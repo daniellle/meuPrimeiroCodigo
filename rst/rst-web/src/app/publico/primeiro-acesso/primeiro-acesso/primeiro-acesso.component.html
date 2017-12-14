@@ -1,0 +1,37 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<div class="teste">
+    <div class="tela-externa">
+        <div class="container-publico">
+            <p class="titulo-pagina text-center">
+                {{title}}
+            </p>
+
+            <div>
+                <div class="container-form">
+                    <form class="float-label" [formGroup]="formulario">
+                        <div class="row">
+                            <div class="form-group col-sm-11 mx-auto" [ngClass]="{ divDis : cpf.disabled }">
+                                <md-input-container [floatPlaceholder]="true">
+                                    <input required for="cpf" mdInput placeholder="{{'app_rst_labels_cpf' | recurso}}" type="text" (blur)="pesquisar(null)" name="cpf" id="cpf" [textMask]="{mask: mascaraCpf, guide: false}" #cpf formControlName="cpf" class="form-control" />
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-11 mx-auto" [ngClass]="{ divDis : cpf.disabled }">
+                                <my-date-picker (dateChanged)="pesquisar($event)" [options]="datePickerOptions" locale="pt-br" formControlName="dataNascimento" name="dataNascimento"></my-date-picker>
+                                <span class="floating-label"> {{ 'app_rst_labels_data_nascimento_required' | recurso }} </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <br/>
+                <div class="calendario" *ngIf="!existeTrabalhador()">
+                </div>
+                <div *ngIf="existeTrabalhador()" class="container-form">
+                    <app-termo-uso-modal #modalTermoUso [(primeiroAcesso)]="primeiroAcesso" [(formularioSenha)]="formularioSenha" [(formulario)]="formulario"></app-termo-uso-modal>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+
+<div class="container-form" [ngClass]="{ divDis : modoConsulta }">
+    <form novalidate>
+        <div class="container-subtitulo">
+            <p>{{questionario.nome}}</p>
+        </div>
+        <div class="corpo-card">
+            <div class="row">
+                <div class="form-group col-md-11 mx-auto">
+                    <div class="white-space mesangem-classificacao">{{questionario.descricao}}</div>
+                </div>
+                <!-- <div class="form-group font-bold col-md-12">
+                    <p>{{questionario.descricao}}</p>
+                </div> -->
+
+                <div class="col-md-12 space-up">
+                    <mat-accordion multi="true">
+                        <mat-expansion-panel *ngFor="let grupo of questionario.listaGrupoPerguntaQuestionario, let i = index" (opened)="panelOpenState = true"
+                            (closed)="panelOpenStxate = false">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <div class="seta"> </div>{{grupo.descricao}}
+                                </mat-panel-title>
+
+                            </mat-expansion-panel-header>
+                            <div class="form-group col-md-12" *ngFor="let perguntaQuestionario of grupo.listaPerguntaQuestionarioDTO">
+                                <div class="white-space">{{perguntaQuestionario.numeracao}} - {{perguntaQuestionario.descricao}}</div>
+                                <div class="form-group col-md-12 space-up" *ngIf="isTipoRespostaSimples(perguntaQuestionario.tipoResposta)">
+                                    <md-radio-group disableRipple>
+                                        <label class="col col-md-12" *ngFor="let respostaQuestionario of perguntaQuestionario.listaRespostaQuestionario; let i=index"
+                                            for="{{ respostaQuestionario.id }}">
+                                            <md-radio-button [id]="respostaQuestionario.id" (change)="selectDeselectRadio(perguntaQuestionario.id, respostaQuestionario.id)"
+                                                disableRipple [value]="respostaQuestionario.id" name="respostaQuestionario">{{respostaQuestionario.descricao}}</md-radio-button>
+                                        </label>
+                                    </md-radio-group>
+                                </div>
+                                <div class="form-check col-md-12 space-up" *ngIf="!isTipoRespostaSimples(perguntaQuestionario.tipoResposta)">
+                                    <div class="form-check col-lg-6 space-up" *ngFor="let respostaQuestionario of perguntaQuestionario.listaRespostaQuestionario">
+                                        <md-slide-toggle [id]="respostaQuestionario.id" name="respostaQuestionario" (change)="selectDeselectCheck(perguntaQuestionario.id, respostaQuestionario.id,  $event)">
+                                            <span class="col-quebra-palavra">{{respostaQuestionario.descricao}}</span>
+                                        </md-slide-toggle>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="btn-rodape-acoes space-up">
+    <button type="button " class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!this.modoConsulta" (click)="salvar()">{{'app_rst_btn_salvar' | recurso}}</button>
+    <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
+</div>

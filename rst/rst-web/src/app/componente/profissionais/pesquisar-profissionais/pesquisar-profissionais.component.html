@@ -1,0 +1,68 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{ 'app_rst_profissionais_title_pesquisar' | recurso }}
+</p>
+
+<div class="container-pesquisar container-form">
+    <form class="float-label">
+        <div class="row">
+            <div class="form-group col-md-6">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{ 'app_rst_labels_nome' | recurso }}" type="text" class="form-control" id="nome" name="nome" [(ngModel)]="filtro.nome" maxlength="160" />
+                </md-input-container>
+            </div>
+            <div class="form-group col-md-6">
+                <md-input-container for="cpf" [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{ 'app_rst_labels_cpf' | recurso }}" name="cpf" [textMask]="{mask: mascaraCpf, guide: false}" [(ngModel)]="filtro.cpf" class="form-control" id="cpf" />
+                </md-input-container>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <md-input-container for="registro" [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{ 'app_rst_labels_rg_conselho_regional' | recurso }}" type="text" name="registro" maxlength="256" [(ngModel)]="filtro.registro" class="form-control" id="registro" />
+                </md-input-container>
+            </div>
+            <div class="form-group col-md-6 search">
+                <label for="situacao" class="col-form-label pesquisa-situacao">{{ 'app_rst_labels_situacao' | recurso }}</label>
+                <div>
+                    <md-radio-group [(ngModel)]="filtro.situacao" name="situacao" disableRipple>
+                        <md-radio-button class="pesquisa-situacao" disableRipple id="todos" name="todos" value="">{{ 'app_rst_labels_situacao_todos' | recurso }}</md-radio-button>
+                        <md-radio-button class="pesquisa-situacao" disableRipple *ngFor="let key of keysSituacao" [value]="key">{{situacoes[key]}}</md-radio-button>
+                    </md-radio-group>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="btn-filter-pesquisar space-up">
+    <button type="button" class="btn btn-primary" (click)="pesquisar()"> {{'app_rst_btn_pesquisar' | recurso}}</button>
+    <button type="button" class="btn btn-primary" (click)="incluir()" *ngIf="hasPermissaoCadastrar()"> {{'app_rst_btn_novo' | recurso}}</button>
+</div>
+<div class="container-form space-up" *ngIf="isNotEmpty(profissionais)">
+    <div class="grid-pesquisa">
+        <table class="table table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th class="label"><span>{{'app_rst_labels_nome_profissional_up' | recurso}}</span></th>
+                    <th class="label"><span>{{'app_rst_labels_registro_profissional_up' | recurso}}</span></th>
+                    <th class="label"><span>{{'app_rst_labels_tipo_profissional_up' | recurso}}</span></th>
+                    <th class="label"><span>{{'app_rst_labels_situacao' | recurso}}</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of profissionais" (click)="selecionar(item)">
+                    <td class="col-nome col-quebra">&nbsp;{{item.nome}}</td>
+                    <td class="col-nao-quebra">&nbsp;{{item.registro}}</td>
+                    <td class="col-nome col-quebra">&nbsp;{{tipoProfissional[item.tipoProfissional]}}</td>
+                    <td class="col-nao-quebra">&nbsp;{{item.dataExclusao == null ? 'Ativo' : 'Inativo' }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="btn-paginacao">
+            <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+        </div>
+    </div>
+</div>

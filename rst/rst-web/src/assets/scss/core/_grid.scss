@@ -1,0 +1,27 @@
+.row.row-equal {
+  padding-right: ($grid-gutter-width-base / 4);
+  padding-left:  ($grid-gutter-width-base / 4);
+  margin-right: ($grid-gutter-width-base / -2);
+  margin-left:  ($grid-gutter-width-base / -2);
+
+  [class*="col-"] {
+    padding-right: ($grid-gutter-width-base / 4);
+    padding-left:  ($grid-gutter-width-base / 4);
+  }
+}
+
+.main .container-fluid {
+  padding: 0 30px;
+}
+
+.img-contato{
+  width: 20px;
+  height: 20px;
+}
+
+.img-notificacao{
+  width: 20px;
+  height: 20px;
+}
+
+

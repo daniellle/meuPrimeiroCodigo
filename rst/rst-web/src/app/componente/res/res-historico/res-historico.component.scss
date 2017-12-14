@@ -1,0 +1,28 @@
+@import '../res-home/res-home.component.scss';
+.container-fluid {
+    margin-top: 16px;
+}
+
+.row-medicamentos-alergias {
+    margin-top: 32px;
+}
+
+.row-timeline {
+    margin-top: 32px;
+}
+
+
+.card-res {
+   .row-card-content {
+       &.card-medicamentos,
+         &.card-alergias {
+        .row-card-content {
+            min-height: 100px;
+            height: 150px;
+        }
+        .row-conteudo {
+            margin-top: 8px;
+        }
+    }
+    }
+}

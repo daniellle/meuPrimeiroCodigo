@@ -1,0 +1,84 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{ title }}
+</p>
+
+<div class="container-pesquisar container-form">
+
+    <form>
+        <div class="row">
+            <div class="form-group col-lg-8">
+                <div class="md-container">
+                    <md-select placeholder="{{ 'app_rst_labels_funcionalidade' | recurso }}" [(ngModel)]="filtro.funcionalidade" name="funcionalidade" id="selectFuncionalidade">
+                        <md-option>
+                            <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                        </md-option>
+                        <md-option *ngFor='let key of keyFuncionalide' [value]="key">{{funcionalidade[key]}}
+                        </md-option>
+                    </md-select>
+                </div>
+            </div>
+            <div class="form-group col-lg-4">
+                <div class="md-container">
+                    <md-select placeholder="{{ 'app_rst_labels_tipo_operacao' | recurso }} " [(ngModel)]="filtro.tipoOperacaoAuditoria" name="tipoOperacaoAuditoria" id="selectTipoOperacaoAuditoria">
+                        <md-option>
+                            <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                        </md-option>
+                        <md-option *ngFor="let key of keyTipoOperacao" [value]="key">{{tipoOperacao[key]}}
+                        </md-option>
+                    </md-select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-4">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{'app_rst_labels_login' | recurso}}" type="text" name="nome" id="nome" [textMask]="{mask: mascaraCpf, guide: false}" [(ngModel)]="filtro.usuario" />
+                </md-input-container>
+            </div>
+            <div class="form-group col-md-4">
+                <my-date-picker class="prof" [(ngModel)]="dataInicial" name="mydate" [options]="datePickerOptions" locale="pt-br" name="dtdesligamento"></my-date-picker>
+                <span class="floating-label"> Data início da ocorrência</span>
+            </div>
+            <div class="form-group col-md-4">
+                <my-date-picker class="prof" label='ate' name="mydate" [(ngModel)]="dataFinal" [options]="datePickerOptions" locale="pt-br" name="dtdesligamento"></my-date-picker>
+                <span class="floating-label"> Data fim da ocorrência</span>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="btn-rodape-acoes space-up">
+    <button type="button" class="btn btn-primary" (click)="pesquisar();">{{ 'app_rst_btn_pesquisar' | recurso }}</button>
+</div>
+<div class="container-form space-up" *ngIf="temAuditoria">
+    <div class="grid-pesquisa">
+        <table class="table table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th class="label"><span>{{ 'app_rst_btn_data_hora' | recurso }}</span></th>
+                    <th class="label"><span>{{ 'app_rst_btn_login' | recurso }}</span></th>
+                    <th class="label"><span>{{ 'app_rst_btn_funcionalidade' | recurso }}</span></th>
+                    <th class="label"><span>{{ 'app_rst_btn_tipo_operacao' | recurso }}</span></th>
+                    <th class="label"><span>{{ 'app_rst_btn_descricao' | recurso }}</span></th>
+                    <th class="label"><span>{{ 'app_rst_labels_dispositivo_movel' | recurso }}</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of listaAuditoria">
+                    <td class="col-nao-quebra">{{item.timestamp}}</td>
+                    <td class="col-nao-quebra">{{getCpfFormatado(item.mdc.usuario)}}</td>
+                    <td class="col-nao-quebra">{{getFuncionalidade(item.mdc.funcionalidade)}}</td>
+                    <td class="col-nao-quebra">{{getOperacao(item.mdc.tipo_operacao)}}</td>
+                    <td class="col-quebra">{{item.message}}</td>
+                    <td class="col-nao-quebra">{{getNavegadorMovel(item.mdc.navegador)}}</td>
+
+                </tr>
+            </tbody>
+        </table>
+        <div class="btn-paginacao">
+            <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+        </div>
+    </div>
+</div>

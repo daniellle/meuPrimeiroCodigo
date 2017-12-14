@@ -1,0 +1,107 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{'app_rst_usuario_empresa_empresas_associadas_title' | recurso}}
+</p>
+
+<div class="container-form" *ngIf="!isSomenteTrabalhador()">
+    <div class="row">
+        <div class="form-group col-sm-8">
+            <md-input-container [floatPlaceholder]="true">
+                <input mdInput placeholder="{{ 'app_rst_labels_razao_social' | recurso }}" type="text" name="razaoSocial" [(ngModel)]="filtro.razaoSocial" class="form-control" id="razaoSocial" maxlength="160" #razaoSocialFiltro="ngModel">
+            </md-input-container>
+        </div>
+        <div class="form-group col-sm-4">
+            <md-input-container [floatPlaceholder]="true">
+                <input mdInput placeholder="{{ 'app_rst_labels_cnpj' | recurso }}" type="text" [textMask]="{mask: mascaraCnpj, guide: false}" name="cnpj" [(ngModel)]="filtro.cnpj" class="form-control" id="cnpj" #cnpjFiltro="ngModel">
+            </md-input-container>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12 col-lg-4">
+            <md-input-container [floatPlaceholder]="true">
+                <input mdInput placeholder="{{ 'app_rst_labels_nome_fantasia' | recurso }}" type="text" name="nomeFantasia" [(ngModel)]="filtro.nomeFantasia" class="form-control" id="nomeFantasia" maxlength="160" #nomeFantasia="ngModel">
+            </md-input-container>
+        </div>
+    </div>
+</div>
+
+<div class="btn-filter-pesquisar space-up" *ngIf="!isSomenteTrabalhador()">
+    <button class="btn btn-primary" (click)="pesquisar()">{{'app_rst_btn_pesquisar' | recurso}}</button>
+    <button *ngIf="hasPermissao()" class="btn btn-primary" (click)="novo()">{{'app_rst_btn_novo' | recurso}}</button>
+    <button class="btn btn-secondary" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
+</div>
+
+<div class="container-form space-up" *ngIf="temPerfilGestorEmpresa()">
+    <div class="container-subtitulo">
+        <p>{{'app_rst_usuario_empresa_empresas_adicionados' | recurso}}</p>
+    </div>
+    <div *ngIf="isEmpty(listaUsuarioEntidade)" class="row">
+        <div class="form-group col-md-12">
+            {{ 'app_rst_msg_nenhum_registro_adicionado' | recurso }}
+        </div>
+    </div>
+    <div class="row grid-pesquisa" *ngIf="isNotEmpty(listaUsuarioEntidade)">
+        <div class="col-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                        <th class="label text-center">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listaUsuarioEntidade">
+                        <td class="col-quebra">{{item.empresa.razaoSocial}}</td>
+                        <td class="col-quebra">{{item.empresa.nomeFantasia}}</td>
+                        <td class="col-nao-quebra">{{item.empresa.cnpj | cnpjPipe }}</td>
+                        <td class="text-center">
+                            <button *ngIf="!modoConsulta" class="btn-link" (click)="removerEmpresa(item)"><img class="lixo" src="assets/img/trash.svg" alt="Excluir"></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="btn-paginacao">
+                <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                    (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-form space-up" *ngIf="temPerfilTrabalhador()">
+    <div class="container-subtitulo">
+        <p>{{'app_rst_usuario_empresa_empresas_trabalhador' | recurso}}</p>
+    </div>
+    <div *ngIf="isNull(listaEmpresasTrabalhador)" class="row">
+        <div class="form-group col-md-12">
+            {{ 'app_rst_msg_nenhum_registro_adicionado' | recurso }}
+        </div>
+    </div>
+    <div class="row grid-pesquisa" *ngIf="isNotEmpty(listaEmpresasTrabalhador)">
+        <div class="col-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listaEmpresasTrabalhador">
+                        <td class="col-quebra">{{item.empresa.razaoSocial}}</td>
+                        <td class="col-quebra">{{item.empresa.nomeFantasia}}</td>
+                        <td class="col-nao-quebra">{{item.empresa.cnpj | cnpjPipe }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="btn-rodape-acoes space-up" *ngIf='temPerfilTrabalhador() && isSomenteTrabalhador()'>
+    <button class="btn btn-secondary" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
+</div>

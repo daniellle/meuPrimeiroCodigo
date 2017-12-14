@@ -1,0 +1,253 @@
+.container-fluid {
+    margin-top: 16px;
+}
+
+.row-timeline {
+    margin-top: 32px;
+}
+
+.horizontal-line{
+    font-size: 12px;
+    color:#96A004;
+}
+
+.horizontal-line hr{
+    border-top: dotted 1px;
+    max-width: 95%;
+    min-width: 90%;
+    display: inline-flex;
+
+}
+
+.text-left{
+    text-align: left;
+}
+
+.card-single {
+    padding: 8px 24px 16px 24px;
+    text-align: center;
+    color: white;
+    &.card-idade {
+        .row {
+            background-color: #6dcdf5;
+        }
+    }
+    &.card-altura {
+        .row {
+            background-color: #9a718f;
+        }
+    }
+    &.card-circunferencia {
+        .row-titulo {
+            flex-flow: row;
+            align-items: center;
+            display: flex;
+            .col-info-sublabel {
+                margin-top: 8px;
+                text-align: right;
+            }
+        }
+        .row {
+            background-color: #ceb2c4;
+        }
+        .row-valores {
+            flex-flow: row-reverse;
+            @media screen and (max-width: 992px) {
+                flex-flow: inherit;
+                flex-wrap: wrap;
+            }
+            .col-info-sublabel {
+                margin-top: -10px;
+            }
+        }
+    }
+    .col-info-label {
+        margin-top: 8px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+    .col-info-valor {
+        margin-top: -24px;
+        font-size: 50px;
+    }
+    .col-info-sublabel {
+        font-size: 10px;
+        font-style: italic;
+    }
+}
+
+.row-chart{
+    padding: 20px;
+
+}
+
+.card-res {
+    padding-left: 24px;
+    padding-right: 24px;
+    .row-card-content {
+        min-height: 230px;
+        height: 100%;
+        .col-info-label {
+            color: #666666;
+            height: 56px;
+            flex-flow: row;
+            display: flex;
+            align-items: center;
+        }
+        .col-info-valor {
+            font-size: 24px;
+            flex-flow: row;
+            align-items: center;
+        }
+        .row-titulo {
+            padding: 10px 0 10px 0;
+            border-bottom: solid 1px #edf2f6;
+            .col-titulo {
+                font-size: 18px;
+                font-weight: bold;
+            }
+            .col-data {
+                font-size: 12px;
+                text-align: right;
+            }
+        }
+        .col-valor-imc {
+            font-size: 24px;
+            margin-left: 19px;
+        }
+        .col-unidade-imc {
+            color: #666666;
+            flex-flow: row;
+            display: flex;
+            align-items: center;
+        }
+        .col-imc-progress {
+            .progress {
+                display: flex;
+                flex-flow: column;
+                height: 340px;
+                width: 5px;
+            }
+            @media screen and (min-width:769px) {
+                margin-left: 30px;
+            }
+        }
+        @mixin background-corpo() {
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+        }
+        .row-imc {
+            display: flex;
+            .mulher {
+                background: url(~assets/img/res/mulher_normal.svg);
+                @include background-corpo();
+                &.baixo-peso {
+                    background: url(~assets/img/res/mulher_baixopeso.svg), url(~assets/img/res/mulher_normal.svg);
+                    @include background-corpo();
+                }
+                &.sobrepeso {
+                    background: url(~assets/img/res/mulher_normal.svg), url(~assets/img/res/mulher_sobrepeso.svg);
+                    @include background-corpo();
+                }
+                &.obeso {
+                    background: url(~assets/img/res/mulher_normal.svg), url(~assets/img/res/mulher_obesa.svg);
+                    @include background-corpo();
+                }
+            }
+            .homem {
+                background: url(~assets/img/res/homem_normal.svg);
+                @include background-corpo();
+                &.baixo-peso {
+                    background: url(~assets/img/res/homem_baixopeso.svg), url(~assets/img/res/homem_normal.svg);
+                    @include background-corpo();
+                }
+                &.sobrepeso {
+                    background: url(~assets/img/res/homem_normal.svg), url(~assets/img/res/homem_sobrepeso.svg);
+                    @include background-corpo();
+                }
+                &.obeso {
+                    background: url(~assets/img/res/homem_normal.svg), url(~assets/img/res/homem_obeso.svg);
+                    @include background-corpo();
+                }
+            }
+            @media screen and (max-width: 992px) {
+                margin-top: 8px;
+            }
+        }
+        .progress-label {
+            position: absolute;
+            color: grey;
+            left: 32px;
+
+            &:not(:first-child) {
+                margin-top: 16px;
+            }
+        }
+        .progress-bar-obeso {
+            background-color: #ff5e38;
+            &.selecionado {
+                &:before {
+                    content: '';
+                    background-color: inherit;
+                    border-radius: 20px;
+                    width: 12px;
+                    height: 12px;
+                    left: 12px;
+                    position: absolute;
+                    top: 9%;
+                }
+            }
+            color: #ff5e38;
+        }
+        .progress-bar-sobrepeso {
+            background-color: #f8b656;
+            &.selecionado {
+                &:before {
+                    content: '';
+                    background-color: inherit;
+                    border-radius: 20px;
+                    width: 12px;
+                    height: 12px;
+                    left: 12px;
+                    position: absolute;
+                    top: 34%;
+                }
+            }
+            color: #f8b656;
+        }
+        .progress-bar-normal {
+            background-color: #6dcdf5;
+            &.selecionado {
+                &:before {
+                    content: '';
+                    background-color: inherit;
+                    border-radius: 20px;
+                    width: 12px;
+                    height: 12px;
+                    left: 12px;
+                    position: absolute;
+                    top: 60%;
+                }
+            }
+            color: #6dcdf5;
+        }
+        .progress-bar-abaixo-peso {
+            background-color: #8d216c;
+            &.selecionado {
+                &:before {
+                    content: '';
+                    background-color: inherit;
+                    border-radius: 20px;
+                    width: 12px;
+                    height: 12px;
+                    left: 12px;
+                    position: absolute;
+                    top: 85%;
+                }
+            }
+            color: #8d216c;
+        }
+        background-color: white;
+    }
+}

@@ -1,0 +1,33 @@
+<div class="container-form space-up">
+    <div *ngIf="model.id" class="container-subtitulo">
+        <p>Editar Trabalhador Selecionado</p>
+    </div>
+    <div *ngIf="!model.id" class="container-subtitulo">
+        <p>Adicionar Trabalhador Selecionado</p>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <label class="col-form-label"><strong>{{ 'app_rst_labels_nome' | recurso}}:</strong> </label>
+            <span>{{model.trabalhador.nome}}</span>
+        </div>
+
+        <div class="col-12">
+            <label class="col-form-label"><strong>{{ 'app_rst_labels_cpf' | recurso}}:</strong> </label>
+            <span>{{model.trabalhador.cpf | cpfPipe}}</span>
+        </div>
+        <div class="col-sm-4 col-md-4" [ngClass]="{ divDis : modoConsulta }">
+            <my-date-picker [options]="datePickerOptions" locale="pt-br" [disabled]="modoConsulta" [(ngModel)]="model.dataAdmissao" name="dataAdmissao"></my-date-picker>
+            <span class="floating-label"> {{ 'app_rst_labels_dataAdmissao' | recurso }} </span>
+        </div>
+        <div class="form-group col-sm-4 col-md-4" [ngClass]="{ divDis : modoConsulta }">
+            <my-date-picker [options]="datePickerOptions" locale="pt-br" [disabled]="modoConsulta" [(ngModel)]="model.dataDemissao" name="dataDemissao"></my-date-picker>
+            <span class="floating-label"> {{ 'app_rst_labels_dataDemissao' | recurso }} </span>
+        </div>
+    </div>
+</div>
+<div class="btn-rodape-acoes space-up">
+    <button class="btn btn-primary" *ngIf="hasPermissaoCadastrar || hasPermissaoAlterar" (click)="adicionarEmpresaTrabalhador()">{{ 'app_rst_btn_salvar' | recurso}}</button>
+    <button class="btn btn-primary" *ngIf="model.id" (click)="lotacoes()">{{ 'app_rst_btn_lotacao' | recurso}}</button>
+    <button class="btn btn-secondary" *ngIf="!model.id" (click)="limpar()">{{'app_rst_btn_cancelar' | recurso}}</button>
+    <button class="btn btn-secondary" *ngIf="model.id" (click)="limpar()">{{'app_rst_btn_voltar' | recurso}}</button>
+</div>

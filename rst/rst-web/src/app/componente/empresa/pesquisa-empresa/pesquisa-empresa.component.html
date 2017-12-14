@@ -1,0 +1,71 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{ title }}
+</p>
+
+<div class="container-pesquisar container-form">
+    <form>
+        <div class="row">
+            <div class="form-group col-md-8">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{ 'app_rst_labels_razao_social' | recurso }}" type="text" class="form-control" id="razaoSocial" name="razaoSocial" [(ngModel)]="filtroEmpresa.razaoSocial" maxlength="160" />
+                </md-input-container>
+            </div>
+            <div class="form-group col-md-4">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{ 'app_rst_labels_cnpj' | recurso }}" [textMask]="{mask: mascaraCnpj, guide: false}" type="text" class="form-control" id="cnpj" name="cnpj" [(ngModel)]="filtroEmpresa.cnpj" />
+                </md-input-container>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6 col-lg-4">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{ 'app_rst_labels_nome_fantasia' | recurso }}" type="text" class="form-control" id="nomeFantasia" name="nomeFantasia" [(ngModel)]="filtroEmpresa.nomeFantasia" maxlength="160" />
+                </md-input-container>
+            </div>
+            <div class="form-group col-md-6 col-lg-4">
+                <label for="situacao" class="col-form-label pesquisa-situacao">{{ 'app_rst_labels_situacao' | recurso }}</label>
+                <div>
+                    <md-radio-group class="search" [(ngModel)]="filtroEmpresa.situacao" name="situacao" disableRipple>
+                        <md-radio-button class="pesquisa-situacao" disableRipple id="todos" name="todos" value="">{{ 'app_rst_labels_situacao_todos' | recurso }}</md-radio-button>
+                        <md-radio-button class="pesquisa-situacao" disableRipple *ngFor="let key of keysSituacao" [value]="key">{{situacoes[key]}}</md-radio-button>
+                    </md-radio-group>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div class="btn-filter-pesquisar space-up">
+    <button type="button" class="btn btn-primary" (click)="pesquisar();">{{ 'app_rst_btn_pesquisar' | recurso }}</button>
+    <button type="button" *ngIf="hasPermissaoCadastro()" class="btn btn-primary" (click)="incluir()"> {{'app_rst_btn_novo' | recurso}}</button>
+</div>
+
+<div class="container-form space-up" *ngIf="isNotEmpty(empresas)">
+    <div class="grid-pesquisa">
+        <table class="table table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
+                    <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
+                    <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                    <th class="label"><span>{{ 'app_rst_labels_situacao' | recurso }}</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of empresas" (click)="selecionar(item)">
+                    <td class="col-quebra">&nbsp;{{item.razaoSocial}}</td>
+                    <td class="col-quebra">&nbsp;{{item.nomeFantasia}}</td>
+                    <td class="col-nao-quebra">{{item.cnpj | cnpjPipe }}</td>
+                    <td class="col-nao-quebra">&nbsp;{{item.dataDesativacao | inativo}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="btn-paginacao">
+            <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+        </div>
+    </div>
+</div>

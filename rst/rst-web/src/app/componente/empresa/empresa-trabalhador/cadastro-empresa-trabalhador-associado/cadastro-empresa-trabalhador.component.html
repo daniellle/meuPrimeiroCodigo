@@ -1,0 +1,62 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+
+<div class="titulo-pagina-intermediaria">
+    <div>Razão Social: {{empresa.razaoSocial}}</div>
+    <div>CNPJ: {{empresa.cnpj | cnpjPipe}}</div>
+</div>
+
+<p class="titulo-pagina">
+    {{'app_rst_empresa_subtitulo_associar_trablhador' | recurso}}
+</p>
+
+<div class="container-form" *ngIf="!idEmpresaTrabalhador && !isTrabalhadorSelecionado">
+    <div class="row">
+        <div class="form-group col-sm-4">
+            <md-input-container [floatPlaceholder]="true">
+                <input #cpfFiltro="ngModel" mdInput placeholder="{{'app_rst_labels_cpf' | recurso}}" type="text" name="cpf" [textMask]="{mask: mascaraCnpj, guide: false}" id="cpf" [(ngModel)]="filtro.cpf" class="form-control" appFormularioCamposErro>
+            </md-input-container>
+        </div>
+
+        <div class="form-group col-sm-8">
+            <md-input-container [floatPlaceholder]="true">
+                <input #nomeFiltro="ngModel" mdInput placeholder="{{'app_rst_labels_nome' | recurso}}" maxlength="160" type="text" name="nome" id="nome" [(ngModel)]="filtro.nome" class="form-control" appFormularioCamposErro>
+            </md-input-container>
+        </div>
+    </div>
+</div>
+
+<div class="btn-filter-pesquisar space-up" *ngIf="!idEmpresaTrabalhador && !isTrabalhadorSelecionado">
+    <button class="btn btn-primary" (click)="pesquisar()">{{'app_rst_btn_pesquisar' | recurso}}</button>
+    <button class="btn btn-secondary" *ngIf="!idEmpresaTrabalhador" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
+</div>
+
+<div class="container-form space-up" *ngIf="!idEmpresaTrabalhador && !isTrabalhadorSelecionado && isNotEmpty(listaTrabalhador)">
+    <div class="row grid-pesquisa">
+        <div class="col-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>{{ 'app_rst_labels_nome' | recurso }}</th>
+                        <th>{{ 'app_rst_labels_cpf' | recurso }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listaTrabalhador" (click)="selecionarTrabalhador(item)">
+                        <td>{{item.nome}}</td>
+                        <td class="col-nao-quebra">{{getCpfFormatado(item.cpf)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="btn-paginacao">
+                <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                    (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="idEmpresaTrabalhador || isTrabalhadorSelecionado">
+    <app-associacao-empresa-trabalhador [hasPermissaoCadastrar]="hasPermissaoCadastrar()" [hasPermissaoAlterar]="hasPermissaoAlterar()" [modoConsulta]="modoConsulta" [(model)]="model" (onSalvar)="adicionarEmpresaTrabalhador()" (onLotacoes)="lotacoes()" (onLimpar)="limpar()"></app-associacao-empresa-trabalhador>
+</div>
+<div class="calendario"></div>

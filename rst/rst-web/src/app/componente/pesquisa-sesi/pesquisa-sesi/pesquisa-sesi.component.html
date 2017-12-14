@@ -1,0 +1,109 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{ title }}
+</p>
+
+<div class="container-pesquisar container-form">
+    <form>
+        <div class="container-subtitulo-pesquisa">
+            <p>{{'app_rst_pesquisa_sesi_busca_unidade_sesi' | recurso}}</p>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6 col-lg-12">
+                <ng-select [options]="unidadesSesiOption" allowClear=true [(ngModel)]="filtroPesquisaSesi.idUnidadeSesi" (deselected)="unidadeSesiRemovido()" (selected)="unidadeSesiAlterado()" name="unidadeSesi" id="unidadeSesi" maxlength="160" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}">
+                </ng-select>
+                <span class="floating-label">{{'app_rst_labels_uat_up' | recurso}}</span>
+            </div>
+        </div>
+        <div class="container-subtitulo-pesquisa">
+            <p>{{'app_rst_pesquisa_sesi_busca_local' | recurso}}</p>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-4" [ngClass]="{ divDis : !habilitaEstado }">
+                <div class="md-container">
+                    <md-select [disabled]=!habilitaEstado placeholder="{{ 'app_rst_labels_estado' | recurso }}" name="estado" [(ngModel)]="estadoSesiSelecionado" id="estado" (change)="estadoAlterado()">
+                        <md-option>
+                            <option value='0'>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                        </md-option>
+                        <md-option *ngFor='let estado of estados' [value]="estado.id">
+                            {{estado.descricao}}
+                        </md-option>
+                    </md-select>
+                </div>
+            </div>
+            <div class="form-group col-md-4" [ngClass]="{ divDis : !habilitaMunicipio }">
+                <ng-select [disabled]=!habilitaMunicipio [options]="municipios" allowClear=true [(ngModel)]="filtroPesquisaSesi.idMunicipio" name="municipio" maxlength="50" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}" (selected)="municipioAlterado()"
+                    (deselected)="municipioRemovido()">
+                </ng-select>
+                <span class="floating-label">Município</span>
+            </div>
+            <div class=" form-group col-md-4" [ngClass]="{ divDis : !habilitaBairro }">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput (blur)="pesquisarProdutoServicoPorEndereco()" [disabled]=!habilitaBairro placeholder="{{ 'app_rst_labels_bairro' | recurso }}" type="text" maxlength="50" class="form-control" [(ngModel)]="filtroPesquisaSesi.bairro" name="bairro" id="bairro"
+                    />
+                </md-input-container>
+            </div>
+        </div>
+        <div class="container-subtitulo-pesquisa">
+            <p>{{'app_rst_pesquisa_sesi_busca_produto' | recurso}}</p>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6" [ngClass]="{ divDis : !habilitaLinha }">
+                <ng-select imput=false [disabled]=!habilitaLinha placeholder="{{'app_rst_labels_situacao_todos' | recurso}}" [options]="linhasOption" allowClear=true [(ngModel)]="linhas" name="linha" maxlength="160" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}"
+                    multiple=true>
+                </ng-select>
+                <span class="floating-label">{{'app_rst_labels_linha' | recurso}}</span>
+            </div>
+            <div class="form-group col-md-6" [ngClass]="{ divDis : !habilitaProduto }">
+                <ng-select imput=false [disabled]=!habilitaProduto placeholder="{{'app_rst_labels_situacao_todos' | recurso}}" [options]="produtosOption" allowClear=true [(ngModel)]="produtos" name="produto" maxlength="160" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}"
+                    multiple=true>
+                </ng-select>
+                <span class="floating-label">{{'app_rst_labels_produto' | recurso}}</span>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="btn-filter-pesquisar space-up">
+    <button type="button" class="btn btn-primary" (click)="pesquisar();">{{'app_rst_btn_pesquisar' | recurso}}</button>
+</div>
+
+<div *ngIf="isNotEmpty(unidadesSesi)">
+    <div class="container-form space-up" *ngFor="let unidade of unidadesSesi">
+        <div class="container-subtitulo">
+            <p>{{unidade.razaoSocialUat}}</p>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-8">
+                <p *ngIf="isNotEmpty(unidade.endereco)">{{unidade.endereco[0].endereco.descricao}}<span *ngIf="unidade.endereco[0].endereco.complemento">, {{unidade.endereco[0].endereco.complemento}}</span><span *ngIf="unidade.endereco[0].endereco.numero">, {{unidade.endereco[0].endereco.numero}}</span>
+                    <span *ngIf="unidade.endereco[0].endereco.bairro">, {{unidade.endereco[0].endereco.bairro}}</span><span *ngIf="unidade.endereco[0].endereco.municipio">, {{unidade.endereco[0].endereco.municipio.descricao}}</span>
+                    <span *ngIf="unidade.endereco[0].endereco.municipio.estado"> - {{unidade.endereco[0].endereco.municipio.estado.descricao}}</span><span *ngIf="unidade.endereco[0].endereco.cep"> - CEP: {{formatarCep(unidade.endereco[0].endereco.cep)}}</span></p>
+                <div class="row" *ngIf="isNotEmpty(unidade.telefone)">
+                    <div class="form-group col-md-10">
+                        <p>Tel: {{exibirTelefone(unidade)}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-4 text-right" *ngIf="isNotEmpty(unidade.endereco)">
+                <a href="{{verMapa(unidade)}}" target="_blank ">
+                    <button type="button" class="btn-link"><img class="btn-ver-mapa" src="assets/img/vermapa.svg" alt="Ver mapa"></button>
+                </a>
+            </div>
+        </div>
+
+        <div *ngIf="isNotEmpty(unidade.linhas)">
+            <div class="row" *ngFor="let linha of unidade.linhas">
+                <div class="form-group col-md-8">
+                    <p class="negrito">{{linha.descricao}}</p>
+                    <p *ngFor="let produto of linha.produtosServicos">- {{produto.nome}}</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="btn-paginacao space-up">
+        <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+            (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+    </div>
+</div>
