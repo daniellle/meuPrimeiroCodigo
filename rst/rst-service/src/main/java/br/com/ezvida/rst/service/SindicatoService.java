@@ -111,5 +111,9 @@ public class SindicatoService extends BaseService {
 		LogAuditoria.registrar(LOGGER, auditoria,"Pesquisar sindicato por CNPJ: " + cnpj);
 		return sindicatoDAO.pesquisarPorCNPJ(cnpj);
 	}
+
+	public List<Sindicato> buscarPorEmpresaEAtivos(Long id) {
+		return sindicatoDAO.buscarPorEmpresaEAtivos(id);
+	}
 	
 }

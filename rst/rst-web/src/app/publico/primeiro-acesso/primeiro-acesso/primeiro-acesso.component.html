@@ -19,7 +19,7 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-11 mx-auto" [ngClass]="{ divDis : cpf.disabled }">
-                                <my-date-picker (dateChanged)="pesquisar($event)" [options]="datePickerOptions" locale="pt-br" formControlName="dataNascimento" name="dataNascimento"></my-date-picker>
+                                <my-date-picker (dateChanged)="pesquisar($event)" [options]="datePickerOptions" locale="pt-br" formControlName="dataNascimento" name="dataNascimento" (keyup)="maskDate($event, this.formulario, 'dataNascimento')"></my-date-picker>
                                 <span class="floating-label"> {{ 'app_rst_labels_data_nascimento_required' | recurso }} </span>
                             </div>
                         </div>

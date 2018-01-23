@@ -238,4 +238,6 @@ public class PermissionConstants {
 	public static final String USUARIO_ENTIDADE_CONSULTAR = "usuario_entidade_consultar";
 	public static final String USUARIO_ENTIDADE_DESATIVAR = "usuario_entidade_desativar";
 	
+	public static final String USUARIO_DADOS_CONSULTAR = "consultar_dados_usuario";
+
 }

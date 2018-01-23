@@ -84,7 +84,7 @@ public class EmpresaSindicatoEndpoint extends SegurancaEndpoint<EmpresaSindicato
 	public Response alterarEmpresaSindicato(@PathParam("idEmpresa") Long idEmpresa,
 			@Encoded EmpresaSindicato empresaSindicato, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(serializar(empresaSindicatoService.salvar(idEmpresa, empresaSindicato, ClienteInfos
 						.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.EMPRESA))))
 				.type(MediaType.APPLICATION_JSON).build();
@@ -99,7 +99,7 @@ public class EmpresaSindicatoEndpoint extends SegurancaEndpoint<EmpresaSindicato
 			PermissionConstants.EMPRESA_SINDICATO_DESATIVAR }))
 	public Response removerEmpresaSindicato(@Encoded EmpresaSindicato empresaSindicato,
 			@Context SecurityContext context, @Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(serializar(empresaSindicatoService.remover(empresaSindicato, ClienteInfos
 						.getClienteInfos(context, request, TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.EMPRESA))))
 				.type(MediaType.APPLICATION_JSON).build();

@@ -45,7 +45,6 @@ import { TipoSanguineo } from 'app/modelo/enum/enum-tipo-sanguineo.model';
 import { Pais } from 'app/modelo/pais.model';
 import { IOption } from 'ng-select';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
-
 @Component({
     selector: 'app-cadastro-trabalhador',
     templateUrl: './cadastro-trabalhador.component.html',
@@ -170,12 +169,16 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
     buscarProfissoes() {
         this.profissaoService.pesquisarProfissoes().subscribe((dados: any) => {
             this.profissoes = dados;
+        }, (error) => {
+            this.mensagemError(error);
         });
     }
 
     buscarEstados() {
         this.estadoService.buscarEstados().subscribe((dados: any) => {
             this.estados = dados;
+        }, (error) => {
+            this.mensagemError(error);
         });
     }
 
@@ -190,6 +193,8 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
                     }
                 }
             });
+        }, (error) => {
+            this.mensagemError(error);
         });
     }
 
@@ -232,6 +237,8 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
                 lista.push(item);
             });
             this.municipiosNacionalidade = lista;
+        }, (error) => {
+            this.mensagemError(error);
         });
     }
 
@@ -345,7 +352,6 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
     validarCampos(): Boolean {
         let isValido = true;
         if (this.trabalhadorForm.controls['nome'].invalid) {
-
             if (this.trabalhadorForm.controls['nome'].errors.required) {
                 this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.trabalhadorForm.controls['nome'],
                     MensagemProperties.app_rst_labels_nome);
@@ -702,6 +708,8 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
                             // this.trabalhadorForm.controls['estadoNacionalidade'].enable();
                         }
                     });
+                }, (error) => {
+                    this.mensagemError(error);
                 });
             }
 
@@ -726,6 +734,8 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
                         }
                     });
                     // this.trabalhadorForm.controls['pais'].enable();
+                }, (error) => {
+                    this.mensagemError(error);
                 });
             }
         }
@@ -1033,4 +1043,5 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
         this.temImagem = false;
     }
 
+    
 }

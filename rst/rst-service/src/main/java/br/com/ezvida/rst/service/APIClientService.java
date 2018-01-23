@@ -1,11 +1,13 @@
 package br.com.ezvida.rst.service;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import br.com.ezvida.girst.apiclient.model.Credencial;
 import br.com.ezvida.girst.apiclient.model.Token;
 import fw.core.service.BaseService;
 
+@Stateless
 public class APIClientService extends BaseService {
 
 	private static final long serialVersionUID = 4803857682047598134L;

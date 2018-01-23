@@ -1,7 +1,5 @@
 package br.com.ezvida.rst.auditoria.model;
 
-import org.jboss.logging.MDC;
-
 import br.com.ezvida.rst.enums.Funcionalidade;
 import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 
@@ -12,10 +10,6 @@ public class ClienteAuditoria {
 	private String descricao;
 	private TipoOperacaoAuditoria tipoOperacao;
 	private Funcionalidade funcionalidade;
-	
-	public ClienteAuditoria() {
-		MDC.put("appName", "rst");
-	}
 
 	public String getNavegador() {
 		return navegador;

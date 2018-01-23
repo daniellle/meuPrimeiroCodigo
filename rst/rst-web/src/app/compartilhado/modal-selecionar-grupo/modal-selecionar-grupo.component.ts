@@ -79,6 +79,8 @@ export class ModalSelecionarGrupoPerguntaComponent extends BaseComponent {
     this.paginacao.pagina = event.page;
     this.grupoService.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<GrupoPergunta>) => {
       this.listaGrupo = retorno.list;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

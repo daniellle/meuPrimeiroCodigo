@@ -67,6 +67,8 @@ export class PesquisaUatComponent extends BaseComponent implements OnInit {
   buscarDepartamentos() {
     this.departamentoService.listarTodos(new FiltroDepartRegional()).subscribe((dados: any) => {
       this.departamentos = dados;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -115,6 +117,8 @@ export class PesquisaUatComponent extends BaseComponent implements OnInit {
     this.paginacao.pagina = event.page;
     this.service.pesquisar(this.filtroUat, this.paginacao).subscribe((retorno: ListaPaginada<Uat>) => {
       this.uats = retorno.list;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

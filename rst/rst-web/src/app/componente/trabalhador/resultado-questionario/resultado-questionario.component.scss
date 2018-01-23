@@ -1,0 +1,39 @@
+@mixin container-resultado {
+    margin-top: auto;
+    border-radius: 10px;
+    margin-left: 4%;
+    margin-right: 4%;
+}
+
+.padding-text {
+    padding: 20px;
+}
+
+.baixo-risco {
+    @include container-resultado;
+    background-color: #c6d344;
+    color: #1a1a1a;
+}
+
+.medio-risco {
+    @include container-resultado;
+    background-color: #fecc4a;
+    color: #1a1a1a;
+}
+
+.medio-alto-risco {
+    @include container-resultado;
+    background-color: #ff803d;
+    color: white;
+}
+
+.alto-risco {
+    @include container-resultado;
+    background-color: #c93737;
+    color: white;
+}
+
+.plus-icons {
+    width: 26px;
+    height: 26px;
+}

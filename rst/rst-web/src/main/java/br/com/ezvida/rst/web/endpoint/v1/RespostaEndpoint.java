@@ -93,7 +93,7 @@ public class RespostaEndpoint extends SegurancaEndpoint<Resposta> {
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.RESPOSTA, PermissionConstants.RESPOSTA_ALTERAR }))
 	public Response alterar(@Encoded Resposta resposta, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(respostaService.salvar(resposta, ClienteInfos.getClienteInfos(context, request,
 						TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.QUESTIONARIOS)))
 				.type(MediaType.APPLICATION_JSON).build();
@@ -107,7 +107,7 @@ public class RespostaEndpoint extends SegurancaEndpoint<Resposta> {
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.RESPOSTA, PermissionConstants.RESPOSTA_DESATIVAR }))
 	public Response desativar(@Encoded Resposta resposta, @Context SecurityContext context
 			, @Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED).entity(serializar(respostaService.desativarResposta(resposta,
+		return Response.status(HttpServletResponse.SC_OK).entity(serializar(respostaService.desativarResposta(resposta,
 				ClienteInfos.getClienteInfos(context, request,
 						TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.QUESTIONARIOS))))
 				.type(MediaType.APPLICATION_JSON).build();

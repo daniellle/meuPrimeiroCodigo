@@ -51,7 +51,9 @@ export class PesquisaQuestionarioComponent extends BaseComponent implements OnIn
     this.carregarTiposQuestionario();
   }
   private carregarVersoes() {
-    this.service.pesquisarVersoes().subscribe((retorno) => { this.versoes = retorno; });
+    this.service.pesquisarVersoes().subscribe((retorno) => { this.versoes = retorno; }, (error) => {
+      this.mensagemError(error);
+    });
   }
   pesquisar() {
     if (this.validarCampos()) {
@@ -85,6 +87,8 @@ export class PesquisaQuestionarioComponent extends BaseComponent implements OnIn
     this.paginacao.pagina = event.page;
     this.service.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<Questionario>) => {
       this.questionarios = retorno.list;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

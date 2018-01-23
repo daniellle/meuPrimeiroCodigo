@@ -72,7 +72,7 @@ public class ParceiroProdutoServicoEndpoint extends SegurancaEndpoint<ParceiroPr
 	public Response desativar(@Encoded ParceiroProdutoServico parceiroProdutoServico
 			, @Context SecurityContext context, @Context HttpServletRequest request) {
 		LOGGER.debug("Salvando Parceiro Produto ");
-		return Response.status(HttpServletResponse.SC_CREATED).entity(serializar(parceiroProdutoServicoService
+		return Response.status(HttpServletResponse.SC_OK).entity(serializar(parceiroProdutoServicoService
 				.desativarParceiroProdutoServico(parceiroProdutoServico
 						,ClienteInfos.getClienteInfos(context, request,TipoOperacaoAuditoria.CONSULTA
 								, Funcionalidade.PARCEIRO_CREDENCIADO))))

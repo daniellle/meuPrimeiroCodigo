@@ -531,6 +531,7 @@ export const MensagemProperties = {
   // Indicadore Questionário
   app_rst_indicador_questionario_title_pesquisar: 'Pesquisar Indicador de Questionário',
   app_rst_indicador_questionario_title_cadastro: 'Cadastro de Indicador de Questionário',
+  app_rst_labels_incentivo: 'Incentivo',
 
   // Classificação Pontuação
   app_rst_classificacao_pontuacao_title_pesquisar: 'Pesquisar Classificação de Pontuação',
@@ -544,6 +545,12 @@ export const MensagemProperties = {
   app_rst_resposta_questionario_campo_obrigatorio: 'O campo {0} da Resposta é obrigatório(a)',
   app_rst_resposta_questionario_pontuacao_invalida: 'O campo Pontuação da Resposta deve ser 0 ou 1',
   app_rst_resposta_questionario_ordem_ja_existe: 'Já existe uma Resposta com a ordem {0}',
+
+  // Resultado Questionário
+  app_rst_resultado_questionario_baixo_risco: 'Baixo Risco',
+  app_rst_resultado_questionario_medio_risco: 'Medio Risco',
+  app_rst_resultado_questionario_medio_alto_risco: 'Médio Alto',
+  app_rst_resultado_questionario_alto_risco: 'Alto',
 
   // Questionário
   app_rst_labels_questionario: 'Questionários',

@@ -130,6 +130,8 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
     this.pesquisaSesiService.pesquisarPaginado(this.filtroPesquisaSesi, this.paginacao)
       .subscribe((retorno: ListaPaginada<PesquisaSesiDTO>) => {
         this.unidadesSesi = retorno.list;
+      }, (error) => {
+        this.mensagemError(error);
       });
   }
 
@@ -146,6 +148,8 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
         });
       }
       this.unidadesSesiOption = listaOption;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -160,6 +164,8 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
       const uats = retorno;
       this.buscarLinhasPorIdUat(uats);
       this.buscarProdutoServicoPorIdUat(uats);
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -176,6 +182,8 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
         });
       }
       this.linhasOption = listaOption;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -196,6 +204,8 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
         });
       }
       this.linhasOption = listaOption;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -216,6 +226,8 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
         });
       }
       this.produtosOption = listaOption;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -232,6 +244,8 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
         });
       }
       this.produtosOption = listaOption;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -239,6 +253,8 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
     this.estadoService.buscarEstados().subscribe((dados: Estado[]) => {
       this.estados = dados;
       this.estadoSesiSelecionado = 0;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -265,6 +281,8 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
         this.preencherEnderecoUnidadeSesi();
         this.habilitaLinha = false;
         this.habilitaProduto = false;
+      }, (error) => {
+        this.mensagemError(error);
       });
     }
   }

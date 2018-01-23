@@ -49,7 +49,7 @@ public class EmpresaFuncaoEndpoint extends SegurancaEndpoint<EmpresaFuncao> {
 			PermissionConstants.EMPRESA_FUNCAO_DESATIVAR, }))
 	public Response desativarEmpresaFuncao(@Encoded EmpresaFuncao empresaFuncao, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(serializar(empresaFuncaoService.desativar(empresaFuncao, ClienteInfos.getClienteInfos(context,
 						request, TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.EMPRESA))))
 				.type(MediaType.APPLICATION_JSON).build();

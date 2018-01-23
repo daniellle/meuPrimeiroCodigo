@@ -31,7 +31,7 @@
                 </md-input-container>
             </div>
             <div class="form-group col-md-4">
-                <my-date-picker class="prof" [options]="datePickerOptions" locale="pt-br" formControlName="dataNascimento" name="dtNascimento"></my-date-picker>
+                <my-date-picker class="prof" [options]="datePickerOptions" locale="pt-br" formControlName="dataNascimento" name="dtNascimento" (keyup)="maskDate($event, this.profissionaisForm, 'dataNascimento')"></my-date-picker>
                 <span class="floating-label"> {{ 'app_rst_labels_data_nascimento' | recurso }} </span>
             </div>
             <div class="form-group col-md-4">

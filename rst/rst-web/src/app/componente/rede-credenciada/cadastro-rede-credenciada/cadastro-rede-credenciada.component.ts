@@ -73,9 +73,13 @@ export class CadastroRedeCredenciadaComponent extends BaseComponent implements O
   carregarCombos() {
     this.porteEmpresaService.pesquisarTodos().subscribe((retorno: PorteEmpresa[]) => {
       this.listaPorteEmpresas = retorno;
+    }, (error) => {
+      this.mensagemError(error);
     });
     this.tipoEmpresaService.pesquisarTodos().subscribe((retorno: TipoEmpresa[]) => {
       this.listaTipoEmpresas = retorno;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -97,6 +101,8 @@ export class CadastroRedeCredenciadaComponent extends BaseComponent implements O
         this.showDataDesligamento = false;
       }
       this.montarTitulo();
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

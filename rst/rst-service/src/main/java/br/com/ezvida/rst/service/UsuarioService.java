@@ -31,6 +31,7 @@ import br.com.ezvida.rst.model.Trabalhador;
 import br.com.ezvida.rst.model.Usuario;
 import br.com.ezvida.rst.model.UsuarioEntidade;
 import br.com.ezvida.rst.model.UsuarioGirstView;
+import br.com.ezvida.rst.model.dto.UsuarioDTO;
 import br.com.ezvida.rst.service.excpetions.RegistroNaoEncontradoException;
 import fw.core.common.util.ResourceUtil;
 import fw.core.exception.BusinessErrorException;
@@ -64,6 +65,9 @@ public class UsuarioService extends BaseService {
 
 	@Inject
 	private UsuarioGirstViewDAO usuarioGirstViewDAO;
+
+	@Inject
+	private EmpresaService empresaService;
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public Usuario getUsuario(String login) {
@@ -275,6 +279,26 @@ public class UsuarioService extends BaseService {
 		}
 
 		return false;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public UsuarioDTO consultarDadosUsuario(DadosFilter dados, Usuario usuarioLogado) {
+		LOGGER.debug("consultando dados do usuario");
+
+		UsuarioDTO usuario = new UsuarioDTO();
+		usuario.setLogin(usuarioLogado.getLogin());
+
+		if (dados.isTrabalhador()) {
+			usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorCpf(usuarioLogado.getLogin()));
+			Trabalhador trabalhador = trabalhadorService.buscarPorCpf(usuarioLogado.getLogin());
+			usuario.setTipoImagem(trabalhador.getTipoImagem());
+			usuario.setImagem(trabalhador.getImagem());
+		} else {
+			usuario.setDepartamentosRegionais(departamentoRegionalService.pesquisarPorIds(dados.getIdsDepartamentoRegional()));
+			usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorIds(dados.getIdsEmpresa()));
+		}
+
+		return usuario;
 	}
 
 }

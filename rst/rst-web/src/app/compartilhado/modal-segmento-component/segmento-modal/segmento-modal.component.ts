@@ -85,6 +85,8 @@ export class SegmentoModalComponent extends BaseComponent implements OnInit {
     this.paginacao.pagina = event.page;
     this.service.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<Segmento>) => {
       this.segmentos = retorno.list;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

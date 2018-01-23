@@ -95,6 +95,8 @@ export class CargoModalComponent extends BaseComponent implements OnInit {
     this.empresaCboService.pesquisar(this.filtro,  this.paginacao).subscribe((retorno: ListaPaginada<EmpresaCbo>) => {
       this.paginacao = this.getPaginacao(this.paginacao, retorno);
       this.verificarRetornoEmpresaCargo(retorno);
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

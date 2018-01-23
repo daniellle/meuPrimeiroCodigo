@@ -200,7 +200,7 @@
                 <artifactId>maven-ear-plugin</artifactId>
                 <configuration>
                     <fileNameMapping>no-version</fileNameMapping>
-                    <finalName>rst-app</finalName>
+                    <finalName>rst-app-${rst.version}</finalName>
                     <displayName>rst-app</displayName>
                     <modules>
                         <webModule>

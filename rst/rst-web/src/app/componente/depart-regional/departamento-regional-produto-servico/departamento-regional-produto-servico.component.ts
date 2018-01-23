@@ -82,17 +82,25 @@ export class DepartamentoRegionalProdutoServicoComponent extends BaseComponent i
         this.paginacaoDepartamentoRegionalProdutoServico.pagina = 1;
         this.pesquisarDepartamentoRegionalProdutoServicoPaginadoService(this.idDepartamentoRegional);
       }
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
   buscarLinhas() {
     this.linhaService.buscarTodas().subscribe((retorno) => {
       this.listaLinhas = retorno;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
   bucarDepartamentoRegionalPorId(id) {
-    this.departamentoRegionalService.pesquisarPorId(id).subscribe((retorno) => { this.departaentoRegional = retorno; });
+    this.departamentoRegionalService.pesquisarPorId(id).subscribe((retorno) => {
+      this.departaentoRegional = retorno;
+    }, (error) => {
+      this.mensagemError(error);
+    });
   }
   pesquisarDepartamentoRegionalProdutoServicoPaginadoService(idDepartamentoRegional: number): void {
     this.DepartamentoRegionalProdutoServicoSerivce.pesquisarDepartamentoRegionalProdutoServico(idDepartamentoRegional,
@@ -208,7 +216,7 @@ export class DepartamentoRegionalProdutoServicoComponent extends BaseComponent i
 
   hasPermissaoCadastrar() {
     return Seguranca.isPermitido([PermissoesEnum.DEPARTAMENTO_REGIONAL_PRODUTOS_SERVICOS,
-      PermissoesEnum.DEPARTAMENTO_REGIONAL_PRODUTOS_SERVICOS_CADASTRAR]);
+    PermissoesEnum.DEPARTAMENTO_REGIONAL_PRODUTOS_SERVICOS_CADASTRAR]);
   }
 
 }

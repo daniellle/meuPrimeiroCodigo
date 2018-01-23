@@ -27,7 +27,7 @@ export class UsuarioService extends BaseService<Usuario> {
 
   pesquisarPaginado(filtro: FiltroUsuario, paginacao: Paginacao): Observable<ListaPaginada<Usuario>> {
 
-    const params =  this.getParams(filtro, paginacao);
+    const params = this.getParams(filtro, paginacao);
     return super.get('/v1/usuarios/paginado', params)
       .map((response: Response) => {
         return response;
@@ -57,47 +57,47 @@ export class UsuarioService extends BaseService<Usuario> {
       return this.editar(usuario);
     } else {
       return super.post('/v1/usuarios', usuario)
-      .map((response: Usuario) => {
+        .map((response: Usuario) => {
+          return response;
+        }).catch((error: HttpResponse<MensagemErro>) => {
+          return Observable.throw(error);
+        }).finally(() => {
+          this.bloqueioService.evento.emit(true);
+        });
+    }
+  }
+
+  editar(usuario: Usuario): Observable<any> {
+    return super.put('/v1/usuarios', usuario)
+      .map((response: any) => {
         return response;
       }).catch((error: HttpResponse<MensagemErro>) => {
         return Observable.throw(error);
       }).finally(() => {
         this.bloqueioService.evento.emit(true);
       });
-    }
-  }
-
-  editar(usuario: Usuario): Observable<any> {
-    return super.put('/v1/usuarios', usuario)
-    .map((response: any) => {
-      return response;
-    }).catch((error: HttpResponse<MensagemErro>) => {
-      return Observable.throw(error);
-    }).finally(() => {
-      this.bloqueioService.evento.emit(true);
-    });
   }
 
   desativar(usuario: Usuario): Observable<Usuario> {
     return super.delete('/v1/usuarios/desativar?id=' + usuario.id)
-    .map((response: Response) => {
-      return response;
-    }).catch((error: HttpResponse<MensagemErro>) => {
-      return Observable.throw(error);
-    }).finally(() =>  {
-      this.bloqueioService.evento.emit(true);
-    });
+      .map((response: Response) => {
+        return response;
+      }).catch((error: HttpResponse<MensagemErro>) => {
+        return Observable.throw(error);
+      }).finally(() => {
+        this.bloqueioService.evento.emit(true);
+      });
   }
 
   recuperarSenha(email: String): Observable<String> {
     return super.post('v1/usuarios/recuperarsenha', email)
-    .map((response: Response) => {
-      return response;
-    }).catch((error: HttpResponse<MensagemErro>) => {
-      return Observable.throw(error);
-    }).finally(() => {
-      this.bloqueioService.evento.emit(true);
-    });
+      .map((response: Response) => {
+        return response;
+      }).catch((error: HttpResponse<MensagemErro>) => {
+        return Observable.throw(error);
+      }).finally(() => {
+        this.bloqueioService.evento.emit(true);
+      });
   }
 
   private getParams(filtro: FiltroUsuario, paginacao: Paginacao): HttpParams {
@@ -128,5 +128,15 @@ export class UsuarioService extends BaseService<Usuario> {
       params = params.append('qtdRegistro', paginacao.qtdRegistro.toString());
     }
     return params;
+  }
+
+  consultarDadosUsuario(): Observable<Usuario> {
+
+    return super.get('/v1/usuarios/dados')
+      .map((response: Response) => {
+        return response;
+      }).catch((error: Response) => {
+        return Observable.throw(error);
+      });
   }
 }

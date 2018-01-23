@@ -8,11 +8,13 @@ import { ListaPaginada } from './../modelo/lista-paginada.model';
 import { Paginacao } from 'app/modelo/paginacao.model';
 import { RecursoPipe } from './../compartilhado/utilitario/recurso.pipe';
 import { Optional } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import { BloqueioService } from '../servico/bloqueio.service';
 import { ToastOptions, ToastyService } from 'ng2-toasty';
 import { EstadoService } from 'app/servico/estado.service';
 import { IOption } from 'ng-select';
+import * as moment from 'moment';
+import { ValidarData } from 'app/compartilhado/validators/data.validator';
 
 export abstract class BaseComponent {
 
@@ -236,4 +238,55 @@ export abstract class BaseComponent {
     return Seguranca.isPermitido([nomePermissao]);
   }
 
+  // validacao de data
+
+  // validarData(data: any): boolean {
+  //   const RegExPattern = '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/[12][0-9]{3}$';
+
+  //   if (!((data.match(RegExPattern)) && (data !== ''))) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
+
+  retiraLetra($event, str) {
+    if ((str !== '0' && str !== '' && !Number(str)) || ($event.target.value.length > 10)) {
+      $event.target.value = $event.target.value.substring(0, $event.target.value.length - 1);
+      str = str.substring(0, str - 1);
+      this.retiraLetra($event, str);
+    }
+    return $event.target.value;
+  }
+
+  maskDate($event, form?: FormGroup, campoForm?: string, verificaDataModel ?: string) {
+    let str: string = $event.target.value;
+    str = str.replace(new RegExp('/', 'g'), '');
+    $event.target.value = this.retiraLetra($event, str);
+    if ($event.target.value.length < 10 && $event.keyCode !== 8) {
+      if ($event.target.value.length === 2 || $event.target.value.length === 5) {
+        $event.target.value = $event.target.value += '/';
+      }
+    }
+    if (verificaDataModel && $event.target.value !== '') {
+      this.validacaoDataParaNgModel($event, verificaDataModel);
+    }
+    const existeFiltro = form && campoForm && $event.target.value.length === 10;
+    if (form && campoForm) {
+      form.controls[campoForm].patchValue(
+        $event.target.value,
+      );
+    }
+
+    if (existeFiltro) {
+      if (ValidarData(moment($event.target.value, 'DD/MM/YYYY').format('YYYY-MM-DD'))) {
+        form.controls[campoForm].patchValue(
+          DatePicker.convertDateForMyDatePicker($event.target.value),
+        );
+       }
+    }
+  }
+
+  validacaoDataParaNgModel($event, verificaDataModel: string) {
+    verificaDataModel = ValidarData(moment($event.target.value, 'DD/MM/YYYY').format('YYYY-MM-DD')) ? 'yes' : '';
+  }
 }

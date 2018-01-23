@@ -13,7 +13,7 @@ export class PorteEmpresaService extends BaseService<PorteEmpresa> {
     }
 
     pesquisarTodos(): Observable<PorteEmpresa[]> {
-      return super.get('/v1/portesempresas')
+      return super.get('/v1/portes-empresas')
     .map((response: Response) => {
         return response;
       }).catch((error: Response) => {

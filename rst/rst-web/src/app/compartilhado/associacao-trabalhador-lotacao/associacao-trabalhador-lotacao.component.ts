@@ -1,5 +1,6 @@
+import { DatePicker } from './../utilitario/date-picker';
 import { EmpresaTrabalhadorLotacaoService } from './../../servico/empresa-trabalhador-lotacao.service';
-import { ValidarDataFutura, CompareDataBefore } from 'app/compartilhado/validators/data.validator';
+import { ValidarDataFutura, CompareDataBefore, ValidarData } from 'app/compartilhado/validators/data.validator';
 import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
 import { EmpresaTrabalhador } from 'app/modelo/empresa-trabalhador.model';
 import { DialogService } from 'ng2-bootstrap-modal';
@@ -11,8 +12,9 @@ import { EmpresaTrabalhadorLotacao } from '../../modelo/empresa-trabalhador-lota
 import { Router } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
 import { ListaPaginada } from '../../modelo/lista-paginada.model';
+import * as moment from 'moment';
 
-@Component({
+@Component({ 
   selector: 'app-associacao-trabalhador-lotacao',
   templateUrl: './associacao-trabalhador-lotacao.component.html',
   styleUrls: ['./associacao-trabalhador-lotacao.component.scss'],
@@ -57,7 +59,8 @@ export class AssociacaoTrabalhadorLotacaoComponent extends BaseComponent impleme
   modoConsulta: boolean;
 
   public title: string;
-
+  verificaDataModelAssociacao = true;
+  verificaDataModelDesligamento = true;
   constructor(
     private router: Router,
     private associacaoTrabalhadorLotacaoService: EmpresaTrabalhadorLotacaoService,
@@ -153,4 +156,54 @@ export class AssociacaoTrabalhadorLotacaoComponent extends BaseComponent impleme
         this.mensagemError(error);
       });
   }
+
+  maskDt($event, campo: string) {
+    let str: string = $event.target.value;
+    str = str.replace(new RegExp('/', 'g'), '');
+    $event.target.value = this.retiraLetra($event, str);
+    if ($event.target.value.length < 10 && $event.keyCode !== 8) {
+      if ($event.target.value.length === 2 || $event.target.value.length === 5) {
+        $event.target.value = $event.target.value += '/';
+      }
+    }
+    if ($event.target.value !== '' && $event.target.value.length < 10) {
+      if (campo === 'A') {
+        this.verificaDataModelAssociacao = false;
+      }
+      if (campo === 'D') {
+        this.verificaDataModelDesligamento = false;
+      }
+    } else if ($event.target.value.length === 10) {
+      if (campo === 'A') {
+        this.instanciaDataAssociacao($event.target.value);
+
+      }
+      if (campo === 'D') {
+        this.instanciaDataDesligamento($event.target.value);
+      }
+    } else {
+      this.verificaDataModelAssociacao = true;
+      this.verificaDataModelDesligamento = true;
+    }
+
+  }
+
+  instanciaDataAssociacao(value ) {
+    if (ValidarData(moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD'))) {
+      this.dataAssociacao = DatePicker.convertDateForMyDatePicker(value);
+      this.verificaDataModelAssociacao = true;
+    } else {
+      this.verificaDataModelAssociacao = false;
+    }
+  }
+
+  instanciaDataDesligamento(value) {
+    if (ValidarData(moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD'))) {
+      this.dataDesligamento = DatePicker.convertDateForMyDatePicker(value);
+      this.verificaDataModelDesligamento = true;
+    } else {
+      this.verificaDataModelDesligamento = false;
+    }
+  }
+
 }

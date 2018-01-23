@@ -1,4 +1,4 @@
-<div class="flip_container_card" (click)="mudarPagina()" (touchstart)="this.classList.toggle('hover');">
+<div class="flip_container_card" (click)="mudarPagina($event)">
     <div class="flipper_card">
         <div class="front face" [ngClass]="[classCardCor, classImgFront]">
             <p class="flipper_card-titulo">{{titulo}}</p>

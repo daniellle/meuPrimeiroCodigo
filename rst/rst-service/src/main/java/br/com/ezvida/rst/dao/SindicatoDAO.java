@@ -99,6 +99,113 @@ public class SindicatoDAO extends BaseDAO<Sindicato, Long> {
 		boolean situacao = false;
 		boolean ids = false;
 		
+		montarJoinPaginado(jpql, count, segurancaFilter);
+		
+		if (sindicatoFilter != null) {
+			
+			cnpj = StringUtils.isNotEmpty(sindicatoFilter.getCnpj());
+			razaoSocial= StringUtils.isNotEmpty(sindicatoFilter.getRazaoSocial());
+			nomeFantasia = StringUtils.isNotEmpty(sindicatoFilter.getNomeFantasia());
+			situacao = StringUtils.isNotBlank(sindicatoFilter.getSituacao());
+			ids = StringUtils.isNotBlank(sindicatoFilter.getIds());
+			
+			montarJoinDepReg(jpql, segurancaFilter);
+			
+			addWhere(jpql, cnpj, razaoSocial, nomeFantasia, situacao, ids);
+			
+			montarFiltroPaginado(jpql, parametros, sindicatoFilter, cnpj, razaoSocial, nomeFantasia);
+			montarFiltroSituacaoPaginado(jpql, sindicatoFilter, cnpj, razaoSocial, nomeFantasia, situacao);
+			montarFiltroIds(jpql, parametros, sindicatoFilter, cnpj, razaoSocial, nomeFantasia, situacao, ids);
+		}
+		
+		if(segurancaFilter != null && sindicatoFilter != null && sindicatoFilter.isAplicarDadosFilter()) {	
+			addFiltroDepRegional(jpql, parametros, segurancaFilter, cnpj, razaoSocial, nomeFantasia, situacao, ids);
+		}
+		
+		if(!count) {
+			jpql.append(" order by c.razaoSocial ");
+		}
+		
+	}
+
+	private void addFiltroDepRegional(StringBuilder jpql, Map<String, Object> parametros, DadosFilter segurancaFilter,
+			boolean cnpj, boolean razaoSocial, boolean nomeFantasia, boolean situacao, boolean ids) {
+		boolean hasFilters = cnpj || razaoSocial || nomeFantasia || situacao || ids;
+		
+		if (hasFilters && (segurancaFilter.temIdsDepRegional())) {
+			jpql.append(AND);
+			jpql.append(" depRegional.id IN (:idsDepRegional) ");
+			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
+		}
+	}
+
+	private void montarFiltroIds(StringBuilder jpql, Map<String, Object> parametros, SindicatoFilter sindicatoFilter,
+			boolean cnpj, boolean razaoSocial, boolean nomeFantasia, boolean situacao, boolean ids) {
+		if (ids) {
+			if (cnpj || razaoSocial || nomeFantasia || situacao) {
+				jpql.append(AND);
+			}
+
+			jpql.append(" c.id not in (:ids) ");
+			parametros.put("ids", CollectionUtil.getIds(sindicatoFilter.getIds()));
+		}
+	}
+
+	private void montarFiltroSituacaoPaginado(StringBuilder jpql, SindicatoFilter sindicatoFilter, boolean cnpj,
+			boolean razaoSocial, boolean nomeFantasia, boolean situacao) {
+		if (situacao) {
+			if(cnpj || razaoSocial || nomeFantasia) {
+				jpql.append(AND);
+			}
+			if (Situacao.ATIVO.getCodigo().equals(sindicatoFilter.getSituacao())) {
+				jpql.append(" c.dataDesativacao ").append(Situacao.ATIVO.getQuery());
+			} else if (Situacao.INATIVO.getCodigo().equals(sindicatoFilter.getSituacao())) {
+				jpql.append(" c.dataDesativacao ").append(Situacao.INATIVO.getQuery());
+			}
+		}
+	}
+
+	private void montarFiltroPaginado(StringBuilder jpql, Map<String, Object> parametros,
+			SindicatoFilter sindicatoFilter, boolean cnpj, boolean razaoSocial, boolean nomeFantasia) {
+		if (cnpj){
+			jpql.append(" c.cnpj = :cnpj ");
+			parametros.put("cnpj", sindicatoFilter.getCnpj());
+		}
+		if (razaoSocial){
+			if(cnpj) {
+				jpql.append(AND);
+			}
+			jpql.append(" UPPER(c.razaoSocial) like :razaoSocial escape :sc ");
+			parametros.put("sc", "\\");
+			parametros.put("razaoSocial", "%" + sindicatoFilter.getRazaoSocial().replace("%", "\\%").toUpperCase() + "%");
+			
+		}
+		if (nomeFantasia){
+			if(cnpj || razaoSocial) {
+				jpql.append(AND);
+			}
+			jpql.append(" UPPER(c.nomeFantasia) like :nomeFantasia escape :sc ");
+			parametros.put("sc", "\\");
+			parametros.put("nomeFantasia", "%" + sindicatoFilter.getNomeFantasia().replace("%", "\\%").toUpperCase() + "%");
+		}
+	}
+
+	private void addWhere(StringBuilder jpql, boolean cnpj, boolean razaoSocial, boolean nomeFantasia, boolean situacao,
+			boolean ids) {
+		if (cnpj || razaoSocial || nomeFantasia || situacao || ids) {
+			jpql.append(" where ");
+		}
+	}
+
+	private void montarJoinDepReg(StringBuilder jpql, DadosFilter segurancaFilter) {
+		if(segurancaFilter != null && segurancaFilter.temIdsDepRegional()) {
+			jpql.append(" left join empresa.empresaUats empresaUats ");
+			jpql.append(" left join empresaUats.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador ");
+			jpql.append(" left join unidadeAtendimentoTrabalhador.departamentoRegional depRegional ");
+		}
+	}
+
+	private void montarJoinPaginado(StringBuilder jpql, boolean count, DadosFilter segurancaFilter) {
 		if(count) {
 			jpql.append("select count(distinct c.id) from Sindicato c ");
 		} else { 
@@ -109,82 +216,6 @@ public class SindicatoDAO extends BaseDAO<Sindicato, Long> {
 			jpql.append(LEFT_JOIN_C_EMPRESA_SINDICATO_EMPRESA_SINDICATO);
 			jpql.append(LEFT_JOIN_EMPRESA_SINDICATO_EMPRESA_EMPRESA);
 		}
-		
-		if (sindicatoFilter != null) {
-			
-			cnpj = StringUtils.isNotEmpty(sindicatoFilter.getCnpj());
-			razaoSocial= StringUtils.isNotEmpty(sindicatoFilter.getRazaoSocial());
-			nomeFantasia = StringUtils.isNotEmpty(sindicatoFilter.getNomeFantasia());
-			situacao = StringUtils.isNotBlank(sindicatoFilter.getSituacao());
-			ids = StringUtils.isNotBlank(sindicatoFilter.getIds());
-			
-			if(segurancaFilter.temIdsDepRegional()) {
-				jpql.append(" left join empresa.empresaUats empresaUats ");
-				jpql.append(" left join empresaUats.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador ");
-				jpql.append(" left join unidadeAtendimentoTrabalhador.departamentoRegional depRegional ");
-			}
-			
-			if (cnpj || razaoSocial || nomeFantasia || situacao || ids) {
-				jpql.append(" where ");
-			}
-			
-			if (cnpj){
-				jpql.append(" c.cnpj = :cnpj ");
-				parametros.put("cnpj", sindicatoFilter.getCnpj());
-			}
-			if (razaoSocial){
-				if(cnpj) {
-					jpql.append(AND);
-				}
-				jpql.append(" UPPER(c.razaoSocial) like :razaoSocial escape :sc ");
-				parametros.put("sc", "\\");
-				parametros.put("razaoSocial", "%" + sindicatoFilter.getRazaoSocial().replace("%", "\\%").toUpperCase() + "%");
-				
-			}
-			if (nomeFantasia){
-				if(cnpj || razaoSocial) {
-					jpql.append(AND);
-				}
-				jpql.append(" UPPER(c.nomeFantasia) like :nomeFantasia escape :sc ");
-				parametros.put("sc", "\\");
-				parametros.put("nomeFantasia", "%" + sindicatoFilter.getNomeFantasia().replace("%", "\\%").toUpperCase() + "%");
-			}
-			if (situacao) {
-				if(cnpj || razaoSocial || nomeFantasia) {
-					jpql.append(AND);
-				}
-				if (Situacao.ATIVO.getCodigo().equals(sindicatoFilter.getSituacao())) {
-					jpql.append(" c.dataDesativacao ").append(Situacao.ATIVO.getQuery());
-				} else if (Situacao.INATIVO.getCodigo().equals(sindicatoFilter.getSituacao())) {
-					jpql.append(" c.dataDesativacao ").append(Situacao.INATIVO.getQuery());
-				}
-			}
-
-			if (ids) {
-				if (cnpj || razaoSocial || nomeFantasia || situacao) {
-					jpql.append(AND);
-				}
-
-				jpql.append(" c.id not in (:ids) ");
-				parametros.put("ids", CollectionUtil.getIds(sindicatoFilter.getIds()));
-			}
-		}
-		
-		if(segurancaFilter != null && sindicatoFilter != null && sindicatoFilter.isAplicarDadosFilter()) {
-			
-			boolean hasFilters = cnpj || razaoSocial || nomeFantasia || situacao || ids;
-			
-			if (hasFilters && (segurancaFilter.temIdsDepRegional())) {
-				jpql.append(AND);
-				jpql.append(" depRegional.id IN (:idsDepRegional) ");
-				parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
-			}
-		}
-		
-		if(!count) {
-			jpql.append(" order by c.razaoSocial ");
-		}
-		
 	}
 	
 	
@@ -218,5 +249,21 @@ public class SindicatoDAO extends BaseDAO<Sindicato, Long> {
 		TypedQuery<Sindicato> query = criarConsultaPorTipo(jpql.toString());
 		query.setParameter("cnpj", cnpj);
 		return DAOUtil.getSingleResult(query);
+	}
+
+	public List<Sindicato> buscarPorEmpresaEAtivos(Long id) {
+		LOGGER.debug("Buscando sindicatos ativos por empresa");
+
+		StringBuilder jpql = new StringBuilder();
+		jpql.append("select new Sindicato(sindicato.cnpj, sindicato.razaoSocial, sindicato.nomeFantasia) ");
+		jpql.append(" from EmpresaSindicato empresaSindicato ");
+		jpql.append(" inner join empresaSindicato.sindicato sindicato ");
+		jpql.append(" where empresaSindicato.empresa.id = :id ");
+		jpql.append(" 	and empresaSindicato.dataDesligamento is null and empresaSindicato.dataExclusao is null ");
+
+		TypedQuery<Sindicato> query = criarConsultaPorTipo(jpql.toString());
+		query.setParameter("id", id);
+
+		return query.getResultList();
 	}
 }

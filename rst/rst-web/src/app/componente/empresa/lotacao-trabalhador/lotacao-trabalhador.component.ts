@@ -184,6 +184,8 @@ export class LotacaoTrabalhadorComponent extends BaseComponent implements OnInit
                         this.mensagemError(error);
                     });
             }
+        }, (error) => {
+            this.mensagemError(error);
         });
 
     }
@@ -266,7 +268,7 @@ export class LotacaoTrabalhadorComponent extends BaseComponent implements OnInit
         }
     }
 
-    validarCampos() {        
+    validarCampos() {
         let retorno = true;
         if (!this.lotacaoFiltro.idUnidadeObra && !this.lotacaoFiltro.idCargo
             && !this.lotacaoFiltro.idSetor && !this.lotacaoFiltro.idJornada

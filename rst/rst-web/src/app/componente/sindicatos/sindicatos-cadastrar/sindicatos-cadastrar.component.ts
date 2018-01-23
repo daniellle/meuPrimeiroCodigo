@@ -98,6 +98,8 @@ export class SindicatosCadastrarComponent extends BaseComponent implements OnIni
     carregarTela() {
         this.route.params.subscribe((params) => {
             this.id = params['id'];
+        }, (error) => {
+            this.mensagemError(error);
         });
 
         this.sindicato = new Sindicato();
@@ -123,6 +125,8 @@ export class SindicatosCadastrarComponent extends BaseComponent implements OnIni
     buscarEstados() {
         this.dpService.buscarEstados().subscribe((dados: any) => {
             this.estados = dados;
+        }, (error) => {
+            this.mensagemError(error);
         });
     }
 
@@ -421,7 +425,11 @@ export class SindicatosCadastrarComponent extends BaseComponent implements OnIni
 
         // validar data desativacao
         if (!this.isVazia(this.formulario.controls['dtDesativacao'].value)) {
-            if (ValidarDataFutura(this.formulario.controls['dtDesativacao'].value.jsdate)) {
+            if (this.formulario.controls['dtDesativacao'].errors && this.formulario.controls['dtDesativacao'].errors.validData) {
+                this.mensagemErroComParametros('app_rst_campo_invalido', this.formulario.controls['dtDesativacao'],
+                  MensagemProperties.app_rst_labels_data_desativacao);
+                retorno = false;
+              } else if (ValidarDataFutura(this.formulario.controls['dtDesativacao'].value.jsdate)) {
                 this.mensagemErroComParametrosModel('app_rst_labels_data_futura', MensagemProperties.app_rst_labels_data_desativacao);
                 retorno = false;
             }

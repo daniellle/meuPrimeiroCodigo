@@ -69,6 +69,8 @@ export class EnderecoModalComponent extends BaseComponent implements OnInit {
     buscarEstados() {
         this.estadoService.buscarEstados().subscribe((dados: any) => {
             this.estados = dados;
+        }, (error) => {
+            this.mensagemError(error);
         });
     }
 
@@ -87,7 +89,9 @@ export class EnderecoModalComponent extends BaseComponent implements OnInit {
             this.estadoSelecionado = true;
             this.idEstadoSelecionado = idEstado;
             this.municipios = listaOption;
-        });
+        }, (error) => {
+            this.mensagemError(error);
+          });
     }
 
     adicionarEndereco(index?: any) {

@@ -96,7 +96,7 @@ public class IndicadorQuestionarioEndpoint extends SegurancaEndpoint<GrupoPergun
 			PermissionConstants.INDICADOR_QUESTIONARIO_ALTERAR }))
 	public Response alterar(@Encoded IndicadorQuestionario indicadorQuestionario, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(indicadorQuestionarioService.salvar(indicadorQuestionario, ClienteInfos.getClienteInfos(context,
 						request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.QUESTIONARIOS)))
 				.type(MediaType.APPLICATION_JSON).build();
@@ -111,7 +111,7 @@ public class IndicadorQuestionarioEndpoint extends SegurancaEndpoint<GrupoPergun
 			PermissionConstants.INDICADOR_QUESTIONARIO_DESATIVAR }))
 	public Response desativar(@Encoded IndicadorQuestionario indicadorQuestionario, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(indicadorQuestionarioService.desativar(indicadorQuestionario, ClienteInfos.getClienteInfos(context,
 						request, TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.QUESTIONARIOS)))
 				.type(MediaType.APPLICATION_JSON).build();

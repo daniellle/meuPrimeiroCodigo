@@ -72,6 +72,8 @@ export class EmpresaSindicatoComponent extends BaseComponent implements OnInit {
   private getIdEmpresa() {
     this.activatedRoute.params.subscribe((params) => {
       this.idEmpresa = params['id'];
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
   private carregarEmpresaSindicato() {

@@ -102,7 +102,7 @@ public class GrupoPerguntaDAO extends BaseRstDAO<GrupoPergunta, Long> {
 		StringBuilder jpql = new StringBuilder();
 		jpql.append(" select g from PerguntaQuestionario pq ");
 		jpql.append(" inner join pq.grupoPergunta g");		
-		jpql.append(" where	pq.id = :id");		
+		jpql.append(" where	g.id = :id");		
 		TypedQuery<GrupoPergunta> query = criarConsultaPorTipo(jpql.toString());
 		query.setParameter("id", idGrupoPergunta);
 		return !query.getResultList().isEmpty();

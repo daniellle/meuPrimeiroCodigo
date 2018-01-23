@@ -56,7 +56,7 @@ export class EmpresaService extends BaseService<Empresa> {
   }
 
   pesquisarTipoCliente(): Observable<TipoEmpresa[]> {
-    return super.get('/v1/tiposEmpresas')
+    return super.get('/v1/tipos-empresas')
       .map((response: Response) => {
         return response;
       }).catch((error: Response) => {

@@ -100,7 +100,7 @@ public class RedeCredenciadaEndpoint extends SegurancaEndpoint<RedeCredenciada> 
 			PermissionConstants.REDE_CREDENCIADA_ALTERAR }))
 	public Response alterar(@Encoded RedeCredenciada redeCredenciada,
 			@Context SecurityContext context, @Context HttpServletRequest request) {		
-		return Response.status(HttpServletResponse.SC_CREATED).entity(redeCredenciadaService.salvar(redeCredenciada
+		return Response.status(HttpServletResponse.SC_OK).entity(redeCredenciadaService.salvar(redeCredenciada
 				, ClienteInfos.getClienteInfos(context, request
 						,TipoOperacaoAuditoria.ALTERACAO,Funcionalidade.REDE_CREDENCIADA))).type(MediaType.APPLICATION_JSON).build();
 	}

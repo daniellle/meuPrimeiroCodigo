@@ -98,7 +98,7 @@ public class EmpresaTrabalhadorLotacaoEndpoint extends SegurancaEndpoint<Empresa
 			@Context SecurityContext context
 			, @Context HttpServletRequest request) {
 		LOGGER.debug("Removendo Empresa Trabalhador Lotação");
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(serializar(empresaTrabalhadorLotacaoService.remover(empresaTrabalhadorLotacao, ClienteInfos
 						.getClienteInfos(context, request, TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.EMPRESA))))
 				.type(MediaType.APPLICATION_JSON).build();

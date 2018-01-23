@@ -115,6 +115,8 @@ export class ModalSelecionarRespostaComponent extends BaseComponent {
     this.paginacao.pagina = event.page;
     this.respostaService.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<Resposta>) => {
       this.listaResposta = retorno.list;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 }

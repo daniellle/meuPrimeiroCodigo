@@ -36,7 +36,7 @@ import { TipoEmail } from 'app/modelo/enum/enum-tipo-email.model';
 import { RamoEmpresa } from 'app/modelo/ramo-empresa.model';
 import { RamoEmpresaService } from 'app/servico/ramo-empresa.service';
 import { UnidadeObraService } from 'app/servico/unidade-obra.service';
-import { ValidarDataFutura } from 'app/compartilhado/validators/data.validator';
+import { ValidarDataFutura, ValidateData } from 'app/compartilhado/validators/data.validator';
 import { Cnae } from '../../../modelo/cnae.model';
 import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
 
@@ -136,13 +136,17 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
     private carregarRamoEmpresa() {
         this.ramoEmpresaService.pesquisarTodos().subscribe((dados: any) => {
             this.ramosEmpresa = dados;
-        });
+        }, (error) => {
+            this.mensagemError(error);
+          });
     }
 
     private carregarPorteEmpresa() {
         this.porteEmpresaService.pesquisarTodos().subscribe((retorno: PorteEmpresa[]) => {
             this.listaPorteEmpresas = retorno;
-        });
+        }, (error) => {
+            this.mensagemError(error);
+          });
     }
 
     private emModoConsulta() {
@@ -154,7 +158,11 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
     }
 
     private carregarVersoes() {
-        this.service.pesquisarVersoes().subscribe((retorno) => { this.versoes = retorno; });
+        this.service.pesquisarVersoes().subscribe((retorno) => { 
+            this.versoes = retorno; 
+        }, (error) => {
+            this.mensagemError(error);
+        });
     }
 
     private pesquisar() {
@@ -177,6 +185,8 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
                     this.paginacaoCnae = this.getPaginacao(this.paginacaoCnae, retorno);
                     this.mensagemError(MensagemProperties.app_rst_nenhum_registro_encontrado);
                 }
+            }, (error) => {
+                this.mensagemError(error);
             });
         }
     }
@@ -255,6 +265,8 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
     pesquisarTipoCliente() {
         this.service.pesquisarTipoCliente().subscribe((retorno: TipoEmpresa[]) => {
             this.listaTipoEmpresas = retorno;
+        }, (error) => {
+            this.mensagemError(error);
         });
     }
 
@@ -539,6 +551,7 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
             dtdesligamento: [
                 { value: null, disabled: this.modoConsulta || !this.hasPermissaoDesativar() },
                 Validators.compose([
+                    ValidateData,
                 ]),
             ],
             nomeContato: [
@@ -881,7 +894,11 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
 
         // validar data desativacao
         if (!this.isVazia(this.empresaForm.controls['dtdesligamento'].value)) {
-            if (ValidarDataFutura(this.empresaForm.controls['dtdesligamento'].value.jsdate)) {
+            if (this.empresaForm.controls['dtdesligamento'].errors && this.empresaForm.controls['dtdesligamento'].errors.validData) {
+                this.mensagemErroComParametros('app_rst_campo_invalido', this.empresaForm.controls['dtdesligamento'],
+                  MensagemProperties.app_rst_labels_data_desativacao);
+                retorno = false;
+              } else if (ValidarDataFutura(this.empresaForm.controls['dtdesligamento'].value.jsdate)) {
                 this.mensagemErroComParametrosModel('app_rst_labels_data_futura', MensagemProperties.app_rst_labels_data_desativacao);
                 retorno = false;
             }

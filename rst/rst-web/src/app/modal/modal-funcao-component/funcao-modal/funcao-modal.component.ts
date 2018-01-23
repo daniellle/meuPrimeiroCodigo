@@ -101,6 +101,8 @@ export class FuncaoModalComponent extends BaseComponent implements OnInit {
     .subscribe((retorno: ListaPaginada<EmpresaFuncao>) => {
       this.paginacao = this.getPaginacao(this.paginacao, retorno);
       this.setLista(retorno);
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

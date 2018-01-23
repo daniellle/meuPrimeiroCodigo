@@ -229,4 +229,6 @@ export enum PermissoesEnum {
     USUARIO_CADASTRAR = 'usuario_cadastrar',
     USUARIO_CONSULTAR = 'usuario_consultar',
     USUARIO_DESATIVAR = 'usuario_desativar',
+
+    USUARIO_CONSULTAR_DADOS = 'consultar_dados_usuario',
 }

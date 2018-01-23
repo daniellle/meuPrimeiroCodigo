@@ -53,7 +53,6 @@ export class AuditoriaComponet extends BaseComponent implements OnInit {
       this.mensagemError(MensagemProperties.app_rst_msg_validacao_data);
       return false;
     }
-
     if (this.convertDateToString(this.dataInicial.date) !== this.convertDateToString(this.dataFinal.date)
       && !CompareDataBefore(this.dataInicial.jsdate, this.dataFinal.jsdate)) {
       this.mensagemError(MensagemProperties.app_rst_auditoria_data_inicio_maior_que_fim);

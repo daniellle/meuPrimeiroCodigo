@@ -43,6 +43,8 @@ export class RedeCredenciadaPesquisarComponent extends BaseComponent implements 
     super(bloqueioService, dialogo);
     serviceSegmento.pesquisarSegmentos().subscribe((segmentos) => {
       this.segmento = segmentos;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -103,6 +105,8 @@ export class RedeCredenciadaPesquisarComponent extends BaseComponent implements 
     this.paginacao.pagina = event.page;
     this.service.pesquisarPorFiltro(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<RedeCredenciada>) => {
       this.redeCredenciada = retorno.list;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

@@ -96,7 +96,7 @@ public class ClassificacaoPontuacaoEndpoint extends SegurancaEndpoint<Certificad
 			PermissionConstants.CLASSIFICACAO_PONTUACAO_ALTERAR }))
 	public Response alterar(@Encoded ClassificacaoPontuacao classificacaoPontuacao, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(classificacaoPontuacaoService.salvar(classificacaoPontuacao, ClienteInfos.getClienteInfos(
 						context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.QUESTIONARIOS)))
 				.type(MediaType.APPLICATION_JSON).build();
@@ -111,7 +111,7 @@ public class ClassificacaoPontuacaoEndpoint extends SegurancaEndpoint<Certificad
 			PermissionConstants.CLASSIFICACAO_PONTUACAO_DESATIVAR }))
 	public Response desativar(@Encoded ClassificacaoPontuacao classificacaoPontuacao, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(classificacaoPontuacaoService.desativar(classificacaoPontuacao, ClienteInfos.getClienteInfos(
 						context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.QUESTIONARIOS)))
 				.type(MediaType.APPLICATION_JSON).build();

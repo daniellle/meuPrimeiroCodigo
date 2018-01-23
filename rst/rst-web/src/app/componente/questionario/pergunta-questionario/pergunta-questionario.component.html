@@ -49,7 +49,7 @@
                             <md-input-container style="border-color:transparent" [floatPlaceholder]="true">
                                 <input mdInput placeholder="{{'app_rst_labels_indicador' | recurso }}" type="text" name="indicador" id="modalLupa" formControlName="indicador" class="form-control" appFormularioCamposErro>
                             </md-input-container>
-                            <app-modal-selecionar-indicador [isIndicadorSelecionado]="perguntaQuestionario.indicadorQuestionario" [modoConsulta]="modoConsulta" (onLimpar)="limparIndicador()" (onAdicionar)="selecionarIndicador($event)">
+                            <app-modal-selecionar-indicador [isIndicadorSelecionado]="perguntaQuestionario.indicadorQuestionario.id" [modoConsulta]="modoConsulta" (onLimpar)="limparIndicador()" (onAdicionar)="selecionarIndicador($event)">
                             </app-modal-selecionar-indicador>
                         </div>
                     </div>

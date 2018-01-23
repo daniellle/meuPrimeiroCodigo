@@ -99,7 +99,7 @@ public class QuestionarioTrabalhadorEndpoint extends SegurancaEndpoint<Questiona
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response alterar(@Encoded QuestionarioTrabalhador questionarioTrabalhador, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(questionarioTrabalhadorService.salvar(questionarioTrabalhador, ClienteInfos.getClienteInfos(context, request,
 						TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.QUESTIONARIOS)))
 				.type(MediaType.APPLICATION_JSON).build();

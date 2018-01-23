@@ -21,6 +21,10 @@ public class ClienteInfos {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClienteInfos.class);
 
+	private ClienteInfos() {
+		throw new IllegalStateException("Utility class");
+	}
+
 	public static ClienteAuditoria getClienteInfos(SecurityContext context, HttpServletRequest request,
 			TipoOperacaoAuditoria tipoOperacao, Funcionalidade funcionalidade){
 		ClienteAuditoria clienteInfo = new ClienteAuditoria();

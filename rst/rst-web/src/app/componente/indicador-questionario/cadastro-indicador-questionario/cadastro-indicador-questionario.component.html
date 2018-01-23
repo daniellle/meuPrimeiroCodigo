@@ -16,12 +16,22 @@
                         <input mdInput required placeholder="{{'app_rst_labels_descricao' | recurso}}" type="text" maxlength="160" class="form-control" formControlName="descricao" name="descricao" id="descricao" />
                     </md-input-container>
                 </div>
+            </div>
+            <div class="row">
                 <div class="form-group col-md-6">
                     <md-input-container [floatPlaceholder]="true">
-                        <input mdInput placeholder="{{'app_rst_labels_orientacao' | recurso}}" type="text" maxlength="250" class="form-control" formControlName="orientacao" name="orientacao" id="orientacao" />
+                        <textarea mdInput rows="4" placeholder="{{'app_rst_labels_orientacao' | recurso}}" type="text" maxlength="250" class="form-control" formControlName="orientacao" name="orientacao" id="orientacao"></textarea>
                     </md-input-container>
                 </div>
             </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <md-input-container [floatPlaceholder]="true">
+                        <textarea mdInput rows="4" placeholder="{{'app_rst_labels_incentivo' | recurso}}" type="text" maxlength="250" class="form-control" formControlName="incentivo" name="incentivo" id="incentivo"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+
         </div>
     </form>
 </div>

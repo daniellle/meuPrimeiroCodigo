@@ -31,7 +31,7 @@ public class UsuarioEndpointTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioEndpointTest.class);
 
     @InjectMocks
-    private UsuariosEndpoint endpoint;
+    private UsuarioEndpoint endpoint;
 
     @Spy
     @InjectMocks

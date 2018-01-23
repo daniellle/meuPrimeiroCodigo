@@ -95,7 +95,7 @@ public class GrupoPerguntaEndpoint extends SegurancaEndpoint<GrupoPergunta> {
 			PermissionConstants.GRUPO_PERGUNTA_ALTERAR }))
 	public Response alterar(@Encoded GrupoPergunta grupoPergunta, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(grupoPerguntaService.salvar(grupoPergunta, ClienteInfos.getClienteInfos(context, request,
 						TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.QUESTIONARIOS)))
 				.type(MediaType.APPLICATION_JSON).build();
@@ -110,7 +110,7 @@ public class GrupoPerguntaEndpoint extends SegurancaEndpoint<GrupoPergunta> {
 			PermissionConstants.GRUPO_PERGUNTA_DESATIVAR }))
 	public Response desativar(@Encoded GrupoPergunta grupoPergunta, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(grupoPerguntaService.desativarGrupoPergunta(grupoPergunta, ClienteInfos.getClienteInfos(context, request,
 						TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.QUESTIONARIOS)))
 				.type(MediaType.APPLICATION_JSON).build();

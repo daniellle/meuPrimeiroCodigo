@@ -2,8 +2,8 @@ package br.com.ezvida.rst.dao.filter;
 
 import javax.ws.rs.QueryParam;
 
-public class IndicadorQuestionarioFilter extends FilterBase{
-	
+public class IndicadorQuestionarioFilter extends FilterBase {
+
 	@QueryParam("descricao")
 	private String descricao;
 
@@ -11,7 +11,4 @@ public class IndicadorQuestionarioFilter extends FilterBase{
 		return descricao;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
 }

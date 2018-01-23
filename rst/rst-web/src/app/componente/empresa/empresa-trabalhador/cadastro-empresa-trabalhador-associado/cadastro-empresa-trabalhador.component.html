@@ -14,7 +14,7 @@
     <div class="row">
         <div class="form-group col-sm-4">
             <md-input-container [floatPlaceholder]="true">
-                <input #cpfFiltro="ngModel" mdInput placeholder="{{'app_rst_labels_cpf' | recurso}}" type="text" name="cpf" [textMask]="{mask: mascaraCnpj, guide: false}" id="cpf" [(ngModel)]="filtro.cpf" class="form-control" appFormularioCamposErro>
+                <input #cpfFiltro="ngModel" mdInput placeholder="{{'app_rst_labels_cpf' | recurso}}" type="text" name="cpf" [textMask]="{mask: mascaraCpf, guide: false}" id="cpf" [(ngModel)]="filtro.cpf" class="form-control" appFormularioCamposErro>
             </md-input-container>
         </div>
 

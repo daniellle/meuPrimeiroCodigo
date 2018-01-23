@@ -4,7 +4,7 @@ import * as moment from 'moment';
 const constDatePickerOptions: IMyDpOptions = {
     openSelectorOnInputClick: false,
     indicateInvalidDate: false,
-    editableDateField: false,
+    editableDateField: true,
     dateFormat: 'dd/mm/yyyy',
     showClearDateBtn: true,
     inline: false,

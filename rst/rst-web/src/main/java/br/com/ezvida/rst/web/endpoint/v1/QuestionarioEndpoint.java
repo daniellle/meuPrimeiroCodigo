@@ -113,7 +113,7 @@ public class QuestionarioEndpoint extends SegurancaEndpoint<Questionario> {
 			 PermissionConstants.QUESTIONARIO_ALTERAR }))
 	public Response alterar(@Encoded Questionario questionario, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(questionarioService.salvar(questionario, ClienteInfos.getClienteInfos(context, request,
 						TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.QUESTIONARIOS)))
 				.type(MediaType.APPLICATION_JSON).build();
@@ -152,7 +152,7 @@ public class QuestionarioEndpoint extends SegurancaEndpoint<Questionario> {
 			PermissionConstants.QUESTIONARIO_DESATIVAR }))
 	public Response desativar(@Encoded Questionario questionario, @Context SecurityContext context
 			, @Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED).entity(serializar(questionarioService.desativar(questionario,
+		return Response.status(HttpServletResponse.SC_OK).entity(serializar(questionarioService.desativar(questionario,
 				ClienteInfos.getClienteInfos(context, request,
 						TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.EMPRESA))))
 				.type(MediaType.APPLICATION_JSON).build();

@@ -16,11 +16,11 @@
             <span>{{model.trabalhador.cpf | cpfPipe}}</span>
         </div>
         <div class="col-sm-4 col-md-4" [ngClass]="{ divDis : modoConsulta }">
-            <my-date-picker [options]="datePickerOptions" locale="pt-br" [disabled]="modoConsulta" [(ngModel)]="model.dataAdmissao" name="dataAdmissao"></my-date-picker>
+            <my-date-picker [options]="datePickerOptions" locale="pt-br" [disabled]="modoConsulta" [(ngModel)]="model.dataAdmissao" name="dataAdmissao" (keyup)="maskDt($event, 'A')"></my-date-picker>
             <span class="floating-label"> {{ 'app_rst_labels_dataAdmissao' | recurso }} </span>
         </div>
         <div class="form-group col-sm-4 col-md-4" [ngClass]="{ divDis : modoConsulta }">
-            <my-date-picker [options]="datePickerOptions" locale="pt-br" [disabled]="modoConsulta" [(ngModel)]="model.dataDemissao" name="dataDemissao"></my-date-picker>
+            <my-date-picker id="teste" [options]="datePickerOptions" locale="pt-br" [disabled]="modoConsulta" [(ngModel)]="model.dataDemissao" name="dataDemissao" (keyup)="maskDt($event, 'D')"></my-date-picker>
             <span class="floating-label"> {{ 'app_rst_labels_dataDemissao' | recurso }} </span>
         </div>
     </div>

@@ -81,6 +81,8 @@ export class PesquisarProfissionaisComponent extends BaseComponent implements On
     this.paginacao.pagina = event.page;
     this.service.pesquisar(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<Profissional>) => {
       this.profissionais = retorno.list;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

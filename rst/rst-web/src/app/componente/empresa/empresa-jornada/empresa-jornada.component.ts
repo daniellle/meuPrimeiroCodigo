@@ -78,7 +78,9 @@ export class EmpresaJornadaComponent extends BaseComponent implements OnInit {
                 this.emFiltro.id = this.idEmpresa;
                 this.pesquisarEmpresasJornadas();
             }
-        });
+        }, (error) => {
+            this.mensagemError(error);
+          });
     }
 
     private pesquisarEmpresasJornadas() {

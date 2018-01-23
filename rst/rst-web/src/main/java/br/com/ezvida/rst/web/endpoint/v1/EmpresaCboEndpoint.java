@@ -83,7 +83,7 @@ public class EmpresaCboEndpoint extends SegurancaEndpoint<EmpresaCbo> {
 			PermissionConstants.EMPRESA_CARGO_DESATIVAR }))
 	public Response desativar(@Encoded EmpresaCbo empresaCbo, @Context SecurityContext context
 			, @Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED).entity(serializar(empresaCboService.desativarEmpresaCbo(empresaCbo,
+		return Response.status(HttpServletResponse.SC_OK).entity(serializar(empresaCboService.desativarEmpresaCbo(empresaCbo,
 				ClienteInfos.getClienteInfos(context, request,
 						TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.EMPRESA))))
 				.type(MediaType.APPLICATION_JSON).build();

@@ -481,15 +481,21 @@ export class CadastroParceiroCredenciadoComponent extends BaseComponent implemen
                 });
             }
             this.listaEspecialidades = listaOption;
+        }, (error) => {
+            this.mensagemError(error);
         });
     }
 
     private carregarCombos() {
         this.porteEmpresaService.pesquisarTodos().subscribe((retorno: PorteEmpresa[]) => {
             this.listaPorteParceiros = retorno;
+        }, (error) => {
+            this.mensagemError(error);
         });
         this.tipoEmpresaService.pesquisarTodos().subscribe((retorno: TipoEmpresa[]) => {
             this.listaTipoParceiros = retorno;
+        }, (error) => {
+            this.mensagemError(error);
         });
         this.carregarEspecialidades();
     }

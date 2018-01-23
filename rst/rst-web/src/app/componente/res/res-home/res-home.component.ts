@@ -1,3 +1,4 @@
+import { environment } from './../../../../environments/environment.prod';
 import {BloqueioService} from './../../../servico/bloqueio.service';
 import {BaseComponent} from 'app/componente/base.component';
 import {ResService} from './../../../servico/res-service.service';
@@ -327,10 +328,6 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
                 },
             };
         }
-    }
-
-    irParaMinhaSaude() {
-        this.router.navigate(['/res/minhasaude']);
     }
 
     getClasseImagemCorpo(): string {

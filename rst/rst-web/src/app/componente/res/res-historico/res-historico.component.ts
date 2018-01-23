@@ -88,12 +88,12 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
             .catch((err) => Observable.of(null)));
         Observable.forkJoin(chamadas).subscribe((result) => {
             const listaVacinas = [];
-            listaVacinas.push({nome: 'Hepatite B', resultado: result[11]});
-            listaVacinas.push({nome: 'Tríplice viral', resultado: result[12]});
-            listaVacinas.push({nome: 'Dupla adulto (difteria e tétano)', resultado: result[13]});
-            listaVacinas.push({nome: 'Febre amarela', resultado: result[14]});
-            listaVacinas.push({nome: 'Influenza', resultado: result[15]});
-            listaVacinas.push({nome: 'Outras', resultado: result[16]});
+            listaVacinas.push({ nome: 'Hepatite B', resultado: result[11] });
+            listaVacinas.push({ nome: 'Tríplice viral', resultado: result[12] });
+            listaVacinas.push({ nome: 'Dupla adulto (difteria e tétano)', resultado: result[13] });
+            listaVacinas.push({ nome: 'Febre amarela', resultado: result[14] });
+            listaVacinas.push({ nome: 'Influenza', resultado: result[15] });
+            listaVacinas.push({ nome: 'Outras', resultado: result[16] });
 
             this.tratarResultado({
                 peso: result[0],
@@ -109,6 +109,8 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
                 medicamentos: result[10],
                 vacinas: listaVacinas,
             });
+        }, (error) => {
+            this.mensagemError(error);
         });
     }
 
@@ -194,6 +196,8 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
                     this.encontrosTimeline[pagina] = resultado.resultado.result;
                     this.paginaTimeline = this.encontrosTimeline[pagina];
                 }
+            }, (error) => {
+                this.mensagemError(error);
             });
         }
     }

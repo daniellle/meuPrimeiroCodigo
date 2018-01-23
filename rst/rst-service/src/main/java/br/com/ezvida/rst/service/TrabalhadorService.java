@@ -235,7 +235,8 @@ public class TrabalhadorService extends BaseService {
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public Trabalhador buscarPorCpf(String cpf, ClienteAuditoria auditoria, DadosFilter dadosFilter) {
+	public Trabalhador buscarPorCpf(String cpf) {
+		LOGGER.debug("buscando trabalhador por cpf");
 
 		Trabalhador trabalhador = trabalhadorDAO.pesquisarPorCpf(cpf);
 

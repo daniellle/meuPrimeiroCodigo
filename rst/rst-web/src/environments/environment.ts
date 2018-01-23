@@ -12,4 +12,5 @@ export const environment = {
     path_raiz: '',
     baseHref: '/',
     exibirMenu: true,
+    exibirWS: true,
 };

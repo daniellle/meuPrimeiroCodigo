@@ -172,4 +172,6 @@ export class EmpresaIntermediarioComponent implements OnInit {
     PermissoesEnum.EMPRESA_TRABALHADOR_LOTACAO_CONSULTAR,
     PermissoesEnum.EMPRESA_TRABALHADOR_LOTACAO_DESATIVAR]);
   }
+
+
 }

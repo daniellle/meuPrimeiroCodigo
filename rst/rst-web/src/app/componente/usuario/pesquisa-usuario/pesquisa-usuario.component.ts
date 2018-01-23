@@ -70,6 +70,10 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
   buscarPerfis(): void {
     this.perfilService.buscarTodos().subscribe((retorno: any) => {
       this.perfis = retorno;
+    }, (error) => {
+      this.mensagemError(error);
+    }, () => {
+        this.orderByNome(this.perfis);
     });
   }
 
@@ -93,6 +97,8 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
   buscarDepartamentos() {
     this.departamentoService.listarTodos(new FiltroDepartRegional()).subscribe((dados: any) => {
       this.departamentos = dados;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -138,6 +144,8 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
     this.paginacao.pagina = event.page;
     this.usuarioService.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<Usuario>) => {
       this.usuarios = retorno.list;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -145,6 +153,8 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
     this.usuarioService.desativar(usuario).subscribe((retorno: Usuario) => {
       this.mensagemSucesso(MensagemProperties.app_rst_usuario_desativar_sucesso);
       this.pesquisar();
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -170,5 +180,20 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
 
   adicionarDepartamentoRegional(event) {
     this.filtro.departamentoRegional = event;
+  }
+
+  orderByNome(list: any[]) {
+
+    if (!this.listaUndefinedOuVazia(list)) {
+      list.sort((left, right): number => {
+        if (left.id > right.id) {
+          return 1;
+        }
+        if (left.id < right.id) {
+          return -1;
+        }
+        return 0;
+      });
+    }
   }
 }

@@ -51,6 +51,8 @@ export class PesquisaDepartRegionalComponent extends BaseComponent implements On
     if (!this.modoConsulta) {
       this.service.buscarEstados().subscribe((dados: any) => {
         this.estados = dados;
+      }, (error) => {
+        this.mensagemError(error);
       });
     }
   }
@@ -130,6 +132,8 @@ export class PesquisaDepartRegionalComponent extends BaseComponent implements On
     this.service.pesquisar(this.filtroDepartRegional, this.paginacao)
       .subscribe((retorno: ListaPaginada<DepartamentoRegional>) => {
         this.departsRegionais = retorno.list;
+      }, (error) => {
+        this.mensagemError(error);
       });
   }
   incluir() {

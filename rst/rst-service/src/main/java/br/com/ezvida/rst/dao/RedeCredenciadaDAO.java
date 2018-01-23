@@ -107,6 +107,75 @@ public class RedeCredenciadaDAO extends BaseDAO<RedeCredenciada, Long> {
 
 	private void getQueryPaginado(StringBuilder jpql, Map<String, Object> parametros,
 			RedeCredenciadaFilter redeCredenciadaFilter, boolean count, DadosFilter segurancaFilter) {
+		montarJoinsPaginado(jpql, count, segurancaFilter);
+
+		if (redeCredenciadaFilter != null) {
+			boolean cnpj = StringUtils.isNotEmpty(redeCredenciadaFilter.getCnpj());
+			boolean razaoSocialNome = StringUtils.isNotEmpty(redeCredenciadaFilter.getRazaoSocial());
+			boolean status = StringUtils.isNotBlank(redeCredenciadaFilter.getSituacao());
+			boolean segmento = redeCredenciadaFilter.getSegmento() != null && redeCredenciadaFilter.getSegmento() > 0;
+			jpql.append(" where ");
+			montarFiltroPaginado(jpql, parametros, redeCredenciadaFilter, cnpj, razaoSocialNome, segmento);
+			montarFiltroStatusPaginado(jpql, redeCredenciadaFilter, cnpj, razaoSocialNome, status, segmento);
+			montarFiltroDepRegId(jpql, parametros, segurancaFilter, cnpj, razaoSocialNome, status, segmento);
+
+			if (!count) {
+				jpql.append(" order by rede.numeroCnpj ");
+			}
+
+		}
+	}
+
+	private void montarFiltroDepRegId(StringBuilder jpql, Map<String, Object> parametros, DadosFilter segurancaFilter,
+			boolean cnpj, boolean razaoSocialNome, boolean status, boolean segmento) {
+		if ((cnpj || razaoSocialNome || segmento || status) && (segurancaFilter.temIdsDepRegional())) {
+
+			jpql.append("  and departamentoRegional.id IN (:idsDepRegional) ");
+			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
+
+		}
+	}
+
+	private void montarFiltroStatusPaginado(StringBuilder jpql, RedeCredenciadaFilter redeCredenciadaFilter,
+			boolean cnpj, boolean razaoSocialNome, boolean status, boolean segmento) {
+		if (status) {
+			if (cnpj || razaoSocialNome || segmento) {
+				jpql.append(" and ");
+			}
+
+			if (Situacao.ATIVO.getCodigo().equals(redeCredenciadaFilter.getSituacao())) {
+				jpql.append(" rede.dataDesligamento ").append(Situacao.ATIVO.getQuery());
+			} else if (Situacao.INATIVO.getCodigo().equals(redeCredenciadaFilter.getSituacao())) {
+				jpql.append(" rede.dataDesligamento ").append(Situacao.INATIVO.getQuery());
+			}
+		}
+	}
+
+	private void montarFiltroPaginado(StringBuilder jpql, Map<String, Object> parametros,
+			RedeCredenciadaFilter redeCredenciadaFilter, boolean cnpj, boolean razaoSocialNome, boolean segmento) {
+		if (cnpj) {
+			jpql.append(" rede.numeroCnpj = :numeroCnpj ");
+			parametros.put("numeroCnpj", redeCredenciadaFilter.getCnpj());
+		}
+		if (razaoSocialNome) {
+			if (cnpj) {
+				jpql.append(" and ");
+			}
+			jpql.append(" UPPER(rede.razaoSocial) like :razaoSocial escape :sc  ");
+			parametros.put("sc", "\\");
+			parametros.put("razaoSocial", "%" + redeCredenciadaFilter.getRazaoSocial().replace("%", "\\%").toUpperCase() + "%");
+		}
+		if (segmento) {
+			if (cnpj || razaoSocialNome) {
+				jpql.append(" and ");
+			}
+
+			jpql.append(" segmento.id = :idSegmento  ");
+			parametros.put("idSegmento", redeCredenciadaFilter.getSegmento());
+		}
+	}
+
+	private void montarJoinsPaginado(StringBuilder jpql, boolean count, DadosFilter segurancaFilter) {
 		if (count) {
 			jpql.append("select count(rede.id) from RedeCredenciada rede ");
 			jpql.append(" left join rede.segmento segmento ");
@@ -126,57 +195,6 @@ public class RedeCredenciadaDAO extends BaseDAO<RedeCredenciada, Long> {
 			jpql.append(" left join empresaUat.empresa empresa ");
 			jpql.append("left join empresa.empresaTrabalhadores empresaTrabalhadores ");
 			jpql.append("left join empresaTrabalhadores.trabalhador trabalhador ");
-		}
-
-		if (redeCredenciadaFilter != null) {
-			boolean cnpj = StringUtils.isNotEmpty(redeCredenciadaFilter.getCnpj());
-			boolean razaoSocialNome = StringUtils.isNotEmpty(redeCredenciadaFilter.getRazaoSocial());
-			boolean status = StringUtils.isNotBlank(redeCredenciadaFilter.getSituacao());
-			boolean segmento = redeCredenciadaFilter.getSegmento() != null && redeCredenciadaFilter.getSegmento() > 0;
-			jpql.append(" where ");
-			if (cnpj) {
-				jpql.append(" rede.numeroCnpj = :numeroCnpj ");
-				parametros.put("numeroCnpj", redeCredenciadaFilter.getCnpj());
-			}
-			if (razaoSocialNome) {
-				if (cnpj) {
-					jpql.append(" and ");
-				}
-				jpql.append(" UPPER(rede.razaoSocial) like :razaoSocial escape :sc  ");
-				parametros.put("sc", "\\");
-				parametros.put("razaoSocial", "%" + redeCredenciadaFilter.getRazaoSocial().replace("%", "\\%").toUpperCase() + "%");
-			}
-			if (segmento) {
-				if (cnpj || razaoSocialNome) {
-					jpql.append(" and ");
-				}
-
-				jpql.append(" segmento.id = :idSegmento  ");
-				parametros.put("idSegmento", redeCredenciadaFilter.getSegmento());
-			}
-			if (status) {
-				if (cnpj || razaoSocialNome || segmento) {
-					jpql.append(" and ");
-				}
-
-				if (Situacao.ATIVO.getCodigo().equals(redeCredenciadaFilter.getSituacao())) {
-					jpql.append(" rede.dataDesligamento ").append(Situacao.ATIVO.getQuery());
-				} else if (Situacao.INATIVO.getCodigo().equals(redeCredenciadaFilter.getSituacao())) {
-					jpql.append(" rede.dataDesligamento ").append(Situacao.INATIVO.getQuery());
-				}
-			}
-
-			if ((cnpj || razaoSocialNome || segmento || status) && (segurancaFilter.temIdsDepRegional())) {
-
-				jpql.append("  and departamentoRegional.id IN (:idsDepRegional) ");
-				parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
-
-			}
-
-			if (!count) {
-				jpql.append(" order by rede.numeroCnpj ");
-			}
-
 		}
 	}
 

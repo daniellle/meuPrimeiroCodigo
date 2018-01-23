@@ -3,6 +3,7 @@ package br.com.ezvida.rst.dao;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -60,24 +61,18 @@ public class DepartamentoRegionalDAO extends BaseDAO<DepartamentoRegional, Long>
 
 		return DAOUtil.getSingleResult(query);
 	}
-
-	public List<DepartamentoRegional> listarTodos(Situacao situacao, DadosFilter dados,
-			DepartamentoRegionalFilter departamentoRegionalFilter) {
-		LOGGER.debug("Listando todos os departamentos regionais");
-
-		StringBuilder jpql = new StringBuilder();
-		Map<String, Object> parametros = Maps.newHashMap();
-
-		jpql.append("select DISTINCT departamentoRegional from DepartamentoRegional departamentoRegional ");
-
-		if (departamentoRegionalFilter != null && departamentoRegionalFilter.isAplicarDadosFilter()) {
+	
+	private void montarJoinsListarTodos(boolean dadosFilter, StringBuilder jpql) {
+		if (dadosFilter) {
 			jpql.append("left join departamentoRegional.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador ");
 			jpql.append("left join unidadeAtendimentoTrabalhador.empresaUats empresaUats ");
 			jpql.append("left join empresaUats.empresa empresa ");
 			jpql.append("left join empresa.empresaTrabalhadores empresaTrabalhadores ");
 			jpql.append("left join empresaTrabalhadores.trabalhador trabalhador ");
 		}
-
+	}
+	
+	private void montarFiltroSituacao(Situacao situacao, StringBuilder jpql ) {
 		if (!Situacao.TODOS.equals(situacao)) {
 			jpql.append("where");
 			if (Situacao.ATIVO.equals(situacao)) {
@@ -88,37 +83,56 @@ public class DepartamentoRegionalDAO extends BaseDAO<DepartamentoRegional, Long>
 				jpql.append(" departamentoRegional.dataDesativacao ").append(Situacao.INATIVO.getQuery());
 			}
 		}
+	}
+	
+	private void montarFiltroListarTodos(Situacao situacao, Map<String, Object> parametros, DadosFilter dados,
+			StringBuilder jpql) {
 
-		if (departamentoRegionalFilter != null && departamentoRegionalFilter.isAplicarDadosFilter()) {
-			if (dados.temIdsDepRegional()) {
-				if (!Situacao.TODOS.equals(situacao)) {
-					jpql.append(" and ");
-				} else {
-					jpql.append(" where ");
-				}
-				jpql.append(" departamentoRegional.id IN (:idsDepRegional) ");
-				parametros.put("idsDepRegional", dados.getIdsDepartamentoRegional());
+		if (dados.temIdsDepRegional()) {
+			if (!Situacao.TODOS.equals(situacao)) {
+				jpql.append(" and ");
+			} else {
+				jpql.append(" where ");
 			}
-
-			if (dados.temIdsEmpresa()) {
-				if (dados.temIdsDepRegional() || !Situacao.TODOS.equals(situacao)) {
-					jpql.append(" and ");
-				} else {
-					jpql.append(" where ");
-				}
-				jpql.append(" empresa.id IN (:idsEmpresa) ");
-				parametros.put("idsEmpresa", dados.getIdsEmpresa());
-			}
-
-			if (dados.temIdsTrabalhador()) {
-				if (dados.temIdsEmpresa() || dados.temIdsDepRegional() || !Situacao.TODOS.equals(situacao)) {
-					jpql.append(" and ");
-				}
-				jpql.append(" trabalhador.id IN (:idsTrabalhador) ");
-				parametros.put("idsTrabalhador", dados.getIdsTrabalhador());
-			}
+			jpql.append(" departamentoRegional.id IN (:idsDepRegional) ");
+			parametros.put("idsDepRegional", dados.getIdsDepartamentoRegional());
 		}
 
+		if (dados.temIdsEmpresa()) {
+			if (dados.temIdsDepRegional() || !Situacao.TODOS.equals(situacao)) {
+				jpql.append(" and ");
+			} else {
+				jpql.append(" where ");
+			}
+			jpql.append(" empresa.id IN (:idsEmpresa) ");
+			parametros.put("idsEmpresa", dados.getIdsEmpresa());
+		}
+
+		if (dados.temIdsTrabalhador()) {
+			if (dados.temIdsEmpresa() || dados.temIdsDepRegional() || !Situacao.TODOS.equals(situacao)) {
+				jpql.append(" and ");
+			}
+			jpql.append(" trabalhador.id IN (:idsTrabalhador) ");
+			parametros.put("idsTrabalhador", dados.getIdsTrabalhador());
+		}
+	}
+	
+	public List<DepartamentoRegional> listarTodos(Situacao situacao, DadosFilter dados,
+			DepartamentoRegionalFilter departamentoRegionalFilter) {
+		LOGGER.debug("Listando todos os departamentos regionais");
+
+		StringBuilder jpql = new StringBuilder();
+		Map<String, Object> parametros = Maps.newHashMap();
+		
+		boolean dadosFilter = departamentoRegionalFilter != null && departamentoRegionalFilter.isAplicarDadosFilter();
+
+		jpql.append("select DISTINCT departamentoRegional from DepartamentoRegional departamentoRegional ");
+		montarJoinsListarTodos(dadosFilter,jpql);
+		montarFiltroSituacao(situacao,jpql);
+		if(dadosFilter) {			
+			montarFiltroListarTodos(situacao, parametros,  dados, jpql);
+		}
+		
 		jpql.append(" order by departamentoRegional.razaoSocial ");
 
 		TypedQuery<DepartamentoRegional> query = criarConsultaPorTipo(jpql.toString());
@@ -232,7 +246,6 @@ public class DepartamentoRegionalDAO extends BaseDAO<DepartamentoRegional, Long>
 				jpql.append(" and ");
 			}
 			this.adicionarFiltroSituacao(jpql, departamentoRegionalFilter);
-			and = true;
 		}
 		this.inserirSeguracaFilter(jpql, segurancaFilter, count, parametros);
 	}
@@ -287,4 +300,22 @@ public class DepartamentoRegionalDAO extends BaseDAO<DepartamentoRegional, Long>
 		return query.getResultList();
 	}
 
+	public List<DepartamentoRegional> pesquisarPorIds(Set<Long> ids) {
+		LOGGER.debug("Pesquisando Departamento por Ids");
+
+		StringBuilder jpql = new StringBuilder();
+		jpql.append("select new DepartamentoRegional( ");
+		jpql.append("  departamentoRegional.cnpj, departamentoRegional.razaoSocial, departamentoRegional.siglaDR, estado.siglaUF) ");
+		jpql.append("  from DepartamentoRegional departamentoRegional ");
+		jpql.append("	left join departamentoRegional.listaEndDepRegional enderecos ");
+		jpql.append("	left join enderecos.endereco endereco ");
+		jpql.append("	left join endereco.municipio municipio ");
+		jpql.append("	left join municipio.estado estado ");
+		jpql.append(" where departamentoRegional.id in (:ids) ");
+
+		TypedQuery<DepartamentoRegional> query = criarConsultaPorTipo(jpql.toString());
+		query.setParameter("ids", ids);
+
+		return query.getResultList();
+	}
 }

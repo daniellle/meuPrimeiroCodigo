@@ -63,12 +63,12 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 
 		return listaPaginada;
 	}
-	
+
 	public List<UsuarioEntidade> pesquisarTodasEmpresasAssociadas(String cpf) {
-		
+
 		StringBuilder jpql = new StringBuilder();
 		Map<String, Object> parametros = Maps.newHashMap();
-		
+
 		jpql.append("select distinct usuarioEntidade from UsuarioEntidade usuarioEntidade ");
 		jpql.append("inner join fetch usuarioEntidade.empresa empresa ");
 		jpql.append(" where usuarioEntidade.dataExclusao is null ");
@@ -77,18 +77,18 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 			jpql.append(" and usuarioEntidade.cpf = :cpf");
 			parametros.put("cpf", cpf);
 		}
-	
+
 		TypedQuery<UsuarioEntidade> query = criarConsultaPorTipo(jpql.toString());
 		query.setParameter("cpf", cpf);
-		
+
 		return query.getResultList();
 	}
-	
+
 	public List<UsuarioEntidade> pesquisarTodosDepartamentosAssociadas(String cpf) {
-		
+
 		StringBuilder jpql = new StringBuilder();
 		Map<String, Object> parametros = Maps.newHashMap();
-		
+
 		jpql.append("select distinct usuarioEntidade from UsuarioEntidade usuarioEntidade ");
 		jpql.append("inner join fetch usuarioEntidade.departamentoRegional departamento ");
 		jpql.append(" where usuarioEntidade.dataExclusao is null ");
@@ -97,10 +97,10 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 			jpql.append(" and usuarioEntidade.cpf = :cpf");
 			parametros.put("cpf", cpf);
 		}
-	
+
 		TypedQuery<UsuarioEntidade> query = criarConsultaPorTipo(jpql.toString());
 		query.setParameter("cpf", cpf);
-		
+
 		return query.getResultList();
 	}
 
@@ -167,7 +167,7 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 
 	private void queryPAginadoEmpresa(StringBuilder jpql, Map<String, Object> parametros, UsuarioEntidadeFilter filtro,
 			boolean count) {
-		
+
 		boolean cpf = StringUtils.isNotBlank(filtro.getCpf());
 		boolean razaoSocial = StringUtils.isNotBlank(filtro.getRazaoSocial());
 		boolean nomeFantasia = StringUtils.isNotBlank(filtro.getNomeFantasia());
@@ -180,7 +180,7 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 			jpql.append("select distinct usuarioEntidade from UsuarioEntidade usuarioEntidade ");
 			jpql.append("inner join fetch usuarioEntidade.empresa empresa ");
 		}
-		
+
 		jpql.append(" where ");
 		jpql.append(" usuarioEntidade.dataExclusao is  null ");
 
@@ -188,35 +188,35 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 			jpql.append(" and usuarioEntidade.cpf = :cpf");
 			parametros.put("cpf", filtro.getCpf());
 		}
-		
+
 		if (razaoSocial) {
-	
+
 			jpql.append(" and UPPER(empresa.razaoSocial) like :razaoSocial escape :sc ");
 			parametros.put("sc", "\\");
 			parametros.put("razaoSocial", "%" + filtro.getRazaoSocial().replace("%", "\\%").toUpperCase() + "%");
 		}
-		
+
 		if (nomeFantasia) {
-			
+
 			jpql.append(" and UPPER(empresa.nomeFantasia) like :nomeFantasia escape :sc ");
 			parametros.put("sc", "\\");
 			parametros.put("nomeFantasia", "%" + filtro.getNomeFantasia().replace("%", "\\%").toUpperCase() + "%");
 		}
-		
+
 		if (cnpj) {
 			jpql.append(" and empresa.cnpj = :cnpj");
 			parametros.put("cnpj", filtro.getCnpj());
 		}
-		
+
 		if (!count) {
 			jpql.append(" order by empresa.razaoSocial ");
 		}
-		
+
 	}
 
 	private void queryPAginadoSindicato(StringBuilder jpql, Map<String, Object> parametros,
 			UsuarioEntidadeFilter filtro, boolean count) {
-		
+
 		boolean cpf = StringUtils.isNotBlank(filtro.getCpf());
 		boolean razaoSocial = StringUtils.isNotBlank(filtro.getRazaoSocial());
 		boolean nomeFantasia = StringUtils.isNotBlank(filtro.getNomeFantasia());
@@ -237,20 +237,20 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 			jpql.append(" and usuarioEntidade.cpf = :cpf ");
 			parametros.put("cpf", filtro.getCpf());
 		}
-		
+
 		if (razaoSocial) {
 			jpql.append(" and UPPER(sindicato.razaoSocial) like :razaoSocial escape :sc ");
 			parametros.put("sc", "\\");
 			parametros.put("razaoSocial", "%" + filtro.getRazaoSocial().replace("%", "\\%").toUpperCase() + "%");
 		}
-		
+
 		if (nomeFantasia) {
-			
+
 			jpql.append(" and UPPER(sindicato.nomeFantasia) like :nomeFantasia escape :sc ");
 			parametros.put("sc", "\\");
 			parametros.put("nomeFantasia", "%" + filtro.getNomeFantasia().replace("%", "\\%").toUpperCase() + "%");
 		}
-		
+
 		if (cnpj) {
 			jpql.append(" and  sindicato.cnpj = :cnpj");
 			parametros.put("cnpj", filtro.getCnpj().concat("%"));
@@ -268,8 +268,7 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 		boolean razaoSocial = StringUtils.isNotBlank(filtro.getRazaoSocial());
 		boolean cnpj = StringUtils.isNotBlank(filtro.getCnpj());
 		boolean estado = filtro.getIdEstado() != null && filtro.getIdEstado() != 0;
-		
-		
+
 		if (count) {
 			jpql.append("select  count(distinct usuarioEntidade.id)  from UsuarioEntidade usuarioEntidade ");
 			jpql.append(" inner join  usuarioEntidade.departamentoRegional departamentoRegional ");
@@ -286,27 +285,25 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 			jpql.append("left join fetch municipio.estado estado ");
 		}
 
-		
-			jpql.append(" where ");
-			jpql.append("  usuarioEntidade.dataExclusao is  null  ");
-		
+		jpql.append(" where ");
+		jpql.append("  usuarioEntidade.dataExclusao is  null  ");
 
 		if (cpf) {
 			jpql.append(" and usuarioEntidade.cpf = :cpf ");
 			parametros.put("cpf", filtro.getCpf());
 		}
-		
+
 		if (razaoSocial) {
 			jpql.append(" and UPPER(departamentoRegional.razaoSocial) like :razaoSocial escape :sc ");
 			parametros.put("sc", "\\");
 			parametros.put("razaoSocial", "%" + filtro.getRazaoSocial().replace("%", "\\%").toUpperCase() + "%");
 		}
-		
+
 		if (cnpj) {
 			jpql.append(" and  departamentoRegional.cnpj = :cnpj");
 			parametros.put("cnpj", filtro.getCnpj().concat("%"));
 		}
-		
+
 		if (estado) {
 			jpql.append(" and estado.id = :idEstado");
 			parametros.put("idEstado", filtro.getIdEstado());
@@ -316,7 +313,7 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 			jpql.append(" order by departamentoRegional.razaoSocial ");
 		}
 	}
-	
+
 	private StringBuilder consultaExistenciaUsuarioEntidadeEmpresa(StringBuilder jpql) {
 		jpql.append("select empresa.id from UsuarioEntidade usuarioEntidade ");
 		jpql.append(" left join usuarioEntidade.empresa empresa ");
@@ -325,7 +322,7 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 		jpql.append(" and empresa.id = :idEmpresa  ");
 		return jpql;
 	}
-	
+
 	private StringBuilder consultaExistenciaUsuarioEntidadeSindicato(StringBuilder jpql) {
 		jpql.append("select sindicato.id from UsuarioEntidade usuarioEntidade ");
 		jpql.append(" left join usuarioEntidade.sindicato sindicato ");
@@ -334,7 +331,7 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 		jpql.append(" and sindicato.id = :idSindicato  ");
 		return jpql;
 	}
-	
+
 	private StringBuilder consultaExistenciaUsuarioEntidadeDepartamento(StringBuilder jpql) {
 		jpql.append("select departamento.id from UsuarioEntidade usuarioEntidade ");
 		jpql.append(" left join usuarioEntidade.departamentoRegional departamento ");
@@ -343,18 +340,19 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 		jpql.append(" and departamento.id = :idDepartamento  ");
 		return jpql;
 	}
-	
+
 	public Long verificandoExistenciaUsuarioEntidade(UsuarioEntidade usuarioEntidade) {
 		StringBuilder jpql = new StringBuilder();
 		if (usuarioEntidade.getEmpresa() != null && usuarioEntidade.getEmpresa().getId() != null) {
 			consultaExistenciaUsuarioEntidadeEmpresa(jpql);
 		}
-		
+
 		if (usuarioEntidade.getSindicato() != null && usuarioEntidade.getSindicato().getId() != null) {
 			consultaExistenciaUsuarioEntidadeSindicato(jpql);
 		}
-		
-		if (usuarioEntidade.getDepartamentoRegional() != null && usuarioEntidade.getDepartamentoRegional().getId() != null) {
+
+		if (usuarioEntidade.getDepartamentoRegional() != null
+				&& usuarioEntidade.getDepartamentoRegional().getId() != null) {
 			consultaExistenciaUsuarioEntidadeDepartamento(jpql);
 		}
 
@@ -362,19 +360,24 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 
 		query.setParameter("cpf", usuarioEntidade.getCpf());
 
+		addFiltroIds(usuarioEntidade, query);
+
+		return DAOUtil.getSingleResult(query);
+	}
+
+	private void addFiltroIds(UsuarioEntidade usuarioEntidade, TypedQuery<Long> query) {
 		if (usuarioEntidade.getEmpresa() != null && usuarioEntidade.getEmpresa().getId() != null) {
 			query.setParameter("idEmpresa", usuarioEntidade.getEmpresa().getId());
 		}
-		
+
 		if (usuarioEntidade.getSindicato() != null && usuarioEntidade.getSindicato().getId() != null) {
 			query.setParameter("idSindicato", usuarioEntidade.getSindicato().getId());
 		}
-		
-		if (usuarioEntidade.getDepartamentoRegional() != null && usuarioEntidade.getDepartamentoRegional().getId() != null) {
+
+		if (usuarioEntidade.getDepartamentoRegional() != null
+				&& usuarioEntidade.getDepartamentoRegional().getId() != null) {
 			query.setParameter("idDepartamento", usuarioEntidade.getDepartamentoRegional().getId());
 		}
-
-		return DAOUtil.getSingleResult(query);
 	}
 
 	public List<UsuarioEntidade> pesquisarPorDepartRegionalEmEmpresa(String cpf, DadosFilter dadosFilter) {

@@ -1,3 +1,4 @@
+import {ResOrdinalComponent} from './res-ordinal.component';
 import { ResElemento } from './res-elemento.component';
 import { ResQuantidadeComponent } from './res-quantidade.component';
 import { ResTextoComponent } from './res-texto.component';
@@ -24,6 +25,7 @@ import {
     DvMultimedia,
     DvCount,
     DvInterval,
+    DvOrdinal,
 } from '@ezvida/adl-core';
 import { ElementoDadosDirective } from 'app/diretiva/elemento-dados.directive';
 import { Component, ViewChild, ComponentFactoryResolver} from '@angular/core';
@@ -77,7 +79,10 @@ export class ResItemRowComponent {
     }
 
     private criarComponent(diretiva: ElementoDirective, elemento: Element): ResElemento | null {
-        if (elemento.value instanceof DvCodedText) {
+        if (elemento.value instanceof DvOrdinal) {
+            return <ResQuantidadeComponent>diretiva.conteiner
+                .createComponent(this.resolver.resolveComponentFactory(ResOrdinalComponent)).instance;
+        } else if (elemento.value instanceof DvCodedText) {
             return <ResTextoCodificadoComponent>diretiva.conteiner
                 .createComponent(this.resolver.resolveComponentFactory(ResTextoCodificadoComponent)).instance;
         } else if (elemento.value instanceof DvQuantity) {

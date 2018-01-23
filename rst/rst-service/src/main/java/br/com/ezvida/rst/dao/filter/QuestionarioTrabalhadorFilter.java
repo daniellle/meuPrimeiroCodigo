@@ -11,8 +11,5 @@ public class QuestionarioTrabalhadorFilter extends FilterBase{
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 	
 }

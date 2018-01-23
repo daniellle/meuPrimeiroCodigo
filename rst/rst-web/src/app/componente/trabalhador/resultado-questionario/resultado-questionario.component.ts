@@ -1,3 +1,4 @@
+import { MensagemProperties } from './../../../compartilhado/utilitario/recurso.pipe';
 import { environment } from './../../../../environments/environment';
 import { RespostaQuestionarioTrabalhadorService } from './../../../servico/resposta-questionario-trabalhador.service';
 import { ResultadoQuestionarioDTO } from './../../../modelo/resultado-questionario-dto.model';
@@ -74,6 +75,25 @@ export class ResultadoQuestionarioComponent extends BaseComponent implements OnI
 
   adjustHeight(el){
     el.style.height = (el.scrollHeight > el.clientHeight) ? (el.scrollHeight)+"px" : "60px";
-}
+  }
 
+  isBaixoRisco() {
+    return this.resultadoQuestionario && this.resultadoQuestionario.classificacao.classificacao
+      === MensagemProperties.app_rst_resultado_questionario_baixo_risco;
+  }
+
+  isMedioRisco() {
+    return this.resultadoQuestionario && this.resultadoQuestionario.classificacao.classificacao
+      === MensagemProperties.app_rst_resultado_questionario_medio_risco;
+  }
+
+  isMedioAltoRisco() {
+    return this.resultadoQuestionario && this.resultadoQuestionario.classificacao.classificacao
+      === MensagemProperties.app_rst_resultado_questionario_medio_alto_risco;
+  }
+
+  isAltoRisco() {
+    return this.resultadoQuestionario && this.resultadoQuestionario.classificacao.classificacao
+      === MensagemProperties.app_rst_resultado_questionario_alto_risco;
+  }
 }

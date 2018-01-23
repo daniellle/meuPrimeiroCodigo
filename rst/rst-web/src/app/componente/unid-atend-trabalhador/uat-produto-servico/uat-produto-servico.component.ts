@@ -87,11 +87,15 @@ export class UatProdutoServicoComponent extends BaseComponent implements OnInit 
   buscarLinhas() {
     this.linhaService.buscarLinhasAtivasPorIdDepartamentoUat(this.idUat).subscribe((retorno) => {
       this.listaLinhas = retorno;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
   bucarUatPorId(id) {
-    this.uatService.pesquisarPorId(id).subscribe((retorno) => { this.uat = retorno; });
+    this.uatService.pesquisarPorId(id).subscribe((retorno) => { this.uat = retorno; }, (error) => {
+      this.mensagemError(error);
+    });
   }
 
   pesquisarUatProdutoServicoPaginadoService(idUat: number): void {

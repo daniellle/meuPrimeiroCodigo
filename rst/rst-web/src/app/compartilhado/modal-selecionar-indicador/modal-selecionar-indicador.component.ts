@@ -78,6 +78,8 @@ export class ModalSelecionarIndicadorQuestionarioComponent extends BaseComponent
     this.paginacao.pagina = event.page;
     this.indicadorService.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<IndicadorQuestionario>) => {
       this.listaIndicadorQuestionario = retorno.list;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

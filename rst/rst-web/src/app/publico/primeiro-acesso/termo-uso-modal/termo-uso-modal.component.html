@@ -94,14 +94,23 @@
     </div>
 </div>
 
-<ng-template #modalTermoUso let-close="close" let-fechar="dismiss">
-    <div class="modal-header">
-        <p class="modal-title">{{ 'app_rst_primeiro_acesso_title_termo_uso' | recurso }}</p>
+<ng-template #modalTermoUso let-close="close" let-fechar="dismiss" class="modal-content">
+    <div class="text-center modal-header">
+        <p style="text-align:center" class="text-center modal-title">{{ 'app_rst_primeiro_acesso_title_termo_uso' | recurso }}</p>
 
     </div>
-    <div class="modal-body">
+    <a (click)="mostrar()">
+        <div class="text-center modal-title space-up visualizar">
+            <span>Visualizar   
+                    <img [ngClass]="{'img-size': !show , 'rotate': show }"  src="assets/img/seta_baixo.svg" alt="estender" />
+                </span>
+        </div>
+    </a>
+    <div *ngIf="show" class="modal-body termo-uso ">
         <div [innerHTML]="termoUso"></div>
     </div>
+
+
     <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="close('adicionar')">{{ 'app_rst_btn_concordar' | recurso }}</button>
         <button type="button" class="btn btn-secondary" (click)="fechar('cancelar')">{{ 'app_rst_btn_cancelar' | recurso }}</button>

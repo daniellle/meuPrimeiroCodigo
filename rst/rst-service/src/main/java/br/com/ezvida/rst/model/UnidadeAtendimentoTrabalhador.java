@@ -79,6 +79,16 @@ public class UnidadeAtendimentoTrabalhador extends AbstractData {
 	@JoinColumn(name = "ID_DEPARTAMENTO_REGIONAL_FK")
 	private DepartamentoRegional departamentoRegional;
 
+	public UnidadeAtendimentoTrabalhador() {
+		// construtor padrao
+	}
+
+	public UnidadeAtendimentoTrabalhador(String cnpj, String razaoSocial, String cnpjDR, String razaoSocialDR, String siglaDR, String estadoDR) {
+		this.cnpj = cnpj;
+		this.razaoSocial = razaoSocial;
+		this.departamentoRegional = new DepartamentoRegional(cnpjDR, razaoSocialDR, siglaDR, estadoDR);
+	}
+
 	@PreUpdate
 	public void preUpdate() {
 		setDataAlteracao(new Date());

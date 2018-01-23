@@ -1,3 +1,4 @@
+import { ValidarData } from 'app/compartilhado/validators/data.validator';
 import { PerfilEnum } from './../../../modelo/enum/enum-perfil';
 import { SimNao } from './../../../modelo/enum/enum-simnao.model';
 import { DatePicker } from './../../../compartilhado/utilitario/date-picker';
@@ -23,6 +24,7 @@ import { ModalidadeCurso } from 'app/modelo/enum/enum-modalidade-curso.model';
 import { Paginacao } from 'app/modelo/paginacao.model';
 import { ListaPaginada } from 'app/modelo/lista-paginada.model';
 import * as FileSaver from 'file-saver';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-trabalhador-certificado',
@@ -51,6 +53,10 @@ export class TrabalhadorCertificadoComponent extends BaseComponent implements On
   listaCertificadosTrabalhador: Certificado[];
   public tamanho;
   public labelTamanhoArquivo;
+
+  verificaDataModelValidade = true;
+  verificaDataModelConclusao = true;
+
   @ViewChild('modalAdicionarTipoCurso') modalAdicionarTipoCurso: any;
   @ViewChild('inputFile') inputFile: any;
   @ViewChild('inputFileTrabalhador') inputFileTrabalhador: any;
@@ -87,12 +93,16 @@ export class TrabalhadorCertificadoComponent extends BaseComponent implements On
         this.idTrabalhador = trabalhador.id;
         this.getListaCertificados();
         this.getListaCertificadosTrabalhador();
+      }, (error) => {
+        this.mensagemError(error);
       });
     } else {
       this.activatedRoute.params.subscribe((params) => {
         this.idTrabalhador = params['id'];
         this.getListaCertificados();
         this.getListaCertificadosTrabalhador();
+      }, (error) => {
+        this.mensagemError(error);
       });
     }
   }
@@ -158,6 +168,8 @@ export class TrabalhadorCertificadoComponent extends BaseComponent implements On
   private getListaTipoCurso(): void {
     this.tipoCursoService.buscarTodos().subscribe((response: TipoCurso[]) => {
       this.listaTipoCurso = response;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -229,6 +241,8 @@ export class TrabalhadorCertificadoComponent extends BaseComponent implements On
     this.parametroService.pesquisar().subscribe((retorno) => {
       this.tamanho = parseInt(retorno, 10);
       this.labelTamanhoArquivo = MensagemProperties.app_rst_label_tamanho_arquivo.replace('{0}', this.tamanho);
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
   fileChanged($event) {
@@ -316,7 +330,9 @@ export class TrabalhadorCertificadoComponent extends BaseComponent implements On
         }, (reason) => {
           this.visualizarCertificado = new Certificado();
         });
-    });
+      }, (error) => {
+        this.mensagemError(error);
+      });
   }
 
   salvarArquivoTrabalhador(formCertificadoTrabalhador) {
@@ -383,5 +399,53 @@ export class TrabalhadorCertificadoComponent extends BaseComponent implements On
       return false; // gestor DR e trabalhador vendo seus certificados
     }
     return true; // Gestor Dr e trabalhador ou apenas gestor Dr vendo certificados de outros
+  }
+
+  maskDt($event, campo?: string) {
+    let str: string = $event.target.value;
+    str = str.replace(new RegExp('/', 'g'), '');
+    $event.target.value = this.retiraLetra($event, str);
+    if ($event.target.value.length < 10 && $event.keyCode !== 8) {
+      if ($event.target.value.length === 2 || $event.target.value.length === 5) {
+        $event.target.value = $event.target.value += '/';
+      }
+    }
+    if ($event.target.value !== '' && $event.target.value.length < 10) {
+      if (campo === 'V') {
+        this.verificaDataModelValidade = false;
+      }
+      if (campo === 'C') {
+        this.verificaDataModelConclusao = false;
+      }
+    } else if ($event.target.value.length === 10) {
+      if (campo === 'V') {
+        this.instanciaDataValidade($event.target.value);
+      }
+      if (campo === 'C') {
+        this.instanciaDataConclusao($event.target.value);
+      }
+    } else {
+      this.verificaDataModelValidade = true;
+      this.verificaDataModelConclusao = true;
+    }
+
+  }
+
+  instanciaDataValidade(value) {
+    if (ValidarData(moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD'))) {
+      this.certificado.dataValidade = DatePicker.convertDateForMyDatePicker(value);
+      this.verificaDataModelValidade = true;
+    } else {
+      this.verificaDataModelValidade = false;
+    }
+  }
+
+  instanciaDataConclusao(value) {
+    if (ValidarData(moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD'))) {
+      this.certificado.dataConclusao = DatePicker.convertDateForMyDatePicker(value);
+      this.verificaDataModelConclusao = true;
+    } else {
+      this.verificaDataModelConclusao = false;
+    }
   }
 }

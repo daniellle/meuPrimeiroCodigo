@@ -66,6 +66,8 @@ export class EmpresaSetorComponent extends BaseComponent implements OnInit {
                 this.filtro.idEmpresa = this.idEmpresa;
                 this.pesquisarEmpresasSetor();
             }
+        }, (error) => {
+            this.mensagemError(error);
         });
     }
 
@@ -228,11 +230,11 @@ export class EmpresaSetorComponent extends BaseComponent implements OnInit {
 
     hasPermissaoCadastrar() {
         return this.hasPermissao(PermissoesEnum.EMPRESA_SETOR_CADASTRAR)
-        || this.hasPermissao(PermissoesEnum.EMPRESA_SETOR);
+            || this.hasPermissao(PermissoesEnum.EMPRESA_SETOR);
     }
 
     hasPermissaoDesativar() {
         return this.hasPermissao(PermissoesEnum.EMPRESA_SETOR_DESATIVAR)
-        || this.hasPermissao(PermissoesEnum.EMPRESA_SETOR);
+            || this.hasPermissao(PermissoesEnum.EMPRESA_SETOR);
     }
 }

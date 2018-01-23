@@ -108,6 +108,8 @@ export class TrabalhadorDependenteComponent extends BaseComponent implements OnI
         this.trabalhadorDependenteBusca = trabalhadorDependente;
         this.converterModelDependneteParaForm();
       }
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -130,6 +132,8 @@ export class TrabalhadorDependenteComponent extends BaseComponent implements OnI
       } else {
         this.listaTrabalhadorDependente = listaTrabalhadorDependente;
       }
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

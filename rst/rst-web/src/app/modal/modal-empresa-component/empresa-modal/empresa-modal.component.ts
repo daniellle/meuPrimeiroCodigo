@@ -62,6 +62,8 @@ export class EmpresaModalComponent extends BaseComponent implements OnInit {
     this.paginacao.pagina = event.page;
     this.service.pesquisar(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<Empresa>) => {
       this.empresas = retorno.list;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

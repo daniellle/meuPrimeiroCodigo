@@ -16,6 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -70,6 +71,20 @@ public class DepartamentoRegional extends AbstractData {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "departamentoRegional")
 	private Set<UnidadeAtendimentoTrabalhador> unidadeAtendimentoTrabalhador;
 	
+	@Transient
+	private String estado;
+
+	public DepartamentoRegional() {
+		// construtor padrao
+	}
+
+	public DepartamentoRegional(String cnpj, String razaoSocial, String sigla, String estado) {
+		this.cnpj = cnpj;
+		this.razaoSocial = razaoSocial;
+		this.siglaDR = sigla;
+		this.estado = estado;
+	}
+
 	@PreUpdate
 	public void preUpdate() {
 		setDataAlteracao(new Date());
@@ -166,6 +181,14 @@ public class DepartamentoRegional extends AbstractData {
 
 	public void setUnidadeAtendimentoTrabalhador(Set<UnidadeAtendimentoTrabalhador> unidadeAtendimentoTrabalhador) {
 		this.unidadeAtendimentoTrabalhador = unidadeAtendimentoTrabalhador;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
 	@Override

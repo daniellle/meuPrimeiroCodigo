@@ -107,7 +107,7 @@ public class UnidadeAtendimentoTrabalhadorEndpoint extends SegurancaEndpoint<Uni
 	@Autorizacao(permissoes = @Permissao(value = {  PermissionConstants.CAT, PermissionConstants.CAT_ALTERAR }))
 	public Response alterar(@Encoded UnidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador
 			,@Context SecurityContext context, @Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED).entity(
+		return Response.status(HttpServletResponse.SC_OK).entity(
 				unidAtendTrabalhadorService.salvar(unidadeAtendimentoTrabalhador, 
 						ClienteInfos.getClienteInfos(context, request,
 								TipoOperacaoAuditoria.ALTERACAO,Funcionalidade.CAT))).type(MediaType.APPLICATION_JSON).build();

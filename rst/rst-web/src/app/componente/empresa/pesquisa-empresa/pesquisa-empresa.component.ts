@@ -52,6 +52,8 @@ export class PesquisaEmpresaComponent extends BaseComponent implements OnInit {
   buscarUnidadesObras() {
     this.unidadeObraService.pesquisarTodos().subscribe((dados: any) => {
       this.unidadesObras = dados;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -93,6 +95,8 @@ export class PesquisaEmpresaComponent extends BaseComponent implements OnInit {
     this.paginacao.pagina = event.page;
     this.service.pesquisar(this.filtroEmpresa, this.paginacao).subscribe((retorno: ListaPaginada<Empresa>) => {
       this.empresas = retorno.list;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

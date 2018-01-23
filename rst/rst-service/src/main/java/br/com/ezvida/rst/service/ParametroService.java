@@ -41,9 +41,6 @@ public class ParametroService extends BaseService {
 	public static final String IGEV = "igev";
 
 	public static final String HOST_ELASTICSEARCH = "host_elasticsearch";
-	public static final String CLUSTER_ELASTICSEARCH = "cluster_elasticsearch";
-	
-	public static final String APP_NOME = "app_nome";
 	
 	public static final String MAIL_SMTP_HOST = "mail_smtp_host";
 	public static final String MAIL_SMTP_PORT = "mail_smtp_port";

@@ -227,7 +227,7 @@ public class Usuario extends BaseEntity<Long> {
 		this.idTrabalhadores = idTrabalhadores;
 	}
 
-    @Override
+	@Override
     public String toString() {
         return MoreObjects.toStringHelper(this).add("dn", dn).add("login", login).add("nome", nome).add("sobrenome", sobrenome).add("cargo", cargo)
                 .add("email", email).toString();

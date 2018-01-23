@@ -4,10 +4,9 @@ import javax.ws.rs.QueryParam;
 
 public class ParceiroFilter extends FilterBase {
 
-	
 	@QueryParam("id")
 	private Long id;
-	
+
 	@QueryParam("cpfCnpj")
 	private String cpfCnpj;
 
@@ -20,13 +19,8 @@ public class ParceiroFilter extends FilterBase {
 	@QueryParam("situacao")
 	private String situacao;
 
-	
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getCpfCnpj() {
@@ -41,23 +35,11 @@ public class ParceiroFilter extends FilterBase {
 		return razaoSocialNome;
 	}
 
-	public void setRazaoSocialNome(String razaoSocialNome) {
-		this.razaoSocialNome = razaoSocialNome;
-	}
-
 	public Long getEspecialidade() {
 		return especialidade;
 	}
 
-	public void setEspecialidade(Long especialidade) {
-		this.especialidade = especialidade;
-	}
-
 	public String getSituacao() {
 		return situacao;
-	}
-
-	public void setSituacao(String situacao) {
-		this.situacao = situacao;
 	}
 }

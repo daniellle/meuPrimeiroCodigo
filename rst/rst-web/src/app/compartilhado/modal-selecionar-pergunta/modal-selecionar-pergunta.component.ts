@@ -78,7 +78,9 @@ export class ModalSelecionarPerguntaComponent extends BaseComponent {
     this.paginacao.pagina = event.page;
     this.perguntaService.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<Pergunta>) => {
       this.listaPergunta = retorno.list;
-    });
+    }, (error) => {
+      this.mensagemError(error);
+    }); 
   }
 
   openModal() {

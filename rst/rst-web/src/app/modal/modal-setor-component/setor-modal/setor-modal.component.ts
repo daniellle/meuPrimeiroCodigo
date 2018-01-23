@@ -97,6 +97,8 @@ export class SetorModalComponent extends BaseComponent implements OnInit {
     .subscribe((retorno: ListaPaginada<EmpresaSetor>) => {
       this.paginacao = this.getPaginacao(this.paginacao, retorno);
       this.setLista(retorno);
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

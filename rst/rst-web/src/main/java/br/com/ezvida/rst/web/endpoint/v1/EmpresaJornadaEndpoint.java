@@ -78,7 +78,7 @@ public class EmpresaJornadaEndpoint extends SegurancaEndpoint<EmpresaJornada> {
 	public Response desativar(@Encoded EmpresaJornada empresaJornada,
 			@Context SecurityContext context
 			, @Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED).entity(serializar(empresaJornadaService.desativarEmpresaJornada(empresaJornada,
+		return Response.status(HttpServletResponse.SC_OK).entity(serializar(empresaJornadaService.desativarEmpresaJornada(empresaJornada,
 				ClienteInfos.getClienteInfos(context, request,
 						TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.EMPRESA))))
 				.type(MediaType.APPLICATION_JSON).build();

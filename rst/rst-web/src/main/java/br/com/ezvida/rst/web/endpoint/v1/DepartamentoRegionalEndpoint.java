@@ -122,7 +122,7 @@ public class DepartamentoRegionalEndpoint extends SegurancaEndpoint<Departamento
 			PermissionConstants.DEPARTAMENTO_REGIONAL_ALTERAR }))
 	public Response alterar(@Encoded DepartamentoRegional departamentoRegional, @Context SecurityContext context
 			, @Context HttpServletRequest request) {		
-		return Response.status(HttpServletResponse.SC_CREATED).entity(departamentoRegionalService
+		return Response.status(HttpServletResponse.SC_OK).entity(departamentoRegionalService
 				.salvar(departamentoRegional,ClienteInfos.getClienteInfos(context, request,
 						TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.DEPARTAMENTO_REGIONAL)))
 				.type(MediaType.APPLICATION_JSON)

@@ -1,4 +1,5 @@
-import { ValidarDataFutura, CompareDataBefore } from 'app/compartilhado/validators/data.validator';
+import { DatePicker } from './../utilitario/date-picker';
+import { ValidarDataFutura, CompareDataBefore, ValidarData } from 'app/compartilhado/validators/data.validator';
 import { Router } from '@angular/router';
 import { ListaPaginada } from 'app/modelo/lista-paginada.model';
 import { EmpresaSindicatoService } from './../../servico/empresa.-sindicato.service';
@@ -10,6 +11,7 @@ import { BloqueioService } from 'app/servico/bloqueio.service';
 import { BaseComponent } from 'app/componente/base.component';
 import { EmpresaSindicato } from './../../modelo/empresa-sindicato.model';
 import { Component, OnInit, Input, Output } from '@angular/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-associacao-empresa-sindicato',
@@ -43,6 +45,9 @@ export class AssociacaoEmpresaSindicatoComponent extends BaseComponent implement
   @Input()
   public dataDesligamento: any;
   public title: string;
+
+  verificaDataModelAssociacao = true;
+  verificaDataModelDesligamento = true;
 
   constructor(
     private router: Router,
@@ -78,28 +83,38 @@ export class AssociacaoEmpresaSindicatoComponent extends BaseComponent implement
   }
 
   private validarEmpresaSindicato(): Boolean {
-    if (!this.dataAssociacao) {
+    let isValido = true;
+    console.log(this.dataAssociacao)
+    if (!this.dataAssociacao && this.verificaDataModelAssociacao) {
       this.mensagemErroComParametrosModel('app_rst_campo_obrigatorio', MensagemProperties.app_rst_labels_dataAssociacao);
-      return false;
+      isValido = false;
     }
-    if (ValidarDataFutura(this.dataAssociacao.jsdate)) {
+    if ( this.dataAssociacao && ValidarDataFutura(this.dataAssociacao.jsdate)) {
       this.mensagemErroComParametrosModel('app_rst_labels_data_futura', MensagemProperties.app_rst_labels_dataAssociacao);
-      return false;
+      isValido = false;
     }
 
     if (this.dataDesligamento) {
       if (ValidarDataFutura(this.dataDesligamento.jsdate)) {
         this.mensagemErroComParametrosModel('app_rst_labels_data_futura', MensagemProperties.app_rst_labels_dataDesligamento);
-        return false;
+        isValido = false;
       }
 
-      if (!CompareDataBefore(this.dataAssociacao.jsdate, this.dataDesligamento.jsdate)) {
+      if (this.dataAssociacao && !CompareDataBefore(this.dataAssociacao.jsdate, this.dataDesligamento.jsdate)) {
         this.mensagemErroComParametrosModel('app_rst_empresa_dataDesligamento_maior_que_dataAssociacao');
-        return false;
+        isValido = false;
       }
     }
+    if (!this.verificaDataModelAssociacao) {
+      this.mensagemErroComParametrosModel('app_rst_campo_invalido', MensagemProperties.app_rst_labels_dataAssociacao);
+      isValido = false;
+    }
 
-    return true;
+    if (!this.verificaDataModelDesligamento) {
+      this.mensagemErroComParametrosModel('app_rst_campo_invalido', MensagemProperties.app_rst_labels_dataDesligamento);
+      isValido = false;
+    }
+    return isValido;
   }
 
   limpar() {
@@ -132,5 +147,54 @@ export class AssociacaoEmpresaSindicatoComponent extends BaseComponent implement
       }, (error) => {
         this.mensagemError(error);
       });
+  }
+
+  maskDt($event, campo: string) {
+    let str: string = $event.target.value;
+    str = str.replace(new RegExp('/', 'g'), '');
+    $event.target.value = this.retiraLetra($event, str);
+    if ($event.target.value.length < 10 && $event.keyCode !== 8) {
+      if ($event.target.value.length === 2 || $event.target.value.length === 5) {
+        $event.target.value = $event.target.value += '/';
+      }
+    }
+    if ($event.target.value !== '' && $event.target.value.length < 10) {
+      if (campo === 'A') {
+        this.verificaDataModelAssociacao = false;
+      }
+      if (campo === 'D') {
+        this.verificaDataModelDesligamento = false;
+      }
+    } else if ($event.target.value.length === 10) {
+      if (campo === 'A') {
+        this.instanciaDataAssociacao($event.target.value);
+
+      }
+      if (campo === 'D') {
+        this.instanciaDataDesligamento($event.target.value);
+      }
+    } else {
+      this.verificaDataModelAssociacao = true;
+      this.verificaDataModelDesligamento = true;
+    }
+
+  }
+
+  instanciaDataAssociacao(value ) {
+    if (ValidarData(moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD'))) {
+      this.dataAssociacao = DatePicker.convertDateForMyDatePicker(value);
+      this.verificaDataModelAssociacao = true;
+    } else {
+      this.verificaDataModelAssociacao = false;
+    }
+  }
+
+  instanciaDataDesligamento(value) {
+    if (ValidarData(moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD'))) {
+      this.dataDesligamento = DatePicker.convertDateForMyDatePicker(value);
+      this.verificaDataModelDesligamento = true;
+    } else {
+      this.verificaDataModelDesligamento = false;
+    }
   }
 }

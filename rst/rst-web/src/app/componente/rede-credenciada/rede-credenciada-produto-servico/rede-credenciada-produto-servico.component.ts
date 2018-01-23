@@ -84,6 +84,8 @@ export class RedeCredenciadaProdutoServicoComponent extends BaseComponent implem
         this.paginacaoRedeCredenciadaProdutoServico.pagina = 1;
         this.pesquisarRedeCredenciadaProdutoServicoPaginadoService(this.idRedeCredenciada);
       }
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -94,7 +96,11 @@ export class RedeCredenciadaProdutoServicoComponent extends BaseComponent implem
   }
 
   bucarRedeCredenciadaPorId(id) {
-    this.redeCredenciadaService.pesquisarPorId(id).subscribe((retorno) => { this.redeCredenciada = retorno; });
+    this.redeCredenciadaService.pesquisarPorId(id).subscribe((retorno) => {
+      this.redeCredenciada = retorno;
+    }, (error) => {
+      this.mensagemError(error);
+    });
   }
   pesquisarRedeCredenciadaProdutoServicoPaginadoService(idRedeCredenciada: number): void {
     this.redeCredenciadaProdutoServicoSerivce.pesquisarRedeCredenciadaProdutoServico(idRedeCredenciada,

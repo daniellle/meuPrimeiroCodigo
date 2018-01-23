@@ -58,11 +58,11 @@
                     </md-input-container>
                 </div>
                 <div class="form-group col-md-3">
-                    <my-date-picker placeholder="" id="dataValidade" [options]="datePickerOptions" locale="pt-br" [(ngModel)]="certificado.dataValidade" name="dataValidade"></my-date-picker>
+                    <my-date-picker placeholder="" id="dataValidade" [options]="datePickerOptions" locale="pt-br" [(ngModel)]="certificado.dataValidade" name="dataValidade" (keyup)="maskDt($event, 'V')"></my-date-picker>
                     <span class="floating-label">{{ 'app_rst_labels_data_validade' | recurso }}</span>
                 </div>
                 <div class="form-group col-md-3">
-                    <my-date-picker placeholder="" id="dataConclusao" [options]="datePickerOptions" locale="pt-br" [(ngModel)]="certificado.dataConclusao" name="dataConclusao"></my-date-picker>
+                    <my-date-picker placeholder="" id="dataConclusao" [options]="datePickerOptions" locale="pt-br" [(ngModel)]="certificado.dataConclusao" name="dataConclusao" (keyup)="maskDt($event, 'C')"></my-date-picker>
                     <span class="floating-label">{{ 'app_rst_labels_data_conclusao' | recurso }}</span>
                 </div>
                 <div class="form-group col-md-3">

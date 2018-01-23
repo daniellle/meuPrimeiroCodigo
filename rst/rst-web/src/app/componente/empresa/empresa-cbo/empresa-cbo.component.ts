@@ -90,6 +90,8 @@ export class EmpresaCboComponent extends BaseComponent implements OnInit {
                 this.filtro.idEmpresa = this.idEmpresa;
                 this.pesquisarEmpresasCbos();
             }
+        }, (error) => {
+            this.mensagemError(error);
         });
     }
 

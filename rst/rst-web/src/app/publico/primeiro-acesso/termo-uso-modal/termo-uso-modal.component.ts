@@ -60,7 +60,7 @@ export class TermoUsoModalComponent extends BaseComponent implements OnInit {
   public existeTelefone = false;
 
   @ViewChild('modalTermoUso') modalTermoUso;
-
+  public show  = false;
   constructor(
     public activeModal: NgbActiveModal,
     private modalService: NgbModal,
@@ -129,7 +129,7 @@ export class TermoUsoModalComponent extends BaseComponent implements OnInit {
   abrirTermo() {
     this.buscarTermoUso();
     if (this.verificarCamposSenha()) {
-      const modalRef = this.modalService.open(this.modalTermoUso, { size: 'lg' });
+      const modalRef = this.modalService.open(this.modalTermoUso);
       modalRef.result.then((result) => {
         this.aceitouTermo = true;
         this.cadastrarPrimeiroAcesso();
@@ -233,7 +233,7 @@ export class TermoUsoModalComponent extends BaseComponent implements OnInit {
     const cpf = this.removerMascara();
     const data = this.formatarData();
     this.trabalhadorService.buscarTrabalhadorCpfDataNascimento(cpf, data).subscribe((retorno: Trabalhador) => {
-      // this.trabalhadorService.buscarPorId(this.primeiroAcesso.trabalhador.id.toString()).subscribe((retorno: Trabalhador) => {
+
       this.existeEmail = false;
       this.existeTelefone = false;
 
@@ -441,5 +441,12 @@ export class TermoUsoModalComponent extends BaseComponent implements OnInit {
       });
     }
   }
-
+ mostrar() {
+   console.log(this.show)
+   if (this.show) {
+    this.show = false;
+   } else {
+    this.show = true;
+   }
+ }
 }

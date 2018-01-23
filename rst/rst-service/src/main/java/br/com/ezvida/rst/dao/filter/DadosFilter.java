@@ -90,15 +90,15 @@ public class DadosFilter implements Serializable {
 		this.trabalhador = contemPapel(TRABALHADOR);
 
 		if (diretoriaDr || gestorDr) {
-			this.idsDepartamentoRegional = CollectionUtils.isEmpty(departamentos) ? Sets.newHashSet(0L) : departamentos;
+			this.idsDepartamentoRegional = addHash(departamentos);
 		}
 
 		if (gestorEmpresa && !(diretoriaDr || gestorDr)) {
-			this.idsEmpresa = CollectionUtils.isEmpty(empresas) ? Sets.newHashSet(0L) : empresas;
+			this.idsEmpresa = addHash(empresas);
 		}
 
 		if (trabalhador && !(diretoriaDr || gestorDr || gestorEmpresa)) {
-			this.idsTrabalhador = CollectionUtils.isEmpty(idsTrabalhadores) ? Sets.newHashSet(0L) : idsTrabalhadores;
+			this.idsTrabalhador = addHash(idsTrabalhadores);
 		}
 
 		// TODO SO PREEENCHER DE ACORDO COM O PERFIL
@@ -116,6 +116,10 @@ public class DadosFilter implements Serializable {
 
 		this.preenchePerfil();
 
+	}
+	
+	private Set<Long> addHash(Set<Long> obj) {
+		return CollectionUtils.isEmpty(obj) ? Sets.newHashSet(0L) : obj;
 	}
 
 	private void preenchePerfil() {

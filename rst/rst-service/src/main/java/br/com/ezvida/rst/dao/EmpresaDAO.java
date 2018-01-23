@@ -3,6 +3,7 @@ package br.com.ezvida.rst.dao;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -251,5 +252,40 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 
 	private boolean temIdsDepRegionalOuTemIdsEmpresa(DadosFilter segurancaFilter) {
 		return segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa();
+	}
+
+	public List<Empresa> buscarEmpresasPorIds(Set<Long> ids) {
+		LOGGER.debug("Pesquisando Empresa por Ids");
+
+		StringBuilder jpql = new StringBuilder();
+
+		jpql.append("select new Empresa( ");
+		jpql.append(" empresa.id, empresa.cnpj, empresa.razaoSocial ) ");
+		jpql.append(" from Empresa empresa ");
+		jpql.append(" where empresa.id in (:ids)");
+
+		TypedQuery<Empresa> query = criarConsultaPorTipo(jpql.toString());
+		query.setParameter("ids", ids);
+
+		return query.getResultList();
+	}
+
+	public List<Empresa> buscarEmpresasUatsDrsPorCpf(String cpf) {
+		LOGGER.debug("Pesquisando Empresa por cpf");
+
+		StringBuilder jpql = new StringBuilder();
+
+		jpql.append("select new Empresa( ");
+		jpql.append(" empresa.id, empresa.cnpj, empresa.razaoSocial ) ");
+		jpql.append("from Empresa empresa ");
+		jpql.append("inner join empresa.empresaTrabalhadores empresaTrabalhador ");
+		jpql.append("inner join empresaTrabalhador.trabalhador trabalhador ");
+		jpql.append(" where empresaTrabalhador.dataExclusao is null and empresaTrabalhador.dataDemissao is null ");
+		jpql.append(" and trabalhador.cpf = :cpf ");
+
+		TypedQuery<Empresa> query = criarConsultaPorTipo(jpql.toString());
+		query.setParameter("cpf", cpf);
+
+		return query.getResultList();
 	}
 }

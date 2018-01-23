@@ -19,7 +19,7 @@ export class RespostaQuestionarioTrabalhadorService extends BaseService<Resposta
   }
 
   buscarPorId(id: number): Observable<ResultadoQuestionarioDTO> {
-    return super.get(`/v1/respostasquestionario/${id}`)
+    return super.get(`/v1/respostas-questionario/${id}`)
       .map((response: ResultadoQuestionarioDTO) => {
         return this.parseResponse(response);
       }).catch((error) => {

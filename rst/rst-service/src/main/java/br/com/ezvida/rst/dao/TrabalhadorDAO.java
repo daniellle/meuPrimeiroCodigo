@@ -41,6 +41,47 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 		StringBuilder jpql = new StringBuilder();
 		Map<String, Object> parametros = Maps.newHashMap();
 
+		montarJoinPesquisarPorId(segurancaFilter, jpql);
+
+		jpql.append(" where trabalhador.id = :id");
+
+		if (segurancaFilter != null && trabalhadorFilter.isAplicarDadosFilter()) {
+			filtroIdsPesquisarPorId(segurancaFilter, id, jpql, parametros);
+		}
+
+		TypedQuery<Trabalhador> query = criarConsultaPorTipo(jpql.toString());
+		parametros.put("id", id);
+		DAOUtil.setParameterMap(query, parametros);
+
+		return DAOUtil.getSingleResult(query);
+	}
+
+	private void filtroIdsPesquisarPorId(DadosFilter segurancaFilter, Long id, StringBuilder jpql,
+			Map<String, Object> parametros) {
+		if (segurancaFilter.temIdsEmpresa()) {
+			jpql.append(" and empresa.id IN (:idsEmpresa) ");
+			parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
+		}
+
+		if (segurancaFilter.temIdsDepRegional()) {
+			if (id != null || segurancaFilter.temIdsEmpresa()) {
+				jpql.append(" and ");
+			}
+
+			jpql.append(" depRegional.id IN (:idsDepRegional) ");
+			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
+		}
+
+		if (segurancaFilter.temIdsTrabalhador()) {
+			if (id != null || segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()) {
+				jpql.append(" and ");
+			}
+			jpql.append(" trabalhador.id IN (:idsTrabalhador) ");
+			parametros.put("idsTrabalhador", segurancaFilter.getIdsTrabalhador());
+		}
+	}
+
+	private void montarJoinPesquisarPorId(DadosFilter segurancaFilter, StringBuilder jpql) {
 		jpql.append("select trabalhador from Trabalhador trabalhador ");
 		jpql.append(" left join fetch trabalhador.profissao p ");
 		jpql.append(" left join fetch trabalhador.pais a ");
@@ -59,38 +100,6 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 				jpql.append(" left join unidadeAtendimentoTrabalhador.departamentoRegional depRegional ");
 			}
 		}
-
-		jpql.append(" where trabalhador.id = :id");
-
-		if (segurancaFilter != null && trabalhadorFilter.isAplicarDadosFilter()) {
-			if (segurancaFilter.temIdsEmpresa()) {
-				jpql.append(" and empresa.id IN (:idsEmpresa) ");
-				parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
-			}
-
-			if (segurancaFilter.temIdsDepRegional()) {
-				if (id != null || segurancaFilter.temIdsEmpresa()) {
-					jpql.append(" and ");
-				}
-
-				jpql.append(" depRegional.id IN (:idsDepRegional) ");
-				parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
-			}
-
-			if (segurancaFilter.temIdsTrabalhador()) {
-				if (id != null || segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()) {
-					jpql.append(" and ");
-				}
-				jpql.append(" trabalhador.id IN (:idsTrabalhador) ");
-				parametros.put("idsTrabalhador", segurancaFilter.getIdsTrabalhador());
-			}
-		}
-
-		TypedQuery<Trabalhador> query = criarConsultaPorTipo(jpql.toString());
-		parametros.put("id", id);
-		DAOUtil.setParameterMap(query, parametros);
-
-		return DAOUtil.getSingleResult(query);
 	}
 
 	public Trabalhador pesquisarPorCpfDataNascimento(String cpf, Date dataNascimento) {
@@ -154,6 +163,127 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 		boolean nit = false;
 		boolean falecidos = false;
 
+		montarJoinPaginado(jpql, count, segurancaFilter);
+
+		if (trabalhadorFilter != null || segurancaFilter != null) {
+			jpql.append(" where ");
+		}
+
+		if (trabalhadorFilter != null) {
+			situacao = StringUtils.isNotBlank(trabalhadorFilter.getSituacao());
+			cpf = StringUtils.isNotEmpty(trabalhadorFilter.getCpf());
+			nome = StringUtils.isNotEmpty(trabalhadorFilter.getNome());
+			nit = StringUtils.isNotEmpty(trabalhadorFilter.getNit());
+			falecidos = trabalhadorFilter.isFalecidos();
+
+			situacao = montarFiltroSituacaoPaginado(jpql, trabalhadorFilter, situacao);
+
+			montarFiltroPaginado(jpql, parametros, trabalhadorFilter, situacao, cpf, nome, nit);
+
+			montarFiltroFalecidoPaginado(jpql, trabalhadorFilter, situacao, cpf, nome, nit);
+		}
+
+		aplicarDadosFilter(jpql, parametros, trabalhadorFilter, segurancaFilter, situacao, cpf, nome, nit, falecidos);
+
+		if (!count) {
+			jpql.append(" order by trabalhador.nome");
+		}
+
+	}
+
+	private void aplicarDadosFilter(StringBuilder jpql, Map<String, Object> parametros,
+			TrabalhadorFilter trabalhadorFilter, DadosFilter segurancaFilter, boolean situacao, boolean cpf,
+			boolean nome, boolean nit, boolean falecidos) {
+		if (segurancaFilter != null && trabalhadorFilter != null && trabalhadorFilter.isAplicarDadosFilter()) {
+			boolean hasFilters = cpf || nome || nit || situacao || !falecidos;
+			addFiltroIds(jpql, parametros, segurancaFilter, hasFilters);
+		}
+	}
+
+	private void addFiltroIds(StringBuilder jpql, Map<String, Object> parametros, DadosFilter segurancaFilter,
+			boolean hasFilters) {
+		if (segurancaFilter.temIdsEmpresa()) {
+			if (hasFilters) {
+				jpql.append(" and ");
+			}
+
+			jpql.append(" empresa.id IN (:idsEmpresa) ");
+			parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
+		}
+
+		if (segurancaFilter.temIdsDepRegional()) {
+			if (hasFilters || segurancaFilter.temIdsEmpresa()) {
+				jpql.append(" and ");
+			}
+
+			jpql.append(" depRegional.id IN (:idsDepRegional) ");
+			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
+		}
+
+		if (segurancaFilter.temIdsTrabalhador()) {
+			if (hasFilters || segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()) {
+				jpql.append(" and ");
+			}
+			jpql.append(" trabalhador.id IN (:idsTrabalhador) ");
+			parametros.put("idsTrabalhador", segurancaFilter.getIdsTrabalhador());
+		}
+	}
+
+	private void montarFiltroFalecidoPaginado(StringBuilder jpql, TrabalhadorFilter trabalhadorFilter, boolean situacao,
+			boolean cpf, boolean nome, boolean nit) {
+		if (!trabalhadorFilter.isFalecidos()) {
+			if (situacao || cpf || nome || nit) {
+				jpql.append(" and ");
+			}
+			jpql.append(" trabalhador.dataFalecimento is null ");
+		}
+	}
+
+	private boolean montarFiltroSituacaoPaginado(StringBuilder jpql, TrabalhadorFilter trabalhadorFilter,
+			boolean situacao) {
+		if (situacao) {
+			boolean verificarSituacao = false;
+			if (Situacao.ATIVO.getCodigo().equals(trabalhadorFilter.getSituacao())) {
+				jpql.append(" trabalhador.dataFalecimento ").append(Situacao.ATIVO.getQuery());
+				verificarSituacao = true;
+			}
+
+			if (Situacao.INATIVO.getCodigo().equals(trabalhadorFilter.getSituacao())) {
+				jpql.append(" trabalhador.dataFalecimento ").append(Situacao.INATIVO.getQuery());
+				verificarSituacao = true;
+			}
+			situacao = verificarSituacao;
+		}
+		return situacao;
+	}
+
+	private void montarFiltroPaginado(StringBuilder jpql, Map<String, Object> parametros,
+			TrabalhadorFilter trabalhadorFilter, boolean situacao, boolean cpf, boolean nome, boolean nit) {
+		if (cpf) {
+			if (situacao) {
+				jpql.append(" and ");
+			}
+			jpql.append(" trabalhador.cpf = :cpf ");
+			parametros.put("cpf", trabalhadorFilter.getCpf());
+		}
+		if (nome) {
+			if (situacao || cpf) {
+				jpql.append(" and ");
+			}
+			jpql.append(" UPPER(trabalhador.nome) like :nome escape :sc ");
+			parametros.put("sc", "\\");
+			parametros.put("nome", "%" + trabalhadorFilter.getNome().replaceAll("%", "\\%").toUpperCase() + "%");
+		}
+		if (nit) {
+			if (situacao || cpf || nome) {
+				jpql.append(" and ");
+			}
+			jpql.append(" trabalhador.nit = :nit ");
+			parametros.put("nit", trabalhadorFilter.getNit());
+		}
+	}
+
+	private void montarJoinPaginado(StringBuilder jpql, boolean count, DadosFilter segurancaFilter) {
 		if (count) {
 			jpql.append("select count( DISTINCT trabalhador.id) from Trabalhador trabalhador ");
 		} else {
@@ -172,97 +302,6 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 				jpql.append(" inner join unidadeAtendimentoTrabalhador.departamentoRegional depRegional ");
 			}
 		}
-
-		if (trabalhadorFilter != null || segurancaFilter != null) {
-			jpql.append(" where ");
-		}
-
-		if (trabalhadorFilter != null) {
-			situacao = StringUtils.isNotBlank(trabalhadorFilter.getSituacao());
-			cpf = StringUtils.isNotEmpty(trabalhadorFilter.getCpf());
-			nome = StringUtils.isNotEmpty(trabalhadorFilter.getNome());
-			nit = StringUtils.isNotEmpty(trabalhadorFilter.getNit());
-			falecidos = trabalhadorFilter.isFalecidos();
-
-			if (situacao) {
-				boolean verificarSituacao = false;
-				if (Situacao.ATIVO.getCodigo().equals(trabalhadorFilter.getSituacao())) {
-					jpql.append(" trabalhador.dataFalecimento ").append(Situacao.ATIVO.getQuery());
-					verificarSituacao = true;
-				}
-
-				if (Situacao.INATIVO.getCodigo().equals(trabalhadorFilter.getSituacao())) {
-					jpql.append(" trabalhador.dataFalecimento ").append(Situacao.INATIVO.getQuery());
-					verificarSituacao = true;
-				}
-				situacao = verificarSituacao;
-			}
-
-			if (cpf) {
-				if (situacao) {
-					jpql.append(" and ");
-				}
-				jpql.append(" trabalhador.cpf = :cpf ");
-				parametros.put("cpf", trabalhadorFilter.getCpf());
-			}
-			if (nome) {
-				if (situacao || cpf) {
-					jpql.append(" and ");
-				}
-				jpql.append(" UPPER(trabalhador.nome) like :nome escape :sc ");
-				parametros.put("sc", "\\");
-				parametros.put("nome", "%" + trabalhadorFilter.getNome().replaceAll("%", "\\%").toUpperCase() + "%");
-			}
-			if (nit) {
-				if (situacao || cpf || nome) {
-					jpql.append(" and ");
-				}
-				jpql.append(" trabalhador.nit = :nit ");
-				parametros.put("nit", trabalhadorFilter.getNit());
-			}
-
-			if (!trabalhadorFilter.isFalecidos()) {
-				if (situacao || cpf || nome || nit) {
-					jpql.append(" and ");
-				}
-				jpql.append(" trabalhador.dataFalecimento is null ");
-			}
-		}
-
-		if (segurancaFilter != null && trabalhadorFilter != null && trabalhadorFilter.isAplicarDadosFilter()) {
-			boolean hasFilters = cpf || nome || nit || situacao || !falecidos;
-
-			if (segurancaFilter.temIdsEmpresa()) {
-				if (hasFilters) {
-					jpql.append(" and ");
-				}
-
-				jpql.append(" empresa.id IN (:idsEmpresa) ");
-				parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
-			}
-
-			if (segurancaFilter.temIdsDepRegional()) {
-				if (hasFilters || segurancaFilter.temIdsEmpresa()) {
-					jpql.append(" and ");
-				}
-
-				jpql.append(" depRegional.id IN (:idsDepRegional) ");
-				parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
-			}
-
-			if (segurancaFilter.temIdsTrabalhador()) {
-				if (hasFilters || segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()) {
-					jpql.append(" and ");
-				}
-				jpql.append(" trabalhador.id IN (:idsTrabalhador) ");
-				parametros.put("idsTrabalhador", segurancaFilter.getIdsTrabalhador());
-			}
-		}
-
-		if (!count) {
-			jpql.append(" order by trabalhador.nome");
-		}
-
 	}
 
 	public List<Trabalhador> listarTodos() {
@@ -293,7 +332,6 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 
 		StringBuilder jpql = new StringBuilder();
 		jpql.append("select t from Trabalhador t where t.cpf = :cpf");
-		jpql.append(" order by t.nome");
 		TypedQuery<Trabalhador> query = criarConsultaPorTipo(jpql.toString());
 		query.setParameter("cpf", cpf);
 

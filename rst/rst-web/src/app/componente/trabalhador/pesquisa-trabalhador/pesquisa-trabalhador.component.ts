@@ -94,6 +94,8 @@ export class PesquisaTrabalhadorComponent extends BaseComponent implements OnIni
     this.paginacao.pagina = event.page;
     this.service.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<Trabalhador>) => {
       this.trabalhadores = retorno.list;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

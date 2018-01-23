@@ -102,7 +102,7 @@ public class ParceiroEndpoint extends SegurancaEndpoint<Parceiro> {
 	public Response alterar(@Encoded Parceiro parceiro, 
 			@Context SecurityContext context, @Context HttpServletRequest request) {
 		LOGGER.debug("Alterando Parceiro");
-		return Response.status(HttpServletResponse.SC_CREATED).entity(parceiroService.salvar(parceiro
+		return Response.status(HttpServletResponse.SC_OK).entity(parceiroService.salvar(parceiro
 				,ClienteInfos.getClienteInfos(context, request,
 						TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.PARCEIRO_CREDENCIADO))).type(MediaType.APPLICATION_JSON).build();
 	}

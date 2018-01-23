@@ -20,66 +20,53 @@
         <div class="row">
             <div class="form-group col-md-8">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput required placeholder="{{'app_rst_labels_razao_social' | recurso}}" *ngIf="isPessoaJuridica" maxlength="160"
-                        type="text" name="nome" id="nome" formControlName="nome" class="form-control" appFormularioCamposErro/>
-                    <input mdInput required placeholder="{{'app_rst_labels_nome' | recurso}}" *ngIf="!isPessoaJuridica" maxlength="160" type="text"
-                        name="nome" id="nome" formControlName="nome" class="form-control" appFormularioCamposErro/>
+                    <input mdInput required placeholder="{{'app_rst_labels_razao_social' | recurso}}" *ngIf="isPessoaJuridica" maxlength="160" type="text" name="nome" id="nome" formControlName="nome" class="form-control" appFormularioCamposErro/>
+                    <input mdInput required placeholder="{{'app_rst_labels_nome' | recurso}}" *ngIf="!isPessoaJuridica" maxlength="160" type="text" name="nome" id="nome" formControlName="nome" class="form-control" appFormularioCamposErro/>
                 </md-input-container>
             </div>
             <div class="form-group col-md-4">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput required placeholder="{{'app_rst_labels_cnpj' | recurso}}" *ngIf="isPessoaJuridica" for="numeroCnpjCpf" type="text"
-                        name="numeroCnpjCpf" [textMask]="{mask: isPessoaJuridica ?  mascaraCnpj: mascaraCpf , guide: false}"
-                        id="numeroCnpjCpf" formControlName="numeroCnpjCpf" class="form-control" appFormularioCamposErro/>
-                    <input mdInput required placeholder="{{'app_rst_labels_cpf' | recurso}}" *ngIf="!isPessoaJuridica" name="numeroCnpjCpf" type="text"
-                        name="numeroCnpjCpf" [textMask]="{mask: isPessoaJuridica ?  mascaraCnpj: mascaraCpf , guide: false}"
-                        id="numeroCnpjCpf" formControlName="numeroCnpjCpf" class="form-control" appFormularioCamposErro/>
+                    <input mdInput required placeholder="{{'app_rst_labels_cnpj' | recurso}}" *ngIf="isPessoaJuridica" for="numeroCnpjCpf" type="text" name="numeroCnpjCpf" [textMask]="{mask: isPessoaJuridica ?  mascaraCnpj: mascaraCpf , guide: false}" id="numeroCnpjCpf"
+                        formControlName="numeroCnpjCpf" class="form-control" appFormularioCamposErro/>
+                    <input mdInput required placeholder="{{'app_rst_labels_cpf' | recurso}}" *ngIf="!isPessoaJuridica" name="numeroCnpjCpf" type="text" name="numeroCnpjCpf" [textMask]="{mask: isPessoaJuridica ?  mascaraCnpj: mascaraCpf , guide: false}" id="numeroCnpjCpf"
+                        formControlName="numeroCnpjCpf" class="form-control" appFormularioCamposErro/>
                 </md-input-container>
             </div>
         </div>
         <div class="row" *ngIf="isPessoaJuridica">
             <div class="form-group col-md-8">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{'app_rst_labels_nome_fantasia' | recurso}}" for="nomeFantasia" maxlength="160" type="text"
-                        name="nomeFantasia" id="nomeFantasia" formControlName="nomeFantasia" class="form-control" appFormularioCamposErro
-                    />
+                    <input mdInput placeholder="{{'app_rst_labels_nome_fantasia' | recurso}}" for="nomeFantasia" maxlength="160" type="text" name="nomeFantasia" id="nomeFantasia" formControlName="nomeFantasia" class="form-control" appFormularioCamposErro />
                 </md-input-container>
             </div>
             <div class="form-group col-md-4">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{'app_rst_labels_email' | recurso}}" for="email" maxlength="100" type="text" name="email" id="email"
-                        formControlName="email" class="form-control" appFormularioCamposErro/>
+                    <input mdInput placeholder="{{'app_rst_labels_email' | recurso}}" for="email" maxlength="100" type="text" name="email" id="email" formControlName="email" class="form-control" appFormularioCamposErro/>
                 </md-input-container>
             </div>
         </div>
         <div class="row" *ngIf="isPessoaJuridica">
             <div class="form-group col-md-4">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{'app_rst_labels_inscricao_estadual_completo' | recurso}}" for="inscricaoEstadual" maxlength="20"
-                        type="text" name="inscricaoEstadual" id="inscricaoEstadual" formControlName="inscricaoEstadual" class="form-control"
-                        appFormularioCamposErro/>
+                    <input mdInput placeholder="{{'app_rst_labels_inscricao_estadual_completo' | recurso}}" for="inscricaoEstadual" maxlength="20" type="text" name="inscricaoEstadual" id="inscricaoEstadual" formControlName="inscricaoEstadual" class="form-control" appFormularioCamposErro/>
                 </md-input-container>
             </div>
 
             <div class="form-group col-md-4">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{'app_rst_labels_inscricao_municipal' | recurso}}" for="inscricaoMunicipal" maxlength="20" type="text"
-                        name="inscricaoMunicipal" id="inscricaoMunicipal" formControlName="inscricaoMunicipal" class="form-control"
-                        appFormularioCamposErro/>
+                    <input mdInput placeholder="{{'app_rst_labels_inscricao_municipal' | recurso}}" for="inscricaoMunicipal" maxlength="20" type="text" name="inscricaoMunicipal" id="inscricaoMunicipal" formControlName="inscricaoMunicipal" class="form-control" appFormularioCamposErro/>
                 </md-input-container>
             </div>
             <div class="form-group col-md-4">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{'app_rst_labels_url' | recurso}}" for="url" maxlength="70" type="text" name="url" id="url"
-                        formControlName="url" class="form-control" appFormularioCamposErro/>
+                    <input mdInput placeholder="{{'app_rst_labels_url' | recurso}}" for="url" maxlength="70" type="text" name="url" id="url" formControlName="url" class="form-control" appFormularioCamposErro/>
                 </md-input-container>
             </div>
         </div>
         <div class="row">
             <div class="form-group col-md-4" *ngIf="isPessoaJuridica">
                 <div class="md-container">
-                    <md-select id="porteEmpresa" name="porteEmpresa" formControlName="porteEmpresa" for="porteEmpresa" placeholder="{{ 'app_rst_labels_porte' | recurso }}"
-                        appFormularioCamposErro>
+                    <md-select id="porteEmpresa" name="porteEmpresa" formControlName="porteEmpresa" for="porteEmpresa" placeholder="{{ 'app_rst_labels_porte' | recurso }}" appFormularioCamposErro>
                         <md-option>
                             <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
                         </md-option>
@@ -91,8 +78,7 @@
             </div>
             <div class="form-group col-md-4" *ngIf="isPessoaJuridica">
                 <div class="md-container">
-                    <md-select for="tipoEmpresa" formControlName="tipoEmpresa" id="tipoEmpresa" placeholder="{{ 'app_rst_labels_tipo' | recurso }}"
-                        appFormularioCamposErro>
+                    <md-select for="tipoEmpresa" formControlName="tipoEmpresa" id="tipoEmpresa" placeholder="{{ 'app_rst_labels_tipo' | recurso }}" appFormularioCamposErro>
                         <md-option>
                             <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
                         </md-option>
@@ -103,14 +89,12 @@
                 </div>
             </div>
             <div class="form-group col-md-4" *ngIf="!isPessoaJuridica">
-                <my-date-picker class="prof" name="myDateNascimento" [options]="datePickerOptions" locale="pt-br" formControlName="dataNascimento"
-                    name="dataNascimento"></my-date-picker>
+                <my-date-picker class="prof" name="myDateNascimento" [options]="datePickerOptions" locale="pt-br" formControlName="dataNascimento" name="dataNascimento" (keyup)="maskDate($event, this.parceiroForm, 'dataNascimento')"></my-date-picker>
                 <span class="floating-label"> {{ 'app_rst_labels_data_nascimento' | recurso }} </span>
             </div>
             <div *ngIf="!isPessoaJuridica" class="form-group col-md-4">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{'app_rst_labels_nit' | recurso}}" for="numeroNitResponsavel" maxlength="14" type="text" name="numeroNitResponsavel"
-                        [textMask]="{mask: mascaraNit, guide: false}" id="numeroNitResponsavel" formControlName="numeroNitResponsavel"
+                    <input mdInput placeholder="{{'app_rst_labels_nit' | recurso}}" for="numeroNitResponsavel" maxlength="14" type="text" name="numeroNitResponsavel" [textMask]="{mask: mascaraNit, guide: false}" id="numeroNitResponsavel" formControlName="numeroNitResponsavel"
                         class="form-control" appFormularioCamposErro/>
                 </md-input-container>
             </div>
@@ -126,15 +110,13 @@
         </div>
         <div class="row">
             <div class="form-group col-md-8">
-                <ng-select [options]="listaEspecialidades" formControlName="especialidades" maxlength="50" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}"
-                    multiple=true>
+                <ng-select [options]="listaEspecialidades" formControlName="especialidades" maxlength="50" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}" multiple=true>
                 </ng-select>
                 <span class="floating-label">Especialidades</span>
             </div>
             <div class="form-group col-md-8" *ngIf="!isPessoaJuridica">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{'app_rst_labels_cargo' | recurso}}" for="cargoResponsavel" maxlength="14" type="text" name="cargoResponsavel"
-                        id="cargoResponsavel" formControlName="cargoResponsavel" class="form-control" appFormularioCamposErro/>
+                    <input mdInput placeholder="{{'app_rst_labels_cargo' | recurso}}" for="cargoResponsavel" maxlength="14" type="text" name="cargoResponsavel" id="cargoResponsavel" formControlName="cargoResponsavel" class="form-control" appFormularioCamposErro/>
                 </md-input-container>
             </div>
         </div>
@@ -148,8 +130,7 @@
                 <div class="borda-segmento">
                     <div id="modalLupa" #modalLupa class="input-group searchlupa">
                         <md-input-container style="border-color:transparent" [floatPlaceholder]="true">
-                            <input mdInput placeholder="{{'app_rst_labels_segmento' | recurso }}" disabled type="text" name="segmento" id="modalLupa"
-                                value="{{getDescricaoSegmento()}}" class="form-control" appFormularioCamposErro>
+                            <input mdInput placeholder="{{'app_rst_labels_segmento' | recurso }}" disabled type="text" name="segmento" id="modalLupa" value="{{getDescricaoSegmento()}}" class="form-control" appFormularioCamposErro>
                         </md-input-container>
                         <app-segmento-modal [modoConsulta]="modoConsulta" *ngIf="!existeSegmento()" #segmentoModalComponent #segmentoModalComponent [(segmento)]="parceiro.segmento"></app-segmento-modal>
                         <span *ngIf="existeSegmento() && !modoConsulta">
@@ -186,8 +167,7 @@
                     <p>{{'app_rst_labels_endereco' | recurso}}</p>
                 </div>
                 <app-endereco-modal [(modoConsulta)]="modoConsulta" #enderecoModalComponent [(list)]="parceiro.enderecosParceiro"></app-endereco-modal>
-                <app-endereco-grid [(modoConsulta)]="modoConsulta" [enderecoModalComponent]="enderecoModalComponent" *ngIf="existeEndereco()"
-                    [(list)]="parceiro.enderecosParceiro"></app-endereco-grid>
+                <app-endereco-grid [(modoConsulta)]="modoConsulta" [enderecoModalComponent]="enderecoModalComponent" *ngIf="existeEndereco()" [(list)]="parceiro.enderecosParceiro"></app-endereco-grid>
             </form>
         </div>
     </div>
@@ -202,14 +182,12 @@
             <div class="row">
                 <div class="form-group col-md-8">
                     <md-input-container [floatPlaceholder]="true">
-                        <input mdInput placeholder="{{'app_rst_labels_nome' | recurso}}" for="nomeResponsavel" maxlength="160" type="text" name="nomeResponsavel"
-                            id="nomeResponsavel" formControlName="nomeResponsavel" class="form-control" appFormularioCamposErro/>
+                        <input mdInput placeholder="{{'app_rst_labels_nome' | recurso}}" for="nomeResponsavel" maxlength="160" type="text" name="nomeResponsavel" id="nomeResponsavel" formControlName="nomeResponsavel" class="form-control" appFormularioCamposErro/>
                     </md-input-container>
                 </div>
                 <div class="form-group col-md-4">
                     <md-input-container [floatPlaceholder]="true">
-                        <input mdInput placeholder="{{'app_rst_labels_nit' | recurso}}" for="numeroNitResponsavel" maxlength="14" type="text" name="numeroNitResponsavel"
-                            [textMask]="{mask: mascaraNit, guide: false}" id="numeroNitResponsavel" formControlName="numeroNitResponsavel"
+                        <input mdInput placeholder="{{'app_rst_labels_nit' | recurso}}" for="numeroNitResponsavel" maxlength="14" type="text" name="numeroNitResponsavel" [textMask]="{mask: mascaraNit, guide: false}" id="numeroNitResponsavel" formControlName="numeroNitResponsavel"
                             class="form-control" appFormularioCamposErro/>
                     </md-input-container>
                 </div>
@@ -217,22 +195,18 @@
             <div class="row">
                 <div class="form-group col-md-4">
                     <md-input-container [floatPlaceholder]="true">
-                        <input mdInput placeholder="{{'app_rst_labels_cargo_responsavel' | recurso}}" for="cargoResponsavel" maxlength="14" type="text"
-                            name="cargoResponsavel" id="cargoResponsavel" formControlName="cargoResponsavel" class="form-control"
-                            appFormularioCamposErro/>
+                        <input mdInput placeholder="{{'app_rst_labels_cargo_responsavel' | recurso}}" for="cargoResponsavel" maxlength="14" type="text" name="cargoResponsavel" id="cargoResponsavel" formControlName="cargoResponsavel" class="form-control" appFormularioCamposErro/>
                     </md-input-container>
                 </div>
                 <div class="form-group col-md-4">
                     <md-input-container [floatPlaceholder]="true">
-                        <input mdInput placeholder="{{'app_rst_labels_telefone' | recurso}}" for="telefoneResponsavel" maxlength="15" (keyup)="mudarMascaraTelResponsavel($event)"
-                            type="text" name="telefoneResponsavel" id="telefoneResponsavel" formControlName="telefoneResponsavel"
+                        <input mdInput placeholder="{{'app_rst_labels_telefone' | recurso}}" for="telefoneResponsavel" maxlength="15" (keyup)="mudarMascaraTelResponsavel($event)" type="text" name="telefoneResponsavel" id="telefoneResponsavel" formControlName="telefoneResponsavel"
                             class="form-control" appFormularioCamposErro/>
                     </md-input-container>
                 </div>
                 <div class="form-group col-md-4">
                     <md-input-container [floatPlaceholder]="true">
-                        <input mdInput placeholder="{{'app_rst_labels_email' | recurso}}" for="emailResponsavel" maxlength="100" type="text" name="emailResponsavel"
-                            id="emailResponsavel" formControlName="emailResponsavel" class="form-control" appFormularioCamposErro/>
+                        <input mdInput placeholder="{{'app_rst_labels_email' | recurso}}" for="emailResponsavel" maxlength="100" type="text" name="emailResponsavel" id="emailResponsavel" formControlName="emailResponsavel" class="form-control" appFormularioCamposErro/>
                     </md-input-container>
                 </div>
             </div>
@@ -247,7 +221,7 @@
 
         <div class="row">
             <div class="form-group col-md-4">
-                <my-date-picker name="mydate" [options]="datePickerOptions" locale="pt-br" formControlName="dtdesligamento" name="dtdesligamento"></my-date-picker>
+                <my-date-picker name="mydate" [options]="datePickerOptions" locale="pt-br" formControlName="dtdesligamento" name="dtdesligamento" (keyup)="maskDate($event, this.parceiroForm, 'dtdesligamento')"></my-date-picker>
                 <span class="floating-label"> {{ 'app_rst_labels_data_desativacao' | recurso }} </span>
             </div>
         </div>

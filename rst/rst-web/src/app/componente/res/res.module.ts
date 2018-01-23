@@ -1,4 +1,4 @@
-import { ResHistoricoResolver } from './res-historico/res-historico.resolver';
+import {ResOrdinalComponent} from './historico-timeline/res-ordinal.component';
 import { ResHistoricoComponent } from './res-historico/res-historico.component';
 import { ComposicaoDirective } from './../../diretiva/composicao.directive';
 import { ElementoIndefinidoDirective } from 'app/diretiva/elemento-indefinido.directive';
@@ -30,6 +30,13 @@ import { ResHomeComponent } from './res-home/res-home.component';
 
 const routes: Routes = [
     {
+        path: 'minhasaude', component: ResHistoricoComponent,
+        canLoad: [AutorizacaoGuard],
+        data: {
+            permissoes: ['trabalhador_cadastrar', 'trabalhador_alterar', 'trabalhador_consultar', 'trabalhador_desativar'],
+        },
+    },
+    {
         path: 'home', component: ResHomeComponent,
         canLoad: [AutorizacaoGuard],
         data: {
@@ -39,16 +46,7 @@ const routes: Routes = [
             basicos: ResHomeResolve,
         },
     },
-    {
-        path: 'minhasaude', component: ResHistoricoComponent,
-        canLoad: [AutorizacaoGuard],
-        data: {
-            permissoes: ['trabalhador_cadastrar', 'trabalhador_alterar', 'trabalhador_consultar', 'trabalhador_desativar'],
-        },
-        resolve: {
-            basicos: ResHistoricoResolver,
-        },
-    },
+
 ];
 
 @NgModule({
@@ -65,6 +63,7 @@ const routes: Routes = [
         TimelineItemComponent,
         ResItemComponent,
         ResItemRowComponent,
+        ResOrdinalComponent,
         ResTextoComponent,
         ResQuantidadeComponent,
         ResBooleanoComponent,
@@ -83,7 +82,7 @@ const routes: Routes = [
         ResHistoricoComponent,
     ],
     providers: [
-        ResHomeResolve, ResService, ResHistoricoResolver, {
+        ResHomeResolve, ResService, {
             provide: LOCALE_ID,
             useValue: 'pt-BR',
         }],
@@ -91,6 +90,7 @@ const routes: Routes = [
         TimelineItemComponent,
         ResItemComponent,
         ResItemRowComponent,
+        ResOrdinalComponent,
         ResQuantidadeComponent,
         ResTextoComponent,
         ResBooleanoComponent,

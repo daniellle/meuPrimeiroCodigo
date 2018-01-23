@@ -42,6 +42,7 @@ import {
     DvCount,
     DvBoolean,
     DvInterval,
+    DvOrdinal,
 } from '@ezvida/adl-core';
 import { IconesUtils } from 'app/compartilhado/utilitario/icones.utils';
 
@@ -227,9 +228,9 @@ export class TimelineItemComponent implements OnInit {
     }
 
     private processarAtributo(entidade: Element, informacoes: InformacoesTemplate, root: InformacoesTemplate) {
-        // Hábitos de Lazer
-        if (root.arquetipoReferencia === 'openEHR-EHR-OBSERVATION.ovl-ficha_clinica_ocupacional-habitos_lazer-001.v1.0.0') {
-            // CID-10 CNAE
+        // História clínica atual
+        if (root.arquetipoReferencia === 'openEHR-EHR-OBSERVATION.ovl-ficha_clinica_ocupacional-historia_clinica_atual-001.v1.0.0') {
+            // CIDS RELACIONADOS COM O CMAN DESTA EMPRESA
             if (entidade.archetypeNodeId === 'id10') {
                 return;
             }
@@ -271,7 +272,11 @@ export class TimelineItemComponent implements OnInit {
             informacoes.pathsComValor = [];
         }
 
-        if (entidade.value instanceof DvCodedText) {
+        if (entidade.value instanceof DvOrdinal) {
+            if (!isNullOrUndefined(entidade.value.value)) {
+                informacoes.pathsComValor.push(entidade);
+            }
+        } else if (entidade.value instanceof DvCodedText) {
             if (entidade.value) {
                 if (!isNullOrUndefined(entidade.value.value)) {
                     informacoes.pathsComValor.push(entidade);

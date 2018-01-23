@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="68.347687mm"
+   height="39.093506mm"
+   viewBox="0 0 68.347687 39.093506"
+   version="1.1"
+   id="svg11793"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="seta_baixo.svg">
+  <defs
+     id="defs11787" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="-219.41044"
+     inkscape:cy="-61.56498"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1018"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata11790">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(28.882178,-93.450761)">
+    <g
+       id="g5502-0-0-7-2-2-6-5-7-3"
+       transform="matrix(0.54247537,0,0,0.54247537,-29.658492,78.027612)"
+       style="fill:#7ececd;fill-opacity:1;stroke:none;stroke-width:0.4877336;stroke-opacity:1"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       inkscape:export-filename="F:\SESI\Layout\Telas\tela_atentimento_resumo.png">
+      <path
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#7ececd;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.4877336;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+         d="m 10.5,28.431641 c -2.3381319,0 -4.6766957,0.877867 -6.4335938,2.634765 -3.51379597,3.513796 -3.51379597,9.353392 0,12.867188 l 53.9003908,53.90039 c 1.68329,1.683291 4.122286,2.662106 6.433594,2.662106 2.332438,0 4.603088,-0.8316 6.433593,-2.662106 L 124.625,44.039062 c 3.66727,-3.451547 3.72278,-9.45886 0.20898,-12.972656 -3.51379,-3.513796 -9.35339,-3.513796 -12.86718,0 l -0.002,0.002 -47.468746,47.560547 -47.5625,-47.5625 C 15.176696,29.309508 12.838132,28.431641 10.5,28.431641 Z"
+         id="path5500-7-0-3-4-4-9-2-0-2"
+         inkscape:connector-curvature="0" />
+    </g>
+  </g>
+</svg>

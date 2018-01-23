@@ -235,6 +235,8 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
         this.getProfissional(id);
       }
       this.montarTitulo();
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -374,6 +376,8 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
   buscarEstados() {
     this.estadoService.buscarEstados().subscribe((dados: any) => {
       this.estados = dados;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -390,6 +394,8 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
         });
       }
       this.especialdades = listaOption;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

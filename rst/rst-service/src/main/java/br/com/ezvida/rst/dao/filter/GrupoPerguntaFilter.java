@@ -11,8 +11,4 @@ public class GrupoPerguntaFilter extends FilterBase {
 		return descricao;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
 }

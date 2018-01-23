@@ -24,7 +24,7 @@ import fw.security.binding.Permissao;
 import fw.web.endpoint.SegurancaEndpoint;
 
 @RequestScoped
-@Path("/private/v1/respostasquestionario")
+@Path("/private/v1/respostas-questionario")
 public class RespostaQuestionarioTrabalhadorEndpoint extends SegurancaEndpoint<RespostaQuestionarioTrabalhador> {
 
 	private static final long serialVersionUID = -4933477155106485998L;

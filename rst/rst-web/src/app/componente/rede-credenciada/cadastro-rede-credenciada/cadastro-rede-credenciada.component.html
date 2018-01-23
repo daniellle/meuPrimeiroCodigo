@@ -181,7 +181,7 @@
         </div>
         <div class="row">
             <div class="form-group col-md-4">
-                <my-date-picker name="mydate" [options]="datePickerOptions" locale="pt-br" formControlName="dtdesligamento" name="dtdesligamento"></my-date-picker>
+                <my-date-picker name="mydate" [options]="datePickerOptions" locale="pt-br" formControlName="dtdesligamento" name="dtdesligamento" (keyup)="maskDate($event, this.formulario, 'dtdesligamento')"></my-date-picker>
                 <span class="floating-label"> {{ 'app_rst_labels_data_desativacao' | recurso }} </span>
             </div>
         </div>

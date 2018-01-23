@@ -83,17 +83,25 @@ export class ParceiroCredenciadoProdutoServicoComponent extends BaseComponent im
         this.paginacaoParceiroProdutoServico.pagina = 1;
         this.pesquisarParceiroProdutoServicoPaginadoService(this.idParceiro);
       }
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
   buscarLinhas() {
     this.linhaService.buscarTodas().subscribe((retorno) => {
       this.listaLinhas = retorno;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
   bucarParceiroPorId(id) {
-    this.parceiroService.pesquisarPorId(id).subscribe((retorno) => { this.parceiro = retorno; });
+    this.parceiroService.pesquisarPorId(id).subscribe((retorno) => {
+    this.parceiro = retorno;
+    }, (error) => {
+      this.mensagemError(error);
+    });
   }
   pesquisarParceiroProdutoServicoPaginadoService(idParceiro: number): void {
     this.ParceiroProdutoServicoSerivce.pesquisarParceiroProdutoServico(idParceiro,
@@ -208,7 +216,7 @@ export class ParceiroCredenciadoProdutoServicoComponent extends BaseComponent im
 
   hasPermissaoCadastrar() {
     return Seguranca.isPermitido([PermissoesEnum.PARCEIRO_PRODUTO_SERVICO,
-      PermissoesEnum.PARCEIRO_PRODUTO_SERVICO_CADASTRAR]);
+    PermissoesEnum.PARCEIRO_PRODUTO_SERVICO_CADASTRAR]);
   }
 
 }

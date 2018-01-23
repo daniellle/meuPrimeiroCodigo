@@ -87,7 +87,7 @@ public class TipoQuestionarioEndpoint extends SegurancaEndpoint<TipoQuestionario
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.QUESTIONARIO, PermissionConstants.QUESTIONARIO_ALTERAR }))
 	public Response alterar(@Encoded TipoQuestionario tipoQuestionario, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(tipoQuestionarioService.salvar(tipoQuestionario, ClienteInfos.getClienteInfos(context, request,
 						TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.QUESTIONARIOS)))
 				.type(MediaType.APPLICATION_JSON).build();

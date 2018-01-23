@@ -71,6 +71,8 @@ export class AplicarQuestionarioComponent extends BaseComponent implements OnIni
         Seguranca.getUsuario().sub === retorno.cpf)) {
           this.router.navigate(['/acessonegado']);
       }
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

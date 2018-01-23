@@ -113,7 +113,7 @@ public class ProdutoServicoEndpoint extends SegurancaEndpoint<ProdutoServico> {
 			PermissionConstants.PRODUTO_SERVICO_ALTERAR }))
 	public Response alterar(@Encoded ProdutoServico produtoServico, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(produtoServicoService.salvar(produtoServico, ClienteInfos.getClienteInfos(context, request,
 						TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.PRODUTOS_SERVICOS)))
 				.type(MediaType.APPLICATION_JSON).build();

@@ -17,10 +17,6 @@ public class EmpresaTrabalhadorFilter extends FilterBase {
 		return cpf;
 	}
 
-	public void setCpf(String cPF) {
-		cpf = cPF;
-	}
-
 	public String getNome() {
 		return nome;
 	}
@@ -31,9 +27,5 @@ public class EmpresaTrabalhadorFilter extends FilterBase {
 
 	public Long getIdEmpresa() {
 		return idEmpresa;
-	}
-
-	public void setIdEmpresa(Long idEmpresa) {
-		this.idEmpresa = idEmpresa;
 	}
 }

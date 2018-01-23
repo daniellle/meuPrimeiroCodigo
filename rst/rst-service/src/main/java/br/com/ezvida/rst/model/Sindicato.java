@@ -88,6 +88,16 @@ public class Sindicato extends AbstractData {
 	@Column(name = "dt_desativacao", nullable = true)
 	private Date dataDesativacao;
 	
+	public Sindicato() {
+		// construtor padrao
+	}
+
+	public Sindicato(String cnpj, String razaoSocial, String nomeFantasia) {
+		this.cnpj = cnpj;
+		this.razaoSocial = razaoSocial;
+		this.nomeFantasia = nomeFantasia;
+	}
+
 	@PreUpdate
 	public void preUpdate() {
 		setDataAlteracao(new Date());

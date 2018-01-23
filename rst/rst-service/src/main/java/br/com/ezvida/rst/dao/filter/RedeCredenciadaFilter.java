@@ -4,10 +4,9 @@ import javax.ws.rs.QueryParam;
 
 public class RedeCredenciadaFilter extends FilterBase {
 
-	
 	@QueryParam("id")
 	private Long id;
-	
+
 	@QueryParam("cnpj")
 	private String cnpj;
 
@@ -20,22 +19,12 @@ public class RedeCredenciadaFilter extends FilterBase {
 	@QueryParam("situacao")
 	private String situacao;
 
-	
-	
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getSituacao() {
 		return situacao;
-	}
-
-	public void setSituacao(String situacao) {
-		this.situacao = situacao;
 	}
 
 	public String getCnpj() {
@@ -50,15 +39,7 @@ public class RedeCredenciadaFilter extends FilterBase {
 		return razaoSocial;
 	}
 
-	public void setRazaoSocial(String razaoSocial) {
-		this.razaoSocial = razaoSocial;
-	}
-
 	public Long getSegmento() {
 		return segmento;
-	}
-
-	public void setSegmento(Long segmento) {
-		this.segmento = segmento;
 	}
 }

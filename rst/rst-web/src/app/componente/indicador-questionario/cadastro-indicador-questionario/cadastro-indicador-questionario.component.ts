@@ -81,6 +81,12 @@ export class CadastroIndicadorQuestionarioComponent extends BaseComponent implem
           Validators.maxLength(250),
         ]),
       ],
+      incentivo: [
+        { value: null, disabled: this.modoConsulta },
+        Validators.compose([
+          Validators.maxLength(250),
+        ]),
+      ],
     });
   }
 
@@ -106,6 +112,7 @@ export class CadastroIndicadorQuestionarioComponent extends BaseComponent implem
     this.indicadorQuestionarioForm.patchValue({
       descricao: this.model.descricao,
       orientacao: this.model.orientacao,
+      incentivo: this.model.incentivo,
     });
   }
 
@@ -115,6 +122,7 @@ export class CadastroIndicadorQuestionarioComponent extends BaseComponent implem
       id: this.model.id,
       descricao: formModel.descricao.value as string,
       orientacao: formModel.orientacao.value as string,
+      incentivo: formModel.incentivo.value as string,
     };
     return saveProdutoServico;
   }

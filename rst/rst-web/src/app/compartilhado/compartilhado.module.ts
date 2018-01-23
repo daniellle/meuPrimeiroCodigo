@@ -196,7 +196,8 @@ import { CALENDARIO_DIRECTIVES } from 'app/diretiva/calendario.directive';
         CardTelaIntermediariaComponent,
         ModalSelecionarGrupoPerguntaComponent,
     ],
-    providers: [EstadoService, NgbModal, NgbActiveModal, SegmentoService, EmpresaTrabalhadorLotacaoService],
+    providers: [EstadoService, NgbModal, NgbActiveModal, SegmentoService, EmpresaTrabalhadorLotacaoService,
+         { provide: 'Window',  useValue: window }],
     entryComponents: [TelefoneModalComponent, TelefoneGridComponent, SegmentoModalComponent,
         SegmentoGridComponent, UatModalComponent, UatGridComponent, ModalSelecionarGrupoPerguntaComponent],
 })

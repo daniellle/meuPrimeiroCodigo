@@ -11,9 +11,6 @@
             <div class="form-group col-lg-8">
                 <div class="md-container">
                     <md-select placeholder="{{ 'app_rst_labels_funcionalidade' | recurso }}" [(ngModel)]="filtro.funcionalidade" name="funcionalidade" id="selectFuncionalidade">
-                        <md-option>
-                            <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
-                        </md-option>
                         <md-option *ngFor='let key of keyFuncionalide' [value]="key">{{funcionalidade[key]}}
                         </md-option>
                     </md-select>
@@ -22,9 +19,6 @@
             <div class="form-group col-lg-4">
                 <div class="md-container">
                     <md-select placeholder="{{ 'app_rst_labels_tipo_operacao' | recurso }} " [(ngModel)]="filtro.tipoOperacaoAuditoria" name="tipoOperacaoAuditoria" id="selectTipoOperacaoAuditoria">
-                        <md-option>
-                            <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
-                        </md-option>
                         <md-option *ngFor="let key of keyTipoOperacao" [value]="key">{{tipoOperacao[key]}}
                         </md-option>
                     </md-select>
@@ -38,11 +32,11 @@
                 </md-input-container>
             </div>
             <div class="form-group col-md-4">
-                <my-date-picker class="prof" [(ngModel)]="dataInicial" name="mydate" [options]="datePickerOptions" locale="pt-br" name="dtdesligamento"></my-date-picker>
+                <my-date-picker class="prof" [(ngModel)]="dataInicial" name="mydate" [options]="datePickerOptions" locale="pt-br" name="dtdesligamento" (keyup)="maskDate($event)"></my-date-picker>
                 <span class="floating-label"> Data início da ocorrência</span>
             </div>
             <div class="form-group col-md-4">
-                <my-date-picker class="prof" label='ate' name="mydate" [(ngModel)]="dataFinal" [options]="datePickerOptions" locale="pt-br" name="dtdesligamento"></my-date-picker>
+                <my-date-picker class="prof" label='ate' name="mydate" [(ngModel)]="dataFinal" [options]="datePickerOptions" locale="pt-br" name="dtdesligamento" (keyup)="maskDate($event)"></my-date-picker>
                 <span class="floating-label"> Data fim da ocorrência</span>
             </div>
         </div>

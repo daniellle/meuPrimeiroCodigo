@@ -2,6 +2,7 @@ package br.com.ezvida.rst.service;
 
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
@@ -18,6 +19,7 @@ import fw.core.exception.BusinessErrorException;
 import fw.core.service.BaseService;
 import fw.security.exception.UnauthorizedException;
 
+@Stateless
 public class TipoQuestionarioService extends BaseService {
 	
 	private static final long serialVersionUID = 685642312416177650L;

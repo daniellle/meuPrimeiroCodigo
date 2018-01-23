@@ -250,9 +250,9 @@
 		</dependency>
 		
 		<dependency>
-    		<groupId>org.elasticsearch.client</groupId>
-    		<artifactId>transport</artifactId>
-    		<version>6.0.0</version>
+		    <groupId>org.elasticsearch.client</groupId>
+		    <artifactId>elasticsearch-rest-high-level-client</artifactId>
+		    <version>6.0.0</version>
 		</dependency>
 
 		<dependency>

@@ -76,6 +76,8 @@ export class PesquisaDepartamentoUsuarioComponent extends BaseComponent implemen
     if (!this.modoConsulta) {
       this.departamentoService.buscarEstados().subscribe((dados: any) => {
         this.estados = dados;
+      }, (error) => {
+        this.mensagemError(error);
       });
     }
   }

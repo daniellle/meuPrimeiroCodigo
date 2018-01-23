@@ -91,9 +91,9 @@ public class PerguntaQuestionarioEndpoint extends SegurancaEndpoint<PerguntaQues
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.QUESTIONARIO, PermissionConstants.QUESTIONARIO_DESATIVAR }))
 	public Response desativar(@Encoded PerguntaQuestionario perguntaQuestionario, @Context SecurityContext context
 			, @Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED).entity(serializar(perguntaQuestionarioService.desativarPerguntaQuestionario(perguntaQuestionario,
+		return Response.status(HttpServletResponse.SC_OK).entity(serializar(perguntaQuestionarioService.desativarPerguntaQuestionario(perguntaQuestionario,
 				ClienteInfos.getClienteInfos(context, request,
-						TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.EMPRESA))))
+								TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.QUESTIONARIOS))))
 				.type(MediaType.APPLICATION_JSON).build();
 	}
 }

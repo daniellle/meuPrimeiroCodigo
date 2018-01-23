@@ -165,24 +165,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 				parametros.put("codigoPerfil", usuarioFilter.getCodigoPerfil());
 			}
 
-			if (usuarioFilter.getIdEmpresa() != null) {
-				if (usuarioFilter.getCodigoPerfil() != null) {
-					adicionarAnd(jpql);
-				}
-
-				jpql.append(" (vw_usuario_entidade.id_empresa_fk = :idEmpresa OR ");
-				jpql.append(" empresa.id_empresa = :idEmpresa) ");
-				parametros.put("idEmpresa", usuarioFilter.getIdEmpresa());
-			}
-
-			if (usuarioFilter.getIdDepartamentoRegional() != null) {
-				if (usuarioFilter.getCodigoPerfil() != null || usuarioFilter.getIdEmpresa() != null) {
-					adicionarAnd(jpql);
-				}
-				jpql.append(" (vw_usuario_entidade.id_departamento_regional_fk = :idDepartamentoRegional OR ");
-				jpql.append(" departamento_regional.id_departamento_regional = :idDepartamentoRegional) ");
-				parametros.put("idDepartamentoRegional", usuarioFilter.getIdDepartamentoRegional());
-			}
+			montarFiltroIds(jpql, parametros, usuarioFilter);
 
 			if (usuarioFilter.getNome() != null) {
 				if (usuarioFilter.getCodigoPerfil() != null || usuarioFilter.getIdEmpresa() != null
@@ -195,21 +178,46 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 				setFiltroAplicado(true);
 			}
 
-			if (usuarioFilter.getLogin() != null) {
-				if (usuarioFilter.getCodigoPerfil() != null || usuarioFilter.getIdEmpresa() != null
-						|| usuarioFilter.getIdDepartamentoRegional() != null || usuarioFilter.getNome() != null ) {
-					jpql.append("  and ");
-				}
-				jpql.append("  vw_usuario_entidade.login = :login ");
-				parametros.put("login", usuarioFilter.getLogin());
-				setFiltroAplicado(true);
-			}
+			montarFiltroLogin(jpql, parametros, usuarioFilter);
 			
 			adicionarAnd(jpql);
 			jpql.append(" vw_usuario_entidade.data_desativacao is null ");
 
 		}
 
+	}
+
+	private void montarFiltroLogin(StringBuilder jpql, Map<String, Object> parametros, UsuarioFilter usuarioFilter) {
+		if (usuarioFilter.getLogin() != null) {
+			if (usuarioFilter.getCodigoPerfil() != null || usuarioFilter.getIdEmpresa() != null
+					|| usuarioFilter.getIdDepartamentoRegional() != null || usuarioFilter.getNome() != null ) {
+				jpql.append("  and ");
+			}
+			jpql.append("  vw_usuario_entidade.login = :login ");
+			parametros.put("login", usuarioFilter.getLogin());
+			setFiltroAplicado(true);
+		}
+	}
+
+	private void montarFiltroIds(StringBuilder jpql, Map<String, Object> parametros, UsuarioFilter usuarioFilter) {
+		if (usuarioFilter.getIdEmpresa() != null) {
+			if (usuarioFilter.getCodigoPerfil() != null) {
+				adicionarAnd(jpql);
+			}
+
+			jpql.append(" (vw_usuario_entidade.id_empresa_fk = :idEmpresa OR ");
+			jpql.append(" empresa.id_empresa = :idEmpresa) ");
+			parametros.put("idEmpresa", usuarioFilter.getIdEmpresa());
+		}
+
+		if (usuarioFilter.getIdDepartamentoRegional() != null) {
+			if (usuarioFilter.getCodigoPerfil() != null || usuarioFilter.getIdEmpresa() != null) {
+				adicionarAnd(jpql);
+			}
+			jpql.append(" (vw_usuario_entidade.id_departamento_regional_fk = :idDepartamentoRegional OR ");
+			jpql.append(" departamento_regional.id_departamento_regional = :idDepartamentoRegional) ");
+			parametros.put("idDepartamentoRegional", usuarioFilter.getIdDepartamentoRegional());
+		}
 	}
 
 	private boolean isFiltroAplicado() {

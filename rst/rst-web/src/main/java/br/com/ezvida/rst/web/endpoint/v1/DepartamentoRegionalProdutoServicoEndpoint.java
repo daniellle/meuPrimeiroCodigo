@@ -75,7 +75,7 @@ public class DepartamentoRegionalProdutoServicoEndpoint extends SegurancaEndpoin
 			PermissionConstants.DEPARTAMENTO_REGIONAL_PRODUTOS_SERVICOS_DESATIVAR }))
 	public Response desativar(@Encoded DepartamentoRegionalProdutoServico departamentoRegionalProdutoServico
 			,@Context SecurityContext context, @Context HttpServletRequest request) {		
-		return Response.status(HttpServletResponse.SC_CREATED).entity(
+		return Response.status(HttpServletResponse.SC_OK).entity(
 				serializar(departamentoRegionalProdutoServicoService
 						.desativarDepartamentoRegionalProdutoServico(departamentoRegionalProdutoServico
 								,ClienteInfos.getClienteInfos(context, request,

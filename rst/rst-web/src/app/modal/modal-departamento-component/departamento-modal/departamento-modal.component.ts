@@ -61,6 +61,8 @@ export class DepartamentoModalComponent extends BaseComponent implements OnInit 
     if (!this.modoConsulta) {
       this.service.buscarEstados().subscribe((dados: any) => {
         this.estados = dados;
+      }, (error) => {
+        this.mensagemError(error);
       });
     }
   }
@@ -82,6 +84,8 @@ export class DepartamentoModalComponent extends BaseComponent implements OnInit 
       if (this.filtro.idEstado === '0') {
         this.filtro.idEstado = undefined;
       }
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

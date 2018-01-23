@@ -58,7 +58,7 @@ public class LinhaService extends BaseService {
 				}
 			}
 		}
-		return linhaDAO.pesquisarTodos(dadosFilter, linhaFilter, this.habilitaFiltro(dadosFilter));
+		return linhaDAO.pesquisarTodos(dadosFilter, this.habilitaFiltro(dadosFilter));
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)

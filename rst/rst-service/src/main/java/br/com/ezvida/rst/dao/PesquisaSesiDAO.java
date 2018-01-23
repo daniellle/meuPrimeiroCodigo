@@ -118,6 +118,142 @@ public class PesquisaSesiDAO extends BaseDAO<UnidadeAtendimentoTrabalhador, Long
 		boolean linha = false;
 		boolean produto = false;
 
+		montarJoinPaginado(jpql, count, segurancaFilter);
+
+		if (pesquisaSesiFilter != null) {
+			jpql.append(" where ");
+
+			unidadeSesi = pesquisaSesiFilter.getIdUnidadeSesi() != null && pesquisaSesiFilter.getIdUnidadeSesi().intValue() > 0;
+			estado = pesquisaSesiFilter.getIdEstado() != null && pesquisaSesiFilter.getIdEstado().intValue() > 0;
+			municipio = pesquisaSesiFilter.getIdMunicipio() != null && pesquisaSesiFilter.getIdMunicipio().intValue() > 0;
+			bairro = StringUtils.isNotBlank(pesquisaSesiFilter.getBairro());
+			linha = StringUtils.isNotBlank(pesquisaSesiFilter.getIdsLinha());
+			produto = StringUtils.isNotBlank(pesquisaSesiFilter.getIdsProduto());
+			
+			if (unidadeSesi) {
+				jpql.append(" uat.id = :idUat ");
+				parametros.put("idUat", pesquisaSesiFilter.getIdUnidadeSesi());
+			}
+			
+			montarFiltroPaginado(jpql, parametros, pesquisaSesiFilter, unidadeSesi, estado, municipio, bairro);
+			
+			montarFiltroLinhaPaginado(jpql, parametros, pesquisaSesiFilter, unidadeSesi, estado, municipio, bairro,
+					linha);
+			montarFiltroProduto(jpql, parametros, pesquisaSesiFilter, unidadeSesi, estado, municipio, bairro,
+					linha, produto);
+		}
+
+		montarFiltroSegurancaFilterPaginado(jpql, parametros, segurancaFilter, unidadeSesi, estado, municipio, bairro,
+				linha, produto);
+
+		if (!count) {
+			jpql.append(" order by uat.razaoSocial ");
+		}
+	}
+
+	private void montarFiltroLinhaPaginado(StringBuilder jpql, Map<String, Object> parametros,
+			PesquisaSesiFilter pesquisaSesiFilter, boolean unidadeSesi, boolean estado, boolean municipio,
+			boolean bairro, boolean linha) {
+		if (linha) {
+			List<String> listLinhaString = Arrays.asList(pesquisaSesiFilter.getIdsLinha().split(","));
+			List<Long> listLinhaLong = new ArrayList<Long>();
+			listLinhaString.stream().forEach(n -> listLinhaLong.add(Long.parseLong(n)));
+			
+			if (unidadeSesi || estado || municipio || bairro) {
+				jpql.append(" and");
+			}
+			jpql.append(" linha.id IN :idsLinha");
+			parametros.put("idsLinha", listLinhaLong);
+		}
+	}
+
+	private void montarFiltroProduto(StringBuilder jpql, Map<String, Object> parametros,
+			PesquisaSesiFilter pesquisaSesiFilter, boolean unidadeSesi, boolean estado, boolean municipio,
+			boolean bairro, boolean linha, boolean produto) {
+		
+		
+		if (produto) {
+			List<String> listProdutoString = Arrays.asList(pesquisaSesiFilter.getIdsProduto().split(","));
+			List<Long> listProdutoLong = new ArrayList<Long>();
+			listProdutoString.stream().forEach(n -> listProdutoLong.add(Long.parseLong(n)));
+			
+			if (unidadeSesi || estado || municipio || bairro || linha) {
+				jpql.append(" and");
+			}
+			jpql.append(" produtoServico.id IN :idsProduto");
+			parametros.put("idsProduto", listProdutoLong);
+		}
+	}
+
+	private void montarFiltroSegurancaFilterPaginado(StringBuilder jpql, Map<String, Object> parametros,
+			DadosFilter segurancaFilter, boolean unidadeSesi, boolean estado, boolean municipio, boolean bairro,
+			boolean linha, boolean produto) {
+		if (segurancaFilter != null) {
+			if ((unidadeSesi || estado || municipio || bairro || linha || produto)
+					&& (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa())) {
+				jpql.append(" and ");
+				montarFiltroSegurancaFilterIds(jpql, parametros, segurancaFilter);
+			}
+		}
+	}
+
+	private void montarFiltroSegurancaFilterIds(StringBuilder jpql, Map<String, Object> parametros,
+			DadosFilter segurancaFilter) {
+		if (segurancaFilter.temIdsEmpresa()) {
+			jpql.append(" empresa.id IN (:idsEmpresa) ");
+			parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
+		}
+
+		if (segurancaFilter.temIdsEmpresa() && segurancaFilter.temIdsDepRegional()) {
+			jpql.append(" and ");
+		}
+
+		if (segurancaFilter.temIdsDepRegional()) {
+			jpql.append(" uat.departamentoRegional.id IN (:idsDepRegional) ");
+			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
+		}
+
+		if (segurancaFilter.temIdsTrabalhador()) {
+
+			if (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()) {
+				jpql.append(" and ");
+			}
+
+			jpql.append(" trabalhador.id IN (:idsTrabalhador) ");
+			parametros.put("idsTrabalhador", segurancaFilter.getIdsTrabalhador());
+		}
+	}
+
+	private void montarFiltroPaginado(StringBuilder jpql, Map<String, Object> parametros,
+			PesquisaSesiFilter pesquisaSesiFilter, boolean unidadeSesi, boolean estado, boolean municipio,
+			boolean bairro) {
+		if (estado) {
+			if (unidadeSesi) {
+				jpql.append(" and");
+			}
+			jpql.append(" estado.id = :idEstado ");
+			parametros.put("idEstado", pesquisaSesiFilter.getIdEstado());
+		}
+
+		if (municipio) {
+			if (unidadeSesi || estado) {
+				jpql.append(" and");
+			}
+			jpql.append(" municipio.id = :idMunicipio");
+			parametros.put("idMunicipio", pesquisaSesiFilter.getIdMunicipio());
+		}
+
+		if (bairro) {
+			if (unidadeSesi || estado || municipio) {
+				jpql.append(" and ");
+			}
+			jpql.append("UPPER(endereco.bairro) like :bairro escape :sc ");
+			parametros.put("sc", "/");
+			parametros.put("bairro", "%" + pesquisaSesiFilter.getBairro().replace("%", "/%").toUpperCase() + "%");
+		}
+	}
+
+	private void montarJoinPaginado(StringBuilder jpql, boolean count, DadosFilter segurancaFilter) {
 		if (count) {
 			jpql.append("select count(distinct uat.id) from UnidadeAtendimentoTrabalhador uat ");
 			jpql.append("left join uat.uatProdutoServico uatProdutoServico ");
@@ -151,106 +287,6 @@ public class PesquisaSesiDAO extends BaseDAO<UnidadeAtendimentoTrabalhador, Long
 				jpql.append("left join empresa.empresaTrabalhadores empresaTrabalhador ");
 				jpql.append("left join empresaTrabalhador.trabalhador trabalhador ");
 			}
-		}
-
-		if (pesquisaSesiFilter != null) {
-			jpql.append(" where ");
-
-			unidadeSesi = pesquisaSesiFilter.getIdUnidadeSesi() != null && pesquisaSesiFilter.getIdUnidadeSesi().intValue() > 0;
-			estado = pesquisaSesiFilter.getIdEstado() != null && pesquisaSesiFilter.getIdEstado().intValue() > 0;
-			municipio = pesquisaSesiFilter.getIdMunicipio() != null && pesquisaSesiFilter.getIdMunicipio().intValue() > 0;
-			bairro = StringUtils.isNotBlank(pesquisaSesiFilter.getBairro());
-			linha = StringUtils.isNotBlank(pesquisaSesiFilter.getIdsLinha());
-			produto = StringUtils.isNotBlank(pesquisaSesiFilter.getIdsProduto());
-
-			if (unidadeSesi) {
-				jpql.append(" uat.id = :idUat ");
-				parametros.put("idUat", pesquisaSesiFilter.getIdUnidadeSesi());
-			}
-
-			if (estado) {
-				if (unidadeSesi) {
-					jpql.append(" and");
-				}
-				jpql.append(" estado.id = :idEstado ");
-				parametros.put("idEstado", pesquisaSesiFilter.getIdEstado());
-			}
-
-			if (municipio) {
-				if (unidadeSesi || estado) {
-					jpql.append(" and");
-				}
-				jpql.append(" municipio.id = :idMunicipio");
-				parametros.put("idMunicipio", pesquisaSesiFilter.getIdMunicipio());
-			}
-
-			if (bairro) {
-				if (unidadeSesi || estado || municipio) {
-					jpql.append(" and ");
-				}
-				jpql.append("UPPER(endereco.bairro) like :bairro escape :sc ");
-				parametros.put("sc", "/");
-				parametros.put("bairro", "%" + pesquisaSesiFilter.getBairro().replace("%", "/%").toUpperCase() + "%");
-			}
-
-			if (linha) {
-				List<String> listLinhaString = Arrays.asList(pesquisaSesiFilter.getIdsLinha().split(","));
-				List<Long> listLinhaLong = new ArrayList<Long>();
-				listLinhaString.stream().forEach(n -> listLinhaLong.add(Long.parseLong(n)));
-				
-				if (unidadeSesi || estado || municipio || bairro) {
-					jpql.append(" and");
-				}
-				jpql.append(" linha.id IN :idsLinha");
-				parametros.put("idsLinha", listLinhaLong);
-			}
-			
-			if (produto) {
-				List<String> listProdutoString = Arrays.asList(pesquisaSesiFilter.getIdsProduto().split(","));
-				List<Long> listProdutoLong = new ArrayList<Long>();
-				listProdutoString.stream().forEach(n -> listProdutoLong.add(Long.parseLong(n)));
-				
-				if (unidadeSesi || estado || municipio || bairro || linha) {
-					jpql.append(" and");
-				}
-				jpql.append(" produtoServico.id IN :idsProduto");
-				parametros.put("idsProduto", listProdutoLong);
-			}
-		}
-
-		if (segurancaFilter != null) {
-			if ((unidadeSesi || estado || municipio || bairro || linha || produto)
-					&& (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa())) {
-				jpql.append(" and ");
-
-				if (segurancaFilter.temIdsEmpresa()) {
-					jpql.append(" empresa.id IN (:idsEmpresa) ");
-					parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
-				}
-
-				if (segurancaFilter.temIdsEmpresa() && segurancaFilter.temIdsDepRegional()) {
-					jpql.append(" and ");
-				}
-
-				if (segurancaFilter.temIdsDepRegional()) {
-					jpql.append(" uat.departamentoRegional.id IN (:idsDepRegional) ");
-					parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
-				}
-
-				if (segurancaFilter.temIdsTrabalhador()) {
-
-					if (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()) {
-						jpql.append(" and ");
-					}
-
-					jpql.append(" trabalhador.id IN (:idsTrabalhador) ");
-					parametros.put("idsTrabalhador", segurancaFilter.getIdsTrabalhador());
-				}
-			}
-		}
-
-		if (!count) {
-			jpql.append(" order by uat.razaoSocial ");
 		}
 	}
 	

@@ -110,7 +110,7 @@ public class UnidadeAtendimentoTrabalhadorProdutoServicoEndpoint
 			 PermissionConstants.CAT_PRODUTOS_SERVICOS_DESATIVAR }))
 	public Response desativar(@Encoded UnidadeAtendimentoTrabalhadorProdutoServico uatProdutoServico,
 			@Context SecurityContext context, @Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(serializar(uatProdutoServicoService.desativarUatProdutoServico(uatProdutoServico, ClienteInfos
 						.getClienteInfos(context, request, TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.CAT))))
 				.type(MediaType.APPLICATION_JSON).build();

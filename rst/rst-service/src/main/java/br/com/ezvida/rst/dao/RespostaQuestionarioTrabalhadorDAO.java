@@ -55,8 +55,8 @@ public class RespostaQuestionarioTrabalhadorDAO extends BaseRstDAO<RespostaQuest
 
 		ResultadoQuestionarioDTO resultadoQuestionarioDTO = new ResultadoQuestionarioDTO();
 		StringBuilder jpql = new StringBuilder();
-		jpql.append(" select indicador_quest.ds_indicador_quest,indicador_quest.ds_orientacao, ");
-		jpql.append(" max(resposta_quest.pontuacao) from indicador_quest indicador_quest ");
+		jpql.append(" select indicador_quest.ds_indicador_quest,indicador_quest.ds_orientacao,");
+		jpql.append(" max(resposta_quest.pontuacao), indicador_quest.ds_incentivo from indicador_quest indicador_quest ");
 		jpql.append(" left join pergunta_quest pergunta_quest ");
 		jpql.append(" on (indicador_quest.id_indicador_quest=pergunta_quest.id_indicador_quest_fk) ");
 		jpql.append(" left join resposta_quest resposta_quest ");
@@ -64,7 +64,7 @@ public class RespostaQuestionarioTrabalhadorDAO extends BaseRstDAO<RespostaQuest
 		jpql.append(" left join resp_quest_trab resp_quest_trab");
 		jpql.append(" on (resp_quest_trab.id_resposta_quest_fk=resposta_quest.id_resposta_quest) ");
 		jpql.append(" where resp_quest_trab.id_quest_trab_fk = :idQuestionarioTrabalhador ");
-		jpql.append(" group by indicador_quest.ds_indicador_quest,indicador_quest.ds_orientacao ");
+		jpql.append(" group by indicador_quest.ds_indicador_quest,indicador_quest.ds_orientacao, indicador_quest.ds_incentivo ");
 
 		Query query = getEm().createNativeQuery(jpql.toString());
 		query.setParameter("idQuestionarioTrabalhador", idQuestionarioTrabalhador);
@@ -77,7 +77,7 @@ public class RespostaQuestionarioTrabalhadorDAO extends BaseRstDAO<RespostaQuest
 			if ((Integer) objects[2] > 0) {
 				aprovado = false;
 			}
-			indicadorDTO = new IndicadorDTO((String) objects[0], (String) objects[1], aprovado);
+			indicadorDTO = new IndicadorDTO((String) objects[0], (String) objects[1], aprovado, (String) objects[3]);
 			listaIndicadorDTO.add(indicadorDTO);
 		}
 		resultadoQuestionarioDTO.setListaIndicadores(listaIndicadorDTO);
@@ -91,13 +91,13 @@ public class RespostaQuestionarioTrabalhadorDAO extends BaseRstDAO<RespostaQuest
 
 		StringBuilder jpql = new StringBuilder();
 		jpql.append(" select indicador_quest.ds_indicador_quest,indicador_quest.ds_orientacao, ");
-		jpql.append(" max(resposta_quest.pontuacao) from indicador_quest indicador_quest ");
+		jpql.append(" max(resposta_quest.pontuacao),indicador_quest.ds_incentivo from indicador_quest indicador_quest ");
 		jpql.append(" left join pergunta_quest pergunta_quest ");
 		jpql.append(" on (indicador_quest.id_indicador_quest=pergunta_quest.id_indicador_quest_fk) ");
 		jpql.append(" left join resposta_quest resposta_quest ");
 		jpql.append(" on (resposta_quest.id_pergunta_quest_fk=pergunta_quest.id_pergunta_quest) ");
 		jpql.append(" where resposta_quest.id_resposta_quest in (:idsRespostasQuestionario) ");
-		jpql.append(" group by indicador_quest.ds_indicador_quest,indicador_quest.ds_orientacao ");
+		jpql.append(" group by indicador_quest.ds_indicador_quest,indicador_quest.ds_orientacao, indicador_quest.ds_incentivo ");
 
 		Query query = getEm().createNativeQuery(jpql.toString());
 		query.setParameter("idsRespostasQuestionario", idsRespostasQuestionario);
@@ -110,7 +110,7 @@ public class RespostaQuestionarioTrabalhadorDAO extends BaseRstDAO<RespostaQuest
 			if ((Integer) objects[2] > 0) {
 				aprovado = false;
 			}
-			indicadorDTO = new IndicadorDTO((String) objects[0], (String) objects[1], aprovado);
+			indicadorDTO = new IndicadorDTO((String) objects[0], (String) objects[1], aprovado, (String) objects[3]);
 			listaIndicadorDTO.add(indicadorDTO);
 		}
 

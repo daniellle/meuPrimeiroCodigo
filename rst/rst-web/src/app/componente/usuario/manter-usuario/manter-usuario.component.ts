@@ -254,6 +254,8 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
       this.filtrarPerfisSistemaCadastro();
       this.filtrarPerfisSistemaGirst();
       this.filtrarPerfisSistemaDw();
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -272,6 +274,8 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
       } else {
         this.sistemas = [retorno.find((sistema) => sistema.codigo.toUpperCase() === SistemaEnum.CADASTRO)];
       }
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

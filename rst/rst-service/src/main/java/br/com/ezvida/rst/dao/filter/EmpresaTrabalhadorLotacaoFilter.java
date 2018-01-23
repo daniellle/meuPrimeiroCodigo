@@ -6,7 +6,7 @@ public class EmpresaTrabalhadorLotacaoFilter extends FilterBase {
 
 	@QueryParam("id")
 	private Long idEmpresaTrabalhador;
-	
+
 	@QueryParam("idEmpresa")
 	private Long idEmpresa;
 
@@ -14,15 +14,8 @@ public class EmpresaTrabalhadorLotacaoFilter extends FilterBase {
 		return idEmpresaTrabalhador;
 	}
 
-	public void setIdEmpresaTrabalhador(Long idEmpresaTrabalhador) {
-		this.idEmpresaTrabalhador = idEmpresaTrabalhador;
-	}
-
 	public Long getIdEmpresa() {
 		return idEmpresa;
 	}
 
-	public void setIdEmpresa(Long idEmpresa) {
-		this.idEmpresa = idEmpresa;
-	}
 }

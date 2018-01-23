@@ -2,12 +2,14 @@ package br.com.ezvida.rst.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -148,6 +150,17 @@ public class DepartamentoRegionalService extends BaseService {
 	
 	public List<DepartamentoRegional> buscarPorTrabalhador(Long idTrabalhador) {
 		return departamentoRegionalDAO.buscarPorTrabalhador(idTrabalhador);
+	}
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<DepartamentoRegional> pesquisarPorIds(Set<Long> ids) {
+		LOGGER.debug("pesquisando departamentos por ids");
+
+		if (CollectionUtils.isNotEmpty(ids)) {
+			return departamentoRegionalDAO.pesquisarPorIds(ids);
+		}
+
+		return null;
 	}
 
 }

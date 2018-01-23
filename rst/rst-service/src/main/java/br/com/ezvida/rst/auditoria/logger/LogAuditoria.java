@@ -17,40 +17,36 @@ import fw.core.model.BaseEntity;
 
 public class LogAuditoria {
 
+	private static final String TIPO_OPERACAO = "tipo_operacao";
+	private static final String NAVEGADOR = "navegador";
+	private static final String FUNCIONALIDADE = "funcionalidade";
+	private static final String RST = "rst";
+	private static final String APP_NAME = "appName";
+	private static final String USUARIO = "usuario";
+	private static final String PATTERN = "dd-MM-yyyy HH:mm:ss";
+
 	private LogAuditoria() {
 		throw new IllegalStateException("Utility class");
 	}
-	private static final String PATTERN = "dd-MM-yyyy HH:mm:ss";
 	
-	public static <T> void registrar(Logger logger, ClienteAuditoria auditoria, String mensagem, Collection<T> obj) {
-		MDC.put("usuario", auditoria.getUsuario());
-		MDC.put("funcionalidade", auditoria.getFuncionalidade().getCodigoJson());
-		MDC.put("navegador", auditoria.getNavegador());
-		MDC.put("tipo_operacao", auditoria.getTipoOperacao().getCodigoJson());
-		JacksonMapper mapper = new JacksonMapper();
-		DateFormat df  = new SimpleDateFormat(PATTERN);
-		mapper.setDateFormat(df);
+	public static <T extends BaseEntity<Long>> void registrar(Logger logger, ClienteAuditoria auditoria, String mensagem, Collection<T> objects) {
+		createMDC(auditoria);
 		try {
-			for (T t : obj) {
-				logger.info(mensagem + new String(mapper.writeValueAsBytes(t), "UTF-8"));
+			for (T object : objects) {
+				logger.info(mensagem + new String(createMapper().writeValueAsBytes(object), "UTF-8"));
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			throw new BusinessErrorException(ResourceUtil.getMensagem("app_rst_falha_auditoria"), e);
 			
 		}
-		MDC.clear();
 
 	}
 
 	public static void registrar(Logger logger, ClienteAuditoria auditoria, String mensagem, BaseEntity<Long> obj) {
-		MDC.put("usuario", auditoria.getUsuario());
-		MDC.put("funcionalidade", auditoria.getFuncionalidade().getCodigoJson());
-		MDC.put("navegador", auditoria.getNavegador());
-		MDC.put("tipo_operacao", auditoria.getTipoOperacao().getCodigoJson());
-		JacksonMapper mapper = new JacksonMapper();
-		DateFormat df  = new SimpleDateFormat(PATTERN);
-		mapper.setDateFormat(df);
+		createMDC(auditoria);
+
+		JacksonMapper mapper = createMapper();
 		mapper.addMixIn(byte[].class, PropertyFilter.class);
 		
 		try {
@@ -59,51 +55,48 @@ public class LogAuditoria {
 			logger.error(e.getMessage());
 			throw new BusinessErrorException(ResourceUtil.getMensagem("app_rst_falha_auditoria"), e);
 		}
-		MDC.clear();
 	}
 
 	public static void registrar(Logger logger, ClienteAuditoria auditoria, String mensagem, FilterBase obj) {
-		MDC.put("usuario", auditoria.getUsuario());
-		MDC.put("funcionalidade", auditoria.getFuncionalidade().getCodigoJson());
-		MDC.put("navegador", auditoria.getNavegador());
-		MDC.put("tipo_operacao", auditoria.getTipoOperacao().getCodigoJson());
-		JacksonMapper mapper = new JacksonMapper();
-		DateFormat df  = new SimpleDateFormat(PATTERN);
-		mapper.setDateFormat(df);
+		createMDC(auditoria);
+
 		try {
-			logger.info(mensagem + "= {}", new String(mapper.writeValueAsBytes(obj), "UTF-8"));
+			logger.info(mensagem + "= {}", new String(createMapper().writeValueAsBytes(obj), "UTF-8"));
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			throw new BusinessErrorException(ResourceUtil.getMensagem("app_rst_falha_auditoria"), e);
 		}
-		MDC.clear();
 	}
 
 	public static void registrar(Logger logger, ClienteAuditoria auditoria, String mensagem) {
-		MDC.put("usuario", auditoria.getUsuario());
-		MDC.put("funcionalidade", auditoria.getFuncionalidade().getCodigoJson());
-		MDC.put("navegador", auditoria.getNavegador());
-		MDC.put("tipo_operacao", auditoria.getTipoOperacao().getCodigoJson());
+		createMDC(auditoria);
 		logger.info(mensagem);
-		MDC.clear();
 	}
 
 	public static void registrar(Logger logger, ClienteAuditoria auditoria, String mensagem, Usuario usuario) {
-		MDC.put("usuario", auditoria.getUsuario());
-		MDC.put("funcionalidade", auditoria.getFuncionalidade().getCodigoJson());
-		MDC.put("navegador", auditoria.getNavegador());
-		MDC.put("tipo_operacao", auditoria.getTipoOperacao().getCodigoJson());
-		JacksonMapper mapper = new JacksonMapper();
-		DateFormat df  = new SimpleDateFormat(PATTERN);
-		mapper.setDateFormat(df);
+		createMDC(auditoria);
 		try {
-			logger.info(mensagem + new String(mapper.writeValueAsBytes(usuario), "UTF-8"));
+			logger.info(mensagem + new String(createMapper().writeValueAsBytes(usuario), "UTF-8"));
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			throw new BusinessErrorException(ResourceUtil.getMensagem("app_rst_falha_auditoria"), e);
 		}
-		MDC.clear();
 	}
-	
-	
+
+	private static JacksonMapper createMapper() {
+		JacksonMapper mapper = new JacksonMapper();
+		DateFormat df = new SimpleDateFormat(PATTERN);
+		mapper.setDateFormat(df);
+
+		return mapper;
+	}
+
+	private static void createMDC(ClienteAuditoria auditoria) {
+		MDC.clear();
+		MDC.put(APP_NAME, RST);
+		MDC.put(USUARIO, auditoria.getUsuario());
+		MDC.put(FUNCIONALIDADE, auditoria.getFuncionalidade().getCodigoJson());
+		MDC.put(NAVEGADOR, auditoria.getNavegador());
+		MDC.put(TIPO_OPERACAO, auditoria.getTipoOperacao().getCodigoJson());
+	}
 }

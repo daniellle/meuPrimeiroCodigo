@@ -49,25 +49,25 @@ public class EmpresaTrabalhadorEndpont extends SegurancaEndpoint<EmpresaTrabalha
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.EMPRESA_TRABALHADOR,
-			PermissionConstants.EMPRESA_TRABALHADOR_CADASTRAR, PermissionConstants.EMPRESA_TRABALHADOR_ALTERAR, 
+			PermissionConstants.EMPRESA_TRABALHADOR_CADASTRAR, PermissionConstants.EMPRESA_TRABALHADOR_ALTERAR,
 			PermissionConstants.EMPRESA_TRABALHADOR_CONSULTAR, PermissionConstants.EMPRESA_TRABALHADOR_DESATIVAR }))
 	public Response pesquisarPaginado(@BeanParam EmpresaTrabalhadorFilter empresaTrabalhadorFilter,
-			@Context SecurityContext context
-			, @Context HttpServletRequest request) {
+			@Context SecurityContext context, @Context HttpServletRequest request) {
 		LOGGER.debug("Listando Trabalhadores associados a empresa");
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
 				.header("Content-Version", getApplicationVersion())
-				.entity(serializar(empresaTrabalhadorService.pesquisarPaginado(empresaTrabalhadorFilter,
-						ClienteInfos.getClienteInfos(context, request,
+				.entity(serializar(empresaTrabalhadorService.pesquisarPaginado(
+						empresaTrabalhadorFilter, ClienteInfos.getClienteInfos(context, request,
 								TipoOperacaoAuditoria.CONSULTA, Funcionalidade.EMPRESA),
-						ClienteInfos.getDadosFilter(context)))).build();
+						ClienteInfos.getDadosFilter(context))))
+				.build();
 	}
 
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response buscarPorId(@PathParam("id") String id, @Context SecurityContext context
-			, @Context HttpServletRequest request) {
+	public Response buscarPorId(@PathParam("id") String id, @Context SecurityContext context,
+			@Context HttpServletRequest request) {
 		LOGGER.debug("Buscando EmpresaTrabalhador por id");
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
 				.header("Content-Version", getApplicationVersion())
@@ -80,8 +80,8 @@ public class EmpresaTrabalhadorEndpont extends SegurancaEndpoint<EmpresaTrabalha
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.EMPRESA_TRABALHADOR,
 			PermissionConstants.EMPRESA_TRABALHADOR_CADASTRAR }))
-	public Response salvar(@Encoded EmpresaTrabalhador empresaTrabalhador, @Context SecurityContext context
-			, @Context HttpServletRequest request) {
+	public Response salvar(@Encoded EmpresaTrabalhador empresaTrabalhador, @Context SecurityContext context,
+			@Context HttpServletRequest request) {
 		if (empresaTrabalhador.getDataDemissao() != null) {
 			LOGGER.debug("Alterando Empresa Trabalhador ");
 			return Response
@@ -92,11 +92,14 @@ public class EmpresaTrabalhadorEndpont extends SegurancaEndpoint<EmpresaTrabalha
 													TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.EMPRESA))))
 					.type(MediaType.APPLICATION_JSON).build();
 		} else {
-		LOGGER.debug("Salvando Empresa Trabalhador ");
-		return Response.status(HttpServletResponse.SC_CREATED)
-				.entity(serializar(empresaTrabalhadorService.salvar(empresaTrabalhador,
-						ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.INCLUSAO, Funcionalidade.EMPRESA))))
-				.type(MediaType.APPLICATION_JSON).build();
+			LOGGER.debug("Salvando Empresa Trabalhador ");
+			return Response
+					.status(HttpServletResponse.SC_CREATED).entity(
+							serializar(
+									empresaTrabalhadorService.salvar(empresaTrabalhador,
+											ClienteInfos.getClienteInfos(context, request,
+													TipoOperacaoAuditoria.INCLUSAO, Funcionalidade.EMPRESA))))
+					.type(MediaType.APPLICATION_JSON).build();
 		}
 	}
 
@@ -106,8 +109,8 @@ public class EmpresaTrabalhadorEndpont extends SegurancaEndpoint<EmpresaTrabalha
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.EMPRESA_TRABALHADOR,
 			PermissionConstants.EMPRESA_TRABALHADOR_ALTERAR }))
-	public void alterar(@Encoded EmpresaTrabalhador empresaTrabalhador, @Context SecurityContext context
-			, @Context HttpServletRequest request) {
+	public void alterar(@Encoded EmpresaTrabalhador empresaTrabalhador, @Context SecurityContext context,
+			@Context HttpServletRequest request) {
 		salvar(empresaTrabalhador, context, request);
 	}
 
@@ -118,12 +121,12 @@ public class EmpresaTrabalhadorEndpont extends SegurancaEndpoint<EmpresaTrabalha
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.EMPRESA_TRABALHADOR,
 			PermissionConstants.EMPRESA_TRABALHADOR_DESATIVAR }))
-	public Response remover(@Encoded EmpresaTrabalhador empresaTrabalhador, @Context SecurityContext context
-			, @Context HttpServletRequest request) {
+	public Response remover(@Encoded EmpresaTrabalhador empresaTrabalhador, @Context SecurityContext context,
+			@Context HttpServletRequest request) {
 		LOGGER.debug("Removendo Empresa Trabalhador ");
-		return Response.status(HttpServletResponse.SC_CREATED)
-				.entity(serializar(empresaTrabalhadorService.remover(empresaTrabalhador,
-						ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.EMPRESA))))
+		return Response.status(HttpServletResponse.SC_OK)
+				.entity(serializar(empresaTrabalhadorService.remover(empresaTrabalhador, ClienteInfos
+						.getClienteInfos(context, request, TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.EMPRESA))))
 				.type(MediaType.APPLICATION_JSON).build();
 	}
 
@@ -135,9 +138,8 @@ public class EmpresaTrabalhadorEndpont extends SegurancaEndpoint<EmpresaTrabalha
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.USUARIO_ENTIDADE,
 			PermissionConstants.USUARIO_ENTIDADE_CADASTRAR, PermissionConstants.USUARIO_ENTIDADE_ALTERAR,
 			PermissionConstants.USUARIO_ENTIDADE_CONSULTAR, PermissionConstants.USUARIO_ENTIDADE_DESATIVAR }))
-	public Response pesquisarPorTrabalhadorCpf(@PathParam("cpf") String cpf,
-			@Context SecurityContext context
-			, @Context HttpServletRequest request) {
+	public Response pesquisarPorTrabalhadorCpf(@PathParam("cpf") String cpf, @Context SecurityContext context,
+			@Context HttpServletRequest request) {
 		LOGGER.debug("Buscando Empresas associados a Trabalhadores por CPF");
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
 				.header("Content-Version", getApplicationVersion())

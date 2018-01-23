@@ -4,7 +4,7 @@ import { Seguranca } from './../../../compartilhado/utilitario/seguranca.model';
 import { environment } from './../../../../environments/environment';
 import { DatePicker } from './../../../compartilhado/utilitario/date-picker';
 import { DepartRegionalService } from './../../../servico/depart-regional.service';
-import { ValidarDataFutura } from 'app/compartilhado/validators/data.validator';
+import { ValidarDataFutura, ValidateData } from 'app/compartilhado/validators/data.validator';
 import { MensagemProperties } from './../../../compartilhado/utilitario/recurso.pipe';
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from 'app/componente/base.component';
@@ -191,6 +191,7 @@ export class CadastroUatComponent extends BaseComponent implements OnInit {
       dtdesligamento: [
         { value: null, disabled: this.modoConsulta },
         Validators.compose([
+          ValidateData,
         ]),
       ],
       depRegional: [
@@ -413,6 +414,8 @@ export class CadastroUatComponent extends BaseComponent implements OnInit {
       this.departamentos = dados;
       this.setDepartamento();
       this.orderByRazaoSocial(this.departamentos);
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 
@@ -473,8 +476,12 @@ export class CadastroUatComponent extends BaseComponent implements OnInit {
       }
     }
     // Data desativação
-    if (!this.isVazia(this.formulario.controls['dtdesligamento'].value)) {
-      if (ValidarDataFutura(this.formulario.controls['dtdesligamento'].value.jsdate)) {
+    if (!this.isVazia(this.formulario.controls['dtdesligamento'].value) ) {
+      if (this.formulario.controls['dtdesligamento'].errors && this.formulario.controls['dtdesligamento'].errors.validData) {
+        this.mensagemErroComParametros('app_rst_campo_invalido', this.formulario.controls['dtdesligamento'],
+          MensagemProperties.app_rst_labels_data_desativacao);
+        retorno = false;
+      } else if (ValidarDataFutura(this.formulario.controls['dtdesligamento'].value.jsdate)) {
         this.mensagemErroComParametrosModel('app_rst_labels_data_futura', MensagemProperties.app_rst_labels_data_desativacao);
         retorno = false;
       }
@@ -574,6 +581,8 @@ export class CadastroUatComponent extends BaseComponent implements OnInit {
       this.estados = dados;
       if (this.estados) {
       }
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

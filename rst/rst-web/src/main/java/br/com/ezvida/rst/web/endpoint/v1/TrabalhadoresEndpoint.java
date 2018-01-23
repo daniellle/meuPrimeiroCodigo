@@ -88,7 +88,7 @@ public class TrabalhadoresEndpoint extends SegurancaEndpoint<Trabalhador> {
 		ClienteAuditoria auditoria = ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.TRABALHADOR);
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
 				.header("Content-Version", getApplicationVersion())
-				.entity(serializar(trabalhadorService.buscarPorCpf(auditoria.getUsuario(), auditoria, ClienteInfos.getDadosFilter(context))))
+				.entity(serializar(trabalhadorService.buscarPorCpf(auditoria.getUsuario())))
 				.build();
 	}
 
@@ -227,7 +227,7 @@ public class TrabalhadoresEndpoint extends SegurancaEndpoint<Trabalhador> {
 			PermissionConstants.TRABALHADOR_DEPENDENTE_ALTERAR }))
 	public Response alterar(@Encoded Trabalhador trabalhador, @Context SecurityContext context
 			, @Context HttpServletRequest request) {		
-		return Response.status(HttpServletResponse.SC_CREATED).entity(trabalhadorService.salvar(trabalhador, 
+		return Response.status(HttpServletResponse.SC_OK).entity(trabalhadorService.salvar(trabalhador, 
 				ClienteInfos.getClienteInfos(context, request,
 						TipoOperacaoAuditoria.INCLUSAO,Funcionalidade.TRABALHADOR)))
 				.type(MediaType.APPLICATION_JSON).build();

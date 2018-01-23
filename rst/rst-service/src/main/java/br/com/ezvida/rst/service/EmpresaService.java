@@ -1,12 +1,14 @@
 	package br.com.ezvida.rst.service;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +62,12 @@ public class EmpresaService extends BaseService {
 	
 	@Inject
 	private UsuarioEntidadeService usuarioEntidade;
+
+	@Inject
+	private UnidadeAtendimentoTrabalhadorService uatService;
+
+	@Inject
+	private SindicatoService sindicatoService;
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public Empresa pesquisarPorId(Long id, DadosFilter dadosFilter) {
@@ -168,6 +176,38 @@ public class EmpresaService extends BaseService {
 			throw new BusinessErrorException(
 					getMensagem("app_rst_campo_invalido", getMensagem("app_rst_label_nit_responsavel")));
 		}
+	}
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<Empresa> buscarEmpresasUatsDrsPorIds(Set<Long> ids) {
+		LOGGER.debug("Pesquisando Empresas por id");
+		if (CollectionUtils.isNotEmpty(ids)) {
+			List<Empresa> empresas = empresaDAO.buscarEmpresasPorIds(ids);
+
+			for (Empresa empresa : empresas) {
+				empresa.setUats(uatService.buscarPorEmpresaEAtivas(empresa.getId()));
+				empresa.setSindicatos(sindicatoService.buscarPorEmpresaEAtivos(empresa.getId()));
+				empresa.setId(null);
+			}
+
+			return empresas;
+		}
+
+		return null;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<Empresa> buscarEmpresasUatsDrsPorCpf(String cpf) {
+		LOGGER.debug("Pesquisando Empresas por cpf");
+		List<Empresa> empresas = empresaDAO.buscarEmpresasUatsDrsPorCpf(cpf);
+
+		for (Empresa empresa : empresas) {
+			empresa.setUats(uatService.buscarPorEmpresaEAtivas(empresa.getId()));
+			empresa.setSindicatos(sindicatoService.buscarPorEmpresaEAtivos(empresa.getId()));
+			empresa.setId(null);
+		}
+
+		return empresas;
 	}
 
 }

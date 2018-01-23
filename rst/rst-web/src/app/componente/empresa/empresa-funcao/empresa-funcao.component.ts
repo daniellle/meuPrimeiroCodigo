@@ -69,6 +69,8 @@ export class EmpresaFuncaoComponent extends BaseComponent implements OnInit {
                 this.filtro.idEmpresa = this.idEmpresa;
                 this.pesquisarEmpresasFuncao();
             }
+        }, (error) => {
+            this.mensagemError(error);
         });
     }
     private pesquisarEmpresasFuncao() {

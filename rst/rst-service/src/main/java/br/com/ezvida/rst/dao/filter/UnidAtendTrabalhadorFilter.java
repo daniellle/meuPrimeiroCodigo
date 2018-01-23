@@ -6,13 +6,13 @@ public class UnidAtendTrabalhadorFilter extends FilterBase {
 
 	@QueryParam("cnpj")
 	private String cnpj;
-	
+
 	@QueryParam("razaoSocial")
 	private String razaoSocial;
-	
+
 	@QueryParam("idDepRegional")
 	private Long idDepRegional;
-	
+
 	@QueryParam("statusCat")
 	private String statusCat;
 
@@ -28,23 +28,11 @@ public class UnidAtendTrabalhadorFilter extends FilterBase {
 		return razaoSocial;
 	}
 
-	public void setRazaoSocial(String razaoSocial) {
-		this.razaoSocial = razaoSocial;
-	}
-
 	public Long getIdDepRegional() {
 		return idDepRegional;
 	}
 
-	public void setIdDepRegional(Long idDepRegional) {
-		this.idDepRegional = idDepRegional;
-	}
-
 	public String getStatusCat() {
 		return statusCat;
-	}
-
-	public void setStatusCat(String statusCat) {
-		this.statusCat = statusCat;
 	}
 }

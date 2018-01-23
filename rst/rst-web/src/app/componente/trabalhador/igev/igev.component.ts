@@ -51,6 +51,8 @@ export class IgevComponent extends BaseComponent implements OnInit {
       this.trabalhadorService.buscarMeusDados().subscribe((retorno: Trabalhador) => {
         this.idTrabalhador = retorno.id;
         this.trabalhador = retorno;
+      }, (error) => {
+        this.mensagemError(error);
       });
     } else {
       this.idTrabalhador = this.activatedRoute.snapshot.params['id'];
@@ -65,6 +67,8 @@ export class IgevComponent extends BaseComponent implements OnInit {
     filtroTrabalhador.id = this.idTrabalhador.toString();
     this.trabalhadorService.buscarPorId(filtroTrabalhador).subscribe((retorno: Trabalhador) => {
       this.trabalhador = retorno;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 

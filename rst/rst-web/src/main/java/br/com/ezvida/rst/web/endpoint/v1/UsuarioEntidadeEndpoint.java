@@ -149,7 +149,7 @@ public class UsuarioEntidadeEndpoint extends SegurancaEndpoint<UsuarioEntidade> 
 	public Response desativar(@Encoded UsuarioEntidade UsuarioEntidade, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
 		return Response
-				.status(HttpServletResponse.SC_CREATED).entity(
+				.status(HttpServletResponse.SC_OK).entity(
 						serializar(
 								usuarioEntidadeService.desativarUsuarioEntidade(UsuarioEntidade,
 										ClienteInfos.getClienteInfos(context, request,

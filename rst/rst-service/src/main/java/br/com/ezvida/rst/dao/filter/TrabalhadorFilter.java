@@ -45,32 +45,19 @@ public class TrabalhadorFilter extends FilterBase {
 		return nome;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
 
 	public String getNit() {
 		return nit;
 	}
 
-	public void setNit(String nit) {
-		this.nit = nit;
-	}
 
 	public String getSituacao() {
 		return situacao;
 	}
 
-	public void setSituacao(String situacao) {
-		this.situacao = situacao;
-	}
 
 	public boolean isFalecidos() {
 		return falecidos;
-	}
-
-	public void setFalecidos(boolean falecidos) {
-		this.falecidos = falecidos;
 	}
 
 	public boolean isAplicarDadosFilter() {

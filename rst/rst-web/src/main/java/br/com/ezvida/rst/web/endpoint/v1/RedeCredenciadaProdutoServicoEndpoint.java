@@ -76,7 +76,7 @@ public class RedeCredenciadaProdutoServicoEndpoint extends SegurancaEndpoint<Red
 	public Response desativar(@Encoded RedeCredenciadaProdutoServico redeCredenciadaProdutoServico
 			, @Context SecurityContext context, @Context HttpServletRequest request) {
 		LOGGER.debug("Salvando Empresa Setores ");
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(serializar(redeCredenciadaProdutoServicoService
 						.desativarRedeCredenciadaProdutoServico(redeCredenciadaProdutoServico
 								, ClienteInfos.getClienteInfos(context, request,

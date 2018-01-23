@@ -17,7 +17,7 @@ import br.com.ezvida.rst.service.TipoEmpresaService;
 import fw.web.endpoint.SegurancaEndpoint;
 
 @RequestScoped
-@Path("/private/v1/tiposEmpresas")
+@Path("/private/v1/tipos-empresas")
 public class TipoEmpresaEndpoint extends SegurancaEndpoint<Token> {
 
 	private static final long serialVersionUID = -5946935555743247998L;

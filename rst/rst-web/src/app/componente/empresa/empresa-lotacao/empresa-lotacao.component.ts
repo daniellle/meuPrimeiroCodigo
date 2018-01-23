@@ -103,7 +103,9 @@ export class EmpresaLotacaoComponent extends BaseComponent implements OnInit {
                 this.emFiltro = new FiltroEmpresa();
                 this.emFiltro.id = this.idEmpresa;
             }
-        });
+        }, (error) => {
+            this.mensagemError(error);
+          });
     }
 
     private buscarJornadas() {

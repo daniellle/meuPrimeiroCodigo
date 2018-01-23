@@ -1,3 +1,4 @@
+//import { TesteComponent } from './teste/teste.component';
 import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -188,9 +189,9 @@ const routes: Routes = [
 				path: 'usuario',
 				loadChildren: './usuario/usuario.module#UsuarioModule',
 				canLoad: [AutorizacaoGuard], data: {
-					permissoes: [PermissoesEnum.USUARIO,PermissoesEnum.USUARIO_CADASTRAR, PermissoesEnum.USUARIO_ALTERAR,
-						PermissoesEnum.USUARIO_CONSULTAR, PermissoesEnum.USUARIO_DESATIVAR, PermissoesEnum.USUARIO_ENTIDADE, PermissoesEnum.USUARIO_ENTIDADE_CADASTRAR,
-						PermissoesEnum.USUARIO_ENTIDADE_ALTERAR, PermissoesEnum.USUARIO_ENTIDADE_CONSULTAR, PermissoesEnum.USUARIO_ENTIDADE_DESATIVAR]
+					permissoes: [PermissoesEnum.USUARIO, PermissoesEnum.USUARIO_CADASTRAR, PermissoesEnum.USUARIO_ALTERAR,
+					PermissoesEnum.USUARIO_CONSULTAR, PermissoesEnum.USUARIO_DESATIVAR, PermissoesEnum.USUARIO_ENTIDADE, PermissoesEnum.USUARIO_ENTIDADE_CADASTRAR,
+					PermissoesEnum.USUARIO_ENTIDADE_ALTERAR, PermissoesEnum.USUARIO_ENTIDADE_CONSULTAR, PermissoesEnum.USUARIO_ENTIDADE_DESATIVAR]
 				},
 			},
 			{
@@ -280,10 +281,10 @@ const routes: Routes = [
 				loadChildren: './classificacao-pontuacao/classificacao-pontuacao.module#ClassificacaoPontuacaoModule',
 				canLoad: [AutorizacaoGuard], data: {
 					permissoes: [PermissoesEnum.CLASSIFICACAO_PONTUACAO,
-						PermissoesEnum.CLASSIFICACAO_PONTUACAO_CADASTRAR,
-						PermissoesEnum.CLASSIFICACAO_PONTUACAO_ALTERAR,
-						PermissoesEnum.CLASSIFICACAO_PONTUACAO_CONSULTAR,
-						PermissoesEnum.CLASSIFICACAO_PONTUACAO_DESATIVAR],
+					PermissoesEnum.CLASSIFICACAO_PONTUACAO_CADASTRAR,
+					PermissoesEnum.CLASSIFICACAO_PONTUACAO_ALTERAR,
+					PermissoesEnum.CLASSIFICACAO_PONTUACAO_CONSULTAR,
+					PermissoesEnum.CLASSIFICACAO_PONTUACAO_DESATIVAR],
 				},
 			},
 			{
@@ -291,10 +292,10 @@ const routes: Routes = [
 				loadChildren: './resposta/resposta.module#RespostaModule',
 				canLoad: [AutorizacaoGuard], data: {
 					permissoes: [PermissoesEnum.RESPOSTA,
-						PermissoesEnum.RESPOSTA_CADASTRAR,
-						PermissoesEnum.RESPOSTA_ALTERAR,
-						PermissoesEnum.RESPOSTA_CONSULTAR,
-						PermissoesEnum.RESPOSTA_DESATIVAR],
+					PermissoesEnum.RESPOSTA_CADASTRAR,
+					PermissoesEnum.RESPOSTA_ALTERAR,
+					PermissoesEnum.RESPOSTA_CONSULTAR,
+					PermissoesEnum.RESPOSTA_DESATIVAR],
 				},
 			},
 			{
@@ -303,13 +304,25 @@ const routes: Routes = [
 				canLoad: [AutorizacaoGuard], data: {
 					permissoes: [PermissoesEnum.PESQUISA_SESI_CONSULTAR],
 				},
-			}
+			},
+			{
+				path: 'dashboard',
+				loadChildren: './dashboard/dashboard.module#DashboardModule',
+				canLoad: [AutorizacaoGuard], data: {
+					permissoes: [PermissoesEnum.PESQUISA_SESI_CONSULTAR],
+				},
+			},
+				// {
+			// 	path: 'teste', component: TesteComponent,
+				
+			// }
 		],
 	},
 ];
 
 @NgModule({
 	imports: [TemplateModule, SegurancaModule, RouterModule.forChild(routes)],
+//	declarations: [TesteComponent]
 })
 export class ComponenteModule {
 	constructor() {

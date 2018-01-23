@@ -84,7 +84,7 @@ public class CertificadoEndpoint extends SegurancaEndpoint<Certificado> {
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.TRABALHADOR_CERTIFICADO, PermissionConstants.TRABALHADOR_CERTIFICADO_ALTERAR,
 			PermissionConstants.TRABALHADOR_CERTIFICADO_DESATIVAR, PermissionConstants.TRABALHADOR_CERTIFICADO_TRAB_CADASTRAR }))
 	public Response alterar(@Encoded Certificado certificado, @Context SecurityContext context, @Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED)
+		return Response.status(HttpServletResponse.SC_OK)
 				.entity(certificadoService.salvar(certificado,
 						ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.TRABALHADOR)))
 				.type(MediaType.APPLICATION_JSON).build();

@@ -1,7 +1,7 @@
 <!-- <ng2-toasty></ng2-toasty>
 <app-bloqueio></app-bloqueio> -->
 <p class="titulo-pagina">
-     {{resultadoQuestionario.tituloQuestionario}}
+    {{resultadoQuestionario.tituloQuestionario}}
 </p>
 <div class="container-form">
     <form novalidate>
@@ -13,15 +13,15 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-11 space-up mx-auto">
-                    <div class="white-space mesangem-classificacao">{{resultadoQuestionario.classificacao.mensagem}}</div>
+        <div class="row" [ngClass]="{ 'baixo-risco': isBaixoRisco(), 'medio-risco': isMedioRisco(), 'medio-alto-risco': isMedioAltoRisco(), 'alto-risco': isAltoRisco()}">
+            <div class="col-11 mx-auto container-resultado">
+                <div class="white-space mesangem-classificacao padding-text">{{resultadoQuestionario.classificacao.mensagem}}</div>
             </div>
         </div>
 
         <div class="row lista-resposta">
             <div class="col-md-12" *ngFor="let indicador of resultadoQuestionario.listaIndicadores">
-                <div class="row space-up">
+                <div class="row  space-up">
 
                     <span class="spcae-up space-left">
                         <img *ngIf="!indicador.aprovado" class="icone" src="assets/img/seta_laranja_down.svg" alt="Não Aprovado">
@@ -29,14 +29,16 @@
                     </span>
 
                     <p class="space-left descricao-indicador">{{indicador.descricao}}</p>
-
-                    <span class="space-left">
-                        <img *ngIf="!indicador.aprovado" class="icone" src="assets/img/erro.svg" alt="Não Aprovado">
-                        <img *ngIf="indicador.aprovado" class="icone" src="assets/img/acerto.svg" alt="Aprovado">
-                    </span>
-                    <span class="space-left space-right">
-                        <img (click)="openModalResultado(indicador.orientacao)" *ngIf="!indicador.aprovado" class="icone" src="assets/img/info.svg" alt="Informações">
-                    </span>
+                    <div>
+                        <span class="space-left">
+                            <img *ngIf="!indicador.aprovado" class="icone" src="assets/img/erro.svg" alt="Não Aprovado">
+                            <img *ngIf="indicador.aprovado" class="icone" src="assets/img/acerto.svg" alt="Aprovado">
+                         </span>
+                        <span class="space-left space-right">
+                            <img (click)="openModalResultado(indicador.orientacao)" *ngIf="!indicador.aprovado" class="plus-icons" src="assets/img/info.svg" alt="Informações">
+                            <img (click)="openModalResultado(indicador.incentivo)" *ngIf="indicador.aprovado"  class="plus-icons" src="assets/img/curtir.svg" alt="Informações">
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

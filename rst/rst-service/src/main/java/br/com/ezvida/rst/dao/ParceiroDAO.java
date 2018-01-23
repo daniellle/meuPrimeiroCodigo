@@ -32,6 +32,7 @@ public class ParceiroDAO extends BaseDAO<Parceiro, Long> {
 		super(em, Parceiro.class);
 	}
 
+	@Override
 	public Parceiro pesquisarPorId(Long id) {
 		LOGGER.debug("Pesquisando Parceiro por Id");
 		StringBuilder jpql = new StringBuilder();
@@ -81,9 +82,8 @@ public class ParceiroDAO extends BaseDAO<Parceiro, Long> {
 		return DAOUtil.getSingleResult(query);
 
 	}
-
-	private void getQueryPaginado(StringBuilder jpql, Map<String, Object> parametros, ParceiroFilter parceiroFilter,
-			boolean count, DadosFilter segurancaFilter) {
+	
+	private void montarJoinPaginado(StringBuilder jpql, boolean count, DadosFilter segurancaFilter) {
 		if (count) {
 			jpql.append("select count(DISTINCT parceiro.id) from Parceiro parceiro ");
 		} else {
@@ -105,7 +105,14 @@ public class ParceiroDAO extends BaseDAO<Parceiro, Long> {
 			jpql.append(" left join empresa.empresaTrabalhadores empresaTrabalhadores ");
 			jpql.append(" left join empresaTrabalhadores.trabalhador trabalhador ");
 		}
-
+	}
+	
+	private void getQueryPaginado(StringBuilder jpql, Map<String, Object> parametros, ParceiroFilter parceiroFilter,
+			boolean count, DadosFilter segurancaFilter) {
+		
+		montarJoinPaginado( jpql,  count,  segurancaFilter);
+		
+		boolean temIdDepRegional = segurancaFilter != null && segurancaFilter.temIdsDepRegional();
 		if (parceiroFilter != null) {
 			boolean cnpj = StringUtils.isNotEmpty(parceiroFilter.getCpfCnpj());
 			boolean razaoSocialNome = StringUtils.isNotEmpty(parceiroFilter.getRazaoSocialNome());
@@ -116,51 +123,68 @@ public class ParceiroDAO extends BaseDAO<Parceiro, Long> {
 				jpql.append(" where ");
 			}
 			
-			if (cnpj) {
-				jpql.append(" parceiro.numeroCnpjCpf = :numeroCnpjCpf ");
-				parametros.put("numeroCnpjCpf", parceiroFilter.getCpfCnpj());
-			}
-			
-			if (razaoSocialNome) {
-				if (cnpj) {
-					jpql.append(" and ");
-				}
-				jpql.append(" UPPER(parceiro.nome) like :nome escape :sc ");
-				parametros.put("sc", "\\");
-				parametros.put("nome", "%" + parceiroFilter.getRazaoSocialNome().replace("%", "\\%").toUpperCase() + "%");
-			}
-			
-			if (especialidade) {
-				if (cnpj || razaoSocialNome) {
-					jpql.append(" and ");
-				}
+			montarFiltroPaginado(jpql, parametros, parceiroFilter, cnpj, razaoSocialNome, especialidade, status);
 
-				jpql.append(" (parceiroEspecialidades.dataExclusao is null and especialidade.id = :idEspecialidade) ");
-				parametros.put("idEspecialidade", parceiroFilter.getEspecialidade());
-			}
-			
-			if (status) {
-				if (cnpj || razaoSocialNome || especialidade) {
-					jpql.append(" and ");
-				}
-
-				if (Situacao.ATIVO.getCodigo().equals(parceiroFilter.getSituacao())) {
-					jpql.append(" parceiro.dataDesligamento ").append(Situacao.ATIVO.getQuery());
-				} else if (Situacao.INATIVO.getCodigo().equals(parceiroFilter.getSituacao())) {
-					jpql.append(" parceiro.dataDesligamento ").append(Situacao.INATIVO.getQuery());
-				}
-			}
-
-			if ((cnpj || razaoSocialNome || especialidade || status) && (segurancaFilter.temIdsDepRegional())) {
-
-				jpql.append("  and departamentoRegional.id IN (:idsDepRegional) ");
-				parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
-
-			}
+			montarDepId(jpql, parametros, segurancaFilter, temIdDepRegional, cnpj, razaoSocialNome, especialidade,
+					status);
 
 			if (!count) {
 				jpql.append(" order by parceiro.nome ");
 
+			}
+		}
+	}
+
+	private void montarDepId(StringBuilder jpql, Map<String, Object> parametros, DadosFilter segurancaFilter,
+			boolean temIdDepRegional, boolean cnpj, boolean razaoSocialNome, boolean especialidade, boolean status) {
+		if ((cnpj || razaoSocialNome || especialidade || status) && (temIdDepRegional)) {
+
+			jpql.append("  and departamentoRegional.id IN (:idsDepRegional) ");
+			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
+
+		}
+	}
+
+	private void montarFiltroPaginado(StringBuilder jpql, Map<String, Object> parametros, ParceiroFilter parceiroFilter,
+			boolean cnpj, boolean razaoSocialNome, boolean especialidade, boolean status) {
+		String and = "and";
+		if (cnpj) {
+			jpql.append(" parceiro.numeroCnpjCpf = :numeroCnpjCpf ");
+			parametros.put("numeroCnpjCpf", parceiroFilter.getCpfCnpj());
+		}
+		
+		if (razaoSocialNome) {
+			if (cnpj) {
+				jpql.append(and);
+			}
+			jpql.append(" UPPER(parceiro.nome) like :nome escape :sc ");
+			parametros.put("sc", "\\");
+			parametros.put("nome", "%" + parceiroFilter.getRazaoSocialNome().replace("%", "\\%").toUpperCase() + "%");
+		}
+		
+		if (especialidade) {
+			if (cnpj || razaoSocialNome) {
+				jpql.append(and);
+			}
+
+			jpql.append(" (parceiroEspecialidades.dataExclusao is null and especialidade.id = :idEspecialidade) ");
+			parametros.put("idEspecialidade", parceiroFilter.getEspecialidade());
+		}
+		
+		montarFiltroStatus(jpql, parceiroFilter, cnpj, razaoSocialNome, especialidade, status);
+	}
+
+	private void montarFiltroStatus(StringBuilder jpql, ParceiroFilter parceiroFilter, boolean cnpj,
+			boolean razaoSocialNome, boolean especialidade, boolean status) {
+		if (status) {
+			if (cnpj || razaoSocialNome || especialidade) {
+				jpql.append("and");
+			}
+
+			if (Situacao.ATIVO.getCodigo().equals(parceiroFilter.getSituacao())) {
+				jpql.append(" parceiro.dataDesligamento ").append(Situacao.ATIVO.getQuery());
+			} else if (Situacao.INATIVO.getCodigo().equals(parceiroFilter.getSituacao())) {
+				jpql.append(" parceiro.dataDesligamento ").append(Situacao.INATIVO.getQuery());
 			}
 		}
 	}

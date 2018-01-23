@@ -91,16 +91,7 @@ public class ProfissionalDAO extends BaseDAO<Profissional, Long> {
 		boolean nome = false;
 		boolean status = false;
 
-		if (count) {
-			jpql.append(" select DISTINCT count(p.id)from Profissional p ");
-		} else {
-			jpql.append(" select DISTINCT p from Profissional p ");
-		}
-
-		if (segurancaFilter != null && segurancaFilter.temIdsDepRegional()) {
-			jpql.append(" left join p.listaUnidadeAtendimentoTrabalhadorProfissional profissionalUat ");
-			jpql.append(" left join profissionalUat.unidadeAtendimentoTrabalhador uat ");
-		}
+		montarJoinPaginado(jpql, count, segurancaFilter);
 
 		if (profissionalFilter != null) {
 
@@ -113,41 +104,19 @@ public class ProfissionalDAO extends BaseDAO<Profissional, Long> {
 				jpql.append(" where ");
 			}
 
-			if (cpf) {
-				jpql.append(" upper(p.cpf) like :cpf escape :sc ");
-				parametros.put("sc", "\\");
-				parametros.put("cpf", profissionalFilter.getCpf().replace("%", "\\%").toUpperCase());
-			}
-
-			if (registro) {
-				if (cpf) {
-					jpql.append(" and ");
-				}
-				jpql.append(" UPPER(p.registro) like :registro escape :sc ");
-				parametros.put("sc", "\\");
-				parametros.put("registro",
-						"%" + profissionalFilter.getRegistro().replace("%", "\\%").toUpperCase() + "%");
-			}
-			if (nome) {
-				if (cpf || registro) {
-					jpql.append(" and ");
-				}
-				jpql.append(" UPPER(p.nome) like :nome escape :sc  ");
-				parametros.put("sc", "\\");
-				parametros.put("nome", "%" + profissionalFilter.getNome().replace("%", "\\%").toUpperCase() + "%");
-			}
-			if (status) {
-				if (cpf || registro || nome) {
-					jpql.append(" and ");
-				}
-				if (Situacao.ATIVO.getCodigo().equals(profissionalFilter.getStatusProfissional())) {
-					jpql.append(" p.dataExclusao ").append(Situacao.ATIVO.getQuery());
-				} else if (Situacao.INATIVO.getCodigo().equals(profissionalFilter.getStatusProfissional())) {
-					jpql.append(" p.dataExclusao ").append(Situacao.INATIVO.getQuery());
-				}
-			}
+			montarFiltroPaginado(jpql, parametros, profissionalFilter, cpf, registro, nome);
+			montarFiltroStatusPaginado(jpql, profissionalFilter, cpf, registro, nome, status);
 		}
 
+		montarFiltroDepRegional(jpql, parametros, segurancaFilter, cpf, registro, nome, status);
+
+		if (!count) {
+			jpql.append(" order by p.nome");
+		}
+	}
+
+	private void montarFiltroDepRegional(StringBuilder jpql, Map<String, Object> parametros,
+			DadosFilter segurancaFilter, boolean cpf, boolean registro, boolean nome, boolean status) {
 		if (segurancaFilter != null) {
 			if ((cpf || registro || nome || status) && (segurancaFilter.temIdsDepRegional())) {
 				jpql.append(" and ");
@@ -155,9 +124,59 @@ public class ProfissionalDAO extends BaseDAO<Profissional, Long> {
 				parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
 			}
 		}
+	}
 
-		if (!count) {
-			jpql.append(" order by p.nome");
+	private void montarFiltroStatusPaginado(StringBuilder jpql, ProfissionalFilter profissionalFilter, boolean cpf,
+			boolean registro, boolean nome, boolean status) {
+		if (status) {
+			if (cpf || registro || nome) {
+				jpql.append(" and ");
+			}
+			if (Situacao.ATIVO.getCodigo().equals(profissionalFilter.getStatusProfissional())) {
+				jpql.append(" p.dataExclusao ").append(Situacao.ATIVO.getQuery());
+			} else if (Situacao.INATIVO.getCodigo().equals(profissionalFilter.getStatusProfissional())) {
+				jpql.append(" p.dataExclusao ").append(Situacao.INATIVO.getQuery());
+			}
+		}
+	}
+
+	private void montarFiltroPaginado(StringBuilder jpql, Map<String, Object> parametros,
+			ProfissionalFilter profissionalFilter, boolean cpf, boolean registro, boolean nome) {
+		if (cpf) {
+			jpql.append(" upper(p.cpf) like :cpf escape :sc ");
+			parametros.put("sc", "\\");
+			parametros.put("cpf", profissionalFilter.getCpf().replace("%", "\\%").toUpperCase());
+		}
+
+		if (registro) {
+			if (cpf) {
+				jpql.append(" and ");
+			}
+			jpql.append(" UPPER(p.registro) like :registro escape :sc ");
+			parametros.put("sc", "\\");
+			parametros.put("registro",
+					"%" + profissionalFilter.getRegistro().replace("%", "\\%").toUpperCase() + "%");
+		}
+		if (nome) {
+			if (cpf || registro) {
+				jpql.append(" and ");
+			}
+			jpql.append(" UPPER(p.nome) like :nome escape :sc  ");
+			parametros.put("sc", "\\");
+			parametros.put("nome", "%" + profissionalFilter.getNome().replace("%", "\\%").toUpperCase() + "%");
+		}
+	}
+
+	private void montarJoinPaginado(StringBuilder jpql, boolean count, DadosFilter segurancaFilter) {
+		if (count) {
+			jpql.append(" select DISTINCT count(p.id)from Profissional p ");
+		} else {
+			jpql.append(" select DISTINCT p from Profissional p ");
+		}
+
+		if (segurancaFilter != null && segurancaFilter.temIdsDepRegional()) {
+			jpql.append(" left join p.listaUnidadeAtendimentoTrabalhadorProfissional profissionalUat ");
+			jpql.append(" left join profissionalUat.unidadeAtendimentoTrabalhador uat ");
 		}
 	}
 

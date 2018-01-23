@@ -58,8 +58,8 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
   tipoTela() {
     this.modoConsulta = !Seguranca.isPermitido(
       [PermissoesEnum.USUARIO_ENTIDADE, PermissoesEnum.USUARIO_ENTIDADE_ALTERAR,
-        PermissoesEnum.USUARIO_ENTIDADE_CADASTRAR,
-        PermissoesEnum.USUARIO_ENTIDADE_DESATIVAR]);
+      PermissoesEnum.USUARIO_ENTIDADE_CADASTRAR,
+      PermissoesEnum.USUARIO_ENTIDADE_DESATIVAR]);
   }
 
   pesquisar(): void {
@@ -90,11 +90,6 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
       if (this.usuario && !this.usuario.perfisSistema) {
         this.usuario.perfisSistema = new Array<UsuarioPerfilSistema>();
       }
-      // this.usuarioEntidadeService.validarAcessoUsuario(this.usuario.login).subscribe((usuarioEntidades: UsuarioEntidade[]) => {
-        
-      // }, (error) => {
-      //   this.router.navigate(['/acessonegado']);
-      // });
     }, (error) => {
       this.mensagemError(error);
     });
@@ -109,7 +104,7 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
   }
 
   private pesquisarUsuarioEntidadePaginado(filtro: FiltroUsuarioEntidade, paginacao: Paginacao): void {
-  
+
     this.usuarioEntidadeService.pesquisarPaginado(filtro, paginacao, MensagemProperties.app_rst_menu_empresa).
       subscribe((retorno: ListaPaginada<UsuarioEntidade>) => {
         if (retorno.quantidade > 0) {
@@ -179,7 +174,7 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
   }
 
   hasPermissao() {
-   return super.hasPermissao(PermissoesEnum.USUARIO_ENTIDADE) ||
-     super.hasPermissao(PermissoesEnum.USUARIO_ENTIDADE_CADASTRAR);
+    return super.hasPermissao(PermissoesEnum.USUARIO_ENTIDADE) ||
+      super.hasPermissao(PermissoesEnum.USUARIO_ENTIDADE_CADASTRAR);
   }
 }

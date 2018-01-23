@@ -30,7 +30,10 @@ public class IndicadorQuestionario extends AbstractData {
 
 	@Column(name = "DS_ORIENTACAO")
 	private String orientacao;
-
+	
+	@Column(name = "ds_incentivo")
+	private String incentivo;
+	
 	public Long getId() {
 		return id;
 	}
@@ -55,6 +58,15 @@ public class IndicadorQuestionario extends AbstractData {
 		this.orientacao = orientacao;
 	}
 	
+	
+	public String getIncentivo() {
+		return incentivo;
+	}
+
+	public void setIncentivo(String incentivo) {
+		this.incentivo = incentivo;
+	}
+
 	@PreUpdate
 	public void preUpdate() {
 		setDataAlteracao(new Date());

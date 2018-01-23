@@ -2,20 +2,20 @@ package br.com.ezvida.rst.dao.filter;
 
 import javax.ws.rs.QueryParam;
 
-public class CertificadoFilter extends FilterBase  {
-	
+public class CertificadoFilter extends FilterBase {
+
 	@QueryParam("id")
 	private Long id;
-	
+
 	@QueryParam("descricao")
 	private String descricao;
-	
+
 	@QueryParam("idTipoCurso")
 	private Long idTipoCurso;
-	
+
 	@QueryParam("idTrabalhador")
 	private Long idTrabalhador;
-	
+
 	@QueryParam("inclusaoTrabalhador")
 	private String inclusaoTrabalhador;
 
@@ -31,10 +31,6 @@ public class CertificadoFilter extends FilterBase  {
 		return descricao;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
 	public Long getIdTipoCurso() {
 		return idTipoCurso;
 	}
@@ -47,16 +43,8 @@ public class CertificadoFilter extends FilterBase  {
 		return idTrabalhador;
 	}
 
-	public void setIdTrabalhador(Long idTrabalhador) {
-		this.idTrabalhador = idTrabalhador;
-	}
-
 	public String getInclusaoTrabalhador() {
 		return inclusaoTrabalhador;
-	}
-
-	public void setInclusaoTrabalhador(String inclusaoTrabalhador) {
-		this.inclusaoTrabalhador = inclusaoTrabalhador;
 	}
 
 }

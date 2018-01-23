@@ -1,6 +1,14 @@
 package br.com.ezvida.rst.auditoria.model;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import br.com.ezvida.rst.utils.DateJsonDeserializer;
+import br.com.ezvida.rst.utils.DateTimeJsonSerializer;
 
 public class Auditoria implements Serializable {
 
@@ -21,12 +29,15 @@ public class Auditoria implements Serializable {
 	private String threadId;
 
 	private String sequence;
-	
-	private String timestamp;
+
+	@JsonDeserialize(using = DateJsonDeserializer.class)
+	@JsonSerialize(using = DateTimeJsonSerializer.class)
+	@JSONField(name = "@timestamp")
+	private Date timestamp;
 
 	private String port;
 
-
+	@JSONField(name = "@version")
 	private String version;
 
 	private String host;
@@ -97,11 +108,11 @@ public class Auditoria implements Serializable {
 		this.sequence = sequence;
 	}
 
-	public String getTimestamp() {
+	public Date getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(String timestamp) {
+	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
 
@@ -136,7 +147,5 @@ public class Auditoria implements Serializable {
 	public void setLoggerName(String loggerName) {
 		this.loggerName = loggerName;
 	}
-	
-	
 
 }

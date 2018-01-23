@@ -18,7 +18,7 @@ public class SindicatoEndpointTest {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SindicatoEndpointTest.class);
 
     @InjectMocks
-    private SindicatosEndpoint endpoint;
+    private SindicatoEndpoint endpoint;
 
     @Spy
     @InjectMocks

@@ -20,7 +20,7 @@ import br.com.ezvida.rst.service.PorteEmpresaService;
 import fw.web.endpoint.SegurancaEndpoint;
 
 @RequestScoped
-@Path("/private/v1/portesempresas")
+@Path("/private/v1/portes-empresas")
 public class PorteEmpresaEndpoint  extends SegurancaEndpoint<Token> {
 
 	private static final long serialVersionUID = 2315055955185142072L;

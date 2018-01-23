@@ -55,10 +55,10 @@ export class PesquisarParceiroCredenciadoComponent extends BaseComponent impleme
     }
 
     isConsultar() {
-        this.modoConsulta = !Seguranca.isPermitido([ PermissoesEnum.PARCEIRO_CREDENCIADA,
-            PermissoesEnum.PARCEIRO_CREDENCIADA_CADASTRAR,
-            PermissoesEnum.PARCEIRO_CREDENCIADA_ALTERAR,
-            PermissoesEnum.PARCEIRO_CREDENCIADA_DESATIVAR]);
+        this.modoConsulta = !Seguranca.isPermitido([PermissoesEnum.PARCEIRO_CREDENCIADA,
+        PermissoesEnum.PARCEIRO_CREDENCIADA_CADASTRAR,
+        PermissoesEnum.PARCEIRO_CREDENCIADA_ALTERAR,
+        PermissoesEnum.PARCEIRO_CREDENCIADA_DESATIVAR]);
     }
 
     pesquisar() {
@@ -127,6 +127,8 @@ export class PesquisarParceiroCredenciadoComponent extends BaseComponent impleme
         this.paginacao.pagina = event.page;
         this.service.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<Parceiro>) => {
             this.parceiros = retorno.list;
+        }, (error) => {
+            this.mensagemError(error);
         });
     }
 
@@ -138,7 +140,7 @@ export class PesquisarParceiroCredenciadoComponent extends BaseComponent impleme
     }
 
     incluir() {
-        this.router.navigate(['cadastrar'], {relativeTo: this.activatedRoute});
+        this.router.navigate(['cadastrar'], { relativeTo: this.activatedRoute });
     }
 
     formatarCpfCnpj(item: Parceiro) {
@@ -159,6 +161,6 @@ export class PesquisarParceiroCredenciadoComponent extends BaseComponent impleme
 
     hasPermissaoCadastro() {
         return Seguranca.isPermitido([PermissoesEnum.PARCEIRO_CREDENCIADA,
-            PermissoesEnum.PARCEIRO_CREDENCIADA_CADASTRAR]);
+        PermissoesEnum.PARCEIRO_CREDENCIADA_CADASTRAR]);
     }
 }

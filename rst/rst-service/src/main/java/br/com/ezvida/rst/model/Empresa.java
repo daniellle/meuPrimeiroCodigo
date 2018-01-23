@@ -1,6 +1,7 @@
 package br.com.ezvida.rst.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -19,6 +20,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -157,11 +159,23 @@ public class Empresa extends AbstractData {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
 	private Set<UnidadeObra> unidadeObra;
 
+	@Transient
+	private List<UnidadeAtendimentoTrabalhador> uats;
+
+	@Transient
+	private List<Sindicato> sindicatos;
+
 	public Empresa(Long id) {
 		this.id = id;
 	}
 	
 	public Empresa() {	}
+
+	public Empresa(Long id, String cnpjEmpresa, String razaoSocialEmpresa) {
+		this.id = id;
+		this.cnpj = cnpjEmpresa;
+		this.razaoSocial = razaoSocialEmpresa;
+	}
 
 	@PreUpdate
 	public void preUpdate() {
@@ -626,4 +640,21 @@ public class Empresa extends AbstractData {
 	public void setDataDesativacao(Date dataDesativacao) {
 		this.dataDesativacao = dataDesativacao;
 	}
+
+	public List<UnidadeAtendimentoTrabalhador> getUats() {
+		return uats;
+	}
+
+	public void setUats(List<UnidadeAtendimentoTrabalhador> uats) {
+		this.uats = uats;
+	}
+
+	public List<Sindicato> getSindicatos() {
+		return sindicatos;
+	}
+
+	public void setSindicatos(List<Sindicato> sindicatos) {
+		this.sindicatos = sindicatos;
+	}
+
 }
