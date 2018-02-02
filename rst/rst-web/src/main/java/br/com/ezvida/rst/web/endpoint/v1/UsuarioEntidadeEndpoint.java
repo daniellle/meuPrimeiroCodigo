@@ -21,6 +21,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import br.com.ezvida.rst.anotacoes.Preferencial;
 import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.constants.PermissionConstants;
 import br.com.ezvida.rst.dao.filter.UsuarioEntidadeFilter;
@@ -45,6 +46,7 @@ public class UsuarioEntidadeEndpoint extends SegurancaEndpoint<UsuarioEntidade> 
 	private UsuarioEntidadeService usuarioEntidadeService;
 
 	@Inject
+    @Preferencial
 	private UsuarioService usuarioService;
 
 	@GET

@@ -17,6 +17,8 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.core.MultivaluedMap;
 
+import br.com.ezvida.rst.dao.TrabalhadorDAO;
+import br.com.ezvida.rst.model.Trabalhador;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +56,10 @@ public class RESService extends BaseService {
     
     @Inject
     private ParametroService service;
+
+    @Inject
+    private TrabalhadorDAO trabalhadorDAO;
+
     @Inject
     private ResDAO resDao;
 
@@ -145,17 +151,19 @@ public class RESService extends BaseService {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Object buscarDadosPaciente(String cpf, ClienteAuditoria clienteAuditoria) {
         LogAuditoria.registrar(LOGGER, clienteAuditoria, "Buscando dados do trabalhador " + cpf);
-
-        Retrofit retro = new Retrofit.Builder().baseUrl(this.service.getRESUrl()).client(getOkHttpClient())
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        try {
-            Object resultado = retro.create(RESApi.class).buscarPaciente(this.autenticar(), cpf).execute().body();
-
-            return resultado;
-        } catch (IOException e) {
-        	LOGGER.error(e.getMessage());
-            return null;
-        }
+        Trabalhador t = trabalhadorDAO.pesquisarPorCpf(cpf);
+        return ImmutableMap.of("name",t.getNome(),"cpf",t.getCpf());
+//
+//        Retrofit retro = new Retrofit.Builder().baseUrl(this.service.getRESUrl()).client(getOkHttpClient())
+//                .addConverterFactory(GsonConverterFactory.create()).build();
+//        try {
+//            Object resultado = retro.create(RESApi.class).buscarPaciente(this.autenticar(), cpf).execute().body();
+//
+//            return resultado;
+//        } catch (IOException e) {
+//        	LOGGER.error(e.getMessage());
+//            return null;
+//        }
     }
 
     private Map<String, Object> buscarValorParaDado(String cpf, DadosArquetipo dado) {

@@ -1,7 +1,9 @@
 package br.com.ezvida.rst.utils;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import br.com.ezvida.rst.enums.Ambiente;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +16,12 @@ public class SegurancaUtils {
 	private static final String SHIB_SESSION_LOGIN = "Shib-Session-Login";
 	private static final Logger LOGGER = LoggerFactory.getLogger(SegurancaUtils.class);
 
-	public static String validarAutenticacao(HttpServletRequest request) {
-		if (System.getenv("SOLUTIS_DEV_ENV") != null) {
+
+	@Inject
+	private Ambiente ambiente;
+
+	public String validarAutenticacao(HttpServletRequest request) {
+		if (ambiente == Ambiente.DESENVOLVIMENTO){
 			LOGGER.warn(" UTILIZANDO SEGURANÇA DO AMBIENTE DE DESENVOLVIMENTO");
 			return "99999999999";
 		}

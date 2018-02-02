@@ -20,6 +20,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import br.com.ezvida.rst.anotacoes.Preferencial;
+import br.com.ezvida.rst.service.UsuarioService;
+import br.com.ezvida.rst.service.UsuarioServiceProd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +33,6 @@ import br.com.ezvida.rst.dao.filter.UsuarioFilter;
 import br.com.ezvida.rst.enums.Funcionalidade;
 import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.model.Usuario;
-import br.com.ezvida.rst.service.UsuarioService;
 import br.com.ezvida.rst.web.auditoria.ClienteInfos;
 import fw.security.binding.Autorizacao;
 import fw.security.binding.Permissao;
@@ -45,8 +47,9 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioEndpoint.class);
 
     @Inject
+    @Preferencial
     private UsuarioService usuarioService;
-    
+
     //@formatter:off
     @GET
     @Encoded
@@ -68,7 +71,7 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
         				.header("Content-Version", getApplicationVersion())
         				.entity(serializar(usuarioService.getUsuario(login))).build();
     }
-    
+
     @GET
     @Encoded
     @Path("/paginado")
@@ -87,7 +90,7 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
 						, ClienteInfos.getClienteInfos(context, request
 								, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS)))).build();
     }
-    
+
     @GET
     @Encoded
     @Path("/buscar")
@@ -105,7 +108,7 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
                 		,ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA
                 				,Funcionalidade.USUARIOS)))).build();
     }
-    
+
     @POST
     @Encoded
     @Produces(MediaType.APPLICATION_JSON)
@@ -119,7 +122,7 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
 						,ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.INCLUSAO
 								, Funcionalidade.USUARIOS) ))).build();
     }
-    
+
     @PUT
     @Encoded
     @Produces(MediaType.APPLICATION_JSON)
@@ -132,7 +135,7 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
                 .header("Content-Version", getApplicationVersion())
                 .type(MediaType.APPLICATION_JSON).build();
     }
-    
+
     @DELETE
 	@Encoded
 	@Path("/desativar")
@@ -146,7 +149,7 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
                 .header("Content-Version", getApplicationVersion())
                 .type(MediaType.APPLICATION_JSON).build();
     }
-    
+
 	//@formatter:off
     @GET
     @Encoded

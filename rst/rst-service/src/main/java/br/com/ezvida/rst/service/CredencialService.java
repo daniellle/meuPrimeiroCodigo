@@ -11,6 +11,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import br.com.ezvida.rst.anotacoes.Preferencial;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.oltu.oauth2.common.OAuth;
@@ -40,6 +41,7 @@ public class CredencialService extends BaseService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CredencialService.class);
 
     @Inject
+	@Preferencial
     private UsuarioService usuarioService;
     
     @Inject
@@ -48,11 +50,15 @@ public class CredencialService extends BaseService {
     @Inject
     private APIClientService apiClientService;
 
+
+    @Inject
+	private SegurancaUtils segurancaUtils;
+
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public Token validar(HttpServletRequest request) {
 
         try {
-			String login = SegurancaUtils.validarAutenticacao(request);
+			String login = segurancaUtils.validarAutenticacao(request);
 
 			LOGGER.debug("Solicitando autorizacao do usuario [ {} ]", login);
             

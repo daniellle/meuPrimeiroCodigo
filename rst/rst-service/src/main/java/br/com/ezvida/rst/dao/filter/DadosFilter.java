@@ -250,6 +250,10 @@ public class DadosFilter implements Serializable {
 		return gestorDn;
 	}
 
+	public boolean isSuperUsuario(){
+		return this.isAdministrador() || this.isGestorDn() | this.isDiretoriaDn();
+	}
+
 	public void setGestorDn(boolean gestorDn) {
 		this.gestorDn = gestorDn;
 	}

@@ -13,6 +13,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import br.com.ezvida.rst.anotacoes.Preferencial;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -66,6 +67,7 @@ public class TrabalhadorService extends BaseService {
 	private TrabalhadorDependenteService trabalhadorDependenteService;
 
 	@Inject
+    @Preferencial
 	private UsuarioService usuarioService;
 	
 	@Inject

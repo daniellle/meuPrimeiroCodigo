@@ -108,35 +108,38 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 	private void applicarFiltroPerfis(boolean count, UsuarioFilter usuarioFilter, StringBuilder jpql,
 			Map<String, Object> parametros, DadosFilter dados) {
 
-		if (dados != null && (dados.isGestorDr() || dados.isDiretoriaDr() || dados.isGestorDn()) ) {
-			if (dados.isGestorDr() || dados.isDiretoriaDr()) {
-				if (isFiltroAplicado()) {
-					jpql.append(" OR (");
-					aplicarFiltros(count, jpql, parametros, usuarioFilter);
-					setFiltroAplicado(true);
+		if (dados != null && !dados.isAdministrador()){
+
+			if( (dados.isGestorDr() || dados.isDiretoriaDr() || dados.isGestorDn()) ) {
+				if (dados.isGestorDr() || dados.isDiretoriaDr()) {
+					if (isFiltroAplicado()) {
+						jpql.append(" OR (");
+						aplicarFiltros(count, jpql, parametros, usuarioFilter);
+						setFiltroAplicado(true);
+					}
+					jpql.append(
+							"  and (codigo_perfil in ('GEEM', 'TRA')  and vw_usuario_entidade.id_empresa_fk IS NULL )) )");
+					jpql.append(" and codigo_perfil not in ('ADM', 'ATD', 'DIDN', 'DIDR', 'GDNA', 'GDNP', 'GDRA') ");
 				}
-				jpql.append(
-						"  and (codigo_perfil in ('GEEM', 'TRA')  and vw_usuario_entidade.id_empresa_fk IS NULL )) )"); 
-				jpql.append(" and codigo_perfil not in ('ADM', 'ATD', 'DIDN', 'DIDR', 'GDNA', 'GDNP', 'GDRA') ");
-			}
-			
-			if (dados.isGestorDn()) {
-				if (isFiltroAplicado()) {
-					jpql.append(" and ");
+
+				if (dados.isGestorDn()) {
+					if (isFiltroAplicado()) {
+						jpql.append(" and ");
+					}
+					jpql.append(
+							"  codigo_perfil not in ('ADM', 'ATD', 'GDNA') )");
 				}
-				jpql.append(
-						"  codigo_perfil not in ('ADM', 'ATD', 'GDNA') )");
+				return;
 			}
-			
-		} else {
-			jpql.append(")");
 		}
-		
+
+		jpql.append(")");
+
+
 	}
 
 	private void aplicarFiltrosDados(StringBuilder jpql, Map<String, Object> parametros, DadosFilter dados) {
-		if (dados != null) {
-
+		if (dados != null && !dados.isSuperUsuario()) {
 			if (dados.temIdsEmpresa()) {
 
 				adicionarAnd(jpql);
@@ -145,9 +148,9 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 				parametros.put("idsEmpresa", dados.getIdsEmpresa());
 				setFiltroAplicado(true);
 			}
-
 			if (dados.temIdsDepRegional()) {
-				adicionarAnd(jpql);
+				String conectorLogico  = dados.temIdsEmpresa() ? " OR " : isFiltroAplicado() ? " AND " : " ";
+				jpql.append(conectorLogico);
 				jpql.append(" (vw_usuario_entidade.id_departamento_regional_fk IN (:idsDepRegional) OR ");
 				jpql.append(" departamento_regional.id_departamento_regional IN (:idsDepRegional)) ");
 				parametros.put("idsDepRegional", dados.getIdsDepartamentoRegional());

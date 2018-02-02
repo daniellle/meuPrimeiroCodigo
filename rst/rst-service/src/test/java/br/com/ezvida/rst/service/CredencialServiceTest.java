@@ -33,7 +33,7 @@ public class CredencialServiceTest {
 
     @Spy
     @InjectMocks
-    private UsuarioService usuarioService;
+    private UsuarioServiceProd usuarioService;
 
     @Mock
     private UsuarioDAO usuarioDAO;
@@ -62,7 +62,7 @@ public class CredencialServiceTest {
     @Test
     public void validar() throws Exception {
 
-//        LOGGER.debug("UsuarioService {}", usuarioService);
+//        LOGGER.debug("UsuarioServiceProd {}", usuarioService);
 //        LOGGER.debug("UsuarioDAO {}", usuarioDAO);
 //
 //        String token = ChaveSeguranca.getInstance()

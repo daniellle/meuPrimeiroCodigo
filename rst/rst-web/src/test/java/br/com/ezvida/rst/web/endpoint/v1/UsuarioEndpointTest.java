@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import br.com.ezvida.rst.dao.UsuarioDAO;
 import br.com.ezvida.rst.enums.Ambiente;
-import br.com.ezvida.rst.service.UsuarioService;
+import br.com.ezvida.rst.service.UsuarioServiceProd;
 import fw.core.common.encode.Decoder;
 
 //@RunWith(MockitoJUnitRunner.class)
@@ -35,7 +35,7 @@ public class UsuarioEndpointTest {
 
     @Spy
     @InjectMocks
-    private UsuarioService service;
+    private UsuarioServiceProd service;
 
     @Mock
     private UsuarioDAO dao;

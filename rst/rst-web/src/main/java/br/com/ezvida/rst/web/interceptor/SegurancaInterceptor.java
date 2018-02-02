@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.inject.Inject;
 import javax.interceptor.InvocationContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,6 +35,9 @@ abstract class SegurancaInterceptor implements Serializable {
 
 	private static final long serialVersionUID = 2084625442842225421L;
 
+	@Inject
+    private SegurancaUtils segurancaUtils;
+
 	Payload validarAutenticacao(InvocationContext context) throws OAuthProblemException, OAuthSystemException, UnsupportedEncodingException {
 
 		Optional<Object> optional = Arrays.stream(context.getParameters()).filter(parametro -> parametro instanceof HttpServletRequest).findAny();
@@ -44,7 +48,7 @@ abstract class SegurancaInterceptor implements Serializable {
 
 		HttpServletRequest request = (HttpServletRequest) optional.get();
 
-		String login = SegurancaUtils.validarAutenticacao(request);
+		String login = segurancaUtils.validarAutenticacao(request);
 
 		Map<TipoOAuth, String> token = getAccessToken(request);
 
