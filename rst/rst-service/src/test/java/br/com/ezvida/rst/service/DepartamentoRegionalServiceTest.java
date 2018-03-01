@@ -142,7 +142,7 @@ public class DepartamentoRegionalServiceTest extends BaseService {
 			DepartamentoRegional departamentoRegional = new DepartamentoRegional();
 
 			this.auditoria.setTipoOperacao(TipoOperacaoAuditoria.INCLUSAO);
-			departamentoRegionalService.salvar(departamentoRegional, this.auditoria);
+			departamentoRegionalService.salvar(departamentoRegional, this.auditoria, new DadosFilter());
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}
@@ -158,7 +158,7 @@ public class DepartamentoRegionalServiceTest extends BaseService {
 			DepartamentoRegional departamentoRegional = new DepartamentoRegional();
 			departamentoRegional.setId(1L);
 			this.auditoria.setTipoOperacao(TipoOperacaoAuditoria.ALTERACAO);
-			departamentoRegionalService.salvar(departamentoRegional, this.auditoria);
+			departamentoRegionalService.salvar(departamentoRegional, this.auditoria, new DadosFilter());
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}
@@ -176,7 +176,7 @@ public class DepartamentoRegionalServiceTest extends BaseService {
 			departamentoRegional.setDataCriacao(new Date());
 
 			this.auditoria.setTipoOperacao(TipoOperacaoAuditoria.INCLUSAO);
-			departamentoRegionalService.salvar(departamentoRegional, this.auditoria);
+			departamentoRegionalService.salvar(departamentoRegional, this.auditoria, new DadosFilter());
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}
@@ -200,7 +200,7 @@ public class DepartamentoRegionalServiceTest extends BaseService {
 					.pesquisarPorCNPJ(departamentoRegional.getCnpj());
 
 			this.auditoria.setTipoOperacao(TipoOperacaoAuditoria.INCLUSAO);
-			departamentoRegionalService.salvar(departamentoRegional, this.auditoria);
+			departamentoRegionalService.salvar(departamentoRegional, this.auditoria, new DadosFilter());
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}

@@ -84,86 +84,86 @@ export class CadastroUatComponent extends BaseComponent implements OnInit {
   createForm() {
     this.formulario = this.formBuilder.group({
       cnpj: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.maxLength(18),
           ValidateCNPJ,
         ]),
       ],
       razaoSocial: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required,
           Validators.maxLength(160),
         ]),
       ],
       nomeFantasia: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required,
           Validators.maxLength(160),
         ]),
       ],
       endereco: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required,
           Validators.maxLength(100),
         ]),
       ],
       complemento: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.maxLength(100),
         ]),
       ],
       numeroEnd: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.maxLength(5),
         ]),
       ],
       numero: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required,
           Validators.maxLength(14),
         ]),
       ],
       tipo: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required,
         ]),
       ],
       contato: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required,
         ]),
       ],
       bairro: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.maxLength(50),
         ]),
       ],
       cep: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required,
           Validators.maxLength(10),
         ]),
       ],
       municipio: [
-        { value: null, disabled: true },
+        { value: null, disabled: true || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required,
           Validators.maxLength(50),
         ]),
       ],
       estado: [
-        { value: undefined, disabled: this.modoConsulta },
+        { value: undefined, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required,
           Validators.maxLength(100),
@@ -183,19 +183,19 @@ export class CadastroUatComponent extends BaseComponent implements OnInit {
         ]),
       ],
       nomeResponsavel: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.maxLength(160),
         ]),
       ],
       dtdesligamento: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           ValidateData,
         ]),
       ],
       depRegional: [
-        { value: undefined, disabled: this.modoConsulta },
+        { value: undefined, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required,
         ]),
@@ -301,7 +301,7 @@ export class CadastroUatComponent extends BaseComponent implements OnInit {
   setMunicipio() {
     if (this.uat.endereco) {
       this.pesquisarMunicipiosPorEstado(this.uat.endereco[0].endereco.municipio.estado.id);
-      if (!this.modoConsulta) {
+      if (!this.modoConsulta && this.isPermitidoEditar()) {
         this.formulario.controls['municipio'].enable();
       }
     }
@@ -476,7 +476,7 @@ export class CadastroUatComponent extends BaseComponent implements OnInit {
       }
     }
     // Data desativação
-    if (!this.isVazia(this.formulario.controls['dtdesligamento'].value) ) {
+    if (!this.isVazia(this.formulario.controls['dtdesligamento'].value)) {
       if (this.formulario.controls['dtdesligamento'].errors && this.formulario.controls['dtdesligamento'].errors.validData) {
         this.mensagemErroComParametros('app_rst_campo_invalido', this.formulario.controls['dtdesligamento'],
           MensagemProperties.app_rst_labels_data_desativacao);
@@ -568,7 +568,7 @@ export class CadastroUatComponent extends BaseComponent implements OnInit {
     this.formulario.patchValue({
       municipio: null,
     });
-    if (this.formulario.controls['estado'].value && this.formulario.controls['estado'].value !== 0 && !this.modoConsulta) {
+    if (this.formulario.controls['estado'].value && this.formulario.controls['estado'].value !== 0 && !this.modoConsulta && this.isPermitidoEditar()) {
       this.formulario.controls['municipio'].enable();
       this.pesquisarMunicipiosPorEstado(this.formulario.controls['estado'].value);
     } else {
@@ -590,7 +590,7 @@ export class CadastroUatComponent extends BaseComponent implements OnInit {
     if (this.modoAlterar && !this.formulario.controls['estado'].value) {
       this.formulario.controls['municipio'].disable();
     }
-    if (this.modoAlterar && this.formulario.controls['estado'].value && !this.modoConsulta) {
+    if (this.modoAlterar && this.formulario.controls['estado'].value && !this.modoConsulta && this.isPermitidoEditar()) {
       this.formulario.controls['municipio'].enable();
     }
   }
@@ -601,6 +601,14 @@ export class CadastroUatComponent extends BaseComponent implements OnInit {
     } else {
       this.router.navigate([`${environment.path_raiz_cadastro}/uat`]);
     }
+  }
+
+  isPermitidoEditar(): boolean {
+    return this.usuarioLogado.papeis.length >= 1 &&
+      this.usuarioLogado.papeis.indexOf('GDNA') === -1
+      && this.usuarioLogado.papeis.indexOf('GDNP') === -1
+      && this.usuarioLogado.papeis.indexOf('GDRA') === -1
+      && this.usuarioLogado.papeis.indexOf('GDRP') === -1;
   }
 
 }

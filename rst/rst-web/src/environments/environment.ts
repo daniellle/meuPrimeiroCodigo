@@ -5,12 +5,12 @@
 
 export const environment = {
     production: false,
-    api_private: 'http://127.0.0.1:8080/rst/api/private',
-    api_public: 'http://127.0.0.1:8080/rst/api/public',
-    url_portal: 'https://sp.duendeverde.itoc.solutis.net.br',
+    api_private: 'http://localhost:8080/rst/api/private',
+    api_public: 'http://localhost:8080/rst/api/public',
+    url_portal: 'http://localhost:8080',
     path_raiz_cadastro: 'cadastro',
     path_raiz: '',
     baseHref: '/',
     exibirMenu: true,
-    exibirWS: true,
+    exibirWS: true
 };

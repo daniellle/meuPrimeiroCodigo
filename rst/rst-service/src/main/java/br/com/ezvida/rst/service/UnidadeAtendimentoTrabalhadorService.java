@@ -99,7 +99,7 @@ public class UnidadeAtendimentoTrabalhadorService extends BaseService {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public UnidadeAtendimentoTrabalhador salvar(UnidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador,
-			ClienteAuditoria auditoria) {
+			ClienteAuditoria auditoria, DadosFilter dados) {
 
 		String descricaoAuditoria = "Cadastro de Unidade de Atendimento ao Trabalhador ";
 		if (unidadeAtendimentoTrabalhador.getId() != null) {
@@ -107,11 +107,13 @@ public class UnidadeAtendimentoTrabalhadorService extends BaseService {
 		}
 
 		validar(unidadeAtendimentoTrabalhador);
-		unidadeAtendimentoTrabalhadorDAO.salvar(unidadeAtendimentoTrabalhador);
+
+		if (!dados.isGestorDn() && !dados.isGestorDr()) {
+			unidadeAtendimentoTrabalhadorDAO.salvar(unidadeAtendimentoTrabalhador);
+			enderecoUnidadeAtendimentoTrabalhadorService.salvar(unidadeAtendimentoTrabalhador.getEndereco(), unidadeAtendimentoTrabalhador);
+		}
 
 		emailUnidadeAtendimentoTrabalhadorService.salvar(unidadeAtendimentoTrabalhador.getEmail(),
-				unidadeAtendimentoTrabalhador);
-		enderecoUnidadeAtendimentoTrabalhadorService.salvar(unidadeAtendimentoTrabalhador.getEndereco(),
 				unidadeAtendimentoTrabalhador);
 		telefoneUnidadeAtendimentoTrabalhadorService.salvar(unidadeAtendimentoTrabalhador.getTelefone(),
 				unidadeAtendimentoTrabalhador);

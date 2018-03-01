@@ -1,12 +1,11 @@
 package br.com.ezvida.rst.producer;
 
+import javax.enterprise.inject.Produces;
+
 import br.com.ezvida.rst.anotacoes.Preferencial;
 import br.com.ezvida.rst.anotacoes.Prod;
 import br.com.ezvida.rst.enums.Ambiente;
 import br.com.ezvida.rst.service.UsuarioService;
-import br.com.ezvida.rst.service.UsuarioServiceDev;
-
-import javax.enterprise.inject.Produces;
 
 public class UsuarioProducer {
 
@@ -15,7 +14,8 @@ public class UsuarioProducer {
     @Preferencial
     public UsuarioService produceUsuarioService(Ambiente ambiente, @Prod UsuarioService service){
         if(ambiente == Ambiente.DESENVOLVIMENTO){
-            return new UsuarioServiceDev();
+			// return new UsuarioServiceDev();
+			return service;
         }else{
             return service;
         }

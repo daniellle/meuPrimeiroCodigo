@@ -129,7 +129,7 @@ public class EmpresaService extends BaseService {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public Empresa salvar(Empresa empresa, ClienteAuditoria auditoria) {
+	public Empresa salvar(Empresa empresa, ClienteAuditoria auditoria, DadosFilter dadosFilter) {
 		String descricaoAuditoria = "Cadastro de empresa: ";
 		if (empresa.getId() != null) {
 			descricaoAuditoria = "Alteração no cadastro de empresa: ";
@@ -140,14 +140,30 @@ public class EmpresaService extends BaseService {
 			empresaTrabalhadorDAO.inativar(empresa.getId());
 		}
 
-		empresaDAO.salvar(empresa);
+		if (!dadosFilter.isGestorEmpresa()) {
+			empresaDAO.salvar(empresa);
+			emailEmpresaService.salvar(empresa.getEmailsEmpresa(), empresa);
+			enderecoEmpresaService.salvar(empresa.getEnderecosEmpresa(), empresa);
+			telefoneEmpresaService.salvar(empresa.getTelefoneEmpresa(), empresa);
+			empresaUatService.salvar(empresa.getEmpresaUats(), empresa);
+			empresaCnaeService.salvar(empresa.getEmpresaCnaes(), empresa);
+			unidadeObraService.salvar(empresa.getUnidadeObra(), empresa);
+		} else if (empresa.getId() != null) {
+			Empresa emp = empresaDAO.pesquisarPorId(empresa.getId(), dadosFilter);
+			emp.setNomeContato(empresa.getNomeContato());
+			emp.setNumeroNitContato(empresa.getNumeroNitContato());
+			emp.setDescricaCargoContato(empresa.getDescricaCargoContato());
+			emp.setNumeroTelefoneContato(empresa.getNumeroTelefoneContato());
+			emp.setEmailContato(empresa.getEmailContato());
+			emp.setNomeResponsavel(empresa.getNomeResponsavel());
+			emp.setNumeroNitResponsavel(empresa.getNumeroNitResponsavel());
+			emp.setEmailResponsavel(empresa.getEmailResponsavel());
+			emp.setNumeroTelefone(empresa.getNumeroTelefone());
+			empresaDAO.salvar(emp);
+			emailEmpresaService.salvar(empresa.getEmailsEmpresa(), empresa);
+			telefoneEmpresaService.salvar(empresa.getTelefoneEmpresa(), empresa);
+		}
 
-		emailEmpresaService.salvar(empresa.getEmailsEmpresa(), empresa);
-		enderecoEmpresaService.salvar(empresa.getEnderecosEmpresa(), empresa);
-		telefoneEmpresaService.salvar(empresa.getTelefoneEmpresa(), empresa);
-		empresaUatService.salvar(empresa.getEmpresaUats(), empresa);
-		empresaCnaeService.salvar(empresa.getEmpresaCnaes(), empresa);
-		unidadeObraService.salvar(empresa.getUnidadeObra(), empresa);
 
 		LogAuditoria.registrar(LOGGER, auditoria,  descricaoAuditoria, empresa);
 		return empresa;

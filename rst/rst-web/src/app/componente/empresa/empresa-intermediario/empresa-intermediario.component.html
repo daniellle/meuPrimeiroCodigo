@@ -7,7 +7,7 @@
                     <md-option>
                         <option value="{{null}}">{{ 'app_rst_labels_selecione' | recurso }}</option>
                     </md-option>
-                    <md-option *ngFor='let empresa of empresasUsuario' [value]="empresa">{{empresa.razaoSocial}}
+                    <md-option *ngFor='let empresa of empresasUsuario' [value]="empresa">{{empresa.razaoSocial}} - {{empresa.cnpj}}
                     </md-option>
                 </md-select>
             </div>

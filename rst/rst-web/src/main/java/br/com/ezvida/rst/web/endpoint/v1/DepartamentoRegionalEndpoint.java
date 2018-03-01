@@ -109,8 +109,9 @@ public class DepartamentoRegionalEndpoint extends SegurancaEndpoint<Departamento
 	public Response cadastrar(@Encoded DepartamentoRegional departamentoRegional, @Context SecurityContext context
 			, @Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_CREATED).entity(departamentoRegionalService
-				.salvar(departamentoRegional,ClienteInfos.getClienteInfos(context, request,
-						TipoOperacaoAuditoria.INCLUSAO, Funcionalidade.DEPARTAMENTO_REGIONAL)))
+				.salvar(departamentoRegional,
+						ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.INCLUSAO, Funcionalidade.DEPARTAMENTO_REGIONAL),
+						ClienteInfos.getDadosFilter(context)))
 				.type(MediaType.APPLICATION_JSON).build();
 	}
 
@@ -123,8 +124,9 @@ public class DepartamentoRegionalEndpoint extends SegurancaEndpoint<Departamento
 	public Response alterar(@Encoded DepartamentoRegional departamentoRegional, @Context SecurityContext context
 			, @Context HttpServletRequest request) {		
 		return Response.status(HttpServletResponse.SC_OK).entity(departamentoRegionalService
-				.salvar(departamentoRegional,ClienteInfos.getClienteInfos(context, request,
-						TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.DEPARTAMENTO_REGIONAL)))
+				.salvar(departamentoRegional,
+						ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.DEPARTAMENTO_REGIONAL),
+						ClienteInfos.getDadosFilter(context)))
 				.type(MediaType.APPLICATION_JSON)
 				.build();
 	}

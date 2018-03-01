@@ -7,6 +7,7 @@ import { Trabalhador } from './../../../modelo/trabalhador.model';
 import { TrabalhadorService } from 'app/servico/trabalhador.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { Usuario } from 'app/modelo/usuario.model';
 
 @Component({
   selector: 'app-trabalhador-intermediario',
@@ -19,6 +20,7 @@ export class TrabalhadorIntermediarioComponent implements OnInit {
   public trabalhador: Trabalhador;
   public cpfFormatdo: string;
   public meusdados: boolean;
+  public usuarioLogado: Usuario;
 
   constructor(
     private router: Router,
@@ -29,7 +31,7 @@ export class TrabalhadorIntermediarioComponent implements OnInit {
 
   ngOnInit() {
     this.trabalhador = new Trabalhador();
-
+    this.usuarioLogado = Seguranca.getUsuario();
     this.meusdados = this.activatedRoute.snapshot.params.id === 'meusdados';
     if (this.meusdados) {
       this.service.buscarMeusDados().subscribe((trabalhador) => {
@@ -42,6 +44,10 @@ export class TrabalhadorIntermediarioComponent implements OnInit {
         this.buscar();
       }
     }
+  }
+
+  hasPermissionSaude() {
+    return (this.usuarioLogado.sub === this.trabalhador.cpf);
   }
 
   mudarPagina(tipo) {

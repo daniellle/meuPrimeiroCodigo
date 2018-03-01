@@ -3,11 +3,11 @@ package br.com.ezvida.rst.utils;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import br.com.ezvida.rst.enums.Ambiente;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.ezvida.rst.enums.Ambiente;
 import fw.security.exception.UnauthenticatedException;
 
 public class SegurancaUtils {
@@ -23,7 +23,11 @@ public class SegurancaUtils {
 	public String validarAutenticacao(HttpServletRequest request) {
 		if (ambiente == Ambiente.DESENVOLVIMENTO){
 			LOGGER.warn(" UTILIZANDO SEGURANÇA DO AMBIENTE DE DESENVOLVIMENTO");
-			return "99999999999";
+			// return "65020081515"; // administrador
+			// return "15138902040"; // gestor dn
+			// return "01863352538"; // gestor dr
+			return "92883645361"; // gestor empresa
+			// return "46335766744"; // trabalhador
 		}
 		LOGGER.debug("SessionLogin {}", request.getAttribute(SHIB_SESSION_LOGIN));
 		if (request.getAttribute(SHIB_SESSION_ID) == null || request.getAttribute(SHIB_SESSION_LOGIN) == null) {

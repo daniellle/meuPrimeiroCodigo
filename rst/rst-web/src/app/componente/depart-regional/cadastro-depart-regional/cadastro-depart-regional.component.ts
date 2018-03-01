@@ -161,25 +161,25 @@ export class CadastroDepartRegionalComponent extends BaseComponent implements On
   createForm() {
     this.formulario = this.formBuilder.group({
       cnpj: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required, ValidateCNPJ,
         ]),
       ],
       siglaDr: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.maxLength(2),
         ]),
       ],
       nomeFantasia: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.maxLength(80),
         ]),
       ],
       razaoSocial: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required,
           Validators.maxLength(150),
@@ -192,59 +192,59 @@ export class CadastroDepartRegionalComponent extends BaseComponent implements On
         ]),
       ],
       endereco: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required,
           Validators.maxLength(100),
         ]),
       ],
       complemento: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.maxLength(100),
         ]),
       ],
       numeroEnd: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.maxLength(5),
         ]),
       ],
       bairro: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.maxLength(50),
         ]),
       ],
       estado: [
-        { value: undefined, disabled: this.modoConsulta },
+        { value: undefined, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required,
           Validators.maxLength(100),
         ]),
       ],
       municipio: [
-        { value: null, disabled: true },
+        { value: null, disabled: true || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required,
           Validators.maxLength(50),
         ]),
       ],
       cep: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required,
           Validators.maxLength(10),
         ]),
       ],
       tipo: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required,
         ]),
       ],
       numero: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           Validators.required,
           Validators.maxLength(14),
@@ -257,7 +257,7 @@ export class CadastroDepartRegionalComponent extends BaseComponent implements On
         ]),
       ],
       dtDesativacao: [
-        { value: null, disabled: this.modoConsulta },
+        { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
           ValidateData, ValidateDataFutura,
         ]),
@@ -282,7 +282,7 @@ export class CadastroDepartRegionalComponent extends BaseComponent implements On
 
   emModoIncluir() {
     this.modoIncluir = Boolean(Seguranca.isPermitido([PermissoesEnum.DEPARTAMENTO_REGIONAL,
-      PermissoesEnum.DEPARTAMENTO_REGIONAL_CADASTRAR]));
+    PermissoesEnum.DEPARTAMENTO_REGIONAL_CADASTRAR]));
   }
 
   emModoConsulta() {
@@ -613,5 +613,11 @@ export class CadastroDepartRegionalComponent extends BaseComponent implements On
     if (this.departamentoRegional.listaEndDepRegional) {
       this.pesquisarMunicipiosPorEstado(this.departamentoRegional.listaEndDepRegional[0].endereco.municipio.estado.id);
     }
+  }
+
+  isPermitidoEditar(): boolean {
+    return this.usuarioLogado.papeis.length >= 1
+      && this.usuarioLogado.papeis.indexOf('GDRA') === -1
+      && this.usuarioLogado.papeis.indexOf('GDRP') === -1;
   }
 }

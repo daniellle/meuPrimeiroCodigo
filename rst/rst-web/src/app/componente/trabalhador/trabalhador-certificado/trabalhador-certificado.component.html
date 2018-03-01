@@ -90,7 +90,7 @@
 
 <div class="container-form space-up">
     <div class="container-subtitulo">
-        <p>{{'app_rst_labels_certificados_adicionados' | recurso}}</p>
+        <p>{{'app_rst_labels_certificados__adicionados_empresa' | recurso}}</p>
     </div>
     <span *ngIf="!isNotEmpty(listaCertificados)">{{'app_rst_nenhum_registro_encontrado' | recurso}}</span>
     <div class="row grid-pesquisa" *ngIf="isNotEmpty(listaCertificados)">
@@ -123,40 +123,10 @@
         </div>
     </div>
 </div>
-<div *ngIf="temPerfilTrabalhador() && (meusDados || meusCertificados)">
-    <div class="container-form space-up">
-        <div class="container-subtitulo">
-            <p>{{'app_rst_labels_certificados_adicionais' | recurso}}</p>
-        </div>
-        <form novalidate #formCertificadoTrabalhador="ngForm">
-            <div class="corpo-card">
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <md-input-container [floatPlaceholder]="true">
-                            <div class="input-group searchlupa">
-                                <input disabled mdInput required placeholder="{{'app_rst_labels_certificado' | recurso}}" name="nomeArquivoTrabalhador" id="nomeArquivoTrabalhador" [(ngModel)]="nomeArquivoTrabalhador" type="text" class="form-control">
-
-                                <label *ngIf="!existeArquivo()" for='arquivoTrabalhador' class="btn-img"><span class="fa fa-search btn-add-certificado"  aria-hidden="true"></span></label>
-                                <label *ngIf="existeArquivo()" for='fake' class="btn-img"><span class="fa fa-times btn-add-certificado"  (click)="removerUpload()" aria-hidden="true"></span></label>
-                            </div>
-                            <input #inputFileTrabalhador required id='arquivoTrabalhador' name="arquivoTrabalhador" style="display: none" accept="images/.png, .jpg, .jpeg, .tif, .pdf" type="file" (change)=fileChanged($event)>
-                        </md-input-container>
-                        <div class="fontSize">
-                            {{labelTamanhoArquivo}}
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="btn-rodape-acoes space-up">
-        <button type="button " class="btn-rodape btn btn-primary btn-cadastro " *ngIf="temPerfilTrabalhador() && (meusDados || meusCertificados)" (click)="salvarArquivoTrabalhador(formCertificadoTrabalhador)">{{'app_rst_btn_salvar' | recurso}}</button>
-    </div>
-</div>
 <div class="container-form space-up" *ngIf="isNotEmpty(listaCertificadosTrabalhador)">
-    <div class="container-subtitulo" *ngIf="!(temPerfilTrabalhador() && (meusDados || meusCertificados))">
-        <p>{{'app_rst_labels_certificados_adicionais' | recurso}}</p>
+    <div class="container-subtitulo">
+        <p *ngIf="!(temPerfilTrabalhador() && (meusDados || meusCertificados))">{{'app_rst_labels_certificados__adicionados_trabalhador' | recurso}}</p>
+        <p *ngIf="(temPerfilTrabalhador() && (meusDados || meusCertificados))">{{'app_rst_labels_certificados__adicionados_mim' | recurso}}</p>
     </div>
     <div class="row grid-pesquisa">
         <div class="col-12">
@@ -183,6 +153,38 @@
         </div>
     </div>
 </div>
+<div *ngIf="temPerfilTrabalhador() && (meusDados || meusCertificados)">
+    <div class="container-form space-up">
+        <div class="container-subtitulo">
+            <p>{{'app_rst_labels_adicionar_certificados' | recurso}}</p>
+        </div>
+        <form novalidate #formCertificadoTrabalhador="ngForm">
+            <div class="corpo-card">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <md-input-container [floatPlaceholder]="true">
+                            <div class="input-group searchlupa">
+                                <input disabled mdInput required placeholder="{{'app_rst_labels_certificado' | recurso}}" name="nomeArquivoTrabalhador" id="nomeArquivoTrabalhador" [(ngModel)]="nomeArquivoTrabalhador" type="text" class="form-control">
+
+                                <label *ngIf="!existeArquivo()" for='arquivoTrabalhador' class="btn-img"><span class="fa fa-cloud-upload btn-add-certificado"  aria-hidden="true"></span></label>
+                                <label *ngIf="existeArquivo()" for='fake' class="btn-img"><span class="fa fa-times btn-add-certificado"  (click)="removerUpload()" aria-hidden="true"></span></label>
+                            </div>
+                            <input #inputFileTrabalhador required id='arquivoTrabalhador' name="arquivoTrabalhador" style="display: none" accept="images/.png, .jpg, .jpeg, .tif, .pdf" type="file" (change)=fileChanged($event)>
+                        </md-input-container>
+                        <div class="fontSize">
+                            {{labelTamanhoArquivo}}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="btn-rodape-acoes space-up">
+        <button type="button " class="btn-rodape btn btn-primary btn-cadastro " *ngIf="temPerfilTrabalhador() && (meusDados || meusCertificados)" (click)="salvarArquivoTrabalhador(formCertificadoTrabalhador)">{{'app_rst_btn_salvar' | recurso}}</button>
+    </div>
+</div>
+
 
 
 

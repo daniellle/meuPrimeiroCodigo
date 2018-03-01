@@ -61,10 +61,10 @@ public class UnidadeAtendimentoTrabalhadorEndpoint extends SegurancaEndpoint<Uni
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.CAT, PermissionConstants.CAT_CADASTRAR }))
 	public Response cadastrar(@Encoded UnidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador, @Context SecurityContext context
 			, @Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED).entity(
-				unidAtendTrabalhadorService.salvar(unidadeAtendimentoTrabalhador, 
-						ClienteInfos.getClienteInfos(context, request,
-								TipoOperacaoAuditoria.INCLUSAO,Funcionalidade.CAT)))
+		return Response.status(HttpServletResponse.SC_CREATED)
+				.entity(unidAtendTrabalhadorService.salvar(unidadeAtendimentoTrabalhador,
+						ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.INCLUSAO, Funcionalidade.CAT),
+						ClienteInfos.getDadosFilter(context)))
 				.type(MediaType.APPLICATION_JSON).build();
 	}
 
@@ -107,10 +107,11 @@ public class UnidadeAtendimentoTrabalhadorEndpoint extends SegurancaEndpoint<Uni
 	@Autorizacao(permissoes = @Permissao(value = {  PermissionConstants.CAT, PermissionConstants.CAT_ALTERAR }))
 	public Response alterar(@Encoded UnidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador
 			,@Context SecurityContext context, @Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_OK).entity(
-				unidAtendTrabalhadorService.salvar(unidadeAtendimentoTrabalhador, 
-						ClienteInfos.getClienteInfos(context, request,
-								TipoOperacaoAuditoria.ALTERACAO,Funcionalidade.CAT))).type(MediaType.APPLICATION_JSON).build();
+		return Response.status(HttpServletResponse.SC_OK)
+				.entity(unidAtendTrabalhadorService.salvar(unidadeAtendimentoTrabalhador,
+						ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.CAT),
+						ClienteInfos.getDadosFilter(context)))
+				.type(MediaType.APPLICATION_JSON).build();
 	}
 
 	@GET

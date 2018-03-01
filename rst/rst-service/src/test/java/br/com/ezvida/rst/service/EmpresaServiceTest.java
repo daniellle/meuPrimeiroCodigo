@@ -118,7 +118,7 @@ public class EmpresaServiceTest extends BaseService {
 		try {
 			Empresa empresa = new Empresa();
 			this.auditoria.setTipoOperacao(TipoOperacaoAuditoria.INCLUSAO);
-			empresaService.salvar(empresa, auditoria);
+			empresaService.salvar(empresa, auditoria, new DadosFilter());
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}
@@ -134,7 +134,7 @@ public class EmpresaServiceTest extends BaseService {
 			Empresa empresa = new Empresa();
 			empresa.setId(1L);
 			this.auditoria.setTipoOperacao(TipoOperacaoAuditoria.ALTERACAO);
-			empresaService.salvar(empresa, auditoria);
+			empresaService.salvar(empresa, auditoria, new DadosFilter());
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}
@@ -151,7 +151,7 @@ public class EmpresaServiceTest extends BaseService {
 			empresa.setCnpj("11111111111111");
 			empresa.setDataCriacao(new Date());
 			this.auditoria.setTipoOperacao(TipoOperacaoAuditoria.INCLUSAO);
-			empresaService.salvar(empresa, auditoria);
+			empresaService.salvar(empresa, auditoria, new DadosFilter());
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}
@@ -174,7 +174,7 @@ public class EmpresaServiceTest extends BaseService {
 			Mockito.doReturn(empresaCadastrado).when(empresaDAO).pesquisarPorCNPJ(empresa.getCnpj());
 
 			this.auditoria.setTipoOperacao(TipoOperacaoAuditoria.INCLUSAO);
-			empresaService.salvar(empresa, auditoria);
+			empresaService.salvar(empresa, auditoria, new DadosFilter());
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}
@@ -192,7 +192,7 @@ public class EmpresaServiceTest extends BaseService {
 			empresa.setNumeroNitContato("88540602031");
 			empresa.setDataCriacao(new Date());
 			this.auditoria.setTipoOperacao(TipoOperacaoAuditoria.INCLUSAO);
-			empresaService.salvar(empresa, auditoria);
+			empresaService.salvar(empresa, auditoria, new DadosFilter());
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}
@@ -210,7 +210,7 @@ public class EmpresaServiceTest extends BaseService {
 			empresa.setNumeroNitResponsavel("88540602031");
 			empresa.setDataCriacao(new Date());
 			this.auditoria.setTipoOperacao(TipoOperacaoAuditoria.INCLUSAO);
-			empresaService.salvar(empresa, auditoria);
+			empresaService.salvar(empresa, auditoria, new DadosFilter());
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}

@@ -83,6 +83,7 @@ export class TrabalhadorCertificadoComponent extends BaseComponent implements On
     this.getListaTipoCurso();
     this.emModoConsulta();
     this.getParametro();
+    this.temPerfilTrabalhador();
   }
 
   carregarTela() {
@@ -380,6 +381,7 @@ export class TrabalhadorCertificadoComponent extends BaseComponent implements On
         }
       });
     }
+    console.log(temPerfilTrab);
     return temPerfilTrab;
   }
 

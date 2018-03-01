@@ -138,7 +138,7 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
             this.ramosEmpresa = dados;
         }, (error) => {
             this.mensagemError(error);
-          });
+        });
     }
 
     private carregarPorteEmpresa() {
@@ -146,7 +146,7 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
             this.listaPorteEmpresas = retorno;
         }, (error) => {
             this.mensagemError(error);
-          });
+        });
     }
 
     private emModoConsulta() {
@@ -158,8 +158,8 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
     }
 
     private carregarVersoes() {
-        this.service.pesquisarVersoes().subscribe((retorno) => { 
-            this.versoes = retorno; 
+        this.service.pesquisarVersoes().subscribe((retorno) => {
+            this.versoes = retorno;
         }, (error) => {
             this.mensagemError(error);
         });
@@ -370,58 +370,58 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
     createForm() {
         this.empresaForm = this.formBuilder.group({
             cnpj: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.required, ValidateCNPJ,
                 ]),
             ],
             razaoSocial: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.required,
                     Validators.maxLength(160),
                 ]),
             ],
             nomeFantasia: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.required,
                     Validators.maxLength(160),
                 ]),
             ],
             endereco: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.maxLength(100),
                 ]),
             ],
             unidadeNomeObra: [
-                { value: undefined, disabled: this.modoConsulta },
+                { value: undefined, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.maxLength(100),
                 ]),
             ],
             ramoEmpresa: [
-                { value: undefined, disabled: this.modoConsulta },
+                { value: undefined, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.maxLength(100),
                 ]),
             ],
             municipio: [
-                { value: null, disabled: true },
+                { value: null, disabled: true || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.required,
                     Validators.maxLength(300),
                 ]),
             ],
             bairro: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.maxLength(50),
                 ]),
             ],
             cep: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.maxLength(8),
                 ]),
@@ -439,13 +439,13 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
                 ]),
             ],
             depRegional: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.required,
                 ]),
             ],
             estado: [
-                { value: 0, disabled: this.modoConsulta },
+                { value: 0, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.required,
                     Validators.maxLength(300),
@@ -481,44 +481,44 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
                 ]),
             ],
             tipoEmpresa: [
-                { value: undefined, disabled: this.modoConsulta },
+                { value: undefined, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.required,
                 ]),
             ],
             inscricaoEstadual: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.required,
                     Validators.maxLength(20),
                 ]),
             ],
             sesmt: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.maxLength(1),
                 ]),
             ],
             cipa: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.maxLength(1),
                 ]),
             ],
             matriz: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.maxLength(1),
                 ]),
             ],
             qtdMembrosCipa: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.required,
                 ]),
             ],
             porteEmpresa: [
-                { value: undefined, disabled: this.modoConsulta },
+                { value: undefined, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.required,
                 ]),
@@ -531,25 +531,25 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
                 ]),
             ],
             inscricaoMunicipal: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.maxLength(20),
                 ]),
             ],
             designCipa: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.maxLength(1),
                 ]),
             ],
             url: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
                     Validators.maxLength(70),
                 ]),
             ],
             dtdesligamento: [
-                { value: null, disabled: this.modoConsulta || !this.hasPermissaoDesativar() },
+                { value: null, disabled: this.modoConsulta || !this.hasPermissaoDesativar() || !this.isPermitidoEditar() },
                 Validators.compose([
                     ValidateData,
                 ]),
@@ -896,9 +896,9 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
         if (!this.isVazia(this.empresaForm.controls['dtdesligamento'].value)) {
             if (this.empresaForm.controls['dtdesligamento'].errors && this.empresaForm.controls['dtdesligamento'].errors.validData) {
                 this.mensagemErroComParametros('app_rst_campo_invalido', this.empresaForm.controls['dtdesligamento'],
-                  MensagemProperties.app_rst_labels_data_desativacao);
+                    MensagemProperties.app_rst_labels_data_desativacao);
                 retorno = false;
-              } else if (ValidarDataFutura(this.empresaForm.controls['dtdesligamento'].value.jsdate)) {
+            } else if (ValidarDataFutura(this.empresaForm.controls['dtdesligamento'].value.jsdate)) {
                 this.mensagemErroComParametrosModel('app_rst_labels_data_futura', MensagemProperties.app_rst_labels_data_desativacao);
                 retorno = false;
             }
@@ -992,6 +992,19 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
 
     hasPermissaoDesativar() {
         return this.hasPermissao(PermissoesEnum.EMPRESA_DESATIVAR)
-        || this.hasPermissao(PermissoesEnum.EMPRESA);
+            || this.hasPermissao(PermissoesEnum.EMPRESA);
+    }
+
+    isPermitidoEditar(): boolean {
+        return this.usuarioLogado.papeis.length >= 1
+            && this.usuarioLogado.papeis.indexOf('GEEM') === -1;
+    }
+
+    showAppSegmentoModal(): boolean {
+        return !this.existeSegmento() && this.isPermitidoEditar();
+    }
+
+    showButtonSegmento(): boolean {
+        return this.existeSegmento() && !this.modoConsulta && this.isPermitidoEditar();
     }
 }

@@ -62,7 +62,7 @@
             <tr *ngFor="let item of departsRegionais" (click)="selecionar(item)">
                 <td class="col-quebra col-nome">{{item.razaoSocial}}</td>
                 <td class="text-center col-nao-quebra">{{item.cnpj | cnpjPipe}}</td>
-                <td class="col-quebra col-nome">{{getEndereco(item)}}</td>
+                <td class="col-quebra col-nome">{{item?.listaEndDepRegional?.shift()?.endereco?.municipio?.descricao }}</td>
                 <td class="col-nao-quebra">{{item.siglaDR}}</td>
                 <td class="text-center col-nao-quebra">&nbsp;{{(item.dataExclusao == null && item.dataDesativacao == null) ? 'Ativo' : 'Inativo' }}</td>
             </tr>

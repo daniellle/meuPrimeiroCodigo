@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -131,7 +130,7 @@ public class UnidAtendTrabalhadorServiceTest extends BaseService {
 			unidadeAtendimentoTrabalhador.setCnpj("09238588000190");
 
 			this.auditoria.setTipoOperacao(TipoOperacaoAuditoria.INCLUSAO);
-			unidAtendTrabalhadorService.salvar(unidadeAtendimentoTrabalhador, this.auditoria);
+			unidAtendTrabalhadorService.salvar(unidadeAtendimentoTrabalhador, this.auditoria, new DadosFilter());
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}
@@ -148,7 +147,7 @@ public class UnidAtendTrabalhadorServiceTest extends BaseService {
 			unidadeAtendimentoTrabalhador.setDataCriacao(new Date());
 
 			this.auditoria.setTipoOperacao(TipoOperacaoAuditoria.INCLUSAO);
-			unidAtendTrabalhadorService.salvar(unidadeAtendimentoTrabalhador, this.auditoria);
+			unidAtendTrabalhadorService.salvar(unidadeAtendimentoTrabalhador, this.auditoria, new DadosFilter());
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}
@@ -164,7 +163,7 @@ public class UnidAtendTrabalhadorServiceTest extends BaseService {
 			unidadeAtendimentoTrabalhador.setId(1212L);
 
 			this.auditoria.setTipoOperacao(TipoOperacaoAuditoria.ALTERACAO);
-			unidAtendTrabalhadorService.salvar(unidadeAtendimentoTrabalhador, this.auditoria);
+			unidAtendTrabalhadorService.salvar(unidadeAtendimentoTrabalhador, this.auditoria, new DadosFilter());
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}

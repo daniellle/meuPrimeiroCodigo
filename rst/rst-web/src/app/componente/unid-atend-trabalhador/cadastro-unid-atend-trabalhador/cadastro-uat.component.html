@@ -15,12 +15,14 @@
         <div class="row">
             <div class="form-group col-md-8">
                 <md-input-container [ngClass]="{'divDisabled': razaoSocial.disabled}" [floatPlaceholder]="true">
-                    <input #razaoSocial mdInput placeholder="{{ 'app_rst_labels_razao_social' | recurso }}" required type="text" maxlength="160" class="form-control" id="razaoSocial" formControlName="razaoSocial" name="razaoSocial" appFormularioCamposErro>
+                    <input #razaoSocial mdInput placeholder="{{ 'app_rst_labels_razao_social' | recurso }}" required type="text" maxlength="160"
+                        class="form-control" id="razaoSocial" formControlName="razaoSocial" name="razaoSocial" appFormularioCamposErro>
                 </md-input-container>
             </div>
             <div class="form-group col-md-4">
                 <md-input-container [ngClass]="{'divDisabled': cnpj.disabled}" [floatPlaceholder]="true">
-                    <input #cnpj mdInput placeholder="{{ 'app_rst_labels_cnpj' | recurso }}" type="text" maxlength="18" class="form-control" [textMask]="{mask: mascaraCnpj, guide: false}" formControlName="cnpj" id="cnpj" appFormularioCamposErro>
+                    <input #cnpj mdInput placeholder="{{ 'app_rst_labels_cnpj' | recurso }}" type="text" maxlength="18" class="form-control"
+                        [textMask]="{mask: mascaraCnpj, guide: false}" formControlName="cnpj" id="cnpj" appFormularioCamposErro>
                 </md-input-container>
 
             </div>
@@ -28,12 +30,14 @@
         <div class="row">
             <div class="form-group col-md-8">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{ 'app_rst_labels_nome_fantasia' | recurso }}" required type="text" maxlength="160" class="form-control" id="nomeFantasia" formControlName="nomeFantasia" name="nomeFantasia" appFormularioCamposErro>
+                    <input mdInput placeholder="{{ 'app_rst_labels_nome_fantasia' | recurso }}" required type="text" maxlength="160" class="form-control"
+                        id="nomeFantasia" formControlName="nomeFantasia" name="nomeFantasia" appFormularioCamposErro>
                 </md-input-container>
             </div>
             <div class="form-group col-md-4">
                 <div class="md-container">
-                    <md-select placeholder="{{'app_rst_labels_departamento_regional' | recurso}}" required name="depRegional" formControlName="depRegional" id="idDepRegional">
+                    <md-select placeholder="{{'app_rst_labels_departamento_regional' | recurso}}" required name="depRegional" formControlName="depRegional"
+                        id="idDepRegional">
                         <md-option>
                             <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
                         </md-option>
@@ -45,7 +49,8 @@
             </div>
             <div class="form-group col-md-12">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder=" {{'app_rst_labels_responsavel' | recurso }}" type="text" maxlength="160" class="form-control" id="nomeResponsavel" name="nomeResponsavel" formControlName="nomeResponsavel">
+                    <input mdInput placeholder=" {{'app_rst_labels_responsavel' | recurso }}" type="text" maxlength="160" class="form-control"
+                        id="nomeResponsavel" name="nomeResponsavel" formControlName="nomeResponsavel">
                 </md-input-container>
             </div>
         </div>
@@ -60,13 +65,15 @@
         <div class="row">
             <div class="form-group col-md-8">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{'app_rst_labels_endereco' | recurso }}" required type="text" maxlength="100" class="form-control" id="endereco" name="endereco" formControlName="endereco" appFormularioCamposErro>
+                    <input mdInput placeholder="{{'app_rst_labels_endereco' | recurso }}" required type="text" maxlength="100" class="form-control"
+                        id="endereco" name="endereco" formControlName="endereco" appFormularioCamposErro>
                 </md-input-container>
             </div>
 
             <div class="form-group col-md-4">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{'app_rst_labels_numero' | recurso }}" type="text" maxlength="5" class="form-control" id="numeroEnd" name="numeroEnd" formControlName="numeroEnd" appFormularioCamposErro>
+                    <input mdInput placeholder="{{'app_rst_labels_numero' | recurso }}" type="text" maxlength="5" class="form-control" id="numeroEnd"
+                        name="numeroEnd" formControlName="numeroEnd" appFormularioCamposErro>
                 </md-input-container>
             </div>
 
@@ -74,17 +81,20 @@
         <div class="row">
             <div class="form-group col-md-4">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{ 'app_rst_labels_bairro' | recurso }}" type="text" maxlength="50" class="form-control" id="bairro" name="bairro" formControlName="bairro">
+                    <input mdInput placeholder="{{ 'app_rst_labels_bairro' | recurso }}" type="text" maxlength="50" class="form-control" id="bairro"
+                        name="bairro" formControlName="bairro">
                 </md-input-container>
             </div>
             <div class="form-group col-md-4">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{'app_rst_labels_complemento' | recurso }}" type="text" maxlength="100" class="form-control" id="complemento" name="complemento" formControlName="complemento" appFormularioCamposErro>
+                    <input mdInput placeholder="{{'app_rst_labels_complemento' | recurso }}" type="text" maxlength="100" class="form-control"
+                        id="complemento" name="complemento" formControlName="complemento" appFormularioCamposErro>
                 </md-input-container>
             </div>
             <div class="form-group col-md-4">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{'app_rst_labels_CEP' | recurso }}" required type="text" maxlength="10" class="form-control" [textMask]="{mask: mascaraCep, guide: false}" id="cep" name="cep" formControlName="cep">
+                    <input mdInput placeholder="{{'app_rst_labels_CEP' | recurso }}" required type="text" maxlength="10" class="form-control"
+                        [textMask]="{mask: mascaraCep, guide: false}" id="cep" name="cep" formControlName="cep">
                 </md-input-container>
             </div>
 
@@ -92,7 +102,8 @@
         <div class="row">
             <div class="form-group col-md-4">
                 <div class="md-container">
-                    <md-select placeholder="{{ 'app_rst_labels_estado' | recurso }}" required name="estado" formControlName="estado" id="estado" (change)="buscarMunicipio()" appFormularioCamposErro>
+                    <md-select placeholder="{{ 'app_rst_labels_estado' | recurso }}" required name="estado" formControlName="estado" id="estado"
+                        (change)="buscarMunicipio()" appFormularioCamposErro>
                         <md-option>
                             <option value="undefined">Selecione</option>
                         </md-option>
@@ -109,7 +120,8 @@
         <div class="row">
             <div class="form-group col-md-12">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{ 'app_rst_labels_email' | recurso }}" type="text" maxlength="50" class="form-control" id="email" name="email" formControlName="email">
+                    <input mdInput placeholder="{{ 'app_rst_labels_email' | recurso }}" type="text" maxlength="50" class="form-control" id="email"
+                        name="email" formControlName="email">
                 </md-input-container>
             </div>
         </div>
@@ -137,7 +149,8 @@
         </div>
         <div class="row">
             <div class="form-group col-md-4">
-                <my-date-picker name="mydate" [options]="datePickerOptions" locale="pt-br" formControlName="dtdesligamento" name="dtdesligamento" (keyup)="maskDate($event,formulario,'dtdesligamento')"></my-date-picker>
+                <my-date-picker name="mydate" [options]="datePickerOptions" locale="pt-br" formControlName="dtdesligamento" name="dtdesligamento"
+                    (keyup)="maskDate($event,formulario,'dtdesligamento')"></my-date-picker>
                 <span class="floating-label"> {{ 'app_rst_labels_data_desativacao' | recurso }} </span>
             </div>
         </div>

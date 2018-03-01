@@ -1,6 +1,6 @@
 package br.com.ezvida.rst.enums;
 
-public enum DadosArquetipo {
+public enum InformacaoSaude {
     VACINA_HEPATITE_B("openEHR-EHR-EVALUATION.ovl-ficha_clinica_ocupacional-vacinas-001.v1.0.0",
             "/data[id2]/items[id28]/items[id29]",
             "DV_BOOLEAN",
@@ -100,7 +100,7 @@ public enum DadosArquetipo {
 	private String regexArquetipo;
 	private String nome;
 	
-	private DadosArquetipo(String id, String path, String tipo, String regex, String regexArquetipo, String nome) {
+	private InformacaoSaude(String id, String path, String tipo, String regex, String regexArquetipo, String nome) {
 		this.idArquetipo = id;
 		this.pathDado = path;
 		this.tipoDado = tipo;
@@ -133,8 +133,8 @@ public enum DadosArquetipo {
 	    return nome;
 	}
 	
-	public static DadosArquetipo fromString(String s){
-		return DadosArquetipo.valueOf(s);
+	public static InformacaoSaude fromString(String s){
+		return InformacaoSaude.valueOf(s);
 	}
 	
 

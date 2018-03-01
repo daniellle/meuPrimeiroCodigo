@@ -70,7 +70,7 @@ public class UsuarioServiceDev implements UsuarioService {
                     "questionario",
                     "empresa_cargo",
                     "empresa_trabalhador_lotacao")));
-            u.setPapeis(new HashSet<>(Arrays.asList("ADM","GEEM")));
+            u.setPapeis(new HashSet<>(Arrays.asList("ADM")));
             return u;
     }
 

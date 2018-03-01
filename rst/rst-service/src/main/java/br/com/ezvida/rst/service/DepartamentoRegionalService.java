@@ -100,7 +100,7 @@ public class DepartamentoRegionalService extends BaseService {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public DepartamentoRegional salvar(DepartamentoRegional departamentoRegional, ClienteAuditoria auditoria)  {		
+	public DepartamentoRegional salvar(DepartamentoRegional departamentoRegional, ClienteAuditoria auditoria, DadosFilter dados) {
 		String descricaoAuditoria = "Cadastro de DR: ";
 		if(departamentoRegional.getId() != null) {
 			descricaoAuditoria = "Alteração no cadastro de DR: ";
@@ -114,17 +114,25 @@ public class DepartamentoRegionalService extends BaseService {
 		
 		validar(departamentoRegional);
 		
-		if (departamentoRegional.getId()!= null && departamentoRegional.getDataDesativacao() != null) {
+		if (departamentoRegional.getId() != null && departamentoRegional.getDataDesativacao() != null) {
 			validarUatAtivaAssociada(departamentoRegional.getId());
 		}
 
-		departamentoRegionalDAO.salvar(departamentoRegional);
-		telefoneDepartamentoRegionalService.salvar(departamentoRegional.getListaTelDepRegional(), departamentoRegional);
-		emailDepartamentoRegionalService.salvar(departamentoRegional.getListaEmailDepRegional(), departamentoRegional);
-		enderecoDepartamentoRegionalService.salvar(departamentoRegional.getListaEndDepRegional(), departamentoRegional);
-		
-		LogAuditoria.registrar(LOGGER, auditoria
-				,  descricaoAuditoria, departamentoRegional);
+		if (!dados.isGestorDr()) {
+			departamentoRegionalDAO.salvar(departamentoRegional);
+			telefoneDepartamentoRegionalService.salvar(departamentoRegional.getListaTelDepRegional(), departamentoRegional);
+			emailDepartamentoRegionalService.salvar(departamentoRegional.getListaEmailDepRegional(), departamentoRegional);
+			enderecoDepartamentoRegionalService.salvar(departamentoRegional.getListaEndDepRegional(), departamentoRegional);
+
+		} else if (departamentoRegional.getId() != null) {
+			DepartamentoRegional depto = departamentoRegionalDAO.pesquisarPorId(departamentoRegional.getId());
+			depto.setNomeResponsavel(departamentoRegional.getNomeResponsavel());
+			departamentoRegionalDAO.salvar(depto);
+			telefoneDepartamentoRegionalService.salvar(departamentoRegional.getListaTelDepRegional(), departamentoRegional);
+			emailDepartamentoRegionalService.salvar(departamentoRegional.getListaEmailDepRegional(), departamentoRegional);
+		}
+
+		LogAuditoria.registrar(LOGGER, auditoria, descricaoAuditoria, departamentoRegional);
 		return departamentoRegional;
 	}
 

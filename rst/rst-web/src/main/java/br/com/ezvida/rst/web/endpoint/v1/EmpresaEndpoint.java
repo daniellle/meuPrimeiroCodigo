@@ -151,8 +151,10 @@ public class EmpresaEndpoint extends SegurancaEndpoint<Empresa> {
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.EMPRESA, PermissionConstants.EMPRESA_CADASTRAR }))
 	public Response cadastrar(@Encoded Empresa empresa, @Context SecurityContext context, @Context HttpServletRequest request) {
 		LOGGER.debug("Cadastrando Empresa");
-		return Response.status(HttpServletResponse.SC_CREATED).entity(empresaService.salvar(empresa,
-				ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.INCLUSAO, Funcionalidade.EMPRESA)))
+		return Response.status(HttpServletResponse.SC_CREATED)
+				.entity(empresaService.salvar(empresa,
+						ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.INCLUSAO, Funcionalidade.EMPRESA),
+						ClienteInfos.getDadosFilter(context)))
 				.type(MediaType.APPLICATION_JSON).build();
 	}
 
@@ -163,8 +165,10 @@ public class EmpresaEndpoint extends SegurancaEndpoint<Empresa> {
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.EMPRESA, PermissionConstants.EMPRESA_ALTERAR }))
 	public Response alterar(@Encoded Empresa empresa, @Context SecurityContext context, @Context HttpServletRequest request) {
 		LOGGER.debug("Alterando Empresa");
-		return Response.status(HttpServletResponse.SC_OK).entity(empresaService.salvar(empresa,
-				ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.EMPRESA)))
+		return Response.status(HttpServletResponse.SC_OK)
+				.entity(empresaService.salvar(empresa,
+						ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.EMPRESA),
+						ClienteInfos.getDadosFilter(context)))
 				.type(MediaType.APPLICATION_JSON).build();
 	}
 

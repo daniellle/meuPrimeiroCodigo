@@ -6,20 +6,19 @@
     margin-top: 32px;
 }
 
-.horizontal-line{
+.horizontal-line {
     font-size: 12px;
-    color:#96A004;
+    color: #96A004;
 }
 
-.horizontal-line hr{
+.horizontal-line hr {
     border-top: dotted 1px;
     max-width: 95%;
     min-width: 90%;
     display: inline-flex;
-
 }
 
-.text-left{
+.text-left {
     text-align: left;
 }
 
@@ -76,9 +75,8 @@
     }
 }
 
-.row-chart{
+.row-chart {
     padding: 20px;
-
 }
 
 .card-res {
@@ -179,7 +177,6 @@
             position: absolute;
             color: grey;
             left: 32px;
-
             &:not(:first-child) {
                 margin-top: 16px;
             }

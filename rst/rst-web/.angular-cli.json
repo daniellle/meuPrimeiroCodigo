@@ -33,10 +33,13 @@
             ],
             "environmentSource": "environments/environment.ts",
             "environments": {
-                "dev": "environments/environment.ts",
+                "fsw": "environments/environment.ts",
+                "dev": "environments/environment.dev.ts",
                 "prod": "environments/environment.prod.ts",
                 "test": "environments/environment.test.ts",
-                "qa": "environments/environment.qa.ts"
+                "demo": "environments/environment.demo.ts",
+                "treina": "environments/environment.treina.ts",
+                "homolog": "environments/environment.homolog.ts"
             }
         }
     ],

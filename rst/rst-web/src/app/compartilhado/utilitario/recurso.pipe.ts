@@ -515,7 +515,12 @@ export const MensagemProperties = {
   app_rst_labels_cadastro_certificado: 'Cadastro de Certificado',
   app_rst_labels_certificados_adicionados: 'Certificados adicionados',
   app_rst_labels_data_conclusao: 'Data de Conclusão',
+  app_rst_labels_adicionar_certificados: 'Adicionar Certificados',
+  app_rst_labels_certificados__adicionados_mim: 'Certificados adicionados por mim',
+  app_rst_labels_certificados__adicionados_empresa: 'Certificados adicionados pela empresa',
+  app_rst_labels_certificados__adicionados_trabalhador: 'Certificados adicionados pelo trabalhador',
   app_rst_labels_certificados_adicionais: 'Certificados adicionais',
+
 
   // Pergunta
   app_rst_labels_pergunta: 'Pergunta',

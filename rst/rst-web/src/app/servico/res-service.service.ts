@@ -5,12 +5,13 @@ import { AutenticacaoService } from 'app/servico/autenticacao.service';
 import { BloqueioService } from 'app/servico/bloqueio.service';
 import { BaseService } from 'app/servico/base.service';
 import { Observable } from 'rxjs/Observable';
-import { Path } from '@ezvida/adl-core';
+import { Path, History, TypedJSON, Event, ItemList, Cluster, Element } from '@ezvida/adl-core';
+import { maxBy } from 'lodash';
 
 @Injectable()
 export class ResService extends BaseService<any> {
 
-    private API = '/v1/res';
+    private API = '/v1/saude';
 
     constructor(protected httpClient: HttpClient, protected bloqueio: BloqueioService, protected autenticacaoService: AutenticacaoService) {
         super(httpClient, bloqueio);
@@ -29,53 +30,64 @@ export class ResService extends BaseService<any> {
         return this.get(`${this.API}/paciente/${encodeURIComponent(cpf)}`);
     }
 
-    buscarValorParaDado(
-        dado: string,
-        cpf: string,
-        todos: boolean,
-        quantidade?: number,
-        de?: Date, ate?: Date): Observable<Array<{ data: string, informacao: Path }> | Path> {
+    buscarHistoricoParaInformacaoSaude(dado: string, cpf: string): Observable<any> {
+        //         return resultado.result.map((elem) => {
+        //             return { data: elem.date, informacao: elem.dataValue };
+        //         });
         const usuario = Seguranca.getUsuario() as any;
-
         let parametros = new HttpParams().set('cpf', cpf || usuario.sub);
 
-        if (de || ate) {
-            if (de) {
-                parametros = parametros.set('de', de.toDateString());
-            }
-            if (ate) {
-                parametros = parametros.set('ate', ate.toDateString());
-            }
-        }
-
-        if (quantidade) {
-            parametros = parametros.set('quantidade', quantidade ? quantidade.toString() : '3');
-        }
-
-        if (todos) {
-            parametros = parametros.set('todos', 'true');
-        }
-
-        return this.get(`${this.API}/registro/${encodeURIComponent(dado)}`, parametros)
-            .map((resultado: { max: number; result: any[] }) => {
+        return this.get(`${this.API}/informacao/historico/${encodeURIComponent(dado)}`, parametros)
+            .map((resultado: History) => {
                 if (resultado) {
-                    if (!quantidade && !todos) {
-                        return resultado.result[0].dataValue;
-                    } else {
-                        return resultado.result.map((elem) => {
-                            return { data: elem.date, informacao: elem.dataValue };
+                    const history = TypedJSON.parse(JSON.stringify(resultado), History);
+
+                    const lista: any[] = [];
+                    if (history.events) {
+                        history.events.map((event: Event) => {
+                            (<ItemList>event.data).items.map((elemento: Element) => {
+                                lista.push({
+                                    data: event.time.toDate(),
+                                    informacao: elemento.value
+                                });
+                            });
                         });
                     }
+                    return lista;
                 }
-            })
-            .catch((erro) => {
+            }).catch((error) => {
+                console.log(error);
+                return Observable.empty();
+            });
+    }
+
+    buscarValorParaInformacaoSaude(dado: string, cpf: string): Observable<any> {
+        const usuario = Seguranca.getUsuario() as any;
+        let parametros = new HttpParams().set('cpf', cpf || usuario.sub);
+        return this.get(`${this.API}/informacao/${encodeURIComponent(dado)}`, parametros)
+            .map((resultado: Cluster) => {
+                if (resultado) {
+                    const elemento: Element = <Element>resultado.items[0];
+                    return elemento;
+                }
+                // if (resultado) 
+                //     if (!quantidade && !todos) {
+                //         return resultado.dataValue;
+                //     } else {
+                //         return resultado.result.map((elem) => {
+                //             return { data: elem.date, informacao: elem.dataValue };
+                //         });
+                //     }
+                // }
+                return null;
+            }).catch((erro) => {
                 console.error(erro);
                 return null;
             });
     }
 
     buscarEncontro(encontroId: string): Observable<any> {
-        return this.get(`${this.API}/encontro/${encontroId}`).catch((erro) => {
+        return this.get(`${this.API}/fichaMedica/${encontroId}`).catch((erro) => {
             console.log(erro);
             return null;
         });
@@ -83,25 +95,25 @@ export class ResService extends BaseService<any> {
 
     buscarHistorico(paciente: any, aPartirDe?: Date, pagina = 0): Observable<{
         filtrarInformacoes: boolean,
-        resultado: {max: number; result: any[]; }
+        resultado: { max: number; result: any[]; }
     }> {
         if (!aPartirDe) {
             aPartirDe = new Date(0);
         }
         const params = new HttpParams().set('de', aPartirDe.toString()).set('cpf', paciente).set('pagina', pagina.toString());
-        return this.get(`${this.API}/historico`, params);
+        return this.get(`${this.API}/fichaMedica`, params);
     }
 
     buscaAlergias(cpf: string, dado: string): Observable<any> {
-        return this.buscarValorParaDado(dado, cpf, true);
+        return this.buscarHistoricoParaInformacaoSaude(dado, cpf);
     }
 
     buscaMedicamentos(cpf: string, dado: string): Observable<any> {
-        return this.buscarValorParaDado(dado, cpf, true);
+        return this.buscarHistoricoParaInformacaoSaude(dado, cpf);
     }
 
     buscaVacinas(cpf: string, dado: string): Observable<any> {
-        return this.buscarValorParaDado(dado, cpf, false);
+        return this.buscarHistoricoParaInformacaoSaude(dado, cpf);
     }
 
 }

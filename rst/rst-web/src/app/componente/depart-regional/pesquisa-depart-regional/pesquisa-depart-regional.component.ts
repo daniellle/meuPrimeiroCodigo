@@ -35,7 +35,6 @@ export class PesquisaDepartRegionalComponent extends BaseComponent implements On
     protected bloqueioService: BloqueioService, protected dialogo: ToastyService, private dialogService: DialogService,
     private activatedRoute: ActivatedRoute) {
     super(bloqueioService, dialogo);
-    this.buscarEstados();
     this.keysSituacao = Object.keys(this.situacoes);
   }
 
@@ -45,6 +44,7 @@ export class PesquisaDepartRegionalComponent extends BaseComponent implements On
     this.filtroDepartRegional.situacao = '';
     this.modoConsulta = !Seguranca.isPermitido(['departamento_regional_cadastrar', 'departamento_regional_alterar',
       'departamento_regional_desativar']);
+    this.buscarEstados();
   }
 
   buscarEstados() {
@@ -78,7 +78,7 @@ export class PesquisaDepartRegionalComponent extends BaseComponent implements On
   }
 
   pesquisar() {
-    this.departsRegionais = new Array<DepartamentoRegional>();
+    this.departsRegionais = [];
     this.departamentoSelecionado = null;
     this.removerMascara();
     if (this.validarCampos()) {
@@ -89,7 +89,8 @@ export class PesquisaDepartRegionalComponent extends BaseComponent implements On
       this.paginacao.pagina = 1;
       this.service.pesquisar(this.filtroDepartRegional, this.paginacao).subscribe((retorno: ListaPaginada<DepartamentoRegional>) => {
         this.departsRegionais = retorno.list;
-        this.getPaginacao(this.paginacao, retorno);
+        this.departsRegionais.forEach(depat => depat.listaEndDepRegional = undefined);
+        this.paginacao = this.getPaginacao(this.paginacao, retorno);
         this.filtroDepartRegional.idEstado = estadoSelecinado;
         if (retorno.quantidade === 0) {
           this.mensagemError(MensagemProperties.app_rst_nenhum_registro_encontrado);
