@@ -70,6 +70,16 @@
                         {{ 'app_rst_labels_usuario' | recurso }}
                     </a>
                 </li>
+                <li class="nav-item ">
+                        <a class="sub-item nav-link " routerLinkActive="active " [routerLink]="[ '/cadastro/gerenciarperfil/trocarsenha'] ">
+                           {{ 'trocar_senha' | recurso }}
+                        </a>
+                    </li>
+                <li class="nav-item ">
+                    <a class="sub-item nav-link " routerLinkActive="active " [routerLink]="[ '/cadastro/gerenciarperfil'] ">
+                        {{ 'gerenciar_perfil' | recurso }}
+                    </a>
+                </li>
             </ul>
         </li>
         <li class="nav-title ">Conta</li>

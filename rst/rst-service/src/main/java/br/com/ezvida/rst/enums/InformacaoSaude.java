@@ -37,105 +37,104 @@ public enum InformacaoSaude {
             ".*/data\\[id2(\\.\\d+)*\\]\\/items\\[id28(\\.\\d+)*\\]\\/items\\[id43(\\.\\d+)*\\]",
             "(openEHR-EHR-EVALUATION).ovl-(?:\\w+)-(vacinas)[^\\w\\ ](.*)",
             "Especificar"),
-	ALERGIA("openEHR-EHR-EVALUATION.allergy.v1.0.0" , 
-			"/data[id2]/items[id3]" ,
-			"DV_TEXT", 
-			".*/data\\[id2(\\.\\d+)*\\]\\/items\\[id3(\\.\\d+)*\\]",
-			"(openEHR-EHR-EVALUATION).ovl-(?:\\w+)-(allergy)[^\\w\\ ](.*)",
-			"Alergia"),
-	MEDICAMENTO( "openEHR-EHR-ACTION.medication.v1.0.0",
-	        "/description[id18]/items[id25]",
-	        "DV_TEXT",
-	        ".*/description\\[id18(\\.\\d+)*\\]\\/items\\[id25(\\.\\d+)*\\]",
-	        "(openEHR-EHR-ACTION).ovl-(?:\\w+)-(medication)[^\\w\\ ](.*)",
-	        "Medicamento"),
-	PRESSAO_SISTOLICA("openEHR-EHR-OBSERVATION.blood_pressure.v1.0.0",
-			"/data[id2]/events[id7]/data[id4]/items[id5]",
-			"DV_QUANTITY",
-			".*/data\\[id2(\\.\\d+)*\\]\\/events\\[id7(\\.\\d+)*\\]\\/data\\[id4(\\.\\d+)*\\]\\/items\\[id5(\\.\\d+)*\\]",
-			"(openEHR-EHR-OBSERVATION).ovl-(?:\\w+)-(blood_pressure)[^\\w\\ ](.*)",
-			"Sistólica"),
-	PRESSAO_DIASTOLICA("openEHR-EHR-OBSERVATION.blood_pressure.v1.0.0",
-			"/data[id2]/events[id7]/data[id4]/items[id6]",
-			"DV_QUANTITY",
-			".*/data\\[id2(\\.\\d+)*\\]\\/events\\[id7(\\.\\d+)*\\]\\/data\\[id4(\\.\\d+)*\\]\\/items\\[id6(\\.\\d+)*\\]",
-			"(openEHR-EHR-OBSERVATION).ovl-(?:\\w+)-(blood_pressure)[^\\w\\ ](.*)",
-			"Diastólica"),
-	PESO("openEHR-EHR-OBSERVATION.body_weight.v1.0.0",
-			"/data[id3]/events[id4]/data[id2]/items[id5]",
-			"DV_QUANTITY",
-			".*/data\\[id3(\\.\\d+)*\\]\\/events\\[id4(\\.\\d+)*\\]\\/data\\[id2(\\.\\d+)*\\]\\/items\\[id5(\\.\\d+)*\\]",
-			"(openEHR-EHR-OBSERVATION).ovl-(?:\\w+)-(body_weight)[^\\w\\ ](.*)",
-			"Peso"),
-	ALTURA("openEHR-EHR-OBSERVATION.height.v1.0.0",
-			"/data[id2]/events[id3]/data[id4]/items[id5]",
-			"DV_QUANTITY",
-			".*/data\\[id2(\\.\\d+)*\\]\\/events\\[id3(\\.\\d+)*\\]\\/data\\[id4(\\.\\d+)*\\]\\/items\\[id5(\\.\\d+)*\\]",
-			"(openEHR-EHR-OBSERVATION).ovl-(?:\\w+)-(height)[^\\w\\ ](.*)",
-			"Altura / comprimento"),
-	IMC("openEHR-EHR-OBSERVATION.body_mass_index.v1.0.0",
-			"/data[id2]/events[id3]/data[id4]/items[id5]",
-			"DV_QUANTITY",
-			".*/data\\[id2(\\.\\d+)*\\]\\/events\\[id3(\\.\\d+)*\\]\\/data\\[id4(\\.\\d+)*\\]\\/items\\[id5(\\.\\d+)*\\]",
-			"(openEHR-EHR-OBSERVATION).ovl-(?:\\w+)-(body_mass_index)[^\\w\\ ](.*)",
-			"Índice de massa corporal"),
-	TEMPERATURA("openEHR-EHR-OBSERVATION.body_temperature.v1.0.0",
-			"/data[id3]/events[id4]/data[id2]/items[id5]",
-			"DV_QUANTITY",
-			".*/data\\[id3(\\.\\d+)*\\]\\/events\\[id4(\\.\\d+)*\\]\\/data\\[id2(\\.\\d+)*\\]\\/items\\[id5(\\.\\d+)*\\]",
-			"(openEHR-EHR-OBSERVATION).ovl-(?:\\w+)-(body_temperature)[^\\w\\ ](.*)",
-			"Temperatura"),
-	CIRCUNFERENCIA_ABDOMINAL("openEHR-EHR-OBSERVATION.body_weight.v1.0.0",
-			"/data[id3]/events[id4]/data[id2]/items[id0.3]",
-			"DV_QUANTITY",
-			".*/data\\[id3(\\.\\d+)*\\]\\/events\\[id4(\\.\\d+)*\\]\\/data\\[id2(\\.\\d+)*\\]\\/items\\[id0.3(\\.\\d+)*\\]",
-			"(openEHR-EHR-OBSERVATION).ovl-(?:\\w+)-(body_weight)[^\\w\\ ](.*)",
-			"Circunferência abdominal"),
-	;	
-	
-	private String idArquetipo;
-	private String pathDado;
-	private String tipoDado;	
-	private String regexPath;
-	private String regexArquetipo;
-	private String nome;
-	
-	private InformacaoSaude(String id, String path, String tipo, String regex, String regexArquetipo, String nome) {
-		this.idArquetipo = id;
-		this.pathDado = path;
-		this.tipoDado = tipo;
-		this.regexPath = regex;
-		this.regexArquetipo = regexArquetipo;
-		this.nome = nome;
-	}
-	
-	public String getIdArquetipo() {
-		return idArquetipo;
-	}
+    ALERGIA("openEHR-EHR-EVALUATION.allergy.v1.0.0",
+            "/data[id2]/items[id3]",
+            "DV_TEXT",
+            ".*/data\\[id2(\\.\\d+)*\\]\\/items\\[id3(\\.\\d+)*\\]",
+            "(openEHR-EHR-EVALUATION).ovl-(?:\\w+)-(allergy)[^\\w\\ ](.*)",
+            "Alergia"),
+    MEDICAMENTO("openEHR-EHR-ACTION.medication.v1.0.0",
+            "/description[id18]/items[id25]",
+            "DV_TEXT",
+            ".*/description\\[id18(\\.\\d+)*\\]\\/items\\[id25(\\.\\d+)*\\]",
+            "(openEHR-EHR-ACTION).ovl-(?:\\w+)-(medication)[^\\w\\ ](.*)",
+            "Medicamento"),
+    PRESSAO_SISTOLICA("openEHR-EHR-OBSERVATION.blood_pressure.v1.0.0",
+            "/data[id2]/events[id7]/data[id4]/items[id5]",
+            "DV_QUANTITY",
+            ".*/data\\[id2(\\.\\d+)*\\]\\/events\\[id7(\\.\\d+)*\\]\\/data\\[id4(\\.\\d+)*\\]\\/items\\[id5(\\.\\d+)*\\]",
+            "(openEHR-EHR-OBSERVATION).ovl-(?:\\w+)-(blood_pressure)[^\\w\\ ](.*)",
+            "Sistólica"),
+    PRESSAO_DIASTOLICA("openEHR-EHR-OBSERVATION.blood_pressure.v1.0.0",
+            "/data[id2]/events[id7]/data[id4]/items[id6]",
+            "DV_QUANTITY",
+            ".*/data\\[id2(\\.\\d+)*\\]\\/events\\[id7(\\.\\d+)*\\]\\/data\\[id4(\\.\\d+)*\\]\\/items\\[id6(\\.\\d+)*\\]",
+            "(openEHR-EHR-OBSERVATION).ovl-(?:\\w+)-(blood_pressure)[^\\w\\ ](.*)",
+            "Diastólica"),
+    PESO("openEHR-EHR-OBSERVATION.body_weight-SESI_BR.v1.0.0",
+            "/data[id3]/events[id4]/data[id2]/items[id5]",
+            "DV_QUANTITY",
+            ".*/data\\[id3(\\.\\d+)*\\]\\/events\\[id4(\\.\\d+)*\\]\\/data\\[id2(\\.\\d+)*\\]\\/items\\[id5(\\.\\d+)*\\]",
+            "(openEHR-EHR-OBSERVATION).ovl-(?:\\w+)-(body_weight)[^\\w\\ ](.*)",
+            "Peso"),
+    ALTURA("openEHR-EHR-OBSERVATION.height.v1.0.0",
+            "/data[id2]/events[id3]/data[id4]/items[id5]",
+            "DV_QUANTITY",
+            ".*/data\\[id2(\\.\\d+)*\\]\\/events\\[id3(\\.\\d+)*\\]\\/data\\[id4(\\.\\d+)*\\]\\/items\\[id5(\\.\\d+)*\\]",
+            "(openEHR-EHR-OBSERVATION).ovl-(?:\\w+)-(height)[^\\w\\ ](.*)",
+            "Altura / comprimento"),
+    IMC("openEHR-EHR-OBSERVATION.body_mass_index.v1.0.0",
+            "/data[id2]/events[id3]/data[id4]/items[id5]",
+            "DV_QUANTITY",
+            ".*/data\\[id2(\\.\\d+)*\\]\\/events\\[id3(\\.\\d+)*\\]\\/data\\[id4(\\.\\d+)*\\]\\/items\\[id5(\\.\\d+)*\\]",
+            "(openEHR-EHR-OBSERVATION).ovl-(?:\\w+)-(body_mass_index)[^\\w\\ ](.*)",
+            "Índice de massa corporal"),
+    TEMPERATURA("openEHR-EHR-OBSERVATION.body_temperature.v1.0.0",
+            "/data[id3]/events[id4]/data[id2]/items[id5]",
+            "DV_QUANTITY",
+            ".*/data\\[id3(\\.\\d+)*\\]\\/events\\[id4(\\.\\d+)*\\]\\/data\\[id2(\\.\\d+)*\\]\\/items\\[id5(\\.\\d+)*\\]",
+            "(openEHR-EHR-OBSERVATION).ovl-(?:\\w+)-(body_temperature)[^\\w\\ ](.*)",
+            "Temperatura"),
+    CIRCUNFERENCIA_ABDOMINAL("openEHR-EHR-OBSERVATION.body_weight-SESI_BR.v1.0.0",
+            "/data[id3]/events[id4]/data[id2]/items[id0.3]",
+            "DV_QUANTITY",
+            ".*/data\\[id3(\\.\\d+)*\\]\\/events\\[id4(\\.\\d+)*\\]\\/data\\[id2(\\.\\d+)*\\]\\/items\\[id0.3(\\.\\d+)*\\]",
+            "(openEHR-EHR-OBSERVATION).ovl-(?:\\w+)-(body_weight)[^\\w\\ ](.*)",
+            "Circunferência abdominal"),;
 
-	public String getPathDado() {
-		return pathDado;
-	}
+    private String idArquetipo;
+    private String pathDado;
+    private String tipoDado;
+    private String regexPath;
+    private String regexArquetipo;
+    private String nome;
 
-	public String getTipoDado() {
-		return tipoDado;
-	}
+    private InformacaoSaude(String id, String path, String tipo, String regex, String regexArquetipo, String nome) {
+        this.idArquetipo = id;
+        this.pathDado = path;
+        this.tipoDado = tipo;
+        this.regexPath = regex;
+        this.regexArquetipo = regexArquetipo;
+        this.nome = nome;
+    }
 
-	public String getRegexPath() {
-		return regexPath;
-	}
+    public static InformacaoSaude fromString(String s) {
+        return InformacaoSaude.valueOf(s);
+    }
 
-	public String getRegexArquetipo() {
-		return regexArquetipo;
-	}
-	
-	public String getNome() {
-	    return nome;
-	}
-	
-	public static InformacaoSaude fromString(String s){
-		return InformacaoSaude.valueOf(s);
-	}
-	
+    public String getIdArquetipo() {
+        return idArquetipo;
+    }
+
+    public String getPathDado() {
+        return pathDado;
+    }
+
+    public String getTipoDado() {
+        return tipoDado;
+    }
+
+    public String getRegexPath() {
+        return regexPath;
+    }
+
+    public String getRegexArquetipo() {
+        return regexArquetipo;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
 
 }

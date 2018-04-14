@@ -93,6 +93,8 @@ export const MensagemProperties = {
   app_rst_labels_email: 'E-mail',
   app_rst_labels_email_alternativo: 'E-mail Alternativo',
   app_rst_labels_cargo: 'Cargo',
+  app_rst_labels_apelido: 'Apelido',
+  app_rst_labels_exibir_apelido: 'Exibir Apelido',
   app_rst_labels_selecione: 'Selecione',
   app_rst_labels_residencial: 'Residencial',
   app_rst_labels_comercial: 'Comercial',
@@ -232,6 +234,19 @@ export const MensagemProperties = {
   app_rst_labels_pontuacao_minima: 'Pontuação Mínima',
   app_rst_labels_recomendacao: 'Recomendação',
   app_rst_labels_mensagem: 'Mensagem',
+  app_rst_labels_vacinas_alergias_medicamentos_auto_declarados: 'Vacinas, Alergias e Medicamentos Auto-declarados',
+  app_rst_labels_vacinas_auto_declarados: 'Vacinas auto-declaradas',
+  app_rst_labels_alergias_auto_declarados: 'Alergias auto-declaradas',
+  app_rst_labels_medicamentos_auto_declarados: 'Medicamentos auto-declarados',
+  app_rst_labels_vacinas_auto_declaradas_minha_saude: 'Vacinas (auto declaradas)',
+  app_rst_labels_ultima_fco: 'Fonte: Última FCO',
+  app_rst_labels_fonte_trabalhador: 'Fonte: Trabalhador',
+  app_rst_labels_nenhuma_vacina_informada: 'Nenhuma vacina informada.',
+  app_rst_labels_alergias_auto_declaras_minha_saude: 'Alergias (auto declaradas)',
+  app_rst_labels_nenhuma_alergia_informada: 'Nenhuma alergia informada.',
+  app_rst_labels_medicamento: 'Medicamentos',
+  app_rst_labels_medicamentos_auto_declarados_minha_saude: 'Medicamentos (auto declarados)',
+  app_rst_labels_nenhum_medicamento_informado: 'Nenhuma medicamento informado.',
 
   // MSG COMPARTILHADAS
   app_rst_msg_nenhum_registro_adicionado: 'Nenhum registro adicionado.',
@@ -407,6 +422,7 @@ export const MensagemProperties = {
   // Usuario
   app_rst_usuario_title_pesquisar: 'Pesquisar Usuário',
   app_rst_usuario_title_cadastrar: 'Cadastro do Usuário',
+  app_rst_usuario_title_perfil: 'Meu Perfil',
   app_rst_usuario_title_associar_perfil: 'Associar Perfil',
 
   app_rst_usuario_validacao_selecione_sistema_perfil: 'Selecione um sistema e seus perfis',
@@ -569,6 +585,12 @@ export const MensagemProperties = {
   app_rst_questionario_preencha_seu_igev: 'Preencha seu IGEV',
   app_rst_questionario_consulte_seu_historico: 'Consulte seu Histórico',
   app_rst_questionario_igev_periodo: 'Você já preencheu o seu IGEV do período. Aguarde o próximo ciclo.',
+
+  senha_atual: 'Digite sua Senha Atual',
+  nova_senha: 'Digite a sua Nova Senha',
+  confirme_sua_nova_senha: 'Confirme a sua Nova Senha',
+  trocar_senha: 'Trocar Senha',
+  gerenciar_perfil: 'Gerenciar Perfil',
 };
 
 @Pipe({

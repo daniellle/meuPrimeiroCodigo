@@ -56,6 +56,9 @@ export class Trabalhador {
     termo: string;
     imagem: ByteString;
     tipoImagem: string;
+    descricaoMedicamentos: string;
+    descricaoAlergias: string;
+    descricaoVacinas: string;
     constructor() {
         this.listaTelefoneTrabalhador = new Array<TelefoneTrabalhador>();
         this.listaEmailTrabalhador = new Array<EmailTrabalhador>();

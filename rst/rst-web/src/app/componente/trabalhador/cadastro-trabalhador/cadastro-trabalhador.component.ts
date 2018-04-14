@@ -283,6 +283,9 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
             possuiAutomovel: this.trabalhador.automovel,
             notificacao: this.trabalhador.notificacao,
             nacionalidade: this.trabalhador.nacionalidade,
+            descricaoAlergias: this.trabalhador.descricaoAlergias,
+            descricaoVacinas: this.trabalhador.descricaoVacinas,
+            descricaoMedicamentos: this.trabalhador.descricaoMedicamentos,
         });
 
         this.trabalhadorForm.patchValue({
@@ -540,7 +543,9 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
         this.trabalhador.genero = EnumValues.getNameFromValue(Genero, formModel.genero.value);
         this.trabalhador.raca = formModel.raca.value;
         this.trabalhador.estadoCivil = formModel.estadoCivil.value;
-
+        this.trabalhador.descricaoAlergias = formModel.descricaoAlergias.value;
+        this.trabalhador.descricaoVacinas = formModel.descricaoVacinas.value;
+        this.trabalhador.descricaoMedicamentos = formModel.descricaoMedicamentos.value;
         this.trabalhador.nomeMae = formModel.nomeMae.value;
         this.trabalhador.nomePai = formModel.nomePai.value;
         this.trabalhador.tipoSanguineo = formModel.tipoSanguineo.value;
@@ -977,6 +982,24 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
                 { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
                 Validators.compose([]),
             ],
+            descricaoMedicamentos: [
+                { value: null, disabled: this.modoConsulta },
+                Validators.compose([
+                    Validators.maxLength(300),
+                ]),
+            ],
+            descricaoAlergias: [
+                { value: null, disabled: this.modoConsulta },
+                Validators.compose([
+                    Validators.maxLength(300),
+                ]),
+            ],
+            descricaoVacinas: [
+                { value: null, disabled: this.modoConsulta },
+                Validators.compose([
+                    Validators.maxLength(300),
+                ]),
+            ],
         });
 
         this.verificarTermo();
@@ -1043,5 +1066,5 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
         this.temImagem = false;
     }
 
-    
+
 }

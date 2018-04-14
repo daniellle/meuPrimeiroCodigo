@@ -67,6 +67,18 @@ export class UsuarioService extends BaseService<Usuario> {
     }
   }
 
+    salvarPerfil(usuario: Usuario): Observable<Usuario> {
+        this.bloqueioService.evento.emit(false);
+        return super.put('/v1/usuarios/perfil', usuario)
+            .map((response: any) => {
+                return response;
+            }).catch((error: HttpResponse<MensagemErro>) => {
+                return Observable.throw(error);
+            }).finally(() => {
+                this.bloqueioService.evento.emit(true);
+            });
+    }
+
   editar(usuario: Usuario): Observable<any> {
     return super.put('/v1/usuarios', usuario)
       .map((response: any) => {
@@ -138,5 +150,5 @@ export class UsuarioService extends BaseService<Usuario> {
       }).catch((error: Response) => {
         return Observable.throw(error);
       });
-  }
+  }  
 }

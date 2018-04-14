@@ -48,7 +48,7 @@ export class PesquisaDepartRegionalComponent extends BaseComponent implements On
   }
 
   buscarEstados() {
-    if (!this.modoConsulta) {
+    if (this.modoConsulta) {
       this.service.buscarEstados().subscribe((dados: any) => {
         this.estados = dados;
       }, (error) => {

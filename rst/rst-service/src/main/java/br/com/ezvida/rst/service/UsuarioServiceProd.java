@@ -11,7 +11,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
-import br.com.ezvida.rst.anotacoes.Prod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,15 +18,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import br.com.ezvida.girst.apiclient.client.UsuarioClient;
+import br.com.ezvida.girst.apiclient.model.Credencial;
 import br.com.ezvida.girst.apiclient.model.ListaPaginada;
 import br.com.ezvida.girst.apiclient.model.Perfil;
 import br.com.ezvida.girst.apiclient.model.UsuarioPerfilSistema;
 import br.com.ezvida.girst.apiclient.model.filter.UsuarioFilter;
+import br.com.ezvida.rst.anotacoes.Prod;
 import br.com.ezvida.rst.auditoria.logger.LogAuditoria;
 import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.UsuarioGirstViewDAO;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.enums.Ambiente;
+import br.com.ezvida.rst.model.DepartamentoRegional;
 import br.com.ezvida.rst.model.Trabalhador;
 import br.com.ezvida.rst.model.Usuario;
 import br.com.ezvida.rst.model.UsuarioEntidade;
@@ -42,277 +44,368 @@ import fw.core.service.BaseService;
 @Prod
 public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
-	private static final long serialVersionUID = -4839541588378608503L;
+    private static final long serialVersionUID = -4839541588378608503L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(CredencialService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CredencialService.class);
 
-	private static final String CODIGO_PERFIL_GESTOR_EMPRESA = "GEEM";
-	private static final String CODIGO_PERFIL_DIRETOR_DR = "DIDR";
-	private static final String CODIGO_PERFIL_GESTOR_DR_APLICACOES = "GDRA";
+    private static final String CODIGO_PERFIL_GESTOR_EMPRESA = "GEEM";
+    private static final String CODIGO_PERFIL_DIRETOR_DR = "DIDR";
+    private static final String CODIGO_PERFIL_GESTOR_DR_APLICACOES = "GDRA";
 
-	@Inject
-	private UsuarioClient usuarioClient;
+    @Inject
+    private UsuarioClient usuarioClient;
 
-	@Inject
-	private APIClientService apiClientService;
+    @Inject
+    private APIClientService apiClientService;
 
-	@Inject
-	private UsuarioEntidadeService usuarioEntidadeService;
+    @Inject
+    private UsuarioEntidadeService usuarioEntidadeService;
 
-	@Inject
-	private TrabalhadorService trabalhadorService;
+    @Inject
+    private TrabalhadorService trabalhadorService;
 
-	@Inject
-	private DepartamentoRegionalService departamentoRegionalService;
+    @Inject
+    private DepartamentoRegionalService departamentoRegionalService;
 
-	@Inject
-	private UsuarioGirstViewDAO usuarioGirstViewDAO;
+    @Inject
+    private UsuarioGirstViewDAO usuarioGirstViewDAO;
 
-	@Inject
-	private EmpresaService empresaService;
+    @Inject
+    private EmpresaService empresaService;
 
-	@Override
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public Usuario getUsuario(String login) {
-		LOGGER.debug("Obtendo usuario do girst");
-		br.com.ezvida.girst.apiclient.model.Usuario usuarioGirst = usuarioClient.getPerfilUsuario(
-				apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), login,
-				apiClientService.getSistema());
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Usuario getUsuario(String login) {
+        LOGGER.debug("Obtendo usuario do girst");
 
-		Usuario usuario = null;
-		if (usuarioGirst != null) {
-			LOGGER.debug("Criando usuario do rst");
-			usuario = new Usuario(null, usuarioGirst.getLogin(), usuarioGirst.getNome(), null, null,
-					usuarioGirst.getEmail());
+        br.com.ezvida.girst.apiclient.model.Usuario usuarioGirst;
 
-			List<br.com.ezvida.girst.apiclient.model.Perfil> perfis = usuarioGirst.getPerfisSistema().stream()
-					.map(ups -> ups.getPerfil()).collect(Collectors.toList());
+        try {
+            usuarioGirst = usuarioClient.getPerfilUsuario(
+                    apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), login,
+                    apiClientService.getSistema());
+        } catch (Exception e) {
+            LOGGER.error("Erro ao obter usuário do girst. Login = " + login + ". Erro: " + e.getMessage(), e.getCause());
+            throw e;
+        }
 
-			for (Perfil perfil : perfis) {
-				usuario.getPapeis().add(perfil.getCodigo());
-				usuario.getPermissoes().addAll(perfil.getPerfilPermissoes().stream()
-						.map(p -> p.getPermissao().getNome()).collect(Collectors.toList()));
-			}
-			getEntidadesFiltradas(usuario);
-		}		
-		return usuario;
-	}
+        Usuario usuario = null;
+        if (usuarioGirst != null) {
+            LOGGER.debug("Criando usuario do rst");
+            usuario = new Usuario(null, usuarioGirst.getLogin(), usuarioGirst.getNome(), null, null,
+                    usuarioGirst.getEmail());
 
-	private void getEntidadesFiltradas(Usuario usuario) {
-		List<UsuarioEntidade> usuariosEntidade = usuarioEntidadeService.pesquisarPorCPF(usuario.getLogin());
+            List<br.com.ezvida.girst.apiclient.model.Perfil> perfis = usuarioGirst.getPerfisSistema().stream()
+                    .map(UsuarioPerfilSistema::getPerfil).collect(Collectors.toList());
 
-		if (usuario.getPapeis().contains(DadosFilter.TRABALHADOR)) {
-			Trabalhador trabalhador = trabalhadorService.pesquisarPorCPF(usuario.getLogin());
+            for (Perfil perfil : perfis) {
+                usuario.getPapeis().add(perfil.getCodigo());
+                if (perfil.getPerfilPermissoes() != null) {
+                    usuario.getPermissoes().addAll(perfil.getPerfilPermissoes().stream()
+                            .map(p -> p.getPermissao().getNome()).collect(Collectors.toList()));
+                }
+            }
+            getEntidadesFiltradas(usuario);
+        } else {
+            LOGGER.debug("O usuário do girst para o login = " + login + ", é null.");
+        }
 
-			if (trabalhador != null) {
-				usuario.getIdTrabalhadores().add(trabalhador.getId());
-				usuario.setIdDepartamentos(departamentoRegionalService.buscarPorTrabalhador(trabalhador.getId())
-						.stream().map(d -> d.getId()).collect(Collectors.toSet()));
-			}
-		}
+        return usuario;
+    }
 
-		for (UsuarioEntidade usuarioEntidade : usuariosEntidade) {
-			if (usuarioEntidade.getDepartamentoRegional() != null) {
-				usuario.getIdDepartamentos().add(usuarioEntidade.getDepartamentoRegional().getId());
-			}
+    private void getEntidadesFiltradas(Usuario usuario) {
+        List<UsuarioEntidade> usuariosEntidade = usuarioEntidadeService.pesquisarPorCPF(usuario.getLogin());
 
-			if (usuarioEntidade.getEmpresa() != null) {
-				usuario.getIdEmpresas().add(usuarioEntidade.getEmpresa().getId());
-			}
+        if (usuario.getPapeis().contains(DadosFilter.TRABALHADOR)) {
+            Trabalhador trabalhador = trabalhadorService.pesquisarPorCPF(usuario.getLogin());
 
-			if (usuarioEntidade.getParceiro() != null) {
-				usuario.getIdParceiros().add(usuarioEntidade.getParceiro().getId());
-			}
+            if (trabalhador != null) {
+                usuario.getIdTrabalhadores().add(trabalhador.getId());
+                usuario.setIdDepartamentos(departamentoRegionalService.buscarPorTrabalhador(trabalhador.getId())
+                        .stream().map(DepartamentoRegional::getId).collect(Collectors.toSet()));
+            }
+        }
 
-			if (usuarioEntidade.getRedeCredenciada() != null) {
-				usuario.getIdRedesCredenciadas().add(usuarioEntidade.getRedeCredenciada().getId());
-			}
+        for (UsuarioEntidade usuarioEntidade : usuariosEntidade) {
+            if (usuarioEntidade.getDepartamentoRegional() != null) {
+                usuario.getIdDepartamentos().add(usuarioEntidade.getDepartamentoRegional().getId());
+            }
 
-			if (usuarioEntidade.getSindicato() != null) {
-				usuario.getIdSindicatos().add(usuarioEntidade.getSindicato().getId());
-			}
-		}
-	}
+            if (usuarioEntidade.getEmpresa() != null) {
+                usuario.getIdEmpresas().add(usuarioEntidade.getEmpresa().getId());
+            }
 
-	@Override
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public Map<String, String> getConfiguracao(Ambiente ambiente) {
+            if (usuarioEntidade.getParceiro() != null) {
+                usuario.getIdParceiros().add(usuarioEntidade.getParceiro().getId());
+            }
 
-		Map<Ambiente, Map<String, String>> configuracoes;
+            if (usuarioEntidade.getRedeCredenciada() != null) {
+                usuario.getIdRedesCredenciadas().add(usuarioEntidade.getRedeCredenciada().getId());
+            }
 
-		try (InputStream stream = this.getClass().getResourceAsStream("/ldap/configuracao.yaml")) {
+            if (usuarioEntidade.getSindicato() != null) {
+                usuario.getIdSindicatos().add(usuarioEntidade.getSindicato().getId());
+            }
+        }
+    }
 
-			ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Map<String, String> getConfiguracao(Ambiente ambiente) {
 
-			configuracoes = mapper.readValue(stream,
-					mapper.getTypeFactory().constructMapType(Map.class, Ambiente.class, Map.class));
+        Map<Ambiente, Map<String, String>> configuracoes;
 
-		} catch (Exception e) {
-			throw new BusinessErrorException(ResourceUtil.getMensagem("app_dashboard_validacao_error"), e);
-		}
+        try (InputStream stream = this.getClass().getResourceAsStream("/ldap/configuracao.yaml")) {
 
-		return configuracoes.get(ambiente);
+            ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
-	}
+            configuracoes = mapper.readValue(stream,
+                    mapper.getTypeFactory().constructMapType(Map.class, Ambiente.class, Map.class));
 
-	@Override
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public ListaPaginada<br.com.ezvida.girst.apiclient.model.Usuario> pesquisarPaginado(
-			br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter) {
+        } catch (Exception e) {
+            throw new BusinessErrorException(ResourceUtil.getMensagem("app_dashboard_validacao_error"), e);
+        }
 
-		UsuarioFilter usuarioFilterClient = new UsuarioFilter();
-		usuarioFilterClient.setLogin(usuarioFilter.getLogin());
-		usuarioFilterClient.setNome(usuarioFilter.getNome());
-		usuarioFilterClient.setPagina(usuarioFilter.getPagina());
-		usuarioFilterClient.setQuantidadeRegistro(usuarioFilter.getQuantidadeRegistro());
+        return configuracoes.get(ambiente);
 
-		return usuarioClient.pesquisarPaginado(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), usuarioFilterClient);
+    }
 
-	}
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public ListaPaginada<br.com.ezvida.girst.apiclient.model.Usuario> pesquisarPaginado(br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter) {
+        UsuarioFilter usuarioFilterClient = new UsuarioFilter();
+        usuarioFilterClient.setLogin(usuarioFilter.getLogin());
+        usuarioFilterClient.setNome(usuarioFilter.getNome());
+        usuarioFilterClient.setPagina(usuarioFilter.getPagina());
+        usuarioFilterClient.setQuantidadeRegistro(usuarioFilter.getQuantidadeRegistro());
 
-	@Override
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> pesquisarPaginadoGirst(
-			br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
-			, ClienteAuditoria auditoria) {
+        ListaPaginada<br.com.ezvida.girst.apiclient.model.Usuario> listaRetorno;
 
-		br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> listaPagianda = usuarioGirstViewDAO
-				.pesquisarPorFiltro(usuarioFilter, dados);
-		LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: " , usuarioFilter);
-		return listaPagianda;
-	}
+        try {
+            listaRetorno = this.usuarioClient.pesquisarPaginado(apiClientService.getURL(),
+                    apiClientService.getOAuthToken().getAccess_token(),
+                    usuarioFilterClient);
+        } catch (Exception e) {
+            LOGGER.error("Erro ao pesquisar usuários paginado por filtro. Erro: " + e.getMessage(), e.getCause());
+            throw e;
+        }
 
-	@Override
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public br.com.ezvida.girst.apiclient.model.Usuario buscarPorId(String id, ClienteAuditoria auditoria) {	
-		if (auditoria != null) {
-			LogAuditoria.registrar(LOGGER, auditoria, "buscar usuário por id: " + id);
-		}
-		try {			
-			return usuarioClient.buscarUsuarioPorId(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), id);
-		} catch (Exception e) {
-			throw new RegistroNaoEncontradoException(getMensagem("app_rst_nenhum_registro_encontrado"));
-		}		
-	}
+        return listaRetorno;
 
-	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public br.com.ezvida.girst.apiclient.model.Usuario cadastrarUsuario(
-			br.com.ezvida.girst.apiclient.model.Usuario usuario
-			, ClienteAuditoria auditoria) {
-		if (auditoria != null) {
-			LogAuditoria.registrar(LOGGER, auditoria, "cadastro de usuário: ", usuario);
-		}
-		return usuarioClient.cadastrar(apiClientService.getURL()
-				, apiClientService.getOAuthToken().getAccess_token(),
-				usuario);
-	}
+    }
 
-	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public br.com.ezvida.girst.apiclient.model.Usuario alterarUsuario(
-			br.com.ezvida.girst.apiclient.model.Usuario usuario, ClienteAuditoria auditoria) {
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> pesquisarPaginadoGirst(
+            br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
+            , ClienteAuditoria auditoria) {
 
-		br.com.ezvida.girst.apiclient.model.Usuario usuarioAnterior = buscarPorId(usuario.getId().toString(), null);
-		if (auditoria != null && usuarioAnterior != null && usuarioAnterior.getPerfisSistema() != null
-				&& usuarioAnterior.getPerfisSistema().size() > 0) {
-			List<UsuarioPerfilSistema> perfisRemovidos = new ArrayList<UsuarioPerfilSistema>();
-			for (UsuarioPerfilSistema itemUsrAnt : usuarioAnterior.getPerfisSistema()) {
-				if (!usuario.getPerfisSistema().contains(itemUsrAnt)) {
-					perfisRemovidos.add(itemUsrAnt);
-				}
-			}
+        br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> listaPagianda = usuarioGirstViewDAO
+                .pesquisarPorFiltro(usuarioFilter, dados);
+        LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
+        return listaPagianda;
+    }
 
-			if (perfisRemovidos.size() > 0) {
-				for (UsuarioPerfilSistema perfil : perfisRemovidos) {
-					if (perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_EMPRESA)) {
-						List<UsuarioEntidade> listaEmpresasAssociadas = usuarioEntidadeService
-								.pesquisarTodasEmpresasAssociadas(usuario.getLogin());
-						if (listaEmpresasAssociadas != null && listaEmpresasAssociadas.size() > 0) {
-							for (UsuarioEntidade item : listaEmpresasAssociadas) {
-								usuarioEntidadeService.desativarUsuarioEntidade(item, auditoria);
-							}
-						}
-					}
-					if (perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_DIRETOR_DR)
-							|| perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_DR_APLICACOES)) {
-						List<UsuarioEntidade> listaDepartamentosAssociados = usuarioEntidadeService
-								.pesquisarTodosDepartamentosAssociadas(usuario.getLogin());
-						if (listaDepartamentosAssociados != null && listaDepartamentosAssociados.size() > 0) {
-							for (UsuarioEntidade item : listaDepartamentosAssociados) {
-								usuarioEntidadeService.desativarUsuarioEntidade(item, auditoria);
-							}
-						}
-					}
-				}
-			}
-		}
-		
-		if (auditoria != null) {
-			LogAuditoria.registrar(LOGGER, auditoria, "Alterção do usuário: " + usuario);
-		}
-		return usuarioClient.alterar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(),
-				usuario);
-	}
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public br.com.ezvida.girst.apiclient.model.Usuario buscarPorId(String id, ClienteAuditoria auditoria) {
+        if (auditoria != null) {
+            LogAuditoria.registrar(LOGGER, auditoria, "buscar usuário por id: " + id);
+        }
+        try {
+            return this.usuarioClient.buscarUsuarioPorId(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), id);
+        } catch (Exception e) {
+            LOGGER.error("Erro ao buscar usuário por id. Id = " + id + ". Erro: " + e.getMessage(), e.getCause());
+            throw new RegistroNaoEncontradoException(getMensagem("app_rst_nenhum_registro_encontrado"));
+        }
+    }
 
-	@Override
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public br.com.ezvida.girst.apiclient.model.Usuario desativarUsuario(String id, ClienteAuditoria auditoria) {
-		LogAuditoria.registrar(LOGGER, auditoria,"desativar usuário: " + id);
-		return usuarioClient.remover(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), id,
-				null);
-	}
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public br.com.ezvida.girst.apiclient.model.Usuario cadastrarUsuario(
+            br.com.ezvida.girst.apiclient.model.Usuario usuario
+            , ClienteAuditoria auditoria) {
+        if (auditoria != null) {
+            LogAuditoria.registrar(LOGGER, auditoria, "cadastro de usuário: ", usuario);
+        }
 
-	@Override
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public br.com.ezvida.girst.apiclient.model.Usuario buscarPorEmail(String email) {
-		return usuarioClient.buscarPorEmail(apiClientService.getURL(),
-				apiClientService.getOAuthToken().getAccess_token(), email);
-	}
+        br.com.ezvida.girst.apiclient.model.Usuario u;
 
-	@Override
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public br.com.ezvida.girst.apiclient.model.Usuario buscarPorLogin(String login) {
-		return usuarioClient.getPerfilUsuario(apiClientService.getURL(),
-				apiClientService.getOAuthToken().getAccess_token(), login, null);
-	}
+        try {
+            u = this.usuarioClient.cadastrar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), usuario);
+        } catch (Exception e) {
+            LOGGER.error("Erro ao cadastrar usuário. Erro: " + e.getMessage(), e.getCause());
+            throw e;
+        }
 
-	@Override
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public boolean isAdm(String cpf) {
-		br.com.ezvida.girst.apiclient.model.Usuario usuario = buscarPorLogin(cpf);
+        return u;
+    }
 
-		if (usuario != null) {
-			for (UsuarioPerfilSistema perfilSistema : usuario.getPerfisSistema()) {
-				if (perfilSistema.getPerfil() != null
-						&& perfilSistema.getPerfil().getCodigo().equals(DadosFilter.ADMINISTRADOR)) {
-					return true;
-				}
-			}
-		}
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public br.com.ezvida.girst.apiclient.model.Usuario alterarUsuario(
+            br.com.ezvida.girst.apiclient.model.Usuario usuario, ClienteAuditoria auditoria) {
 
-		return false;
-	}
+        br.com.ezvida.girst.apiclient.model.Usuario usuarioAnterior = buscarPorId(usuario.getId().toString(), null);
+        if (auditoria != null && usuarioAnterior != null && usuarioAnterior.getPerfisSistema() != null
+                && usuarioAnterior.getPerfisSistema().size() > 0) {
+            List<UsuarioPerfilSistema> perfisRemovidos = new ArrayList<>();
+            for (UsuarioPerfilSistema itemUsrAnt : usuarioAnterior.getPerfisSistema()) {
+                if (!usuario.getPerfisSistema().contains(itemUsrAnt)) {
+                    perfisRemovidos.add(itemUsrAnt);
+                }
+            }
 
-	@Override
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public UsuarioDTO consultarDadosUsuario(DadosFilter dados, Usuario usuarioLogado) {
-		LOGGER.debug("consultando dados do usuario");
+            if (perfisRemovidos.size() > 0) {
+                for (UsuarioPerfilSistema perfil : perfisRemovidos) {
+                    if (perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_EMPRESA)) {
+                        List<UsuarioEntidade> listaEmpresasAssociadas = usuarioEntidadeService
+                                .pesquisarTodasEmpresasAssociadas(usuario.getLogin());
+                        if (listaEmpresasAssociadas != null && listaEmpresasAssociadas.size() > 0) {
+                            for (UsuarioEntidade item : listaEmpresasAssociadas) {
+                                usuarioEntidadeService.desativarUsuarioEntidade(item, auditoria);
+                            }
+                        }
+                    }
+                    if (perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_DIRETOR_DR)
+                            || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_DR_APLICACOES)) {
+                        List<UsuarioEntidade> listaDepartamentosAssociados = usuarioEntidadeService
+                                .pesquisarTodosDepartamentosAssociadas(usuario.getLogin());
+                        if (listaDepartamentosAssociados != null && listaDepartamentosAssociados.size() > 0) {
+                            for (UsuarioEntidade item : listaDepartamentosAssociados) {
+                                usuarioEntidadeService.desativarUsuarioEntidade(item, auditoria);
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-		UsuarioDTO usuario = new UsuarioDTO();
-		usuario.setLogin(usuarioLogado.getLogin());
+        if (auditoria != null) {
+            LogAuditoria.registrar(LOGGER, auditoria, "Alteração do usuário: " + usuario);
+        }
 
-		if (dados.isTrabalhador()) {
-			usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorCpf(usuarioLogado.getLogin()));
-			Trabalhador trabalhador = trabalhadorService.buscarPorCpf(usuarioLogado.getLogin());
-			usuario.setTipoImagem(trabalhador.getTipoImagem());
-			usuario.setImagem(trabalhador.getImagem());
-		} else {
-			usuario.setDepartamentosRegionais(departamentoRegionalService.pesquisarPorIds(dados.getIdsDepartamentoRegional()));
-			usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorIds(dados.getIdsEmpresa()));
-		}
+        br.com.ezvida.girst.apiclient.model.Usuario u;
 
-		return usuario;
-	}
+        try {
+            u = this.usuarioClient.alterar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), usuario);
+        } catch (Exception e) {
+            LOGGER.error("Erro ao alterar o usuário. Id = " + String.valueOf(usuario.getId()) + ". Erro: " + e.getMessage(), e.getCause());
+            throw e;
+        }
 
+        return u;
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public br.com.ezvida.girst.apiclient.model.Usuario alterarPerfil(br.com.ezvida.girst.apiclient.model.Usuario usuario, ClienteAuditoria auditoria) {
+        br.com.ezvida.girst.apiclient.model.Usuario usuarioAnterior = buscarPorId(usuario.getId().toString(), null);
+        br.com.ezvida.girst.apiclient.model.Usuario u = null;
+        if (auditoria != null && usuarioAnterior != null) {
+            LogAuditoria.registrar(LOGGER, auditoria, "Alteração do perfil do usuário: " + usuario);
+            try {
+                u = this.usuarioClient.alterar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), usuario);
+            } catch (Exception e) {
+                LOGGER.error("Erro ao alterar o perfil do usuário. Id = " + String.valueOf(usuario.getId()) + ". Erro: " + e.getMessage(), e.getCause());
+                throw e;
+            }
+        }
+
+        return u;
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public br.com.ezvida.girst.apiclient.model.Usuario desativarUsuario(String id, ClienteAuditoria auditoria) {
+        LogAuditoria.registrar(LOGGER, auditoria, "desativar usuário: " + id);
+
+        br.com.ezvida.girst.apiclient.model.Usuario u;
+
+        try {
+            u = this.usuarioClient.remover(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), id, null);
+        } catch (Exception e) {
+            LOGGER.error("Erro ao remover o usuário. Id = " + id + ". Erro: " + e.getMessage(), e.getCause());
+            throw e;
+        }
+
+        return u;
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public br.com.ezvida.girst.apiclient.model.Usuario buscarPorEmail(String email) {
+        br.com.ezvida.girst.apiclient.model.Usuario u;
+
+        try {
+            u = this.usuarioClient.buscarPorEmail(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), email);
+        } catch (Exception e) {
+            LOGGER.error("Erro ao buscar usuário por email. Email = " + email + ". Erro: " + e.getMessage(), e.getCause());
+            throw e;
+        }
+
+        return u;
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public br.com.ezvida.girst.apiclient.model.Usuario buscarPorLogin(String login) {
+        br.com.ezvida.girst.apiclient.model.Usuario u;
+
+        try {
+            u = this.usuarioClient.getPerfilUsuario(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), login, null);
+        } catch (Exception e) {
+            LOGGER.error("Erro ao obter o perfil do usuário por login. Login = " + login + ". Erro: " + e.getMessage(), e.getCause());
+            throw e;
+        }
+
+        return u;
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public boolean isAdm(String cpf) {
+        br.com.ezvida.girst.apiclient.model.Usuario usuario = buscarPorLogin(cpf);
+
+        if (usuario != null) {
+            for (UsuarioPerfilSistema perfilSistema : usuario.getPerfisSistema()) {
+                if (perfilSistema.getPerfil() != null
+                        && perfilSistema.getPerfil().getCodigo().equals(DadosFilter.ADMINISTRADOR)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public UsuarioDTO consultarDadosUsuario(DadosFilter dados, Usuario usuarioLogado) {
+        LOGGER.debug("consultando dados do usuario");
+
+        UsuarioDTO usuario = new UsuarioDTO();
+        usuario.setLogin(usuarioLogado.getLogin());
+
+        if (dados.isTrabalhador()) {
+            usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorCpf(usuarioLogado.getLogin()));
+            Trabalhador trabalhador = trabalhadorService.buscarPorCpf(usuarioLogado.getLogin());
+            usuario.setTipoImagem(trabalhador.getTipoImagem());
+            usuario.setImagem(trabalhador.getImagem());
+        } else {
+            usuario.setDepartamentosRegionais(departamentoRegionalService.pesquisarPorIds(dados.getIdsDepartamentoRegional()));
+            usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorIds(dados.getIdsEmpresa()));
+        }
+
+        return usuario;
+    }
+
+    // Criar metodo
+    // colocar regras
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public void alterarSenhaRST(Credencial credencial) {
+
+        // Enviar credencial para trocar senha
+        usuarioClient.alterarSenha(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), credencial);
+    }
 }

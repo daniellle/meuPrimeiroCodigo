@@ -1,8 +1,14 @@
 package br.com.ezvida.rst.service;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import br.com.ezvida.girst.apiclient.model.Credencial;
 import br.com.ezvida.girst.apiclient.model.ListaPaginada;
-import br.com.ezvida.girst.apiclient.model.Perfil;
-import br.com.ezvida.girst.apiclient.model.PerfilPermissao;
 import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.dao.filter.UsuarioFilter;
@@ -10,12 +16,6 @@ import br.com.ezvida.rst.enums.Ambiente;
 import br.com.ezvida.rst.model.Usuario;
 import br.com.ezvida.rst.model.UsuarioGirstView;
 import br.com.ezvida.rst.model.dto.UsuarioDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
 
 public class UsuarioServiceDev implements UsuarioService {
 
@@ -111,6 +111,12 @@ public class UsuarioServiceDev implements UsuarioService {
     }
 
     @Override
+    public br.com.ezvida.girst.apiclient.model.Usuario alterarPerfil(br.com.ezvida.girst.apiclient.model.Usuario usuario, ClienteAuditoria auditoria) {
+        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        return null;
+    }
+
+    @Override
     public br.com.ezvida.girst.apiclient.model.Usuario desativarUsuario(String id, ClienteAuditoria auditoria) {
         logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
         return null;
@@ -139,4 +145,8 @@ public class UsuarioServiceDev implements UsuarioService {
         logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
         return null;
     }
+
+	public void alterarSenhaRST(Credencial credencial) {
+		logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+	}
 }

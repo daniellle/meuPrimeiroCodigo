@@ -1,53 +1,16 @@
 package br.com.ezvida.rst.model;
 
-import java.util.Date;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
-
-import org.hibernate.annotations.Type;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
-import br.com.ezvida.rst.converter.BrPdhConverter;
-import br.com.ezvida.rst.converter.EscolaridadeConverter;
-import br.com.ezvida.rst.converter.EstadoCivilConverter;
-import br.com.ezvida.rst.converter.FaixaSalarialConverter;
-import br.com.ezvida.rst.converter.GeneroConverter;
-import br.com.ezvida.rst.converter.NacionalidadeConverter;
-import br.com.ezvida.rst.converter.RacaConverter;
-import br.com.ezvida.rst.converter.SimNaoConverter;
-import br.com.ezvida.rst.converter.SituacaoTrabalhadorConverter;
-import br.com.ezvida.rst.converter.TipoSanguineoConverter;
-import br.com.ezvida.rst.enums.BrPdh;
-import br.com.ezvida.rst.enums.Escolaridade;
-import br.com.ezvida.rst.enums.EstadoCivil;
-import br.com.ezvida.rst.enums.FaixaSalarial;
-import br.com.ezvida.rst.enums.Genero;
-import br.com.ezvida.rst.enums.Nacionalidade;
-import br.com.ezvida.rst.enums.Raca;
-import br.com.ezvida.rst.enums.SimNao;
-import br.com.ezvida.rst.enums.SituacaoTrabalhador;
-import br.com.ezvida.rst.enums.TipoSanguineo;
+import br.com.ezvida.rst.converter.*;
+import br.com.ezvida.rst.enums.*;
 import br.com.ezvida.rst.utils.DateJsonDeserializer;
 import br.com.ezvida.rst.utils.DateJsonSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
+import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "TRABALHADOR", uniqueConstraints = @UniqueConstraint(name = "PK_TRABALHADOR", columnNames = {
@@ -206,7 +169,16 @@ public class Trabalhador extends AbstractData {
 	
 	@Column(name="ds_tp_imagem")
 	private String tipoImagem;
-	
+
+	@Column(name="ds_medicamentos", length = 300)
+	private String descricaoMedicamentos;
+
+	@Column(name="ds_alergias", length = 300)
+	private String descricaoAlergias;
+
+	@Column(name="ds_vacinas", length = 300)
+	private String descricaoVacinas;
+
 	public Trabalhador() {
 		
 	}
@@ -214,6 +186,13 @@ public class Trabalhador extends AbstractData {
 	public Trabalhador(Long id) {
 		this.id = id;
 	}
+
+	public Trabalhador(Long id, String descricaoMedicamentos, String descricaoAlergias, String descricaoVacinas) {
+        this.id = id;
+        this.descricaoMedicamentos = descricaoMedicamentos;
+        this.descricaoAlergias = descricaoAlergias;
+        this.descricaoVacinas = descricaoVacinas;
+    }
 
 	@PreUpdate
 	public void preUpdate() {
@@ -662,6 +641,28 @@ public class Trabalhador extends AbstractData {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	
+
+    public String getDescricaoMedicamentos() {
+        return descricaoMedicamentos;
+    }
+
+    public void setDescricaoMedicamentos(String descricaoMedicamentos) {
+        this.descricaoMedicamentos = descricaoMedicamentos;
+    }
+
+    public String getDescricaoAlergias() {
+        return descricaoAlergias;
+    }
+
+    public void setDescricaoAlergias(String descricaoAlergias) {
+        this.descricaoAlergias = descricaoAlergias;
+    }
+
+    public String getDescricaoVacinas() {
+        return descricaoVacinas;
+    }
+
+    public void setDescricaoVacinas(String descricaoVacinas) {
+        this.descricaoVacinas = descricaoVacinas;
+    }
 }

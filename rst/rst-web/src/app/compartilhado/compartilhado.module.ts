@@ -124,7 +124,7 @@ import { CALENDARIO_DIRECTIVES } from 'app/diretiva/calendario.directive';
         EnderecoGridComponent, EnderecoModalComponent, InputCnpjCpfComponent, SegmentoModalComponent,
         SegmentoGridComponent, UatModalComponent, UatGridComponent, AssociacaoEmpresaSindicatoComponent,
         UnidadeModalComponent, UnidadeGridComponent, AssociacaoTrabalhadorLotacaoComponent, CALENDARIO_DIRECTIVES,
-        ModalSelecionarGrupoPerguntaComponent,
+        ModalSelecionarGrupoPerguntaComponent
     ],
     exports: [
         CommonModule,

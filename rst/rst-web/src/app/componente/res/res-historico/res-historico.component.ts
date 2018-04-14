@@ -1,11 +1,13 @@
 import {OperationalTemplate} from '@ezvida/adl-core';
-import {BloqueioService} from './../../../servico/bloqueio.service';
-import {Seguranca} from './../../../compartilhado/utilitario/seguranca.model';
+import {BloqueioService} from '../../../servico/bloqueio.service';
+import {Seguranca} from '../../../compartilhado/utilitario/seguranca.model';
 import {Observable} from 'rxjs/Observable';
-import {ResService} from './../../../servico/res-service.service';
+import {ResService} from '../../../servico/res-service.service';
 import {ResHomeComponent} from '../res-home/res-home.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {TrabalhadorService} from "../../../servico/trabalhador.service";
+import {Trabalhador} from "../../../modelo/trabalhador.model";
 
 @Component({
     selector: 'app-res-historico',
@@ -13,19 +15,19 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
     styleUrls: ['./res-historico.component.scss']
 })
 export class ResHistoricoComponent extends ResHomeComponent implements OnInit, AfterViewInit {
-    
+
     DADOS_HISTORICOS = [
         'PRESSAO_SISTOLICA',
         'PRESSAO_DIASTOLICA',
         'CIRCUNFERENCIA_ABDOMINAL'
     ];
-    
+
     DADOS_BASICOS = [
         'PESO',
         'ALTURA',
         'IMC'
     ];
-    
+
     encontrosTimeline: any = null;
     carregandoTimeline = false;
     paginaTimeline: any[];
@@ -38,27 +40,33 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
     medicamentos: string[] = [];
     form: OperationalTemplate;
     filtrarInformacoes = false;
-    
-    constructor(protected route: ActivatedRoute,
+    descricaoMedicamentos: string;
+    descricaoAlergias: string;
+    descricaoVacinas: string;
+    trabalhador: Trabalhador;
+
+    constructor(protected trabalhadorService: TrabalhadorService,
+        protected route: ActivatedRoute,
         protected router: Router,
         protected service: ResService,
         protected bloqueioService: BloqueioService) {
         super(route, router, service, bloqueioService);
     }
-    
+
     ngOnInit() {
         this.buscaDadosHistoricos();
+        this.buscarDadosTrabalhador();
     }
-    
+
     ngAfterViewInit() { }
-    
+
     nomeTrabalhador(): string {
         if ( this.cpf !== Seguranca.getUsuario().login && this.paciente ) {
             return this.paciente.name ? this.paciente.name.toUpperCase() : null;
         }
         return null;
     }
-    
+
     tratarVacinas(vacinas: any) {
         if ( vacinas ) {
             vacinas.forEach((elem) => {
@@ -68,7 +76,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
             });
         }
     }
-    
+
     tratarMedicamentos(medicamentos: any) {
         if ( medicamentos ) {
             medicamentos.forEach((elem) => {
@@ -78,7 +86,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
             });
         }
     }
-    
+
     tratarAlergias(alergias: any) {
         if ( alergias ) {
             alergias.forEach((elem) => {
@@ -88,7 +96,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
             });
         }
     }
-    
+
     carregarTimeline(encontrosMedicos: any) {
         if ( encontrosMedicos && encontrosMedicos.resultado.result ) {
             this.filtrarInformacoes = encontrosMedicos.filtrarInformacoes;
@@ -103,7 +111,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
         }
         this.carregandoTimeline = false;
     }
-    
+
     navegar($event) {
         const pagina = $event.page - 1;
         if ( this.encontrosTimeline[pagina] ) {
@@ -112,7 +120,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
         else {
             this.service.buscarHistorico(this.paciente.cpf, null, $event.page - 1).subscribe((resultado) => {
                 this.filtrarInformacoes = resultado.filtrarInformacoes;
-                
+
                 if ( resultado.resultado.result ) {
                     this.encontrosTimeline[pagina] = resultado.resultado.result;
                     this.paginaTimeline = this.encontrosTimeline[pagina];
@@ -122,14 +130,14 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
             });
         }
     }
-    
+
     private buscaDadosHistoricos() {
         this.cpf = (Seguranca.getUsuario() as any).sub;
         if ( localStorage.getItem('trabalhador_cpf') ) {
             this.cpf = localStorage.getItem('trabalhador_cpf');
             localStorage.removeItem('trabalhador_cpf');
         }
-        
+
         this.carregandoTimeline = true;
         const chamadas: any[] = this.DADOS_BASICOS.map((dado) => this.service.buscarValorParaInformacaoSaude(dado,
             this.cpf)
@@ -164,7 +172,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
             listaVacinas.push({nome: 'Febre amarela', resultado: result[14]});
             listaVacinas.push({nome: 'Influenza', resultado: result[15]});
             listaVacinas.push({nome: 'Outras', resultado: result[16]});
-            
+
             this.tratarResultado({
                 peso: result[0],
                 altura: result[1],
@@ -182,7 +190,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
             this.mensagemError(error);
         });
     }
-    
+
     private tratarResultado(dados) {
         this.bloqueioService.bloquear();
         if ( dados ) {
@@ -204,13 +212,23 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
         }
         this.bloqueioService.desbloquear();
     }
+
+    private buscarDadosTrabalhador() {
+        if(this.cpf !== null) {
+            this.trabalhadorService.buscarVacinasAlergiasMedicamentosAutoDeclarados(this.cpf).subscribe(trabalhador => {
+                this.trabalhador = trabalhador;
+            }, error => {
+                this.mensagemError(error);
+            });
+        }
+    }
 }
 
 // tslint:disable-next-line:max-classes-per-file
 export class DadoBasico {
     valor: any;
     unidade: string;
-    
+
     constructor(valor: { magnitude: any, units: string } | any) {
         this.valor = valor.magnitude;
         this.unidade = valor.units;

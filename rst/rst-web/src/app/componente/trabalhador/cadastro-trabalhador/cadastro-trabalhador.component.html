@@ -395,6 +395,41 @@
         </div>
     </div>
 </div>
+
+<div class="container-form">
+    <form [formGroup]="trabalhadorForm">
+        <div class="container-subtitulo">
+            <p>{{'app_rst_labels_vacinas_alergias_medicamentos_auto_declarados' | recurso}}</p>
+        </div>
+
+        <div class="corpo-card">
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <md-input-container [floatPlaceholder]="true">
+                        <textarea mdInput formControlName="descricaoVacinas" name="descricaoVacinas" id="descricaoVacinas" placeholder="{{ 'app_rst_labels_vacinas_auto_declarados' | recurso }}" type="text" maxlength="300"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <md-input-container [floatPlaceholder]="true">
+                        <textarea mdInput formControlName="descricaoAlergias" name="descricaoAlergias" id="descricaoAlergias" placeholder="{{ 'app_rst_labels_alergias_auto_declarados' | recurso }}" type="text" maxlength="300"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <md-input-container [floatPlaceholder]="true">
+                        <textarea mdInput formControlName="descricaoMedicamentos" name="descricaoMedicamentos" id="descricaoMedicamentos" placeholder="{{ 'app_rst_labels_medicamentos_auto_declarados' | recurso }}" type="text" maxlength="300"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
 <div class="btn-rodape-acoes">
     <button type="button " class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!modoConsulta" (click)="salvar()">{{'app_rst_btn_salvar' | recurso}}</button>
     <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>

@@ -1,5 +1,6 @@
 import { DadosFilter } from './dados-filter.model';
 import { UsuarioPerfilSistema } from './usuario-perfil-sistema.model';
+import {SimNao} from "./enum/enum-simnao.model";
 export class Usuario {
 
   id: number;
@@ -12,6 +13,9 @@ export class Usuario {
   papeis: string[];
   dados: DadosFilter;
   sub: string;
+  apelido: string;
+  exibirApelido: boolean;
+  foto: ByteString;
 
   constructor(
     id?: number,
@@ -21,6 +25,9 @@ export class Usuario {
     login?: string,
     senha?: string,
     dados?: DadosFilter,
+    apelido?: string,
+    exibirApelido?: boolean,
+    foto?: ByteString,
   ) {
 
     this.id = id;
@@ -31,6 +38,9 @@ export class Usuario {
     this.senha = senha;
     this.perfisSistema = new Array<UsuarioPerfilSistema>();
     this.dados = new DadosFilter();
+    this.apelido = apelido;
+    this.exibirApelido = exibirApelido;
+    this.foto = foto;
   }
 
 }

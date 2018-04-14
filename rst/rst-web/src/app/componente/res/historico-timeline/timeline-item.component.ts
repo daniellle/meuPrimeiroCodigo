@@ -90,7 +90,7 @@ import {IconesUtils} from 'app/compartilhado/utilitario/icones.utils';
     styleUrls: ['../../../../assets/scss/timeline/timeline.scss']
 })
 export class TimelineItemComponent implements OnInit {
-    
+
     data: Date;
     expandido = false;
     titulo = 'Encontro Médico';
@@ -115,13 +115,13 @@ export class TimelineItemComponent implements OnInit {
         'openEHR-EHR-SECTION.ovl-ficha_clinica_ocupacional-adhoc-009.v1.0.0', // história clínica atual
         'openEHR-EHR-EVALUATION.ovl-ficha_clinica_ocupacional-hipoteses_diagnosticas_detalhes-001.v1.0.0' // detalhes-diagnostico
     ];
-    
+
     constructor(private resolver: ComponentFactoryResolver, private service: ResService) { }
-    
+
     ngOnInit() {
         this.montarCabecalho(this.elementoHistorico);
     }
-    
+
     expandir() {
         const expandir = !this.expandido;
         if ( expandir ) {
@@ -137,12 +137,12 @@ export class TimelineItemComponent implements OnInit {
             this.expandido = false;
         }
     }
-    
+
     carregarDados() {
         this.service.buscarEncontro(this.elementoHistorico._id).subscribe((data) => {
             this.composition = TypedJSON.parse(data.resultado.composition, Composition);
             const form = data.form as OperationalTemplate;
-            
+
             const informacoes = this.coletarInformacoesTemplate(this.composition);
             informacoes.forEach((element) => {
                 try {
@@ -159,110 +159,111 @@ export class TimelineItemComponent implements OnInit {
             this.dadosCarregados = true;
             this.aplicarLayoutExpandido();
         });
-        
+
     }
-    
+
     aplicarLayoutExpandido() {
         this.timelineIcon = this.estilo.svg_full;
         this.expandido = true;
     }
-    
+
     isPathInterno(path: Locatable): boolean {
         return path.isArchetypeRoot() ||
                path instanceof Cluster ||
                path instanceof IntervalEvent ||
                path instanceof Evaluation;
     }
-    
+
     private montarCabecalho(elementoHistorico: { created: Date; composition: any }) {
         this.data = elementoHistorico.created;
         this.composition = elementoHistorico.composition;
-        
+
         this.definirTitulo(this.composition);
-        
+
         this.estilo = IconesUtils.getIconeTemplate(this.composition.archetypeNodeId);
         this.timelineIcon = this.estilo.svg;
     }
-    
+
     private definirTitulo(composition: any) {
     }
-    
+
     private coletarInformacoesTemplate(composition: Composition): InformacoesTemplate[] {
         const informacoes: InformacoesTemplate[] = [];
-        
+
         composition.content.forEach((locatable: Locatable) => {
             if ( this.templatesIgnorados.indexOf(locatable.archetypeNodeId) === -1 ) {
-                console.log(locatable.archetypeNodeId);
                 const info = new InformacoesTemplate();
                 info.isRoot = this.isPathInterno(locatable);
                 info.arquetipoReferencia = locatable.archetypeNodeId;
                 info.titulo = locatable.name.value;
-                
+                const first = new InformacoesTemplate();
+                info.informacoesInternas.push(first);
+
                 if ( locatable instanceof Element ) {
-                    this.processarAtributo(locatable, info, info);
+                    this.processarAtributo(locatable, first, info);
                 }
                 else if ( locatable instanceof Event ) {
-                    this.processStructure(locatable.data, info, info);
-                    this.processStructure(locatable.state, info, info);
+                    this.processStructure(locatable.data, first, info);
+                    this.processStructure(locatable.state, first, info);
                 }
                 else if ( locatable instanceof Cluster ) {
                     if ( !isNullOrUndefined((<Cluster>locatable).items) ) {
                         (<Cluster>locatable).items.filter(i => !this.templatesIgnorados
-                                                                    .includes(i.archetypeNodeId))
-                                            .forEach((item: Item) => {
-                                                this.processCluster(item, info, info);
-                                            });
+                            .includes(i.archetypeNodeId))
+                            .forEach((item: Item) => {
+                                this.processCluster(item, first, info);
+                            });
                     }
                 }
                 else if ( locatable instanceof Entry ) {
-                    this.processEntry(<Entry>locatable, info, info);
+                    this.processEntry(<Entry>locatable, first, info);
                 }
                 else if ( locatable instanceof Section ) {
                     if ( !isNullOrUndefined((<Section>locatable).items) ) {
                         (<Section>locatable).items.filter(i => !this.templatesIgnorados
-                                                                    .includes(i.archetypeNodeId))
-                                            .forEach((item: ContentItem) => {
-                                                this.compositionProcess(item, info, info);
-                                            });
+                            .includes(i.archetypeNodeId))
+                            .forEach((item: ContentItem) => {
+                                this.compositionProcess(item, first, info);
+                            });
                     }
                 }
-                
+
                 informacoes.push(info);
             }
         });
-        
+
         for (const info of informacoes) {
             if ( info.informacoesInternas && info.informacoesInternas.length > 0 ) {
                 info.informacoesInternas.forEach((inf) => {
                     const todosPaths = inf.pathsComValor.splice(0);
-                    
+
                     inf.pathsComValor.push(...this.agrupar(inf), ...todosPaths);
                 });
             }
         }
-        
+
         return informacoes;
     }
-    
+
     private agrupar(informacaoInterna: InformacoesTemplate) {
         const resultado: any[] = [];
         if ( informacaoInterna.pathsComValor ) {
             const todosPaths = informacaoInterna.pathsComValor.splice(0);
-            
+
             resultado.push(...todosPaths);
         }
-        
+
         if ( informacaoInterna.informacoesInternas ) {
             informacaoInterna.informacoesInternas.forEach((info) => {
                 const todosInternos = resultado.splice(0);
-                
+
                 resultado.push(...this.agrupar(info), ...todosInternos);
             });
         }
-        
+
         return resultado;
     }
-    
+
     private processarAtributo(entidade: Element, informacoes: InformacoesTemplate, root: InformacoesTemplate) {
         // História clínica atual
         if ( root.arquetipoReferencia
@@ -272,7 +273,7 @@ export class TimelineItemComponent implements OnInit {
                 return;
             }
         }
-        
+
         if ( this.filtrarInformacoes ) {
             // História Ocupacional Atual
             if (
@@ -311,11 +312,11 @@ export class TimelineItemComponent implements OnInit {
                 }
             }
         }
-        
+
         if ( isNullOrUndefined(informacoes.pathsComValor) ) {
             informacoes.pathsComValor = [];
         }
-        
+
         if ( entidade.value instanceof DvOrdinal ) {
             if ( !isNullOrUndefined(entidade.value.value) ) {
                 informacoes.pathsComValor.push(entidade);
@@ -373,7 +374,7 @@ export class TimelineItemComponent implements OnInit {
             }
         }
     }
-    
+
     private compositionProcess(locatable: Locatable, informacoes: InformacoesTemplate, root: InformacoesTemplate) {
         if ( locatable instanceof Element ) {
             this.processarAtributo(locatable, informacoes, root);
@@ -383,10 +384,10 @@ export class TimelineItemComponent implements OnInit {
             informacoes.isRoot = this.isPathInterno(locatable);
             informacoes.arquetipoReferencia = locatable.archetypeNodeId;
             informacoes.titulo = locatable.name.value;
-            
+
             this.processStructure(locatable.data, info, root);
             this.processStructure(locatable.state, info, root);
-            
+
             informacoes.informacoesInternas.push(info);
         }
         else if ( locatable instanceof Cluster ) {
@@ -394,13 +395,13 @@ export class TimelineItemComponent implements OnInit {
             informacoes.isRoot = this.isPathInterno(locatable);
             informacoes.arquetipoReferencia = locatable.archetypeNodeId;
             informacoes.titulo = locatable.name.value;
-            
+
             if ( !isNullOrUndefined((<Cluster>locatable).items) ) {
                 (<Cluster>locatable).items.forEach((item: Item) => {
                     this.processCluster(item, info, root);
                 });
             }
-            
+
             informacoes.informacoesInternas.push(info);
         }
         else if ( locatable instanceof Entry ) {
@@ -408,9 +409,9 @@ export class TimelineItemComponent implements OnInit {
             informacoes.isRoot = this.isPathInterno(locatable);
             informacoes.arquetipoReferencia = locatable.archetypeNodeId;
             informacoes.titulo = locatable.name.value;
-            
+
             this.processEntry(<Entry>locatable, info, root);
-            
+
             informacoes.informacoesInternas.push(info);
         }
         else if ( locatable instanceof Section ) {
@@ -419,25 +420,25 @@ export class TimelineItemComponent implements OnInit {
                 informacoes.isRoot = this.isPathInterno(locatable);
                 informacoes.arquetipoReferencia = locatable.archetypeNodeId;
                 informacoes.titulo = locatable.name.value;
-                
+
                 (<Section>locatable).items.forEach((item: ContentItem) => {
                     this.compositionProcess(item, info, root);
                 });
-                
+
                 informacoes.informacoesInternas.push(info);
             }
         }
     }
-    
+
     private processEntry(entry: Entry, informacoes: InformacoesTemplate, root: InformacoesTemplate): void {
         if ( entry instanceof AdminEntry ) {
             const info = new InformacoesTemplate();
             informacoes.isRoot = this.isPathInterno(entry);
             informacoes.arquetipoReferencia = entry.archetypeNodeId;
             informacoes.titulo = entry.name.value;
-            
+
             this.processStructure((<AdminEntry>entry).data, info, root);
-            
+
             informacoes.informacoesInternas.push(info);
         }
         else if ( entry instanceof Instruction ) {
@@ -445,9 +446,9 @@ export class TimelineItemComponent implements OnInit {
             informacoes.isRoot = this.isPathInterno(entry);
             informacoes.arquetipoReferencia = entry.archetypeNodeId;
             informacoes.titulo = entry.name.value;
-            
+
             this.processEntryInstruction(<Instruction>entry, info, root);
-            
+
             informacoes.informacoesInternas.push(info);
         }
         else if ( entry instanceof Action ) {
@@ -455,9 +456,9 @@ export class TimelineItemComponent implements OnInit {
             informacoes.isRoot = this.isPathInterno(entry);
             informacoes.arquetipoReferencia = entry.archetypeNodeId;
             informacoes.titulo = entry.name.value;
-            
+
             this.processEntryAction(<Action>entry, info, root);
-            
+
             informacoes.informacoesInternas.push(info);
         }
         else if ( entry instanceof Section ) {
@@ -465,13 +466,13 @@ export class TimelineItemComponent implements OnInit {
             informacoes.isRoot = this.isPathInterno(entry);
             informacoes.arquetipoReferencia = entry.archetypeNodeId;
             informacoes.titulo = entry.name.value;
-            
+
             if ( !isNullOrUndefined((<Section>entry).items) ) {
                 (<Section>entry).items.forEach((item: ContentItem) => {
                     this.compositionProcess(item, info, root);
                 });
             }
-            
+
             informacoes.informacoesInternas.push(info);
         }
         else if ( entry instanceof Evaluation ) {
@@ -479,9 +480,9 @@ export class TimelineItemComponent implements OnInit {
             informacoes.isRoot = this.isPathInterno(entry);
             informacoes.arquetipoReferencia = entry.archetypeNodeId;
             informacoes.titulo = entry.name.value;
-            
+
             this.processStructure((<Evaluation>entry).data, info, root);
-            
+
             informacoes.informacoesInternas.push(info);
         }
         else if ( entry instanceof Observation ) {
@@ -489,9 +490,9 @@ export class TimelineItemComponent implements OnInit {
             informacoes.isRoot = this.isPathInterno(entry);
             informacoes.arquetipoReferencia = entry.archetypeNodeId;
             informacoes.titulo = entry.name.value;
-            
+
             this.processEntryObservation(<Observation>entry, info, root);
-            
+
             informacoes.informacoesInternas.push(info);
         }
         else if ( entry instanceof CareEntry ) {
@@ -499,13 +500,13 @@ export class TimelineItemComponent implements OnInit {
             informacoes.isRoot = this.isPathInterno(entry);
             informacoes.arquetipoReferencia = entry.archetypeNodeId;
             informacoes.titulo = entry.name.value;
-            
+
             this.processStructure((<CareEntry>entry).protocol, info, root);
-            
+
             informacoes.informacoesInternas.push(info);
         }
     }
-    
+
     private processCluster(item: Item, informacoes: InformacoesTemplate, root: InformacoesTemplate): void {
         if ( item instanceof Element ) {
             this.processarAtributo(<Element>item, informacoes, root);
@@ -515,41 +516,41 @@ export class TimelineItemComponent implements OnInit {
             informacoes.isRoot = this.isPathInterno(item);
             informacoes.arquetipoReferencia = item.archetypeNodeId;
             informacoes.titulo = item.name.value;
-            
+
             this.compositionProcess(item, info, root);
-            
+
             informacoes.informacoesInternas.push(info);
         }
     }
-    
+
     private processHistory(history: History, informacoes: InformacoesTemplate, root: InformacoesTemplate): void {
         if ( history && history.events ) {
             const info = new InformacoesTemplate();
             informacoes.isRoot = this.isPathInterno(history);
             informacoes.arquetipoReferencia = history.archetypeNodeId;
             informacoes.titulo = history.name.value;
-            
+
             if ( !isNullOrUndefined(history.events) ) {
                 history.events.forEach((evento: Event) => {
                     this.compositionProcess(evento, info, root);
                 });
             }
-            
+
             informacoes.informacoesInternas.push(info);
         }
     }
-    
+
     private processStructure(item: ItemStructure, informacoes: InformacoesTemplate, root: InformacoesTemplate): void {
         if ( item instanceof ItemTree && (<ItemTree>item).items ) {
             const info = new InformacoesTemplate();
             informacoes.isRoot = this.isPathInterno(item);
             informacoes.arquetipoReferencia = item.archetypeNodeId;
             informacoes.titulo = item.name.value;
-            
+
             (<ItemTree>item).items.forEach((itemElement: Item) => {
                 this.processCluster(itemElement, info, root);
             });
-            
+
             informacoes.informacoesInternas.push(info);
         }
         else if ( item instanceof ItemSingle ) {
@@ -560,11 +561,11 @@ export class TimelineItemComponent implements OnInit {
             informacoes.isRoot = this.isPathInterno(item);
             informacoes.arquetipoReferencia = item.archetypeNodeId;
             informacoes.titulo = item.name.value;
-            
+
             (<ItemList>item).items.forEach((element: Element) => {
                 this.processarAtributo(element, info, root);
             });
-            
+
             informacoes.informacoesInternas.push(info);
         }
         else if ( item instanceof ItemTable && (<ItemTable>item).rows ) {
@@ -572,7 +573,7 @@ export class TimelineItemComponent implements OnInit {
             informacoes.isRoot = this.isPathInterno(item);
             informacoes.arquetipoReferencia = item.archetypeNodeId;
             informacoes.titulo = item.name.value;
-            
+
             (<ItemTable>item).rows.forEach((cluster: Cluster) => {
                 if ( cluster.items ) {
                     cluster.items.forEach((itemElement: Item) => {
@@ -580,26 +581,26 @@ export class TimelineItemComponent implements OnInit {
                     });
                 }
             });
-            
+
             informacoes.informacoesInternas.push(info);
         }
     }
-    
+
     private processEntryAction(action: Action, informacoes: InformacoesTemplate, root: InformacoesTemplate) {
         const info = new InformacoesTemplate();
         informacoes.isRoot = this.isPathInterno(action);
         informacoes.arquetipoReferencia = action.archetypeNodeId;
         informacoes.titulo = action.name.value;
-        
+
         this.processStructure(action.description, informacoes, root);
-        
+
         if ( action.instructionDetails instanceof InstructionDetails ) {
             this.processStructure(action.instructionDetails.wfDetails, info, root);
         }
-        
+
         informacoes.informacoesInternas.push(info);
     }
-    
+
     private processEntryObservation(observation: Observation,
         informacoes: InformacoesTemplate,
         root: InformacoesTemplate) {
@@ -607,14 +608,14 @@ export class TimelineItemComponent implements OnInit {
         informacoes.isRoot = this.isPathInterno(observation);
         informacoes.arquetipoReferencia = observation.archetypeNodeId;
         informacoes.titulo = observation.name.value;
-        
+
         this.processHistory(observation.data, info, root);
         this.processHistory(observation.state, info, root);
         this.processStructure(observation.protocol, info, root);
-        
+
         informacoes.informacoesInternas.push(info);
     }
-    
+
     private processEntryInstruction(instruction: Instruction,
         informacoes: InformacoesTemplate,
         root: InformacoesTemplate) {
@@ -622,28 +623,28 @@ export class TimelineItemComponent implements OnInit {
         informacoes.isRoot = this.isPathInterno(instruction);
         informacoes.arquetipoReferencia = instruction.archetypeNodeId;
         informacoes.titulo = instruction.name.value;
-        
+
         this.processStructure(instruction.protocol, info, root);
-        
+
         if ( !isNullOrUndefined(instruction.activities) ) {
             instruction.activities.forEach((activity: Activity) => {
                 this.processarActivity(activity, info, root);
             });
         }
-        
+
         informacoes.informacoesInternas.push(info);
     }
-    
+
     private processarActivity(activity: Activity, informacoes: InformacoesTemplate, root: InformacoesTemplate) {
         const info = new InformacoesTemplate();
         informacoes.isRoot = this.isPathInterno(activity);
         informacoes.arquetipoReferencia = activity.archetypeNodeId;
         informacoes.titulo = activity.name.value;
-        
+
         if ( activity.description ) {
             this.processStructure(activity.description, info, root);
         }
-        
+
         informacoes.informacoesInternas.push(info);
     }
 }
@@ -656,5 +657,5 @@ export class InformacoesTemplate {
     titulo: string;
     pathsComValor: Element[] = [];
     informacoesInternas: InformacoesTemplate[] = [];
-    
+
 }

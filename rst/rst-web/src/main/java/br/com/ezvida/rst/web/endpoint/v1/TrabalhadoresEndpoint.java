@@ -1,24 +1,5 @@
 package br.com.ezvida.rst.web.endpoint.v1;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.BeanParam;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Encoded;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
-
 import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.constants.PermissionConstants;
 import br.com.ezvida.rst.dao.filter.QuestionarioTrabalhadorFilter;
@@ -34,6 +15,16 @@ import br.com.ezvida.rst.web.auditoria.ClienteInfos;
 import fw.security.binding.Autorizacao;
 import fw.security.binding.Permissao;
 import fw.web.endpoint.SegurancaEndpoint;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 
 @RequestScoped
 @Path("/private/v1/trabalhadores")
@@ -63,7 +54,7 @@ public class TrabalhadoresEndpoint extends SegurancaEndpoint<Trabalhador> {
 			PermissionConstants.TRABALHADOR_CERTIFICADO_CONSULTAR, PermissionConstants.TRABALHADOR_CERTIFICADO_ALTERAR,
 			PermissionConstants.TRABALHADOR_CERTIFICADO_DESATIVAR}))
 	public Response buscarPorId(@BeanParam TrabalhadorFilter trabalhadorFilter, @Context SecurityContext context
-			, @Context HttpServletRequest request) {		
+			, @Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
 				.header("Content-Version", getApplicationVersion())
 				.entity(serializar(trabalhadorService.buscarPorId(trabalhadorFilter,
@@ -72,7 +63,7 @@ public class TrabalhadoresEndpoint extends SegurancaEndpoint<Trabalhador> {
 						ClienteInfos.getDadosFilter(context))))
 				.build();
 	}
-	
+
 	@GET
 	@Path("/meus-dados")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -106,7 +97,7 @@ public class TrabalhadoresEndpoint extends SegurancaEndpoint<Trabalhador> {
 			PermissionConstants.TRABALHADOR_CERTIFICADO_CONSULTAR, PermissionConstants.TRABALHADOR_CERTIFICADO_ALTERAR,
 			PermissionConstants.TRABALHADOR_CERTIFICADO_DESATIVAR}))
 	public Response pesquisarPaginado(@BeanParam TrabalhadorFilter trabalhadorFilter, @Context SecurityContext context
-			, @Context HttpServletRequest request) {		
+			, @Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
 				.header("Content-Version", getApplicationVersion())
 				.entity(serializar(trabalhadorService.pesquisarPaginado(trabalhadorFilter,
@@ -121,7 +112,7 @@ public class TrabalhadoresEndpoint extends SegurancaEndpoint<Trabalhador> {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.TRABALHADOR, PermissionConstants.TRABALHADOR_CADASTRAR }))
 	public Response criar(@Encoded Trabalhador trabalhador, @Context SecurityContext context
-			, @Context HttpServletRequest request) {		
+			, @Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_CREATED)
 				.entity(trabalhadorService.salvar(trabalhador
 						, ClienteInfos.getClienteInfos(context, request,
@@ -152,7 +143,7 @@ public class TrabalhadoresEndpoint extends SegurancaEndpoint<Trabalhador> {
 	@Encoded
 	@Path("{idTrabalhador}/dependente")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)	
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.TRABALHADOR_DEPENDENTE,
 			PermissionConstants.TRABALHADOR_DEPENDENTE_CADASTRAR, PermissionConstants.TRABALHADOR_DEPENDENTE_ALTERAR }))
 	public Response criarDependente(@PathParam("idTrabalhador") Long idTrabalhador,
@@ -193,14 +184,14 @@ public class TrabalhadoresEndpoint extends SegurancaEndpoint<Trabalhador> {
 			PermissionConstants.TRABALHADOR_DEPENDENTE_ALTERAR,	PermissionConstants.TRABALHADOR_DEPENDENTE_CONSULTAR,
 			PermissionConstants.TRABALHADOR_DEPENDENTE_DESATIVAR }))
 	public Response buscarTrabalhadorDependentePorCpf(@QueryParam("cpf") String cpf, @Context SecurityContext context
-			,@Context HttpServletRequest request) {		
+			,@Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
 				.header("Content-Version", getApplicationVersion())
 				.entity(serializar(trabalhadorDependenteService.pesquisarDependentePorCPF(cpf
 						,ClienteInfos.getClienteInfos(context, request,
 								TipoOperacaoAuditoria.CONSULTA,Funcionalidade.TRABALHADOR)))).build();
 	}
-	
+
 	@PUT
 	@Encoded
 	@Path("/dependente/desativar")
@@ -211,7 +202,7 @@ public class TrabalhadoresEndpoint extends SegurancaEndpoint<Trabalhador> {
 			PermissionConstants.TRABALHADOR_DEPENDENTE_DESATIVAR }))
 	public Response removerDependente(@Encoded TrabalhadorDependente trabalhadorDependente,
 			@Context SecurityContext context
-			, @Context HttpServletRequest request) {		
+			, @Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK)
 				.entity(trabalhadorDependenteService.desativar(trabalhadorDependente
 						,ClienteInfos.getClienteInfos(context, request,
@@ -226,8 +217,8 @@ public class TrabalhadoresEndpoint extends SegurancaEndpoint<Trabalhador> {
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.TRABALHADOR_DEPENDENTE,
 			PermissionConstants.TRABALHADOR_DEPENDENTE_ALTERAR }))
 	public Response alterar(@Encoded Trabalhador trabalhador, @Context SecurityContext context
-			, @Context HttpServletRequest request) {		
-		return Response.status(HttpServletResponse.SC_OK).entity(trabalhadorService.salvar(trabalhador, 
+			, @Context HttpServletRequest request) {
+		return Response.status(HttpServletResponse.SC_OK).entity(trabalhadorService.salvar(trabalhador,
 				ClienteInfos.getClienteInfos(context, request,
 						TipoOperacaoAuditoria.INCLUSAO,Funcionalidade.TRABALHADOR)))
 				.type(MediaType.APPLICATION_JSON).build();
@@ -242,7 +233,7 @@ public class TrabalhadoresEndpoint extends SegurancaEndpoint<Trabalhador> {
 			PermissionConstants.TRABALHADOR_DEPENDENTE_ALTERAR, PermissionConstants.TRABALHADOR_DEPENDENTE_CADASTRAR,
 			PermissionConstants.TRABALHADOR_DEPENDENTE_CONSULTAR, PermissionConstants.TRABALHADOR_DEPENDENTE_DESATIVAR }))
 	public Response buscarTrabalhadorDependentePaginado(@BeanParam TrabalhadorFilter trabalhadorFilter
-			, @Context SecurityContext context, @Context HttpServletRequest request) {		
+			, @Context SecurityContext context, @Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
 				.header("Content-Version", getApplicationVersion())
 				.entity(serializar(trabalhadorDependenteService.pesquisarPorTrabalhador(trabalhadorFilter
@@ -250,4 +241,14 @@ public class TrabalhadoresEndpoint extends SegurancaEndpoint<Trabalhador> {
 								TipoOperacaoAuditoria.CONSULTA,Funcionalidade.TRABALHADOR)))).build();
 	}
 
+    @GET
+    @Encoded
+    @Path("/vacinas-alergias-medicamentos-auto-declarados/{cpf}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response buscarVacinasAlergiasMedicamentosAutoDeclarados(@PathParam("cpf") String cpf, @Context SecurityContext context, @Context HttpServletRequest request) {
+        return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
+            .header("Content-Version", getApplicationVersion()).entity(serializar(trabalhadorService.buscarVacinasAlergiasMedicamentosAutoDeclarados(cpf)))
+            .build();
+    }
 }

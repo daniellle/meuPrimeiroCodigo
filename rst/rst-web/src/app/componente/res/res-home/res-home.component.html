@@ -1,7 +1,7 @@
 <app-bloqueio [processado]='false'> </app-bloqueio>
 <div class='container-fluid'>
     <div class='row'>
-        <div class='col-lg-4 col-sm-12 card-single card-idade'>
+        <div class='col-md-4 card-single card-idade'>
             <div class='row'>
                 <div class='col-12 col-info-label'>
                     <label> Idade </label>
@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-        <div class='col-lg-4 col-sm-12 card-single card-altura'>
+        <div class='col-md-4 card-single card-altura'>
             <div class='row'>
                 <div class='col-12 col-info-label'>
                     <label>Altura ({{altura?.unidade}})</label>
@@ -25,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <div class='col-lg-4 col-sm-12 card-single card-circunferencia'>
+        <div class='col-md-4 card-single card-circunferencia'>
             <div class='row'>
                 <div class='col-12 col-info-label'>
                     <label>Peso ({{peso?.unidade}})</label>
@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class='row'>
-        <div class='col-lg-4 col-md-6 col-sm-12 card-res'>
+        <div class='col-md-4 col-sm-6 col-xs-12 card-res'>
             <div class='row row-card-content'>
                 <div class='col-12'>
                     <div class='row row-titulo'>
@@ -66,7 +66,7 @@
                 </div>
             </div>
         </div>
-        <div class='col-lg-4 col-md-6 col-sm-12 card-res '>
+        <div class='col-md-4 col-sm-6 col-xs-12 card-res '>
             <div class='row row-card-content'>
                 <div class='col-12'>
                     <div class='row row-titulo '>
@@ -92,7 +92,7 @@
                             </div>
                             <div class='row '>
                                 <div class='col-12 col-imc-progress text-center '>
-                                    <div class="progress" style="">
+                                    <div class="progress">
                                         <div class="progress-bar progress-bar-obeso" [class.selecionado]='imc?.valor>= 30' role="progressbar" style="width:100%; height:25%;">
                                             <label class='progress-label'> > ou = a 30 </label>
                                             <label class='progress-label'> Obeso </label>
@@ -121,7 +121,7 @@
                 </div>
             </div>
         </div>
-        <div class='col-lg-4 col-md-6 col-sm-12 card-res '>
+        <div class='col-md-4 col-sm-6 col-xs-12 card-res '>
             <div class='row row-card-content '>
                 <div class='col-12'>
                     <div class='row row-titulo'>

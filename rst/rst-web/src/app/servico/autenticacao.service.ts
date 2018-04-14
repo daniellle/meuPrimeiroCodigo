@@ -73,4 +73,18 @@ export class AutenticacaoService extends BaseService<Credencial> {
 				this.bloqueio.evento.emit(true);
 			});
 	}
+
+	alterarSenhaRST(senha_antiga: String, senha_nova: String): Observable<String> {
+		//var data = [senha_antiga, senha_nova];
+		const propriedades = { senha_antiga: senha_antiga, senha_nova: senha_nova };
+		return super.post('/v1/usuarios/trocarsenha', propriedades)
+			.map((response: Response) => {
+				return response;
+			}).catch((error) => {
+				return Observable.throw(error);
+			}).finally(() => {
+				this.bloqueio.evento.emit(true);
+			});
+	}
 }
+

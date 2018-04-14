@@ -1,34 +1,33 @@
-import { IgevComponent } from './igev/igev.component';
-import { RespostaQuestionarioTrabalhadorService } from './../../servico/resposta-questionario-trabalhador.service';
-import { QuestionarioTrabalhadorService } from './../../servico/questionario-trabalhador.service';
-import { MontarQuestionarioService } from './../../servico/montar-questionario.service';
-import { ParametroService } from './../../servico/parametro.service';
-import { CertificadoService } from './../../servico/certificado.service';
-import { TipoCursoService } from './../../servico/tipo-curso.service';
-import { ImageCropperModule } from 'ng2-img-cropper';
-import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
-import { AutorizacaoGuard } from './../../seguranca/autorizacao.guard';
-import { TrabalhadorDependenteService } from './../../servico/trabalhador-dependente.service';
-import { TrabalhadorIntermediarioComponent } from './trabalhador-intermediario/trabalhador-intermediario.component';
-import { PaisService } from './../../servico/pais.service';
-import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
-import { Routes, RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { CompartilhadoModule } from 'app/compartilhado/compartilhado.module';
-import { PaginationModule, TypeaheadModule } from 'ngx-bootstrap';
+import {IgevComponent} from './igev/igev.component';
+import {RespostaQuestionarioTrabalhadorService} from './../../servico/resposta-questionario-trabalhador.service';
+import {QuestionarioTrabalhadorService} from './../../servico/questionario-trabalhador.service';
+import {MontarQuestionarioService} from './../../servico/montar-questionario.service';
+import {ParametroService} from './../../servico/parametro.service';
+import {CertificadoService} from './../../servico/certificado.service';
+import {TipoCursoService} from './../../servico/tipo-curso.service';
+import {ImageCropperModule} from 'ng2-img-cropper';
+import {PermissoesEnum} from 'app/modelo/enum/enum-permissoes';
+import {AutorizacaoGuard} from './../../seguranca/autorizacao.guard';
+import {TrabalhadorDependenteService} from './../../servico/trabalhador-dependente.service';
+import {TrabalhadorIntermediarioComponent} from './trabalhador-intermediario/trabalhador-intermediario.component';
+import {PaisService} from './../../servico/pais.service';
+import {MensagemProperties} from 'app/compartilhado/utilitario/recurso.pipe';
+import {RouterModule, Routes} from '@angular/router';
+import {NgModule} from '@angular/core';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {CompartilhadoModule} from 'app/compartilhado/compartilhado.module';
+import {PaginationModule, TypeaheadModule} from 'ngx-bootstrap';
 
-import { TrabalhadorService } from './../../servico/trabalhador.service';
-import { CadastroTrabalhadorComponent } from './cadastro-trabalhador/cadastro-trabalhador.component';
-import { PesquisaTrabalhadorComponent } from './pesquisa-trabalhador/pesquisa-trabalhador.component';
-import { DialogService } from 'ng2-bootstrap-modal';
-import { ProfissaoService } from 'app/servico/profissao.service';
-import { TrabalhadorDependenteComponent } from './trabalhador-dependente/trabalhador-dependente.component';
-import { TrabalhadorCertificadoComponent } from './trabalhador-certificado/trabalhador-certificado.component';
-import { HistoricoQuestionarioComponent } from './historico-questionario/historico-questionario.component';
-import { AplicarQuestionarioComponent } from 'app/componente/trabalhador/aplicar-questionario/aplicar-questionario.component';
-import { ResultadoQuestionarioComponent } from './resultado-questionario/resultado-questionario.component';
-
+import {TrabalhadorService} from './../../servico/trabalhador.service';
+import {CadastroTrabalhadorComponent} from './cadastro-trabalhador/cadastro-trabalhador.component';
+import {PesquisaTrabalhadorComponent} from './pesquisa-trabalhador/pesquisa-trabalhador.component';
+import {DialogService} from 'ng2-bootstrap-modal';
+import {ProfissaoService} from 'app/servico/profissao.service';
+import {TrabalhadorDependenteComponent} from './trabalhador-dependente/trabalhador-dependente.component';
+import {TrabalhadorCertificadoComponent} from './trabalhador-certificado/trabalhador-certificado.component';
+import {HistoricoQuestionarioComponent} from './historico-questionario/historico-questionario.component';
+import {AplicarQuestionarioComponent} from 'app/componente/trabalhador/aplicar-questionario/aplicar-questionario.component';
+import {ResultadoQuestionarioComponent} from './resultado-questionario/resultado-questionario.component';
 const routes: Routes = [
     {
         path: '', component: PesquisaTrabalhadorComponent,

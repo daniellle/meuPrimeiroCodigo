@@ -6,6 +6,7 @@ import { SegurancaModule } from '../seguranca/seguranca.module';
 import { AutorizacaoGuard } from '../seguranca/autorizacao.guard';
 import { TemplateModule } from '../compartilhado/template/template.module';
 import { TemplateComponent } from '../compartilhado/template/template.component';
+import { GerenciamentoPerfilComponent } from './gerenciamento-perfil/gerenciamento-perfil.component';
 
 const routes: Routes = [
 	{
@@ -243,6 +244,10 @@ const routes: Routes = [
 				},
 			},
 			{
+				path: 'gerenciarperfil',
+				loadChildren: './gerenciamento-perfil/gerenciamento-perfil.module#GerenciamentoPerfilModule',
+			},
+			{
 				path: 'grupopergunta',
 				loadChildren: './grupo-pergunta/grupo-pergunta.module#GrupoPerguntaModule',
 				canLoad: [AutorizacaoGuard], data: {
@@ -314,7 +319,7 @@ const routes: Routes = [
 			},
 				// {
 			// 	path: 'teste', component: TesteComponent,
-				
+
 			// }
 		],
 	},

@@ -1,28 +1,25 @@
 package br.com.ezvida.rst.dao;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Maps;
-
 import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.dao.filter.ListaPaginada;
 import br.com.ezvida.rst.dao.filter.TrabalhadorFilter;
 import br.com.ezvida.rst.enums.Situacao;
 import br.com.ezvida.rst.model.Trabalhador;
+import com.google.common.collect.Maps;
 import fw.core.jpa.BaseDAO;
 import fw.core.jpa.DAOUtil;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 
@@ -335,6 +332,13 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 		TypedQuery<Trabalhador> query = criarConsultaPorTipo(jpql.toString());
 		query.setParameter("cpf", cpf);
 
+		return DAOUtil.getSingleResult(query);
+	}
+
+	public Trabalhador buscarVacinasAlergiasMedicamentosAutoDeclarados(String cpf) {
+		LOGGER.debug("Pesquisando dados auto-declarados do trabalhador por cpf.");
+		TypedQuery<Trabalhador> query = criarConsultaPorTipo("select new Trabalhador(t.id, t.descricaoMedicamentos, t.descricaoAlergias, t.descricaoVacinas) from Trabalhador t where t.cpf = :cpf");
+		query.setParameter("cpf", cpf);
 		return DAOUtil.getSingleResult(query);
 	}
 

@@ -126,4 +126,13 @@ export class TrabalhadorService extends BaseService<Trabalhador> {
       });
   }
 
+  buscarVacinasAlergiasMedicamentosAutoDeclarados(cpf: string): Observable<Trabalhador> {
+    return super.get('/v1/trabalhadores/vacinas-alergias-medicamentos-auto-declarados/' + cpf)
+        .map((response: Response) => {
+            return response;
+        }).catch((error: Response) => {
+            return Observable.throw(error);
+        });
+    }
+
 }

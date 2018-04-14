@@ -1,28 +1,10 @@
 package br.com.ezvida.rst.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
-
-import br.com.ezvida.rst.anotacoes.Preferencial;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import br.com.ezvida.girst.apiclient.model.Perfil;
 import br.com.ezvida.girst.apiclient.model.Sistema;
 import br.com.ezvida.girst.apiclient.model.Usuario;
 import br.com.ezvida.girst.apiclient.model.UsuarioPerfilSistema;
+import br.com.ezvida.rst.anotacoes.Preferencial;
 import br.com.ezvida.rst.auditoria.logger.LogAuditoria;
 import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.TrabalhadorDAO;
@@ -32,15 +14,23 @@ import br.com.ezvida.rst.dao.filter.TrabalhadorFilter;
 import br.com.ezvida.rst.dao.filter.UsuarioFilter;
 import br.com.ezvida.rst.enums.SimNao;
 import br.com.ezvida.rst.enums.TipoTelefone;
-import br.com.ezvida.rst.model.EmailTrabalhador;
-import br.com.ezvida.rst.model.PrimeiroAcesso;
-import br.com.ezvida.rst.model.SolicitacaoEmail;
-import br.com.ezvida.rst.model.Trabalhador;
-import br.com.ezvida.rst.model.TrabalhadorDependente;
+import br.com.ezvida.rst.model.*;
 import br.com.ezvida.rst.service.excpetions.RegistroNaoEncontradoException;
 import br.com.ezvida.rst.utils.ValidadorUtils;
 import fw.core.exception.BusinessErrorException;
 import fw.core.service.BaseService;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Stateless
 public class TrabalhadorService extends BaseService {
@@ -157,6 +147,11 @@ public class TrabalhadorService extends BaseService {
 		if (trabalhador.getId() != null) {
 			descricaoAuditoria = "Alteração no cadastro de trabalhador: ";
 		}
+
+        trabalhador.setDescricaoAlergias(StringUtils.trimToNull(trabalhador.getDescricaoAlergias()));
+        trabalhador.setDescricaoVacinas(StringUtils.trimToNull(trabalhador.getDescricaoVacinas()));
+        trabalhador.setDescricaoMedicamentos(StringUtils.trimToNull(trabalhador.getDescricaoMedicamentos()));
+
 		validar(trabalhador, auditoria);
 		trabalhadorDAO.salvar(trabalhador);
 		emailTrabalhadorService.salvar(trabalhador.getListaEmailTrabalhador(), trabalhador);
@@ -325,4 +320,14 @@ public class TrabalhadorService extends BaseService {
     			adicionarMascaraCpf(solicitacaoEmail.getSolicitacaoEmail().getCpf()));
     	return solicitacaoEmailService.enviarEmail(solicitacaoEmail.getSolicitacaoEmail());
     }
+
+    public Trabalhador buscarVacinasAlergiasMedicamentosAutoDeclarados(String cpf) {
+        Trabalhador trabalhador = trabalhadorDAO.buscarVacinasAlergiasMedicamentosAutoDeclarados(cpf);
+
+        if (trabalhador == null) {
+            throw new RegistroNaoEncontradoException(getMensagem("app_rst_nenhum_registro_encontrado"));
+        }
+
+        return trabalhador;
+	}
 }

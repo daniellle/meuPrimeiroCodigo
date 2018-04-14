@@ -224,9 +224,9 @@
                     <p class="sub center" style="margin-top: 0; color: #74787E; font-size: 12px; line-height: 1.5em; text-align: left;">&copy;
 							${appNome}. Todos os direitos reservados.</p>
 						<p class="sub center" style="margin-top: 0; color: #74787E; font-size: 12px; line-height: 1.5em; text-align: left; color: #AEAEAE;">
-							Esta mensagem foi enviada a você pela <b>${appNome}</b><sup style="font-size: 9px; line-height: 0; vertical-align: 3px">&reg;</sup>.
-							Por favor, não a responda. Você recebeu este e-mail porque está cadastrado no banco de dados da ${appNome}.
-							Nenhum e-mail enviado pela ${appNome} tem arquivos anexados ou solicita o preenchimento de senhas e informações cadastrais.
+							Esta mensagem foi enviada a você pelo <b>${appNome}</b><sup style="font-size: 9px; line-height: 0; vertical-align: 3px">&reg;</sup>.
+							Por favor, não a responda. Você recebeu este e-mail porque está cadastrado no banco de dados do ${appNome}.
+							Nenhum e-mail enviado pelo ${appNome} tem arquivos anexados ou solicita o preenchimento de senhas e informações cadastrais.
 						</p>
 					</td>
                 </tr>
