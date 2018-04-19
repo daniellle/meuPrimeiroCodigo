@@ -36,7 +36,8 @@ export class GerenciamentoPerfilComponent extends BaseComponent implements OnIni
     }
 
   ngOnInit() {
-    this.createForm();    
+    this.createForm();
+    this.title = MensagemProperties.app_rst_usuario_title_perfil;
   }
   
   passwordMatchValidator(g: FormGroup) {

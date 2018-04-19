@@ -3,9 +3,11 @@ const {SpecReporter} = require('jasmine-spec-reporter');
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [
-    './e2e/**/trocarsenha.e2e-spec.ts', //funciona para usuario elson - 65020081515
-    //'./e2e/**/unidadevadmin.e2e-spec.ts' //funciona para usuario carol - 37139762520
-    // './e2e/**/*.e2e-spec.ts'
+    //'./e2e/**/*.e2e-spec.ts',
+    //'./e2e/**/trocarsenha.e2e-spec.ts', //funciona para usuario elson - 65020081515
+    //'./e2e/**/unidadevadmin.e2e-spec.ts', //funciona para usuario carol - 37139762520
+    './e2e/**/formprofissional.e2e-spec.ts',
+    './e2e/**/formtrabalhador.e2e-spec.ts',
   ],
   capabilities: {
     'browserName': 'chrome'

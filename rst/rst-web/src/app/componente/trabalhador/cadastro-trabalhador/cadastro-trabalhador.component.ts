@@ -1,5 +1,6 @@
+import { PerfilEnum } from './../../../modelo/enum/enum-perfil';
 import { FiltroTrabalhador } from './../../../modelo/filtro-trabalhador.model';
-import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
+import { PermissoesEnum } from './../../../modelo/enum/enum-permissoes';
 import { Seguranca } from './../../../compartilhado/utilitario/seguranca.model';
 import { environment } from './../../../../environments/environment';
 import { DatePicker } from './../../../compartilhado/utilitario/date-picker';
@@ -9,7 +10,6 @@ import { SituacaoTrabalhador } from 'app/modelo/enum/enum-situacao-trabalhador.m
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
 import { ToastyService } from 'ng2-toasty';
 import { DialogService } from 'ng2-bootstrap-modal';
 import { BaseComponent } from 'app/componente/base.component';
@@ -84,6 +84,8 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
     public nacionalidade = Nacionalidade;
     public keysNacionalidade: string[];
     public nacional: String = '';
+    public vidaAtiva: string;
+    public temvidaAtiva: boolean;
 
     foto: any;
     cropperSettings: CropperSettings;
@@ -121,7 +123,39 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
         this.carregarTela();
         this.title = MensagemProperties.app_rst_trabalhador_title_cadastrar;
         this.inicializarImagem();
+        
     }
+    getVidaAtiva(id: string) {
+            this.service.buscarVidaAtivaTrabalhador(id).subscribe((dados: string) => {
+                if (dados){
+                    this.vidaAtiva = dados + " Vida Ativa";
+                    this.temvidaAtiva = true;
+                } else {
+                    this.vidaAtiva = "Sem Vida Ativa";
+                    this.temvidaAtiva = false;
+                } 
+            }, (error) => {
+                this.mensagemError(error);
+                this.vidaAtiva =  "Sem Vida Ativa";
+                this.temvidaAtiva = false;
+            });
+    }
+
+    private temEmpPerfil(): boolean {
+        const isPermitido = this.usuarioLogado.papeis.find((element) =>
+        element === PerfilEnum.ADM
+        || element === PerfilEnum.DIDN
+        || element ===  PerfilEnum.DIDR) != null;
+        return isPermitido; 
+
+        // const isPerfil =  this.usuarioLogado.perfisSistema.find((element) =>
+        // ((element.perfil.codigo === PerfilEnum.ADM
+        //     || element.perfil.codigo === PerfilEnum.DIDN
+        //     || element.perfil.codigo === PerfilEnum.DIDR)
+        //     && isPermitido)) != null;
+        // return isPerfil && isPermitido;
+    }
+
     inicializarImagem() {
         this.cropperSettings = new CropperSettings();
         this.cropperSettings.width = 50;
@@ -626,6 +660,10 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
             if (trabalhador && trabalhador.id) {
                 this.trabalhador = trabalhador;
                 this.converterModelParaForm();
+                if(this.temEmpPerfil()){
+                    this.getVidaAtiva(this.id);
+                }
+                
             }
         }, (error) => {
             return this.router.navigate(['/acessonegado']);

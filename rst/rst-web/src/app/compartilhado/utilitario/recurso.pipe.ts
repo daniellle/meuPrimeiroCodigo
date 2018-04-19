@@ -72,6 +72,7 @@ export const MensagemProperties = {
   app_rst_labels_complemento: 'Complemento',
   app_rst_labels_numero: 'Número',
   app_rst_labels_estado: 'Estado',
+  app_rst_labels_conselhoregional: 'ConselhoRegional',
   app_rst_labels_jornada: 'Jornada',
   app_rst_remover_segmento: 'Remover Segmento',
   app_rst_remover_setor: 'Remover Setor',

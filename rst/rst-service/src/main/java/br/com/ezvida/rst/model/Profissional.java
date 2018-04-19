@@ -72,6 +72,10 @@ public class Profissional extends AbstractData {
 	@JoinColumn(name = "ID_ESTADO_FK", referencedColumnName = "ID_ESTADO")
 	private Estado estado;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_CONSELHO_REGIONAL_FK", referencedColumnName = "ID_CONSELHO_REGIONAL")
+	private ConselhoRegional conselhoRegional;
+
 	@Column(name = "FL_TIPO_PROFISSIONAL", nullable = true)
 	@Convert(converter = TipoProfissionalConverter.class)
 	private TipoProfissional tipoProfissional;
@@ -222,6 +226,14 @@ public class Profissional extends AbstractData {
 
 	public void setEstado(Estado estado) {
 		this.estado = estado;
+	}
+
+	public ConselhoRegional getConselhoRegional() {
+		return conselhoRegional;
+	}
+
+	public void setConselhoRegional(ConselhoRegional conselhoRegional) {
+		this.conselhoRegional = conselhoRegional;
 	}
 
 	@Override

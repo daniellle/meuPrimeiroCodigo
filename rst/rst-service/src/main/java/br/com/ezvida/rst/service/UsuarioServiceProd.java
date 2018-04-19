@@ -301,7 +301,8 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public br.com.ezvida.girst.apiclient.model.Usuario alterarPerfil(br.com.ezvida.girst.apiclient.model.Usuario usuario, ClienteAuditoria auditoria) {
         br.com.ezvida.girst.apiclient.model.Usuario usuarioAnterior = buscarPorId(usuario.getId().toString(), null);
-        br.com.ezvida.girst.apiclient.model.Usuario u = null;
+//        br.com.ezvida.girst.apiclient.model.Usuario u = null;
+        br.com.ezvida.girst.apiclient.model.Usuario u = buscarPorLogin(usuario.getLogin());
         if (auditoria != null && usuarioAnterior != null) {
             LogAuditoria.registrar(LOGGER, auditoria, "Alteração do perfil do usuário: " + usuario);
             try {
@@ -395,6 +396,13 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
         } else {
             usuario.setDepartamentosRegionais(departamentoRegionalService.pesquisarPorIds(dados.getIdsDepartamentoRegional()));
             usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorIds(dados.getIdsEmpresa()));
+        }
+
+        br.com.ezvida.girst.apiclient.model.Usuario usuarioGirst = buscarPorLogin(usuarioLogado.getLogin());
+        if (usuarioGirst != null) {
+            usuario.setExibirApelido(usuarioGirst.getExibirApelido());
+            usuario.setApelido(usuarioGirst.getApelido());
+                usuario.setFotoPerfil(usuarioGirst.getFoto());
         }
 
         return usuario;

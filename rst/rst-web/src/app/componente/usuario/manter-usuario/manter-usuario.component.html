@@ -6,20 +6,23 @@
 
 <form novalidate [formGroup]="usuarioForm">
     <div class="container-form">
-        <p class="container-subtitulo">
-            {{ 'app_rst_label_dados_gerais' | recurso }}
-        </p>
+        <div class="container-subtitulo">
+            <p>{{ 'app_rst_label_dados_gerais' | recurso }}</p>
+        </div>
         <div class="row">
             <div class="form-group col-md-4" [ngClass]="{ divDis : modoAlterar || modoConsulta }">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{'app_rst_labels_login_cpf' | recurso}}" [textMask]="{mask: mascaraCpf, guide: false}" type="text" name="login" id="login" formControlName="login" class="form-control" required appFormularioCamposErro>
+                    <input mdInput placeholder="{{'app_rst_labels_login_cpf' | recurso}}"
+                           [textMask]="{mask: mascaraCpf, guide: false}" type="text" name="login" id="login"
+                           formControlName="login" class="form-control" required appFormularioCamposErro>
                 </md-input-container>
             </div>
         </div>
         <div class="row">
             <div class="form-group col-md-8" [ngClass]="{ divDis : modoConsulta }">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{'app_rst_labels_nome' | recurso}}" type="text" name="nome" id="nome" formControlName="nome" class="form-control" maxlength="160" required appFormularioCamposErro>
+                    <input mdInput placeholder="{{'app_rst_labels_nome' | recurso}}" type="text" name="nome" id="nome"
+                           formControlName="nome" class="form-control" maxlength="160" required appFormularioCamposErro>
                 </md-input-container>
             </div>
         </div>
@@ -27,7 +30,9 @@
         <div class="row">
             <div class="form-group col-md-8" [ngClass]="{ divDis : modoConsulta }">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{'app_rst_labels_email' | recurso}}" type="text" name="email" id="email" formControlName="email" class="form-control" maxlength="100" required appFormularioCamposErro>
+                    <input mdInput placeholder="{{'app_rst_labels_email' | recurso}}" type="text" name="email"
+                           id="email" formControlName="email" class="form-control" maxlength="100" required
+                           appFormularioCamposErro>
                 </md-input-container>
             </div>
         </div>
@@ -35,14 +40,16 @@
 </form>
 
 <div class="container-form space-up" *ngIf="!modoConsulta">
-    <p class="container-subtitulo">
-        {{ 'app_rst_usuario_title_associar_perfil' | recurso }}
-    </p>
+    <div class="container-subtitulo">
+        <p>{{ 'app_rst_usuario_title_associar_perfil' | recurso }}</p>
+    </div>
     <div class="corpo-card">
         <div class="row">
             <div class="form-group col-md-6">
                 <div class="md-container">
-                    <md-select placeholder="{{ 'app_rst_usuario_label_sistemas' | recurso }}" (change)="selecionarSistema()" name="idSistemas" [(ngModel)]="idSistemas" id="idSistemas" disabled="{{ modoConsulta }}">
+                    <md-select placeholder="{{ 'app_rst_usuario_label_sistemas' | recurso }}"
+                               (change)="selecionarSistema()" name="idSistemas" [(ngModel)]="idSistemas" id="idSistemas"
+                               disabled="{{ modoConsulta }}">
                         <md-option value="null">{{ 'app_rst_labels_selecione' | recurso }}</md-option>
                         <md-option *ngFor="let sistema of sistemas" [value]="sistema.id">
                             {{sistema.nome}}
@@ -57,57 +64,70 @@
             </div>
             <div class="form-group col-md-12">
                 <label class="col col-md-4" *ngFor="let perfil of perfis" for="{{ perfil.nome }}">
-                        <fieldset>
-                                <md-checkbox [(ngModel)]="perfisSelecionados[perfil.id]" name="rdoLista" (change)="modificarPerfil(perfil, $event, perfil.id)" class="radio-tabela-pesquisa" disabled="{{ modoConsulta }}">
-                                        {{perfil.nome}}
-                                </md-checkbox>
-                            </fieldset>
-                        <!-- <md-checkbox name="{{ perfil.nome }}" id="{{ perfil.id }}" [(ngModel)]="perfisSelecionados[perfil.id]" (click)="modificarPerfil(perfil, $event, perfil.id)" class="form-check-input" disabled="{{ modoConsulta }}" [ngModelOptions]="{standalone: true}">
-                                {{perfil.nome}}</md-checkbox> -->
-                        <!-- <input type="checkbox" name="{{ perfil.nome }}" id="{{ perfil.id }}" [(ngModel)]="perfisSelecionados[perfil.id]" (click)="modificarPerfil(perfil, $event, perfil.id)" class="form-check-input" disabled="{{ modoConsulta }}" [ngModelOptions]="{standalone: true}">
-                        {{perfil.nome}} -->
-                    </label>
+                    <fieldset>
+                        <md-checkbox [(ngModel)]="perfisSelecionados[perfil.id]" name="rdoLista"
+                                     (change)="modificarPerfil(perfil, $event, perfil.id)" class="radio-tabela-pesquisa"
+                                     disabled="{{ modoConsulta }}">
+                            {{perfil.nome}}
+                        </md-checkbox>
+                    </fieldset>
+                    <!-- <md-checkbox name="{{ perfil.nome }}" id="{{ perfil.id }}" [(ngModel)]="perfisSelecionados[perfil.id]" (click)="modificarPerfil(perfil, $event, perfil.id)" class="form-check-input" disabled="{{ modoConsulta }}" [ngModelOptions]="{standalone: true}">
+                            {{perfil.nome}}</md-checkbox> -->
+                    <!-- <input type="checkbox" name="{{ perfil.nome }}" id="{{ perfil.id }}" [(ngModel)]="perfisSelecionados[perfil.id]" (click)="modificarPerfil(perfil, $event, perfil.id)" class="form-check-input" disabled="{{ modoConsulta }}" [ngModelOptions]="{standalone: true}">
+                    {{perfil.nome}} -->
+                </label>
             </div>
             <div class="form-group col-md-12">
-                <button type="button" class="btn-rodape btn btn-sm btn-primary btn-cadastro" *ngIf="!modoConsulta" (click)="associarPerfil()">{{'app_rst_usuario_title_associar_perfil' | recurso}}</button>
+                <button type="button" class="btn-rodape btn btn-sm btn-primary btn-cadastro" *ngIf="!modoConsulta"
+                        (click)="associarPerfil()">{{'app_rst_usuario_title_associar_perfil' | recurso}}
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-<br />
+<br/>
 <div class="container-form">
-    <p class="container-subtitulo">
-        Perfis Associados
-    </p>
-
+    <div class="container-subtitulo">
+        <p>Perfis Associados</p>
+    </div>
     <div class="grid-perfil-sistema" *ngIf="!isListaVazia()">
         <table class="table table-responsive table-hover">
             <thead>
-                <tr>
-                    <th class="label"><span class="label">{{ 'app_rst_usuario_label_sistemas' | recurso }}</span></th>
-                    <th class="label"><span class="label">{{ 'app_rst_usuario_label_perfis' | recurso }}</span></th>
-                    <th class="label" *ngIf="temPermissaoDesativar()"><span class="label"></span></th>
-                </tr>
+            <tr>
+                <th class="label"><span class="label">{{ 'app_rst_usuario_label_sistemas' | recurso }}</span></th>
+                <th class="label"><span class="label">{{ 'app_rst_usuario_label_perfis' | recurso }}</span></th>
+                <th class="label" *ngIf="temPermissaoDesativar()"><span class="label"></span></th>
+            </tr>
             </thead>
             <tbody>
-                <tr (click)="selecionarSistemaPerfil(item.id)" *ngFor="let item of getSistemaPerfil()">
-                    <td class="col-nao-quebra">{{item.sistema}}</td>
-                    <td class="col-quebra">{{item.perfil}}</td>
-                    <td class="text-center" *ngIf="temPermissaoDesativar()">
-                        <button class="btn-link" (click)="$event.stopPropagation(); excluirAssociacaoPerfil(item.id)"><img class="lixo" src="assets/img/trash.svg" alt="Excluir"></button>
-                    </td>
-                </tr>
+            <tr (click)="selecionarSistemaPerfil(item.id)" *ngFor="let item of getSistemaPerfil()">
+                <td class="col-nao-quebra">{{item.sistema}}</td>
+                <td class="col-quebra">{{item.perfil}}</td>
+                <td class="text-center" *ngIf="temPermissaoDesativar()">
+                    <button class="btn-link" (click)="$event.stopPropagation(); excluirAssociacaoPerfil(item.id)"><img
+                        class="lixo" src="assets/img/trash.svg" alt="Excluir"></button>
+                </td>
+            </tr>
             </tbody>
         </table>
         <div class="btn-paginacao">
-            <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="getSistemaPerfil().length" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
-                (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false" [ngModelOptions]="{standalone: true}"></pagination>
+            <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo"
+                        [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior"
+                        [totalItems]="getSistemaPerfil().length" [(ngModel)]="paginacao.pagina"
+                        [itemsPerPage]="paginacao.qtdRegistro"
+                        (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)"
+                        [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true"
+                        [boundaryLinks]="true" [rotate]="false" [ngModelOptions]="{standalone: true}"></pagination>
         </div>
     </div>
 </div>
 
 <div class="btn-rodape-acoes space-up">
-    <button type="button " class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!modoConsulta" (click)="salvar()">{{'app_rst_btn_salvar' | recurso}}</button>
-    <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
+    <button type="button " class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!modoConsulta" (click)="salvar()">
+        {{'app_rst_btn_salvar' | recurso}}
+    </button>
+    <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="voltar()">{{'app_rst_btn_voltar' |
+        recurso}}
+    </button>
 </div>

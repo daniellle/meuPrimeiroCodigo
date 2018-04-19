@@ -6,8 +6,18 @@
 
 <div class="container-form" [ngClass]="{ divDis : modoConsulta || isSomenteTrabalhador()}">
     <form novalidate [formGroup]="trabalhadorForm">
-        <div class="container-subtitulo">
-            <p>{{'app_rst_label_dados_gerais' | recurso}}</p>
+        <div class="container-subtitulo" style="height:50px;">
+            <div class="row">
+                    <div class="col-sm-4">{{'app_rst_label_dados_gerais' | recurso}}</div>
+                    <div class="col-sm-8 text-right" *ngIf="temEmpPerfil()">
+                        <div *ngIf="temvidaAtiva">
+                           <span id="vidaAtiva" class="col-quebra-palavra">{{ vidaAtiva }}</span>
+                        </div>
+                        <div *ngIf="!temvidaAtiva">
+                            <span id="semvidaAtiva" class="col-quebra-palavra" style="color:red">{{ vidaAtiva }}</span>
+                         </div>
+                    </div>
+            </div>            
         </div>
         <div class="corpo-card">
             <div class="row">

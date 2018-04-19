@@ -1,3 +1,4 @@
+
 import { Estado } from 'app/modelo/estado.model';
 import { ProfissionalEspecialidade } from './profissional-especialidade.model';
 import { UatProfissional } from './unid-atend-trabalhador-profissional.model';
@@ -6,6 +7,7 @@ import { EmailProfissional } from './email-profissional.model';
 import { TelefoneProfissional } from './telefone-profissional.model';
 import { TipoProfissional } from 'app/modelo/enum/enum-tipo-profissional';
 import { Situacao } from 'app/modelo/enum/enum-situacao.model';
+import { ConselhoRegional } from 'app/modelo/conselho-regional.models';
 
 export class Profissional {
     id: number;
@@ -17,6 +19,7 @@ export class Profissional {
     cpf: String;
     nit: string;
     estado: Estado;
+    conselhoRegional: ConselhoRegional;
     tipoProfissional: TipoProfissional;
     dataCriacao: Date;
     dataAlteracao: Date;

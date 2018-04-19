@@ -341,5 +341,12 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 		query.setParameter("cpf", cpf);
 		return DAOUtil.getSingleResult(query);
 	}
+	
+	public Long buscarVidaAtiva(String id) {
+		LOGGER.debug("Pesquisando Vida Ativa do trabalhador por id.");
+		Query query = criarConsulta("select count(t.id) from EmpresaTrabalhador t where t.trabalhador.id = :id and t.dataFimContrato >= current_date ");
+		query.setParameter("id", Long.parseLong(id));
+		return DAOUtil.getSingleResult(query);
+	}	
 
 }

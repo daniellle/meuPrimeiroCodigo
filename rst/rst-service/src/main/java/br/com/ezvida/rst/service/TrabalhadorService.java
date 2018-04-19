@@ -38,9 +38,9 @@ public class TrabalhadorService extends BaseService {
 	private static final long serialVersionUID = 6186912314459313987L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TrabalhadorService.class);
-	
+
 	private static final String CODIGO_SISTEMA_CADASTRO = "cadastro";
-	
+
 	@Inject
 	private TrabalhadorDAO trabalhadorDAO;
 
@@ -57,14 +57,15 @@ public class TrabalhadorService extends BaseService {
 	private TrabalhadorDependenteService trabalhadorDependenteService;
 
 	@Inject
-    @Preferencial
+	@Preferencial
 	private UsuarioService usuarioService;
-	
+
 	@Inject
 	private SolicitacaoEmailService solicitacaoEmailService;
-	
+
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public Trabalhador buscarPorId(TrabalhadorFilter trabalhadorFilter, ClienteAuditoria auditoria, DadosFilter dadosFilter) {
+	public Trabalhador buscarPorId(TrabalhadorFilter trabalhadorFilter, ClienteAuditoria auditoria,
+			DadosFilter dadosFilter) {
 
 		if (trabalhadorFilter == null || trabalhadorFilter.getId() == null) {
 			throw new BusinessErrorException("Id de consulta está nulo.");
@@ -75,11 +76,11 @@ public class TrabalhadorService extends BaseService {
 		if (trabalhador == null) {
 			throw new RegistroNaoEncontradoException(getMensagem("app_rst_nenhum_registro_encontrado"));
 		}
-		
+
 		if (!trabalhadorFilter.isAplicarDadosFilter() && !auditoria.getUsuario().equals(trabalhador.getCpf())) {
 			throw new RegistroNaoEncontradoException(getMensagem("app_rst_nenhum_registro_encontrado"));
 		}
-		
+
 		if (trabalhador != null) {
 			trabalhador.setListaTelefoneTrabalhador(
 					telefoneTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
@@ -89,6 +90,11 @@ public class TrabalhadorService extends BaseService {
 		}
 		LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de trabalhador por id: " + trabalhadorFilter.getId());
 		return trabalhador;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public Long buscarTrabalhadorVidaAtiva(String id) {
+		return trabalhadorDAO.buscarVidaAtiva(id);
 	}
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -106,12 +112,12 @@ public class TrabalhadorService extends BaseService {
 		if (trabalhador == null) {
 			throw new BusinessErrorException(getMensagem("app_rst_nenhum_registro_encontrado"));
 		}
-		
+
 		if (trabalhador.getId() != null && trabalhador.getTermo() != null
 				&& trabalhador.getTermo().equals(SimNao.SIM)) {
 			throw new BusinessErrorException(getMensagem("app_rst_trabalhador_ja_rezlizou_primeiro_acesso"));
 		}
-		
+
 		if (trabalhador != null) {
 			trabalhador.setListaTelefoneTrabalhador(
 					telefoneTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
@@ -119,7 +125,7 @@ public class TrabalhadorService extends BaseService {
 			trabalhador.setListaEnderecoTrabalhador(
 					enderecoTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
 		}
-		
+
 		return trabalhador;
 	}
 
@@ -148,9 +154,9 @@ public class TrabalhadorService extends BaseService {
 			descricaoAuditoria = "Alteração no cadastro de trabalhador: ";
 		}
 
-        trabalhador.setDescricaoAlergias(StringUtils.trimToNull(trabalhador.getDescricaoAlergias()));
-        trabalhador.setDescricaoVacinas(StringUtils.trimToNull(trabalhador.getDescricaoVacinas()));
-        trabalhador.setDescricaoMedicamentos(StringUtils.trimToNull(trabalhador.getDescricaoMedicamentos()));
+		trabalhador.setDescricaoAlergias(StringUtils.trimToNull(trabalhador.getDescricaoAlergias()));
+		trabalhador.setDescricaoVacinas(StringUtils.trimToNull(trabalhador.getDescricaoVacinas()));
+		trabalhador.setDescricaoMedicamentos(StringUtils.trimToNull(trabalhador.getDescricaoMedicamentos()));
 
 		validar(trabalhador, auditoria);
 		trabalhadorDAO.salvar(trabalhador);
@@ -196,7 +202,7 @@ public class TrabalhadorService extends BaseService {
 				if (!verificarPerfilSistemaPrimeiroAcesso(usuario)) {
 					usuario.getPerfisSistema().add(primeiroAcesso.getUsuario().getPerfisSistema().iterator().next());
 				}
-				
+
 				usuario.setSenha(primeiroAcesso.getUsuario().getSenha());
 				usuario.setEmail(primeiroAcesso.getUsuario().getEmail());
 				usuarioService.alterarUsuario(usuario, null);
@@ -209,7 +215,7 @@ public class TrabalhadorService extends BaseService {
 		}
 		return primeiroAcesso;
 	}
-	
+
 	private void definirPerfilSistema(PrimeiroAcesso primeiroAcesso) {
 		Perfil perfil = new Perfil();
 		perfil.setCodigo(DadosFilter.TRABALHADOR);
@@ -230,7 +236,7 @@ public class TrabalhadorService extends BaseService {
 		List<Trabalhador> trabalhadores = trabalhadorDAO.pesquisarPorCPF(Arrays.asList(cpf));
 		return !trabalhadores.isEmpty() ? trabalhadores.get(0) : null;
 	}
-	
+
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public Trabalhador buscarPorCpf(String cpf) {
 		LOGGER.debug("buscando trabalhador por cpf");
@@ -250,16 +256,18 @@ public class TrabalhadorService extends BaseService {
 			throw new BusinessErrorException(getMensagem("app_rst_registro_duplicado",
 					getMensagem("app_rst_label_trabalhador"), getMensagem("app_rst_label_cpf")));
 		}
-		
+
 		if (CollectionUtils.isNotEmpty(trabalhador.getListaEmailTrabalhador())) {
-    		for (EmailTrabalhador emailTrabalhador : trabalhador.getListaEmailTrabalhador()) {
-    		    Set<EmailTrabalhador> emailTrabalhadorRetorno = emailTrabalhadorService.pesquisarPorEmail(emailTrabalhador.getEmail().getDescricao());
-    		    if (emailTrabalhadorRetorno != null && CollectionUtils.isNotEmpty(emailTrabalhadorRetorno)
-    		    		&& !emailTrabalhadorRetorno.iterator().next().getTrabalhador().getId().equals(trabalhador.getId())) {
-    		        throw new BusinessErrorException(getMensagem("app_rst_registro_duplicado",
-    		                getMensagem("app_rst_label_trabalhador"), getMensagem("app_rst_label_email")));
-    		    }
-    		}
+			for (EmailTrabalhador emailTrabalhador : trabalhador.getListaEmailTrabalhador()) {
+				Set<EmailTrabalhador> emailTrabalhadorRetorno = emailTrabalhadorService
+						.pesquisarPorEmail(emailTrabalhador.getEmail().getDescricao());
+				if (emailTrabalhadorRetorno != null && CollectionUtils.isNotEmpty(emailTrabalhadorRetorno)
+						&& !emailTrabalhadorRetorno.iterator().next().getTrabalhador().getId()
+								.equals(trabalhador.getId())) {
+					throw new BusinessErrorException(getMensagem("app_rst_registro_duplicado",
+							getMensagem("app_rst_label_trabalhador"), getMensagem("app_rst_label_email")));
+				}
+			}
 		}
 
 		if (trabalhador.getCpf() != null) {
@@ -287,47 +295,49 @@ public class TrabalhadorService extends BaseService {
 		}
 	}
 
-    private String adicionarMascaraCpf(String cpf) {
+	private String adicionarMascaraCpf(String cpf) {
 		StringBuilder sBuilder = new StringBuilder(cpf);
 		sBuilder.insert(3, ".");
 		sBuilder.insert(7, ".");
 		sBuilder.insert(11, "-");
 		return sBuilder.toString();
 	}
-    
-    private boolean verificarPerfilSistemaPrimeiroAcesso(Usuario uruario) {
-    	boolean ehTrabalhador = false;
-    	for (UsuarioPerfilSistema item: uruario.getPerfisSistema()) {
-    		if (item.getSistema().getCodigo().equals(CODIGO_SISTEMA_CADASTRO)
+
+	private boolean verificarPerfilSistemaPrimeiroAcesso(Usuario uruario) {
+		boolean ehTrabalhador = false;
+		for (UsuarioPerfilSistema item : uruario.getPerfisSistema()) {
+			if (item.getSistema().getCodigo().equals(CODIGO_SISTEMA_CADASTRO)
 					&& item.getPerfil().getCodigo().equals(DadosFilter.TRABALHADOR)) {
-    			ehTrabalhador = true;
-    		}
-    	}    	
+				ehTrabalhador = true;
+			}
+		}
 		return ehTrabalhador;
 	}
-    
-    public SolicitacaoEmail solicitarEmailSesi(PrimeiroAcesso solicitacaoEmail) {
-    	if (solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador() != null
-    			&& solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().size() == 1
-    			&& solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next() != null
-    			&& solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next().getId() == null ) {
-    		solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next().getTelefone().setTipo(TipoTelefone.RESIDENCIAL);
-    		solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next().getTelefone().setContato(SimNao.SIM);
-    	}
-    	
-    	salvarPrimeiroAcesso(solicitacaoEmail);
-    	solicitacaoEmail.getSolicitacaoEmail().setCpf(
-    			adicionarMascaraCpf(solicitacaoEmail.getSolicitacaoEmail().getCpf()));
-    	return solicitacaoEmailService.enviarEmail(solicitacaoEmail.getSolicitacaoEmail());
-    }
 
-    public Trabalhador buscarVacinasAlergiasMedicamentosAutoDeclarados(String cpf) {
-        Trabalhador trabalhador = trabalhadorDAO.buscarVacinasAlergiasMedicamentosAutoDeclarados(cpf);
+	public SolicitacaoEmail solicitarEmailSesi(PrimeiroAcesso solicitacaoEmail) {
+		if (solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador() != null
+				&& solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().size() == 1
+				&& solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next() != null
+				&& solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next().getId() == null) {
+			solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next().getTelefone()
+					.setTipo(TipoTelefone.RESIDENCIAL);
+			solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next().getTelefone()
+					.setContato(SimNao.SIM);
+		}
 
-        if (trabalhador == null) {
-            throw new RegistroNaoEncontradoException(getMensagem("app_rst_nenhum_registro_encontrado"));
-        }
+		salvarPrimeiroAcesso(solicitacaoEmail);
+		solicitacaoEmail.getSolicitacaoEmail()
+				.setCpf(adicionarMascaraCpf(solicitacaoEmail.getSolicitacaoEmail().getCpf()));
+		return solicitacaoEmailService.enviarEmail(solicitacaoEmail.getSolicitacaoEmail());
+	}
 
-        return trabalhador;
+	public Trabalhador buscarVacinasAlergiasMedicamentosAutoDeclarados(String cpf) {
+		Trabalhador trabalhador = trabalhadorDAO.buscarVacinasAlergiasMedicamentosAutoDeclarados(cpf);
+
+		if (trabalhador == null) {
+			throw new RegistroNaoEncontradoException(getMensagem("app_rst_nenhum_registro_encontrado"));
+		}
+
+		return trabalhador;
 	}
 }

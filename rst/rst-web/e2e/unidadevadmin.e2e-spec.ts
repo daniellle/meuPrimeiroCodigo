@@ -55,6 +55,8 @@ describe('Teste atributos da pagina de Buscar Unidade', () => {
   });  
  
   it('Ao preencher cpnj invalido deve aparecer uma msg de erro !', function() {
+    browser.driver.sleep(3000);
+    unidadePage.inputCNPJ.clear();       
     unidadePage.inputCNPJ.click();
     unidadePage.inputCNPJ.sendKeys('AAA1234');  
     unidadePage.buttonPesquisar.click();
@@ -67,6 +69,8 @@ describe('Teste atributos da pagina de Buscar Unidade', () => {
   });   
 
   it('Ao preencher cpnj inexistente deve aparecer uma msg indicando que nenhum registro foi encontrado !', function() {
+    browser.driver.sleep(3000);
+    unidadePage.inputCNPJ.clear();       
     unidadePage.inputCNPJ.click();
     unidadePage.inputCNPJ.sendKeys('01.838.723/0139-62');    
     unidadePage.buttonPesquisar.click();
@@ -92,7 +96,7 @@ describe('Teste de resultados da busca por Unidade', () => {
   });  
 
   it('Ao pesquisar por "a" deve aparecer uma tabela com registro e o primeiro registro em desenvolvimento e: "ATENDIMENTOS A UNIDADES - LUCAIA" !', function() {  
-    browser.driver.sleep(5000);
+    browser.driver.sleep(1000);
     unidadePage.inputCNPJ.clear();   
     unidadePage.inputRazaoSocial.click();
     unidadePage.inputRazaoSocial.sendKeys('ATENDIMENTOS A UNIDADES - LUCAIA'); 
@@ -163,9 +167,8 @@ describe('Teste do Cadastro de Unidade', () => {
   });  
 
   it('Ao clicar no botao Novo deve aparecer o Formulario de Cadastro de Unidade" !', function() {  
-    browser.waitForAngular();
     browser.driver.sleep(1500);    
-  
+    browser.waitForAngular();
     unidadePage.buttonNovo.click();
     browser.driver.sleep(2500);        
     browser.ignoreSynchronization = true;       

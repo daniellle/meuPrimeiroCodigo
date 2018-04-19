@@ -64,6 +64,18 @@ public class EmpresaTrabalhador extends AbstractData {
 	@Convert(converter = SituacaoConverter.class)
 	private Situacao situacao;
 
+	@JsonDeserialize(using = DateJsonDeserializer.class)
+	@JsonSerialize(using = DateJsonSerializer.class)
+	@Temporal(TemporalType.DATE)
+	@Column(name = "DT_CONTRATO_INI")
+	private Date dataIniContrato;
+	
+	@JsonDeserialize(using = DateJsonDeserializer.class)
+	@JsonSerialize(using = DateJsonSerializer.class)
+	@Temporal(TemporalType.DATE)
+	@Column(name = "DT_CONTRATO_FIM")
+	private Date dataFimContrato;	
+	
 	@PrePersist
 	public void prePersist() {
 		setDataCriacao(new Date());
@@ -124,12 +136,30 @@ public class EmpresaTrabalhador extends AbstractData {
 		this.situacao = situacao;
 	}
 
+	public Date getDataIniContrato() {
+		return dataIniContrato;
+	}
+
+	public void setDataIniContrato(Date dataIniContrato) {
+		this.dataIniContrato = dataIniContrato;
+	}
+
+	public Date getDataFimContrato() {
+		return dataFimContrato;
+	}
+
+	public void setDataFimContrato(Date dataFimContrato) {
+		this.dataFimContrato = dataFimContrato;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((dataAdmissao == null) ? 0 : dataAdmissao.hashCode());
 		result = prime * result + ((dataDemissao == null) ? 0 : dataDemissao.hashCode());
+		result = prime * result + ((dataFimContrato == null) ? 0 : dataFimContrato.hashCode());
+		result = prime * result + ((dataIniContrato == null) ? 0 : dataIniContrato.hashCode());
 		result = prime * result + ((empresa == null) ? 0 : empresa.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((situacao == null) ? 0 : situacao.hashCode());
@@ -156,6 +186,16 @@ public class EmpresaTrabalhador extends AbstractData {
 				return false;
 		} else if (!dataDemissao.equals(other.dataDemissao))
 			return false;
+		if (dataFimContrato == null) {
+			if (other.dataFimContrato != null)
+				return false;
+		} else if (!dataFimContrato.equals(other.dataFimContrato))
+			return false;
+		if (dataIniContrato == null) {
+			if (other.dataIniContrato != null)
+				return false;
+		} else if (!dataIniContrato.equals(other.dataIniContrato))
+			return false;
 		if (empresa == null) {
 			if (other.empresa != null)
 				return false;
@@ -175,4 +215,6 @@ public class EmpresaTrabalhador extends AbstractData {
 			return false;
 		return true;
 	}
+
+	
 }

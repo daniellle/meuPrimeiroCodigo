@@ -32,6 +32,7 @@ public class ProfissionalDAO extends BaseDAO<Profissional, Long> {
 		StringBuilder jpql = new StringBuilder();
 		jpql.append("select profissional from Profissional profissional ");
 		jpql.append(" left join fetch profissional.estado estado ");
+		jpql.append(" left join fetch profissional.conselhoRegional conselhoRegional ");
 		jpql.append(" where profissional.id = :id");
 		TypedQuery<Profissional> query = criarConsultaPorTipo(jpql.toString());
 		query.setParameter("id", id);

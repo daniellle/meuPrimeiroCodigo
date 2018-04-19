@@ -1,3 +1,4 @@
+import { ConselhoRegional } from 'app/modelo/conselho-regional.models';
 import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
 import { Seguranca } from './../../../compartilhado/utilitario/seguranca.model';
 import { environment } from './../../../../environments/environment';
@@ -14,6 +15,7 @@ import { IOption } from 'ng-select';
 import { Especialidade } from './../../../modelo/especialidade.model';
 import { EspecialidadeService } from './../../../servico/especialidade.service';
 import { EstadoService } from './../../../servico/estado.service';
+import { ConselhoRegionalService } from 'app/servico/conselho-regional.service';
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from 'app/componente/base.component';
 import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
@@ -56,6 +58,7 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
   public uat: UnidadeAtendimentoTrabalhador;
   public uatsSelecionados = new Array<UnidadeAtendimentoTrabalhador>();
   public estados: any[];
+  public conselhoRegionais: any[];
   public municipios: any[];
   public dataSource: Observable<any>;
   public keysTipoProfissional: string[];
@@ -73,6 +76,7 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
     protected dialogo: ToastyService,
     private dialogService: DialogService,
     protected estadoService: EstadoService,
+    protected conselhoRegionalService: ConselhoRegionalService,
     protected especialidadeService: EspecialidadeService) {
     super(bloqueioService, dialogo);
     this.keysTipoProfissional = Object.keys(this.tipoProfissional);
@@ -86,6 +90,7 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
 
   ngOnInit() {
     this.buscarEstados();
+    this.buscarConselhoRegionais();   
     this.buscarEspecialidades();
   }
 
@@ -186,6 +191,12 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
           Validators.maxLength(2),
         ]),
       ],
+      conselhoRegional: [
+        { value: null, disabled: this.modoConsulta },
+        Validators.compose([
+          Validators.maxLength(300),
+        ]),
+      ],       
       regConsRegional: [
         { value: null, disabled: this.modoConsulta },
         Validators.compose([
@@ -224,7 +235,7 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
         Validators.compose([
           Validators.maxLength(300),
         ]),
-      ],
+      ],    
     });
   }
 
@@ -339,6 +350,15 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
         uf: this.profissional.estado.id,
       });
     }
+    if (this.profissional.conselhoRegional) {
+      this.profissionaisForm.patchValue({
+        conselhoRegional: this.profissional.conselhoRegional.id,
+      });
+      const formModel = this.profissionaisForm.controls;
+   
+      console.log(formModel.conselhoRegional.value);
+      
+    }    
     if (this.profissional.listaEnderecoProfissional) {
       this.profissionaisForm.patchValue({
         endereco: this.profissional.listaEnderecoProfissional[0].endereco.descricao,
@@ -380,6 +400,14 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
       this.mensagemError(error);
     });
   }
+
+  buscarConselhoRegionais() {
+    this.conselhoRegionalService.buscarConselhoRegional().subscribe((dados: any) => {
+      this.conselhoRegionais = dados;
+    }, (error) => {
+      this.mensagemError(error);
+    });
+  }  
 
   buscarEspecialidades() {
     this.especialidadeService.pesquisarEspecialidades().subscribe((retorno: any[]) => {
@@ -553,7 +581,7 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
         MensagemProperties.app_rst_labels_estado);
       isValido = false;
     }
-
+   
     if (this.profissionaisForm.controls['estado'].value && !this.profissionaisForm.controls['municipio'].value) {
       this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.profissionaisForm.controls['municipio'],
         MensagemProperties.app_rst_labels_municipio);
@@ -567,7 +595,7 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
     const formModel = this.profissionaisForm.controls;
     this.profissional.nome = formModel.nome.value;
     this.profissional.dataNascimento = formModel.dataNascimento.value ?
-      this.convertDateToString(formModel.dataNascimento.value.date) : null;
+    this.convertDateToString(formModel.dataNascimento.value.date) : null;
     this.profissional.genero = EnumValues.getNameFromValue(Genero, formModel.genero.value);
     this.profissional.nit = MascaraUtil.removerMascara(formModel.nit.value);
     this.profissional.cpf = MascaraUtil.removerMascara(formModel.cpf.value);
@@ -578,6 +606,12 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
     } else {
       this.profissional.estado = new Estado();
       this.profissional.estado.id = formModel.uf.value;
+    }
+    if (!formModel.conselhoRegional.value) {
+      this.profissional.conselhoRegional = null;
+    } else {
+      this.profissional.conselhoRegional = new ConselhoRegional();
+      this.profissional.conselhoRegional.id = formModel.conselhoRegional.value;
     }
     this.profissional.tipoProfissional = formModel.tipoProfissional.value;
 

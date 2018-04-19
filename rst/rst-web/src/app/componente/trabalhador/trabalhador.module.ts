@@ -1,3 +1,5 @@
+import { PermissoesEnum } from './../../modelo/enum/enum-permissoes';
+import { PerfilEnum } from './../../modelo/enum/enum-perfil';
 import {IgevComponent} from './igev/igev.component';
 import {RespostaQuestionarioTrabalhadorService} from './../../servico/resposta-questionario-trabalhador.service';
 import {QuestionarioTrabalhadorService} from './../../servico/questionario-trabalhador.service';
@@ -6,7 +8,6 @@ import {ParametroService} from './../../servico/parametro.service';
 import {CertificadoService} from './../../servico/certificado.service';
 import {TipoCursoService} from './../../servico/tipo-curso.service';
 import {ImageCropperModule} from 'ng2-img-cropper';
-import {PermissoesEnum} from 'app/modelo/enum/enum-permissoes';
 import {AutorizacaoGuard} from './../../seguranca/autorizacao.guard';
 import {TrabalhadorDependenteService} from './../../servico/trabalhador-dependente.service';
 import {TrabalhadorIntermediarioComponent} from './trabalhador-intermediario/trabalhador-intermediario.component';
@@ -17,7 +18,6 @@ import {NgModule} from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {CompartilhadoModule} from 'app/compartilhado/compartilhado.module';
 import {PaginationModule, TypeaheadModule} from 'ngx-bootstrap';
-
 import {TrabalhadorService} from './../../servico/trabalhador.service';
 import {CadastroTrabalhadorComponent} from './cadastro-trabalhador/cadastro-trabalhador.component';
 import {PesquisaTrabalhadorComponent} from './pesquisa-trabalhador/pesquisa-trabalhador.component';

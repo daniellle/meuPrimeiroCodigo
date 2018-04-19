@@ -29,6 +29,7 @@ public class SegurancaUtils {
             // return "03004596539"; // gestor empresa
             // return "46335766744"; // trabalhador
 			// return "37139762520"; // carol adm
+
         }
         LOGGER.debug("SessionLogin {}", request.getAttribute(SHIB_SESSION_LOGIN));
         if (request.getAttribute(SHIB_SESSION_ID) == null || request.getAttribute(SHIB_SESSION_LOGIN) == null) {

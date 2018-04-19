@@ -251,4 +251,18 @@ public class TrabalhadoresEndpoint extends SegurancaEndpoint<Trabalhador> {
             .header("Content-Version", getApplicationVersion()).entity(serializar(trabalhadorService.buscarVacinasAlergiasMedicamentosAutoDeclarados(cpf)))
             .build();
     }
+    
+	@GET
+	@Encoded
+	@Path("/vidaativa/{id}")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Autorizacao(permissoes = @Permissao(value = {PermissionConstants.DEPARTAMENTO_REGIONAL, PermissionConstants.DEPARTAMENTO_REGIONAL_CONSULTAR, PermissionConstants.USUARIO }))
+	public Response buscarVidaAtiva(@PathParam("id") String id, @Context SecurityContext context
+			, @Context HttpServletRequest request) {
+		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
+				.header("Content-Version", getApplicationVersion())
+				.entity(serializar(trabalhadorService.buscarTrabalhadorVidaAtiva(id)))
+				.build();
+	}    
 }

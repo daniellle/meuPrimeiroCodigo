@@ -1,34 +1,5 @@
 package br.com.ezvida.rst.web.endpoint.v1;
 
-import java.util.Map;
-
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.BeanParam;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.Encoded;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
-
-import br.com.ezvida.rst.anotacoes.Preferencial;
-import br.com.ezvida.rst.service.UsuarioService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Charsets;
-
 import br.com.ezvida.rst.anotacoes.Preferencial;
 import br.com.ezvida.rst.constants.PermissionConstants;
 import br.com.ezvida.rst.dao.filter.UsuarioFilter;
@@ -37,9 +8,23 @@ import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.model.Usuario;
 import br.com.ezvida.rst.service.UsuarioService;
 import br.com.ezvida.rst.web.auditoria.ClienteInfos;
+import com.google.common.base.Charsets;
 import fw.security.binding.Autorizacao;
 import fw.security.binding.Permissao;
 import fw.web.endpoint.SegurancaEndpoint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
+import java.util.Map;
 
 @RequestScoped
 @Path("/private/v1/usuarios")
@@ -47,7 +32,7 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
 
     private static final long serialVersionUID = -3618279439764362012L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioEndpoint.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioEndpoint.class);
 
     @Inject
     @Preferencial
@@ -59,20 +44,20 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
     @Path("login/{login}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Autorizacao(permissoes = @Permissao(value = { PermissionConstants.USUARIO,
-    		PermissionConstants.USUARIO_CADASTRAR, PermissionConstants.USUARIO_ALTERAR,
-    		PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_DESATIVAR }))
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO,
+        PermissionConstants.USUARIO_CADASTRAR, PermissionConstants.USUARIO_ALTERAR,
+        PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_DESATIVAR}))
     //@formatter:on
-	public Response getUsuario(@Context HttpServletRequest request, @Encoded @PathParam("login") String login) {
+    public Response getUsuario(@Context HttpServletRequest request, @Encoded @PathParam("login") String login) {
 
-		LOGGER.debug("Carregando usuário {}", login);
+        LOGGER.debug("Carregando usuário {}", login);
 
         getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
 
         return Response.status(HttpServletResponse.SC_OK)
-        				.type(MediaType.APPLICATION_JSON)
-        				.header("Content-Version", getApplicationVersion())
-        				.entity(serializar(usuarioService.getUsuario(login))).build();
+            .type(MediaType.APPLICATION_JSON)
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(usuarioService.getUsuario(login))).build();
     }
 
     @GET
@@ -80,63 +65,63 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
     @Path("/paginado")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.USUARIO, PermissionConstants.USUARIO_CADASTRAR,
-			PermissionConstants.USUARIO_ALTERAR, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_DESATIVAR,
-			PermissionConstants.USUARIO_ENTIDADE, PermissionConstants.USUARIO_ENTIDADE_CADASTRAR, PermissionConstants.USUARIO_ENTIDADE_ALTERAR,
-			PermissionConstants.USUARIO_ENTIDADE_CONSULTAR, PermissionConstants.USUARIO_ENTIDADE_DESATIVAR }))
-	public Response pesquisarPaginado(@BeanParam UsuarioFilter usuarioFilter, @Context SecurityContext context, @Context HttpServletRequest request) {
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CADASTRAR,
+        PermissionConstants.USUARIO_ALTERAR, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_DESATIVAR,
+        PermissionConstants.USUARIO_ENTIDADE, PermissionConstants.USUARIO_ENTIDADE_CADASTRAR, PermissionConstants.USUARIO_ENTIDADE_ALTERAR,
+        PermissionConstants.USUARIO_ENTIDADE_CONSULTAR, PermissionConstants.USUARIO_ENTIDADE_DESATIVAR}))
+    public Response pesquisarPaginado(@BeanParam UsuarioFilter usuarioFilter, @Context SecurityContext context, @Context HttpServletRequest request) {
         LOGGER.debug("Buscando Usuários por filtro e paginado");
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-				.entity(serializar(usuarioService.pesquisarPaginadoGirst(usuarioFilter
-						, ClienteInfos.getDadosFilter(context)
-						, ClienteInfos.getClienteInfos(context, request
-								, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS)))).build();
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(usuarioService.pesquisarPaginadoGirst(usuarioFilter
+                , ClienteInfos.getDadosFilter(context)
+                , ClienteInfos.getClienteInfos(context, request
+                    , TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS)))).build();
     }
 
     @GET
     @Encoded
     @Path("/buscar")
     @Produces(MediaType.APPLICATION_JSON)
-	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.USUARIO, PermissionConstants.USUARIO_ALTERAR,
-			PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_DESATIVAR,
-			PermissionConstants.USUARIO_ENTIDADE, PermissionConstants.USUARIO_ENTIDADE_CADASTRAR,
-			PermissionConstants.USUARIO_ENTIDADE_ALTERAR, PermissionConstants.USUARIO_ENTIDADE_CONSULTAR,
-			PermissionConstants.USUARIO_ENTIDADE_DESATIVAR }))
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_ALTERAR,
+        PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_DESATIVAR,
+        PermissionConstants.USUARIO_ENTIDADE, PermissionConstants.USUARIO_ENTIDADE_CADASTRAR,
+        PermissionConstants.USUARIO_ENTIDADE_ALTERAR, PermissionConstants.USUARIO_ENTIDADE_CONSULTAR,
+        PermissionConstants.USUARIO_ENTIDADE_DESATIVAR}))
     public Response buscarPorId(@QueryParam("id") String id, @Context SecurityContext context
-    		, @Context HttpServletRequest request) {
+        , @Context HttpServletRequest request) {
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-                .entity(serializar(usuarioService.buscarPorId(id
-                		,ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA
-                				,Funcionalidade.USUARIOS)))).build();
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(usuarioService.buscarPorId(id
+                , ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA
+                    , Funcionalidade.USUARIOS)))).build();
     }
 
     @POST
     @Encoded
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.USUARIO, PermissionConstants.USUARIO_CADASTRAR }))
-	public Response criar(@Encoded br.com.ezvida.girst.apiclient.model.Usuario usuario, @Context SecurityContext context,
-			@Context HttpServletRequest request) {
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CADASTRAR}))
+    public Response criar(@Encoded br.com.ezvida.girst.apiclient.model.Usuario usuario, @Context SecurityContext context,
+                          @Context HttpServletRequest request) {
         return Response.status(HttpServletResponse.SC_CREATED).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-				.entity(serializar(usuarioService.cadastrarUsuario(usuario
-						,ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.INCLUSAO
-								, Funcionalidade.USUARIOS) ))).build();
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(usuarioService.cadastrarUsuario(usuario
+                , ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.INCLUSAO
+                    , Funcionalidade.USUARIOS)))).build();
     }
 
     @PUT
     @Encoded
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.USUARIO, PermissionConstants.USUARIO_ALTERAR }))
-	public Response alterar(@Encoded br.com.ezvida.girst.apiclient.model.Usuario usuario, @Context SecurityContext context,
-			@Context HttpServletRequest request) {
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_ALTERAR}))
+    public Response alterar(@Encoded br.com.ezvida.girst.apiclient.model.Usuario usuario, @Context SecurityContext context,
+                            @Context HttpServletRequest request) {
         return Response.status(HttpServletResponse.SC_OK).entity(serializar(usuarioService.alterarUsuario(usuario,
-        		ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.USUARIOS))))
-                .header("Content-Version", getApplicationVersion())
-                .type(MediaType.APPLICATION_JSON).build();
+            ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.USUARIOS))))
+            .header("Content-Version", getApplicationVersion())
+            .type(MediaType.APPLICATION_JSON).build();
     }
 
     @PUT
@@ -144,77 +129,97 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
     @Path("/perfil")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Autorizacao(permissoes = @Permissao(value = { PermissionConstants.USUARIO, PermissionConstants.USUARIO_ALTERAR }))
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.TRABALHADOR, PermissionConstants.TRABALHADOR_CONSULTAR}))
     public Response alterarPerfil(@Context SecurityContext context,
-                            @Context HttpServletRequest request, @Encoded br.com.ezvida.girst.apiclient.model.Usuario usuario) {
+                                  @Context HttpServletRequest request, @Encoded br.com.ezvida.girst.apiclient.model.Usuario usuario) {
         return Response.status(HttpServletResponse.SC_OK).entity(serializar(usuarioService.alterarPerfil(usuario,
             ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.USUARIOS))))
             .header("Content-Version", getApplicationVersion())
             .type(MediaType.APPLICATION_JSON).build();
     }
 
-    @DELETE
-	@Encoded
-	@Path("/desativar")
-	@Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.USUARIO, PermissionConstants.USUARIO_DESATIVAR }))
-	public Response remover(@Context HttpServletRequest request, @Encoded @QueryParam("id") String id, @Context SecurityContext context) {
-        return Response.status(HttpServletResponse.SC_OK)
-        		.entity(serializar(usuarioService.desativarUsuario(id
-        				,ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.USUARIOS))))
-                .header("Content-Version", getApplicationVersion())
-                .type(MediaType.APPLICATION_JSON).build();
+    @GET
+    @Path("/buscarperfil")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.TRABALHADOR, PermissionConstants.TRABALHADOR_CONSULTAR}))
+    public Response getPerfilByLogin(@Context HttpServletRequest request, @Context SecurityContext context) {
+
+        Usuario usuarioLogado = ClienteInfos.getUsuario(context);
+        LOGGER.debug("Carregando usuário {}", usuarioLogado.getLogin());
+
+        getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
+
+        br.com.ezvida.girst.apiclient.model.Usuario usuarioGirst = usuarioService.buscarPorLogin(usuarioLogado.getLogin());
+
+        return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(usuarioService.buscarPorId(usuarioGirst.getId().toString()
+                , ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA
+                    , Funcionalidade.USUARIOS)))).build();
     }
 
-	//@formatter:off
+    @DELETE
+    @Encoded
+    @Path("/desativar")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_DESATIVAR}))
+    public Response remover(@Context HttpServletRequest request, @Encoded @QueryParam("id") String id, @Context SecurityContext context) {
+        return Response.status(HttpServletResponse.SC_OK)
+            .entity(serializar(usuarioService.desativarUsuario(id
+                , ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.USUARIOS))))
+            .header("Content-Version", getApplicationVersion())
+            .type(MediaType.APPLICATION_JSON).build();
+    }
+
+    //@formatter:off
     @GET
     @Encoded
     @Path("/dados")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Autorizacao(permissoes = @Permissao(value = { PermissionConstants.USUARIO_DADOS_CONSULTAR }))
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO_DADOS_CONSULTAR}))
     //@formatter:on
-	public Response getDadosUsuario(@Context HttpServletRequest request, @Context SecurityContext context) {
+    public Response getDadosUsuario(@Context HttpServletRequest request, @Context SecurityContext context) {
 
-		LOGGER.debug("Get dados usuario");
+        LOGGER.debug("Get dados usuario");
 
-		getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
+        getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
 
-		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON).header("Content-Version", getApplicationVersion())
-				.entity(serializar(usuarioService.consultarDadosUsuario(ClienteInfos.getDadosFilter(context), ClienteInfos.getUsuario(context))))
-				.build();
-	}
+        return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON).header("Content-Version", getApplicationVersion())
+            .entity(serializar(usuarioService.consultarDadosUsuario(ClienteInfos.getDadosFilter(context), ClienteInfos.getUsuario(context))))
+            .build();
+    }
 
-	@POST
-	@Encoded
-	@Path("/trocarsenha")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.USUARIO_DADOS_CONSULTAR }))
-	//@formatter:on
-	public Response trocarSenhaUsuario(@Context HttpServletRequest request, @Encoded Map<String, String> propriedades,
-			@Context SecurityContext context) {
-		// @Encoded JsonObject senha_antiga @Encoded List<String> senhas
-		String senha_antiga = (String) propriedades.get("senha_antiga");
-		String senha_nova = (String) propriedades.get("senha_nova");
+    @POST
+    @Encoded
+    @Path("/trocarsenha")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO_DADOS_CONSULTAR}))
+    //@formatter:on
+    public Response trocarSenhaUsuario(@Context HttpServletRequest request, @Encoded Map<String, String> propriedades,
+                                       @Context SecurityContext context) {
+        // @Encoded JsonObject senha_antiga @Encoded List<String> senhas
+        String senha_antiga = (String) propriedades.get("senha_antiga");
+        String senha_nova = (String) propriedades.get("senha_nova");
 
-		LOGGER.debug("---------------------- Chamou trocar Senha ------------------------");
-		LOGGER.debug("Teste antiga = {}", senha_antiga);
-		LOGGER.debug("Teste nova = {}", senha_nova);
+        LOGGER.debug("---------------------- Chamou trocar Senha ------------------------");
+        LOGGER.debug("Teste antiga = {}", senha_antiga);
+        LOGGER.debug("Teste nova = {}", senha_nova);
 
-		// 0- Verificar se senha_antiga confere com a senha cadastrada no banco para usuario no contexto
+        // 0- Verificar se senha_antiga confere com a senha cadastrada no banco para usuario no contexto
 
-		// 1- Criar credencial com nova senha
-		br.com.ezvida.girst.apiclient.model.Credencial credencial = new br.com.ezvida.girst.apiclient.model.Credencial();
-		credencial.setUsuario(ClienteInfos.getUsuario(context).getLogin());
-		credencial.setSenha(propriedades.get("senha_nova"));
-		credencial.setSenhaAtual(propriedades.get("senha_antiga"));
+        // 1- Criar credencial com nova senha
+        br.com.ezvida.girst.apiclient.model.Credencial credencial = new br.com.ezvida.girst.apiclient.model.Credencial();
+        credencial.setUsuario(ClienteInfos.getUsuario(context).getLogin());
+        credencial.setSenha(propriedades.get("senha_nova"));
+        credencial.setSenhaAtual(propriedades.get("senha_antiga"));
 
-		// //2- enviar post solicitando troca de senha para senha_nova
-		usuarioService.alterarSenhaRST(credencial);
+        // //2- enviar post solicitando troca de senha para senha_nova
+        usuarioService.alterarSenhaRST(credencial);
 
-		return null;
-	}
+        return null;
+    }
 
 }

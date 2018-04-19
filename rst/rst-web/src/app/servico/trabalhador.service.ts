@@ -135,4 +135,12 @@ export class TrabalhadorService extends BaseService<Trabalhador> {
         });
     }
 
+  buscarVidaAtivaTrabalhador(id: string): Observable<string> {
+    return super.get('/v1/trabalhadores/vidaativa/' + id)
+        .map((response: Response) => {
+            return response;
+        }).catch((error: Response) => {
+            return Observable.throw(error);
+        });
+    }
 }

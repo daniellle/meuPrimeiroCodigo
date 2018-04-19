@@ -1,23 +1,23 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Usuario} from "../../../modelo/usuario.model";
-import {BloqueioService} from "../../../servico/bloqueio.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {UsuarioService} from "../../../servico/usuario.service";
-import {ToastyService} from "ng2-toasty";
-import {BaseComponent} from "../../base.component";
-import {Seguranca} from "../../../compartilhado/utilitario/seguranca.model";
-import {PermissoesEnum} from "../../../modelo/enum/enum-permissoes";
-import {MensagemProperties} from "../../../compartilhado/utilitario/recurso.pipe";
-import {ValidateCPF} from "../../../compartilhado/validators/cpf.validator";
-import {ValidateEmail} from "../../../compartilhado/validators/email.validator";
-import {MascaraUtil} from "../../../compartilhado/utilitario/mascara.util";
-import {CropperSettings, ImageCropperComponent} from 'ng2-img-cropper';
-import {environment} from "../../../../environments/environment";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {EstadoService} from "../../../servico/estado.service";
-import {FiltroUsuario} from "../../../modelo/filtro-usuario.model";
-import {ListaPaginada} from "../../../modelo/lista-paginada.model";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Usuario } from "../../../modelo/usuario.model";
+import { BloqueioService } from "../../../servico/bloqueio.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UsuarioService } from "../../../servico/usuario.service";
+import { ToastyService } from "ng2-toasty";
+import { BaseComponent } from "../../base.component";
+import { Seguranca } from "../../../compartilhado/utilitario/seguranca.model";
+import { PermissoesEnum } from "../../../modelo/enum/enum-permissoes";
+import { MensagemProperties } from "../../../compartilhado/utilitario/recurso.pipe";
+import { ValidateCPF } from "../../../compartilhado/validators/cpf.validator";
+import { ValidateEmail } from "../../../compartilhado/validators/email.validator";
+import { MascaraUtil } from "../../../compartilhado/utilitario/mascara.util";
+import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
+import { environment } from "../../../../environments/environment";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { EstadoService } from "../../../servico/estado.service";
+import { FiltroUsuario } from "../../../modelo/filtro-usuario.model";
+import { ListaPaginada } from "../../../modelo/lista-paginada.model";
 
 @Component({
     selector: 'app-manter-perfil',
@@ -41,14 +41,14 @@ export class ManterPerfilComponent extends BaseComponent implements OnInit {
     @ViewChild('upload') upload;
 
     constructor(private router: Router,
-                private activatedRoute: ActivatedRoute,
-                private usuarioService: UsuarioService,
-                private route: ActivatedRoute,
-                protected bloqueioService: BloqueioService,
-                protected estadoService: EstadoService,
-                protected formBuilder: FormBuilder,
-                protected dialogo: ToastyService,
-                private modalService: NgbModal,
+        private activatedRoute: ActivatedRoute,
+        private usuarioService: UsuarioService,
+        private route: ActivatedRoute,
+        protected bloqueioService: BloqueioService,
+        protected estadoService: EstadoService,
+        protected formBuilder: FormBuilder,
+        protected dialogo: ToastyService,
+        private modalService: NgbModal,
     ) {
         super(bloqueioService, dialogo, estadoService);
         this.inicializarImagem();
@@ -56,8 +56,8 @@ export class ManterPerfilComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.setId();
         this.title = MensagemProperties.app_rst_usuario_title_perfil;
+        this.buscarUsuario();
     }
 
     inicializarImagem() {
@@ -72,25 +72,8 @@ export class ManterPerfilComponent extends BaseComponent implements OnInit {
         this.foto = {};
     }
 
-    setId(): void {
-        let filtro = new FiltroUsuario();
-        filtro.login = Seguranca.getUsuario().sub;
-        this.paginacao.pagina = 1;
-        this.usuarioService.pesquisarPaginado(filtro, this.paginacao).subscribe((retorno: ListaPaginada<Usuario>) => {
-            this.id = retorno.list[0].id;
-            if (retorno.quantidade === 0) {
-                this.mensagemError(MensagemProperties.app_rst_nenhum_registro_encontrado);
-            }
-            if (this.id) {
-                this.buscarUsuario();
-            }
-        }, (error) => {
-            this.mensagemError(error);
-        });
-    }
-
     buscarUsuario(): void {
-        this.usuarioService.buscarUsuarioById(this.id).subscribe((retorno: Usuario) => {
+        this.usuarioService.buscarPerfil().subscribe((retorno: Usuario) => {
             this.usuario = new Usuario();
             this.usuario = retorno;
             if (this.usuario) {
@@ -160,7 +143,7 @@ export class ManterPerfilComponent extends BaseComponent implements OnInit {
     }
 
     voltar(): void {
-        this.router.navigate([`${environment.url_portal}`]);
+        this.router.navigate([`${environment.path_raiz_cadastro}`]);
     }
 
     converterModelParaForm(): void {
@@ -202,20 +185,20 @@ export class ManterPerfilComponent extends BaseComponent implements OnInit {
     criarForm(): void {
         this.usuarioForm = this.formBuilder.group({
             nome: [
-                {value: null, disabled: true},
+                { value: null, disabled: true },
                 Validators.compose([
                     Validators.required,
                     Validators.maxLength(160),
                 ]),
             ],
             login: [
-                {value: null, disabled: true},
+                { value: null, disabled: true },
                 Validators.compose([
                     Validators.required, ValidateCPF,
                 ]),
             ],
             email: [
-                {value: null, disabled: true},
+                { value: null, disabled: true },
                 Validators.compose([
                     Validators.required,
                     Validators.maxLength(255),
@@ -223,13 +206,13 @@ export class ManterPerfilComponent extends BaseComponent implements OnInit {
                 ]),
             ],
             apelido: [
-                {value: null, disabled: false},
+                { value: null, disabled: false },
                 Validators.compose([
                     Validators.maxLength(100),
                 ]),
             ],
             exibirApelido: [
-                {value: null, disabled: false},
+                { value: null, disabled: false },
                 Validators.compose([
                     Validators.maxLength(1),
                 ]),

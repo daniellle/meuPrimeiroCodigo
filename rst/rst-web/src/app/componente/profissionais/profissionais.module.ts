@@ -1,3 +1,4 @@
+import { ConselhoRegionalService } from './../../servico/conselho-regional.service';
 import { AutorizacaoGuard } from './../../seguranca/autorizacao.guard';
 import { UatService } from 'app/servico/uat.service';
 import { EspecialidadeService } from './../../servico/especialidade.service';
@@ -64,6 +65,6 @@ const routes: Routes = [
     AlertModule.forRoot(),
   ],
   declarations: [PesquisarProfissionaisComponent, CadastroProfissionaisComponent],
-  providers: [DialogService, ProfissionalService, EspecialidadeService, UatService],
+  providers: [DialogService, ProfissionalService, EspecialidadeService, UatService, ConselhoRegionalService],
 })
 export class ProfissionaisModule { }

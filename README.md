@@ -1,4 +1,30 @@
 # rst-cadastros
+
+**v2.3.7.1**
+
+============
+
+(RELEASE EM 19/04/2018)
+
+**Novidades**
+
+- Adição do campo Conselho Regional no formulário de cadastro do Profissional
+- Adição do indicador de Vida Ativa no cadastro do Trabalhador
+- Adição de Apelido e Foto do Perfil no Web Service da Consultar Dados do Usuário
+
+------------
+**Melhorias**
+
+------------
+
+**Correções**
+
+------------
+
+- Ajuste de layout nas telas de Profissional e Trocar Senha
+- Ajuste de limite do campo RG na tela de Profissional
+
+
 **v2.3.7**
 
 ============

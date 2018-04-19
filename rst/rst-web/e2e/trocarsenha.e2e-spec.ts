@@ -24,35 +24,38 @@ describe('Funcionalidade: Permitir que o usuário altere a própria senha. Dado 
         browser.get('/cadastro/gerenciarperfil/trocarsenha/');
     });  
 
-    it('Cenário 1: O usuário deseja alterar a própria senha com sucesso \n Dado que o usuário esteja logado \n Quando ele preencher o campo "Senha" \n E preencher o campo "Repetir senha" com a mesma informação inserida no campo "Senha" \n Então eu devo ver "Senha alterada com sucesso."', function() {
-        trocarSenhaPage.inputSenhaAtual.click();
-        trocarSenhaPage.inputSenhaAtual.sendKeys('Qq!12346');
-        trocarSenhaPage.inputSenhaNova.click();
-        trocarSenhaPage.inputSenhaNova.sendKeys('Qq!12346');    
-        trocarSenhaPage.inputSenhaNovaConfirme.click();
-        trocarSenhaPage.inputSenhaNovaConfirme.sendKeys('Qq!12346'); 
-        //trocarSenhaPage.buttonSalvar.click();
-        //browser.driver.sleep(1000);     
-        // trocarSenhaPage.msg = element(by.css(".toast"));
-        // expect(trocarSenhaPage.msg.getText()).toBe("Senha alterada com sucesso"); 
+//     it('Cenário 1: O usuário deseja alterar a própria senha com sucesso \n Dado que o usuário esteja logado \n Quando ele preencher o campo "Senha" \n E preencher o campo "Repetir senha" com a mesma informação inserida no campo "Senha" \n Então eu devo ver "Senha alterada com sucesso."', function() {
+//         browser.driver.sleep(5000);
+//         browser.waitForAngula
+//         trocarSenhaPage.inputSenhaAtual.click();
+//         trocarSenhaPage.inputSenhaAtual.sendKeys('Qq!12346');
+//         trocarSenhaPage.inputSenhaNova.click();
+//         trocarSenhaPage.inputSenhaNova.sendKeys('Qq!12346');    
+//         trocarSenhaPage.inputSenhaNovaConfirme.click();
+//         trocarSenhaPage.inputSenhaNovaConfirme.sendKeys('Qq!12346'); 
+//         //trocarSenhaPage.buttonSalvar.click();
+//         //browser.driver.sleep(1000);     
+//         // trocarSenhaPage.msg = element(by.css(".toast"));
+//         // expect(trocarSenhaPage.msg.getText()).toBe("Senha alterada com sucesso"); 
 
-        var EC = ExpectedConditions;
-        trocarSenhaPage.buttonSalvar.click()
-        .then(function(){
-            browser.ignoreSynchronization = true;       
-            browser.waitForAngular(); 
-            trocarSenhaPage.msg = element(by.css(".toast"));
-            //browser.driver.sleep(300);
-            browser.wait(EC.visibilityOf(trocarSenhaPage.msg), 1000) //wait until toast is displayed
-            .then(function(){
-                expect(trocarSenhaPage.msg.getText()).toEqual('Senha alterada com sucesso');
-            });
-        });
+//         var EC = ExpectedConditions;
+//         trocarSenhaPage.buttonSalvar.click()
+//         .then(function(){
+//             browser.ignoreSynchronization = true;       
+//             browser.waitForAngular(); 
+//             trocarSenhaPage.msg = element(by.css(".toast"));
+//             //browser.driver.sleep(300);
+//             browser.wait(EC.visibilityOf(trocarSenhaPage.msg), 1000) //wait until toast is displayed
+//             .then(function(){
+//                 expect(trocarSenhaPage.msg.getText()).toEqual('Senha alterada com sucesso');
+//             });
+//         });
         
-   }); 
+//    }); 
 
    it('Cenário 2: O usuário deseja alterar a própria senha sem sucesso \n Dado que o usuário esteja logado \n Quando ele preencher o campo "Senha" \n E não preencher o campo "Repetir senha" com a mesma informação inserida no campo "Senha" \n Então eu devo ver "As senhas devem ser iguais."', function() {
-        browser.driver.sleep(500);   
+        browser.driver.sleep(5000);
+        browser.waitForAngula   
         trocarSenhaPage.inputSenhaAtual.click();
         trocarSenhaPage.inputSenhaAtual.sendKeys('Qq!12346');
         trocarSenhaPage.inputSenhaNova.click();

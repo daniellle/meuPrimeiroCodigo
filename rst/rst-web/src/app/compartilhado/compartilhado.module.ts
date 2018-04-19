@@ -22,6 +22,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SelectModule } from 'ng-select';
 import { EstadoService } from 'app/servico/estado.service';
+import { ConselhoRegionalService } from 'app/servico/conselho-regional.service';
 import { TelefoneModalComponent } from 'app/compartilhado/modal-telefone-component/telefone-modal.component';
 import { EmailModalComponent } from './modal-email-component/email-modal/email-modal.component';
 import { EmailGridComponent } from './modal-email-component/email-grid/email-grid.component';
@@ -196,7 +197,7 @@ import { CALENDARIO_DIRECTIVES } from 'app/diretiva/calendario.directive';
         CardTelaIntermediariaComponent,
         ModalSelecionarGrupoPerguntaComponent,
     ],
-    providers: [EstadoService, NgbModal, NgbActiveModal, SegmentoService, EmpresaTrabalhadorLotacaoService,
+    providers: [EstadoService, ConselhoRegionalService, NgbModal, NgbActiveModal, SegmentoService, EmpresaTrabalhadorLotacaoService,
          { provide: 'Window',  useValue: window }],
     entryComponents: [TelefoneModalComponent, TelefoneGridComponent, SegmentoModalComponent,
         SegmentoGridComponent, UatModalComponent, UatGridComponent, ModalSelecionarGrupoPerguntaComponent],

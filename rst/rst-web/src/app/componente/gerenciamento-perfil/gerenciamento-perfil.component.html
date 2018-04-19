@@ -1,61 +1,64 @@
-
-<ng2-toasty></ng2-toasty>
+<ng2-toasty>
+</ng2-toasty>
 <app-bloqueio></app-bloqueio>
 <p class="titulo-pagina">
-    Trocar Senha 
+    {{title}}
 </p>
 
-
 <div class="container-form space-up">
-  <form [formGroup]="usurioSenhaForm">
-    
-    <!-- <div class="container-subtitulo">
-      <p>Trocar Senha</p>
-    </div> -->
-    <div class="corpo-card">        
-          <div class="row">
-            <div class="form-group col-md-12">
-                <md-input-container  [floatPlaceholder]="true" [ngClass]="{'divDisabled': atual.disabled}"> 
-                    <input id="senhaAtual" #atual mdInput formControlName="atual" placeholder="{{ 'senha_atual' | recurso }}" name="atual" type="password">
-                </md-input-container>
-            </div>
-          </div> 
-          <div class="row">
-              <div class="form-group col-md-6">
-                    <div  class="alert alert-danger" *ngIf="usurioSenhaForm.get('nova').hasError('pattern') && usurioSenhaForm.get('nova').touched">
-                            <div class="row">
-                                <p class="col-md-11 mx-auto">
-                                    A Nova Senha Deve Conter:
-                                </p>
-                            </div>
-                           <div class="row" style='color:red'>
-                                <div class="col-sm-11 mx-auto">
-                                    <ul class="list-unstyled">
-                                        <li>- No mínimo 8 caracteres;</li>
-                                        <li>- Letra maiúscula;</li>
-                                        <li>- Letra minúscula;</li>
-                                        <li>- Número ou caracter especial.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>                   
-                  <md-input-container  [floatPlaceholder]="true" [ngClass]="{'divDisabled': nova.disabled}"> 
-                      <input id="senhanova" #nova mdInput minlength="8" formControlName="nova" placeholder="{{ 'nova_senha' | recurso }}" name="nova" type="password">
-                  </md-input-container>  
-                  <br>     
-              </div>     
-              <div class="form-group col-md-6">
-                <div id="errorconfirmesenha" style='color:red' class="alert alert-danger" *ngIf="usurioSenhaForm.controls.confirmacao.errors?.MatchPassword && usurioSenhaForm.get('confirmacao').touched">Confirme a Senha Corretamente.</div>  
-                  <md-input-container  [floatPlaceholder]="true" [ngClass]="{'divDisabled': confirmacao.disabled}"> 
-                      <input id="senhanovaconfirme" #confirmacao mdInput formControlName="confirmacao" placeholder="{{ 'confirme_sua_nova_senha' | recurso }}" name="confirmacao" type="password">
-                  </md-input-container>  
-           
-              </div>                    
-          </div>
-    </div>
-    <div class="btn-rodape-acoes"  >
-        <!-- <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="voltar()">Volta</button>   -->
-        <button id="btnsalvar" [disabled]="!usurioSenhaForm.valid" type="button " class="btn-rodape btn btn-primary btn-cadastro "  (click)="salvar()">Salvar</button>
-    </div>
+    <form [formGroup]="usurioSenhaForm">
 
-</form>
+        <div class="container-subtitulo">
+            <p>Trocar Senha</p>
+        </div>
+        <div class="corpo-card">
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <md-input-container [floatPlaceholder]="true" [ngClass]="{'divDisabled': atual.disabled}">
+                        <input id="senhaAtual" #atual mdInput formControlName="atual" placeholder="{{ 'senha_atual' | recurso }}" name="atual" type="password">
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="alert alert-danger" *ngIf="usurioSenhaForm.get('nova').hasError('pattern') && usurioSenhaForm.get('nova').touched">
+                        <div class="row">
+                            <p class="col-md-11 mx-auto">
+                                A Nova Senha Deve Conter:
+                            </p>
+                        </div>
+                        <div class="row" style='color:red'>
+                            <div class="col-sm-11 mx-auto">
+                                <ul class="list-unstyled">
+                                    <li>- No mínimo 8 caracteres;</li>
+                                    <li>- Letra maiúscula;</li>
+                                    <li>- Letra minúscula;</li>
+                                    <li>- Número ou caracter especial.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <md-input-container [floatPlaceholder]="true" [ngClass]="{'divDisabled': nova.disabled}">
+                        <input id="senhanova" #nova mdInput minlength="8" formControlName="nova" placeholder="{{ 'nova_senha' | recurso }}" name="nova" type="password">
+                    </md-input-container>
+                    <br>
+                </div>
+                <div class="form-group col-md-6">
+                    <div id="errorconfirmesenha" style='color:red' class="alert alert-danger" *ngIf="usurioSenhaForm.controls.confirmacao.errors?.MatchPassword && usurioSenhaForm.get('confirmacao').touched">Confirme a Senha Corretamente.</div>
+                    <md-input-container [floatPlaceholder]="true" [ngClass]="{'divDisabled': confirmacao.disabled}">
+                        <input id="senhanovaconfirme" #confirmacao mdInput formControlName="confirmacao" placeholder="{{ 'confirme_sua_nova_senha' | recurso }}" name="confirmacao" type="password">
+                    </md-input-container>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="btn-rodape-acoes space-up">
+    <button id="btnsalvar" [disabled]="!usurioSenhaForm.valid" type="button " class="btn-rodape btn btn-primary btn-cadastro " (click)="salvar()">
+        {{'app_rst_btn_salvar' | recurso}}
+    </button>
+    <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="voltar()">{{'app_rst_btn_voltar' |
+        recurso}}
+    </button>
+</div>
