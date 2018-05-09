@@ -141,7 +141,7 @@ public class UsuarioServiceDev implements UsuarioService {
     }
 
     @Override
-    public UsuarioDTO consultarDadosUsuario(DadosFilter dados, Usuario usuarioLogado) {
+	public UsuarioDTO consultarDadosUsuario(String login) {
         logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
         return null;
     }

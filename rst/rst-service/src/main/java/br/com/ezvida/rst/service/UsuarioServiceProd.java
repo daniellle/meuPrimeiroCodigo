@@ -301,7 +301,6 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public br.com.ezvida.girst.apiclient.model.Usuario alterarPerfil(br.com.ezvida.girst.apiclient.model.Usuario usuario, ClienteAuditoria auditoria) {
         br.com.ezvida.girst.apiclient.model.Usuario usuarioAnterior = buscarPorId(usuario.getId().toString(), null);
-//        br.com.ezvida.girst.apiclient.model.Usuario u = null;
         br.com.ezvida.girst.apiclient.model.Usuario u = buscarPorLogin(usuario.getLogin());
         if (auditoria != null && usuarioAnterior != null) {
             LogAuditoria.registrar(LOGGER, auditoria, "Alteração do perfil do usuário: " + usuario);
@@ -382,23 +381,24 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public UsuarioDTO consultarDadosUsuario(DadosFilter dados, Usuario usuarioLogado) {
+	public UsuarioDTO consultarDadosUsuario(String login) {
         LOGGER.debug("consultando dados do usuario");
+		Usuario usuarioAConsultar = getUsuario(login);
 
         UsuarioDTO usuario = new UsuarioDTO();
-        usuario.setLogin(usuarioLogado.getLogin());
+		usuario.setLogin(login);
 
-        if (dados.isTrabalhador()) {
-            usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorCpf(usuarioLogado.getLogin()));
-            Trabalhador trabalhador = trabalhadorService.buscarPorCpf(usuarioLogado.getLogin());
+		if (usuarioAConsultar.getPapeis().contains(DadosFilter.TRABALHADOR)) {
+			usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorCpf(login));
+			Trabalhador trabalhador = trabalhadorService.buscarPorCpf(login);
             usuario.setTipoImagem(trabalhador.getTipoImagem());
             usuario.setImagem(trabalhador.getImagem());
         } else {
-            usuario.setDepartamentosRegionais(departamentoRegionalService.pesquisarPorIds(dados.getIdsDepartamentoRegional()));
-            usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorIds(dados.getIdsEmpresa()));
+			usuario.setDepartamentosRegionais(departamentoRegionalService.pesquisarPorIds(usuarioAConsultar.getIdDepartamentos()));
+			usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorIds(usuarioAConsultar.getIdEmpresas()));
         }
 
-        br.com.ezvida.girst.apiclient.model.Usuario usuarioGirst = buscarPorLogin(usuarioLogado.getLogin());
+		br.com.ezvida.girst.apiclient.model.Usuario usuarioGirst = buscarPorLogin(login);
         if (usuarioGirst != null) {
             usuario.setExibirApelido(usuarioGirst.getExibirApelido());
             usuario.setApelido(usuarioGirst.getApelido());

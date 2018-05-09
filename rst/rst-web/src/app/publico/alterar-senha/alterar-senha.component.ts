@@ -18,6 +18,7 @@ export class AlterarSenhaComponent extends BaseComponent implements OnInit {
 
   public alterarSenhaForm: FormGroup;
   hash: string;
+  isHashValido: boolean;
 
   constructor(
     private router: Router,
@@ -39,6 +40,8 @@ export class AlterarSenhaComponent extends BaseComponent implements OnInit {
 
       if (!this.hash) {
         window.location.href = environment.url_portal;
+      }else{
+          this.validarHash();
       }
     });
   }
@@ -106,4 +109,12 @@ export class AlterarSenhaComponent extends BaseComponent implements OnInit {
     return '(?=^.{8,}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$';
   }
 
+  validarHash(): void {
+    this.autenticacaoService.validarHash(this.hash)
+        .subscribe((retorno: any) => {
+            this.isHashValido = true;
+        }, (error) => {
+            this.isHashValido = false;
+        });
+  }
 }

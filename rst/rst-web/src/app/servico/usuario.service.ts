@@ -13,14 +13,18 @@ import { HttpClient } from '@angular/common/http';
 import { Usuario } from './../modelo/usuario.model';
 import { BaseService } from './../../app/servico/base.service';
 import { Injectable } from '@angular/core';
+import { ParametroService } from './parametro.service';
 
 @Injectable()
 export class UsuarioService extends BaseService<Usuario> {
+
+  tokenClienteRst: string;
 
   constructor(
     protected httpClient: HttpClient,
     protected bloqueioService: BloqueioService,
     protected autenticacaoService: AutenticacaoService,
+    protected parametroService: ParametroService
   ) {
     super(httpClient, bloqueioService);
   }
@@ -151,9 +155,12 @@ export class UsuarioService extends BaseService<Usuario> {
     return params;
   }
 
-  consultarDadosUsuario(): Observable<Usuario> {
+  consultarDadosUsuario(login: string): Observable<Usuario> {
+    var endpoint = '/v1/usuarios/dados/' + login;
 
-    return super.get('/v1/usuarios/dados')
+    this.parametroService.buscarTokenAcessoClienteRst().subscribe(token => this.tokenClienteRst);
+
+    return super.getClientCredential(endpoint, this.tokenClienteRst)
       .map((response: Response) => {
         return response;
       }).catch((error: Response) => {

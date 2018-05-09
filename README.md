@@ -1,5 +1,53 @@
 # rst-cadastros
 
+**v2.7.0**
+
+============
+
+(RELEASE EM 09/05/2018)
+
+**Novidades**
+
+	Mudança de regra na definição de senhas para novos usuários
+
+------------
+**Melhorias**
+	
+	Modificado acesso à API de cadastros
+  	Adicionado "Pressão Sanguínea" no histórico do exame
+  	Modificado gráfico de minha saúde para contemplar dois antendimentos
+
+------------
+
+**Correções**
+
+	Ajuste no filtro do pesquisar Unidade Sesi
+  	Ajuste na ordem cronológica nos gráficos de minha saúde
+  	Tratamento de erro para minimizar bug do Retrofit ao retornar body null nos serviços
+  	Ajuste da token do serviço do RES para atualizar dinamicamente
+
+------------
+
+**v2.4.0**
+
+============
+
+(RELEASE EM 24/04/2018)
+
+**Novidades**
+
+------------
+**Melhorias**
+
+------------
+
+**Correções**
+
+------------
+
+- Exibir atendimentos com mesma data na tela de Minha Saúde
+
+
 **v2.3.7.1**
 
 ============

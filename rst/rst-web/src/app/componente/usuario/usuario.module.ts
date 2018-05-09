@@ -28,6 +28,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {PesquisaUsuarioComponent} from './pesquisa-usuario/pesquisa-usuario.component';
 import {ManterUsuarioComponent} from './manter-usuario/manter-usuario.component';
+import { ParametroService } from '../../servico/parametro.service';
 
 const routes: Routes = [
     {
@@ -162,6 +163,7 @@ const routes: Routes = [
         SindicatoService,
         DepartRegionalService,
         EmpresaTrabalhadorService,
+        ParametroService
     ],
 })
 export class UsuarioModule {

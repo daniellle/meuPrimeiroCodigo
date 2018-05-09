@@ -113,4 +113,25 @@ export abstract class BaseService<T> {
       return errorObject.mensagem;
     }
   }
+
+  protected getClientCredential<K>(endpoint: string, token: string, criteria: HttpParams = new HttpParams()): Observable<K> {
+   
+    this.bloqueioService.bloquear();
+
+    const options = {
+      headers: new HttpHeaders()
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
+        .set('Authorization', 'Bearer ' + token),
+      params: criteria,
+    };
+
+    return this.http.get(environment.api_public + endpoint, options)
+      .catch((error: HttpResponse<T>) => {
+        return Observable.throw(this.handlingError(error));
+      }).finally(() => {
+        this.bloqueioService.desbloquear();
+      });
+
+  }
 }

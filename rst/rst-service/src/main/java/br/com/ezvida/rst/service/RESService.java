@@ -12,9 +12,11 @@ import com.google.common.collect.ImmutableMap;
 import fw.core.exception.BusinessException;
 import fw.core.service.BaseService;
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Call;
+import retrofit2.Converter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -27,6 +29,8 @@ import javax.inject.Inject;
 import javax.net.ssl.*;
 import javax.ws.rs.core.MultivaluedMap;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,40 +54,33 @@ public class RESService extends BaseService {
     private ResDAO resDao;
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public Object buscarHistoricoParaInformacaoSaude(InformacaoSaude informacao, MultivaluedMap<String, String> filtros,
-                                                     ClienteAuditoria clienteAuditoria) {
-
+    public Object buscarHistoricoParaInformacaoSaude(InformacaoSaude informacao, MultivaluedMap<String, String> filtros, ClienteAuditoria clienteAuditoria) {
         if (filtros == null) {
             throw new BusinessException("Sem parâmetros de busca informados");
         }
+
         if (informacao == null) {
             throw new BusinessException("Sem informacao a ser buscado");
         }
-        String cpf = filtros.getFirst("cpf") != null ? filtros.getFirst("cpf") : "";
-        LogAuditoria.registrar(LOGGER, clienteAuditoria,
-                               "Buscando histórico de " + informacao.name() + " do trabalhador " + cpf);
-        Map<String, Object> paciente = this.buscarDadosPacienteRES(cpf);
-        if (paciente != null) {
-            Map<String, Object> historico = this.buscarValorParaInformacaoSaude(paciente.get("originalReferenceId")
 
-                                                                                        .toString(), informacao, true);
-            return historico;
+        String cpf = filtros.getFirst("cpf") != null ? filtros.getFirst("cpf") : "";
+        LogAuditoria.registrar(LOGGER, clienteAuditoria, "Buscando histórico de " + informacao.name() + " do trabalhador " + cpf);
+
+        Map<String, Object> paciente = this.buscarDadosPacienteRES(cpf);
+
+        if (paciente != null && !paciente.isEmpty()) {
+            return this.buscarValorParaInformacaoSaude(paciente.get("originalReferenceId").toString(), informacao, true);
         }
+
         return null;
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public Object buscarUltimoRegistroInformacaoSaude(String cpf, InformacaoSaude informacao,
-                                                      ClienteAuditoria clienteAuditoria) {
-        LogAuditoria.registrar(LOGGER, clienteAuditoria,
-                               "Buscando último registro de " + informacao != null ? informacao.name() : null + " do trabalhador " + cpf);
+    public Object buscarUltimoRegistroInformacaoSaude(String cpf, InformacaoSaude informacao, ClienteAuditoria clienteAuditoria) {
+        LogAuditoria.registrar(LOGGER, clienteAuditoria, "Buscando último registro de " + informacao != null ? informacao.name() : null + " do trabalhador " + cpf);
         Map<String, Object> paciente = this.buscarDadosPacienteRES(cpf);
-        if (paciente != null) {
-            Map<String, Object> cluster = this.buscarValorParaInformacaoSaude(paciente.get("originalReferenceId")
-                                                                                      .toString(), informacao, false);
-            if (cluster != null && !cluster.isEmpty()) {
-                return cluster;
-            }
+        if (paciente != null && !paciente.isEmpty()) {
+            return this.buscarValorParaInformacaoSaude(paciente.get("originalReferenceId").toString(), informacao, false);
         }
         return null;
     }
@@ -92,69 +89,37 @@ public class RESService extends BaseService {
     public Object buscarFichaMedica(String id, ClienteAuditoria clienteAuditoria) {
         LogAuditoria.registrar(LOGGER, clienteAuditoria, "Buscando registro médico com id " + id);
 
-        Retrofit retro = new Retrofit.Builder().baseUrl(this.service.getRESUrl())
-                                               .client(getOkHttpClient())
-                                               .addConverterFactory(GsonConverterFactory.create())
-                                               .build();
+        Retrofit retro = getRetroFit();
+        Map<String, Object> resultado = null;
         try {
             String token = this.autenticar();
-            Map<String, Object> resultado = null;
             if (token != null) {
-                Response<Object> r = retro.create(RESApi.class)
-                                          .buscarEncontroMedico(token, id)
-                                          .execute();
-                if (r != null) {
-                    if (r.isSuccessful()) {
-                        Object form = buscarForm(TEMPLATE);
-                        resultado = new ImmutableMap.Builder<String, Object>()
-                                .put("resultado", r.body())
-                                .put("form", form)
-                                .build();
-                    } else {
-                        LOGGER.debug("Não foi possível obter o encontro {} {}", id, r.errorBody());
-                    }
+                Response<Object> response = retro.create(RESApi.class)
+                        .buscarEncontroMedico(token, id)
+                        .execute();
+                if (response != null || response.isSuccessful()) {
+                    Object form = buscarForm(TEMPLATE);
+                    resultado = new ImmutableMap.Builder<String, Object>()
+                            .put("resultado", response.body())
+                            .put("form", form)
+                            .build();
                 } else {
-                    LOGGER.debug("Não foi possível obter o encontro {} {}", id, null);
+                    LOGGER.debug("Não foi possível obter o encontro {} {}", id, response == null ? null : response.errorBody().toString());
                 }
 
             }
             return resultado;
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
-            return null;
         }
+        return resultado;
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public Object buscarForm(String identificador) {
-        Retrofit retro = new Retrofit.Builder().baseUrl(this.service.getRESUrl())
-                                               .client(getOkHttpClient())
-                                               .addConverterFactory(GsonConverterFactory.create())
-                                               .build();
-        try {
-            Object resultado = retro.create(RESApi.class)
-                                    .buscarForm(this.autenticar(), identificador)
-                                    .execute()
-                                    .body();
-
-            return resultado;
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage());
-            return null;
-        }
-    }
-
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public Map<String, Object> buscarFichasMedicasParaPaciente(String cpf, String de, String pagina,
-                                                               ClienteAuditoria clienteAuditoria,
-                                                               Usuario usuarioLogado) {
+    public Map<String, Object> buscarFichasMedicasParaPaciente(String cpf, String de, String pagina, ClienteAuditoria clienteAuditoria, Usuario usuarioLogado) {
         LogAuditoria.registrar(LOGGER, clienteAuditoria, "Buscando histórico do trabalhador " + cpf);
 
-        Retrofit retro = new Retrofit.Builder().baseUrl(this.service.getRESUrl())
-                                               .client(getOkHttpClient())
-                                               .addConverterFactory(GsonConverterFactory.create())
-                                               .build();
-//        Map<String, Object> paciente = this.buscarDadosPacienteRES(cpf);
+        Retrofit retro = getRetroFit();
         Map<String, String> query = MapBuilder
                 .criar("quantity", "5")
                 .incluir("page", pagina)
@@ -164,65 +129,108 @@ public class RESService extends BaseService {
                 .build();
         try {
             Object resultado = retro.create(RESApi.class)
-                                    .buscarHistoricoAtendimento(this.autenticar()
-//                                                , String.valueOf(paciente.get("originalReferenceId"))
-//                                                , TEMPLATE
-                                            , query)
-                                    .execute()
-                                    .body();
-            return new ImmutableMap.Builder<String, Object>()
-                    .put("filtrarInformacoes", cpf.equalsIgnoreCase(usuarioLogado.getLogin()))
-                    .put("resultado", resultado)
-                    .build();
+                    .buscarHistoricoAtendimento(this.autenticar(), query)
+                    .execute()
+                    .body();
+            if (resultado != null) {
+                return new ImmutableMap.Builder<String, Object>()
+                        .put("filtrarInformacoes", cpf.equalsIgnoreCase(usuarioLogado.getLogin()))
+                        .put("resultado", resultado)
+                        .build();
+            }
+            LOGGER.debug("Não foi possível buscar o historico de atendimento {} ", resultado);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         }
         return null;
     }
 
-    private String autenticar() {
-        String token = this.resDao.getToken();
-        if (token == null) {
-            updateToken();
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Object buscarForm(String identificador) {
+        Retrofit retro = getRetroFit();
+        Object resultado = null;
+        try {
+            resultado = retro.create(RESApi.class)
+                    .buscarForm(this.autenticar(), identificador)
+                    .execute()
+                    .body();
+            if (resultado != null) {
+                return resultado;
+            }
+            LOGGER.debug("Não foi possível buscar o form {} ", resultado);
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
         }
+        return resultado;
+    }
 
+    private String autenticar() {
+        LOGGER.debug("Autenticando o token no servico {} ", this.service.getRESUrl());
+        String token = updateToken();
         return token;
     }
 
-    private void updateToken() {
-
-        Retrofit retro = new Retrofit.Builder().baseUrl(service.getRESUrl())
-                                               .client(getOkHttpClient())
-                                               .addConverterFactory(GsonConverterFactory.create())
-                                               .build();
-
+    private String updateToken() {
+        Retrofit retro = getRetroFit();
         RESApi api = retro.create(RESApi.class);
-        Map<String, String> dadosClienteRes = this.service.getDadoClienteRES();
-        Map<String, String> params = MapBuilder.criar("grant_type", "client_credentials")
-                                               .incluir("client_id",
-                                                        dadosClienteRes.get(ParametroService.RES_API_KEY))
-                                               .incluir("client_secret",
-                                                        dadosClienteRes.get(ParametroService.RES_API_SECRET))
-                                               .build();
         String token = null;
         try {
-            Response<Map<String, Object>> response = api.autenticarOrganizacao(params)
-                                                        .execute();
+            Response<Map<String, Object>> response = api.autenticarOrganizacao(getParams()).execute();
             if (response.isSuccessful()) {
-                Map<String, Object> tokenJSON = response.body();
-                token = tokenJSON.get("token_type") + " " + tokenJSON.get("access_token")
-                                                                     .toString();
-                String refresh = String.valueOf(tokenJSON.get("refresh_token"));
-                this.resDao.updateToken(token);
-                this.resDao.updateRefresh(refresh);
+                token = refreshToken(response);
+            } else if (response.code() == 401) {
+                LOGGER.debug("Usuario não autorizado, tentando novamente", response.errorBody().string());
+                token = refreshToken(api.autenticarOrganizacao(getParams()).execute());
             } else {
-                LOGGER.debug("[FALHA GRAVE] Não foi possível autenticar no sistema RES {}", response.errorBody()
-                                                                                                    .string());
+                LOGGER.debug("[FALHA GRAVE] Não foi possível autenticar no sistema RES {}", response.errorBody().string());
             }
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
             LOGGER.debug("[FALHA GRAVE] Não foi possível autenticar no sistema RES {}", e.toString());
         }
+        return token;
+    }
+
+    private Map<String, String> getParams() {
+        Map<String, String> dadosClienteRes = this.service.getDadoClienteRES();
+        Map<String, String> params = MapBuilder.criar("grant_type", "client_credentials")
+                .incluir("client_id", dadosClienteRes.get(ParametroService.RES_API_KEY))
+                .incluir("client_secret", dadosClienteRes.get(ParametroService.RES_API_SECRET))
+                .build();
+        return params;
+    }
+
+    private Retrofit getRetroFit() {
+        Retrofit retro = new Retrofit.Builder().baseUrl(this.service.getRESUrl())
+                .client(getOkHttpClient())
+                .addConverterFactory(new NullOnEmptyConverterFactory())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        if (retro == null) {
+            LOGGER.debug("[FALHA GRAVE] Não foi possível criar o Retrofit para o sistema RES {}", this.service.getRESUrl());
+        }
+        return retro;
+    }
+
+    //Issue relacionada ao retrofit, solução proposta no link: https://github.com/square/retrofit/issues/1554
+    public class NullOnEmptyConverterFactory extends Converter.Factory {
+        @Override
+        public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
+            final Converter<ResponseBody, ?> delegate = retrofit.nextResponseBodyConverter(this, type, annotations);
+            return (Converter<ResponseBody, Object>) body -> {
+                if (body.contentLength() == 0) return null;
+                return delegate.convert(body);
+            };
+        }
+    }
+
+    private String refreshToken(Response<Map<String, Object>> response) {
+        Map<String, Object> tokenJSON = response.body();
+        String token = tokenJSON.get("token_type") + " " + tokenJSON.get("access_token").toString();
+        String refresh = String.valueOf(tokenJSON.get("refresh_token"));
+        this.resDao.updateToken(token);
+        this.resDao.updateRefresh(refresh);
+        return token;
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -285,42 +293,35 @@ public class RESService extends BaseService {
     }
 
     private Map<String, Object> buscarDadosPacienteRES(String cpf) {
-        Retrofit retro = new Retrofit.Builder().baseUrl(this.service.getRESUrl())
-                                               .client(getOkHttpClient())
-                                               .addConverterFactory(GsonConverterFactory.create())
-                                               .build();
+        LOGGER.debug("Buscando dados do paciente {} no sistema RES", cpf);
+
         try {
-            Map<String, Object> resultado = retro.create(RESApi.class)
-                                                 .buscarPaciente(this.autenticar(), cpf)
-                                                 .execute()
-                                                 .body();
-            return resultado;
+            Response<Map<String, Object>> response =this.getRetroFit().create(RESApi.class).buscarPaciente(this.autenticar(), cpf).execute();
+            if (response != null && response.isSuccessful()) {
+                return response.body();
+            }
         } catch (IOException e) {
-            LOGGER.error(e.getMessage());
-            return null;
+            LOGGER.error("Não foi possível encontrar os dados do paciente {} no sistema RES.", cpf);
         }
+
+        return null;
     }
 
 
-    private Map<String, Object> buscarValorParaInformacaoSaude(String referenciaOriginalPaciente,
-                                                               InformacaoSaude informacao,
-                                                               boolean historico) {
-
-        Retrofit retro = new Retrofit.Builder().baseUrl(this.service.getRESUrl())
-                                               .client(getOkHttpClient())
-                                               .addConverterFactory(GsonConverterFactory.create())
-                                               .build();
+    private Map<String, Object> buscarValorParaInformacaoSaude(String referenciaOriginalPaciente, InformacaoSaude informacao, boolean historico) {
+        LOGGER.debug("Buscando valor para infomacoes de saude no sistema RES {}", referenciaOriginalPaciente);
+        Retrofit retro = getRetroFit();
         Map<String, String> params = ImmutableMap.of("amPath", informacao.getPathDado());
         Call<Map<String, Object>> chamada = null;
 
         if (!historico) {
             chamada = retro.create(RESApi.class)
-                           .buscarInformacaoSaude(autenticar(), informacao.getIdArquetipo(), referenciaOriginalPaciente,
-                                                  params);
+                    .buscarInformacaoSaude(autenticar(), informacao.getIdArquetipo(), referenciaOriginalPaciente,
+                            params);
         } else {
             chamada = retro.create(RESApi.class)
-                           .buscarHistoricoParaInformacaoSaude(autenticar(), informacao.getIdArquetipo(),
-                                                               referenciaOriginalPaciente, params);
+                    .buscarHistoricoParaInformacaoSaude(autenticar(), informacao.getIdArquetipo(),
+                            referenciaOriginalPaciente, params);
         }
 
         try {
@@ -330,13 +331,12 @@ public class RESService extends BaseService {
                 resultado = response.body();
             } else {
                 LOGGER.debug(response != null ? response.errorBody()
-                                                        .string() : "null");
+                        .string() : "null");
             }
 
             return resultado;
-
         } catch (IOException e) {
-            LOGGER.debug(e.toString());
+            LOGGER.error(e.toString());
             return ImmutableMap.of();
         }
     }
@@ -368,10 +368,7 @@ public class RESService extends BaseService {
 
         @GET("encounters")///{patientOriginalReferenceId}/{archetypeId}")
         @Headers({"Content-Type: application/x-www-form-urlencoded"})
-        Call<Object> buscarHistoricoAtendimento(@Header("Authorization") String authorization,
-//                                                @Path("patientOriginalReferenceId") String originalReferenceId,
-//                                                @Path("archetypeId") String archetypeId,
-                                                @QueryMap(encoded = true) Map<String, String> params);
+        Call<Object> buscarHistoricoAtendimento(@Header("Authorization") String authorization, @QueryMap(encoded = true) Map<String, String> params);
 
         @GET("encounters/{id}")
         @Headers({"Content-Type: application/x-www-form-urlencoded"})
@@ -383,8 +380,7 @@ public class RESService extends BaseService {
 
         @GET("demographics/patients/document/{document}")
         @Headers({"Content-Type: application/x-www-form-urlencoded"})
-        Call<Map<String, Object>> buscarPaciente(@Header("Authorization") String authorization,
-                                                 @Path("document") String document);
+        Call<Map<String, Object>> buscarPaciente(@Header("Authorization") String authorization, @Path("document") String document);
 
         @FormUrlEncoded
         @POST("oauth/token")

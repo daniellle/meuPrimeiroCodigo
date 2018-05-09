@@ -49,10 +49,12 @@ public class AutorizacaoInterceptor extends SegurancaInterceptor {
 				throw new UnauthorizedException("Usuário não tem autorização para acessar essa aplicação");
 			}
 
+			LOGGER.debug("Usuário autenticado");
 			if (payload.getExpiresAt() != null && LOGGER.isTraceEnabled()) {
 				LOGGER.trace("Data de Expiração: {}", DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(payload.getExpiresAt()));
 			}
 
+			LOGGER.debug("Validando autorização do usuário");
 			validarAutorizacao(payload, context.getMethod().getDeclaredAnnotation(Autorizacao.class));
 
 		} catch (UnauthenticatedException e) {
@@ -74,12 +76,14 @@ public class AutorizacaoInterceptor extends SegurancaInterceptor {
 		}
 
 		if (ArrayUtils.isNotEmpty(seguranca.papeis())) {
+			LOGGER.debug("Verificando papéis do usuário");
 			for (Papel papel : seguranca.papeis()) {
 				validarRestricoes(payload.getClaim("papeis"), papel.logico(), papel.value());
 			}
 		}
 
 		if (ArrayUtils.isNotEmpty(seguranca.permissoes())) {
+			LOGGER.debug("Verificando permissões do usuário");
 			for (Permissao permissao : seguranca.permissoes()) {
 				validarRestricoes(payload.getClaim("permissoes"), permissao.logico(), permissao.value());
 			}

@@ -59,8 +59,10 @@ public class Token extends BaseEntity<String> {
         this.expiraEm = expiraEm;
         this.tipoToken = tipoToken;
         this.tokenAtualizacao = tokenAtualizacao;
-        this.tempoExpiracaoToken = DateUtils.addSeconds(new Date(), expiraEm.intValue()).getTime();
-        this.tempoExpiracaoAtualizacaoToken = DateUtils.addSeconds(new Date(), tempoExpiracaoAtualizacaoToken.intValue()).getTime();
+		this.tempoExpiracaoToken = expiraEm != null ? DateUtils.addSeconds(new Date(), expiraEm.intValue()).getTime() : null;
+		this.tempoExpiracaoAtualizacaoToken = tempoExpiracaoAtualizacaoToken != null
+				? DateUtils.addSeconds(new Date(), tempoExpiracaoAtualizacaoToken.intValue()).getTime()
+				: null;
     }
 
     @Override

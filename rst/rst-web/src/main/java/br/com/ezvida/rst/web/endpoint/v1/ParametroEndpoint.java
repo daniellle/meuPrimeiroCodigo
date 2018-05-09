@@ -64,4 +64,15 @@ public class ParametroEndpoint extends SegurancaEndpoint<Parametro> {
 				.header("Content-Version", getApplicationVersion()).entity(serializar(parametroService.getTamanhoMaximoUpload()))
 				.build();
 	}
+
+	@GET
+	@Encoded
+	@Path("/token_acesso_cliente_rst")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getTokenAcessoClienteRst() {
+		LOGGER.debug("Buscando parametro por nome");
+		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON).header("Content-Version", getApplicationVersion())
+				.entity(serializar(parametroService.getTokenAcessoClienteRst())).build();
+	}
 }

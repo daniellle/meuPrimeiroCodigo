@@ -1,17 +1,19 @@
 package br.com.ezvida.rst.service;
 
-import br.com.ezvida.rst.dao.ParametroDAO;
-import br.com.ezvida.rst.model.Parametro;
-import fw.core.exception.BusinessException;
-import fw.core.service.BaseService;
-import org.apache.commons.lang.StringUtils;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+
+import br.com.ezvida.rst.dao.ParametroDAO;
+import br.com.ezvida.rst.model.Parametro;
+import fw.core.exception.BusinessException;
+import fw.core.service.BaseService;
 
 @Stateless
 public class ParametroService extends BaseService {
@@ -41,6 +43,7 @@ public class ParametroService extends BaseService {
     public static final String EMAIL_SENHA_SESI = "email_senha_sesi";
     public static final String EMAIL_ASSUNTO_SESI = "email_assunto_sesi";
     public static final String TAMANHO_MAXIMO_UPLOAD_ARQUIVO = "tamanho_maximo_upload_arquivo";
+	public static final String TOKEN_ACESSO_CLIENTE_RST = "token_acesso_cliente_rst";
     public static final String SOLICITACAO_EMAIL_SESI = "solicitacao_email_sesi";
     public static final String SOLICITACAO_EMAIL_SESI_CORPO_TEXTO = "solicitacao_email_sesi_corpo_texto";
     private static final long serialVersionUID = -542751432948139228L;
@@ -89,7 +92,7 @@ public class ParametroService extends BaseService {
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public String getRESUrl() {
-        return carregarPorNome(RES_URL); //"http://localhost:8000/api/v1/" ;//;
+        return carregarPorNome(RES_URL);
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -107,9 +110,6 @@ public class ParametroService extends BaseService {
         resultado.put(RES_API_SECRET, secret.getValor());
 
         return resultado;
-//    	return MapBuilder.criar("grant_type", "client_credentials")
-//    			.incluir(RES_API_KEY,"$2a$10$8EOBSu/hXOb8Y9fqQkK5nuhaAKfeYi6kvEVTwldSu.stdep8meGBW")
-//    			.incluir(RES_API_SECRET,"dzc50mrrm930pho").build();
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -176,5 +176,10 @@ public class ParametroService extends BaseService {
     public String getTamanhoMaximoUpload() {
         return carregarPorNome(TAMANHO_MAXIMO_UPLOAD_ARQUIVO);
     }
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public String getTokenAcessoClienteRst() {
+		return carregarPorNome(TOKEN_ACESSO_CLIENTE_RST);
+	}
 
 }

@@ -39,4 +39,13 @@ export class ParametroService extends BaseService<Parametro> {
     });
   }
 
+  buscarTokenAcessoClienteRst(): Observable<string> {
+    return super.getPublic('/v1/parametro/token_acesso_cliente_rst')
+    .map((response: Response) => {
+      return response;
+    }).catch((error: Response) => {
+      return Observable.throw(error);
+    });
+  }
+
 }

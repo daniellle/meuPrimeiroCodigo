@@ -11,7 +11,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import br.com.ezvida.rst.anotacoes.Preferencial;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.oltu.oauth2.common.OAuth;
@@ -22,7 +21,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.Payload;
 
 import br.com.ezvida.girst.apiclient.client.CredencialClient;
+import br.com.ezvida.rst.anotacoes.Preferencial;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
+import br.com.ezvida.rst.enums.Credencial;
 import br.com.ezvida.rst.model.Token;
 import br.com.ezvida.rst.model.Usuario;
 import br.com.ezvida.rst.utils.SegurancaUtils;
@@ -73,6 +74,24 @@ public class CredencialService extends BaseService {
     }
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public Token validar(String login) {
+
+		try {
+			LOGGER.debug("Solicitando autorizacao do usuario  [ {} ] para o sistema", login);
+
+			return gerarToken(usuarioService.getUsuario(login), null, null, null, null, null, Credencial.CLIENTE.toString());
+
+		} catch (UnauthenticatedException e) {
+			LOGGER.error("Erro ao gerar token de autorização do usuário para o sistema", e);
+			throw new UnauthenticatedException(e.getMessage(), e);
+		} catch (Exception e) {
+			LOGGER.error("Erro ao gerar token de autorização do usuário para o sistema", e);
+			throw new UnauthorizedException(getMensagem("app_seguranca_acesso_negado"), e);
+		}
+
+	}
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public Token validar(@Nonnull Payload payload) {
 
 		Usuario usuario = usuarioService.getUsuario(payload.getSubject());
@@ -91,7 +110,7 @@ public class CredencialService extends BaseService {
 
 	}
 
-    private Token gerarToken(Usuario usuario) throws UnsupportedEncodingException {
+	private Token gerarToken(Usuario usuario) throws UnsupportedEncodingException {
 		LOGGER.debug("Criando filtro de dados");
 
 		DadosFilter dadosFilter = new DadosFilter(usuario.getPapeis(), usuario.getIdDepartamentos(), usuario.getIdEmpresas(),
@@ -105,8 +124,20 @@ public class CredencialService extends BaseService {
 			LOGGER.error("Erro ao tentar converter dados filter", e);
 		}
 
+		Date expiracaoToken = DateUtils.addSeconds(new Date(), Token.TEMPO_PADRAO_EXPIRACAO_REFRESH_TOKEN);
+		Date expiracaoAtualizacaoToken = DateUtils.addSeconds(new Date(), Token.TEMPO_PADRAO_EXPIRACAO_REFRESH_TOKEN * 24 * 30 * 6);
+		Long expiraEm = 3600L;
+		Long atualizacaoExpiraEm = (long) (Token.TEMPO_PADRAO_EXPIRACAO_REFRESH_TOKEN * 24 * 30 * 6);
+
+		return gerarToken(usuario, expiracaoToken, expiracaoAtualizacaoToken, expiraEm, atualizacaoExpiraEm, dados, Credencial.USUARIO.toString());
+
+	}
+
+	private Token gerarToken(Usuario usuario, Date expiracaoToken, Date expiracaoAtualizacaoToken, Long expiraEm, Long atualizacaoExpiraEm,
+			String dados, String credencial) throws UnsupportedEncodingException {
 		LOGGER.debug("Gerando token do usuario");
-        //@formatter:off
+
+		//@formatter:off
         String tokenAcesso = ChaveSeguranca.getInstance().gerar(
             JWT.create().withSubject(usuario.getLogin())
                 .withClaim("nome", usuario.getNome())
@@ -114,27 +145,28 @@ public class CredencialService extends BaseService {
                 .withArrayClaim("papeis", usuario.getPapeis().stream().toArray(String[]::new))
                 .withArrayClaim("permissoes", usuario.getPermissoes().stream().toArray(String[]::new))
                 .withClaim("dados", dados)
-                .withExpiresAt(DateUtils.addSeconds(new Date(), Token.TEMPO_PADRAO_EXPIRACAO_REFRESH_TOKEN)), TipoOAuth.ACCESS_TOKEN);
+                .withClaim("credencial", credencial)
+                .withExpiresAt(expiracaoToken), TipoOAuth.ACCESS_TOKEN);
         //@formatter:on
 
 		LOGGER.debug("Gerando token de atualizacao do usuario");
-        //@formatter:off
-        String tokenAtualizacao = ChaveSeguranca.getInstance().gerar(
-            JWT.create().withSubject(usuario.getLogin())
-                .withClaim("nome", usuario.getNome())
-                .withClaim("email", usuario.getEmail())
-                .withArrayClaim("papeis", usuario.getPapeis().stream().toArray(String[]::new))
-                .withArrayClaim("permissoes", usuario.getPermissoes().stream().toArray(String[]::new))
-                .withClaim("dados", dados)
-						.withExpiresAt(DateUtils.addSeconds(new Date(),
-								Token.TEMPO_PADRAO_EXPIRACAO_REFRESH_TOKEN * 24 * 30 * 6)),
-				TipoOAuth.JWT_BEARER);
-        //@formatter:on
+		//@formatter:off
+            String tokenAtualizacao = ChaveSeguranca.getInstance().gerar(
+                JWT.create().withSubject(usuario.getLogin())
+                    .withClaim("nome", usuario.getNome())
+                    .withClaim("email", usuario.getEmail())
+                    .withArrayClaim("papeis", usuario.getPapeis().stream().toArray(String[]::new))
+                    .withArrayClaim("permissoes", usuario.getPermissoes().stream().toArray(String[]::new))
+                    .withClaim("dados", dados)
+                    .withClaim("credencial", credencial)
+    				.withExpiresAt(expiracaoAtualizacaoToken),
+    				TipoOAuth.JWT_BEARER);
+            //@formatter:on
 
-        return new Token(usuario, tokenAcesso, 3600L, (long) (Token.TEMPO_PADRAO_EXPIRACAO_REFRESH_TOKEN * 24 * 30 * 6), OAuth.OAUTH_HEADER_NAME,
-                tokenAtualizacao);
+		LOGGER.debug("Retornando token gerada");
+		return new Token(usuario, tokenAcesso, expiraEm, atualizacaoExpiraEm, OAuth.OAUTH_HEADER_NAME, tokenAtualizacao);
 
-    }
+	}
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String recuperarSenha(String email) {
@@ -149,5 +181,10 @@ public class CredencialService extends BaseService {
     public void alterarSenha(Map<String, String> propriedades) {
         credencialClient.alterarSenhaComHash(apiClientService.getURL(), propriedades, null);
     }
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public String verificarHash(String hashRecuperacaoSenha) {
+		return credencialClient.verificarHashRecuperacaoSenha(apiClientService.getURL(), hashRecuperacaoSenha);
+	}
 
 }

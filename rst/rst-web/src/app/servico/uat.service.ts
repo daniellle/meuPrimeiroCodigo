@@ -49,7 +49,9 @@ export class UatService extends BaseService<Uat> {
         return this.parseResponsePaginado(response);
       }).catch((error: Response) => {
         return Observable.throw(error);
-      });
+      }).finally(() => {
+            this.bloqueio.evento.emit(true);
+        });
   }
 
   pesquisarPorEndereco(filtroEndereco: FiltroEndereco): Observable<Uat[]> {

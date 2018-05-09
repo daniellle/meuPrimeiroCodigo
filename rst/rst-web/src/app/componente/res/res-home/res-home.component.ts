@@ -104,6 +104,20 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
                                         .toDate().getTime()) / (1000 * 3600 * 24)) / 365);
     }
 
+    private ordenarArrayDeCircunferenciaAbdominal(collection: Array<{ data: string, informacao: Path }>) {
+        collection.sort(function (a,b) {
+            if (new Date(a.data) > new Date(b.data)) {
+                return 1;
+            }
+
+            if (new Date(a.data) < new Date(b.data)) {
+                return -1;
+            }
+
+            return 0;
+        });
+    }
+
     criarGraficoDeCircunferencia(circunferencias: Array<{ data: string, informacao: any }>) {
         if (!circunferencias || circunferencias.length === 0 || circunferencias.every(c => Number(c.informacao!.magnitude) <= 0)) {
             this.semDadosPesoSuficiente = true;
@@ -116,6 +130,8 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
             let dados = [
                 {data: []}
             ];
+
+            this.ordenarArrayDeCircunferenciaAbdominal(circunferencias);
 
             circunferencias.forEach((circunferencia) => {
                 if (circunferencia.informacao) {
@@ -212,11 +228,28 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
         return retorno;
     }
 
+    private ordenarArrayDePressaoSanguinea(collection: Array<{ data: string, informacao: Path }>) {
+        collection.sort(function (a,b) {
+            if (new Date(a.data) > new Date(b.data)) {
+                return 1;
+            }
+
+            if (new Date(a.data) < new Date(b.data)) {
+                return -1;
+            }
+
+            return 0;
+        });
+    }
+
     criarGraficoDePressao(sistolicas: Array<{ data: string, informacao: Path }>, diastolicas: Array<{ data: string, informacao: Path }>) {
         if ( (!sistolicas && !diastolicas) || (sistolicas.length === 0 && diastolicas.length === 0) ) {
             this.semDadosPressaoSuficiente = true;
             return;
         }
+
+        this.ordenarArrayDePressaoSanguinea(sistolicas);
+        this.ordenarArrayDePressaoSanguinea(diastolicas);
 
         let labelsComData = [];
         let serieSistolica = [];
@@ -236,6 +269,12 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
                     return new Date(element.data).getTime() === new Date(sistolica.data).getTime();
                 })[0];
 
+                //Se a pressão sistólica e diastólica forem 0 não adiciona no gráfico.
+                if((sistolica.informacao as any).magnitude === undefined || (sistolica.informacao as any).magnitude === null || (sistolica.informacao as any).magnitude === 0 &&
+                    (diastolica.informacao as any).magnitude === undefined || (diastolica.informacao as any).magnitude === null || (diastolica.informacao as any).magnitude === 0) {
+                    continue;
+                }
+
                 //Caso o paciente não tenha valor de pressão diastolica, impossivel só ter 1 dos 2,  não monta as barras.
                 if(diastolica !== undefined) {
                     this.semDadosPressaoSuficiente = false;
@@ -252,7 +291,7 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
                     labelsComData.push(`${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()}`);
 
                     //Remove da lista para caso exista pressões repetidas.
-                    diastolicas = diastolicas.splice(diastolicas.indexOf(diastolica), 1);//TODO TESTAR ESSE SPLICE.
+                    diastolicas.splice(diastolicas.indexOf(diastolica), 1);
 
                     i++;
                     if (i > 2) {

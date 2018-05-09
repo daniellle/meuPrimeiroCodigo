@@ -6,8 +6,14 @@
             <p class="titulo-pagina text-center">
                 {{title}}
             </p>
-
-            <form novalidate [formGroup]="alterarSenhaForm">
+            <div class="container-form" *ngIf="!isHashValido">
+                <div class="row">
+                    <p class="col-md-12 mx-auto text-center">
+                        Esse link não é mais válido!
+                    </p>
+                </div>
+            </div>
+            <form novalidate [formGroup]="alterarSenhaForm" *ngIf="isHashValido">
                 <div class="container-form">
                     <div class="row">
                         <p class="col-md-11 mx-auto">

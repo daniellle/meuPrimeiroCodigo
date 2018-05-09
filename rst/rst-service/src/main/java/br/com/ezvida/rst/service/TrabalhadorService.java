@@ -12,7 +12,9 @@ import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.dao.filter.ListaPaginada;
 import br.com.ezvida.rst.dao.filter.TrabalhadorFilter;
 import br.com.ezvida.rst.dao.filter.UsuarioFilter;
+import br.com.ezvida.rst.enums.Funcionalidade;
 import br.com.ezvida.rst.enums.SimNao;
+import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.enums.TipoTelefone;
 import br.com.ezvida.rst.model.*;
 import br.com.ezvida.rst.service.excpetions.RegistroNaoEncontradoException;
@@ -205,7 +207,8 @@ public class TrabalhadorService extends BaseService {
 
 				usuario.setSenha(primeiroAcesso.getUsuario().getSenha());
 				usuario.setEmail(primeiroAcesso.getUsuario().getEmail());
-				usuarioService.alterarUsuario(usuario, null);
+
+				usuarioService.alterarUsuario(usuario, getAuditoriaNovoUsuario(usuario));
 			}
 
 			trab.setTermo(SimNao.SIM);
@@ -339,5 +342,15 @@ public class TrabalhadorService extends BaseService {
 		}
 
 		return trabalhador;
+	}
+
+	private ClienteAuditoria getAuditoriaNovoUsuario(Usuario usuario) {
+		ClienteAuditoria cliente = new ClienteAuditoria();
+		cliente.setUsuario(usuario.getLogin());
+		cliente.setDescricao("Salvando um NOVO usuario");
+		cliente.setTipoOperacao(TipoOperacaoAuditoria.ALTERACAO);
+		cliente.setNavegador("PRIMEIRO_ACESSO");
+		cliente.setFuncionalidade(Funcionalidade.USUARIOS);
+		return cliente;
 	}
 }

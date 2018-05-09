@@ -59,7 +59,7 @@ public interface UsuarioService extends Serializable {
     boolean isAdm(String cpf);
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    UsuarioDTO consultarDadosUsuario(DadosFilter dados, Usuario usuarioLogado);
+	UsuarioDTO consultarDadosUsuario(String login);
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void alterarSenhaRST(Credencial credencial);
