@@ -414,6 +414,6 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
     public void alterarSenhaRST(Credencial credencial) {
 
         // Enviar credencial para trocar senha
-        usuarioClient.alterarSenha(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), credencial);
+//        usuarioClient.alterarSenha(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), credencial);
     }
 }

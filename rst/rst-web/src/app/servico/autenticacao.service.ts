@@ -97,5 +97,16 @@ export class AutenticacaoService extends BaseService<Credencial> {
                 this.bloqueio.evento.emit(true);
             });
     }
+
+    enivarEmailHash(hash: String): Observable<any> {
+        return super.postPublic('/v1/oauth/enviar-email-hash?hash='+ hash)
+            .map((response: Response) => {
+                return response;
+            }).catch((error) => {
+                return Observable.throw(error);
+            }).finally(() => {
+                this.bloqueio.evento.emit(true);
+            });
+    }
 }
 

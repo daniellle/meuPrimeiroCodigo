@@ -88,6 +88,21 @@ public class AutenticacaoEndpoint extends SegurancaEndpoint<Token> {
             .header("Content-Version", getApplicationVersion()).type(MediaType.TEXT_HTML).build();
     }
 
+    @POST
+    @Encoded
+    @Path("/enviar-email-hash")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response reenviarEmailHash(@Encoded @QueryParam("hash") String hash) {
+        LOGGER.debug("Reenviando e email para recuperacao de senha", hash);
+        getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
+
+        service.reenviarEmailHash(hash);
+
+        return Response.status(HttpServletResponse.SC_OK)
+            .entity(getMensagem("app_rst_autenticacao_email_enviado"))
+            .header("Content-Version", getApplicationVersion()).type(MediaType.TEXT_HTML).build();
+    }
+
 	@POST
 	@Encoded
 	@Path("/sistema/autorizar/{login}")

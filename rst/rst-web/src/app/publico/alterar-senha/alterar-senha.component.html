@@ -9,7 +9,7 @@
             <div class="container-form" *ngIf="!isHashValido">
                 <div class="row">
                     <p class="col-md-12 mx-auto text-center">
-                        Esse link não é mais válido!
+                        <button type="button " class="btn btn-secondary" (click)="enviarEmailHash()">Clique aqui para receber um novo link em seu e-mail</button>
                     </p>
                 </div>
             </div>

@@ -1,5 +1,14 @@
 # rst-cadastros
 
+
+**v2.8.0**
+
+============
+
+**Novidades**
+	Mundaça no tratamento ao clicar em um link expirado para cadastro de senha
+
+
 **v2.7.0**
 
 ============
