@@ -1,4 +1,4 @@
-import { environment } from './../../../../../environments/environment.prod';
+import { environment } from './../../../../../environments/environment';
 import { UsuarioPerfilSistema } from './../../../../modelo/usuario-perfil-sistema.model';
 import { Usuario } from './../../../../modelo/usuario.model';
 import { UsuarioService } from './../../../../servico/usuario.service';

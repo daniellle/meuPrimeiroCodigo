@@ -1,5 +1,31 @@
 # rst-cadastros
 
+**v2.11.0**
+
+============
+
+(RELEASE EM 24/05/2018)
+
+**Novidades**
+
+	Inclusão da página Minha Conta 
+	Atualização do termo de uso
+	Atualização do Sincato com dados do SIGA
+
+------------
+**Melhorias**
+	
+	Sincronização dos dados do Usuário com o Trabalhador
+	Validação do e-mail do Usuário com perfil diferente de Trabalhador na tela de Primeiro Acesso
+
+------------
+
+**Correções**
+	
+	Exibir idade do trabalhador de acordo com os dados da última ficha na tela de Minha Saúde
+
+------------
+
 **v2.7.0**
 
 ============

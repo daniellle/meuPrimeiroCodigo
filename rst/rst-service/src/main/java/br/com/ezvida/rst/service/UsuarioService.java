@@ -1,19 +1,18 @@
 package br.com.ezvida.rst.service;
 
-import java.io.Serializable;
-import java.util.Map;
-
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-
-import br.com.ezvida.girst.apiclient.model.Credencial;
 import br.com.ezvida.girst.apiclient.model.ListaPaginada;
 import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.enums.Ambiente;
+import br.com.ezvida.rst.model.Trabalhador;
 import br.com.ezvida.rst.model.Usuario;
 import br.com.ezvida.rst.model.UsuarioGirstView;
 import br.com.ezvida.rst.model.dto.UsuarioDTO;
+
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import java.io.Serializable;
+import java.util.Map;
 
 public interface UsuarioService extends Serializable {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -44,7 +43,10 @@ public interface UsuarioService extends Serializable {
             br.com.ezvida.girst.apiclient.model.Usuario usuario, ClienteAuditoria auditoria);
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    br.com.ezvida.girst.apiclient.model.Usuario alterarPerfil(br.com.ezvida.girst.apiclient.model.Usuario usuario, ClienteAuditoria auditoria);
+    br.com.ezvida.girst.apiclient.model.Usuario sicronizarTrabalhadorUsuario(Trabalhador trabalhador, ClienteAuditoria auditoria);
+
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    br.com.ezvida.girst.apiclient.model.Usuario alterarPerfilSenha(Map<String, Object> propriedades, ClienteAuditoria auditoria);
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     br.com.ezvida.girst.apiclient.model.Usuario desativarUsuario(String id, ClienteAuditoria auditoria);
@@ -59,8 +61,5 @@ public interface UsuarioService extends Serializable {
     boolean isAdm(String cpf);
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	UsuarioDTO consultarDadosUsuario(String login);
-
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public void alterarSenhaRST(Credencial credencial);
+    UsuarioDTO consultarDadosUsuario(String login);
 }

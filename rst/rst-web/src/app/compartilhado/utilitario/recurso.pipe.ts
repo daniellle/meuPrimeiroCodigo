@@ -423,7 +423,7 @@ export const MensagemProperties = {
   // Usuario
   app_rst_usuario_title_pesquisar: 'Pesquisar Usuário',
   app_rst_usuario_title_cadastrar: 'Cadastro do Usuário',
-  app_rst_usuario_title_perfil: 'Meu Perfil',
+  app_rst_usuario_title_minha_conta: 'Minha Conta',
   app_rst_usuario_title_associar_perfil: 'Associar Perfil',
 
   app_rst_usuario_validacao_selecione_sistema_perfil: 'Selecione um sistema e seus perfis',
@@ -590,8 +590,7 @@ export const MensagemProperties = {
   senha_atual: 'Digite sua Senha Atual',
   nova_senha: 'Digite a sua Nova Senha',
   confirme_sua_nova_senha: 'Confirme a sua Nova Senha',
-  trocar_senha: 'Trocar Senha',
-  gerenciar_perfil: 'Gerenciar Perfil',
+  minha_conta: 'Minha Conta',
 };
 
 @Pipe({

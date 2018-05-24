@@ -25,7 +25,8 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
     DADOS_BASICOS = [
         'PESO',
         'ALTURA',
-        'IMC'
+        'IMC',
+        'IDADE'
     ];
 
     encontrosTimeline: any = null;
@@ -177,13 +178,14 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
                 peso: result[0],
                 altura: result[1],
                 imc: result[2],
-                sistolica: result[3],
-                diastolica: result[4],
-                circunferenciaAbdominal: result[5],
-                encontrosMedicos: result[6],
-                paciente: result[7],
-                alergias: result[8],
-                medicamentos: result[9],
+                idade: result[3],
+                sistolica: result[4],
+                diastolica: result[5],
+                circunferenciaAbdominal: result[6],
+                encontrosMedicos: result[7],
+                paciente: result[8],
+                alergias: result[9],
+                medicamentos: result[10],
                 vacinas: listaVacinas
             });
         }, (error) => {

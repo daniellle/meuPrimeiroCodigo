@@ -170,7 +170,7 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
 			boolean cnpj, boolean razaoSocial, boolean depRegional, boolean status) {
 		if (segurancaFilter != null) {
 			if ((cnpj || razaoSocial || depRegional || status)
-					&& (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa())) {
+					&& (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()) && !segurancaFilter.isAdministrador()) {
 				jpql.append(" and ");
 				montarFiltroIdsPaginado(jpql, parametros, segurancaFilter);
 			}
@@ -262,10 +262,10 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
 			jpql.append("left join fetch endereco.municipio municipio ");
 		}
 
-		if (segurancaFilter != null && (segurancaFilter.temIdsTrabalhador() || segurancaFilter.temIdsEmpresa())) {
+		if (segurancaFilter != null && (segurancaFilter.temIdsTrabalhador() || segurancaFilter.temIdsEmpresa()) && !segurancaFilter.isAdministrador()) {
 			jpql.append("left join empresaUat.empresa empresa ");
 
-			if (segurancaFilter.temIdsTrabalhador()) {
+			if (segurancaFilter.temIdsTrabalhador() && !segurancaFilter.isAdministrador()) {
 				jpql.append("left join empresa.empresaTrabalhadores empresaTrabalhador ");
 				jpql.append("left join empresaTrabalhador.trabalhador trabalhador ");
 			}

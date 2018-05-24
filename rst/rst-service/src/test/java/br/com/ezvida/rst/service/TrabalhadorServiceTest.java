@@ -54,6 +54,9 @@ public class TrabalhadorServiceTest extends BaseService {
 
 	@Mock
 	private EnderecoTrabalhadorService enderecoTrabalhadorService;
+
+	@Mock
+	private UsuarioService usuarioService;
 	
 	private ClienteAuditoria auditoria = new ClienteAuditoria();
 

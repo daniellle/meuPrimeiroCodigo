@@ -12,10 +12,7 @@ import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.dao.filter.ListaPaginada;
 import br.com.ezvida.rst.dao.filter.TrabalhadorFilter;
 import br.com.ezvida.rst.dao.filter.UsuarioFilter;
-import br.com.ezvida.rst.enums.Funcionalidade;
-import br.com.ezvida.rst.enums.SimNao;
-import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
-import br.com.ezvida.rst.enums.TipoTelefone;
+import br.com.ezvida.rst.enums.*;
 import br.com.ezvida.rst.model.*;
 import br.com.ezvida.rst.service.excpetions.RegistroNaoEncontradoException;
 import br.com.ezvida.rst.utils.ValidadorUtils;
@@ -33,6 +30,7 @@ import javax.inject.Inject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Stream;
 
 @Stateless
 public class TrabalhadorService extends BaseService {
@@ -165,8 +163,43 @@ public class TrabalhadorService extends BaseService {
 		emailTrabalhadorService.salvar(trabalhador.getListaEmailTrabalhador(), trabalhador);
 		telefoneTrabalhadorService.salvar(trabalhador.getListaTelefoneTrabalhador(), trabalhador);
 		enderecoTrabalhadorService.salvar(trabalhador.getListaEnderecoTrabalhador(), trabalhador);
+		usuarioService.sicronizarTrabalhadorUsuario(trabalhador, auditoria);
 		LogAuditoria.registrar(LOGGER, auditoria, descricaoAuditoria, trabalhador);
 		return trabalhador;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Trabalhador sicronizarUsuarioTrabalhador(br.com.ezvida.girst.apiclient.model.Usuario usuario, ClienteAuditoria auditoria) {
+		Trabalhador trabalhador = pesquisarPorCPF(usuario.getLogin());
+		trabalhador.setNome(usuario.getNome());
+		trabalhadorDAO.salvar(trabalhador);
+		emailTrabalhadorService.salvar(incluirEmailTrabalhador(usuario, trabalhador), trabalhador);
+		return trabalhador;
+	}
+
+	private Set<EmailTrabalhador> incluirEmailTrabalhador(Usuario usuario, Trabalhador trabalhador) {
+		Set<EmailTrabalhador> listaEmail = trabalhador.getListaEmailTrabalhador();
+		listaEmail.parallelStream().forEach(e -> e.getEmail().setNotificacao(SimNao.NAO));
+
+		Optional<EmailTrabalhador> optEmail = listaEmail.parallelStream().filter(e -> e.getEmail().getDescricao().equalsIgnoreCase(usuario.getEmail())).findFirst();
+		if (optEmail.isPresent()) {
+			listaEmail.remove(optEmail.get());
+			optEmail.get().getEmail().setDescricao(usuario.getEmail());
+			optEmail.get().getEmail().setNotificacao(SimNao.SIM);
+			listaEmail.add(optEmail.get());
+		} else {
+			Email email = new Email();
+			email.setNotificacao(SimNao.SIM);
+			email.setDescricao(usuario.getEmail());
+			email.setTipo(TipoEmail.TRABALHO);
+			EmailTrabalhador emailTrabalhador = new EmailTrabalhador();
+			emailTrabalhador.setTrabalhador(trabalhador);
+			emailTrabalhador.setEmail(email);
+
+			listaEmail.add(emailTrabalhador);
+		}
+
+		return listaEmail;
 	}
 
 	private Usuario buscarTrabalhadorJaCadastrado(String login) {
@@ -205,7 +238,8 @@ public class TrabalhadorService extends BaseService {
 					usuario.getPerfisSistema().add(primeiroAcesso.getUsuario().getPerfisSistema().iterator().next());
 				}
 
-				usuario.setSenha(primeiroAcesso.getUsuario().getSenha());
+                validarEmailPrimeiroAcesso(primeiroAcesso, usuario);
+                usuario.setSenha(primeiroAcesso.getUsuario().getSenha());
 				usuario.setEmail(primeiroAcesso.getUsuario().getEmail());
 
 				usuarioService.alterarUsuario(usuario, getAuditoriaNovoUsuario(usuario));
@@ -297,6 +331,18 @@ public class TrabalhadorService extends BaseService {
 					getMensagem("app_rst_data_maior_que_atual", getMensagem("app_rst_label_data_nascimento")));
 		}
 	}
+
+    private void validarEmailPrimeiroAcesso(PrimeiroAcesso primeiroAcesso, Usuario usuario) {
+        String emailInformado = primeiroAcesso.getUsuario().getEmail();
+        String emailCadastrado = usuario.getEmail();
+        if (emailInformado == null || emailCadastrado == null) {
+            throw new BusinessErrorException(getMensagem("app_rst_validacao_error", emailCadastrado, emailInformado));
+        }
+        if (!emailInformado.equalsIgnoreCase(emailCadastrado)) {
+            throw new BusinessErrorException(
+                    getMensagem("app_rst_email_invalido", getMensagem("app_rst_label_email")));
+        }
+    }
 
 	private String adicionarMascaraCpf(String cpf) {
 		StringBuilder sBuilder = new StringBuilder(cpf);

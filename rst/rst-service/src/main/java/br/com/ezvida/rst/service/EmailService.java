@@ -31,11 +31,13 @@ public class EmailService extends BaseService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void salvar(Email email) {
 		LOGGER.debug("Salvando Email...");
-		validar(email);
-		if (email.getNotificacao() == null) {
-			email.setNotificacao(SimNao.NAO);
+		if (email != null) {
+			validar(email);
+			if (email.getNotificacao() == null) {
+				email.setNotificacao(SimNao.NAO);
+			}
+			emailDAO.salvar(email);
 		}
-		emailDAO.salvar(email);
 	}
 
 	private void validar(Email email) {

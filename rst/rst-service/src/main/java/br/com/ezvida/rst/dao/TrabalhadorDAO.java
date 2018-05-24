@@ -55,12 +55,12 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 
 	private void filtroIdsPesquisarPorId(DadosFilter segurancaFilter, Long id, StringBuilder jpql,
 			Map<String, Object> parametros) {
-		if (segurancaFilter.temIdsEmpresa()) {
+		if (segurancaFilter.temIdsEmpresa() && !segurancaFilter.isAdministrador()) {
 			jpql.append(" and empresa.id IN (:idsEmpresa) ");
 			parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
 		}
 
-		if (segurancaFilter.temIdsDepRegional()) {
+		if (segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
 			if (id != null || segurancaFilter.temIdsEmpresa()) {
 				jpql.append(" and ");
 			}
@@ -69,7 +69,7 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
 		}
 
-		if (segurancaFilter.temIdsTrabalhador()) {
+		if (segurancaFilter.temIdsTrabalhador() && !segurancaFilter.isAdministrador()) {
 			if (id != null || segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()) {
 				jpql.append(" and ");
 			}
@@ -86,12 +86,12 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 		jpql.append(" left join fetch m.estado e ");
 
 		if (segurancaFilter != null) {
-			if (segurancaFilter.temIdsEmpresa() || segurancaFilter.temIdsDepRegional()) {
+			if (segurancaFilter.temIdsEmpresa() || segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
 				jpql.append(" left join trabalhador.listaEmpresaTrabalhador listaEmpresaTrabalhador ");
 				jpql.append(" left join listaEmpresaTrabalhador.empresa empresa ");
 			}
 
-			if (segurancaFilter.temIdsDepRegional()) {
+			if (segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
 				jpql.append(" left join empresa.empresaUats empresaUats ");
 				jpql.append(" left join empresaUats.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador ");
 				jpql.append(" left join unidadeAtendimentoTrabalhador.departamentoRegional depRegional ");
@@ -199,7 +199,7 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 
 	private void addFiltroIds(StringBuilder jpql, Map<String, Object> parametros, DadosFilter segurancaFilter,
 			boolean hasFilters) {
-		if (segurancaFilter.temIdsEmpresa()) {
+		if (segurancaFilter.temIdsEmpresa() && !segurancaFilter.isAdministrador()) {
 			if (hasFilters) {
 				jpql.append(" and ");
 			}
@@ -208,7 +208,7 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 			parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
 		}
 
-		if (segurancaFilter.temIdsDepRegional()) {
+		if (segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
 			if (hasFilters || segurancaFilter.temIdsEmpresa()) {
 				jpql.append(" and ");
 			}
@@ -217,7 +217,7 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
 		}
 
-		if (segurancaFilter.temIdsTrabalhador()) {
+		if (segurancaFilter.temIdsTrabalhador() && !segurancaFilter.isAdministrador()) {
 			if (hasFilters || segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()) {
 				jpql.append(" and ");
 			}
@@ -288,12 +288,12 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 		}
 
 		if (segurancaFilter != null) {
-			if (segurancaFilter.temIdsEmpresa() || segurancaFilter.temIdsDepRegional()) {
+			if (segurancaFilter.temIdsEmpresa() || segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
 				jpql.append(" inner join trabalhador.listaEmpresaTrabalhador listaEmpresaTrabalhador ");
 				jpql.append(" inner join listaEmpresaTrabalhador.empresa empresa ");
 			}
 
-			if (segurancaFilter.temIdsDepRegional()) {
+			if (segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
 				jpql.append(" inner join empresa.empresaUats empresaUats ");
 				jpql.append(" inner join empresaUats.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador ");
 				jpql.append(" inner join unidadeAtendimentoTrabalhador.departamentoRegional depRegional ");

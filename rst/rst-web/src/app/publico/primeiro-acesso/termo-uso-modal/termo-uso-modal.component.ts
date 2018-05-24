@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { EmailTrabalhador } from 'app/modelo/email-trabalhador.model';
 import { Parametro } from './../../../modelo/parametro.model';
 import { ParametroService } from './../../../servico/parametro.service';
-import { environment } from './../../../../environments/environment.prod';
+import { environment } from './../../../../environments/environment';
 import { TrabalhadorService } from 'app/servico/trabalhador.service';
 import { PrimeiroAcesso } from './../../../modelo/primeiro-acesso.model';
 import { Trabalhador } from './../../../modelo/trabalhador.model';

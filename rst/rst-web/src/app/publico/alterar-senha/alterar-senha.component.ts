@@ -109,12 +109,24 @@ export class AlterarSenhaComponent extends BaseComponent implements OnInit {
     return '(?=^.{8,}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$';
   }
 
-  validarHash(): void {
-    this.autenticacaoService.validarHash(this.hash)
-        .subscribe((retorno: any) => {
-            this.isHashValido = true;
-        }, (error) => {
-            this.isHashValido = false;
-        });
+    validarHash(): void {
+        this.autenticacaoService.validarHash(this.hash)
+            .subscribe((retorno: any) => {
+                this.isHashValido = true;
+            }, (error) => {
+                this.mensagemError(error);
+                this.isHashValido = false;
+            });
+    }
+
+  enviarEmailHash(): void{
+      this.autenticacaoService.enivarEmailHash(this.hash)
+          .subscribe((retorno: any) => {
+              this.mensagemSucesso(retorno);
+              window.location.href = environment.url_portal;
+          }, (error) => {
+              this.mensagemError(error);
+              window.location.href = environment.url_portal;
+          });
   }
 }

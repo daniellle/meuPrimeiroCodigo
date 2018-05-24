@@ -45,7 +45,7 @@ public class LinhaService extends BaseService {
 	public List<Linha> listarTodos(LinhaFilter linhaFilter, ClienteAuditoria auditoria, DadosFilter dadosFilter) {
 		LOGGER.debug("Listando todas as Linha");
 		
-		if (dadosFilter.isTrabalhador()) {
+		if (dadosFilter.isTrabalhador() && !dadosFilter.isAdministrador()) {
 			Set<EmpresaTrabalhador> empresas = empresaTrabalhadorService.pesquisarPorTrabalhadorCpf(auditoria.getUsuario());
 			
 			

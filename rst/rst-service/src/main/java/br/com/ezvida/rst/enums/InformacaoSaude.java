@@ -90,7 +90,13 @@ public enum InformacaoSaude {
             "DV_QUANTITY",
             ".*/data\\[id3(\\.\\d+)*\\]\\/events\\[id4(\\.\\d+)*\\]\\/data\\[id2(\\.\\d+)*\\]\\/items\\[id0.3(\\.\\d+)*\\]",
             "(openEHR-EHR-OBSERVATION).ovl-(?:\\w+)-(body_weight)[^\\w\\ ](.*)",
-            "Circunferência abdominal"),;
+            "Circunferência abdominal"),
+    IDADE("openEHR-EHR-ADMIN_ENTRY.admission_SESI-BR.v1.0.0",
+            "/data[id2]/items[id0.43]/items[id0.62]",
+            "DV_TEXT",
+            ".*/data\\[id2(\\.\\d+)*\\]\\/events\\[id3(\\.\\d+)*\\]\\/data\\[id4(\\.\\d+)*\\]\\/items\\[id5(\\.\\d+)*\\]",
+            "(openEHR-EHR-OBSERVATION-ADMIN_ENTRY).ovl-(?:\\w+)-(admission)[^\\w\\ ](.*)",
+            "Idade");
 
     private String idArquetipo;
     private String pathDado;

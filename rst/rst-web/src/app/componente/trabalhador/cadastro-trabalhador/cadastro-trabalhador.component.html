@@ -17,7 +17,7 @@
                             <span id="semvidaAtiva" class="col-quebra-palavra" style="color:red">{{ vidaAtiva }}</span>
                          </div>
                     </div>
-            </div>            
+            </div>
         </div>
         <div class="corpo-card">
             <div class="row">
@@ -406,7 +406,7 @@
     </div>
 </div>
 
-<div class="container-form">
+<div class="container-form" [ngClass]="{ divDis : modoConsulta}">
     <form [formGroup]="trabalhadorForm">
         <div class="container-subtitulo">
             <p>{{'app_rst_labels_vacinas_alergias_medicamentos_auto_declarados' | recurso}}</p>

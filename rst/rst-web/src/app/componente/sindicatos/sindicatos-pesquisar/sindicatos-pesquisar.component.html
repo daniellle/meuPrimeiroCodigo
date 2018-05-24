@@ -37,7 +37,7 @@
 </div>
 <div class="btn-rodape-acoes space-up">
     <button type="button" class="btn btn-primary" (click)="pesquisar()"> {{'app_rst_btn_pesquisar' | recurso}}</button>
-    <button type="button" class="btn btn-primary" (click)="incluir()" *ngIf="!modoConsulta && hasPermissaoCadastro()"> {{'app_rst_btn_novo' | recurso}}</button>
+    <!-- <button type="button" class="btn btn-primary" (click)="incluir()" *ngIf="!modoConsulta && hasPermissaoCadastro()"> {{'app_rst_btn_novo' | recurso}}</button> -->
 </div>
 <div class="container-form space-up" *ngIf="isNotEmpty(sindicatos)">
     <div class="grid-pesquisa">

@@ -298,7 +298,7 @@ public class ProdutoServicoDAO extends BaseDAO<ProdutoServico, Long> {
 
 		StringBuilder jpql = new StringBuilder();
 		Map<String, Object> parametros = Maps.newHashMap();
-		boolean temWhere = segurancaFilter != null && (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador());
+		boolean temWhere = segurancaFilter != null && (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador()) && !segurancaFilter.isAdministrador();
 		
 		jpql.append("select DISTINCT produtoServico from ProdutoServico produtoServico ");
 		montarJoinPesquisarSemPaginacao(segurancaFilter, jpql);
@@ -318,12 +318,12 @@ public class ProdutoServicoDAO extends BaseDAO<ProdutoServico, Long> {
 	}
 
 	private void filtroDepEmpIds(DadosFilter segurancaFilter, StringBuilder jpql, Map<String, Object> parametros) {
-		if (segurancaFilter != null && segurancaFilter.temIdsDepRegional()) {
+		if (segurancaFilter != null && segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
 			jpql.append(" departamentoRegional.id IN (:idsDepRegional) ");
 			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
 		}
 		
-		if (segurancaFilter != null &&  (segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador())) {
+		if (segurancaFilter != null &&  (segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador()) && !segurancaFilter.isAdministrador()) {
 			if (segurancaFilter.temIdsDepRegional()) {
 				jpql.append(" and ");
 			}
@@ -334,12 +334,12 @@ public class ProdutoServicoDAO extends BaseDAO<ProdutoServico, Long> {
 
 	private void montarJoinPesquisarSemPaginacao(DadosFilter segurancaFilter, StringBuilder jpql) {
 		jpql.append(" inner join fetch produtoServico.linha linha ");
-		if (segurancaFilter != null && (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador())) {
+		if (segurancaFilter != null && (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador()) && !segurancaFilter.isAdministrador()) {
 			jpql.append(" inner join produtoServico.departamentoRegionalProdutoServicos departamentoRegionalProdutoServicos");
 			jpql.append(" inner join departamentoRegionalProdutoServicos.departamentoRegional departamentoRegional");
 		}
 		
-		if (segurancaFilter != null && (segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador())) {
+		if (segurancaFilter != null && (segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador()) && !segurancaFilter.isAdministrador()) {
 			jpql.append(" inner join departamentoRegional.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador");
 			jpql.append(" inner join unidadeAtendimentoTrabalhador.empresaUats empresaUats");
 			jpql.append(" inner join empresaUats.empresa empresa");

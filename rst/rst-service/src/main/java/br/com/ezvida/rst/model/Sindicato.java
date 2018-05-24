@@ -39,6 +39,42 @@ public class Sindicato extends AbstractData {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQUENCE_SINDICATO")
 	@SequenceGenerator(name = "SEQUENCE_SINDICATO", sequenceName = "SEQ_SINDICATO_ID_SINDICATO", allocationSize = 1)
 	private Long id;
+	
+	@Column(name = "cd_siga")
+	private int cd_siga;	
+	
+	@Column(name = "federacao")
+	private String federacao;	
+	
+	@Column(name = "sigla")
+	private String sigla;	
+	
+	@Column(name = "filiado")
+	private String filiado;	
+	
+	@Column(name = "sede_sindicato_nacional")
+	private String sede_sindicato_nacional;		
+	
+	@Column(name = "sexo")
+	private String sexo;	
+	
+	@Column(name = "nome_presidente")
+	private String nome_presidente;		
+	
+	@Column(name = "tipo_abrangencia")
+	private int tipo_abrangencia;	
+	
+	@Column(name = "home_page")
+	private String home_page;	
+	
+	@Column(name = "nm_contato")
+	private String nm_contato;	
+	
+	@Column(name = "area_contato")
+	private String area_contato;	
+	
+	@Column(name = "dt_fundacao")
+	private Date dt_fundacao;	
 
 	@Column(name = "NO_CNPJ")
 	private String cnpj;
@@ -110,6 +146,30 @@ public class Sindicato extends AbstractData {
 
 	public Long getId() {
 		return id;
+	}
+
+	public String getSede_sindicato_nacional() {
+		return sede_sindicato_nacional;
+	}
+
+	public void setSede_sindicato_nacional(String sede_sindicato_nacional) {
+		this.sede_sindicato_nacional = sede_sindicato_nacional;
+	}
+
+	public String getNome_presidente() {
+		return nome_presidente;
+	}
+
+	public void setNome_presidente(String nome_presidente) {
+		this.nome_presidente = nome_presidente;
+	}
+
+	public Date getDt_fundacao() {
+		return dt_fundacao;
+	}
+
+	public void setDt_fundacao(Date dt_fundacao) {
+		this.dt_fundacao = dt_fundacao;
 	}
 
 	public String getCnpj() {
@@ -212,6 +272,78 @@ public class Sindicato extends AbstractData {
 		this.telefone = telefone;
 	}
 
+	public int getCd_siga() {
+		return cd_siga;
+	}
+
+	public void setCd_siga(int cd_siga) {
+		this.cd_siga = cd_siga;
+	}
+
+	public String getFederacao() {
+		return federacao;
+	}
+
+	public void setFederacao(String federacao) {
+		this.federacao = federacao;
+	}
+
+	public String getSigla() {
+		return sigla;
+	}
+
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
+	}
+
+	public String getFiliado() {
+		return filiado;
+	}
+
+	public void setFiliado(String filiado) {
+		this.filiado = filiado;
+	}
+
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
+	public int getTipo_abrangencia() {
+		return tipo_abrangencia;
+	}
+
+	public void setTipo_abrangencia(int tipo_abrangencia) {
+		this.tipo_abrangencia = tipo_abrangencia;
+	}
+
+	public String getHome_page() {
+		return home_page;
+	}
+
+	public void setHome_page(String home_page) {
+		this.home_page = home_page;
+	}
+
+	public String getNm_contato() {
+		return nm_contato;
+	}
+
+	public void setNm_contato(String nm_contato) {
+		this.nm_contato = nm_contato;
+	}
+
+	public String getArea_contato() {
+		return area_contato;
+	}
+
+	public void setArea_contato(String area_contato) {
+		this.area_contato = area_contato;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

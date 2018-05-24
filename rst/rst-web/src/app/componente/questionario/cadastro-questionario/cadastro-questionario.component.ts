@@ -5,7 +5,7 @@ import { TipoQuestionario } from './../../../modelo/tipo-questionario.model';
 import { Periodicidade } from './../../../modelo/enum/periodicidade.model';
 import { PerguntaQuestionario } from './../../../modelo/pergunta-questionario.model';
 import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
-import { environment } from './../../../../environments/environment.prod';
+import { environment } from './../../../../environments/environment';
 import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
 import { Seguranca } from './../../../compartilhado/utilitario/seguranca.model';
 import { ToastyService } from 'ng2-toasty';

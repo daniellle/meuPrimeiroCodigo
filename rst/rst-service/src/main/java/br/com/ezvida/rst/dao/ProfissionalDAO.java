@@ -119,7 +119,7 @@ public class ProfissionalDAO extends BaseDAO<Profissional, Long> {
 	private void montarFiltroDepRegional(StringBuilder jpql, Map<String, Object> parametros,
 			DadosFilter segurancaFilter, boolean cpf, boolean registro, boolean nome, boolean status) {
 		if (segurancaFilter != null) {
-			if ((cpf || registro || nome || status) && (segurancaFilter.temIdsDepRegional())) {
+			if ((cpf || registro || nome || status) && (segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador())) {
 				jpql.append(" and ");
 				jpql.append("  uat.departamentoRegional.id IN (:idsDepRegional) ");
 				parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
@@ -175,7 +175,7 @@ public class ProfissionalDAO extends BaseDAO<Profissional, Long> {
 			jpql.append(" select DISTINCT p from Profissional p ");
 		}
 
-		if (segurancaFilter != null && segurancaFilter.temIdsDepRegional()) {
+		if (segurancaFilter != null && segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
 			jpql.append(" left join p.listaUnidadeAtendimentoTrabalhadorProfissional profissionalUat ");
 			jpql.append(" left join profissionalUat.unidadeAtendimentoTrabalhador uat ");
 		}

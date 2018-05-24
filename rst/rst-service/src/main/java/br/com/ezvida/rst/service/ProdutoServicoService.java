@@ -106,7 +106,7 @@ public class ProdutoServicoService extends BaseService {
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<ProdutoServico> pesquisarSemPaginacao(ClienteAuditoria auditoria, DadosFilter dadosFilter) {
 		
-		if (dadosFilter.isTrabalhador()) {
+		if (dadosFilter.isTrabalhador() && !dadosFilter.isAdministrador()) {
 			Set<EmpresaTrabalhador> empresas = empresaTrabalhadorService.pesquisarPorTrabalhadorCpf(auditoria.getUsuario());
 			
 			

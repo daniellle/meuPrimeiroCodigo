@@ -67,35 +67,35 @@ public class LinhaDAO extends BaseDAO<Linha, Long> {
 
 	private void montarFiltroPesquisarTodos(DadosFilter segurancaFilter, Map<String, Object> parametros,
 			StringBuilder jpql) {
-		if (segurancaFilter.temIdsDepRegional()) {
+		if (segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
 			jpql.append(" departamentoRegional.id IN (:idsDepRegional) ");
 			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
 		}
 		
-		if (segurancaFilter.temIdsDepRegional() && (segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador())) {
+		if (segurancaFilter.temIdsDepRegional() && (segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador()) && !segurancaFilter.isAdministrador()) {
 			jpql.append(" and ");
 		}
 		
-		if (segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador()) {
+		if (segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador() && !segurancaFilter.isAdministrador()) {
 			jpql.append(" empresa.id IN (:idsEmpresa) ");
 			parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
 		}
 	}
 
 	private void montarJoinPesquisarTodos(DadosFilter segurancaFilter, StringBuilder jpql) {
-		if (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador()) {
+		if (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador() && !segurancaFilter.isAdministrador()) {
 			jpql.append(" inner join fetch linha.produtosServicos produtoServico ");
 			jpql.append(" inner join produtoServico.departamentoRegionalProdutoServicos departamentoRegionalProdutoServicos");
 			jpql.append(" inner join departamentoRegionalProdutoServicos.departamentoRegional departamentoRegional");
 		}
 		
-		if (segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador()) {
+		if (segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador() && !segurancaFilter.isAdministrador()) {
 			jpql.append(" inner join departamentoRegional.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador");
 			jpql.append(" inner join unidadeAtendimentoTrabalhador.empresaUats empresaUats");
 			jpql.append(" inner join empresaUats.empresa empresa");
 		}
 		
-		if (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador()) {
+		if (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador() && !segurancaFilter.isAdministrador()) {
 			jpql.append("  where ");
 		}
 	}

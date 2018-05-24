@@ -8,6 +8,8 @@ import { BloqueioService } from './bloqueio.service';
 import { Credencial } from '../modelo/credencial.model';
 import { environment } from '../../environments/environment';
 import { Seguranca } from '../compartilhado/utilitario/seguranca.model';
+import {MensagemErro} from "../modelo/mensagem-erro.model";
+import {Usuario} from "../modelo/usuario.model";
 
 @Injectable()
 export class AutenticacaoService extends BaseService<Credencial> {
@@ -74,21 +76,32 @@ export class AutenticacaoService extends BaseService<Credencial> {
 			});
 	}
 
-	alterarSenhaRST(senha_antiga: String, senha_nova: String): Observable<String> {
-		//var data = [senha_antiga, senha_nova];
-		const propriedades = { senha_antiga: senha_antiga, senha_nova: senha_nova };
-		return super.post('/v1/usuarios/trocarsenha', propriedades)
-			.map((response: Response) => {
-				return response;
-			}).catch((error) => {
-				return Observable.throw(error);
-			}).finally(() => {
-				this.bloqueio.evento.emit(true);
-			});
-	}
+    salvarPerfil(usuario: Usuario, senhaAntiga: String, senhaNova: String): Observable<Usuario> {
+        this.bloqueioService.evento.emit(false);
+        const propriedades = { usuario: usuario, senhaAntiga: senhaAntiga, senhaNova: senhaNova };
+        return super.put('/v1/usuarios/perfil', propriedades)
+            .map((response: Response) => {
+                return response;
+            }).catch((error: HttpResponse<MensagemErro>) => {
+                return Observable.throw(error);
+            }).finally(() => {
+                this.bloqueioService.evento.emit(true);
+            });
+    }
 
     validarHash(hash: String): Observable<any> {
         return super.postPublic('/v1/oauth/validarhash?hash='+ hash)
+            .map((response: Response) => {
+                return response;
+            }).catch((error) => {
+                return Observable.throw(error);
+            }).finally(() => {
+                this.bloqueio.evento.emit(true);
+            });
+    }
+
+    enivarEmailHash(hash: String): Observable<any> {
+        return super.postPublic('/v1/oauth/enviar-email-hash?hash='+ hash)
             .map((response: Response) => {
                 return response;
             }).catch((error) => {

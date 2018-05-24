@@ -29,7 +29,7 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
     ];
 
     hoje = new Date();
-    idade: number;
+    idade: any;
 
     sistolica: DadoBasico;
     diastolica: DadoBasico;
@@ -68,7 +68,6 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
 
     tratarDadosBasicos(dados) {
         if ( dados.paciente ) {
-            this.idade = this.calculaIdade(new Date(dados.paciente.birthDate));
             this.paciente = dados.paciente;
         }
 
@@ -85,6 +84,10 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
             this.imc = new DadoBasico({magnitude: dados.imc.value.magnitude as number, units: dados.imc.value.units});
         }
 
+        if ( dados.idade ) {
+            this.idade = dados.idade.value.value
+        }
+
         if ( dados.peso ) {
             this.peso = new DadoBasico({
                 magnitude: dados.peso.value.magnitude as number,
@@ -93,15 +96,6 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
         }
 
         this.criarGraficoDePressao(dados.sistolica || [], dados.diastolica || []);
-    }
-
-    calculaIdade(dataNascimento: Date): number {
-        if ( dataNascimento == null || isNaN(dataNascimento.getTime()) ) {
-            return null;
-        }
-        return Math.floor((Math.abs(Date.now() -
-                                    moment(dataNascimento, 'YYYY-MM-DDTHH:mm:ss.Z')
-                                        .toDate().getTime()) / (1000 * 3600 * 24)) / 365);
     }
 
     private ordenarArrayDeCircunferenciaAbdominal(collection: Array<{ data: string, informacao: Path }>) {

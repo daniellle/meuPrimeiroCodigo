@@ -1,9 +1,7 @@
 package br.com.ezvida.rst.service;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
@@ -11,6 +9,10 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import br.com.ezvida.girst.apiclient.model.*;
+import br.com.ezvida.rst.enums.SimNao;
+import br.com.ezvida.rst.model.*;
+import br.com.ezvida.rst.model.Usuario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,10 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import br.com.ezvida.girst.apiclient.client.UsuarioClient;
-import br.com.ezvida.girst.apiclient.model.Credencial;
-import br.com.ezvida.girst.apiclient.model.ListaPaginada;
-import br.com.ezvida.girst.apiclient.model.Perfil;
-import br.com.ezvida.girst.apiclient.model.UsuarioPerfilSistema;
 import br.com.ezvida.girst.apiclient.model.filter.UsuarioFilter;
 import br.com.ezvida.rst.anotacoes.Prod;
 import br.com.ezvida.rst.auditoria.logger.LogAuditoria;
@@ -29,11 +27,6 @@ import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.UsuarioGirstViewDAO;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.enums.Ambiente;
-import br.com.ezvida.rst.model.DepartamentoRegional;
-import br.com.ezvida.rst.model.Trabalhador;
-import br.com.ezvida.rst.model.Usuario;
-import br.com.ezvida.rst.model.UsuarioEntidade;
-import br.com.ezvida.rst.model.UsuarioGirstView;
 import br.com.ezvida.rst.model.dto.UsuarioDTO;
 import br.com.ezvida.rst.service.excpetions.RegistroNaoEncontradoException;
 import fw.core.common.util.ResourceUtil;
@@ -289,6 +282,7 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
         try {
             u = this.usuarioClient.alterar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), usuario);
+            trabalhadorService.sicronizarUsuarioTrabalhador(usuario, auditoria);
         } catch (Exception e) {
             LOGGER.error("Erro ao alterar o usuário. Id = " + String.valueOf(usuario.getId()) + ". Erro: " + e.getMessage(), e.getCause());
             throw e;
@@ -299,20 +293,68 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public br.com.ezvida.girst.apiclient.model.Usuario alterarPerfil(br.com.ezvida.girst.apiclient.model.Usuario usuario, ClienteAuditoria auditoria) {
-        br.com.ezvida.girst.apiclient.model.Usuario usuarioAnterior = buscarPorId(usuario.getId().toString(), null);
-        br.com.ezvida.girst.apiclient.model.Usuario u = buscarPorLogin(usuario.getLogin());
-        if (auditoria != null && usuarioAnterior != null) {
-            LogAuditoria.registrar(LOGGER, auditoria, "Alteração do perfil do usuário: " + usuario);
+    public br.com.ezvida.girst.apiclient.model.Usuario sicronizarTrabalhadorUsuario(Trabalhador trabalhador, ClienteAuditoria auditoria) {
+        br.com.ezvida.girst.apiclient.model.Usuario user = buscarPorLogin(trabalhador.getCpf());
+
+        if (user != null) {
+            user.setNome(trabalhador.getNome());
+            Set<EmailTrabalhador> listaEmail = trabalhador.getListaEmailTrabalhador();
+            if (listaEmail != null) {
+                Optional<EmailTrabalhador> opt = listaEmail.parallelStream().filter(
+                        e -> e.getEmail().getNotificacao().equals(SimNao.SIM)).findFirst();
+                if (opt.isPresent()) {
+                    user.setEmail(opt.get().getEmail().getDescricao());
+                }
+                LogAuditoria.registrar(LOGGER, auditoria, "Sicronizando o usuário: " + user);
+                try {
+                    user = this.usuarioClient.alterar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), user);
+                } catch (Exception e) {
+                    LOGGER.error("Erro ao alterar o usuário. Id = " + String.valueOf(user.getId()) + ". Erro: " + e.getMessage(), e.getCause());
+                    throw e;
+                }
+            }
+        }
+        return user;
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public br.com.ezvida.girst.apiclient.model.Usuario alterarPerfilSenha(Map<String, Object> propriedades, ClienteAuditoria auditoria) {
+        UsuarioCredencial usuarioCredencial = getUsuarioCredenciado(propriedades);
+        br.com.ezvida.girst.apiclient.model.Usuario u = new br.com.ezvida.girst.apiclient.model.Usuario();
+
+        if (auditoria != null) {
+            LogAuditoria.registrar(LOGGER, auditoria, "Alteração do perfil e senha do usuário: {}", usuarioCredencial);
             try {
-                u = this.usuarioClient.alterar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), usuario);
+                u = this.usuarioClient.alterarPerfilSenha(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), usuarioCredencial);
             } catch (Exception e) {
-                LOGGER.error("Erro ao alterar o perfil do usuário. Id = " + String.valueOf(usuario.getId()) + ". Erro: " + e.getMessage(), e.getCause());
+                LOGGER.error("Erro ao alterar o perfil do usuário. Id = " + String.valueOf(usuarioCredencial.getId()) + ". Erro: " + e.getMessage(), e.getCause());
                 throw e;
             }
         }
 
         return u;
+    }
+
+   private br.com.ezvida.girst.apiclient.model.UsuarioCredencial getUsuarioCredenciado(Map<String, Object> propriedades){
+        Map<String, Object> user = (Map<String, Object>) propriedades.get("usuario");
+        br.com.ezvida.girst.apiclient.model.UsuarioCredencial usuario = new br.com.ezvida.girst.apiclient.model.UsuarioCredencial();
+        usuario.setId(Long.valueOf((Integer) user.get("id")));
+        usuario.setNome((String) user.get("nome"));
+        usuario.setLogin((String) user.get("login"));
+        usuario.setEmail((String) user.get("email"));
+        usuario.setSenha((String) user.get("senha"));
+        usuario.setApelido((String) user.get("apelido"));
+        usuario.setExibirApelido((Boolean) user.get("exibiApelido"));
+        usuario.setFoto((String) user.get("foto"));
+
+        br.com.ezvida.girst.apiclient.model.Credencial credencial = new br.com.ezvida.girst.apiclient.model.Credencial();
+        credencial.setUsuario(usuario.getLogin());
+        credencial.setSenhaAtual((String) propriedades.get("senhaAntiga"));
+        credencial.setSenha((String) propriedades.get("senhaNova"));
+
+        usuario.setCredencial(credencial);
+        return usuario;
     }
 
     @Override
@@ -381,39 +423,30 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public UsuarioDTO consultarDadosUsuario(String login) {
+    public UsuarioDTO consultarDadosUsuario(String login) {
         LOGGER.debug("consultando dados do usuario");
-		Usuario usuarioAConsultar = getUsuario(login);
+        Usuario usuarioAConsultar = getUsuario(login);
 
         UsuarioDTO usuario = new UsuarioDTO();
-		usuario.setLogin(login);
+        usuario.setLogin(login);
 
-		if (usuarioAConsultar.getPapeis().contains(DadosFilter.TRABALHADOR)) {
-			usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorCpf(login));
-			Trabalhador trabalhador = trabalhadorService.buscarPorCpf(login);
+        if (usuarioAConsultar.getPapeis().contains(DadosFilter.TRABALHADOR)) {
+            usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorCpf(login));
+            Trabalhador trabalhador = trabalhadorService.buscarPorCpf(login);
             usuario.setTipoImagem(trabalhador.getTipoImagem());
             usuario.setImagem(trabalhador.getImagem());
         } else {
-			usuario.setDepartamentosRegionais(departamentoRegionalService.pesquisarPorIds(usuarioAConsultar.getIdDepartamentos()));
-			usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorIds(usuarioAConsultar.getIdEmpresas()));
+            usuario.setDepartamentosRegionais(departamentoRegionalService.pesquisarPorIds(usuarioAConsultar.getIdDepartamentos()));
+            usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorIds(usuarioAConsultar.getIdEmpresas()));
         }
 
-		br.com.ezvida.girst.apiclient.model.Usuario usuarioGirst = buscarPorLogin(login);
+        br.com.ezvida.girst.apiclient.model.Usuario usuarioGirst = buscarPorLogin(login);
         if (usuarioGirst != null) {
             usuario.setExibirApelido(usuarioGirst.getExibirApelido());
             usuario.setApelido(usuarioGirst.getApelido());
-                usuario.setFotoPerfil(usuarioGirst.getFoto());
+            usuario.setFotoPerfil(usuarioGirst.getFoto());
         }
 
         return usuario;
-    }
-
-    // Criar metodo
-    // colocar regras
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public void alterarSenhaRST(Credencial credencial) {
-
-        // Enviar credencial para trocar senha
-        usuarioClient.alterarSenha(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), credencial);
     }
 }

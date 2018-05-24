@@ -256,7 +256,7 @@ public class DepartamentoRegionalDAO extends BaseDAO<DepartamentoRegional, Long>
 
     private void inserirSeguracaFilter(StringBuilder jpql, DadosFilter segurancaFilter, boolean count,
                                        Map<String, Object> parametros) {
-        if (segurancaFilter.temIdsDepRegional()) {
+        if (segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
             jpql.append("and");
             jpql.append(" d.id IN (:idsDepRegional) ");
             parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());

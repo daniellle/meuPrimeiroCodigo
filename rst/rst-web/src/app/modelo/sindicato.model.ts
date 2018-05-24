@@ -6,6 +6,18 @@ import { Situacao } from 'app/modelo/enum/enum-situacao.model';
 export class Sindicato {
 
     id: number;
+    cd_siga: number;
+    federacao: string;    
+    sigla: string; 
+    filiado: string;
+    tipo_abrangencia: number;
+    nome_presidente: string;
+    sexo: string;
+    home_page: string;
+    nm_contato: string;
+    area_contato: string;
+    dt_fundacao: string;
+    sede_sindicato_nacional: string;
     cnpj: string;
     razaoSocial: string;
     nomeFantasia: string;

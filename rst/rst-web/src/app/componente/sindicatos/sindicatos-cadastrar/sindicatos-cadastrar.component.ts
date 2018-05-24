@@ -28,6 +28,7 @@ import { TipoEmail } from 'app/modelo/enum/enum-tipo-email.model';
 import { ValidateCNPJ } from 'app/compartilhado/validators/cnpj.validator';
 import { EnumValues } from 'enum-values';
 import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-sindicatos-cadastrar',
@@ -166,6 +167,29 @@ export class SindicatosCadastrarComponent extends BaseComponent implements OnIni
     prepareSaveSindicato(): Sindicato {
 
         const formModel = this.formulario.controls;
+        this.sindicato.nome_presidente = formModel.nome_presidente.value;
+        this.sindicato.cd_siga = formModel.cd_siga.value;
+        this.sindicato.federacao = formModel.federacao.value;
+        this.sindicato.sigla = formModel.sigla.value;
+
+        if (formModel.filiado.value == true){
+            this.sindicato.filiado = 'S';
+        } else {
+            this.sindicato.filiado = 'N';
+        }
+        if (formModel.sede_sindicato_nacional.value == true){
+            this.sindicato.sede_sindicato_nacional = 'S';
+        }
+        else {
+            this.sindicato.sede_sindicato_nacional = 'N';
+        }
+        this.sindicato.tipo_abrangencia = formModel.tipo_abrangencia.value;
+        this.sindicato.sexo = formModel.sexo.value;
+        this.sindicato.home_page = formModel.home_page.value;
+        this.sindicato.nm_contato = formModel.nm_contato.value;
+        this.sindicato.area_contato = formModel.area_contato.value;
+        this.sindicato.dt_fundacao = formModel.dt_fundacao.value;
+        
         this.sindicato.cnpj = formModel.cnpj.value;
         if (!this.isVazia(this.sindicato.cnpj)) {
             this.sindicato.cnpj = MascaraUtil.removerMascara(this.sindicato.cnpj);
@@ -176,8 +200,8 @@ export class SindicatosCadastrarComponent extends BaseComponent implements OnIni
         this.sindicato.inscricaoMunicipal = formModel.inscMunincipal.value;
         this.sindicato.sesmt = formModel.SESMT.value;
         this.sindicato.cipa = formModel.CIPA.value;
-        this.sindicato.dataDesativacao = formModel.dtDesativacao.value ?
-            this.convertDateToString(formModel.dtDesativacao.value.date) : null;
+        // this.sindicato.dataDesativacao = formModel.dtDesativacao.value ?
+        //     this.convertDateToString(formModel.dtDesativacao.value.date) : null;
 
         // endereco
         if (formModel.endereco.value) {
@@ -256,6 +280,78 @@ export class SindicatosCadastrarComponent extends BaseComponent implements OnIni
 
     createForm() {
         this.formulario = this.formBuilder.group({
+            sede_sindicato_nacional: [
+                { value: null, disabled: this.modoConsulta },
+                Validators.compose([
+                    Validators.maxLength(5),
+                ]),
+            ], 
+            dt_fundacao: [
+                { value: null, disabled: this.modoConsulta },
+                Validators.compose([
+                    ValidateData, ValidateDataFutura,
+                ]),
+            ],            
+            area_contato: [
+                { value: null, disabled: this.modoConsulta },
+                Validators.compose([
+                    Validators.maxLength(40),
+                ]),
+            ],                                                 
+            nm_contato: [
+                { value: null, disabled: this.modoConsulta },
+                Validators.compose([
+                    Validators.maxLength(40),
+                ]),
+            ], 
+            home_page: [
+                { value: null, disabled: this.modoConsulta },
+                Validators.compose([
+                    Validators.maxLength(60),
+                ]),
+            ], 
+            sexo: [
+                { value: null, disabled: this.modoConsulta },
+                Validators.compose([
+                    Validators.maxLength(30),
+                ]),
+            ], 
+            nome_presidente: [
+                { value: null, disabled: this.modoConsulta },
+                Validators.compose([
+                    Validators.maxLength(60),
+                ]),
+            ], 
+            tipo_abrangencia: [
+                { value: null, disabled: this.modoConsulta },
+                Validators.compose([
+                    Validators.maxLength(40),
+                ]),
+            ], 
+            filiado: [
+                { value: null, disabled: this.modoConsulta },
+                Validators.compose([
+                    Validators.maxLength(40),
+                ]),
+            ],                                                                         
+            sigla: [
+                { value: null, disabled: this.modoConsulta },
+                Validators.compose([
+                    Validators.maxLength(30),
+                ]),
+            ],  
+            federacao: [
+                { value: null, disabled: this.modoConsulta },
+                Validators.compose([
+                    Validators.maxLength(30),
+                ]),
+            ],            
+            cd_siga: [
+                { value: null, disabled: this.modoConsulta },
+                Validators.compose([
+                    Validators.maxLength(30),
+                ]),
+            ],            
             cnpj: [
                 { value: null, disabled: this.modoConsulta },
                 Validators.compose([
@@ -368,12 +464,12 @@ export class SindicatosCadastrarComponent extends BaseComponent implements OnIni
 
                 ]),
             ],
-            dtDesativacao: [
-                { value: null, disabled: this.modoConsulta },
-                Validators.compose([
-                    ValidateData, ValidateDataFutura,
-                ]),
-            ],
+            // dtDesativacao: [
+            //     { value: null, disabled: this.modoConsulta },
+            //     Validators.compose([
+            //         ValidateData, ValidateDataFutura,
+            //     ]),
+            // ],
         });
     }
 
@@ -424,16 +520,16 @@ export class SindicatosCadastrarComponent extends BaseComponent implements OnIni
         }
 
         // validar data desativacao
-        if (!this.isVazia(this.formulario.controls['dtDesativacao'].value)) {
-            if (this.formulario.controls['dtDesativacao'].errors && this.formulario.controls['dtDesativacao'].errors.validData) {
-                this.mensagemErroComParametros('app_rst_campo_invalido', this.formulario.controls['dtDesativacao'],
-                  MensagemProperties.app_rst_labels_data_desativacao);
-                retorno = false;
-              } else if (ValidarDataFutura(this.formulario.controls['dtDesativacao'].value.jsdate)) {
-                this.mensagemErroComParametrosModel('app_rst_labels_data_futura', MensagemProperties.app_rst_labels_data_desativacao);
-                retorno = false;
-            }
-        }
+        // if (!this.isVazia(this.formulario.controls['dtDesativacao'].value)) {
+        //     if (this.formulario.controls['dtDesativacao'].errors && this.formulario.controls['dtDesativacao'].errors.validData) {
+        //         this.mensagemErroComParametros('app_rst_campo_invalido', this.formulario.controls['dtDesativacao'],
+        //           MensagemProperties.app_rst_labels_data_desativacao);
+        //         retorno = false;
+        //       } else if (ValidarDataFutura(this.formulario.controls['dtDesativacao'].value.jsdate)) {
+        //         this.mensagemErroComParametrosModel('app_rst_labels_data_futura', MensagemProperties.app_rst_labels_data_desativacao);
+        //         retorno = false;
+        //     }
+        // }
 
         return retorno;
     }
@@ -469,8 +565,21 @@ export class SindicatosCadastrarComponent extends BaseComponent implements OnIni
         } else {
             this.cipa = false;
         }
-
+        
         this.formulario.patchValue({
+            dt_fundacao: this.sindicato.dt_fundacao ? DatePicker.convertDateForMyDatePicker(
+                moment(this.sindicato.dt_fundacao).format("DD/MM/YYYY")) : null, 
+            area_contato: this.sindicato.area_contato,
+            nm_contato: this.sindicato.nm_contato,
+            home_page: this.sindicato.home_page,
+            sexo: this.sindicato.sexo,
+            nome_presidente: this.sindicato.nome_presidente,
+            tipo_abrangencia: this.sindicato.tipo_abrangencia,
+            filiado: this.sindicato.filiado,
+            federacao: this.sindicato.federacao,
+            sigla: this.sindicato.sigla,
+            cd_siga: this.sindicato.cd_siga,
+            sede_sindicato_nacional: this.sindicato.sede_sindicato_nacional,
             cnpj: this.sindicato.cnpj,
             razao: this.sindicato.razaoSocial,
             nome: this.sindicato.nomeFantasia,
@@ -478,7 +587,7 @@ export class SindicatosCadastrarComponent extends BaseComponent implements OnIni
             inscMunincipal: this.sindicato.inscricaoMunicipal,
             SESMT: this.sesmt,
             CIPA: this.cipa,
-            dtDesativacao: this.sindicato.dataDesativacao ? DatePicker.convertDateForMyDatePicker(this.sindicato.dataDesativacao) : null,
+            //dtDesativacao: this.sindicato.dataDesativacao ? DatePicker.convertDateForMyDatePicker(this.sindicato.dataDesativacao) : null,
         });
 
         if (this.isNotEmpty(this.sindicato.endereco)) {

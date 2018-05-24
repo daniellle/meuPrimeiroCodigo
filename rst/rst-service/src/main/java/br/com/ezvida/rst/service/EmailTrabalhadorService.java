@@ -51,7 +51,7 @@ public class EmailTrabalhadorService extends BaseService {
 				emailTrabalhadorDAO.salvar(emailTrabalhador);
 			}
 			
-			ids = emailsTrabalhador.stream().map(t -> t.getId()).collect(Collectors.toList());
+			ids = emailsTrabalhador.stream().filter(t -> t.getId() != null ).map(EmailTrabalhador::getId).collect(Collectors.toList());
 		}
 		
 		LOGGER.debug("Foram desativados ");

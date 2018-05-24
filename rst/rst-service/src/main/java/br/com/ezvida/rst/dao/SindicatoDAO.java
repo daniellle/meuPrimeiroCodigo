@@ -50,7 +50,7 @@ public class SindicatoDAO extends BaseDAO<Sindicato, Long> {
 		jpql.append(" where c.id = :id");
 		
 		parametros.put("id", id);
-		if (segurancaFilter.temIdsDepRegional()) {
+		if (segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
 			jpql.append(" and depRegional.id IN (:idsDepRegional) ");
 			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
 		}
@@ -71,10 +71,10 @@ public class SindicatoDAO extends BaseDAO<Sindicato, Long> {
 		TypedQuery<Sindicato> query = criarConsultaPorTipo(jpql.toString());
 		DAOUtil.setParameterMap(query, parametros);
 		listaPaginada.setQuantidade(getCountQueryPaginado(sindicatoFilter, segurancaFilter));
-
+		
 		query.setFirstResult((sindicatoFilter.getPagina() - 1) * sindicatoFilter.getQuantidadeRegistro());
 		query.setMaxResults(sindicatoFilter.getQuantidadeRegistro());
-
+		
 		listaPaginada.setList(query.getResultList());
 
 		return listaPaginada;
@@ -132,7 +132,7 @@ public class SindicatoDAO extends BaseDAO<Sindicato, Long> {
 			boolean cnpj, boolean razaoSocial, boolean nomeFantasia, boolean situacao, boolean ids) {
 		boolean hasFilters = cnpj || razaoSocial || nomeFantasia || situacao || ids;
 		
-		if (hasFilters && (segurancaFilter.temIdsDepRegional())) {
+		if (hasFilters && (segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador())) {
 			jpql.append(AND);
 			jpql.append(" depRegional.id IN (:idsDepRegional) ");
 			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
@@ -198,7 +198,7 @@ public class SindicatoDAO extends BaseDAO<Sindicato, Long> {
 	}
 
 	private void montarJoinDepReg(StringBuilder jpql, DadosFilter segurancaFilter) {
-		if(segurancaFilter != null && segurancaFilter.temIdsDepRegional()) {
+		if(segurancaFilter != null && segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
 			jpql.append(" left join empresa.empresaUats empresaUats ");
 			jpql.append(" left join empresaUats.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador ");
 			jpql.append(" left join unidadeAtendimentoTrabalhador.departamentoRegional depRegional ");
@@ -212,7 +212,7 @@ public class SindicatoDAO extends BaseDAO<Sindicato, Long> {
 			jpql.append(SELECT_DISTINCT_C_FROM_SINDICATO_C);
 		}
 		
-		if (segurancaFilter != null &&  segurancaFilter.temIdsDepRegional()) {
+		if (segurancaFilter != null &&  segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
 			jpql.append(LEFT_JOIN_C_EMPRESA_SINDICATO_EMPRESA_SINDICATO);
 			jpql.append(LEFT_JOIN_EMPRESA_SINDICATO_EMPRESA_EMPRESA);
 		}

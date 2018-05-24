@@ -123,7 +123,7 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
         this.carregarTela();
         this.title = MensagemProperties.app_rst_trabalhador_title_cadastrar;
         this.inicializarImagem();
-        
+
     }
     getVidaAtiva(id: string) {
             this.service.buscarVidaAtivaTrabalhador(id).subscribe((dados: string) => {
@@ -133,7 +133,7 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
                 } else {
                     this.vidaAtiva = "Sem Vida Ativa";
                     this.temvidaAtiva = false;
-                } 
+                }
             }, (error) => {
                 this.mensagemError(error);
                 this.vidaAtiva =  "Sem Vida Ativa";
@@ -146,7 +146,7 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
         element === PerfilEnum.ADM
         || element === PerfilEnum.DIDN
         || element ===  PerfilEnum.DIDR) != null;
-        return isPermitido; 
+        return isPermitido;
 
         // const isPerfil =  this.usuarioLogado.perfisSistema.find((element) =>
         // ((element.perfil.codigo === PerfilEnum.ADM
@@ -663,7 +663,7 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
                 if(this.temEmpPerfil()){
                     this.getVidaAtiva(this.id);
                 }
-                
+
             }
         }, (error) => {
             return this.router.navigate(['/acessonegado']);

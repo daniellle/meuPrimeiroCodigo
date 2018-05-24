@@ -187,4 +187,9 @@ public class CredencialService extends BaseService {
 		return credencialClient.verificarHashRecuperacaoSenha(apiClientService.getURL(), hashRecuperacaoSenha);
 	}
 
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public String reenviarEmailHash(String hashRecuperacaoSenha) {
+		return credencialClient.reenviarEmailRecuperacaoSenha(apiClientService.getURL(), hashRecuperacaoSenha);
+	}
+
 }

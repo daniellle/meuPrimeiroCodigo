@@ -1,5 +1,5 @@
 import { Situacao } from 'app/modelo/enum/enum-situacao.model';
-import { environment } from './../../../../../environments/environment.prod';
+import { environment } from './../../../../../environments/environment';
 import { SimNao } from 'app/modelo/enum/enum-simnao.model';
 import { EnumValues } from 'enum-values';
 import { UsuarioPerfilSistema } from './../../../../modelo/usuario-perfil-sistema.model';

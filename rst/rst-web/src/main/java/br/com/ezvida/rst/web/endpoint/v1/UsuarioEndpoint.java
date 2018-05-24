@@ -142,10 +142,12 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
     @Path("/perfil")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.TRABALHADOR, PermissionConstants.TRABALHADOR_CONSULTAR}))
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CONSULTAR,  PermissionConstants.USUARIO_ALTERAR}))
     public Response alterarPerfil(@Context SecurityContext context,
-                                  @Context HttpServletRequest request, @Encoded br.com.ezvida.girst.apiclient.model.Usuario usuario) {
-        return Response.status(HttpServletResponse.SC_OK).entity(serializar(usuarioService.alterarPerfil(usuario,
+                                  @Context HttpServletRequest request, @Encoded Map<String, Object> propriedades ) {
+        LOGGER.debug("Atualizando o perfil e senha do usuario");
+        getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
+        return Response.status(HttpServletResponse.SC_OK).entity(serializar(usuarioService.alterarPerfilSenha(propriedades,
             ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.USUARIOS))))
             .header("Content-Version", getApplicationVersion())
             .type(MediaType.APPLICATION_JSON).build();
@@ -183,38 +185,6 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
                 , ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.USUARIOS))))
             .header("Content-Version", getApplicationVersion())
             .type(MediaType.APPLICATION_JSON).build();
-    }
-
-
-    @POST
-    @Encoded
-    @Path("/trocarsenha")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO_DADOS_CONSULTAR}))
-    //@formatter:on
-    public Response trocarSenhaUsuario(@Context HttpServletRequest request, @Encoded Map<String, String> propriedades,
-                                       @Context SecurityContext context) {
-        // @Encoded JsonObject senha_antiga @Encoded List<String> senhas
-        String senha_antiga = (String) propriedades.get("senha_antiga");
-        String senha_nova = (String) propriedades.get("senha_nova");
-
-        LOGGER.debug("---------------------- Chamou trocar Senha ------------------------");
-        LOGGER.debug("Teste antiga = {}", senha_antiga);
-        LOGGER.debug("Teste nova = {}", senha_nova);
-
-        // 0- Verificar se senha_antiga confere com a senha cadastrada no banco para usuario no contexto
-
-        // 1- Criar credencial com nova senha
-        br.com.ezvida.girst.apiclient.model.Credencial credencial = new br.com.ezvida.girst.apiclient.model.Credencial();
-        credencial.setUsuario(ClienteInfos.getUsuario(context).getLogin());
-        credencial.setSenha(propriedades.get("senha_nova"));
-        credencial.setSenhaAtual(propriedades.get("senha_antiga"));
-
-        // //2- enviar post solicitando troca de senha para senha_nova
-        usuarioService.alterarSenhaRST(credencial);
-
-        return null;
     }
 
 }

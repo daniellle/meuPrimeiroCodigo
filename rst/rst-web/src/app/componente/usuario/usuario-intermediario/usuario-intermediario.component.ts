@@ -3,7 +3,7 @@ import { Seguranca } from './../../../compartilhado/utilitario/seguranca.model';
 import { ToastyService } from 'ng2-toasty';
 import { BloqueioService } from './../../../servico/bloqueio.service';
 import { BaseComponent } from 'app/componente/base.component';
-import { environment } from './../../../../environments/environment.prod';
+import { environment } from './../../../../environments/environment';
 import { UsuarioService } from './../../../servico/usuario.service';
 import { Usuario } from './../../../modelo/usuario.model';
 import { MascaraUtil } from './../../../compartilhado/utilitario/mascara.util';
@@ -73,7 +73,7 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
     }
   }
   private temSindPerfil() {
-    // return this.usuario.perfisSistema.find((element) => 
+    // return this.usuario.perfisSistema.find((element) =>
     // element.perfil.codigo === PerfilEnum.GESI) != null;
     return false;
   }
