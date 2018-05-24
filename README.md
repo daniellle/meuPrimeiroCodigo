@@ -1,5 +1,6 @@
 # rst-cadastros
 
+<<<<<<< HEAD
 **v2.11.0**
 
 ============
@@ -25,6 +26,16 @@
 	Exibir idade do trabalhador de acordo com os dados da última ficha na tela de Minha Saúde
 
 ------------
+=======
+
+**v2.8.0**
+
+============
+
+**Novidades**
+	Mundaça no tratamento ao clicar em um link expirado para cadastro de senha
+
+>>>>>>> 2cc4faa0797c2d226714b9365e95ada4534702db
 
 **v2.7.0**
 
