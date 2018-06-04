@@ -45,6 +45,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
   perfisCadastro: Perfil[];
   perfisDw: Perfil[];
   perfisGirst: Perfil[];
+  perfisResOnline: Perfil[];
   sistemas: Sistema[];
   perfisSistemas: UsuarioPerfilSistema[];
   sistemaSelecionado?: Sistema;
@@ -82,6 +83,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
       this.perfisCadastro = new Array<Perfil>();
       this.perfisDw = new Array<Perfil>();
       this.perfisGirst = new Array<Perfil>();
+      this.perfisResOnline = new Array<Perfil>();
 
       if (this.id) {
         this.modoAlterar = true;
@@ -254,6 +256,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
       this.filtrarPerfisSistemaCadastro();
       this.filtrarPerfisSistemaGirst();
       this.filtrarPerfisSistemaDw();
+      this.filtrarPerfisSistemaResOnline();
     }, (error) => {
       this.mensagemError(error);
     });
@@ -366,6 +369,9 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
       if (sistema.codigo.toUpperCase() === SistemaEnum.DW) {
         this.perfis = this.perfisDw;
       }
+      if (sistema.codigo.toUpperCase() === SistemaEnum.RESONLINE) {
+        this.perfis = this.perfisResOnline;
+      }
     }
   }
 
@@ -374,7 +380,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
       if (element.codigo !== PerfilEnum.GDNA && element.codigo !== PerfilEnum.GDRA
         && element.codigo !== PerfilEnum.GEEM && element.codigo !== PerfilEnum.GEPC
         && element.codigo !== PerfilEnum.GERC && element.codigo !== PerfilEnum.GESI
-        && element.codigo !== PerfilEnum.TRA) {
+        && element.codigo !== PerfilEnum.TRA && element.codigo !== PerfilEnum.PFS) {
         this.perfisPortal.push(element);
       }
     });
@@ -385,7 +391,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     if (this.usuarioLogado.papeis.find((papel) => papel === PerfilEnum.GDRA)) {
       this.perfis.forEach((element) => {
         if (element.codigo === PerfilEnum.GEEM || element.codigo === PerfilEnum.GEPC
-          || element.codigo === PerfilEnum.GERC || element.codigo === PerfilEnum.GESI) {
+          || element.codigo === PerfilEnum.GERC || element.codigo === PerfilEnum.GESI || element.codigo === PerfilEnum.PFS) {
           this.perfisCadastro.push(element);
         }
       });
@@ -413,7 +419,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     if (this.usuarioLogado.papeis.find((papel) => papel === PerfilEnum.GDRA)) {
       this.perfis.forEach((element) => {
         if (element.codigo === PerfilEnum.GEEM || element.codigo === PerfilEnum.GEPC
-          || element.codigo === PerfilEnum.GERC || element.codigo === PerfilEnum.GESI) {
+          || element.codigo === PerfilEnum.GERC || element.codigo === PerfilEnum.GESI && element.codigo !== PerfilEnum.PFS) {
           this.perfisDw.push(element);
         }
       });
@@ -422,14 +428,14 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     if (this.usuarioLogado.papeis.find((papel) => papel === PerfilEnum.GDNA)) {
       this.perfis.forEach((element) => {
         if (this.naoEPerfilPortal(element) && element.codigo !== PerfilEnum.ADM
-          && element.codigo !== PerfilEnum.ATD && element.codigo !== PerfilEnum.GDNA && element.codigo !== PerfilEnum.TRA) {
+          && element.codigo !== PerfilEnum.ATD && element.codigo !== PerfilEnum.GDNA && element.codigo !== PerfilEnum.TRA && element.codigo !== PerfilEnum.PFS) {
           this.perfisDw.push(element);
         }
       });
     }
     if (this.usuarioLogado.papeis.find((papel) => papel === PerfilEnum.ADM)) {
       this.perfis.forEach((element) => {
-        if (this.naoEPerfilPortal(element) && element.codigo !== PerfilEnum.TRA) {
+        if (this.naoEPerfilPortal(element) && element.codigo !== PerfilEnum.TRA && element.codigo !== PerfilEnum.PFS) {
           this.perfisDw.push(element);
         }
       });
@@ -446,6 +452,37 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         this.perfisGirst.push(element);
       }
     });
+  }
+
+  filtrarPerfisSistemaResOnline() {
+      let isGdra = this.usuarioLogado.papeis.forEach((papel) => {
+          if(papel !== PerfilEnum.ADM && papel === PerfilEnum.GDRA){
+              return true;
+          }
+      });
+      if (isGdra) {
+          this.perfis.forEach((element) => {
+              if (element.codigo === PerfilEnum.PFS) {
+                  this.perfisResOnline.push(element);
+              }
+          });
+      }
+
+      if (this.usuarioLogado.papeis.find((papel) => papel === PerfilEnum.GDNA)) {
+          this.perfis.forEach((element) => {
+              if (this.naoEPerfilPortal(element) && element.codigo !== PerfilEnum.ADM
+                  && element.codigo !== PerfilEnum.ATD && element.codigo !== PerfilEnum.GDNA && element.codigo !== PerfilEnum.TRA && element.codigo === PerfilEnum.PFS) {
+                  this.perfisResOnline.push(element);
+              }
+          });
+      }
+      if (this.usuarioLogado.papeis.find((papel) => papel === PerfilEnum.ADM)) {
+          this.perfis.forEach((element) => {
+              if (this.naoEPerfilPortal(element) && (element.codigo === PerfilEnum.PFS || element.codigo === PerfilEnum.ADM)) {
+                  this.perfisResOnline.push(element);
+              }
+          });
+      }
   }
 
   temPermissaoDesativar(): boolean {

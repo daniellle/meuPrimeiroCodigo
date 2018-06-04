@@ -8,6 +8,7 @@ import br.com.ezvida.rst.model.Trabalhador;
 import com.google.common.collect.Maps;
 import fw.core.jpa.BaseDAO;
 import fw.core.jpa.DAOUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,14 +17,14 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.math.BigInteger;
+import java.util.*;
 
 public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TrabalhadorDAO.class);
+
+	static final int TOTAL_RECORD_PER_QUERY = 5;
 
 	@Inject
 	public TrabalhadorDAO(EntityManager em) {
@@ -349,4 +350,111 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 		return DAOUtil.getSingleResult(query);
 	}	
 
+
+	public Map<String, List<Object>> buscarTrabalhadoresByEmpresasDoUsuario(List<Long> empresas, String nome, String cpf, String page) {
+		LOGGER.debug("Pesquisando trabalhadores pelas empresas do usuário");
+		Integer pagina = 0;
+
+		if (StringUtils.isNotEmpty(page)) {
+			pagina = Integer.valueOf(page);
+		}
+
+		StringBuilder jpql2 = new StringBuilder();
+		StringBuilder jpql = new StringBuilder();
+
+		jpql.append("SELECT count(1) from trabalhador t");
+		jpql2.append("SELECT t.id_trabalhador, t.dt_nascimento, t.fl_genero, t.no_cpf, t.nm_trabalhador");
+		jpql2.append(" ,em.nm_fantasia,  f2.ds_funcao, cbo.ds_cbo from trabalhador t");
+
+		this.joinTrabalhadorUsuario(jpql);
+		this.joinTrabalhadorUsuario(jpql2);
+
+		this.checkFiltroTrabalhadorUsuario(jpql, nome, cpf, empresas);
+		this.checkFiltroTrabalhadorUsuario(jpql2, nome, cpf, empresas);
+
+		jpql2.append(" order by nm_trabalhador asc limit :items offset :pagina");
+
+		Query query = criarConsultaNativa(jpql.toString());
+		Query query2 = criarConsultaNativa(jpql2.toString());
+
+		this.setParametros(query, nome, cpf, empresas);
+		this.setParametros(query2, nome, cpf, empresas);
+
+		query2.setParameter("items", TOTAL_RECORD_PER_QUERY);
+		query2.setParameter("pagina", TOTAL_RECORD_PER_QUERY * pagina );
+
+
+
+		BigInteger count = DAOUtil.getSingleResult(query);
+		List<Object> trabalhadores = query2.getResultList();
+        Map<String, List<Object>> hashMap = new HashMap<>();
+        List<Object> countL = new ArrayList<>();
+        countL.add(count);
+        hashMap.put("count", countL);
+        hashMap.put("trabalhadores", trabalhadores);
+		return hashMap;
+	}
+
+	public void joinTrabalhadorUsuario(StringBuilder jpql){
+		jpql.append(" INNER JOIN emp_trabalhador t2 ");
+		jpql.append(" ON t.id_trabalhador = t2.id_trabalhador_fk ");
+		jpql.append(" INNER JOIN  empresa em ");
+		jpql.append(" ON t2.id_empresa_fk = em.id_empresa ");
+		jpql.append(" LEFT JOIN emp_trab_lotacao etl ");
+		jpql.append(" ON t2.id_emp_trabalhador = etl.id_empr_trabalhador_fk ");
+		jpql.append(" LEFT JOIN emp_lotacao el ");
+		jpql.append(" ON etl.id_emp_lotacao_fk = el.id_empresa_lotacao ");
+		jpql.append(" LEFT JOIN emp_cbo ec ");
+		jpql.append(" ON el.id_emp_cbo_fk = ec.id_emp_cbo ");
+		jpql.append(" LEFT JOIN emp_funcao ef2 ");
+		jpql.append(" ON el.id_emp_funcao_fk = ef2.id_emp_funcao ");
+		jpql.append(" LEFT JOIN funcao f2 ");
+		jpql.append(" ON ef2.id_funcao_fk = f2.id_funcao ");
+		jpql.append(" LEFT JOIN cbo cbo ");
+		jpql.append(" ON ec.id_cbo_fk = cbo.id_cbo ");
+
+	}
+
+	public void checkFiltroTrabalhadorUsuario(StringBuilder jpql, String nome, String cpf, List<Long> empresas){
+		boolean hasNome = StringUtils.isNotEmpty(nome);
+		boolean hasCpf = StringUtils.isNotEmpty(cpf);
+		boolean hasEmpresas = CollectionUtils.isNotEmpty(empresas);
+
+		if (hasNome || hasCpf || hasEmpresas) {
+			jpql.append(" where ");
+		}
+
+		if(hasNome) {
+			jpql.append(" (upper(nm_trabalhador) like upper(:nome)) ");
+		}
+
+		if (hasNome && hasCpf){
+			jpql.append(" AND ");
+		}
+
+		if(hasCpf){
+			jpql.append("(no_cpf like :cpf) ");
+		}
+
+		if ((hasNome || hasCpf) & hasEmpresas){
+			jpql.append(" AND ");
+		}
+
+		if (hasEmpresas){
+			jpql.append(" em.id_empresa IN (:idEmpresa) ");
+		}
+	}
+
+	public void setParametros(Query query, String nome, String cpf, List<Long> empresas){
+		if(StringUtils.isNotEmpty(nome)) {
+			query.setParameter("nome", "%"+nome.trim().replace(" ", "%")+"%");
+		}
+		if(StringUtils.isNotEmpty(cpf)) {
+			query.setParameter("cpf", "%"+cpf+"%");
+		}
+
+		if (empresas!=null && !empresas.isEmpty()) {
+			query.setParameter("idEmpresa", empresas);
+		}
+	}
 }

@@ -131,7 +131,7 @@ public class UsuarioEntidadeEndpoint extends SegurancaEndpoint<UsuarioEntidade> 
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.USUARIO_ENTIDADE,
 			PermissionConstants.USUARIO_ENTIDADE_CADASTRAR, }))
-	public Response salvar(@Encoded Set<UsuarioEntidade> usuarioEntidade, @Context SecurityContext context,
+	public Response salvar(@Encoded List<UsuarioEntidade> usuarioEntidade, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_CREATED).type(MediaType.APPLICATION_JSON)
 				.header("Content-Version",

@@ -13,6 +13,7 @@ import fw.core.exception.BusinessException;
 import fw.core.service.BaseService;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import okhttp3.internal.http.RetryAndFollowUpInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Call;
@@ -28,6 +29,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.net.ssl.*;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Request;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -66,23 +68,13 @@ public class RESService extends BaseService {
         String cpf = filtros.getFirst("cpf") != null ? filtros.getFirst("cpf") : "";
         LogAuditoria.registrar(LOGGER, clienteAuditoria, "Buscando histórico de " + informacao.name() + " do trabalhador " + cpf);
 
-        Map<String, Object> paciente = this.buscarDadosPacienteRES(cpf);
-
-        if (paciente != null && !paciente.isEmpty()) {
-            return this.buscarValorParaInformacaoSaude(paciente.get("originalReferenceId").toString(), informacao, true);
-        }
-
-        return null;
+        return this.buscarValorParaInformacaoSaude(cpf, informacao, true);
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Object buscarUltimoRegistroInformacaoSaude(String cpf, InformacaoSaude informacao, ClienteAuditoria clienteAuditoria) {
         LogAuditoria.registrar(LOGGER, clienteAuditoria, "Buscando último registro de " + informacao != null ? informacao.name() : null + " do trabalhador " + cpf);
-        Map<String, Object> paciente = this.buscarDadosPacienteRES(cpf);
-        if (paciente != null && !paciente.isEmpty()) {
-            return this.buscarValorParaInformacaoSaude(paciente.get("originalReferenceId").toString(), informacao, false);
-        }
-        return null;
+        return this.buscarValorParaInformacaoSaude(cpf, informacao, false);
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -128,17 +120,22 @@ public class RESService extends BaseService {
                 .incluir("document", cpf)
                 .build();
         try {
-            Object resultado = retro.create(RESApi.class)
+            Response<Object> response = retro.create(RESApi.class)
                     .buscarHistoricoAtendimento(this.autenticar(), query)
-                    .execute()
-                    .body();
-            if (resultado != null) {
-                return new ImmutableMap.Builder<String, Object>()
-                        .put("filtrarInformacoes", cpf.equalsIgnoreCase(usuarioLogado.getLogin()))
-                        .put("resultado", resultado)
-                        .build();
+                    .execute();
+
+            if(response.isSuccessful()) {
+                if(response.body() != null) {
+                    return new ImmutableMap.Builder<String, Object>()
+                            .put("filtrarInformacoes", cpf.equalsIgnoreCase(usuarioLogado.getLogin()))
+                            .put("resultado", response.body())
+                            .build();
+                }else {
+                    LOGGER.debug("Nenhum atendimento encontrado para o trabalhador {}", cpf);
+                }
+            }else {
+                LOGGER.debug("Não foi possível buscar o historico de atendimento {} {} ", response.code(), response.body());
             }
-            LOGGER.debug("Não foi possível buscar o historico de atendimento {} ", resultado);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
         }
@@ -201,7 +198,8 @@ public class RESService extends BaseService {
     }
 
     private Retrofit getRetroFit() {
-        Retrofit retro = new Retrofit.Builder().baseUrl(this.service.getRESUrl())
+        Retrofit retro = new Retrofit.Builder()
+                .baseUrl(this.service.getRESUrl())
                 .client(getOkHttpClient())
                 .addConverterFactory(new NullOnEmptyConverterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -292,36 +290,23 @@ public class RESService extends BaseService {
         updateToken();
     }
 
-    private Map<String, Object> buscarDadosPacienteRES(String cpf) {
-        LOGGER.debug("Buscando dados do paciente {} no sistema RES", cpf);
 
-        try {
-            Response<Map<String, Object>> response =this.getRetroFit().create(RESApi.class).buscarPaciente(this.autenticar(), cpf).execute();
-            if (response != null && response.isSuccessful()) {
-                return response.body();
-            }
-        } catch (IOException e) {
-            LOGGER.error("Não foi possível encontrar os dados do paciente {} no sistema RES.", cpf);
-        }
-
-        return null;
-    }
-
-
-    private Map<String, Object> buscarValorParaInformacaoSaude(String referenciaOriginalPaciente, InformacaoSaude informacao, boolean historico) {
-        LOGGER.debug("Buscando valor para infomacoes de saude no sistema RES {}", referenciaOriginalPaciente);
+    private Map<String, Object> buscarValorParaInformacaoSaude(String cpf, InformacaoSaude informacao, boolean historico) {
+        LOGGER.debug("Buscando valor para infomacoes de saude no sistema RES {}", cpf);
         Retrofit retro = getRetroFit();
-        Map<String, String> params = ImmutableMap.of("amPath", informacao.getPathDado());
+        Map<String, String> params = ImmutableMap.of("amPath", informacao.getPathDado()
+                ,"documentType","cpf"
+                ,"document", cpf
+                ,"archetypeId",informacao.getIdArquetipo());
         Call<Map<String, Object>> chamada = null;
 
         if (!historico) {
             chamada = retro.create(RESApi.class)
-                    .buscarInformacaoSaude(autenticar(), informacao.getIdArquetipo(), referenciaOriginalPaciente,
+                    .buscarInformacaoSaude(autenticar(),
                             params);
         } else {
             chamada = retro.create(RESApi.class)
-                    .buscarHistoricoParaInformacaoSaude(autenticar(), informacao.getIdArquetipo(),
-                            referenciaOriginalPaciente, params);
+                    .buscarHistoricoParaInformacaoSaude(autenticar(), params);
         }
 
         try {
@@ -352,38 +337,30 @@ public class RESService extends BaseService {
          * @return
          */
 
-        @GET("compositions/{archetypeId}/{patientOriginalReferenceId}")
+        @GET("v2/compositions")
         @Headers({"Content-Type: application/x-www-form-urlencoded"})
         Call<Map<String, Object>> buscarInformacaoSaude(@Header("Authorization") String authorization
-                , @Path("archetypeId") String archetypeId
-                , @Path("patientOriginalReferenceId") String originalReferenceId
                 , @QueryMap(encoded = true) Map<String, String> params);
 
-        @GET("compositions/history/{archetypeId}/{patientOriginalReferenceId}")
+        @GET("v2/compositions/history")
         @Headers({"Content-Type: application/x-www-form-urlencoded"})
         Call<Map<String, Object>> buscarHistoricoParaInformacaoSaude(@Header("Authorization") String authorization
-                , @Path("archetypeId") String archetypeId
-                , @Path("patientOriginalReferenceId") String originalReferenceId
                 , @QueryMap(encoded = true) Map<String, String> params);
 
-        @GET("encounters")///{patientOriginalReferenceId}/{archetypeId}")
+        @GET("v1/encounters")
         @Headers({"Content-Type: application/x-www-form-urlencoded"})
         Call<Object> buscarHistoricoAtendimento(@Header("Authorization") String authorization, @QueryMap(encoded = true) Map<String, String> params);
 
-        @GET("encounters/{id}")
+        @GET("v1/encounters/{id}")
         @Headers({"Content-Type: application/x-www-form-urlencoded"})
         Call<Object> buscarEncontroMedico(@Header("Authorization") String authorization, @Path("id") String idEncontro);
 
-        @GET("templates/{id}")
+        @GET("v1/templates/{id}")
         @Headers({"Content-Type: application/x-www-form-urlencoded"})
         Call<Object> buscarForm(@Header("Authorization") String authorization, @Path("id") String identificador);
 
-        @GET("demographics/patients/document/{document}")
-        @Headers({"Content-Type: application/x-www-form-urlencoded"})
-        Call<Map<String, Object>> buscarPaciente(@Header("Authorization") String authorization, @Path("document") String document);
-
         @FormUrlEncoded
-        @POST("oauth/token")
+        @POST("v1/oauth/token")
         Call<Map<String, Object>> autenticarOrganizacao(@FieldMap Map<String, String> params);
     }
 

@@ -93,7 +93,8 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
 
     const isPerfil =  this.usuario.perfisSistema.find((element) =>
       ((element.perfil.codigo === PerfilEnum.GEEM
-        || element.perfil.codigo === PerfilEnum.TRA)
+        || element.perfil.codigo === PerfilEnum.TRA
+        || element.perfil.codigo === PerfilEnum.PFS)
         && isPermitido)) != null;
     return isPerfil && isPermitido;
   }

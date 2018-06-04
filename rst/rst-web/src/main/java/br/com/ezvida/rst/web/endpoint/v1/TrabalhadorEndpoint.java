@@ -1,31 +1,33 @@
 package br.com.ezvida.rst.web.endpoint.v1;
 
+import br.com.ezvida.rst.constants.PermissionConstants;
+import br.com.ezvida.rst.model.PrimeiroAcesso;
+import br.com.ezvida.rst.model.Trabalhador;
+import br.com.ezvida.rst.service.TrabalhadorService;
+import com.google.common.base.Charsets;
+import fw.security.binding.Autorizacao;
+import fw.security.binding.Permissao;
+import fw.web.endpoint.SegurancaEndpoint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Encoded;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-
-import br.com.ezvida.rst.model.PrimeiroAcesso;
-import br.com.ezvida.rst.model.Trabalhador;
-import br.com.ezvida.rst.service.TrabalhadorService;
-import fw.web.endpoint.SegurancaEndpoint;
 
 @RequestScoped
 @Path("/public/v1/trabalhador")
 public class TrabalhadorEndpoint extends SegurancaEndpoint<Trabalhador> {
 
 	private static final long serialVersionUID = 3273560908867006426L;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TrabalhadorEndpoint.class);
 
 	@Inject
 	private TrabalhadorService trabalhadorService;
@@ -43,7 +45,7 @@ public class TrabalhadorEndpoint extends SegurancaEndpoint<Trabalhador> {
 				.header("Content-Version", getApplicationVersion())
 				.entity(serializar(trabalhador)).build();
 	}
-	
+
 	@POST
 	@Encoded
 	@Path("/primeiro-acesso")
@@ -55,7 +57,7 @@ public class TrabalhadorEndpoint extends SegurancaEndpoint<Trabalhador> {
 				.entity(trabalhadorService.salvarPrimeiroAcesso(primeiroAcesso))
 				.type(MediaType.APPLICATION_JSON).build();
 	}
-	
+
 	@POST
 	@Encoded
 	@Path("/solicitar-email")
@@ -66,7 +68,27 @@ public class TrabalhadorEndpoint extends SegurancaEndpoint<Trabalhador> {
 		return Response.status(HttpServletResponse.SC_OK)
 				.entity(trabalhadorService.solicitarEmailSesi(solicitacaoEmail))
 				.type(MediaType.APPLICATION_JSON).build();
-		
+
 	}
+
+    //@formatter:off
+    @GET
+    @Encoded
+    @Path("/usuario/{login}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.TRABALHADOR}))
+    //@formatter:onhttp://localhost:8080/rst/api/public/v1/trabalhador/usuario/00435891383
+    public Response getTrabalhadoresByUsuario(@PathParam("login") String login, @QueryParam("nome") String nome, @QueryParam("cpf") String cpf,
+                                              @QueryParam("page") String page, @Context SecurityContext context
+        , @Context HttpServletRequest request) {
+
+        LOGGER.debug("Get trabalhador por login de usuario");
+
+        getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
+
+        return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON).header("Content-Version", getApplicationVersion())
+            .entity(serializar(trabalhadorService.buscarTrabalhadorByUsuario(login, nome, cpf, page))).build();
+    }
 
 }

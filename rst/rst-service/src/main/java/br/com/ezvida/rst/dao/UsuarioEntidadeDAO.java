@@ -34,6 +34,7 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 
 		if (doFetch) {
 			jpql.append(" left join fetch usuarioEntidade.empresa empresa ");
+			jpql.append(" left join fetch usuarioEntidade.empresaProfissionalSaude empresaProfissionalSaude ");
 			jpql.append(" left join fetch usuarioEntidade.departamentoRegional departamentoRegional ");
 			jpql.append(" left join fetch usuarioEntidade.parceiro parceiro ");
 			jpql.append(" left join fetch usuarioEntidade.redeCredenciada redeCredenciada ");
@@ -70,7 +71,8 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 		Map<String, Object> parametros = Maps.newHashMap();
 
 		jpql.append("select distinct usuarioEntidade from UsuarioEntidade usuarioEntidade ");
-		jpql.append("inner join fetch usuarioEntidade.empresa empresa ");
+		jpql.append("left join fetch usuarioEntidade.empresa empresa ");
+		jpql.append("left join fetch usuarioEntidade.empresaProfissionalSaude empresaProfissionalSaude ");
 		jpql.append(" where usuarioEntidade.dataExclusao is null ");
 
 		if (cpf != null) {
@@ -175,10 +177,12 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 
 		if (count) {
 			jpql.append("select  count(distinct usuarioEntidade.id)  from UsuarioEntidade usuarioEntidade ");
-			jpql.append("inner join  usuarioEntidade.empresa empresa ");
+			jpql.append("left join  usuarioEntidade.empresa empresa ");
+			jpql.append("left join  usuarioEntidade.empresaProfissionalSaude empresaProfissionalSaude ");
 		} else {
 			jpql.append("select distinct usuarioEntidade from UsuarioEntidade usuarioEntidade ");
-			jpql.append("inner join fetch usuarioEntidade.empresa empresa ");
+			jpql.append("left join fetch usuarioEntidade.empresa empresa ");
+			jpql.append("left join fetch usuarioEntidade.empresaProfissionalSaude empresaProfissionalSaude ");
 		}
 
 		jpql.append(" where ");
@@ -192,6 +196,7 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 		if (razaoSocial) {
 
 			jpql.append(" and UPPER(empresa.razaoSocial) like :razaoSocial escape :sc ");
+			jpql.append(" and UPPER(empresaProfissionalSaude.razaoSocial) like :razaoSocial escape :sc ");
 			parametros.put("sc", "\\");
 			parametros.put("razaoSocial", "%" + filtro.getRazaoSocial().replace("%", "\\%").toUpperCase() + "%");
 		}
@@ -199,17 +204,19 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 		if (nomeFantasia) {
 
 			jpql.append(" and UPPER(empresa.nomeFantasia) like :nomeFantasia escape :sc ");
+			jpql.append(" and UPPER(empresaProfissionalSaude.nomeFantasia) like :nomeFantasia escape :sc ");
 			parametros.put("sc", "\\");
 			parametros.put("nomeFantasia", "%" + filtro.getNomeFantasia().replace("%", "\\%").toUpperCase() + "%");
 		}
 
 		if (cnpj) {
 			jpql.append(" and empresa.cnpj = :cnpj");
+			jpql.append(" and empresaProfissionalSaude.cnpj = :cnpj");
 			parametros.put("cnpj", filtro.getCnpj());
 		}
 
 		if (!count) {
-			jpql.append(" order by empresa.razaoSocial ");
+			jpql.append(" order by empresa.razaoSocial, empresaProfissionalSaude.razaoSocial");
 		}
 
 	}
@@ -323,6 +330,15 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 		return jpql;
 	}
 
+	private StringBuilder consultaExistenciaUsuarioEntidadeEmpresaProfissionalSaude(StringBuilder jpql) {
+		jpql.append("select empresaProfissionalSaude.id from UsuarioEntidade usuarioEntidade ");
+		jpql.append(" left join usuarioEntidade.empresaProfissionalSaude empresaProfissionalSaude ");
+		jpql.append(" where usuarioEntidade.dataExclusao is null ");
+		jpql.append(" and usuarioEntidade.cpf = :cpf  ");
+		jpql.append(" and empresaProfissionalSaude.id = :idEmpresa  ");
+		return jpql;
+	}
+
 	private StringBuilder consultaExistenciaUsuarioEntidadeSindicato(StringBuilder jpql) {
 		jpql.append("select sindicato.id from UsuarioEntidade usuarioEntidade ");
 		jpql.append(" left join usuarioEntidade.sindicato sindicato ");
@@ -347,6 +363,10 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 			consultaExistenciaUsuarioEntidadeEmpresa(jpql);
 		}
 
+		if (usuarioEntidade.getEmpresaProfissionalSaude() != null && usuarioEntidade.getEmpresaProfissionalSaude().getId() != null) {
+			consultaExistenciaUsuarioEntidadeEmpresaProfissionalSaude(jpql);
+		}
+
 		if (usuarioEntidade.getSindicato() != null && usuarioEntidade.getSindicato().getId() != null) {
 			consultaExistenciaUsuarioEntidadeSindicato(jpql);
 		}
@@ -368,6 +388,10 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 	private void addFiltroIds(UsuarioEntidade usuarioEntidade, TypedQuery<Long> query) {
 		if (usuarioEntidade.getEmpresa() != null && usuarioEntidade.getEmpresa().getId() != null) {
 			query.setParameter("idEmpresa", usuarioEntidade.getEmpresa().getId());
+		}
+
+		if (usuarioEntidade.getEmpresaProfissionalSaude() != null && usuarioEntidade.getEmpresaProfissionalSaude().getId() != null) {
+			query.setParameter("idEmpresa", usuarioEntidade.getEmpresaProfissionalSaude().getId());
 		}
 
 		if (usuarioEntidade.getSindicato() != null && usuarioEntidade.getSindicato().getId() != null) {

@@ -3,4 +3,5 @@ export enum SistemaEnum {
     CADASTRO = 'CADASTRO',
     GIRST = 'GIRST',
     DW = 'DW',
+    RESONLINE = 'RESONLINE',
 }

@@ -4,7 +4,7 @@
     {{'app_rst_usuario_empresa_subtitulo_associar_empresa' | recurso}}
 </p>
 
-<div class="container-form">
+<div class="container-form container-pesquisar">
     <div class="row">
         <div class="form-group col-sm-8">
             <md-input-container [floatPlaceholder]="true">
@@ -22,6 +22,15 @@
             <md-input-container [floatPlaceholder]="true">
                 <input mdInput placeholder="{{ 'app_rst_labels_nome_fantasia' | recurso }}" type="text" name="nomeFantasia" [(ngModel)]="filtro.nomeFantasia" class="form-control" id="nomeFantasia" maxlength="160" #nomeFantasia="ngModel">
             </md-input-container>
+        </div>
+
+        <div class="form-group col-md-6 search">
+            <label for="perfil-select" class="col-form-label pesquisa-situacao">{{ 'app_rst_labels_perfil' | recurso }}</label>
+            <div>
+                <md-radio-group [(ngModel)]="filtro.perfil" name="perfil-select" disableRipple>
+                    <md-radio-button class="pesquisa-situacao" disableRipple *ngFor="let key of keysPerfil" [value]="key">{{perfis[key]}}</md-radio-button>
+                </md-radio-group>
+            </div>
         </div>
     </div>
 </div>

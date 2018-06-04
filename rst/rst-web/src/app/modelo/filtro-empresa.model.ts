@@ -5,6 +5,7 @@ razaoSocial: string;
 nomeFantasia: string;
 unidadeObra: number;
 situacao = '';
+perfil: string;
 
 idUnidadeObra: number;
 }

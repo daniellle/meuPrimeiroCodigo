@@ -87,17 +87,17 @@ public class UsuarioEntidadeService extends BaseService {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void salvar(UsuarioEntidade esuarioEntidade, ClienteAuditoria auditoria) {
+	public void salvar(UsuarioEntidade usuarioEntidade, ClienteAuditoria auditoria) {
 		String descricaoAuditoria = "Cadastro de " + USUARIO_ENTIDADE + ": ";
-		if (esuarioEntidade.getId() != null) {
+		if (usuarioEntidade.getId() != null) {
 			descricaoAuditoria = "Alteração no cadastro de " + USUARIO_ENTIDADE + ": ";
 		}
-		LogAuditoria.registrar(LOGGER, auditoria, descricaoAuditoria, esuarioEntidade);
-		usuarioEntidadeDAO.salvar(esuarioEntidade);
+		LogAuditoria.registrar(LOGGER, auditoria, descricaoAuditoria, usuarioEntidade);
+		usuarioEntidadeDAO.salvar(usuarioEntidade);
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public Set<UsuarioEntidade> salvar(Set<UsuarioEntidade> list, ClienteAuditoria auditoria) {
+	public List<UsuarioEntidade> salvar(List<UsuarioEntidade> list, ClienteAuditoria auditoria) {
 		boolean sucess = false;
 		if (CollectionUtils.isNotEmpty(list)) {
 			for (UsuarioEntidade usuarioEntidade : list) {
@@ -111,7 +111,7 @@ public class UsuarioEntidadeService extends BaseService {
 		if(!sucess) {
 			throw new BusinessErrorException(getMensagem("app_rst_generic_itens_not_add"));
 		} else {
-			return CollectionUtils.isNotEmpty(list) ? list : Sets.newHashSet();
+			return CollectionUtils.isNotEmpty(list) ? list : Lists.newArrayList();
 		}
 
 	}

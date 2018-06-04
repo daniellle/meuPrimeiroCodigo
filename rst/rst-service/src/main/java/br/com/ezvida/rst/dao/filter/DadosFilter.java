@@ -21,6 +21,7 @@ public class DadosFilter implements Serializable {
 	public static final String GESTOR_PARCEIRO = "GEPC";
 	public static final String GESTOR_REDE = "GERC";
 	public static final String GESTOR_DN = "GDNA";
+	public static final String PROF_SAUDE = "PFS";
 
 	private boolean administrador;
 
@@ -33,6 +34,8 @@ public class DadosFilter implements Serializable {
 	private boolean gestorDn;
 
 	private boolean gestorEmpresa;
+
+	private boolean profissionalSaude;
 
 	private boolean gestorSindicato;
 
@@ -84,6 +87,7 @@ public class DadosFilter implements Serializable {
 		this.gestorDr = contemPapel(GESTOR_DR);
 		this.gestorDn = contemPapel(GESTOR_DN);
 		this.gestorEmpresa = contemPapel(GESTOR_EMPRESA);
+		this.profissionalSaude = contemPapel(PROF_SAUDE);
 		this.gestorParceiroCredenciado = contemPapel(GESTOR_PARCEIRO);
 		this.gestorRedeCredenciada = contemPapel(GESTOR_REDE);
 		this.gestorSindicato = contemPapel(GESTOR_SINDICATO);
@@ -93,7 +97,7 @@ public class DadosFilter implements Serializable {
 			this.idsDepartamentoRegional = addHash(departamentos);
 		}
 
-		if (gestorEmpresa && !(diretoriaDr || gestorDr)) {
+		if ((gestorEmpresa || profissionalSaude) && !(diretoriaDr || gestorDr)) {
 			this.idsEmpresa = addHash(empresas);
 		}
 
@@ -123,7 +127,7 @@ public class DadosFilter implements Serializable {
 	}
 
 	private void preenchePerfil() {
-		if (isTrabalhador()) {
+		if (isTrabalhador() || isProfissionalSaude()) {
 			listaPerfisPermitidos = Sets.newHashSet("NA");
 		}
 
@@ -260,6 +264,14 @@ public class DadosFilter implements Serializable {
 
 	public boolean isGestorEmpresa() {
 		return gestorEmpresa;
+	}
+
+	public boolean isProfissionalSaude() {
+		return profissionalSaude;
+	}
+
+	public void setProfissionalSaude(boolean profissionalSaude) {
+		this.profissionalSaude = profissionalSaude;
 	}
 
 	public boolean isGestorSindicato() {

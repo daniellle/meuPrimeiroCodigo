@@ -259,6 +259,7 @@ export const MensagemProperties = {
   app_rst_empresa_campos_obrigatorios: 'Os campos em * são obrigatórios',
   app_rst_msg_3_caracteres: 'Por favor digitar pelo menos 3 caracteres na pesquisa.',
   app_rst_msg_pesquisar_todos_vazios: 'Por favor digitar pelo menos um dos campos.',
+  app_rst_msg_pesquisar_perfil_vazio: 'Por favor selecione o perfil do usuário',
   app_rst_cadastro_realizado_sucesso: 'Cadastro realizado com sucesso',
   app_rst_cnpj_obrigatorio: 'CNPJ obrigatório',
   app_rst_cnpj_invalido: 'CNPJ inválido.',
@@ -498,8 +499,9 @@ export const MensagemProperties = {
   // Usuario Empresa
   app_rst_usuario_empresa_empresas_associadas_title: 'Empresas Associadas',
   app_rst_usuario_empresa_subtitulo_associar_empresa: 'Associar Empresa',
-  app_rst_usuario_empresa_empresas_adicionados: 'Empresas Adicionadas',
+  app_rst_usuario_empresa_empresas_adicionados: 'Empresas do Gestor',
   app_rst_usuario_empresa_empresas_trabalhador: 'Empresas do Trabalhador',
+  app_rst_usuario_empresa_empresas_adicionados_profissional: 'Empresas do Profissional de Saúde',
 
   // Usuario Sindicato
   app_rst_usuario_sindicato_subtitulo_associar_sindicato: 'Associar Sindicato',

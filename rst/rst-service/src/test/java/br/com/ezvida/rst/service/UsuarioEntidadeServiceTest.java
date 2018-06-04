@@ -1,6 +1,8 @@
 package br.com.ezvida.rst.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -59,7 +61,7 @@ public class UsuarioEntidadeServiceTest extends BaseService {
 	public void salvarListaVazia() throws Exception {
 		String mensagemErro = "";
 		try {
-			Set<UsuarioEntidade> lista = new HashSet<UsuarioEntidade>();
+			List<UsuarioEntidade> lista = new ArrayList<>();
 			
 			this.auditoria.setTipoOperacao(TipoOperacaoAuditoria.INCLUSAO);
 			usuarioEntidadeService.salvar(lista, auditoria);

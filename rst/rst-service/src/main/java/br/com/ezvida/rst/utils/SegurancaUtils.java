@@ -23,12 +23,13 @@ public class SegurancaUtils {
     public String validarAutenticacao(HttpServletRequest request) {
         if (ambiente == Ambiente.DESENVOLVIMENTO) {
             LOGGER.warn(" UTILIZANDO SEGURANÇA DO AMBIENTE DE DESENVOLVIMENTO");
-			//return "65020081515"; // administrador
-            // return "15138902040"; // gestor dn
-            // return "01863352538"; // gestor dr
-            // return "03004596539"; // gestor empresa
+			 return "65020081515"; // administrador
+            // return "48552219026"; // gestor dn aplicacoes
+            // return "74055251564"; // gestor dr aplicacoes
+            // return "92883645361"; // gestor empresa
             // return "46335766744"; // trabalhador
-			 return "37139762520"; // carol adm
+			// return "37139762520"; // carol adm
+            // return "64432620005"; //profissonal saude
 
         }
         LOGGER.debug("SessionLogin {}", request.getAttribute(SHIB_SESSION_LOGIN));

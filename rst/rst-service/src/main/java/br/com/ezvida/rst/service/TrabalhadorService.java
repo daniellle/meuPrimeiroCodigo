@@ -27,10 +27,13 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
+
 
 @Stateless
 public class TrabalhadorService extends BaseService {
@@ -55,6 +58,9 @@ public class TrabalhadorService extends BaseService {
 
 	@Inject
 	private TrabalhadorDependenteService trabalhadorDependenteService;
+
+	@Inject
+    private UsuarioEntidadeService usuarioEntidadeService;
 
 	@Inject
 	@Preferencial
@@ -399,4 +405,36 @@ public class TrabalhadorService extends BaseService {
 		cliente.setFuncionalidade(Funcionalidade.USUARIOS);
 		return cliente;
 	}
+
+	public Map<String,List<Object>> buscarTrabalhadorByUsuario(String login, String nome, String cpf, String page) {
+		br.com.ezvida.girst.apiclient.model.Usuario usuarioGirst = usuarioService.buscarPorLogin(login);
+		List<Long> empresas = new ArrayList<>();
+
+		Optional<UsuarioPerfilSistema> optional = usuarioGirst.getPerfisSistema().stream().filter(
+				u -> u.getSistema().getCodigo().equals("resonline") &&
+						u.getPerfil().getCodigo().equals(DadosFilter.ADMINISTRADOR)).findFirst();
+
+		if (optional == null || !optional.isPresent()) {
+			List<UsuarioEntidade> usuarioEntidades = usuarioEntidadeService.pesquisarPorCPF(login);
+			for (UsuarioEntidade usuarioEntidade : usuarioEntidades) {
+				if (usuarioEntidade.getEmpresaProfissionalSaude() != null) {
+					empresas.add(usuarioEntidade.getEmpresaProfissionalSaude().getId());
+				}
+			}
+
+			if(empresas.isEmpty()){
+				return new HashMap<>();
+			}
+		}
+
+		String str = null;
+		try {
+			str = URLDecoder.decode(nome, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			LOGGER.error("erro ao converter nome em utf8", e);
+		}
+
+		return trabalhadorDAO.buscarTrabalhadoresByEmpresasDoUsuario(empresas, str, cpf, page);
+	}
+
 }

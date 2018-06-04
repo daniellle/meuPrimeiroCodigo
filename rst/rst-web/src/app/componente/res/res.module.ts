@@ -27,6 +27,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CompartilhadoModule } from 'app/compartilhado/compartilhado.module';
 import { PaginationModule, TypeaheadModule } from 'ngx-bootstrap';
 import { ResHomeComponent } from './res-home/res-home.component';
+import {PermissoesEnum} from "../../modelo/enum/enum-permissoes";
 
 const routes: Routes = [
     {

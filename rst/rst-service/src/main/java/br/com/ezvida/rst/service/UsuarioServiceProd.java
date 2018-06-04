@@ -2,6 +2,7 @@ package br.com.ezvida.rst.service;
 
 import java.io.InputStream;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
@@ -126,6 +127,10 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
             if (usuarioEntidade.getEmpresa() != null) {
                 usuario.getIdEmpresas().add(usuarioEntidade.getEmpresa().getId());
+            }
+
+            if (usuarioEntidade.getEmpresaProfissionalSaude() != null) {
+                usuario.getIdEmpresas().add(usuarioEntidade.getEmpresaProfissionalSaude().getId());
             }
 
             if (usuarioEntidade.getParceiro() != null) {
@@ -282,7 +287,15 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
         try {
             u = this.usuarioClient.alterar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), usuario);
-            trabalhadorService.sicronizarUsuarioTrabalhador(usuario, auditoria);
+            AtomicReference<Boolean> isTrabalhador = new AtomicReference<>(false);
+            usuarioAnterior.getPerfisSistema().parallelStream().forEach(ups -> {
+                if (ups.getPerfil().getCodigo().equalsIgnoreCase("TRA")){
+                    isTrabalhador.set(true);
+                }
+             });
+            if(isTrabalhador.get()) {
+                trabalhadorService.sicronizarUsuarioTrabalhador(usuario, auditoria);
+            }
         } catch (Exception e) {
             LOGGER.error("Erro ao alterar o usuário. Id = " + String.valueOf(usuario.getId()) + ". Erro: " + e.getMessage(), e.getCause());
             throw e;

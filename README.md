@@ -1,6 +1,29 @@
-# rst-cadastros
+ # rst-cadastros
+-Aplicações para manutenção dos cadastros RST
 
-<<<<<<< HEAD
+**v2.13.0**
+
+============
+
+(RELEASE EM 04/06/2018)
+
+**Novidades**
+
+	Inclusão do perfil Profissional de Saúde e do Sistema Res Online no cadastro do usuário
+
+------------
+
+**Melhorias**
+	
+	Adaptação da tela de Minha Saúde para a nova versão do RES
+
+------------
+
+**Correções**
+
+------------
+
+
 **v2.11.0**
 
 ============
@@ -26,7 +49,7 @@
 	Exibir idade do trabalhador de acordo com os dados da última ficha na tela de Minha Saúde
 
 ------------
-=======
+
 
 **v2.8.0**
 
@@ -35,7 +58,9 @@
 **Novidades**
 	Mundaça no tratamento ao clicar em um link expirado para cadastro de senha
 
->>>>>>> 2cc4faa0797c2d226714b9365e95ada4534702db
+
+------------
+
 
 **v2.7.0**
 

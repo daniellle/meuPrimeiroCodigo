@@ -12,9 +12,12 @@ import br.com.ezvida.rst.service.QuestionarioTrabalhadorService;
 import br.com.ezvida.rst.service.TrabalhadorDependenteService;
 import br.com.ezvida.rst.service.TrabalhadorService;
 import br.com.ezvida.rst.web.auditoria.ClienteInfos;
+import com.google.common.base.Charsets;
 import fw.security.binding.Autorizacao;
 import fw.security.binding.Permissao;
 import fw.web.endpoint.SegurancaEndpoint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -251,10 +254,10 @@ public class TrabalhadoresEndpoint extends SegurancaEndpoint<Trabalhador> {
             .header("Content-Version", getApplicationVersion()).entity(serializar(trabalhadorService.buscarVacinasAlergiasMedicamentosAutoDeclarados(cpf)))
             .build();
     }
-    
+
 	@GET
 	@Encoded
-	@Path("/vidaativa/{id}")	
+	@Path("/vidaativa/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Autorizacao(permissoes = @Permissao(value = {PermissionConstants.DEPARTAMENTO_REGIONAL, PermissionConstants.DEPARTAMENTO_REGIONAL_CONSULTAR, PermissionConstants.USUARIO }))
@@ -264,5 +267,6 @@ public class TrabalhadoresEndpoint extends SegurancaEndpoint<Trabalhador> {
 				.header("Content-Version", getApplicationVersion())
 				.entity(serializar(trabalhadorService.buscarTrabalhadorVidaAtiva(id)))
 				.build();
-	}    
+	}
+
 }

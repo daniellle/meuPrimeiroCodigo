@@ -43,11 +43,15 @@ public class UsuarioEntidade extends AbstractData {
 	@Column(name = "fl_termo")
 	@Convert(converter = SimNaoConverter.class)
 	private SimNao termo;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_empresa_fk", referencedColumnName = "ID_EMPRESA", nullable = true)
 	private Empresa empresa;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_empresa_pfs_fk", referencedColumnName = "ID_EMPRESA", nullable = true)
+	private Empresa empresaProfissionalSaude;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_departamento_regional_fk", referencedColumnName = "ID_DEPARTAMENTO_REGIONAL", nullable = true)
 	private DepartamentoRegional departamentoRegional;
@@ -63,7 +67,7 @@ public class UsuarioEntidade extends AbstractData {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_sindicato_fk", referencedColumnName = "ID_SINDICATO", nullable = true)
 	private Sindicato sindicato;
-	
+
 	public UsuarioEntidade() {}
 
 	@PreUpdate
@@ -124,6 +128,14 @@ public class UsuarioEntidade extends AbstractData {
 
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	public Empresa getEmpresaProfissionalSaude() {
+		return empresaProfissionalSaude;
+	}
+
+	public void setEmpresaProfissionalSaude(Empresa empresaProfissionalSaude) {
+		this.empresaProfissionalSaude = empresaProfissionalSaude;
 	}
 
 	public DepartamentoRegional getDepartamentoRegional() {

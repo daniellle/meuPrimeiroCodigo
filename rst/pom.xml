@@ -6,13 +6,13 @@
 
     <groupId>br.com.ezvida.rst</groupId>
     <artifactId>rst</artifactId>
-    <version>2.11.0</version>
+    <version>2.13.0</version>
     <packaging>pom</packaging>
 
     <name>Registro de Saúde do Trabalhador</name>
 
     <organization>
-        <name>Sabesp</name>
+        <name>EzVida</name>
         <url>http://www.solutis.com.br</url>
     </organization>
 
