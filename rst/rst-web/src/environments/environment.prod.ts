@@ -8,4 +8,5 @@ export const environment = {
     baseHref: '/rst',
     exibirMenu: false,
     exibirWS: false,
+    isProduction: true,
 };

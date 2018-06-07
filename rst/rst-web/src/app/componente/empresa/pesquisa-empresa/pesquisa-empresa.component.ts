@@ -16,6 +16,10 @@ import { EmpresaService } from 'app/servico/empresa.service';
 import { FiltroEmpresa } from 'app/modelo/filtro-empresa.model';
 import { UnidadeObra } from 'app/modelo/unidade-obra.model';
 import { Situacao } from 'app/modelo/enum/enum-situacao.model';
+import { PorteEmpresaService } from './../../../servico/porte-empresa.service';
+import { PorteEmpresa } from 'app/modelo/porte-empresa.model';
+import { Estado } from './../../../modelo/estado.model';
+import { EstadoService } from 'app/servico/estado.service';
 
 @Component({
   selector: 'app-pesquisa-empresa',
@@ -33,20 +37,30 @@ export class PesquisaEmpresaComponent extends BaseComponent implements OnInit {
 
   public situacoes = Situacao;
   public keysSituacao: string[];
+  public listaPorteEmpresas: PorteEmpresa[];
+  public estados: Estado[];
+  public estadoSesiSelecionado: number;
 
   constructor(
-    private router: Router, private activatedRoute: ActivatedRoute, private service: EmpresaService, private fb: FormBuilder,
+    private router: Router, private activatedRoute: ActivatedRoute,
+    private service: EmpresaService,
+    private fb: FormBuilder,
     protected bloqueioService: BloqueioService, protected dialogo: ToastyService,
-    private dialogService: DialogService, private unidadeObraService: UnidadeObraService) {
-    super(bloqueioService, dialogo);
+    private dialogService: DialogService,
+    private unidadeObraService: UnidadeObraService,
+    private porteEmpresaService: PorteEmpresaService,
+    protected estadoService: EstadoService) {
+    super(bloqueioService, dialogo, estadoService);
     this.keysSituacao = Object.keys(this.situacoes);
     this.buscarUnidadesObras();
+    this.buscarEstados();
   }
 
   ngOnInit() {
     this.filtroEmpresa = new FiltroEmpresa();
     this.filtroEmpresa.unidadeObra = undefined;
     this.title = MensagemProperties.app_rst_empresa_title_pesquisar;
+    this.carregarPorteEmpresa();
   }
 
   buscarUnidadesObras() {
@@ -103,12 +117,17 @@ export class PesquisaEmpresaComponent extends BaseComponent implements OnInit {
   validarCampos(): Boolean {
     let verificador: Boolean = true;
 
-    if (this.isVazia(this.filtroEmpresa.cnpj) && this.isVazia(this.filtroEmpresa.nomeFantasia)
-      && this.isVazia(this.filtroEmpresa.razaoSocial)
-      && (!this.filtroEmpresa.unidadeObra || this.filtroEmpresa.unidadeObra.toString() === 'undefined')) {
-      this.mensagemError(MensagemProperties.app_rst_pesquisar_todos_vazios);
-      verificador = false;
-    }
+    // if (this.isVazia(this.filtroEmpresa.cnpj)
+    //   && this.isVazia(this.filtroEmpresa.nomeFantasia)
+    //   && this.isVazia(this.filtroEmpresa.razaoSocial)
+    //   && this.isVazia(this.filtroEmpresa.porte)
+    //   && this.isVazia(this.filtroEmpresa.idEstado)
+    //   && this.isVazia(this.filtroEmpresa.cnae))
+    //       //&& (!this.filtroEmpresa.porte || this.filtroEmpresa.porte. toString() === 'undefined'))
+    //   {
+    //   this.mensagemError(MensagemProperties.app_rst_pesquisar_todos_vazios);
+    //   verificador = false;
+    // }
     if (!this.isVazia(this.filtroEmpresa.cnpj)) {
       if (MascaraUtil.removerMascara(this.filtroEmpresa.cnpj).length < 14) {
         this.mensagemError(MensagemProperties.app_rst_labels_cnpj_incompleto);
@@ -125,6 +144,22 @@ export class PesquisaEmpresaComponent extends BaseComponent implements OnInit {
 
   hasPermissaoCadastro() {
     return Seguranca.isPermitido([PermissoesEnum.EMPRESA, PermissoesEnum.EMPRESA_CADASTRAR]);
+  }
+
+  private carregarPorteEmpresa() {
+    this.porteEmpresaService.pesquisarTodos().subscribe((retorno: PorteEmpresa[]) => {
+        this.listaPorteEmpresas = retorno;
+    }, (error) => {
+        this.mensagemError(error);
+    });
+ }
+ buscarEstados() {
+    this.estadoService.buscarEstados().subscribe((dados: Estado[]) => {
+      this.estados = dados;
+      this.estadoSesiSelecionado = 0;
+    }, (error) => {
+      this.mensagemError(error);
+    });
   }
 
 }

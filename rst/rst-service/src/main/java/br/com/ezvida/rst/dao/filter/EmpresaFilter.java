@@ -25,6 +25,15 @@ public class EmpresaFilter extends FilterBase {
 	@QueryParam("idUnidadeObra")
 	private Long idUnidadeObra;
 	
+	@QueryParam("porte")
+	private Long idPorte;
+	
+	@QueryParam("estado")
+	private Long idEstado;
+	
+	@QueryParam("cnae")
+	private String codCnae;
+	
 	public Long getId() {
 		return id;
 	}
@@ -47,6 +56,18 @@ public class EmpresaFilter extends FilterBase {
 
 	public String getStatusCat() {
 		return situacao;
+	}
+	
+	public Long getIdPorte() {
+		return idPorte;
+	}
+	
+	public Long getIdEstado() {
+		return idEstado;
+	}
+	
+	public String getCodCnae() {
+		return codCnae;
 	}
 
 }

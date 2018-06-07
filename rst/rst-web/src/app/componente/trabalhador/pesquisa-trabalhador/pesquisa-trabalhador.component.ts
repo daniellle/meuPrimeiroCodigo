@@ -1,20 +1,24 @@
-import { Seguranca } from 'app/compartilhado/utilitario/seguranca.model';
-import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
+import {Seguranca} from 'app/compartilhado/utilitario/seguranca.model';
+import {PermissoesEnum} from 'app/modelo/enum/enum-permissoes';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder} from '@angular/forms';
 
-import { ToastyService } from 'ng2-toasty';
-import { DialogService } from 'ng2-bootstrap-modal';
-import { BaseComponent } from 'app/componente/base.component';
+import {ToastyService} from 'ng2-toasty';
+import {DialogService} from 'ng2-bootstrap-modal';
+import {BaseComponent} from 'app/componente/base.component';
 
-import { BloqueioService } from 'app/servico/bloqueio.service';
-import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
-import { FiltroTrabalhador } from './../../../modelo/filtro-trabalhador.model';
-import { TrabalhadorService } from './../../../servico/trabalhador.service';
-import { ListaPaginada } from './../../../modelo/lista-paginada.model';
-import { Trabalhador } from './../../../modelo/trabalhador.model';
-import { Situacao } from 'app/modelo/enum/enum-situacao.model';
+import {BloqueioService} from 'app/servico/bloqueio.service';
+import {MensagemProperties} from 'app/compartilhado/utilitario/recurso.pipe';
+import {FiltroTrabalhador} from './../../../modelo/filtro-trabalhador.model';
+import {TrabalhadorService} from './../../../servico/trabalhador.service';
+import {ListaPaginada} from './../../../modelo/lista-paginada.model';
+import {Trabalhador} from './../../../modelo/trabalhador.model';
+import {Situacao} from 'app/modelo/enum/enum-situacao.model';
+
+import {Estado} from './../../../modelo/estado.model';
+import {EstadoService} from 'app/servico/estado.service';
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-pesquisa-trabalhador',
@@ -28,6 +32,8 @@ export class PesquisaTrabalhadorComponent extends BaseComponent implements OnIni
   public trabalhadorSelecionado: Trabalhador;
   public situacoes = Situacao;
   public keysSituacao: string[];
+  public estados: Estado[];
+  public estadoSesiSelecionado: number;
 
   constructor(
     private router: Router,
@@ -37,9 +43,11 @@ export class PesquisaTrabalhadorComponent extends BaseComponent implements OnIni
     protected dialogo: ToastyService,
     private dialogService: DialogService,
     private activatedRoute: ActivatedRoute,
+    protected estadoService: EstadoService
   ) {
     super(bloqueioService, dialogo);
     this.keysSituacao = Object.keys(this.situacoes);
+    this.buscarEstados();
   }
 
   ngOnInit() {
@@ -68,10 +76,13 @@ export class PesquisaTrabalhadorComponent extends BaseComponent implements OnIni
   public verificarCampos() {
     let verificador: Boolean = true;
 
-    if (this.isVazia(this.filtro.cpf) && this.isVazia(this.filtro.nome) && this.isVazia(this.filtro.nit)) {
-      this.mensagemError(MensagemProperties.app_rst_pesquisar_todos_vazios);
-      verificador = false;
-    }
+    // if (this.isVazia(this.filtro.cpf)
+    // && this.isVazia(this.filtro.nome)
+    // && this.isVazia(this.filtro.nit)
+    // && this.isVazia(this.filtro.idEstado)) {
+    //   this.mensagemError(MensagemProperties.app_rst_pesquisar_todos_vazios);
+    //   verificador = false;
+    // }
 
     if (!this.isVazia(this.filtro.cpf)) {
       if (this.filtro.cpf.length < 14) {
@@ -119,5 +130,17 @@ export class PesquisaTrabalhadorComponent extends BaseComponent implements OnIni
 
   hasPermissaoCadastrar() {
     return Seguranca.isPermitido([PermissoesEnum.TRABALHADOR, PermissoesEnum.TRABALHADOR_CADASTRAR]);
+  }
+  buscarEstados() {
+    this.estadoService.buscarEstados().subscribe((dados: Estado[]) => {
+      this.estados = dados;
+      this.estadoSesiSelecionado = 0;
+    }, (error) => {
+      this.mensagemError(error);
+    });
+  }
+
+  isProducao(): Boolean {
+     return environment.isProduction;
   }
 }

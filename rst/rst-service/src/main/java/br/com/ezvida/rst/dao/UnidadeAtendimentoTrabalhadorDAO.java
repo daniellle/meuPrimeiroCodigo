@@ -103,13 +103,19 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
 
 	public ListaPaginada<UnidadeAtendimentoTrabalhador> pesquisarPaginado(
 			UnidAtendTrabalhadorFilter unidAtendTrabalhadorFilter, DadosFilter segurancaFilter) {
+		
 		LOGGER.debug("Pesquisando paginado Unidade de Atendimento ao Trabalhador por filtro");
+		
 		ListaPaginada<UnidadeAtendimentoTrabalhador> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
 		StringBuilder jpql = new StringBuilder();
 		Map<String, Object> parametros = Maps.newHashMap();
+		
 		getQueryPaginado(jpql, parametros, unidAtendTrabalhadorFilter, false, segurancaFilter);
+		
 		TypedQuery<UnidadeAtendimentoTrabalhador> query = criarConsultaPorTipo(jpql.toString());
+		
 		DAOUtil.setParameterMap(query, parametros);
+		
 		listaPaginada.setQuantidade(getCountQueryPaginado(unidAtendTrabalhadorFilter, segurancaFilter));
 
 		if (unidAtendTrabalhadorFilter != null) {
@@ -140,22 +146,22 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
 		boolean razaoSocial = false;
 		boolean depRegional = false;
 		boolean status = false;
-
-		montarJoinPaginado(jpql, count, segurancaFilter);
-
+		
 		if (unidAtendTrabalhadorFilter != null) {
-			jpql.append(" where ");
-
 			cnpj = StringUtils.isNotEmpty(unidAtendTrabalhadorFilter.getCnpj());
 			razaoSocial = StringUtils.isNotEmpty(unidAtendTrabalhadorFilter.getRazaoSocial());
 			depRegional = unidAtendTrabalhadorFilter.getIdDepRegional() != null
 					&& unidAtendTrabalhadorFilter.getIdDepRegional().intValue() > 0;
-			status = StringUtils.isNotBlank(unidAtendTrabalhadorFilter.getStatusCat());
+			status = StringUtils.isNotBlank(unidAtendTrabalhadorFilter.getStatusCat());			
+		}
+		
 
+		montarJoinPaginado(jpql, count, segurancaFilter, depRegional);
+
+		if (cnpj || razaoSocial || depRegional || status) {			
+			jpql.append(" where ");
 			montarFiltroPaginado(jpql, parametros, unidAtendTrabalhadorFilter, cnpj, razaoSocial, depRegional);
-
 			addAnd(jpql, cnpj, razaoSocial, depRegional, status);
-
 			montarFiltroSituacaoPaginado(jpql, unidAtendTrabalhadorFilter);
 		}
 
@@ -180,6 +186,7 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
 	private void montarFiltroIdsPaginado(StringBuilder jpql, Map<String, Object> parametros,
 			DadosFilter segurancaFilter) {
 		if (segurancaFilter.temIdsEmpresa()) {
+			//testar se " empresaUat.empresa.id IN (:idsEmpresa) " funciona
 			jpql.append(" empresa.id IN (:idsEmpresa) ");
 			parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
 		}
@@ -234,9 +241,11 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
 			if (cnpj) {
 				jpql.append(" and");
 			}
-			jpql.append(" UPPER(uat.razaoSocial) like :razaoSocial escape :sc");
+			//jpql.append(" UPPER(uat.razaoSocial) like :razaoSocial escape :sc");
+			//tem q ver com Dan pq isso não está funcionando...
+			jpql.append(" set_simple_name(UPPER(uat.razaoSocial)) like set_simple_name(:razaoSocial) escape :sc");
 			parametros.put("sc", "\\");
-			parametros.put("razaoSocial", "%" + unidAtendTrabalhadorFilter.getRazaoSocial().replace("%", "\\%").toUpperCase() + "%");
+			parametros.put("razaoSocial", "%" + unidAtendTrabalhadorFilter.getRazaoSocial().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
 		}
 
 		if (depRegional) {
@@ -248,27 +257,43 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
 		}
 	}
 
-	private void montarJoinPaginado(StringBuilder jpql, boolean count, DadosFilter segurancaFilter) {
+	private void montarJoinPaginado(StringBuilder jpql, boolean count, DadosFilter segurancaFilter, boolean depRegional) {
 		if (count) {
 			jpql.append("select count(distinct uat.id) from UnidadeAtendimentoTrabalhador uat ");
-			jpql.append("left join uat.empresaUats empresaUat ");
+			//jpql.append("left join uat.empresaUats empresaUat ");
 			jpql.append("left join uat.departamentoRegional departamentoRegionalUat ");
 		} else {
 			jpql.append("select DISTINCT uat from UnidadeAtendimentoTrabalhador uat ");
 			jpql.append("left join fetch uat.endereco endUat ");
-			jpql.append("left join uat.empresaUats empresaUat ");
-			jpql.append("left join uat.departamentoRegional departamentoRegionalUat ");
+			//jpql.append("left join uat.empresaUats empresaUat ");
+			//jpql.append("left join uat.departamentoRegional departamentoRegionalUat ");
 			jpql.append("left join fetch endUat.endereco endereco ");
 			jpql.append("left join fetch endereco.municipio municipio ");
 		}
+		
+		if (depRegional){			
+			//ver se é necessário, já que ele pesquisa direto em uat.departamentoRegional.id
+			jpql.append("left join uat.departamentoRegional departamentoRegionalUat ");
+		}
 
-		if (segurancaFilter != null && (segurancaFilter.temIdsTrabalhador() || segurancaFilter.temIdsEmpresa()) && !segurancaFilter.isAdministrador()) {
-			jpql.append("left join empresaUat.empresa empresa ");
-
-			if (segurancaFilter.temIdsTrabalhador() && !segurancaFilter.isAdministrador()) {
-				jpql.append("left join empresa.empresaTrabalhadores empresaTrabalhador ");
-				jpql.append("left join empresaTrabalhador.trabalhador trabalhador ");
-			}
+		if (segurancaFilter != null){
+			
+			if (!segurancaFilter.isAdministrador()){
+			
+				if (segurancaFilter.temIdsEmpresa()) {				
+					jpql.append("left join uat.empresaUats empresaUat ");
+					jpql.append("left join empresaUat.empresa empresa ");
+				}
+				
+				if (segurancaFilter.temIdsTrabalhador()){
+					jpql.append("left join empresa.empresaTrabalhadores empresaTrabalhador ");
+					jpql.append("left join empresaTrabalhador.trabalhador trabalhador ");
+				}
+				
+				if (segurancaFilter.temIdsDepRegional()){
+					jpql.append("left join uat.departamentoRegional departamentoRegionalUat ");
+				}	
+			} 
 		}
 	}
 

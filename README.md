@@ -1,6 +1,36 @@
  # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v2.15.0**
+
+============
+
+(RELEASE EM 07/06/2018)
+
+**Novidades**
+
+
+------------
+
+**Melhorias**
+	
+	Modificado busca dos filtros de texto para "contêm"
+	Modificado Pesquisa de Empresas
+	Modificado Pesquisa de Profissionais
+	Modificado Pesquisa de Trabalhador
+	Removido botão para cadastrar novo trabalhador
+	Nova imagem para o card Minha Conta
+
+------------
+
+**Correções**
+
+	Ajuste do filtro para pesquisar Unidade Sesi
+	Removido exibição do valor "0" em Circunferência Abdominal
+
+------------
+
+
 **v2.13.0**
 
 ============

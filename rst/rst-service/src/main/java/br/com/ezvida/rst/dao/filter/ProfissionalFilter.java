@@ -15,6 +15,9 @@ public class ProfissionalFilter extends FilterBase {
 	
 	@QueryParam("statusProfissional")
 	private String statusProfissional;
+	
+	@QueryParam("estado")
+	private Long idEstado;
 
 	public String getNome() {
 		return nome;
@@ -35,7 +38,8 @@ public class ProfissionalFilter extends FilterBase {
 	public String getStatusProfissional() {
 		return statusProfissional;
 	}
-
 	
-
+	public Long getIdEstado() {
+		return idEstado;
+	}
 }

@@ -15,6 +15,8 @@ import { ListaPaginada } from '../../../modelo/lista-paginada.model';
 import { Situacao } from 'app/modelo/enum/enum-situacao.model';
 import { TipoProfissional } from 'app/modelo/enum/enum-tipo-profissional';
 import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
+import { Estado } from './../../../modelo/estado.model';
+import { EstadoService } from 'app/servico/estado.service';
 
 @Component({
   selector: 'app-profissionais-pesquisar',
@@ -31,15 +33,19 @@ export class PesquisarProfissionaisComponent extends BaseComponent implements On
   public tipoProfissional = TipoProfissional;
   public keysTipoProfissional: string[];
   teste = new Map<number, number>();
+  public estados: Estado[];
+  public estadoSesiSelecionado: number;
   constructor(private router: Router, private fb: FormBuilder,
               protected bloqueioService: BloqueioService,
               private service: ProfissionalService,
               protected dialogo: ToastyService,
               private dialogService: DialogService,
-              private activatedRoute: ActivatedRoute) {
-    super(bloqueioService, dialogo);
+              private activatedRoute: ActivatedRoute,
+              protected estadoService: EstadoService) {
+    super(bloqueioService, dialogo, estadoService);
     this.keysSituacao = Object.keys(this.situacoes);
     this.keysTipoProfissional = Object.keys(this.tipoProfissional);
+    this.buscarEstados();
   }
 
   ngOnInit() {
@@ -70,10 +76,21 @@ export class PesquisarProfissionaisComponent extends BaseComponent implements On
   validarCampos(): Boolean {
     let verificador: Boolean = true;
 
-    if (this.isVazia(this.filtro.cpf) && this.isVazia(this.filtro.nome) && this.isVazia(this.filtro.registro)) {
-      this.mensagemError(MensagemProperties.app_rst_msg_pesquisar_todos_vazios);
-      verificador = false;
-    }
+    // if (this.isVazia(this.filtro.cpf)
+    // && this.isVazia(this.filtro.nome)
+    // && this.isVazia(this.filtro.registro)
+    // && this.isVazia(this.filtro.idEstado)) {
+    //   this.mensagemError(MensagemProperties.app_rst_msg_pesquisar_todos_vazios);
+    //   verificador = false;
+    // }
+
+    if (!this.isVazia(this.filtro.cpf)) {
+        if (MascaraUtil.removerMascara(this.filtro.cpf).length < 14) {
+          this.mensagemError(MensagemProperties.app_rst_labels_cnpj_incompleto);
+          verificador = false;
+        }
+        this.filtro.cpf = MascaraUtil.removerMascara(this.filtro.cpf);
+      }
     return verificador;
   }
 
@@ -105,5 +122,14 @@ export class PesquisarProfissionaisComponent extends BaseComponent implements On
   hasPermissaoCadastrar() {
     return this.hasPermissao(PermissoesEnum.PROFISSIONAL)
       ||  this.hasPermissao(PermissoesEnum.PROFISSIONAL_CADASTRAR);
+  }
+
+  buscarEstados() {
+    this.estadoService.buscarEstados().subscribe((dados: Estado[]) => {
+      this.estados = dados;
+      this.estadoSesiSelecionado = 0;
+    }, (error) => {
+      this.mensagemError(error);
+    });
   }
 }

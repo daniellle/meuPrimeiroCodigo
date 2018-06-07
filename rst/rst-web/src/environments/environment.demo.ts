@@ -8,5 +8,6 @@ export const environment = {
     path_raiz: '',
     baseHref: '/rst',
     exibirMenu: false,
-    exibirWS: false
+    exibirWS: false,
+    isProduction: false,
 };

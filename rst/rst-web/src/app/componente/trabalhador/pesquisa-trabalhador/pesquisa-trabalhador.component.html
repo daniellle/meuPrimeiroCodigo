@@ -24,7 +24,19 @@
                     <input mdInput [textMask]="{mask: mascaraNit, guide: false}" [(ngModel)]="filtro.nit" name="nit" id="nit" appFormularioCamposErro placeholder="{{ 'app_rst_labels_nit' | recurso }}" type="text" />
                 </md-input-container>
             </div>
-            <div class="form-group col-md-6 search">
+            <div class="form-group col-md-4">
+                <div class="md-container">
+                    <md-select placeholder="{{ 'app_rst_labels_estado' | recurso }}" name="estado" [(ngModel)]="filtro.idEstado" id="estado">
+                        <md-option>
+                            <option value='0'>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                        </md-option>
+                        <md-option *ngFor='let estado of estados' [value]="estado.id">
+                            {{estado.descricao}}
+                        </md-option>
+                    </md-select>
+                </div>
+            </div>
+            <div class="form-group col-md-4 search">
                 <label for="situacao" class="col-form-label pesquisa-situacao">{{ 'app_rst_labels_situacao' | recurso }}</label>
                 <div>
                     <md-radio-group [(ngModel)]="filtro.situacao" name="situacao" disableRipple>
@@ -33,12 +45,13 @@
                     </md-radio-group>
                 </div>
             </div>
+
         </div>
     </form>
 </div>
 <div class="btn-filter-pesquisar space-up">
     <button type="button" class="btn btn-primary" (click)="pesquisar();">{{'app_rst_btn_pesquisar' | recurso}}</button>
-    <button type="button" class="btn btn-primary" (click)="novo()" *ngIf="hasPermissaoCadastrar()">{{'app_rst_btn_novo' | recurso}}</button>
+    <button type="button" class="btn btn-primary" (click)="novo()" *ngIf="hasPermissaoCadastrar() && !isProducao()">{{'app_rst_btn_novo' | recurso}}</button>
 </div>
 <!--Grid -->
 <div class="container-form space-up" *ngIf="isNotEmpty(trabalhadores)">

@@ -12,5 +12,6 @@ export const environment = {
     path_raiz: '',
     baseHref: '/',
     exibirMenu: true,
-    exibirWS: true
+    exibirWS: true,
+    isProduction: true,
 };

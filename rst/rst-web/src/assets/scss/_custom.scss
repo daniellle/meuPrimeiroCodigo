@@ -1188,6 +1188,22 @@ th {
     width: 100%;
 }
 
+.img_minhaconta {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: 7px;
+    background-position-y: -2px;
+    background-size: 140px 140px;
+}
+
+.front.img_minhaconta {
+    background-image: url("../img/minhaconta.svg");
+}
+
+.back.img_minhaconta {
+    background-image: url("../img/minhaconta_roxo.svg");
+}
+
 // INICIO Effect CSS Flip CARD
 .flip_container_card {
     position: relative;

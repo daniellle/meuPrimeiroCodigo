@@ -175,9 +175,9 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 						|| usuarioFilter.getIdDepartamentoRegional() != null) {
 					adicionarAnd(jpql);
 				}
-				jpql.append(" UPPER(vw_usuario_entidade.nome) like :nome escape :sc");
+				jpql.append(" set_simple_name(UPPER(vw_usuario_entidade.nome)) like set_simple_name(:nome) escape :sc");
 				parametros.put("sc", "\\");
-				parametros.put("nome", "%" + usuarioFilter.getNome().replaceAll("%", "\\%").toUpperCase() + "%");
+				parametros.put("nome", "%" + usuarioFilter.getNome().replaceAll("%", "\\%").toUpperCase().replace(" ", "%") + "%");
 				setFiltroAplicado(true);
 			}
 

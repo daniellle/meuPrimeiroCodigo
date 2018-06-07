@@ -22,7 +22,8 @@ export class ProfissionalService extends BaseService<Profissional> {
     .append('nome', typeof filtro.nome !== 'undefined' ? filtro.nome : '')
     .append('statusProfissional', filtro.situacao)
     .append('pagina', paginacao.pagina.toString())
-    .append('qtdRegistro', paginacao.qtdRegistro.toString());
+    .append('qtdRegistro', paginacao.qtdRegistro.toString())
+    .append('estado', typeof filtro.idEstado !== 'undefined' ? filtro.idEstado : '0');
 
     return super.get('/v1/profissionais/paginado', params)
     .map((response: Response) => {

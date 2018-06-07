@@ -37,7 +37,11 @@ export class EmpresaService extends BaseService<Empresa> {
       .append('situacao', filtroEmpresa.situacao)
       .append('unidadeObra', filtroEmpresa.unidadeObra > 0 ? filtroEmpresa.unidadeObra.toString() : '0')
       .append('pagina', paginacao.pagina.toString())
-      .append('qtdRegistro', paginacao.qtdRegistro.toString());
+      .append('qtdRegistro', paginacao.qtdRegistro.toString())
+      .append('porte', typeof filtroEmpresa.porte !== 'undefined' ? filtroEmpresa.porte : '0')
+      .append('estado', typeof filtroEmpresa.idEstado !== 'undefined' ? filtroEmpresa.idEstado : '0')
+      .append('cnae', typeof filtroEmpresa.cnae !== 'undefined' ? filtroEmpresa.cnae.toString() : '');
+
     return super.get('/v1/empresas/paginado', params)
       .map((response: Response) => {
         return response;
@@ -66,7 +70,7 @@ export class EmpresaService extends BaseService<Empresa> {
 
   pesquisarCnaes(filtroCnae: FiltroCnae, paginacao: Paginacao): Observable<ListaPaginada<Cnae>> {
     console.log('versao ', typeof filtroCnae.versao);
-    
+
     const params = new HttpParams().append('versao', filtroCnae.versao ? filtroCnae.versao : '')
       .append('descricao', filtroCnae.descricao)
       .append('codigo', filtroCnae.codigo)

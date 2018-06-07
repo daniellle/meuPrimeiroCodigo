@@ -68,8 +68,8 @@ public class ProfissionalDAO extends BaseDAO<Profissional, Long> {
 		}
 
 		listaPaginada.setList(query.getResultList());
-
 		return listaPaginada;
+		
 	}
 
 	public long getCountQueryPaginado(ProfissionalFilter profissionalFilter, DadosFilter segurancaFilter) {
@@ -91,6 +91,7 @@ public class ProfissionalDAO extends BaseDAO<Profissional, Long> {
 		boolean registro = false;
 		boolean nome = false;
 		boolean status = false;
+		boolean estado = false;
 
 		montarJoinPaginado(jpql, count, segurancaFilter);
 
@@ -100,16 +101,17 @@ public class ProfissionalDAO extends BaseDAO<Profissional, Long> {
 			registro = StringUtils.isNotBlank(profissionalFilter.getRegistro());
 			nome = StringUtils.isNotBlank(profissionalFilter.getNome());
 			status = StringUtils.isNotBlank(profissionalFilter.getStatusProfissional());
+			estado = profissionalFilter.getIdEstado() != null && profissionalFilter.getIdEstado().intValue() > 0;
 
-			if (cpf || registro || nome || status) {
+			if (cpf || registro || nome || status || estado) {
 				jpql.append(" where ");
 			}
 
-			montarFiltroPaginado(jpql, parametros, profissionalFilter, cpf, registro, nome);
-			montarFiltroStatusPaginado(jpql, profissionalFilter, cpf, registro, nome, status);
+			montarFiltroPaginado(jpql, parametros, profissionalFilter, cpf, registro, nome, estado);
+			montarFiltroStatusPaginado(jpql, profissionalFilter, cpf, registro, nome, status, estado);
 		}
 
-		montarFiltroDepRegional(jpql, parametros, segurancaFilter, cpf, registro, nome, status);
+		montarFiltroDepRegional(jpql, parametros, segurancaFilter, cpf, registro, nome, status, estado);
 
 		if (!count) {
 			jpql.append(" order by p.nome");
@@ -117,9 +119,9 @@ public class ProfissionalDAO extends BaseDAO<Profissional, Long> {
 	}
 
 	private void montarFiltroDepRegional(StringBuilder jpql, Map<String, Object> parametros,
-			DadosFilter segurancaFilter, boolean cpf, boolean registro, boolean nome, boolean status) {
+			DadosFilter segurancaFilter, boolean cpf, boolean registro, boolean nome, boolean status, boolean estado) {
 		if (segurancaFilter != null) {
-			if ((cpf || registro || nome || status) && (segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador())) {
+			if ((cpf || registro || nome || status || estado) && (segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador())) {
 				jpql.append(" and ");
 				jpql.append("  uat.departamentoRegional.id IN (:idsDepRegional) ");
 				parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
@@ -128,9 +130,9 @@ public class ProfissionalDAO extends BaseDAO<Profissional, Long> {
 	}
 
 	private void montarFiltroStatusPaginado(StringBuilder jpql, ProfissionalFilter profissionalFilter, boolean cpf,
-			boolean registro, boolean nome, boolean status) {
+			boolean registro, boolean nome, boolean status, boolean estado) {
 		if (status) {
-			if (cpf || registro || nome) {
+			if (cpf || registro || nome || estado) {
 				jpql.append(" and ");
 			}
 			if (Situacao.ATIVO.getCodigo().equals(profissionalFilter.getStatusProfissional())) {
@@ -142,7 +144,7 @@ public class ProfissionalDAO extends BaseDAO<Profissional, Long> {
 	}
 
 	private void montarFiltroPaginado(StringBuilder jpql, Map<String, Object> parametros,
-			ProfissionalFilter profissionalFilter, boolean cpf, boolean registro, boolean nome) {
+			ProfissionalFilter profissionalFilter, boolean cpf, boolean registro, boolean nome, boolean estado) {
 		if (cpf) {
 			jpql.append(" upper(p.cpf) like :cpf escape :sc ");
 			parametros.put("sc", "\\");
@@ -162,9 +164,17 @@ public class ProfissionalDAO extends BaseDAO<Profissional, Long> {
 			if (cpf || registro) {
 				jpql.append(" and ");
 			}
-			jpql.append(" UPPER(p.nome) like :nome escape :sc  ");
+			jpql.append(" set_simple_name(UPPER(p.nome)) like set_simple_name(:nome) escape :sc  ");
 			parametros.put("sc", "\\");
-			parametros.put("nome", "%" + profissionalFilter.getNome().replace("%", "\\%").toUpperCase() + "%");
+			parametros.put("nome", "%" + profissionalFilter.getNome().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
+		}
+		
+		if (estado){
+			if (cpf || registro || nome )
+				jpql.append(" and ");
+			
+			jpql.append(" estado.id = :idEstado ");
+			parametros.put("idEstado", profissionalFilter.getIdEstado());
 		}
 	}
 

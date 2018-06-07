@@ -153,9 +153,9 @@ public class ProdutoServicoDAO extends BaseDAO<ProdutoServico, Long> {
 	private void montarFiltroNomeLinha(StringBuilder jpql, Map<String, Object> parametros, ProdutoServicoFilter filter,
 			boolean nome, boolean linha) {
 		if (nome) {
-			jpql.append(" UPPER(produtoServico.nome) like :nome escape :sc");
+			jpql.append(" set_simple_name(UPPER(produtoServico.nome)) like set_simple_name(:nome) escape :sc");
 			parametros.put("sc", "\\");
-			parametros.put("nome", "%" + filter.getNome().replace("%", "\\%").toUpperCase() + "%");
+			parametros.put("nome", "%" + filter.getNome().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
 		}
 		if (linha) {
 			if (nome) {

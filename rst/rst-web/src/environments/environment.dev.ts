@@ -8,7 +8,8 @@ export const environment = {
     path_raiz: '',
     baseHref: '/rst',
     exibirMenu: true,
-    exibirWS: true
+    exibirWS: true,
+    isProduction: false,
 };
 /*
 api_private: 'https://dev-www.sesivivamais.com.br/rst/api/private',

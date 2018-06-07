@@ -1,50 +1,51 @@
-import { PerfilEnum } from './../../../modelo/enum/enum-perfil';
-import { FiltroTrabalhador } from './../../../modelo/filtro-trabalhador.model';
-import { PermissoesEnum } from './../../../modelo/enum/enum-permissoes';
-import { Seguranca } from './../../../compartilhado/utilitario/seguranca.model';
-import { environment } from './../../../../environments/environment';
-import { DatePicker } from './../../../compartilhado/utilitario/date-picker';
-import { PaisService } from './../../../servico/pais.service';
-import { Nacionalidade } from 'app/modelo/enum/enum-nacionalidade.model';
-import { SituacaoTrabalhador } from 'app/modelo/enum/enum-situacao-trabalhador.model';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastyService } from 'ng2-toasty';
-import { DialogService } from 'ng2-bootstrap-modal';
-import { BaseComponent } from 'app/componente/base.component';
-import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
-import { BloqueioService } from 'app/servico/bloqueio.service';
+import {PerfilEnum} from './../../../modelo/enum/enum-perfil';
+import {FiltroTrabalhador} from './../../../modelo/filtro-trabalhador.model';
+import {PermissoesEnum} from './../../../modelo/enum/enum-permissoes';
+import {Seguranca} from './../../../compartilhado/utilitario/seguranca.model';
+import {environment} from './../../../../environments/environment';
+import {DatePicker} from './../../../compartilhado/utilitario/date-picker';
+import {PaisService} from './../../../servico/pais.service';
+import {Nacionalidade} from 'app/modelo/enum/enum-nacionalidade.model';
+import {SituacaoTrabalhador} from 'app/modelo/enum/enum-situacao-trabalhador.model';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ToastyService} from 'ng2-toasty';
+import {DialogService} from 'ng2-bootstrap-modal';
+import {BaseComponent} from 'app/componente/base.component';
+import {MensagemProperties} from 'app/compartilhado/utilitario/recurso.pipe';
+import {BloqueioService} from 'app/servico/bloqueio.service';
 
-import { Trabalhador } from './../../../modelo/trabalhador.model';
-import { TrabalhadorService } from './../../../servico/trabalhador.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Municipio } from 'app/modelo/municipio.model';
-import { EstadoService } from 'app/servico/estado.service';
-import { EnderecoTrabalhador } from 'app/modelo/endereco-trabalhador.model';
-import { Dependente } from 'app/modelo/dependente.model';
-import { TelefoneTrabalhador } from 'app/modelo/telefone-trabalhador.model';
-import { EmailTrabalhador } from 'app/modelo/email-trabalhador.model';
-import { MascaraUtil } from 'app/compartilhado/utilitario/mascara.util';
+import {Trabalhador} from './../../../modelo/trabalhador.model';
+import {TrabalhadorService} from './../../../servico/trabalhador.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Municipio} from 'app/modelo/municipio.model';
+import {EstadoService} from 'app/servico/estado.service';
+import {EnderecoTrabalhador} from 'app/modelo/endereco-trabalhador.model';
+import {Dependente} from 'app/modelo/dependente.model';
+import {TelefoneTrabalhador} from 'app/modelo/telefone-trabalhador.model';
+import {EmailTrabalhador} from 'app/modelo/email-trabalhador.model';
+import {MascaraUtil} from 'app/compartilhado/utilitario/mascara.util';
 
-import { TipoEndereco } from 'app/modelo/enum/enum-tipo-endereco.model';
-import { ValidateCPF } from 'app/compartilhado/validators/cpf.validator';
-import { ValidarNit } from 'app/compartilhado/validators/nit.validator';
-import { Raca } from 'app/modelo/enum/enum-raca.model';
-import { BrPdh } from 'app/modelo/enum/enum-br-pdh.model';
-import { Escolaridade } from 'app/modelo/enum/enum-escolaridade.model';
-import { FaixaSalarial } from 'app/modelo/enum/enum-faixa-salarial.model';
-import { Genero } from 'app/modelo/enum/enum-genero.model';
-import { EstadoCivil } from 'app/modelo/enum/enum-estado-civil.model';
-import { EnumValues } from 'enum-values';
-import { TipoDependente } from 'app/modelo/enum/enum-tipo-dependente.model';
-import { ValidateData, ValidateDataFutura } from 'app/compartilhado/validators/data.validator';
-import { Profissao } from 'app/modelo/profissao.model';
-import { ProfissaoService } from 'app/servico/profissao.service';
-import { TipoSanguineo } from 'app/modelo/enum/enum-tipo-sanguineo.model';
-import { Pais } from 'app/modelo/pais.model';
-import { IOption } from 'ng-select';
-import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
+import {TipoEndereco} from 'app/modelo/enum/enum-tipo-endereco.model';
+import {ValidateCPF} from 'app/compartilhado/validators/cpf.validator';
+import {ValidarNit} from 'app/compartilhado/validators/nit.validator';
+import {Raca} from 'app/modelo/enum/enum-raca.model';
+import {BrPdh} from 'app/modelo/enum/enum-br-pdh.model';
+import {Escolaridade} from 'app/modelo/enum/enum-escolaridade.model';
+import {FaixaSalarial} from 'app/modelo/enum/enum-faixa-salarial.model';
+import {Genero} from 'app/modelo/enum/enum-genero.model';
+import {EstadoCivil} from 'app/modelo/enum/enum-estado-civil.model';
+import {EnumValues} from 'enum-values';
+import {TipoDependente} from 'app/modelo/enum/enum-tipo-dependente.model';
+import {ValidateData, ValidateDataFutura} from 'app/compartilhado/validators/data.validator';
+import {Profissao} from 'app/modelo/profissao.model';
+import {ProfissaoService} from 'app/servico/profissao.service';
+import {TipoSanguineo} from 'app/modelo/enum/enum-tipo-sanguineo.model';
+import {Pais} from 'app/modelo/pais.model';
+import {IOption} from 'ng-select';
+import {CropperSettings, ImageCropperComponent} from 'ng2-img-cropper';
+
 @Component({
     selector: 'app-cadastro-trabalhador',
     templateUrl: './cadastro-trabalhador.component.html',
@@ -197,6 +198,8 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
         if (this.id) {
             this.modoAlterar = true;
             this.buscarTrabalhador();
+        } else if (this.isProducao()) {
+            this.router.navigate(['/acessonegado']);
         }
     }
 
@@ -1104,5 +1107,7 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
         this.temImagem = false;
     }
 
-
+    isProducao():Boolean{
+        return environment.isProduction;
+    }
 }

@@ -31,7 +31,8 @@ export class TrabalhadorService extends BaseService<Trabalhador> {
       .append('falecidos', filtro.falecidos ? 'true' : 'false')
       .append('aplicarDadosFilter', filtro.aplicarDadosFilter ? 'true' : 'false')
       .append('pagina', paginacao.pagina.toString())
-      .append('qtdRegistro', paginacao.qtdRegistro.toString());
+      .append('qtdRegistro', paginacao.qtdRegistro.toString())
+      .append('estado', typeof filtro.idEstado !== 'undefined' ? filtro.idEstado : '0');
 
     return super.get('/v1/trabalhadores/paginado', params)
       .map((response: Response) => {

@@ -50,6 +50,10 @@ export class TrabalhadorIntermediarioComponent implements OnInit {
     return (this.usuarioLogado.sub === this.trabalhador.cpf);
   }
 
+  hasAcessMinhaConta() {
+    return (this.usuarioLogado.sub === this.trabalhador.cpf);
+  }
+
   mudarPagina(tipo) {
     if (this.meusdados) {
       this.router.navigate([`${environment.path_raiz_cadastro}/trabalhador/meusdados/${this.trabalhador.id}/${tipo}`]);

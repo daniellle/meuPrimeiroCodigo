@@ -28,7 +28,7 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
         'IMC'
     ];
 
-    hoje = new Date();
+    hoje: Date;
     idade: any;
 
     sistolica: DadoBasico;
@@ -45,7 +45,6 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
     graficoPressaoSanguinea: any;
     graficoPeso: any;
     paciente: any;
-
     encontrosTimeline: any[];
     paginaTimeline: any[];
     numeroEncontros = 0;
@@ -98,6 +97,12 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
         this.criarGraficoDePressao(dados.sistolica || [], dados.diastolica || []);
     }
 
+    tratarDataFicha(elementoHistorico){
+        if ( elementoHistorico.created ) {
+            this.hoje = elementoHistorico.created;
+        }
+    }
+
     private ordenarArrayDeCircunferenciaAbdominal(collection: Array<{ data: string, informacao: Path }>) {
         collection.sort(function (a,b) {
             if (new Date(a.data) > new Date(b.data)) {
@@ -112,8 +117,19 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
         });
     }
 
+    private getTime(date?: Date) {
+        return date != null ? date.getTime() : 0;
+    }
+
+
+    public sortByDueDate(): void {
+
+    }
+
     criarGraficoDeCircunferencia(circunferencias: Array<{ data: string, informacao: any }>) {
-        if (!circunferencias || circunferencias.length === 0 || circunferencias.every(c => Number(c.informacao!.magnitude) <= 0)) {
+
+        if (!circunferencias || circunferencias.length === 0
+            || circunferencias.every(c => Number(c.informacao!.magnitude) <= 0)) {
             this.semDadosPesoSuficiente = true;
         } else {
             this.semDadosPesoSuficiente = false;
@@ -127,45 +143,88 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
 
             this.ordenarArrayDeCircunferenciaAbdominal(circunferencias);
 
+            let quantidade_de_datas_sem_repeticao_sem_zero = 0;
             circunferencias.forEach((circunferencia) => {
-                if (circunferencia.informacao) {
-                    const data = new Date(circunferencia.data);
-                    setLabelsComDatas.add(`${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()}`);
+                if (circunferencia.informacao
+                    && circunferencia.informacao.magnitude !== 0
+                    && circunferencia.informacao !== undefined
+                    && circunferencia.informacao !== null
+                    && circunferencia.informacao.magnitude !== undefined
+                    && circunferencia.informacao.magnitude != null) {
+                        quantidade_de_datas_sem_repeticao_sem_zero++;
+                    }
+            });
+
+            let contador = 0;
+            circunferencias.forEach((circunferencia) => {
+
+                if (circunferencia.informacao
+                    && circunferencia.informacao.magnitude !== 0
+                    && circunferencia.informacao !== undefined
+                    && circunferencia.informacao !== null
+                    && circunferencia.informacao.magnitude !== undefined
+                    && circunferencia.informacao.magnitude !== null) {
+                        const data = new Date(circunferencia.data);
+                        setLabelsComDatas.add(`${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()}`);
+                        contador++;
                 }
             });
 
             labelsComDatas = Array.from(setLabelsComDatas);
+            setLabelsComDatas = new Set();
 
-            for(const circunferencia of circunferencias) {
-                const data = new Date(circunferencia.data);
-                const dataFormatada = `${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()}`;
-
-                //Verificação se o registro está entre os 3 registros que vão ser exibidos.
-                if(labelsComDatas.indexOf(dataFormatada) > -1) {
-
-                    //Verificar se a data do registro já foi inserida para colocar ele em outro dataset.
-                    const index = datasJaInseridas.indexOf(dataFormatada);
-                    if(index != -1) {
-                        let list = [];
-
-                        for (let i = 0; i < labelsComDatas.length; i++) {
-                            list.push(undefined);
-                        }
-
-                        list[index] = circunferencia.informacao.magnitude;
-
-                        dados.push({
-                            data: list
-                        });
-                    } else {
-                        dados[0].data.push(circunferencia.informacao.magnitude);
-                        datasJaInseridas.push(dataFormatada);
-                    }
+            const posicoesAIgnorar = labelsComDatas.length - 3;
+            let contador2 = 0;
+            labelsComDatas.forEach((data) => {
+                if (contador2 >= posicoesAIgnorar) {
+                    setLabelsComDatas.add(data);
                 }
+                contador2++;
+            });
 
-                i++;
-                if (i > 2) {
-                    break;
+            labelsComDatas = Array.from(setLabelsComDatas);
+            for (const circunferencia of circunferencias) {
+                if (circunferencia.informacao
+                    && circunferencia.informacao.magnitude !== 0
+                    && circunferencia.informacao !== undefined
+                    && circunferencia.informacao !== null
+                    && circunferencia.informacao.magnitude !== undefined
+                    && circunferencia.informacao.magnitude !== null) {
+
+                    //console.log(circunferencia);
+                    const data = new Date(circunferencia.data);
+                    const dataFormatada = `${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()}`;
+
+                    //Verificação se o registro está entre os 3 registros que vão ser exibidos.
+                    //console.log(labelsComDatas.indexOf(dataFormatada));
+                    //console.log(dataFormatada);
+                    if(labelsComDatas.indexOf(dataFormatada) > -1) {
+
+                        //Verificar se a data do registro já foi inserida para colocar ele em outro dataset.
+                        const index = datasJaInseridas.indexOf(dataFormatada);
+                        if(index != -1) {
+                            let list = [];
+
+                            for (let i = 0; i < labelsComDatas.length; i++) {
+                                list.push(undefined);
+                            }
+
+                            list[index] = circunferencia.informacao.magnitude;
+
+                            dados.push({
+                                data: list
+                            });
+                        } else {
+                            dados[0].data.push(circunferencia.informacao.magnitude);
+                            datasJaInseridas.push(dataFormatada);
+                        }
+                    }
+
+                    i++;
+                    if (i > labelsComDatas.length) {
+                        break;
+                    }
+
                 }
             }
 
@@ -344,7 +403,7 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
                             maxTicksLimit: 1,
                             stepSize: 15,
                             callback: (value, index, values) => {
-                                console.log(value);
+                                //console.log(value);
                                 if ( value === 130 ) {
                                     return 'Sistólica ' + value;
                                 }

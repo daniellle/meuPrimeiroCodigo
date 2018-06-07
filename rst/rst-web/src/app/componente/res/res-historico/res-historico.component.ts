@@ -186,7 +186,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
                 paciente: result[8],
                 alergias: result[9],
                 medicamentos: result[10],
-                vacinas: listaVacinas
+                vacinas: listaVacinas,
             });
         }, (error) => {
             this.mensagemError(error);
@@ -203,6 +203,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
             this.tratarVacinas(dados.vacinas);
             if ( encontrosMedicos ) {
                 this.carregarTimeline(encontrosMedicos);
+                this.tratarDataFicha(this.paginaTimeline[0])
             }
             else {
                 this.carregandoTimeline = false;

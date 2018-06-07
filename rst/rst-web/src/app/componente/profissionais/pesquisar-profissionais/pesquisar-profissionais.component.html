@@ -19,12 +19,24 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                 <md-input-container for="registro" [floatPlaceholder]="true">
                     <input mdInput placeholder="{{ 'app_rst_labels_rg_conselho_regional' | recurso }}" type="text" name="registro" maxlength="256" [(ngModel)]="filtro.registro" class="form-control" id="registro" />
                 </md-input-container>
             </div>
-            <div class="form-group col-md-6 search">
+            <div class="form-group col-md-4">
+                <div class="md-container">
+                    <md-select placeholder="{{ 'app_rst_labels_estado' | recurso }}" name="estado" [(ngModel)]="filtro.idEstado" id="estado">
+                        <md-option>
+                            <option value='0'>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                        </md-option>
+                        <md-option *ngFor='let estado of estados' [value]="estado.id">
+                            {{estado.descricao}}
+                        </md-option>
+                    </md-select>
+                </div>
+            </div>
+            <div class="form-group col-md-4 search">
                 <label for="situacao" class="col-form-label pesquisa-situacao">{{ 'app_rst_labels_situacao' | recurso }}</label>
                 <div>
                     <md-radio-group [(ngModel)]="filtro.situacao" name="situacao" disableRipple>
@@ -34,6 +46,7 @@
                 </div>
             </div>
         </div>
+
     </form>
 </div>
 <div class="btn-filter-pesquisar space-up">

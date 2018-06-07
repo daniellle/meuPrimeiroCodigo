@@ -24,6 +24,9 @@ public class TrabalhadorFilter extends FilterBase {
 	
 	@QueryParam("aplicarDadosFilter")
 	private boolean aplicarDadosFilter;
+	
+	@QueryParam("estado")
+	private Long idEstado;
 
 	public Long getId() {
 		return id;
@@ -66,6 +69,11 @@ public class TrabalhadorFilter extends FilterBase {
 
 	public void setAplicarDadosFilter(boolean aplicarDadosFilter) {
 		this.aplicarDadosFilter = aplicarDadosFilter;
+	}
+	
+	
+	public Long getIdEstado() {
+		return idEstado;
 	}
 	
 }

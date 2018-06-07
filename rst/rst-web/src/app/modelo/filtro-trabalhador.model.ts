@@ -6,4 +6,6 @@ export class FiltroTrabalhador {
     situacao = '';
     falecidos = true;
     aplicarDadosFilter = true;
+
+    idEstado: '';
 }

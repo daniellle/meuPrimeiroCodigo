@@ -175,18 +175,18 @@ public class SindicatoDAO extends BaseDAO<Sindicato, Long> {
 			if(cnpj) {
 				jpql.append(AND);
 			}
-			jpql.append(" UPPER(c.razaoSocial) like :razaoSocial escape :sc ");
+			jpql.append(" set_simple_name(UPPER(c.razaoSocial)) like set_simple_name(:razaoSocial) escape :sc ");
 			parametros.put("sc", "\\");
-			parametros.put("razaoSocial", "%" + sindicatoFilter.getRazaoSocial().replace("%", "\\%").toUpperCase() + "%");
+			parametros.put("razaoSocial", "%" + sindicatoFilter.getRazaoSocial().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
 			
 		}
 		if (nomeFantasia){
 			if(cnpj || razaoSocial) {
 				jpql.append(AND);
 			}
-			jpql.append(" UPPER(c.nomeFantasia) like :nomeFantasia escape :sc ");
+			jpql.append(" set_simple_name(UPPER(c.nomeFantasia)) like set_simple_name(:nomeFantasia) escape :sc ");
 			parametros.put("sc", "\\");
-			parametros.put("nomeFantasia", "%" + sindicatoFilter.getNomeFantasia().replace("%", "\\%").toUpperCase() + "%");
+			parametros.put("nomeFantasia", "%" + sindicatoFilter.getNomeFantasia().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
 		}
 	}
 

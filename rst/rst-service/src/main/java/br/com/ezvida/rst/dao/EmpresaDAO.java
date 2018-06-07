@@ -117,14 +117,33 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 		boolean razaoSocial = false;
 		boolean nomeFantasia = false;
 		boolean status = false;
+		boolean porte = false;
+		boolean estado = true;
+		boolean cnae = false;
 		
 		setFiltroAplicado(false);
 
 		if (count) {
 			jpql.append("select count(DISTINCT empresa.id) from Empresa empresa ");
+			jpql.append(" left join empresa.porteEmpresa porteEmpresa ");
+			jpql.append(" left join empresa.enderecosEmpresa enderecosEmpresa ");
+			jpql.append(" left join enderecosEmpresa.endereco endereco ");
+			jpql.append(" left join endereco.municipio municipio ");
+			jpql.append(" left join municipio.estado estado ");
+			jpql.append(" left join empresa.empresaCnaes empresaCnaes ");
+			jpql.append(" left join empresaCnaes.cnae cnae ");
+			
+			
 
 		} else {
 			jpql.append("select DISTINCT empresa from Empresa empresa ");
+			jpql.append(" left join fetch empresa.porteEmpresa porteEmpresa ");
+			jpql.append(" left join fetch empresa.enderecosEmpresa enderecosEmpresa ");
+			jpql.append(" left join fetch enderecosEmpresa.endereco endereco ");
+			jpql.append(" left join fetch endereco.municipio municipio ");
+			jpql.append(" left join fetch municipio.estado estado ");
+			jpql.append(" left join fetch empresa.empresaCnaes empresaCnaes ");
+			jpql.append(" left join fetch empresaCnaes.cnae cnae ");
 		}
 
 		this.montaJoinFiltroDados(jpql, segurancaFilter);		
@@ -138,6 +157,9 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 			razaoSocial = StringUtils.isNotEmpty(empresaFilter.getRazaoSocial());
 			nomeFantasia = StringUtils.isNotEmpty(empresaFilter.getNomeFantasia());
 			status = StringUtils.isNotBlank(empresaFilter.getStatusCat());
+			porte = empresaFilter.getIdPorte() != null && empresaFilter.getIdPorte().intValue() > 0; 
+			estado = empresaFilter.getIdEstado() != null && empresaFilter.getIdEstado().intValue() > 0;
+			cnae = StringUtils.isNotEmpty(empresaFilter.getCodCnae());
 
 			if (cpf) {
 				adicionarAnd(jpql);
@@ -148,20 +170,45 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 
 			if (razaoSocial) {
 				adicionarAnd(jpql);
-				jpql.append(" UPPER(empresa.razaoSocial) like :razaoSocial escape :sc ");
+				jpql.append(" set_simple_name(UPPER(empresa.razaoSocial)) like set_simple_name(:razaoSocial) escape :sc ");
 				parametros.put("sc", "\\");
-				parametros.put("razaoSocial", "%" + empresaFilter.getRazaoSocial().replace("%", "\\%").toUpperCase() + "%");
+				parametros.put("razaoSocial", "%" + empresaFilter.getRazaoSocial().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
 				setFiltroAplicado(true);
 			}
+			
 			if (nomeFantasia) {
 				adicionarAnd(jpql);
-				jpql.append(" UPPER(empresa.nomeFantasia) like :nomeFantasia escape :sc ");
+				jpql.append(" set_simple_name(UPPER(empresa.nomeFantasia)) like set_simple_name(:nomeFantasia) escape :sc ");
 				parametros.put("sc", "\\");
-				parametros.put("nomeFantasia", "%" + empresaFilter.getNomeFantasia().replace("%", "\\%").toUpperCase() + "%");
+				parametros.put("nomeFantasia", "%" + empresaFilter.getNomeFantasia().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
 				setFiltroAplicado(true);
 			}
+			
 			if (status) {				
 				this.filtrarDadosSituacao(jpql, empresaFilter);				
+			}
+			
+			if(porte)			
+			{
+				adicionarAnd(jpql);
+				jpql.append(" porteEmpresa.id = :idPorte ");
+				parametros.put("idPorte", empresaFilter.getIdPorte());
+				setFiltroAplicado(true);				
+			}	
+			
+			if (estado) {
+				adicionarAnd(jpql);
+				jpql.append(" estado.id = :idEstado ");
+				parametros.put("idEstado", empresaFilter.getIdEstado());
+				setFiltroAplicado(true);					
+			}
+			
+			if (cnae) {
+				adicionarAnd(jpql);
+				jpql.append(" UPPER(cnae.codigo) like :codigo escape :sc ");
+				parametros.put("sc", "\\");
+				parametros.put("codigo", "%" + empresaFilter.getCodCnae().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
+				setFiltroAplicado(true);
 			}
 		}
 

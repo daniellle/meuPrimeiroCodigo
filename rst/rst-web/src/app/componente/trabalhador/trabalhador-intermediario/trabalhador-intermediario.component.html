@@ -15,7 +15,7 @@
             <app-card-tela-intermediaria (onNavegar)="mudarPagina('dependente')" [titulo]="'Dependentes'" [classCardCor]="'card-musgo'" [classImgFront]="'img_dependentes'" [classImgBack]="'img_dependentes'"></app-card-tela-intermediaria>
         </div>
 
-        <div class="form-group col-md-4 col-lg-3" *ngIf="!hasPermissaoCallCenter() && hasPermissionSaude()">
+        <div class="form-group col-md-4 col-lg-3" *ngIf="!hasPermissaoCallCenter() && hasAcessMinhaConta()">
             <app-card-tela-intermediaria (onNavegar)="openPageMinhaSaude('/res/minhasaude')" [titulo]="'Minha Saúde'" [classCardCor]="'card-roxo'" [classImgFront]="'img_minhasaude'" [classImgBack]="'img_minhasaude'"></app-card-tela-intermediaria>
         </div>
 
@@ -28,8 +28,8 @@
             <app-card-tela-intermediaria (onNavegar)="mudarPagina('igev')" [titulo]="'IGEV'" [classCardCor]="'card-azul'" [classImgFront]="'img_questionario'" [classImgBack]="'img_questionario_azul'"></app-card-tela-intermediaria>
         </div>
 
-        <div class="form-group col-md-4 col-lg-3" *ngIf="hasPermissionSaude()">
-            <app-card-tela-intermediaria (onNavegar)="openPage('/cadastro/minhaconta')" [titulo]="'Minha Conta'" [classCardCor]="'card-roxo'" [classImgFront]="'img_questionario'" [classImgBack]="'img_questionario'"></app-card-tela-intermediaria>
+        <div class="form-group col-md-4 col-lg-3" *ngIf="hasAcessMinhaConta()">
+            <app-card-tela-intermediaria (onNavegar)="openPage('/cadastro/minhaconta')" [titulo]="'Minha Conta'" [classCardCor]="'card-roxo'" [classImgFront]="'img_minhaconta'" [classImgBack]="'img_minhaconta'"></app-card-tela-intermediaria>
         </div>
 
     </div>

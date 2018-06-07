@@ -160,8 +160,12 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 		boolean nome = false;
 		boolean nit = false;
 		boolean falecidos = false;
+		boolean estado = false;
+		
+		if (trabalhadorFilter != null)
+			estado = trabalhadorFilter.getIdEstado() != null && trabalhadorFilter.getIdEstado().intValue() > 0;
 
-		montarJoinPaginado(jpql, count, segurancaFilter);
+		montarJoinPaginado(jpql, count, segurancaFilter, estado);
 
 		if (trabalhadorFilter != null || segurancaFilter != null) {
 			jpql.append(" where ");
@@ -172,16 +176,16 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 			cpf = StringUtils.isNotEmpty(trabalhadorFilter.getCpf());
 			nome = StringUtils.isNotEmpty(trabalhadorFilter.getNome());
 			nit = StringUtils.isNotEmpty(trabalhadorFilter.getNit());
-			falecidos = trabalhadorFilter.isFalecidos();
+			falecidos = trabalhadorFilter.isFalecidos();			
 
 			situacao = montarFiltroSituacaoPaginado(jpql, trabalhadorFilter, situacao);
 
-			montarFiltroPaginado(jpql, parametros, trabalhadorFilter, situacao, cpf, nome, nit);
+			montarFiltroPaginado(jpql, parametros, trabalhadorFilter, situacao, cpf, nome, nit, estado);
 
-			montarFiltroFalecidoPaginado(jpql, trabalhadorFilter, situacao, cpf, nome, nit);
+			montarFiltroFalecidoPaginado(jpql, trabalhadorFilter, situacao, cpf, nome, nit, estado);
 		}
 
-		aplicarDadosFilter(jpql, parametros, trabalhadorFilter, segurancaFilter, situacao, cpf, nome, nit, falecidos);
+		aplicarDadosFilter(jpql, parametros, trabalhadorFilter, segurancaFilter, situacao, cpf, nome, nit, falecidos, estado);
 
 		if (!count) {
 			jpql.append(" order by trabalhador.nome");
@@ -191,9 +195,9 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 
 	private void aplicarDadosFilter(StringBuilder jpql, Map<String, Object> parametros,
 			TrabalhadorFilter trabalhadorFilter, DadosFilter segurancaFilter, boolean situacao, boolean cpf,
-			boolean nome, boolean nit, boolean falecidos) {
+			boolean nome, boolean nit, boolean falecidos, boolean estado) {
 		if (segurancaFilter != null && trabalhadorFilter != null && trabalhadorFilter.isAplicarDadosFilter()) {
-			boolean hasFilters = cpf || nome || nit || situacao || !falecidos;
+			boolean hasFilters = cpf || nome || nit || situacao || !falecidos || estado;
 			addFiltroIds(jpql, parametros, segurancaFilter, hasFilters);
 		}
 	}
@@ -228,9 +232,9 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 	}
 
 	private void montarFiltroFalecidoPaginado(StringBuilder jpql, TrabalhadorFilter trabalhadorFilter, boolean situacao,
-			boolean cpf, boolean nome, boolean nit) {
-		if (!trabalhadorFilter.isFalecidos()) {
-			if (situacao || cpf || nome || nit) {
+			boolean cpf, boolean nome, boolean nit, boolean estado) {
+		if (trabalhadorFilter.isFalecidos()) {
+			if (situacao || cpf || nome || nit || estado) {
 				jpql.append(" and ");
 			}
 			jpql.append(" trabalhador.dataFalecimento is null ");
@@ -256,7 +260,7 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 	}
 
 	private void montarFiltroPaginado(StringBuilder jpql, Map<String, Object> parametros,
-			TrabalhadorFilter trabalhadorFilter, boolean situacao, boolean cpf, boolean nome, boolean nit) {
+			TrabalhadorFilter trabalhadorFilter, boolean situacao, boolean cpf, boolean nome, boolean nit, boolean estado) {
 		if (cpf) {
 			if (situacao) {
 				jpql.append(" and ");
@@ -268,9 +272,10 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 			if (situacao || cpf) {
 				jpql.append(" and ");
 			}
-			jpql.append(" UPPER(trabalhador.nome) like :nome escape :sc ");
+			jpql.append(" set_simple_name(UPPER(trabalhador.nome)) like set_simple_name(:nome) escape :sc ");
 			parametros.put("sc", "\\");
-			parametros.put("nome", "%" + trabalhadorFilter.getNome().replaceAll("%", "\\%").toUpperCase() + "%");
+			//parametros.put("nome", "%" + trabalhadorFilter.getNome().replaceAll("%", "\\%").toUpperCase() + "%");
+			parametros.put("nome", "%" + trabalhadorFilter.getNome().replaceAll("%", "\\%").toUpperCase().replace(" ", "%") + "%");
 		}
 		if (nit) {
 			if (situacao || cpf || nome) {
@@ -279,13 +284,25 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 			jpql.append(" trabalhador.nit = :nit ");
 			parametros.put("nit", trabalhadorFilter.getNit());
 		}
+		
+		if (estado) {
+			if (situacao || cpf || nome || nit) 
+				jpql.append(" and ");
+			jpql.append(" e.id = :idEstado ");
+			parametros.put("idEstado", trabalhadorFilter.getIdEstado());
+		}
 	}
 
-	private void montarJoinPaginado(StringBuilder jpql, boolean count, DadosFilter segurancaFilter) {
+	private void montarJoinPaginado(StringBuilder jpql, boolean count, DadosFilter segurancaFilter, boolean estado) {
 		if (count) {
 			jpql.append("select count( DISTINCT trabalhador.id) from Trabalhador trabalhador ");
 		} else {
 			jpql.append("select DISTINCT trabalhador from Trabalhador trabalhador ");
+		}
+		
+		if (estado) {
+			jpql.append(" left join trabalhador.municipio m ");
+			jpql.append(" left join m.estado e ");			
 		}
 
 		if (segurancaFilter != null) {

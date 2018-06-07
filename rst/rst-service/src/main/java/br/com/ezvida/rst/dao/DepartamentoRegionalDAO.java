@@ -230,10 +230,10 @@ public class DepartamentoRegionalDAO extends BaseDAO<DepartamentoRegional, Long>
             if (and) {
                 jpql.append(" and ");
             }
-            jpql.append(" UPPER(d.razaoSocial) like :razaoSocial escape :sc  ");
+            jpql.append(" set_simple_name(UPPER(d.razaoSocial)) like set_simple_name(:razaoSocial) escape :sc  ");
             parametros.put("sc", "\\");
             parametros.put("razaoSocial",
-                    "%" + departamentoRegionalFilter.getRazaoSocial().replace("%", "\\%").toUpperCase() + "%");
+                    "%" + departamentoRegionalFilter.getRazaoSocial().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
             and = true;
         }
         if (departamento) {

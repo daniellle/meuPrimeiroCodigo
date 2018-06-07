@@ -157,9 +157,9 @@ public class ParceiroDAO extends BaseDAO<Parceiro, Long> {
 			if (cnpj) {
 				jpql.append(and);
 			}
-			jpql.append(" UPPER(parceiro.nome) like :nome escape :sc ");
+			jpql.append(" set_simple_name(UPPER(parceiro.nome)) like set_simple_name(:nome) escape :sc ");
 			parametros.put("sc", "\\");
-			parametros.put("nome", "%" + parceiroFilter.getRazaoSocialNome().replace("%", "\\%").toUpperCase() + "%");
+			parametros.put("nome", "%" + parceiroFilter.getRazaoSocialNome().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
 		}
 		
 		if (especialidade) {
