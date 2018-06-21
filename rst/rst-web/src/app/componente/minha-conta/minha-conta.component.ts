@@ -197,10 +197,9 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
 
     salvar(): void {
         if (this.validarCampos()) {
-            this.converterFormParaModel();
-            this.servico.salvarPerfil(this.usuario, this.senhaAtual, this.senhaConfirmacao)
+            this.servico.salvarPerfil(this.converterFormParaModel())
                 .subscribe((user: Usuario) => {
-                    if(user){
+                    if (user) {
                         this.mensagemSucesso(MensagemProperties.app_rst_alterar_senha_sucesso);
                         this.voltar();
                     }
@@ -225,18 +224,18 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
         }
     }
 
-    converterFormParaModel(): void {
+    converterFormParaModel(): {} {
         const formModel = this.usuarioPerfilForm.controls;
         this.usuario.nome = formModel.nome.value;
         this.usuario.email = formModel.email.value;
         this.usuario.login = MascaraUtil.removerMascara(formModel.login.value);
-        if (!this.isUndefined(formModel.senhaConfirmacao.value) && !this.isUndefined(formModel.senhaAtual.value)) {
+        if (this.isNotVazia(formModel.senhaConfirmacao.value) && this.isNotVazia(formModel.senhaAtual.value)) {
             this.senhaConfirmacao = formModel.senhaConfirmacao.value;
             this.senhaAtual = formModel.senhaAtual.value;
         }
-        if (!this.isUndefined(formModel.apelido.value) && formModel.apelido.value.toString().trim() != "") {
+        if (this.isNotVazia(formModel.apelido.value) && this.isNotVazia(formModel.apelido.value.toString().trim())) {
             this.usuario.apelido = formModel.apelido.value;
-            if (!this.isUndefined(formModel.exibirApelido.value)) {
+            if (this.isNotVazia(formModel.exibirApelido.value)) {
                 this.usuario.exibirApelido = formModel.exibirApelido.value;
             }
         } else {
@@ -247,6 +246,15 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
             let img = this.foto.image.replace(/^data:image\/\w+;base64,/, '');
             this.usuario.foto = img;
         }
+
+        let credencial = {
+            usuario: this.usuario.login,
+            senha: this.senhaConfirmacao,
+            senhaAtual: this.senhaAtual,
+        };
+        const userCredencial = this.objToStrMap(this.usuario);
+        userCredencial.set('credencial', credencial);
+        return this.strMapToObj(userCredencial);
     }
 
     adicionarImagem() {

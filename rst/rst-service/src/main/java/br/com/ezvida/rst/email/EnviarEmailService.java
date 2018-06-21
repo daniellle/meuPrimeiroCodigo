@@ -100,7 +100,7 @@ public class EnviarEmailService extends BaseService {
 		Authenticator autenticacao = new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(
-						parametroSerice.carregarPorNome(ParametroService.EMAIL_REMETENTE_SESI),
+						parametroSerice.carregarPorNome(ParametroService.EMAIL_USERNAME_SESI),
 						parametroSerice.carregarPorNome(ParametroService.EMAIL_SENHA_SESI));
 			}
 		};

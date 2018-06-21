@@ -140,7 +140,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
         }
 
         this.carregandoTimeline = true;
-        const chamadas: any[] = this.DADOS_BASICOS.map((dado) => this.service.buscarValorParaInformacaoSaude(dado,
+        const chamadas: any[] = this.DADOS_BASICOS.map((dado) => this.service.buscarValorParaInformacaoSaudeUltimoEncontro(dado,
             this.cpf)
                                                                      .catch((err) => Observable.of(null)));
         chamadas.push(...this.DADOS_HISTORICOS.map((dado) => this.service.buscarHistoricoParaInformacaoSaude(dado,

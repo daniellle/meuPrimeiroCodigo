@@ -70,15 +70,24 @@ export class ResService extends BaseService<any> {
                     const elemento: Element = <Element>resultado.items[0];
                     return elemento;
                 }
-                // if (resultado) 
-                //     if (!quantidade && !todos) {
-                //         return resultado.dataValue;
-                //     } else {
-                //         return resultado.result.map((elem) => {
-                //             return { data: elem.date, informacao: elem.dataValue };
-                //         });
-                //     }
-                // }
+
+                return null;
+            }).catch((erro) => {
+                console.error(erro);
+                return null;
+            });
+    }
+
+    buscarValorParaInformacaoSaudeUltimoEncontro(dado: string, cpf: string): Observable<any> {
+        const usuario = Seguranca.getUsuario() as any;
+        let parametros = new HttpParams().set('cpf', cpf || usuario.sub);
+        return this.get(`${this.API}/informacao/ultimoEncontro/${encodeURIComponent(dado)}`, parametros)
+            .map((resultado: Cluster) => {
+                if (resultado) {
+                    const elemento: Element = <Element>resultado.items[0];
+                    return elemento;
+                }
+
                 return null;
             }).catch((erro) => {
                 console.error(erro);

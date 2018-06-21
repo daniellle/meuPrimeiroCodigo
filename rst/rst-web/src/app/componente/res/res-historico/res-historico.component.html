@@ -11,6 +11,7 @@
                 <div class='col-12 col-info-valor'>
                     <label>{{ idade ||'--'}}</label>
                 </div>
+                <small style="margin-left: 5px">Dados coletados em {{ hoje | date:'mediumDate'}}</small>
             </div>
         </div>
         <div class='col-md-4 card-single card-altura'>
@@ -23,6 +24,7 @@
                 <div class='col-12 col-info-valor'>
                     <label>{{ altura?.valor ||'--'}}</label>
                 </div>
+                <small style="margin-left: 5px">Dados coletados em {{ hoje | date:'mediumDate'}}</small>
             </div>
         </div>
 
@@ -36,6 +38,7 @@
                 <div class='col-12 col-info-valor'>
                     <label>{{ peso?.valor || '--'}}</label>
                 </div>
+                <small style="margin-left: 5px">Dados coletados em {{ hoje | date:'mediumDate'}}</small>
             </div>
         </div>
     </div>
@@ -46,9 +49,6 @@
                     <div class='row row-titulo'>
                         <div class='col-6 col-titulo'>
                             Pressão Arterial
-                        </div>
-                        <div class='col-6 col-data'>
-                            {{ hoje | date:'mediumDate'}}
                         </div>
                     </div>
                     <div class='row row-chart' *ngIf='!this.semDadosPressaoSuficiente'>
@@ -71,9 +71,6 @@
                     <div class='row row-titulo'>
                         <div class='col-6 col-titulo'>
                             IMC
-                        </div>
-                        <div class='col-6 col-data'>
-                            {{ hoje | date:'mediumDate'}}
                         </div>
                     </div>
                     <div class='row row-chart row-imc text-center'>
@@ -127,9 +124,6 @@
                     <div class='row row-titulo'>
                         <div class='col-6 col-titulo' style="font-size: 15px;">
                             Circunferência Abdominal
-                        </div>
-                        <div class='col-6 col-data'>
-                            {{ hoje | date:'mediumDate' }}
                         </div>
                     </div>
                     <div class='row row-chart' *ngIf='!this.semDadosPesoSuficiente'>

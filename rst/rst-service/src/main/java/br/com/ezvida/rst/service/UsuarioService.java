@@ -46,7 +46,7 @@ public interface UsuarioService extends Serializable {
     br.com.ezvida.girst.apiclient.model.Usuario sicronizarTrabalhadorUsuario(Trabalhador trabalhador, ClienteAuditoria auditoria);
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    br.com.ezvida.girst.apiclient.model.Usuario alterarPerfilSenha(Map<String, Object> propriedades, ClienteAuditoria auditoria);
+    br.com.ezvida.girst.apiclient.model.Usuario alterarPerfilSenha(br.com.ezvida.girst.apiclient.model.UsuarioCredencial usuarioCredencial, ClienteAuditoria auditoria);
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     br.com.ezvida.girst.apiclient.model.Usuario desativarUsuario(String id, ClienteAuditoria auditoria);

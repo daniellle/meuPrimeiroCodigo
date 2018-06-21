@@ -1,6 +1,32 @@
  # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v2.17.0**
+
+============
+
+(RELEASE EM 21/06/2018)
+
+**Novidades**
+
+
+------------
+
+**Melhorias**
+	
+	Adição de permissão do trabalhador no APP Mobile após realizar o primeiro acesso
+
+------------
+
+**Correções**
+
+	Ajuste ao salvar foto e apelido em Minha Conta
+	Ajuste no serviço para retornar os trabalhadores para o RES Online
+	Ajuste para exibir os dados da última ficha em Minha Saúde
+
+------------
+
+
 **v2.15.0**
 
 ============

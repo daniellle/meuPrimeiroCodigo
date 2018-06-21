@@ -379,9 +379,8 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 		StringBuilder jpql2 = new StringBuilder();
 		StringBuilder jpql = new StringBuilder();
 
-		jpql.append("SELECT count(1) from trabalhador t");
-		jpql2.append("SELECT t.id_trabalhador, t.dt_nascimento, t.fl_genero, t.no_cpf, t.nm_trabalhador");
-		jpql2.append(" ,em.nm_fantasia,  f2.ds_funcao, cbo.ds_cbo from trabalhador t");
+		jpql.append(" SELECT count(1) from trabalhador t ");
+		jpql2.append(" SELECT t.id_trabalhador, t.dt_nascimento, t.fl_genero, t.no_cpf, t.nm_trabalhador, em.nm_fantasia, f2.ds_funcao, cbo.ds_cbo from trabalhador t ");
 
 		this.joinTrabalhadorUsuario(jpql);
 		this.joinTrabalhadorUsuario(jpql2);
@@ -412,25 +411,26 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 		return hashMap;
 	}
 
-	public void joinTrabalhadorUsuario(StringBuilder jpql){
-		jpql.append(" INNER JOIN emp_trabalhador t2 ");
-		jpql.append(" ON t.id_trabalhador = t2.id_trabalhador_fk ");
-		jpql.append(" INNER JOIN  empresa em ");
-		jpql.append(" ON t2.id_empresa_fk = em.id_empresa ");
-		jpql.append(" LEFT JOIN emp_trab_lotacao etl ");
-		jpql.append(" ON t2.id_emp_trabalhador = etl.id_empr_trabalhador_fk ");
-		jpql.append(" LEFT JOIN emp_lotacao el ");
-		jpql.append(" ON etl.id_emp_lotacao_fk = el.id_empresa_lotacao ");
-		jpql.append(" LEFT JOIN emp_cbo ec ");
-		jpql.append(" ON el.id_emp_cbo_fk = ec.id_emp_cbo ");
-		jpql.append(" LEFT JOIN emp_funcao ef2 ");
-		jpql.append(" ON el.id_emp_funcao_fk = ef2.id_emp_funcao ");
-		jpql.append(" LEFT JOIN funcao f2 ");
-		jpql.append(" ON ef2.id_funcao_fk = f2.id_funcao ");
-		jpql.append(" LEFT JOIN cbo cbo ");
-		jpql.append(" ON ec.id_cbo_fk = cbo.id_cbo ");
-
-	}
+    private void joinTrabalhadorUsuario(StringBuilder jpql) {
+        jpql.append(" INNER JOIN emp_trabalhador t2 ");
+        jpql.append(" ON t.id_trabalhador = t2.id_trabalhador_fk ");
+        jpql.append(" AND t2.dt_demissao IS NULL ");
+        jpql.append(" INNER JOIN  empresa em ");
+        jpql.append(" ON t2.id_empresa_fk = em.id_empresa ");
+        jpql.append(" LEFT JOIN emp_trab_lotacao etl ");
+        jpql.append(" ON t2.id_emp_trabalhador = etl.id_empr_trabalhador_fk ");
+        jpql.append(" AND etl.dt_associacao = (SELECT MAX(etl2.dt_associacao) FROM emp_trab_lotacao etl2 WHERE etl2.id_empr_trabalhador_fk = t2.id_emp_trabalhador) ");
+        jpql.append(" LEFT JOIN emp_lotacao el ");
+        jpql.append(" ON etl.id_emp_lotacao_fk = el.id_empresa_lotacao ");
+        jpql.append(" LEFT JOIN emp_cbo ec ");
+        jpql.append(" ON el.id_emp_cbo_fk = ec.id_emp_cbo ");
+        jpql.append(" LEFT JOIN emp_funcao ef2 ");
+        jpql.append(" ON el.id_emp_funcao_fk = ef2.id_emp_funcao ");
+        jpql.append(" LEFT JOIN funcao f2 ");
+        jpql.append(" ON ef2.id_funcao_fk = f2.id_funcao ");
+        jpql.append(" LEFT JOIN cbo cbo ");
+        jpql.append(" ON ec.id_cbo_fk = cbo.id_cbo ");
+    }
 
 	public void checkFiltroTrabalhadorUsuario(StringBuilder jpql, String nome, String cpf, List<Long> empresas){
 		boolean hasNome = StringUtils.isNotEmpty(nome);

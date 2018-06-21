@@ -52,7 +52,7 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
 
 		jpql.append(" where uat.id = :id");
 		
-		if (segurancaFilter != null) {
+		if (segurancaFilter != null && !segurancaFilter.isAdministrador()) {
 			montarFiltroPesquisarPorId(id, segurancaFilter, jpql, parametros);
 		}
 		
@@ -90,7 +90,7 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
 	private void montarJoinPesquisarPorId(DadosFilter segurancaFilter, StringBuilder jpql) {
 		jpql.append("left join fetch uat.departamentoRegional departamentoRegional ");
 
-		if (segurancaFilter != null && (segurancaFilter.temIdsTrabalhador() || segurancaFilter.temIdsEmpresa())) {
+		if (segurancaFilter != null && !segurancaFilter.isAdministrador() && (segurancaFilter.temIdsTrabalhador() || segurancaFilter.temIdsEmpresa())) {
 			jpql.append("left join uat.empresaUats empresaUat ");
 			jpql.append("left join empresaUat.empresa empresa ");
 

@@ -48,7 +48,7 @@ public class ProdutoServicoDAO extends BaseDAO<ProdutoServico, Long> {
 		jpql.append(" where produtoServico.id = :id");
 
 		parametros.put("id", id);
-		if (segurancaFilter != null && segurancaFilter.temIdsDepRegional()) {
+		if (segurancaFilter != null && !segurancaFilter.isAdministrador() && segurancaFilter.temIdsDepRegional()) {
 			jpql.append("  and departamentoRegional.id IN (:idsDepRegional) ");
 			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
 		}
@@ -145,7 +145,7 @@ public class ProdutoServicoDAO extends BaseDAO<ProdutoServico, Long> {
 
 	private void addWhere(StringBuilder jpql, ProdutoServicoFilter filter, DadosFilter segurancaFilter, boolean nome,
 			boolean linha) {
-		if (segurancaFilter != null && filter.isAplicarDadosFilter() && (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()) || nome || linha) {
+		if (segurancaFilter != null && filter.isAplicarDadosFilter() && (!segurancaFilter.isAdministrador() && segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()) || nome || linha) {
 			jpql.append("  where ");
 		}
 	}
@@ -171,7 +171,7 @@ public class ProdutoServicoDAO extends BaseDAO<ProdutoServico, Long> {
 			 DadosFilter segurancaFilter, boolean nome, boolean linha , 
 			boolean filtroIdDep, boolean filtroIdEmp) {
 		
-		if (filtroIdDep) {
+		if (filtroIdDep && !segurancaFilter.isAdministrador()) {
 
 			if (nome || linha) {
 				jpql.append(" and ");
@@ -180,7 +180,7 @@ public class ProdutoServicoDAO extends BaseDAO<ProdutoServico, Long> {
 			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
 		}
 		
-		if (filtroIdEmp) {
+		if (filtroIdEmp && !segurancaFilter.isAdministrador()) {
 
 			if (nome || linha || segurancaFilter.temIdsDepRegional()) {
 				jpql.append(" and ");
@@ -200,12 +200,12 @@ public class ProdutoServicoDAO extends BaseDAO<ProdutoServico, Long> {
 			jpql.append(" inner join fetch produtoServico.linha linha ");
 		}
 
-		if (segurancaFilter != null && filter.isAplicarDadosFilter() && (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa())) {
+		if (segurancaFilter != null && filter.isAplicarDadosFilter() && (!segurancaFilter.isAdministrador() && segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa())) {
 			jpql.append(" inner join produtoServico.departamentoRegionalProdutoServicos departamentoRegionalProdutoServicos");
 			jpql.append(" inner join departamentoRegionalProdutoServicos.departamentoRegional departamentoRegional");
 		}
 		
-		if (segurancaFilter != null && filter.isAplicarDadosFilter() && segurancaFilter.temIdsEmpresa()) {
+		if (segurancaFilter != null && filter.isAplicarDadosFilter() && !segurancaFilter.isAdministrador() && segurancaFilter.temIdsEmpresa()) {
 			jpql.append(" inner join departamentoRegional.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador");
 			jpql.append(" inner join unidadeAtendimentoTrabalhador.empresaUats empresaUats");
 			jpql.append(" inner join empresaUats.empresa empresa");
@@ -361,12 +361,12 @@ public class ProdutoServicoDAO extends BaseDAO<ProdutoServico, Long> {
 				" inner join produtoServico.unidadeAtendimentoTrabalhadorProdutoServico uatProdutoServico");
 		jpql.append(" inner join uatProdutoServico.uat uat");
 		
-		if (segurancaFilter != null && (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa())) {
+		if (segurancaFilter != null && !segurancaFilter.isAdministrador() && (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa())) {
 			jpql.append(" inner join produtoServico.departamentoRegionalProdutoServicos departamentoRegionalProdutoServicos");
 			jpql.append(" inner join departamentoRegionalProdutoServicos.departamentoRegional departamentoRegional");
 		}
 		
-		if (segurancaFilter != null && segurancaFilter.temIdsEmpresa()) {
+		if (segurancaFilter != null && !segurancaFilter.isAdministrador() && segurancaFilter.temIdsEmpresa()) {
 			jpql.append(" inner join departamentoRegional.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador");
 			jpql.append(" inner join unidadeAtendimentoTrabalhador.empresaUats empresaUats");
 			jpql.append(" inner join empresaUats.empresa empresa");
@@ -378,13 +378,13 @@ public class ProdutoServicoDAO extends BaseDAO<ProdutoServico, Long> {
 		jpql.append(" and ");
 		jpql.append(" uatProdutoServico.dataExclusao is null ");
 		
-		if (segurancaFilter != null && segurancaFilter.temIdsDepRegional()) {
+		if (segurancaFilter != null && !segurancaFilter.isAdministrador() && segurancaFilter.temIdsDepRegional()) {
 			jpql.append(" and ");
 			jpql.append(" departamentoRegional.id IN (:idsDepRegional) ");
 			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
 		}
 		
-		if (segurancaFilter != null &&  segurancaFilter.temIdsEmpresa()) {
+		if (segurancaFilter != null && !segurancaFilter.isAdministrador() &&  segurancaFilter.temIdsEmpresa()) {
 			jpql.append(" and ");
 			jpql.append(" empresa.id IN (:idsEmpresa) ");
 			parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());

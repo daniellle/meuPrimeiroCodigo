@@ -76,9 +76,8 @@ export class AutenticacaoService extends BaseService<Credencial> {
 			});
 	}
 
-    salvarPerfil(usuario: Usuario, senhaAntiga: String, senhaNova: String): Observable<Usuario> {
+    salvarPerfil(propriedades: {}): Observable<Usuario> {
         this.bloqueioService.evento.emit(false);
-        const propriedades = { usuario: usuario, senhaAntiga: senhaAntiga, senhaNova: senhaNova };
         return super.put('/v1/usuarios/perfil', propriedades)
             .map((response: Response) => {
                 return response;

@@ -332,8 +332,7 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public br.com.ezvida.girst.apiclient.model.Usuario alterarPerfilSenha(Map<String, Object> propriedades, ClienteAuditoria auditoria) {
-        UsuarioCredencial usuarioCredencial = getUsuarioCredenciado(propriedades);
+    public br.com.ezvida.girst.apiclient.model.Usuario alterarPerfilSenha(br.com.ezvida.girst.apiclient.model.UsuarioCredencial usuarioCredencial, ClienteAuditoria auditoria) {
         br.com.ezvida.girst.apiclient.model.Usuario u = new br.com.ezvida.girst.apiclient.model.Usuario();
 
         if (auditoria != null) {
@@ -347,27 +346,6 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
         }
 
         return u;
-    }
-
-   private br.com.ezvida.girst.apiclient.model.UsuarioCredencial getUsuarioCredenciado(Map<String, Object> propriedades){
-        Map<String, Object> user = (Map<String, Object>) propriedades.get("usuario");
-        br.com.ezvida.girst.apiclient.model.UsuarioCredencial usuario = new br.com.ezvida.girst.apiclient.model.UsuarioCredencial();
-        usuario.setId(Long.valueOf((Integer) user.get("id")));
-        usuario.setNome((String) user.get("nome"));
-        usuario.setLogin((String) user.get("login"));
-        usuario.setEmail((String) user.get("email"));
-        usuario.setSenha((String) user.get("senha"));
-        usuario.setApelido((String) user.get("apelido"));
-        usuario.setExibirApelido((Boolean) user.get("exibiApelido"));
-        usuario.setFoto((String) user.get("foto"));
-
-        br.com.ezvida.girst.apiclient.model.Credencial credencial = new br.com.ezvida.girst.apiclient.model.Credencial();
-        credencial.setUsuario(usuario.getLogin());
-        credencial.setSenhaAtual((String) propriedades.get("senhaAntiga"));
-        credencial.setSenha((String) propriedades.get("senhaNova"));
-
-        usuario.setCredencial(credencial);
-        return usuario;
     }
 
     @Override

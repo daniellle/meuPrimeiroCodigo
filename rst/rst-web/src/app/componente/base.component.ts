@@ -142,6 +142,10 @@ export abstract class BaseComponent {
     return valor === undefined || valor === null || valor === '';
   }
 
+  isNotVazia(valor: any): boolean{
+      return !this.isVazia(valor);
+  }
+
   listaUndefinedOuVazia(valor: any[]): boolean {
     if (!valor || (valor && valor.length === 0)) {
       return true;
@@ -238,7 +242,22 @@ export abstract class BaseComponent {
     return Seguranca.isPermitido([nomePermissao]);
   }
 
-  // validacao de data
+  objToStrMap(obj) {
+      let strMap = new Map();
+      for (let k of Object.keys(obj)) {
+          strMap.set(k, obj[k]);
+      }
+      return strMap;
+  };
+
+  strMapToObj(strMap) {
+      let obj = Object.create(null);
+      strMap.forEach((v, k) => {
+          obj[k] = v;
+      });
+      return obj;
+  }
+   // validacao de data
 
   // validarData(data: any): boolean {
   //   const RegExPattern = '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/[12][0-9]{3}$';

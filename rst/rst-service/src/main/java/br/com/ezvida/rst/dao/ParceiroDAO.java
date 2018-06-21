@@ -93,7 +93,7 @@ public class ParceiroDAO extends BaseDAO<Parceiro, Long> {
 		jpql.append(" left join parceiro.parceiroEspecialidades parceiroEspecialidades ");
 		jpql.append(" left join parceiroEspecialidades.especialidade especialidade ");
 
-		if (segurancaFilter != null && segurancaFilter.temIdsDepRegional()) {
+		if (segurancaFilter != null && !segurancaFilter.isAdministrador() && segurancaFilter.temIdsDepRegional()) {
 			jpql.append(" left join parceiro.parceiroProdutoServicos parceiroProdutoServicos ");
 			jpql.append(" left join parceiroProdutoServicos.produtoServico produtoServico ");
 			jpql.append(
@@ -112,7 +112,7 @@ public class ParceiroDAO extends BaseDAO<Parceiro, Long> {
 		
 		montarJoinPaginado( jpql,  count,  segurancaFilter);
 		
-		boolean temIdDepRegional = segurancaFilter != null && segurancaFilter.temIdsDepRegional();
+		boolean temIdDepRegional = segurancaFilter != null && segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador();
 		if (parceiroFilter != null) {
 			boolean cnpj = StringUtils.isNotEmpty(parceiroFilter.getCpfCnpj());
 			boolean razaoSocialNome = StringUtils.isNotEmpty(parceiroFilter.getRazaoSocialNome());

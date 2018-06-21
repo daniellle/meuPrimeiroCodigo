@@ -44,6 +44,8 @@ public class TrabalhadorService extends BaseService {
 
 	private static final String CODIGO_SISTEMA_CADASTRO = "cadastro";
 
+	private static final String CODIGO_SISTEMA_SESI_VIVA_MAIS_MOBILE = "vivamaismobile";
+
 	@Inject
 	private TrabalhadorDAO trabalhadorDAO;
 
@@ -266,12 +268,20 @@ public class TrabalhadorService extends BaseService {
 		Sistema sistema = new Sistema();
 		sistema.setCodigo(CODIGO_SISTEMA_CADASTRO);
 
+		Sistema sistemaMobile = new Sistema();
+		sistemaMobile.setCodigo(CODIGO_SISTEMA_SESI_VIVA_MAIS_MOBILE);
+
 		UsuarioPerfilSistema usuarioPerfilSistema = new UsuarioPerfilSistema();
 		usuarioPerfilSistema.setPerfil(perfil);
 		usuarioPerfilSistema.setSistema(sistema);
 
 		primeiroAcesso.getUsuario().setPerfisSistema(new HashSet<UsuarioPerfilSistema>());
 		primeiroAcesso.getUsuario().getPerfisSistema().add(usuarioPerfilSistema);
+
+		UsuarioPerfilSistema usuarioPerfilSistemaMobile = new UsuarioPerfilSistema();
+		usuarioPerfilSistemaMobile.setPerfil(perfil);
+		usuarioPerfilSistemaMobile.setSistema(sistemaMobile);
+		primeiroAcesso.getUsuario().getPerfisSistema().add(usuarioPerfilSistemaMobile);
 	}
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -428,11 +438,14 @@ public class TrabalhadorService extends BaseService {
 		}
 
 		String str = null;
-		try {
-			str = URLDecoder.decode(nome, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			LOGGER.error("erro ao converter nome em utf8", e);
-		}
+
+		if (StringUtils.isNotBlank(nome)) {
+            try {
+                str = URLDecoder.decode(nome, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                LOGGER.error("erro ao converter nome em utf8", e);
+            }
+        }
 
 		return trabalhadorDAO.buscarTrabalhadoresByEmpresasDoUsuario(empresas, str, cpf, page);
 	}

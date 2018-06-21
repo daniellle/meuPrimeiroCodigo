@@ -110,4 +110,19 @@ public class RESEndpoint extends SegurancaEndpoint {
         return service.buscarUltimoRegistroInformacaoSaude(query.getFirst("cpf"), dado, clienteAuditoria);
     }
 
+    @GET
+    @Path("/informacao/ultimoEncontro/{informacao}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Object buscarInformacaoSaudeTrabalhadorUltimoEncontro(@PathParam("informacao") InformacaoSaude dado, @Context UriInfo uriInfo, @Context SecurityContext context, @Context HttpServletRequest request) {
+        MultivaluedMap<String, String> query = uriInfo.getQueryParameters();
+
+        if (query == null || query.isEmpty()) {
+            throw new BusinessException("Nenhum parâmetro de busca informado");
+        }
+
+        validaParametrosObrigatorios(query);
+
+        return service.buscarInformacaoSaudeTrabalhadorUltimoEncontro(query.getFirst("cpf"), dado, ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.RES));
+    }
+
 }

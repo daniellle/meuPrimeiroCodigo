@@ -78,17 +78,12 @@ public class TrabalhadorEndpoint extends SegurancaEndpoint<Trabalhador> {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.TRABALHADOR}))
-    //@formatter:onhttp://localhost:8080/rst/api/public/v1/trabalhador/usuario/00435891383
-    public Response getTrabalhadoresByUsuario(@PathParam("login") String login, @QueryParam("nome") String nome, @QueryParam("cpf") String cpf,
-                                              @QueryParam("page") String page, @Context SecurityContext context
-        , @Context HttpServletRequest request) {
-
+    public Response getTrabalhadoresByUsuario(@PathParam("login") String login, @QueryParam("nome") String nome, @QueryParam("cpf") String cpf, @QueryParam("page") String page,
+                                              @Context SecurityContext context, @Context HttpServletRequest request) {
         LOGGER.debug("Get trabalhador por login de usuario");
-
         getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
-
-        return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON).header("Content-Version", getApplicationVersion())
-            .entity(serializar(trabalhadorService.buscarTrabalhadorByUsuario(login, nome, cpf, page))).build();
+        return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON).header("Content-Version", getApplicationVersion()).entity(serializar(
+            trabalhadorService.buscarTrabalhadorByUsuario(login, nome, cpf, page))).build();
     }
 
 }

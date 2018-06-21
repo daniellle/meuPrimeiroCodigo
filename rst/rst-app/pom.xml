@@ -7,13 +7,17 @@
     <parent>
         <artifactId>rst</artifactId>
         <groupId>br.com.ezvida.rst</groupId>
-        <version>2.16.0</version>
+        <version>2.17.0</version>
     </parent>
 
     <artifactId>rst-app</artifactId>
     <packaging>ear</packaging>
 
     <name>Registro de Saúde do Trabalhador - Enterprise Application</name>
+
+    <properties>
+        <frontend.environment>dev</frontend.environment>
+    </properties>
 
     <dependencies>
 
@@ -201,7 +205,7 @@
                 <artifactId>maven-ear-plugin</artifactId>
                 <configuration>
                     <fileNameMapping>no-version</fileNameMapping>
-                    <finalName>rst-app-${version}</finalName>
+                    <finalName>rst-app-${version}-${frontend.environment}</finalName>
                     <displayName>rst-app</displayName>
                     <modules>
                         <webModule>

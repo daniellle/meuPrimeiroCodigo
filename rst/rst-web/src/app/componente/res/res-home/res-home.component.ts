@@ -8,6 +8,7 @@ import {Component, OnInit} from '@angular/core';
 import * as moment from 'moment';
 import 'chartjs-plugin-datalabels';
 import {Seguranca} from '../../../compartilhado/utilitario/seguranca.model';
+import {isNullOrUndefined} from "util";
 
 @Component({
     selector: 'app-res-home',
@@ -79,10 +80,6 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
             });
         }
 
-        if ( dados.imc ) {
-            this.imc = new DadoBasico({magnitude: dados.imc.value.magnitude as number, units: dados.imc.value.units});
-        }
-
         if ( dados.idade ) {
             this.idade = dados.idade.value.value
         }
@@ -92,6 +89,17 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
                 magnitude: dados.peso.value.magnitude as number,
                 units: dados.peso.value.units
             });
+        }
+
+        if (dados.imc) {
+            this.imc = new DadoBasico({magnitude: dados.imc.value.magnitude as number, units: dados.imc.value.units});
+        } else {
+            if (!isNullOrUndefined(this.altura) && !isNullOrUndefined(this.altura.valor) &&
+                !isNullOrUndefined(this.peso) && !isNullOrUndefined(this.peso.valor)) {
+                const altura = Number(this.altura.valor) / 100;
+                const imcMagnitude = (this.peso.valor/(altura * altura)).toFixed(2);
+                this.imc = new DadoBasico({magnitude: imcMagnitude, units: this.peso.unidade + '/' + this.altura.unidade});
+            }
         }
 
         this.criarGraficoDePressao(dados.sistolica || [], dados.diastolica || []);
@@ -463,12 +471,11 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
     }
 
     referenciaAbdominal(): string {
-        if ( this.paciente ) {
-            if ( this.paciente.gender ) {
-                if ( this.paciente.gender.code === 'male' ) {
+        if (this.paciente) {
+            if (this.paciente.gender) {
+                if (this.paciente.gender === 'M') {
                     return '94 cm';
-                }
-                else if ( this.paciente.gender.code === 'female' ) {
+                } else if (this.paciente.gender === 'F') {
                     return '60 cm';
                 }
             }

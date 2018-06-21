@@ -116,7 +116,7 @@ public class UsuarioServiceDev implements UsuarioService {
     }
 
     @Override
-    public br.com.ezvida.girst.apiclient.model.Usuario alterarPerfilSenha(Map<String, Object> propriedades, ClienteAuditoria auditoria) {
+    public br.com.ezvida.girst.apiclient.model.Usuario alterarPerfilSenha(br.com.ezvida.girst.apiclient.model.UsuarioCredencial usuarioCredencial, ClienteAuditoria auditoria) {
         logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
         return null;
     }

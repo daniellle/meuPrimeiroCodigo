@@ -41,6 +41,7 @@ public class ParametroService extends BaseService {
     public static final String EMAIL_REMETENTE_SESI = "email_remetente_sesi";
     public static final String EMAIL_NOME_REMETENTE_SESI = "email_nome_remetente_sesi";
     public static final String EMAIL_SENHA_SESI = "email_senha_sesi";
+    public static final String EMAIL_USERNAME_SESI = "email_username_sesi";
     public static final String EMAIL_ASSUNTO_SESI = "email_assunto_sesi";
     public static final String TAMANHO_MAXIMO_UPLOAD_ARQUIVO = "tamanho_maximo_upload_arquivo";
 	public static final String TOKEN_ACESSO_CLIENTE_RST = "token_acesso_cliente_rst";

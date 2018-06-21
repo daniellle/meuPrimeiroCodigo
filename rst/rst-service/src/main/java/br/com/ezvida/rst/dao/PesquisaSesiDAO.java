@@ -46,7 +46,7 @@ public class PesquisaSesiDAO extends BaseDAO<UnidadeAtendimentoTrabalhador, Long
 		jpql.append("left join fetch endUat.endereco endereco ");
 		jpql.append("left join fetch endereco.municipio municipio ");
 
-		if (segurancaFilter != null && (segurancaFilter.temIdsTrabalhador() || segurancaFilter.temIdsEmpresa())) {
+		if (segurancaFilter != null && !segurancaFilter.isAdministrador() && (segurancaFilter.temIdsTrabalhador() || segurancaFilter.temIdsEmpresa())) {
 			jpql.append("left join empresaUat.empresa empresa ");
 
 			if (segurancaFilter.temIdsTrabalhador()) {
@@ -57,7 +57,7 @@ public class PesquisaSesiDAO extends BaseDAO<UnidadeAtendimentoTrabalhador, Long
 		jpql.append(" where ");
 		jpql.append(" uat.dataDesativacao ").append(Situacao.ATIVO.getQuery());
 
-		if (segurancaFilter != null) {
+		if (segurancaFilter != null && !segurancaFilter.isAdministrador()) {
 			if (segurancaFilter.temIdsEmpresa()) {
 				jpql.append(" and ");
 				jpql.append(" empresa.id IN (:idsEmpresa) ");
@@ -190,7 +190,7 @@ public class PesquisaSesiDAO extends BaseDAO<UnidadeAtendimentoTrabalhador, Long
 			boolean linha, boolean produto) {
 		if (segurancaFilter != null) {
 			if ((unidadeSesi || estado || municipio || bairro || linha || produto)
-					&& (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa())) {
+					&& (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()) && !segurancaFilter.isAdministrador()) {
 				jpql.append(" and ");
 				montarFiltroSegurancaFilterIds(jpql, parametros, segurancaFilter);
 			}
@@ -280,7 +280,7 @@ public class PesquisaSesiDAO extends BaseDAO<UnidadeAtendimentoTrabalhador, Long
 			jpql.append("left join uat.departamentoRegional departamentoRegionalUat ");
 		}
 
-		if (segurancaFilter != null && (segurancaFilter.temIdsTrabalhador() || segurancaFilter.temIdsEmpresa())) {
+		if (segurancaFilter != null && (segurancaFilter.temIdsTrabalhador() || segurancaFilter.temIdsEmpresa()) && !segurancaFilter.isAdministrador()) {
 			jpql.append("left join empresaUat.empresa empresa ");
 
 			if (segurancaFilter.temIdsTrabalhador()) {

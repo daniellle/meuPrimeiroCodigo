@@ -47,7 +47,7 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 		jpql.append(" left join fetch empresa.segmento segmento ");
 		jpql.append(" left join fetch empresa.ramoEmpresa ramoEmpresa ");
 
-		if (segurancaFilter != null && segurancaFilter.temIdsDepRegional()) {
+		if (segurancaFilter != null && segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
 			jpql.append(" inner join empresa.empresaUats empresaUats ");
 			jpql.append(" inner join empresaUats.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador ");
 			jpql.append(" inner join unidadeAtendimentoTrabalhador.departamentoRegional departamentoRegional ");
@@ -55,7 +55,7 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 
 		jpql.append(" where empresa.id = :id");
 
-		if (segurancaFilter != null) {
+		if (segurancaFilter != null && !segurancaFilter.isAdministrador()) {
 			if (segurancaFilter.temIdsEmpresa()) {
 				jpql.append(" and empresa.id IN (:idsEmpresa) ");
 				parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
@@ -220,7 +220,7 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 	}
 	
 	private void montaJoinFiltroDados(StringBuilder jpql, DadosFilter segurancaFilter) {
-		if (segurancaFilter != null && segurancaFilter.temIdsDepRegional()) {
+		if (segurancaFilter != null && segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
 			jpql.append(" inner join empresa.empresaUats empresaUats ");
 			jpql.append(" inner join empresaUats.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador ");
 			jpql.append(" inner join unidadeAtendimentoTrabalhador.departamentoRegional departamentoRegional ");
@@ -237,7 +237,7 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 	}
 	
 	private void filtrarDadosSeguranca(DadosFilter segurancaFilter, StringBuilder jpql, Map<String, Object> parametros) {
-		if (segurancaFilter != null && temIdsDepRegionalOuTemIdsEmpresa(segurancaFilter)) {
+		if (segurancaFilter != null && temIdsDepRegionalOuTemIdsEmpresa(segurancaFilter) && !segurancaFilter.isAdministrador()) {
 			if (segurancaFilter.temIdsEmpresa()) {
 				adicionarAnd(jpql);
 				jpql.append(" empresa.id IN (:idsEmpresa) ");

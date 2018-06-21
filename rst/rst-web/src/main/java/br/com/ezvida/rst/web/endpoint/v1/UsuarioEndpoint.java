@@ -142,13 +142,12 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
     @Path("/perfil")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CONSULTAR,  PermissionConstants.USUARIO_ALTERAR}))
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_ALTERAR}))
     public Response alterarPerfil(@Context SecurityContext context,
-                                  @Context HttpServletRequest request, @Encoded Map<String, Object> propriedades ) {
+                                  @Context HttpServletRequest request, @Encoded br.com.ezvida.girst.apiclient.model.UsuarioCredencial usuarioCredencial) {
         LOGGER.debug("Atualizando o perfil e senha do usuario");
         getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
-        return Response.status(HttpServletResponse.SC_OK).entity(serializar(usuarioService.alterarPerfilSenha(propriedades,
-            ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.USUARIOS))))
+        return Response.status(HttpServletResponse.SC_OK).entity(serializar(usuarioService.alterarPerfilSenha(usuarioCredencial, ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.USUARIOS))))
             .header("Content-Version", getApplicationVersion())
             .type(MediaType.APPLICATION_JSON).build();
     }
