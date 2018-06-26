@@ -1,6 +1,31 @@
  # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v2.17.1**
+
+============
+
+(RELEASE EM 26/06/2018)
+
+**Novidades**
+
+
+------------
+
+**Melhorias**
+	
+	
+------------
+
+**Correções**
+
+	Ajuste no serviço para retornar os trabalhadores para o RES Online
+	Ajuste de redirecionamento após salvar dados de Minha Conta
+	
+------------
+
+
+
 **v2.17.0**
 
 ============

@@ -520,6 +520,7 @@ export const MensagemProperties = {
   app_rst_alterar_senha_pattern_invalido: 'A senha está inválida',
   app_rst_alterar_senha_confirmar_invalido: 'A senha e sua confirmação não combinam',
   app_rst_alterar_senha_sucesso: 'Senha alterada com sucesso',
+  app_rst_minhaconta: 'Dados da conta alterados com sucesso',
 
   // Solicitar email
   app_rst_solicitar_email_sesi: 'Solicitar email do SESI VIVA +',

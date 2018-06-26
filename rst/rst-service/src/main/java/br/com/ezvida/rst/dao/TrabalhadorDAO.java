@@ -379,8 +379,8 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 		StringBuilder jpql2 = new StringBuilder();
 		StringBuilder jpql = new StringBuilder();
 
-		jpql.append(" SELECT count(1) from trabalhador t ");
-		jpql2.append(" SELECT t.id_trabalhador, t.dt_nascimento, t.fl_genero, t.no_cpf, t.nm_trabalhador, em.nm_fantasia, f2.ds_funcao, cbo.ds_cbo from trabalhador t ");
+        jpql.append(" SELECT COUNT(DISTINCT t2.ID_EMP_TRABALHADOR) from trabalhador t ");
+        jpql2.append(" SELECT DISTINCT t.id_trabalhador, t.dt_nascimento, t.fl_genero, t.no_cpf, t.nm_trabalhador, em.nm_fantasia, f2.ds_funcao, cbo.ds_cbo from trabalhador t ");
 
 		this.joinTrabalhadorUsuario(jpql);
 		this.joinTrabalhadorUsuario(jpql2);
@@ -415,6 +415,7 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
         jpql.append(" INNER JOIN emp_trabalhador t2 ");
         jpql.append(" ON t.id_trabalhador = t2.id_trabalhador_fk ");
         jpql.append(" AND t2.dt_demissao IS NULL ");
+        jpql.append(" AND t2.dt_admissao = (SELECT MAX(t3.dt_admissao) FROM emp_trabalhador t3 WHERE t.id_trabalhador = t3.id_trabalhador_fk) ");
         jpql.append(" INNER JOIN  empresa em ");
         jpql.append(" ON t2.id_empresa_fk = em.id_empresa ");
         jpql.append(" LEFT JOIN emp_trab_lotacao etl ");

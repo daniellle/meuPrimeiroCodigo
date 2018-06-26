@@ -200,8 +200,8 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
             this.servico.salvarPerfil(this.converterFormParaModel())
                 .subscribe((user: Usuario) => {
                     if (user) {
-                        this.mensagemSucesso(MensagemProperties.app_rst_alterar_senha_sucesso);
-                        this.voltar();
+                        this.mensagemSucesso(MensagemProperties.app_rst_minhaconta);
+                        // this.voltar();
                     }
                 }, (error) => {
                     this.mensagemError(error);
