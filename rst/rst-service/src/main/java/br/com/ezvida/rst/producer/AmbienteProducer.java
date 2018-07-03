@@ -11,7 +11,8 @@ public class AmbienteProducer {
     private Ambiente produceAmbiente(){
         if(System.getenv("SOLUTIS_DEV_ENV") != null){
 			return Ambiente.DESENVOLVIMENTO;
-        }else{
+        }
+        else{
             return Ambiente.PRODUCAO;
         }
     }

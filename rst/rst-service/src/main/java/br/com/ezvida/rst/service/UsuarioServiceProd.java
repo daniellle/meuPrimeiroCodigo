@@ -101,7 +101,7 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             }
             getEntidadesFiltradas(usuario);
         } else {
-            LOGGER.debug("O usuário do girst para o login = " + login + ", é null.");
+            LOGGER.info("O usuário do girst para o login = " + login + ", é null.");
         }
 
         return usuario;
@@ -289,11 +289,11 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             u = this.usuarioClient.alterar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), usuario);
             AtomicReference<Boolean> isTrabalhador = new AtomicReference<>(false);
             usuarioAnterior.getPerfisSistema().parallelStream().forEach(ups -> {
-                if (ups.getPerfil().getCodigo().equalsIgnoreCase("TRA")){
+                if (ups.getPerfil().getCodigo().equalsIgnoreCase("TRA")) {
                     isTrabalhador.set(true);
                 }
-             });
-            if(isTrabalhador.get()) {
+            });
+            if (isTrabalhador.get()) {
                 trabalhadorService.sicronizarUsuarioTrabalhador(usuario, auditoria);
             }
         } catch (Exception e) {
@@ -307,7 +307,12 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public br.com.ezvida.girst.apiclient.model.Usuario sicronizarTrabalhadorUsuario(Trabalhador trabalhador, ClienteAuditoria auditoria) {
-        br.com.ezvida.girst.apiclient.model.Usuario user = buscarPorLogin(trabalhador.getCpf());
+        br.com.ezvida.girst.apiclient.model.Usuario user = null;
+        try {
+            user = buscarPorLogin(trabalhador.getCpf());
+        } catch (Exception e) {
+            LOGGER.debug("Usuario não encontrado no GIRST", e);
+        }
 
         if (user != null) {
             user.setNome(trabalhador.getNome());

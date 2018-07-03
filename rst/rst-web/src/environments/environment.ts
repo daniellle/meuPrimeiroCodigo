@@ -13,5 +13,5 @@ export const environment = {
     baseHref: '/',
     exibirMenu: true,
     exibirWS: true,
-    isProduction: true,
+    isProduction: false,
 };

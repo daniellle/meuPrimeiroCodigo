@@ -32,321 +32,325 @@ import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Stateless
 public class TrabalhadorService extends BaseService {
 
-	private static final long serialVersionUID = 6186912314459313987L;
+    private static final long serialVersionUID = 6186912314459313987L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(TrabalhadorService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TrabalhadorService.class);
 
-	private static final String CODIGO_SISTEMA_CADASTRO = "cadastro";
+    private static final String CODIGO_SISTEMA_CADASTRO = "cadastro";
 
-	private static final String CODIGO_SISTEMA_SESI_VIVA_MAIS_MOBILE = "vivamaismobile";
+    private static final String CODIGO_SISTEMA_SESI_VIVA_MAIS_MOBILE = "vivamaismobile";
 
-	@Inject
-	private TrabalhadorDAO trabalhadorDAO;
+    @Inject
+    private TrabalhadorDAO trabalhadorDAO;
 
-	@Inject
-	private TelefoneTrabalhadorService telefoneTrabalhadorService;
+    @Inject
+    private TelefoneTrabalhadorService telefoneTrabalhadorService;
 
-	@Inject
-	private EmailTrabalhadorService emailTrabalhadorService;
+    @Inject
+    private EmailTrabalhadorService emailTrabalhadorService;
 
-	@Inject
-	private EnderecoTrabalhadorService enderecoTrabalhadorService;
+    @Inject
+    private EnderecoTrabalhadorService enderecoTrabalhadorService;
 
-	@Inject
-	private TrabalhadorDependenteService trabalhadorDependenteService;
+    @Inject
+    private TrabalhadorDependenteService trabalhadorDependenteService;
 
-	@Inject
+    @Inject
     private UsuarioEntidadeService usuarioEntidadeService;
 
-	@Inject
-	@Preferencial
-	private UsuarioService usuarioService;
+    @Inject
+    @Preferencial
+    private UsuarioService usuarioService;
 
-	@Inject
-	private SolicitacaoEmailService solicitacaoEmailService;
+    @Inject
+    private SolicitacaoEmailService solicitacaoEmailService;
 
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public Trabalhador buscarPorId(TrabalhadorFilter trabalhadorFilter, ClienteAuditoria auditoria,
-			DadosFilter dadosFilter) {
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Trabalhador buscarPorId(TrabalhadorFilter trabalhadorFilter, ClienteAuditoria auditoria,
+                                   DadosFilter dadosFilter) {
 
-		if (trabalhadorFilter == null || trabalhadorFilter.getId() == null) {
-			throw new BusinessErrorException("Id de consulta está nulo.");
-		}
+        if (trabalhadorFilter == null || trabalhadorFilter.getId() == null) {
+            throw new BusinessErrorException("Id de consulta está nulo.");
+        }
 
-		Trabalhador trabalhador = trabalhadorDAO.pesquisarPorId(trabalhadorFilter, dadosFilter);
+        Trabalhador trabalhador = trabalhadorDAO.pesquisarPorId(trabalhadorFilter, dadosFilter);
 
-		if (trabalhador == null) {
-			throw new RegistroNaoEncontradoException(getMensagem("app_rst_nenhum_registro_encontrado"));
-		}
+        if (trabalhador == null) {
+            throw new RegistroNaoEncontradoException(getMensagem("app_rst_nenhum_registro_encontrado"));
+        }
 
-		if (!trabalhadorFilter.isAplicarDadosFilter() && !auditoria.getUsuario().equals(trabalhador.getCpf())) {
-			throw new RegistroNaoEncontradoException(getMensagem("app_rst_nenhum_registro_encontrado"));
-		}
+        if (!trabalhadorFilter.isAplicarDadosFilter() && !auditoria.getUsuario().equals(trabalhador.getCpf())) {
+            throw new RegistroNaoEncontradoException(getMensagem("app_rst_nenhum_registro_encontrado"));
+        }
 
-		if (trabalhador != null) {
-			trabalhador.setListaTelefoneTrabalhador(
-					telefoneTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
-			trabalhador.setListaEmailTrabalhador(emailTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
-			trabalhador.setListaEnderecoTrabalhador(
-					enderecoTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
-		}
-		LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de trabalhador por id: " + trabalhadorFilter.getId());
-		return trabalhador;
-	}
+        if (trabalhador != null) {
+            trabalhador.setListaTelefoneTrabalhador(
+                    telefoneTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
+            trabalhador.setListaEmailTrabalhador(emailTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
+            trabalhador.setListaEnderecoTrabalhador(
+                    enderecoTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
+        }
+        LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de trabalhador por id: " + trabalhadorFilter.getId());
+        return trabalhador;
+    }
 
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public Long buscarTrabalhadorVidaAtiva(String id) {
-		return trabalhadorDAO.buscarVidaAtiva(id);
-	}
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Long buscarTrabalhadorVidaAtiva(String id) {
+        return trabalhadorDAO.buscarVidaAtiva(id);
+    }
 
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public Trabalhador buscarTrabalhadorPrimeiroAcesso(String cpf, String dataNascimento) {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		Date date = null;
-		try {
-			date = (Date) formatter.parse(dataNascimento);
-		} catch (ParseException e) {
-			throw new BusinessErrorException(getMensagem("app_rst_validacao_error"));
-		}
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Trabalhador buscarTrabalhadorPrimeiroAcesso(String cpf, String dataNascimento) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = null;
+        try {
+            date = (Date) formatter.parse(dataNascimento);
+        } catch (ParseException e) {
+            throw new BusinessErrorException(getMensagem("app_rst_validacao_error"));
+        }
 
-		Trabalhador trabalhador = trabalhadorDAO.pesquisarPorCpfDataNascimento(cpf, date);
+        Trabalhador trabalhador = trabalhadorDAO.pesquisarPorCpfDataNascimento(cpf, date);
 
-		if (trabalhador == null) {
-			throw new BusinessErrorException(getMensagem("app_rst_nenhum_registro_encontrado"));
-		}
+        if (trabalhador == null) {
+            throw new BusinessErrorException(getMensagem("app_rst_nenhum_registro_encontrado"));
+        }
 
-		if (trabalhador.getId() != null && trabalhador.getTermo() != null
-				&& trabalhador.getTermo().equals(SimNao.SIM)) {
-			throw new BusinessErrorException(getMensagem("app_rst_trabalhador_ja_rezlizou_primeiro_acesso"));
-		}
+        if (trabalhador.getId() != null && trabalhador.getTermo() != null
+                && trabalhador.getTermo().equals(SimNao.SIM)) {
+            throw new BusinessErrorException(getMensagem("app_rst_trabalhador_ja_rezlizou_primeiro_acesso"));
+        }
 
-		if (trabalhador != null) {
-			trabalhador.setListaTelefoneTrabalhador(
-					telefoneTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
-			trabalhador.setListaEmailTrabalhador(emailTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
-			trabalhador.setListaEnderecoTrabalhador(
-					enderecoTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
-		}
+        if (trabalhador != null) {
+            trabalhador.setListaTelefoneTrabalhador(
+                    telefoneTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
+            trabalhador.setListaEmailTrabalhador(emailTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
+            trabalhador.setListaEnderecoTrabalhador(
+                    enderecoTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
+        }
 
-		return trabalhador;
-	}
+        return trabalhador;
+    }
 
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public List<Trabalhador> listarTodos() {
-		return trabalhadorDAO.listarTodos();
-	}
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<Trabalhador> listarTodos() {
+        return trabalhadorDAO.listarTodos();
+    }
 
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public ListaPaginada<Trabalhador> pesquisarPaginado(TrabalhadorFilter trabalhadorFilter, ClienteAuditoria auditoria,
-			DadosFilter dados) {
-		LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de trabalhador por filtro: ", trabalhadorFilter);
-		return pesquisarPaginado(trabalhadorFilter, dados);
-	}
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public ListaPaginada<Trabalhador> pesquisarPaginado(TrabalhadorFilter trabalhadorFilter, ClienteAuditoria auditoria,
+                                                        DadosFilter dados) {
+        LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de trabalhador por filtro: ", trabalhadorFilter);
+        return pesquisarPaginado(trabalhadorFilter, dados);
+    }
 
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public ListaPaginada<Trabalhador> pesquisarPaginado(TrabalhadorFilter trabalhadorFilter, DadosFilter dados) {
-		return trabalhadorDAO.pesquisarPaginado(trabalhadorFilter, dados);
-	}
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public ListaPaginada<Trabalhador> pesquisarPaginado(TrabalhadorFilter trabalhadorFilter, DadosFilter dados) {
+        return trabalhadorDAO.pesquisarPaginado(trabalhadorFilter, dados);
+    }
 
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public Trabalhador salvar(Trabalhador trabalhador, ClienteAuditoria auditoria) {
-		String descricaoAuditoria = "Cadastro de Profissional: ";
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public Trabalhador salvar(Trabalhador trabalhador, ClienteAuditoria auditoria) {
+        Boolean hasNewTrabalhador = true;
+        if (trabalhador.getId() != null) {
+            hasNewTrabalhador = false;
+        }
 
-		if (trabalhador.getId() != null) {
-			descricaoAuditoria = "Alteração no cadastro de trabalhador: ";
-		}
+        trabalhador.setDescricaoAlergias(StringUtils.trimToNull(trabalhador.getDescricaoAlergias()));
+        trabalhador.setDescricaoVacinas(StringUtils.trimToNull(trabalhador.getDescricaoVacinas()));
+        trabalhador.setDescricaoMedicamentos(StringUtils.trimToNull(trabalhador.getDescricaoMedicamentos()));
 
-		trabalhador.setDescricaoAlergias(StringUtils.trimToNull(trabalhador.getDescricaoAlergias()));
-		trabalhador.setDescricaoVacinas(StringUtils.trimToNull(trabalhador.getDescricaoVacinas()));
-		trabalhador.setDescricaoMedicamentos(StringUtils.trimToNull(trabalhador.getDescricaoMedicamentos()));
+        validar(trabalhador, auditoria);
+        trabalhadorDAO.salvar(trabalhador);
+        emailTrabalhadorService.salvar(trabalhador.getListaEmailTrabalhador(), trabalhador);
+        telefoneTrabalhadorService.salvar(trabalhador.getListaTelefoneTrabalhador(), trabalhador);
+        enderecoTrabalhadorService.salvar(trabalhador.getListaEnderecoTrabalhador(), trabalhador);
 
-		validar(trabalhador, auditoria);
-		trabalhadorDAO.salvar(trabalhador);
-		emailTrabalhadorService.salvar(trabalhador.getListaEmailTrabalhador(), trabalhador);
-		telefoneTrabalhadorService.salvar(trabalhador.getListaTelefoneTrabalhador(), trabalhador);
-		enderecoTrabalhadorService.salvar(trabalhador.getListaEnderecoTrabalhador(), trabalhador);
-		usuarioService.sicronizarTrabalhadorUsuario(trabalhador, auditoria);
-		LogAuditoria.registrar(LOGGER, auditoria, descricaoAuditoria, trabalhador);
-		return trabalhador;
-	}
+        if (!hasNewTrabalhador) {
+            usuarioService.sicronizarTrabalhadorUsuario(trabalhador, auditoria);
+            LogAuditoria.registrar(LOGGER, auditoria, "Alteração no cadastro de trabalhador: ", trabalhador);
+        } else {
+            LogAuditoria.registrar(LOGGER, auditoria, "Cadastro de Profissional: ", trabalhador);
+        }
 
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public Trabalhador sicronizarUsuarioTrabalhador(br.com.ezvida.girst.apiclient.model.Usuario usuario, ClienteAuditoria auditoria) {
-		Trabalhador trabalhador = pesquisarPorCPF(usuario.getLogin());
-		trabalhador.setNome(usuario.getNome());
-		trabalhadorDAO.salvar(trabalhador);
-		emailTrabalhadorService.salvar(incluirEmailTrabalhador(usuario, trabalhador), trabalhador);
-		return trabalhador;
-	}
+        return trabalhador;
+    }
 
-	private Set<EmailTrabalhador> incluirEmailTrabalhador(Usuario usuario, Trabalhador trabalhador) {
-		Set<EmailTrabalhador> listaEmail = trabalhador.getListaEmailTrabalhador();
-		listaEmail.parallelStream().forEach(e -> e.getEmail().setNotificacao(SimNao.NAO));
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public Trabalhador sicronizarUsuarioTrabalhador(br.com.ezvida.girst.apiclient.model.Usuario usuario, ClienteAuditoria auditoria) {
+        Trabalhador trabalhador = pesquisarPorCPF(usuario.getLogin());
+        trabalhador.setNome(usuario.getNome());
+        trabalhadorDAO.salvar(trabalhador);
+        emailTrabalhadorService.salvar(incluirEmailTrabalhador(usuario, trabalhador), trabalhador);
+        return trabalhador;
+    }
 
-		Optional<EmailTrabalhador> optEmail = listaEmail.parallelStream().filter(e -> e.getEmail().getDescricao().equalsIgnoreCase(usuario.getEmail())).findFirst();
-		if (optEmail.isPresent()) {
-			listaEmail.remove(optEmail.get());
-			optEmail.get().getEmail().setDescricao(usuario.getEmail());
-			optEmail.get().getEmail().setNotificacao(SimNao.SIM);
-			listaEmail.add(optEmail.get());
-		} else {
-			Email email = new Email();
-			email.setNotificacao(SimNao.SIM);
-			email.setDescricao(usuario.getEmail());
-			email.setTipo(TipoEmail.TRABALHO);
-			EmailTrabalhador emailTrabalhador = new EmailTrabalhador();
-			emailTrabalhador.setTrabalhador(trabalhador);
-			emailTrabalhador.setEmail(email);
+    private Set<EmailTrabalhador> incluirEmailTrabalhador(Usuario usuario, Trabalhador trabalhador) {
+        Set<EmailTrabalhador> listaEmail = trabalhador.getListaEmailTrabalhador();
+        listaEmail.parallelStream().forEach(e -> e.getEmail().setNotificacao(SimNao.NAO));
 
-			listaEmail.add(emailTrabalhador);
-		}
+        Optional<EmailTrabalhador> optEmail = listaEmail.parallelStream().filter(e -> e.getEmail().getDescricao().equalsIgnoreCase(usuario.getEmail())).findFirst();
+        if (optEmail.isPresent()) {
+            listaEmail.remove(optEmail.get());
+            optEmail.get().getEmail().setDescricao(usuario.getEmail());
+            optEmail.get().getEmail().setNotificacao(SimNao.SIM);
+            listaEmail.add(optEmail.get());
+        } else {
+            Email email = new Email();
+            email.setNotificacao(SimNao.SIM);
+            email.setDescricao(usuario.getEmail());
+            email.setTipo(TipoEmail.TRABALHO);
+            EmailTrabalhador emailTrabalhador = new EmailTrabalhador();
+            emailTrabalhador.setTrabalhador(trabalhador);
+            emailTrabalhador.setEmail(email);
 
-		return listaEmail;
-	}
+            listaEmail.add(emailTrabalhador);
+        }
 
-	private Usuario buscarTrabalhadorJaCadastrado(String login) {
-		UsuarioFilter usuarioFilter = new UsuarioFilter(login, null, 1, 10);
-		br.com.ezvida.girst.apiclient.model.ListaPaginada<br.com.ezvida.girst.apiclient.model.Usuario> lista = usuarioService
-				.pesquisarPaginado(usuarioFilter);
-		if (lista.getQuantidade() > 0) {
-			return usuarioService.buscarPorLogin(login);
-		}
+        return listaEmail;
+    }
 
-		return null;
-	}
+    private Usuario buscarTrabalhadorJaCadastrado(String login) {
+        UsuarioFilter usuarioFilter = new UsuarioFilter(login, null, 1, 10);
+        br.com.ezvida.girst.apiclient.model.ListaPaginada<br.com.ezvida.girst.apiclient.model.Usuario> lista = usuarioService
+                .pesquisarPaginado(usuarioFilter);
+        if (lista.getQuantidade() > 0) {
+            return usuarioService.buscarPorLogin(login);
+        }
 
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public PrimeiroAcesso salvarPrimeiroAcesso(PrimeiroAcesso primeiroAcesso) {
+        return null;
+    }
 
-		Trabalhador trab = trabalhadorDAO.pesquisarPorId(primeiroAcesso.getTrabalhador().getId());
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public PrimeiroAcesso salvarPrimeiroAcesso(PrimeiroAcesso primeiroAcesso) {
 
-		if (trab != null) {
-			if (trab.getDataFalecimento() != null) {
-				throw new BusinessErrorException(getMensagem("app_rst_primeiro_acesso_erro_data_falecimento"));
-			}
+        Trabalhador trab = trabalhadorDAO.pesquisarPorId(primeiroAcesso.getTrabalhador().getId());
 
-			definirPerfilSistema(primeiroAcesso);
+        if (trab != null) {
+            if (trab.getDataFalecimento() != null) {
+                throw new BusinessErrorException(getMensagem("app_rst_primeiro_acesso_erro_data_falecimento"));
+            }
 
-			Usuario usuario = buscarTrabalhadorJaCadastrado(trab.getCpf());
-			if (usuario == null) {
-				usuario = usuarioService.cadastrarUsuario(primeiroAcesso.getUsuario(), null);
+            definirPerfilSistema(primeiroAcesso);
 
-				if (usuario == null) {
-					throw new BusinessErrorException(getMensagem("app_validacao_error"));
-				}
+            Usuario usuario = buscarTrabalhadorJaCadastrado(trab.getCpf());
+            if (usuario == null) {
+                usuario = usuarioService.cadastrarUsuario(primeiroAcesso.getUsuario(), null);
 
-			} else {
-				if (!verificarPerfilSistemaPrimeiroAcesso(usuario)) {
-					usuario.getPerfisSistema().add(primeiroAcesso.getUsuario().getPerfisSistema().iterator().next());
-				}
+                if (usuario == null) {
+                    throw new BusinessErrorException(getMensagem("app_validacao_error"));
+                }
+
+            } else {
+                if (!verificarPerfilSistemaPrimeiroAcesso(usuario)) {
+                    usuario.getPerfisSistema().add(primeiroAcesso.getUsuario().getPerfisSistema().iterator().next());
+                }
 
                 validarEmailPrimeiroAcesso(primeiroAcesso, usuario);
                 usuario.setSenha(primeiroAcesso.getUsuario().getSenha());
-				usuario.setEmail(primeiroAcesso.getUsuario().getEmail());
+                usuario.setEmail(primeiroAcesso.getUsuario().getEmail());
 
-				usuarioService.alterarUsuario(usuario, getAuditoriaNovoUsuario(usuario));
-			}
+                usuarioService.alterarUsuario(usuario, getAuditoriaNovoUsuario(usuario));
+            }
 
-			trab.setTermo(SimNao.SIM);
-			trabalhadorDAO.salvar(trab);
-			emailTrabalhadorService.salvar(primeiroAcesso.getTrabalhador().getListaEmailTrabalhador(), trab);
-			telefoneTrabalhadorService.salvar(primeiroAcesso.getTrabalhador().getListaTelefoneTrabalhador(), trab);
-		}
-		return primeiroAcesso;
-	}
+            trab.setTermo(SimNao.SIM);
+            trabalhadorDAO.salvar(trab);
+            emailTrabalhadorService.salvar(primeiroAcesso.getTrabalhador().getListaEmailTrabalhador(), trab);
+            telefoneTrabalhadorService.salvar(primeiroAcesso.getTrabalhador().getListaTelefoneTrabalhador(), trab);
+        }
+        return primeiroAcesso;
+    }
 
-	private void definirPerfilSistema(PrimeiroAcesso primeiroAcesso) {
-		Perfil perfil = new Perfil();
-		perfil.setCodigo(DadosFilter.TRABALHADOR);
+    private void definirPerfilSistema(PrimeiroAcesso primeiroAcesso) {
+        Perfil perfil = new Perfil();
+        perfil.setCodigo(DadosFilter.TRABALHADOR);
 
-		Sistema sistema = new Sistema();
-		sistema.setCodigo(CODIGO_SISTEMA_CADASTRO);
+        Sistema sistema = new Sistema();
+        sistema.setCodigo(CODIGO_SISTEMA_CADASTRO);
 
-		Sistema sistemaMobile = new Sistema();
-		sistemaMobile.setCodigo(CODIGO_SISTEMA_SESI_VIVA_MAIS_MOBILE);
+        Sistema sistemaMobile = new Sistema();
+        sistemaMobile.setCodigo(CODIGO_SISTEMA_SESI_VIVA_MAIS_MOBILE);
 
-		UsuarioPerfilSistema usuarioPerfilSistema = new UsuarioPerfilSistema();
-		usuarioPerfilSistema.setPerfil(perfil);
-		usuarioPerfilSistema.setSistema(sistema);
+        UsuarioPerfilSistema usuarioPerfilSistema = new UsuarioPerfilSistema();
+        usuarioPerfilSistema.setPerfil(perfil);
+        usuarioPerfilSistema.setSistema(sistema);
 
-		primeiroAcesso.getUsuario().setPerfisSistema(new HashSet<UsuarioPerfilSistema>());
-		primeiroAcesso.getUsuario().getPerfisSistema().add(usuarioPerfilSistema);
+        primeiroAcesso.getUsuario().setPerfisSistema(new HashSet<UsuarioPerfilSistema>());
+        primeiroAcesso.getUsuario().getPerfisSistema().add(usuarioPerfilSistema);
 
-		UsuarioPerfilSistema usuarioPerfilSistemaMobile = new UsuarioPerfilSistema();
-		usuarioPerfilSistemaMobile.setPerfil(perfil);
-		usuarioPerfilSistemaMobile.setSistema(sistemaMobile);
-		primeiroAcesso.getUsuario().getPerfisSistema().add(usuarioPerfilSistemaMobile);
-	}
+        UsuarioPerfilSistema usuarioPerfilSistemaMobile = new UsuarioPerfilSistema();
+        usuarioPerfilSistemaMobile.setPerfil(perfil);
+        usuarioPerfilSistemaMobile.setSistema(sistemaMobile);
+        primeiroAcesso.getUsuario().getPerfisSistema().add(usuarioPerfilSistemaMobile);
+    }
 
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public Trabalhador pesquisarPorCPF(String cpf) {
-		List<Trabalhador> trabalhadores = trabalhadorDAO.pesquisarPorCPF(Arrays.asList(cpf));
-		return !trabalhadores.isEmpty() ? trabalhadores.get(0) : null;
-	}
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Trabalhador pesquisarPorCPF(String cpf) {
+        List<Trabalhador> trabalhadores = trabalhadorDAO.pesquisarPorCPF(Arrays.asList(cpf));
+        return !trabalhadores.isEmpty() ? trabalhadores.get(0) : null;
+    }
 
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public Trabalhador buscarPorCpf(String cpf) {
-		LOGGER.debug("buscando trabalhador por cpf");
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Trabalhador buscarPorCpf(String cpf) {
+        LOGGER.debug("buscando trabalhador por cpf");
 
-		Trabalhador trabalhador = trabalhadorDAO.pesquisarPorCpf(cpf);
+        Trabalhador trabalhador = trabalhadorDAO.pesquisarPorCpf(cpf);
 
-		if (trabalhador == null) {
-			throw new RegistroNaoEncontradoException(getMensagem("app_rst_nenhum_registro_encontrado"));
-		}
+        if (trabalhador == null) {
+            throw new RegistroNaoEncontradoException(getMensagem("app_rst_nenhum_registro_encontrado"));
+        }
 
-		return trabalhador;
-	}
+        return trabalhador;
+    }
 
-	private void validar(Trabalhador trabalhador, ClienteAuditoria auditoria) {
-		Trabalhador trabalhadorRetorno = pesquisarPorCPF(trabalhador.getCpf());
-		if (trabalhadorRetorno != null && !trabalhadorRetorno.getId().equals(trabalhador.getId())) {
-			throw new BusinessErrorException(getMensagem("app_rst_registro_duplicado",
-					getMensagem("app_rst_label_trabalhador"), getMensagem("app_rst_label_cpf")));
-		}
+    private void validar(Trabalhador trabalhador, ClienteAuditoria auditoria) {
+        Trabalhador trabalhadorRetorno = pesquisarPorCPF(trabalhador.getCpf());
+        if (trabalhadorRetorno != null && !trabalhadorRetorno.getId().equals(trabalhador.getId())) {
+            throw new BusinessErrorException(getMensagem("app_rst_registro_duplicado",
+                    getMensagem("app_rst_label_trabalhador"), getMensagem("app_rst_label_cpf")));
+        }
 
-		if (CollectionUtils.isNotEmpty(trabalhador.getListaEmailTrabalhador())) {
-			for (EmailTrabalhador emailTrabalhador : trabalhador.getListaEmailTrabalhador()) {
-				Set<EmailTrabalhador> emailTrabalhadorRetorno = emailTrabalhadorService
-						.pesquisarPorEmail(emailTrabalhador.getEmail().getDescricao());
-				if (emailTrabalhadorRetorno != null && CollectionUtils.isNotEmpty(emailTrabalhadorRetorno)
-						&& !emailTrabalhadorRetorno.iterator().next().getTrabalhador().getId()
-								.equals(trabalhador.getId())) {
-					throw new BusinessErrorException(getMensagem("app_rst_registro_duplicado",
-							getMensagem("app_rst_label_trabalhador"), getMensagem("app_rst_label_email")));
-				}
-			}
-		}
+        if (CollectionUtils.isNotEmpty(trabalhador.getListaEmailTrabalhador())) {
+            for (EmailTrabalhador emailTrabalhador : trabalhador.getListaEmailTrabalhador()) {
+                Set<EmailTrabalhador> emailTrabalhadorRetorno = emailTrabalhadorService
+                        .pesquisarPorEmail(emailTrabalhador.getEmail().getDescricao());
+                if (emailTrabalhadorRetorno != null && CollectionUtils.isNotEmpty(emailTrabalhadorRetorno)
+                        && !emailTrabalhadorRetorno.iterator().next().getTrabalhador().getId()
+                        .equals(trabalhador.getId())) {
+                    throw new BusinessErrorException(getMensagem("app_rst_registro_duplicado",
+                            getMensagem("app_rst_label_trabalhador"), getMensagem("app_rst_label_email")));
+                }
+            }
+        }
 
-		if (trabalhador.getCpf() != null) {
-			TrabalhadorDependente trabalhadorDependente = trabalhadorDependenteService
-					.pesquisarDependentePorCPF(trabalhador.getCpf(), auditoria);
-			if (trabalhadorDependente != null && SimNao.NAO.equals(trabalhadorDependente.getInativo())) {
-				throw new BusinessErrorException(getMensagem("app_rst_cpf_dependente_do_trabalhador",
-						adicionarMascaraCpf(trabalhadorDependente.getTrabalhador().getCpf()),
-						trabalhadorDependente.getTrabalhador().getNome()));
+        if (trabalhador.getCpf() != null) {
+            TrabalhadorDependente trabalhadorDependente = trabalhadorDependenteService
+                    .pesquisarDependentePorCPF(trabalhador.getCpf(), auditoria);
+            if (trabalhadorDependente != null && SimNao.NAO.equals(trabalhadorDependente.getInativo())) {
+                throw new BusinessErrorException(getMensagem("app_rst_cpf_dependente_do_trabalhador",
+                        adicionarMascaraCpf(trabalhadorDependente.getTrabalhador().getCpf()),
+                        trabalhadorDependente.getTrabalhador().getNome()));
 
-			}
-		}
+            }
+        }
 
-		if (StringUtils.isNotEmpty(trabalhador.getCpf()) && !ValidadorUtils.isValidCPF(trabalhador.getCpf())) {
-			throw new BusinessErrorException(getMensagem("app_rst_campo_invalido", getMensagem("app_rst_label_cpf")));
-		}
+        if (StringUtils.isNotEmpty(trabalhador.getCpf()) && !ValidadorUtils.isValidCPF(trabalhador.getCpf())) {
+            throw new BusinessErrorException(getMensagem("app_rst_campo_invalido", getMensagem("app_rst_label_cpf")));
+        }
 
-		if (StringUtils.isNotEmpty(trabalhador.getNit()) && !ValidadorUtils.validarNit(trabalhador.getNit())) {
-			throw new BusinessErrorException(getMensagem("app_rst_campo_invalido", getMensagem("app_rst_label_nit")));
-		}
+        if (StringUtils.isNotEmpty(trabalhador.getNit()) && !ValidadorUtils.validarNit(trabalhador.getNit())) {
+            throw new BusinessErrorException(getMensagem("app_rst_campo_invalido", getMensagem("app_rst_label_nit")));
+        }
 
-		if (trabalhador.getDataNascimento() != null && trabalhador.getDataNascimento().after(new Date())) {
-			throw new BusinessErrorException(
-					getMensagem("app_rst_data_maior_que_atual", getMensagem("app_rst_label_data_nascimento")));
-		}
-	}
+        if (trabalhador.getDataNascimento() != null && trabalhador.getDataNascimento().after(new Date())) {
+            throw new BusinessErrorException(
+                    getMensagem("app_rst_data_maior_que_atual", getMensagem("app_rst_label_data_nascimento")));
+        }
+    }
 
     private void validarEmailPrimeiroAcesso(PrimeiroAcesso primeiroAcesso, Usuario usuario) {
         String emailInformado = primeiroAcesso.getUsuario().getEmail();
@@ -360,86 +364,86 @@ public class TrabalhadorService extends BaseService {
         }
     }
 
-	private String adicionarMascaraCpf(String cpf) {
-		StringBuilder sBuilder = new StringBuilder(cpf);
-		sBuilder.insert(3, ".");
-		sBuilder.insert(7, ".");
-		sBuilder.insert(11, "-");
-		return sBuilder.toString();
-	}
+    private String adicionarMascaraCpf(String cpf) {
+        StringBuilder sBuilder = new StringBuilder(cpf);
+        sBuilder.insert(3, ".");
+        sBuilder.insert(7, ".");
+        sBuilder.insert(11, "-");
+        return sBuilder.toString();
+    }
 
-	private boolean verificarPerfilSistemaPrimeiroAcesso(Usuario uruario) {
-		boolean ehTrabalhador = false;
-		for (UsuarioPerfilSistema item : uruario.getPerfisSistema()) {
-			if (item.getSistema().getCodigo().equals(CODIGO_SISTEMA_CADASTRO)
-					&& item.getPerfil().getCodigo().equals(DadosFilter.TRABALHADOR)) {
-				ehTrabalhador = true;
-			}
-		}
-		return ehTrabalhador;
-	}
+    private boolean verificarPerfilSistemaPrimeiroAcesso(Usuario uruario) {
+        boolean ehTrabalhador = false;
+        for (UsuarioPerfilSistema item : uruario.getPerfisSistema()) {
+            if (item.getSistema().getCodigo().equals(CODIGO_SISTEMA_CADASTRO)
+                    && item.getPerfil().getCodigo().equals(DadosFilter.TRABALHADOR)) {
+                ehTrabalhador = true;
+            }
+        }
+        return ehTrabalhador;
+    }
 
-	public SolicitacaoEmail solicitarEmailSesi(PrimeiroAcesso solicitacaoEmail) {
-		if (solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador() != null
-				&& solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().size() == 1
-				&& solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next() != null
-				&& solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next().getId() == null) {
-			solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next().getTelefone()
-					.setTipo(TipoTelefone.RESIDENCIAL);
-			solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next().getTelefone()
-					.setContato(SimNao.SIM);
-		}
+    public SolicitacaoEmail solicitarEmailSesi(PrimeiroAcesso solicitacaoEmail) {
+        if (solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador() != null
+                && solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().size() == 1
+                && solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next() != null
+                && solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next().getId() == null) {
+            solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next().getTelefone()
+                    .setTipo(TipoTelefone.RESIDENCIAL);
+            solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next().getTelefone()
+                    .setContato(SimNao.SIM);
+        }
 
-		salvarPrimeiroAcesso(solicitacaoEmail);
-		solicitacaoEmail.getSolicitacaoEmail()
-				.setCpf(adicionarMascaraCpf(solicitacaoEmail.getSolicitacaoEmail().getCpf()));
-		return solicitacaoEmailService.enviarEmail(solicitacaoEmail.getSolicitacaoEmail());
-	}
+        salvarPrimeiroAcesso(solicitacaoEmail);
+        solicitacaoEmail.getSolicitacaoEmail()
+                .setCpf(adicionarMascaraCpf(solicitacaoEmail.getSolicitacaoEmail().getCpf()));
+        return solicitacaoEmailService.enviarEmail(solicitacaoEmail.getSolicitacaoEmail());
+    }
 
-	public Trabalhador buscarVacinasAlergiasMedicamentosAutoDeclarados(String cpf) {
-		Trabalhador trabalhador = trabalhadorDAO.buscarVacinasAlergiasMedicamentosAutoDeclarados(cpf);
+    public Trabalhador buscarVacinasAlergiasMedicamentosAutoDeclarados(String cpf) {
+        Trabalhador trabalhador = trabalhadorDAO.buscarVacinasAlergiasMedicamentosAutoDeclarados(cpf);
 
-		if (trabalhador == null) {
-			throw new RegistroNaoEncontradoException(getMensagem("app_rst_nenhum_registro_encontrado"));
-		}
+        if (trabalhador == null) {
+            throw new RegistroNaoEncontradoException(getMensagem("app_rst_nenhum_registro_encontrado"));
+        }
 
-		return trabalhador;
-	}
+        return trabalhador;
+    }
 
-	private ClienteAuditoria getAuditoriaNovoUsuario(Usuario usuario) {
-		ClienteAuditoria cliente = new ClienteAuditoria();
-		cliente.setUsuario(usuario.getLogin());
-		cliente.setDescricao("Salvando um NOVO usuario");
-		cliente.setTipoOperacao(TipoOperacaoAuditoria.ALTERACAO);
-		cliente.setNavegador("PRIMEIRO_ACESSO");
-		cliente.setFuncionalidade(Funcionalidade.USUARIOS);
-		return cliente;
-	}
+    private ClienteAuditoria getAuditoriaNovoUsuario(Usuario usuario) {
+        ClienteAuditoria cliente = new ClienteAuditoria();
+        cliente.setUsuario(usuario.getLogin());
+        cliente.setDescricao("Salvando um NOVO usuario");
+        cliente.setTipoOperacao(TipoOperacaoAuditoria.ALTERACAO);
+        cliente.setNavegador("PRIMEIRO_ACESSO");
+        cliente.setFuncionalidade(Funcionalidade.USUARIOS);
+        return cliente;
+    }
 
-	public Map<String,List<Object>> buscarTrabalhadorByUsuario(String login, String nome, String cpf, String page) {
-		br.com.ezvida.girst.apiclient.model.Usuario usuarioGirst = usuarioService.buscarPorLogin(login);
-		List<Long> empresas = new ArrayList<>();
+    public Map<String, List<Object>> buscarTrabalhadorByUsuario(String login, String nome, String cpf, String page) {
+        br.com.ezvida.girst.apiclient.model.Usuario usuarioGirst = usuarioService.buscarPorLogin(login);
+        List<Long> empresas = new ArrayList<>();
 
-		Optional<UsuarioPerfilSistema> optional = usuarioGirst.getPerfisSistema().stream().filter(
-				u -> u.getSistema().getCodigo().equals("resonline") &&
-						u.getPerfil().getCodigo().equals(DadosFilter.ADMINISTRADOR)).findFirst();
+        Optional<UsuarioPerfilSistema> optional = usuarioGirst.getPerfisSistema().stream().filter(
+                u -> u.getSistema().getCodigo().equals("resonline") &&
+                        u.getPerfil().getCodigo().equals(DadosFilter.ADMINISTRADOR)).findFirst();
 
-		if (optional == null || !optional.isPresent()) {
-			List<UsuarioEntidade> usuarioEntidades = usuarioEntidadeService.pesquisarPorCPF(login);
-			for (UsuarioEntidade usuarioEntidade : usuarioEntidades) {
-				if (usuarioEntidade.getEmpresaProfissionalSaude() != null) {
-					empresas.add(usuarioEntidade.getEmpresaProfissionalSaude().getId());
-				}
-			}
+        if (optional == null || !optional.isPresent()) {
+            List<UsuarioEntidade> usuarioEntidades = usuarioEntidadeService.pesquisarPorCPF(login);
+            for (UsuarioEntidade usuarioEntidade : usuarioEntidades) {
+                if (usuarioEntidade.getEmpresaProfissionalSaude() != null) {
+                    empresas.add(usuarioEntidade.getEmpresaProfissionalSaude().getId());
+                }
+            }
 
-			if(empresas.isEmpty()){
-				return new HashMap<>();
-			}
-		}
+            if (empresas.isEmpty()) {
+                return new HashMap<>();
+            }
+        }
 
-		String str = null;
+        String str = null;
 
-		if (StringUtils.isNotBlank(nome)) {
+        if (StringUtils.isNotBlank(nome)) {
             try {
                 str = URLDecoder.decode(nome, "UTF-8");
             } catch (UnsupportedEncodingException e) {
@@ -447,7 +451,7 @@ public class TrabalhadorService extends BaseService {
             }
         }
 
-		return trabalhadorDAO.buscarTrabalhadoresByEmpresasDoUsuario(empresas, str, cpf, page);
-	}
+        return trabalhadorDAO.buscarTrabalhadoresByEmpresasDoUsuario(empresas, str, cpf, page);
+    }
 
 }

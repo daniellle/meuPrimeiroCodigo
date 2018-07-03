@@ -40,7 +40,7 @@ public class TrabalhadorEndpoint extends SegurancaEndpoint<Trabalhador> {
 	public Response buscarTrabalhadorPrimeiroAcesso(@QueryParam("cpf") String cpf, @QueryParam("dataNascimento") String dataNascimento) {
 
 		Trabalhador trabalhador = trabalhadorService.buscarTrabalhadorPrimeiroAcesso(cpf, dataNascimento);
-
+        getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
 				.header("Content-Version", getApplicationVersion())
 				.entity(serializar(trabalhador)).build();
@@ -53,7 +53,8 @@ public class TrabalhadorEndpoint extends SegurancaEndpoint<Trabalhador> {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response salvarPrimeiroAcesso(@Encoded PrimeiroAcesso primeiroAcesso, @Context SecurityContext context
 			, @Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_CREATED)
+        getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
+	    return Response.status(HttpServletResponse.SC_CREATED)
 				.entity(trabalhadorService.salvarPrimeiroAcesso(primeiroAcesso))
 				.type(MediaType.APPLICATION_JSON).build();
 	}
@@ -65,7 +66,8 @@ public class TrabalhadorEndpoint extends SegurancaEndpoint<Trabalhador> {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response solicitarEmailSesi(@Encoded PrimeiroAcesso solicitacaoEmail,  @Context SecurityContext context
 			, @Context HttpServletRequest request) {
-		return Response.status(HttpServletResponse.SC_OK)
+        getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
+	    return Response.status(HttpServletResponse.SC_OK)
 				.entity(trabalhadorService.solicitarEmailSesi(solicitacaoEmail))
 				.type(MediaType.APPLICATION_JSON).build();
 

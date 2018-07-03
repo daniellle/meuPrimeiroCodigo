@@ -1,0 +1,14 @@
+# Mark the commands below to be run as a batch
+
+# add postgresql module
+module add --name=org.postgresql --resources=/opt/jboss/wildfly/customization/postgresql-42.1.4.jar --dependencies=javax.api,javax.transaction.api
+
+# create postgres driver
+/subsystem=datasources/jdbc-driver=postgres:add(driver-name="postgres",driver-module-name=org.postgresql,driver-class-name=org.postgresql.Driver)
+
+# create the datasource
+data-source add --name=UniqueDS --driver-name=postgres --jndi-name=DS_JNDI_NAME --connection-url=jdbc:postgresql://DB_HOST:DB_PORT/DB_NAME?useUnicode=true&amp;characterEncoding=UTF-8 --user-name=DB_USER --password=DB_PASSWORD --use-ccm=false --max-pool-size=25 --blocking-timeout-wait-millis=5000 --enabled=true
+
+#ajp
+/socket-binding-group=standard-sockets/socket-binding=ajp:add(port=8009)
+/subsystem=undertow/server=default-server/ajp-listener=myListener:add(socket-binding=ajp, scheme=http, enabled=true)

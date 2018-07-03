@@ -1,5 +1,27 @@
- # rst-cadastros
+# rst-cadastros
 -Aplicações para manutenção dos cadastros RST
+
+**v2.23.0**
+
+============
+
+(RELEASE EM 03/07/2018)
+
+**Novidades**
+
+	Diponibilização dos serviços do IGEV via JWT
+
+------------
+
+**Melhorias**
+	
+	
+------------
+
+**Correções**
+
+------------
+
 
 **v2.17.1**
 

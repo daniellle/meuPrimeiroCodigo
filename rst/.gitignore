@@ -7,6 +7,7 @@ build/
 dist/
 out/
 
+
 #Arquivos de Configuração de Projeto
 .project
 .gradle

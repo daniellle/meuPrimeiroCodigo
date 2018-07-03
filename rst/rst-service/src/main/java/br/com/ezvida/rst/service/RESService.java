@@ -11,9 +11,10 @@ import br.com.ezvida.rst.utils.MapBuilder;
 import com.google.common.collect.ImmutableMap;
 import fw.core.exception.BusinessException;
 import fw.core.service.BaseService;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.ResponseBody;
-import okhttp3.internal.http.RetryAndFollowUpInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Call;
@@ -29,7 +30,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.net.ssl.*;
 import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Request;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -45,6 +45,8 @@ public class RESService extends BaseService {
     private static final Logger LOGGER = LoggerFactory.getLogger(RESService.class);
 
     private static final String TEMPLATE = "openEHR-EHR-COMPOSITION.ficha_clinica_ocupacional.v1.0.0";
+
+    private String token;
 
     @Inject
     private ParametroService service;
@@ -90,7 +92,7 @@ public class RESService extends BaseService {
         Retrofit retro = getRetroFit();
         Map<String, Object> resultado = null;
         try {
-            String token = this.autenticar();
+            token = autenticar();
             if (token != null) {
                 Response<Object> response = retro.create(RESApi.class)
                         .buscarEncontroMedico(token, id)
@@ -127,7 +129,7 @@ public class RESService extends BaseService {
                 .build();
         try {
             Response<Object> response = retro.create(RESApi.class)
-                    .buscarHistoricoAtendimento(this.autenticar(), query)
+                    .buscarHistoricoAtendimento(autenticar(), query)
                     .execute();
 
             if(response.isSuccessful()) {
@@ -154,7 +156,7 @@ public class RESService extends BaseService {
         Object resultado = null;
         try {
             resultado = retro.create(RESApi.class)
-                    .buscarForm(this.autenticar(), identificador)
+                    .buscarForm(autenticar(), identificador)
                     .execute()
                     .body();
             if (resultado != null) {
@@ -167,23 +169,25 @@ public class RESService extends BaseService {
         return resultado;
     }
 
-    private String autenticar() {
-        LOGGER.debug("Autenticando o token no servico {} ", this.service.getRESUrl());
-        String token = updateToken();
+    private String autenticar(){
+        if(token == null){
+           LOGGER.debug("Gerando nova token devido a 401");
+           token = this.updateToken();
+        }
         return token;
     }
 
     private String updateToken() {
         Retrofit retro = getRetroFit();
         RESApi api = retro.create(RESApi.class);
-        String token = null;
+        String tokenUpdate = null;
         try {
             Response<Map<String, Object>> response = api.autenticarOrganizacao(getParams()).execute();
             if (response.isSuccessful()) {
-                token = refreshToken(response);
+                tokenUpdate = refreshToken(response);
             } else if (response.code() == 401) {
                 LOGGER.debug("Usuario não autorizado, tentando novamente", response.errorBody().string());
-                token = refreshToken(api.autenticarOrganizacao(getParams()).execute());
+                tokenUpdate = refreshToken(api.autenticarOrganizacao(getParams()).execute());
             } else {
                 LOGGER.debug("[FALHA GRAVE] Não foi possível autenticar no sistema RES {}", response.errorBody().string());
             }
@@ -191,7 +195,7 @@ public class RESService extends BaseService {
             LOGGER.error(e.getMessage());
             LOGGER.debug("[FALHA GRAVE] Não foi possível autenticar no sistema RES {}", e.toString());
         }
-        return token;
+        return tokenUpdate;
     }
 
     private Map<String, String> getParams() {
@@ -266,6 +270,7 @@ public class RESService extends BaseService {
             final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            builder.addInterceptor(new AddHeaderInterceptor());
             builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
             builder.hostnameVerifier(new HostnameVerifier() {
                 @Override
@@ -389,4 +394,19 @@ public class RESService extends BaseService {
         Call<Map<String, Object>> autenticarOrganizacao(@FieldMap Map<String, String> params);
     }
 
+    private class AddHeaderInterceptor implements Interceptor {
+        @Override
+        public okhttp3.Response intercept(Chain chain) throws IOException {
+            Request original = chain.request();
+            okhttp3.Response result = chain.proceed(original);
+            if(result.code() == 401){
+                String token = updateToken();
+                Request novaRequest = original.newBuilder()
+                        .header("Authorization",token)
+                        .build();
+                return chain.proceed(novaRequest);
+            }
+            return result;
+        }
+    }
 }

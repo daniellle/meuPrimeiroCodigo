@@ -66,8 +66,10 @@ public class CredencialService extends BaseService {
 			return gerarToken(usuarioService.getUsuario(login));
 
 		} catch (UnauthenticatedException e) {
+			LOGGER.error(e.getMessage(), e);
 			throw new UnauthenticatedException(e.getMessage(), e);
 		} catch (Exception e) {
+			LOGGER.error("Erro ao gerar token de autorização do usuário para o sistema", e);
             throw new UnauthorizedException(getMensagem("app_seguranca_acesso_negado"), e);
         }
 
@@ -111,7 +113,7 @@ public class CredencialService extends BaseService {
 	}
 
 	private Token gerarToken(Usuario usuario) throws UnsupportedEncodingException {
-		LOGGER.debug("Criando filtro de dados");
+		LOGGER.info("Criando filtro de dados", usuario.getLogin(), usuario.getId(), usuario);
 
 		DadosFilter dadosFilter = new DadosFilter(usuario.getPapeis(), usuario.getIdDepartamentos(), usuario.getIdEmpresas(),
 				usuario.getIdParceiros(), usuario.getIdRedesCredenciadas(), usuario.getIdSindicatos(), usuario.getIdTrabalhadores());
@@ -135,7 +137,7 @@ public class CredencialService extends BaseService {
 
 	private Token gerarToken(Usuario usuario, Date expiracaoToken, Date expiracaoAtualizacaoToken, Long expiraEm, Long atualizacaoExpiraEm,
 			String dados, String credencial) throws UnsupportedEncodingException {
-		LOGGER.debug("Gerando token do usuario");
+		LOGGER.info("Gerando token do usuario", usuario);
 
 		//@formatter:off
         String tokenAcesso = ChaveSeguranca.getInstance().gerar(
