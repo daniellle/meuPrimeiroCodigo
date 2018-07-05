@@ -1,6 +1,30 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v2.25.0**
+
+============
+
+(RELEASE EM 05/07/2018)
+
+**Novidades**
+
+
+------------
+
+**Melhorias**
+
+	Solicitar nova token do RES apenas quando der erro 401	
+	
+------------
+
+**Correções**
+
+	Perfis duplicados ao editar associação do sistema
+	Erro ao pesquisar profissional por CPF
+
+------------
+
 **v2.23.0**
 
 ============

@@ -389,6 +389,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
   filtrarPerfisSistemaCadastro() {
 
     if (this.usuarioLogado.papeis.find((papel) => papel === PerfilEnum.GDRA)) {
+
       this.perfis.forEach((element) => {
         if (element.codigo === PerfilEnum.GEEM || element.codigo === PerfilEnum.GEPC
           || element.codigo === PerfilEnum.GERC || element.codigo === PerfilEnum.GESI || element.codigo === PerfilEnum.PFS) {
@@ -398,9 +399,11 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     }
 
     if (this.usuarioLogado.papeis.find((papel) => papel === PerfilEnum.GDNA)) {
+
       this.perfis.forEach((element) => {
         if (this.naoEPerfilPortal(element) && element.codigo !== PerfilEnum.ADM
           && element.codigo !== PerfilEnum.ATD && element.codigo !== PerfilEnum.GDNA && element.codigo !== PerfilEnum.TRA) {
+
           this.perfisCadastro.push(element);
         }
       });
@@ -409,7 +412,9 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     if (this.usuarioLogado.papeis.find((papel) => papel === PerfilEnum.ADM)) {
       this.perfis.forEach((element) => {
         if (this.naoEPerfilPortal(element) && element.codigo !== PerfilEnum.TRA) {
-          this.perfisCadastro.push(element);
+            if (this.perfisCadastro.indexOf(element) <= -1) {
+                this.perfisCadastro.push(element);
+            }
         }
       });
     }

@@ -85,8 +85,8 @@ export class PesquisarProfissionaisComponent extends BaseComponent implements On
     // }
 
     if (!this.isVazia(this.filtro.cpf)) {
-        if (MascaraUtil.removerMascara(this.filtro.cpf).length < 14) {
-          this.mensagemError(MensagemProperties.app_rst_labels_cnpj_incompleto);
+        if (MascaraUtil.removerMascara(this.filtro.cpf).length < 11) {
+          this.mensagemError(MensagemProperties.app_rst_labels_cpf_incompleto);
           verificador = false;
         }
         this.filtro.cpf = MascaraUtil.removerMascara(this.filtro.cpf);

@@ -1,11 +1,10 @@
 package br.com.ezvida.rst.security;
 
-import java.io.InputStream;
-
+import fw.security.interceptor.ChaveSegurancaComRSA;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fw.security.interceptor.ChaveSegurancaComRSA;
+import java.io.InputStream;
 
 public class ChaveAcesso implements ChaveSegurancaComRSA {
 
@@ -22,8 +21,8 @@ public class ChaveAcesso implements ChaveSegurancaComRSA {
     public InputStream getChavePublica() {
 
         LOGGER.info("Carregando chave: {}", "/certificados/rsa-public.pem");
-
-        return ChaveAcesso.class.getResourceAsStream("/certificados/rsa-public.pem");
+        InputStream stream = ChaveAcesso.class.getResourceAsStream("/certificados/rsa-public.pem");
+        return stream;
 
     }
 

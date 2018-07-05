@@ -1,11 +1,17 @@
 package br.com.ezvida.rst.web.endpoint.v1;
 
+import br.com.ezvida.rst.constants.PermissionConstants;
+import br.com.ezvida.rst.enums.Funcionalidade;
+import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.model.Questionario;
 import br.com.ezvida.rst.model.QuestionarioTrabalhador;
 import br.com.ezvida.rst.service.PerguntaQuestionarioService;
 import br.com.ezvida.rst.service.QuestionarioTrabalhadorService;
 import br.com.ezvida.rst.service.RespostaQuestionarioTrabalhadorService;
+import br.com.ezvida.rst.web.auditoria.ClienteInfos;
 import com.google.common.base.Charsets;
+import fw.security.binding.Autorizacao;
+import fw.security.binding.Permissao;
 import fw.web.endpoint.SegurancaEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +24,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 
 @RequestScoped
 @Path("/public/v1/questionario")
@@ -38,12 +45,15 @@ public class QuestionarioPublicoEndpoint extends SegurancaEndpoint<Questionario>
     @Path("/aplicar/{login}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response montarQuestionario(@PathParam("login") String login, @Context HttpServletRequest request) {
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.QUESTIONARIO, PermissionConstants.QUESTIONARIO_CONSULTAR}))
+    public Response montarQuestionario(@PathParam("login") String login, @Context SecurityContext context,
+                                       @Context HttpServletRequest request) {
         LOGGER.debug("Aplicando questionario no trabalhador");
         getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
             .header("Content-Version", getApplicationVersion())
-            .entity(serializar(perguntaQuestionarioService.gerarQuestionario(login, null)))
+            .entity(serializar(perguntaQuestionarioService.gerarQuestionario(login, ClienteInfos.getClienteInfos(context,
+                request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.QUESTIONARIOS))))
             .build();
     }
 
@@ -52,12 +62,16 @@ public class QuestionarioPublicoEndpoint extends SegurancaEndpoint<Questionario>
     @Path("/salvar-respostas")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response salvarRespostas(@Encoded QuestionarioTrabalhador questionarioTrabalhador,
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.QUESTIONARIO,
+        PermissionConstants.QUESTIONARIO_CADASTRAR, PermissionConstants.QUESTIONARIO_CONSULTAR,
+        PermissionConstants.QUESTIONARIO_ALTERAR}))
+    public Response salvarRespostas(@Encoded QuestionarioTrabalhador questionarioTrabalhador, @Context SecurityContext context,
                                     @Context HttpServletRequest request) {
         LOGGER.debug("Salvando questionario no trabalhador");
         getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
         return Response.status(HttpServletResponse.SC_CREATED)
-            .entity(serializar(questionarioTrabalhadorService.salvar(questionarioTrabalhador, null)))
+            .entity(serializar(questionarioTrabalhadorService.salvar(questionarioTrabalhador, ClienteInfos.getClienteInfos(context, request,
+                TipoOperacaoAuditoria.INCLUSAO, Funcionalidade.QUESTIONARIOS))))
             .type(MediaType.APPLICATION_JSON).build();
     }
 
@@ -66,13 +80,18 @@ public class QuestionarioPublicoEndpoint extends SegurancaEndpoint<Questionario>
     @Path("/buscar-resultado")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response buscarResultadoQuestionario(@QueryParam("cpf") String cpf, @Context HttpServletRequest request) {
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.TRABALHADOR, PermissionConstants.TRABALHADOR_CONSULTAR,
+        PermissionConstants.QUESTIONARIO, PermissionConstants.QUESTIONARIO_CONSULTAR}))
+    public Response buscarResultadoQuestionario(@QueryParam("cpf") String cpf, @Context SecurityContext context,
+                                                @Context HttpServletRequest request) {
         LOGGER.debug("Buscando resultado do questionario");
         getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
             .header("Content-Version",
                 getApplicationVersion())
-            .entity(serializar(respostaQuestionarioTrabalhadorService.getResultadoQuestionario(cpf, null)))
+            .entity(serializar(respostaQuestionarioTrabalhadorService.getResultadoQuestionario(cpf,
+                ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA,
+                    Funcionalidade.QUESTIONARIOS))))
             .build();
     }
 
@@ -81,12 +100,17 @@ public class QuestionarioPublicoEndpoint extends SegurancaEndpoint<Questionario>
     @Path("/historico-paginado")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response pesquisarHistorico(@QueryParam("cpf") String cpf, @QueryParam("pagina") Integer pagina, @QueryParam("qtdRegistro") Integer qtdRegistro, @Context HttpServletRequest request) {
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.TRABALHADOR, PermissionConstants.TRABALHADOR_ALTERAR,
+        PermissionConstants.TRABALHADOR_CONSULTAR, PermissionConstants.QUESTIONARIO, PermissionConstants.QUESTIONARIO_CONSULTAR}))
+    public Response pesquisarHistorico(@QueryParam("cpf") String cpf, @QueryParam("pagina") Integer pagina, @QueryParam("qtdRegistro") Integer qtdRegistro,
+                                       @Context SecurityContext context, @Context HttpServletRequest request) {
         getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
             .header("Content-Version",
                 getApplicationVersion())
-            .entity(serializar(questionarioTrabalhadorService.pesquisaPaginada(cpf, pagina, qtdRegistro, null)))
+            .entity(serializar(questionarioTrabalhadorService.pesquisaPaginada(cpf, pagina, qtdRegistro,
+                ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA,
+                    Funcionalidade.QUESTIONARIOS))))
             .build();
     }
 
@@ -95,7 +119,9 @@ public class QuestionarioPublicoEndpoint extends SegurancaEndpoint<Questionario>
     @Path("/has-ultimo-registro")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response hasUltimoRegistro(@QueryParam("cpf") String cpf, @Context HttpServletRequest request) {
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.TRABALHADOR, PermissionConstants.TRABALHADOR_ALTERAR,
+        PermissionConstants.TRABALHADOR_CONSULTAR, PermissionConstants.QUESTIONARIO, PermissionConstants.QUESTIONARIO_CONSULTAR}))
+    public Response hasUltimoRegistro(@QueryParam("cpf") String cpf, @Context SecurityContext context, @Context HttpServletRequest request) {
         getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
             .header("Content-Version",
