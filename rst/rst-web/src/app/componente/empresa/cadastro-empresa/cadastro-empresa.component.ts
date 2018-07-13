@@ -39,6 +39,7 @@ import { UnidadeObraService } from 'app/servico/unidade-obra.service';
 import { ValidarDataFutura, ValidateData } from 'app/compartilhado/validators/data.validator';
 import { Cnae } from '../../../modelo/cnae.model';
 import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
+import {PerfilEnum} from "../../../modelo/enum/enum-perfil";
 
 @Component({
     selector: 'app-cadastro-empresa',
@@ -832,7 +833,7 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
             retorno = false;
         }
 
-        // tipo      
+        // tipo
         if (this.empresaForm.controls['tipoEmpresa'].invalid) {
             this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.empresaForm.controls['tipoEmpresa'],
                 MensagemProperties.app_rst_labels_tipo);
@@ -996,8 +997,7 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
     }
 
     isPermitidoEditar(): boolean {
-        return this.usuarioLogado.papeis.length >= 1
-            && this.usuarioLogado.papeis.indexOf('GEEM') === -1;
+        return this.naoTemPapel(PerfilEnum.GEEM,PerfilEnum.GEEMM);
     }
 
     showAppSegmentoModal(): boolean {

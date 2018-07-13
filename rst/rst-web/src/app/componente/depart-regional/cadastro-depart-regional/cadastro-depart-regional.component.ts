@@ -26,6 +26,7 @@ import { TipoEmail } from 'app/modelo/enum/enum-tipo-email.model';
 import { ValidateCNPJ } from 'app/compartilhado/validators/cnpj.validator';
 import { EnumValues } from 'enum-values';
 import { ValidateEmail } from 'app/compartilhado/validators/email.validator';
+import {PerfilEnum} from "../../../modelo/enum/enum-perfil";
 
 @Component({
   selector: 'app-cadastro-depart-regional',
@@ -276,7 +277,7 @@ export class CadastroDepartRegionalComponent extends BaseComponent implements On
   //     if (idEstado === 'undefined') {
   //       this.formulario.controls['municipio'].disable();
   //     } else {
-  //       this.formulario.controls['municipio'].enable(); 
+  //       this.formulario.controls['municipio'].enable();
   //     }
   // }
 
@@ -616,8 +617,6 @@ export class CadastroDepartRegionalComponent extends BaseComponent implements On
   }
 
   isPermitidoEditar(): boolean {
-    return this.usuarioLogado.papeis.length >= 1
-      && this.usuarioLogado.papeis.indexOf('GDRA') === -1
-      && this.usuarioLogado.papeis.indexOf('GDRP') === -1;
+    return  this.naoTemPapel(PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.GDRP);
   }
 }

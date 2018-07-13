@@ -36,12 +36,12 @@
     <div class="container-subtitulo">
         <p>{{'app_rst_usuario_sindicato_sindicatos_adicionados' | recurso}}</p>
     </div>
-    <div *ngIf="isEmpty(listaUsuarioEntidade)" class="row">
+    <div *ngIf="isEmpty(listaUsuarioEntidadeGEEM)" class="row">
         <div class="form-group col-md-12">
             {{ 'app_rst_msg_nenhum_registro_adicionado' | recurso }}
         </div>
     </div>
-    <div class="row grid-pesquisa" *ngIf="isNotEmpty(listaUsuarioEntidade)">
+    <div class="row grid-pesquisa" *ngIf="isNotEmpty(listaUsuarioEntidadeGEEM)">
         <div class="col-12">
             <table class="table table-hover">
                 <thead>
@@ -53,7 +53,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of listaUsuarioEntidade">
+                    <tr *ngFor="let item of listaUsuarioEntidadeGEEM">
                         <td class="col-quebra">{{item.sindicato.razaoSocial}}</td>
                         <td class="col-quebra">{{item.sindicato.nomeFantasia}}</td>
                         <td class="col-nao-quebra">{{item.sindicato.cnpj | cnpjPipe }}</td>

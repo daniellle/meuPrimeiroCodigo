@@ -11,9 +11,10 @@ export class UsuarioEntidade {
     email: string;
     termo: string;
     empresa: Empresa;
-    empresaProfissionalSaude: Empresa;
     departamentoRegional: DepartamentoRegional;
     parceiro: Parceiro;
     redeCredenciada: RedeCredenciada;
     sindicato: Sindicato;
+    perfil: string;
+
 }

@@ -10,5 +10,5 @@ module add --name=org.postgresql --resources=/opt/jboss/wildfly/customization/po
 data-source add --name=UniqueDS --driver-name=postgres --jndi-name=DS_JNDI_NAME --connection-url=jdbc:postgresql://DB_HOST:DB_PORT/DB_NAME?useUnicode=true&amp;characterEncoding=UTF-8 --user-name=DB_USER --password=DB_PASSWORD --use-ccm=false --max-pool-size=25 --blocking-timeout-wait-millis=5000 --enabled=true
 
 #ajp
-/socket-binding-group=standard-sockets/socket-binding=ajp:add(port=8009)
+#/socket-binding-group=standard-sockets/socket-binding=ajp:add(port=8009)
 /subsystem=undertow/server=default-server/ajp-listener=myListener:add(socket-binding=ajp, scheme=http, enabled=true)

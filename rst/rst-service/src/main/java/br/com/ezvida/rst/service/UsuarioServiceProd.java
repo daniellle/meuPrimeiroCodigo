@@ -43,8 +43,10 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CredencialService.class);
 
     private static final String CODIGO_PERFIL_GESTOR_EMPRESA = "GEEM";
+    private static final String CODIGO_PERFIL_GESTOR_EMPRESA_MASTER = "GEEMM";
     private static final String CODIGO_PERFIL_DIRETOR_DR = "DIDR";
     private static final String CODIGO_PERFIL_GESTOR_DR_APLICACOES = "GDRA";
+    private static final String CODIGO_PERFIL_GESTOR_DR_APLICACOES_MASTER = "GDRM";
 
     @Inject
     private UsuarioClient usuarioClient;
@@ -127,10 +129,6 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
             if (usuarioEntidade.getEmpresa() != null) {
                 usuario.getIdEmpresas().add(usuarioEntidade.getEmpresa().getId());
-            }
-
-            if (usuarioEntidade.getEmpresaProfissionalSaude() != null) {
-                usuario.getIdEmpresas().add(usuarioEntidade.getEmpresaProfissionalSaude().getId());
             }
 
             if (usuarioEntidade.getParceiro() != null) {
@@ -256,7 +254,8 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
             if (perfisRemovidos.size() > 0) {
                 for (UsuarioPerfilSistema perfil : perfisRemovidos) {
-                    if (perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_EMPRESA)) {
+                    if (perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_EMPRESA)
+                            || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_EMPRESA_MASTER)) {
                         List<UsuarioEntidade> listaEmpresasAssociadas = usuarioEntidadeService
                                 .pesquisarTodasEmpresasAssociadas(usuario.getLogin());
                         if (listaEmpresasAssociadas != null && listaEmpresasAssociadas.size() > 0) {
@@ -266,7 +265,8 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
                         }
                     }
                     if (perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_DIRETOR_DR)
-                            || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_DR_APLICACOES)) {
+                            || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_DR_APLICACOES)
+                            || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_DR_APLICACOES_MASTER)) {
                         List<UsuarioEntidade> listaDepartamentosAssociados = usuarioEntidadeService
                                 .pesquisarTodosDepartamentosAssociadas(usuario.getLogin());
                         if (listaDepartamentosAssociados != null && listaDepartamentosAssociados.size() > 0) {

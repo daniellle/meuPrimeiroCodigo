@@ -1,7 +1,6 @@
 import {environment} from './../../../../../environments/environment';
 import {SimNao} from 'app/modelo/enum/enum-simnao.model';
 import {EnumValues} from 'enum-values';
-import {UsuarioPerfilSistema} from './../../../../modelo/usuario-perfil-sistema.model';
 import {UsuarioService} from './../../../../servico/usuario.service';
 import {UsuarioEntidade} from './../../../../modelo/usuario-entidade.model';
 import {UsuarioEntidadeService} from './../../../../servico/usuario-entidade.service';
@@ -15,12 +14,12 @@ import {EmpresaService} from 'app/servico/empresa.service';
 import {ListaPaginada} from './../../../../modelo/lista-paginada.model';
 import {MensagemProperties} from './../../../../compartilhado/utilitario/recurso.pipe';
 import {Paginacao} from 'app/modelo/paginacao.model';
-import {Router, ActivatedRoute} from '@angular/router';
-import {OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
 import {BaseComponent} from 'app/componente/base.component';
-import {Component} from '@angular/core';
 import {ToastyService} from 'ng2-toasty';
 import {PerfilEnum} from "../../../../modelo/enum/enum-perfil";
+import {Perfil} from "../../../../modelo/perfil.model";
 
 @Component({
     selector: 'app-cadastro-empresa-usuario',
@@ -37,11 +36,8 @@ export class CadastroEmpresaUsuarioComponent extends BaseComponent implements On
     listaSelecionados: Empresa[];
     paginacao: Paginacao = new Paginacao(1, 10);
     public checks: IHash = {};
-    public keysPerfil: string[];
-    public perfis = {
-        GEEM: 'Gestor Empresa',
-        PFS: 'Profissional de Saúde',
-    };
+    perfis: Perfil[];
+
 
     constructor(
         private router: Router,
@@ -54,7 +50,6 @@ export class CadastroEmpresaUsuarioComponent extends BaseComponent implements On
     ) {
         super(bloqueioService, dialogo);
         this.buscarUsuario();
-        this.keysPerfil = Object.keys(this.perfis);
     }
 
     ngOnInit() {
@@ -67,9 +62,38 @@ export class CadastroEmpresaUsuarioComponent extends BaseComponent implements On
         this.idUsuario = this.activatedRoute.snapshot.params['id'];
         this.usuarioService.buscarUsuarioById(this.idUsuario).subscribe((retorno: Usuario) => {
             this.usuario = retorno;
+            this.perfis = getPerfis.call(this, retorno);
         }, (error) => {
             this.mensagemError(error);
         });
+
+        function getPerfis(retorno: Usuario): Perfil[] {
+            let map = new Map();
+            retorno.perfisSistema.forEach(value => {
+                map.set(value.perfil.codigo, value.perfil.nome);
+            });
+            let p = new Array<Perfil>();
+            map.forEach((value, key) => {
+                switch (PerfilEnum[<string>key]) {
+                    case PerfilEnum.GEEM:
+                        p.push(new Perfil(null, value, key));
+                        break;
+                    case PerfilEnum.PFS:
+                        p.push(new Perfil(null, value, key));
+                        break;
+                    case PerfilEnum.RH:
+                        p.push(new Perfil(null, value, key));
+                        break;
+                    case PerfilEnum.ST:
+                        p.push(new Perfil(null, value, key));
+                        break;
+                    case PerfilEnum.GEEMM:
+                        p.push(new Perfil(null, value, key));
+                        break;
+                }
+            });
+            return p;
+        }
     }
 
     pesquisar(): void {
@@ -120,7 +144,8 @@ export class CadastroEmpresaUsuarioComponent extends BaseComponent implements On
             usuarioEntidade.cpf = this.usuario.login;
             usuarioEntidade.email = this.usuario.email;
             usuarioEntidade.termo = EnumValues.getNameFromValue(SimNao, SimNao.true);
-            this.insertEmpresa(usuarioEntidade, item);
+            usuarioEntidade.perfil = this.filtro.perfil;
+            usuarioEntidade.empresa = item;
             lista.push(usuarioEntidade);
         });
         return lista;
@@ -146,9 +171,6 @@ export class CadastroEmpresaUsuarioComponent extends BaseComponent implements On
         }
         if (this.listaUndefinedOuVazia(this.listaSelecionados)) {
             this.mensagemError(MensagemProperties.app_rst_selecione_um_item);
-            verificador = false;
-        }
-        if (this.verificarPerfil()){
             verificador = false;
         }
         return verificador;
@@ -182,41 +204,5 @@ export class CadastroEmpresaUsuarioComponent extends BaseComponent implements On
         }, (error) => {
             this.mensagemError(error);
         });
-    }
-
-    private insertEmpresa(usuarioEntidade: UsuarioEntidade, item: Empresa) {
-        switch (this.filtro.perfil) {
-            case 'GEEM':
-                usuarioEntidade.empresa = item;
-                break;
-            case 'PFS':
-                usuarioEntidade.empresaProfissionalSaude = item;
-                break;
-        }
-    }
-
-    private verificarPerfil(): boolean {
-        let temPerfilGeem = false;
-        let temPerfilPfs = false;
-        if (this.filtro.perfil === 'GEEM' || this.filtro.perfil === 'PFS') {
-            if (this.usuario && this.usuario.perfisSistema) {
-                this.usuario.perfisSistema.forEach((item) => {
-                    if (item.perfil.codigo === PerfilEnum.GEEM) {
-                        temPerfilGeem = true;
-                    } else if (item.perfil.codigo === PerfilEnum.PFS) {
-                        temPerfilPfs = true;
-                    }
-                });
-            }
-            if(this.filtro.perfil === 'PFS' && !temPerfilPfs){
-                this.mensagemError('O usuário não tem perfil de Profissional de Saúde. Verifique se o perfil selecionado é igual ao perfil do usuário.');
-                return true;
-            }
-            if(this.filtro.perfil === 'GEEM' && !temPerfilGeem){
-                this.mensagemError('O usuário não tem perfil de Gestor de Empressa. Verifique se o perfil selecionado é igual ao perfil do usuário.');
-                return true;
-            }
-        }
-        return false;
     }
 }

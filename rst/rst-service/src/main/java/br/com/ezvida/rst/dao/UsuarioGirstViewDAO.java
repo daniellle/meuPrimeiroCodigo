@@ -110,7 +110,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 
 		if (dados != null && !dados.isAdministrador()){
 
-			if( (dados.isGestorDr() || dados.isDiretoriaDr() || dados.isGestorDn()) ) {
+			if( (dados.isGestorDr() || dados.isDiretoriaDr() || dados.isGestorDn())) {
 				if (dados.isGestorDr() || dados.isDiretoriaDr()) {
 					if (isFiltroAplicado()) {
 						jpql.append(" OR (");
@@ -118,8 +118,8 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 						setFiltroAplicado(true);
 					}
 					jpql.append(
-							"  and (codigo_perfil in ('GEEM', 'TRA')  and vw_usuario_entidade.id_empresa_fk IS NULL )) )");
-					jpql.append(" and codigo_perfil not in ('ADM', 'ATD', 'DIDN', 'DIDR', 'GDNA', 'GDNP', 'GDRA') ");
+							"  and (codigo_perfil in ('GEEM', 'GEEMM', 'TRA')  and vw_usuario_entidade.id_empresa_fk IS NULL )) )");
+					jpql.append(" and codigo_perfil not in ('ADM', 'ATD', 'DIDN', 'DIDR', 'GDNA', 'GDNP', 'GDRM') ");
 				}
 
 				if (dados.isGestorDn()) {

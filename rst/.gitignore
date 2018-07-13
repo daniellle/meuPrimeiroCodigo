@@ -6,7 +6,7 @@ target/*
 build/
 dist/
 out/
-
+/*.env
 
 #Arquivos de Configuração de Projeto
 .project

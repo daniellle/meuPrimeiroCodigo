@@ -7,6 +7,9 @@ public class UsuarioEntidadeFilter extends FilterBase {
 	@QueryParam("cpf")
 	private String cpf;
 
+	@QueryParam("perfil")
+	private String perfil;	
+
 	@QueryParam("razaoSocial")
 	private String razaoSocial;
 
@@ -23,6 +26,14 @@ public class UsuarioEntidadeFilter extends FilterBase {
 		return cpf;
 	}
 
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
+	}
+	
 	public String getRazaoSocial() {
 		return razaoSocial;
 	}

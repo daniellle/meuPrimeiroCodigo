@@ -499,9 +499,12 @@ export const MensagemProperties = {
   // Usuario Empresa
   app_rst_usuario_empresa_empresas_associadas_title: 'Empresas Associadas',
   app_rst_usuario_empresa_subtitulo_associar_empresa: 'Associar Empresa',
-  app_rst_usuario_empresa_empresas_adicionados: 'Empresas do Gestor',
+  app_rst_usuario_empresa_empresas_adicionados: 'Empresas do Gestor Empresa',
+  app_rst_usuario_empresa_empresas_adicionados_master: 'Empresas do Gestor Empresa Master',
   app_rst_usuario_empresa_empresas_trabalhador: 'Empresas do Trabalhador',
   app_rst_usuario_empresa_empresas_adicionados_profissional: 'Empresas do Profissional de Saúde',
+  app_rst_usuario_empresa_empresas_recursos_humanos: 'Empresas do Recursos Humanos',
+  app_rst_usuario_empresa_empresas_seguranca_do_trabalho: 'Empresas do Segurança de Trabalho',
 
   // Usuario Sindicato
   app_rst_usuario_sindicato_subtitulo_associar_sindicato: 'Associar Sindicato',

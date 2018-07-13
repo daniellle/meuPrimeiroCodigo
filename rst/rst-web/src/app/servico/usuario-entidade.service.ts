@@ -25,12 +25,15 @@ export class UsuarioEntidadeService extends BaseService<UsuarioEntidade> {
   }
 
   getEndpoint(tipo: string): string {
+
     if (tipo === MensagemProperties.app_rst_menu_empresa) {
       return '/v1/usuario-entidade/empresas/paginado';
     }
+
     if (tipo === MensagemProperties.app_rst_sindicatos_title_menu) {
       return '/v1/usuario-entidade/sindicato/paginado';
     }
+
     if (tipo === MensagemProperties.app_rst_labels_departamento_regional) {
       return '/v1/usuario-entidade/departamento-regional/paginado';
     }
@@ -84,6 +87,9 @@ export class UsuarioEntidadeService extends BaseService<UsuarioEntidade> {
 
     if (filtro.cpf) {
       params = params.append('cpf', filtro.cpf);
+    }
+    if (filtro.perfil) {
+      params = params.append('perfil', filtro.perfil);
     }
     if (filtro.razaoSocial) {
       params = params.append('razaoSocial', filtro.razaoSocial);

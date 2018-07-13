@@ -4,6 +4,7 @@ export class FiltroUsuarioEntidade {
     cnpj: string;
     idEstado: string;
     nomeFantasia: string;
+    perfil: string;
 
     constructor(init?: Partial<FiltroUsuarioEntidade>) {
         if (init) {

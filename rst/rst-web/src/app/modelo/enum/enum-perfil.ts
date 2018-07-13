@@ -15,4 +15,9 @@ export enum PerfilEnum {
     SUPS = 'SUPS',
     SUPG = 'SUPG',
     PFS = 'PFS',
+    RH = 'RH',
+    ST = 'ST',
+    GEEMM = 'GEEMM',
+    GDRM = 'GDRM',
+    EPI = 'EPI',
 }

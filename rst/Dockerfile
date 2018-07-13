@@ -32,7 +32,7 @@ COPY --from=nodeBuilder /tmp/rst-web/dist rst-web/dist
 ADD rst-service rst-service/
 ADD rst-app rst-app/
 ADD pom.xml .
-ADD customization/* customization/
+ADD customization/settings.xml customization/
 
 RUN  sed -i "s/NEXUS_URL/$NEXUS_URL/g" /tmp/customization/settings.xml \
 	&& sed -i "s/\<NEXUS_USER\>/$NEXUS_USER/" /tmp/customization/settings.xml \
@@ -54,7 +54,10 @@ ENV JNDINAME changeme
 ENV MODULE /opt/jboss/wildfly/modules/br/com/ezvida/rst/load/main/
 ENV CUSTOMIZATION  /opt/jboss/wildfly/customization
 
-COPY --from=builder /tmp/customization $CUSTOMIZATION/
+
+COPY --from=builder /tmp/customization/*.ear $CUSTOMIZATION/
+ADD customization/commands.cli $CUSTOMIZATION/
+ADD customization/*.sh $CUSTOMIZATION/
 
 USER root
 RUN chmod +x $CUSTOMIZATION/startup.sh && chown -R jboss: $CUSTOMIZATION/ \
@@ -66,3 +69,5 @@ RUN chmod +x $CUSTOMIZATION/startup.sh && chown -R jboss: $CUSTOMIZATION/ \
 
 USER jboss
 CMD ["sh", "-c", "$CUSTOMIZATION/startup.sh"]
+
+EXPOSE 8009

@@ -126,27 +126,28 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
         this.inicializarImagem();
 
     }
+
     getVidaAtiva(id: string) {
-            this.service.buscarVidaAtivaTrabalhador(id).subscribe((dados: string) => {
-                if (dados){
-                    this.vidaAtiva = dados + " Vida Ativa";
-                    this.temvidaAtiva = true;
-                } else {
-                    this.vidaAtiva = "Sem Vida Ativa";
-                    this.temvidaAtiva = false;
-                }
-            }, (error) => {
-                this.mensagemError(error);
-                this.vidaAtiva =  "Sem Vida Ativa";
+        this.service.buscarVidaAtivaTrabalhador(id).subscribe((dados: string) => {
+            if (dados) {
+                this.vidaAtiva = dados + " Vida Ativa";
+                this.temvidaAtiva = true;
+            } else {
+                this.vidaAtiva = "Sem Vida Ativa";
                 this.temvidaAtiva = false;
-            });
+            }
+        }, (error) => {
+            this.mensagemError(error);
+            this.vidaAtiva = "Sem Vida Ativa";
+            this.temvidaAtiva = false;
+        });
     }
 
     private temEmpPerfil(): boolean {
         const isPermitido = this.usuarioLogado.papeis.find((element) =>
-        element === PerfilEnum.ADM
-        || element === PerfilEnum.DIDN
-        || element ===  PerfilEnum.DIDR) != null;
+            element === PerfilEnum.ADM
+            || element === PerfilEnum.DIDN
+            || element === PerfilEnum.DIDR) != null;
         return isPermitido;
 
         // const isPerfil =  this.usuarioLogado.perfisSistema.find((element) =>
@@ -168,6 +169,7 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
         this.cropperSettings.dynamicSizing = true;
         this.foto = {};
     }
+
     desabilitarSituacao() {
         if (!this.isSomenteTrabalhador()) {
             if (this.trabalhador.dataFalecimento || this.modoConsulta) {
@@ -637,7 +639,9 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
             } else {
                 endereco.endereco.municipio = null;
             }
-            if (formModel.cep.value) { endereco.endereco.cep = MascaraUtil.removerMascara(formModel.cep.value); }
+            if (formModel.cep.value) {
+                endereco.endereco.cep = MascaraUtil.removerMascara(formModel.cep.value);
+            }
             endereco.endereco.tipoEndereco = EnumValues.getNameFromValue(TipoEndereco, TipoEndereco.P);
             if (this.trabalhador.listaEnderecoTrabalhador && this.trabalhador.listaEnderecoTrabalhador.length > 0) {
                 this.trabalhador.listaEnderecoTrabalhador[0].endereco = endereco.endereco;
@@ -663,7 +667,7 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
             if (trabalhador && trabalhador.id) {
                 this.trabalhador = trabalhador;
                 this.converterModelParaForm();
-                if(this.temEmpPerfil()){
+                if (this.temEmpPerfil()) {
                     this.getVidaAtiva(this.id);
                 }
 
@@ -694,9 +698,9 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
         if (this.validarCampos()) {
             this.prepareSave();
             this.service.salvar(this.trabalhador).subscribe((response: Trabalhador) => {
-                if ((Seguranca.getUsuario().papeis.indexOf('GDRA') > -1
-                    || Seguranca.getUsuario().papeis.indexOf('GEEM') > -1
-                    || Seguranca.getUsuario().papeis.indexOf('TRA') > -1) && !this.trabalhador.id) {
+                let user = Seguranca.getUsuario();
+                if (this.contemPerfil([PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.GEEM, PerfilEnum.TRA], user)
+                    && !this.trabalhador.id) {
                     this.trabalhador = response;
                     this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso_trabalhador);
                 } else {
@@ -798,14 +802,14 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
     createForm() {
         this.trabalhadorForm = this.formBuilder.group({
             nome: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.required,
                     Validators.maxLength(160),
                 ]),
             ],
             dataNascimento: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.required,
                     ValidateData,
@@ -813,230 +817,230 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
                 ]),
             ],
             dataFalecimento: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     ValidateData,
                     ValidateDataFutura,
                 ]),
             ],
             cpf: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.required, ValidateCPF,
                 ]),
             ],
             rg: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.maxLength(300),
                 ]),
             ],
             orgaoRg: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.maxLength(300),
                 ]),
             ],
             nit: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.required,
                     ValidarNit,
                 ]),
             ],
             ctps: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.maxLength(300),
                 ]),
             ],
             brPdh: [
-                { value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([]),
             ],
             escolaridade: [
-                { value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([]),
             ],
             estadoCivil: [
-                { value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.required,
                 ]),
             ],
             faixaSalarial: [
-                { value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([]),
             ],
             genero: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.required,
                 ]),
             ],
             raca: [
-                { value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([]),
             ],
             serieCtps: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.maxLength(300),
                 ]),
             ]
             ,
             ufCtps: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.maxLength(300),
                 ]),
             ],
             endereco: [
-                { value: null, disabled: this.modoConsulta },
+                {value: null, disabled: this.modoConsulta},
                 Validators.compose([
                     Validators.maxLength(300),
                 ]),
             ],
             bairro: [
-                { value: null, disabled: this.modoConsulta },
+                {value: null, disabled: this.modoConsulta},
                 Validators.compose([
                     Validators.maxLength(300),
                 ]),
             ],
             complemento: [
-                { value: null, disabled: this.modoConsulta },
+                {value: null, disabled: this.modoConsulta},
                 Validators.compose([
                     Validators.maxLength(300),
                 ]),
             ],
             numero: [
-                { value: null, disabled: this.modoConsulta },
+                {value: null, disabled: this.modoConsulta},
                 Validators.compose([
                     Validators.maxLength(300),
                 ]),
             ],
             estado: [
-                { value: undefined, disabled: this.modoConsulta },
+                {value: undefined, disabled: this.modoConsulta},
                 Validators.compose([
                     Validators.maxLength(300),
                 ]),
             ],
             municipio: [
-                { value: undefined, disabled: true },
+                {value: undefined, disabled: true},
                 Validators.compose([]),
             ],
             cep: [
-                { value: null, disabled: this.modoConsulta },
+                {value: null, disabled: this.modoConsulta},
                 Validators.compose([]),
             ],
             email: [
-                { value: null, disabled: this.modoConsulta },
+                {value: null, disabled: this.modoConsulta},
                 Validators.compose([
                     Validators.maxLength(300),
                 ]),
             ],
             telefone: [
-                { value: null, disabled: this.modoConsulta },
+                {value: null, disabled: this.modoConsulta},
                 Validators.compose([]),
             ],
             planoSaude: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.maxLength(1),
                 ]),
             ],
             possuiAutomovel: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.maxLength(1),
                 ]),
             ],
             atividadeFisica: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.maxLength(1),
                 ]),
             ],
             exameRegular: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.maxLength(1),
                 ]),
             ],
             notificacao: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.maxLength(1),
                 ]),
             ],
             nomeMae: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.maxLength(160),
                 ]),
             ],
             nomePai: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     Validators.maxLength(160),
                 ]),
             ],
             nacionalidade: [
-                { value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([]),
             ],
             situacaoTrabalhador: [
-                { value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([]),
             ],
             profissao: [
-                { value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([]),
             ],
             tipoSanguineo: [
-                { value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([]),
             ],
             pais: [
-                { value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([]),
             ],
             dataNaturalizacao: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     ValidateData,
                     ValidateDataFutura,
                 ]),
             ],
             dataEntradaPais: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([
                     ValidateData,
                     ValidateDataFutura,
                 ]),
             ],
             estadoNacionalidade: [
-                { value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([]),
             ],
             municipioNacionalidade: [
-                { value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador() },
+                {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
                 Validators.compose([]),
             ],
             descricaoMedicamentos: [
-                { value: null, disabled: this.modoConsulta },
+                {value: null, disabled: this.modoConsulta},
                 Validators.compose([
                     Validators.maxLength(300),
                 ]),
             ],
             descricaoAlergias: [
-                { value: null, disabled: this.modoConsulta },
+                {value: null, disabled: this.modoConsulta},
                 Validators.compose([
                     Validators.maxLength(300),
                 ]),
             ],
             descricaoVacinas: [
-                { value: null, disabled: this.modoConsulta },
+                {value: null, disabled: this.modoConsulta},
                 Validators.compose([
                     Validators.maxLength(300),
                 ]),
@@ -1107,7 +1111,7 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
         this.temImagem = false;
     }
 
-    isProducao():Boolean{
+    isProducao(): Boolean {
         return environment.isProduction;
     }
 }

@@ -30,6 +30,7 @@ import { TipoEndereco } from 'app/modelo/enum/enum-tipo-endereco.model';
 import { EnumValues } from 'enum-values';
 import { ValidateCNPJ } from 'app/compartilhado/validators/cnpj.validator';
 import { ValidateEmail } from 'app/compartilhado/validators/email.validator';
+import {PerfilEnum} from "../../../modelo/enum/enum-perfil";
 
 @Component({
   selector: 'app-cadastro-uat',
@@ -604,11 +605,7 @@ export class CadastroUatComponent extends BaseComponent implements OnInit {
   }
 
   isPermitidoEditar(): boolean {
-    return this.usuarioLogado.papeis.length >= 1 &&
-      this.usuarioLogado.papeis.indexOf('GDNA') === -1
-      && this.usuarioLogado.papeis.indexOf('GDNP') === -1
-      && this.usuarioLogado.papeis.indexOf('GDRA') === -1
-      && this.usuarioLogado.papeis.indexOf('GDRP') === -1;
+      return this.naoTemPapel(PerfilEnum.GDNA, PerfilEnum.GDNP, PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.GDRP);
   }
 
 }

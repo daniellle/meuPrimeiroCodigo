@@ -431,8 +431,8 @@ public class TrabalhadorService extends BaseService {
         if (optional == null || !optional.isPresent()) {
             List<UsuarioEntidade> usuarioEntidades = usuarioEntidadeService.pesquisarPorCPF(login);
             for (UsuarioEntidade usuarioEntidade : usuarioEntidades) {
-                if (usuarioEntidade.getEmpresaProfissionalSaude() != null) {
-                    empresas.add(usuarioEntidade.getEmpresaProfissionalSaude().getId());
+                if (usuarioEntidade.getEmpresa() != null) {
+                    empresas.add(usuarioEntidade.getEmpresa().getId());
                 }
             }
 

@@ -1,14 +1,13 @@
 package br.com.ezvida.rst.utils;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-
+import br.com.ezvida.rst.enums.Ambiente;
+import fw.security.exception.UnauthenticatedException;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.ezvida.rst.enums.Ambiente;
-import fw.security.exception.UnauthenticatedException;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 public class SegurancaUtils {
 
@@ -23,13 +22,16 @@ public class SegurancaUtils {
     public String validarAutenticacao(HttpServletRequest request) {
         if (ambiente == Ambiente.DESENVOLVIMENTO) {
             LOGGER.warn(" UTILIZANDO SEGURANÇA DO AMBIENTE DE DESENVOLVIMENTO");
-			 return "65020081515"; // administrador
+            // return "65020081515"; // administrador
             // return "48552219026"; // gestor dn aplicacoes
-            // return "74055251564"; // gestor dr aplicacoes
+            // return "56866951135"; // gestor dr master
+            return "74055251564"; // gestor dr aplicacoes
+            // return "71141598973"; // gestor empresa master
             // return "92883645361"; // gestor empresa
             // return "46335766744"; // trabalhador
-			// return "37139762520"; // carol adm
+            // return "37139762520"; // carol adm
             // return "64432620005"; //profissonal saude
+            // return "19743559698"; //recursos humanos
 
         }
         LOGGER.debug("SessionLogin {}", request.getAttribute(SHIB_SESSION_LOGIN));
