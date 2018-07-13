@@ -1,6 +1,30 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v2.29.0**
+===========
+
+(RELEASE EM 13/07/2018)
+
+**Novidades**
+
+	Criação de perfis de usurios master
+
+
+------------
+
+**Melhorias**
+
+	Solicitar nova token do RES apenas quando der erro 401	
+	
+------------
+
+**Correções**
+
+	Ajustes necessários nos perfis Gestor DR e Master e Gestor DN
+
+------------
+
 **v2.25.0**
 
 ============
