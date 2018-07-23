@@ -17,6 +17,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("rawtypes")
 @RequestScoped
@@ -34,8 +36,8 @@ public class RESEndpoint extends SegurancaEndpoint {
     public Object buscarPaciente(@PathParam("cpf") String cpf, @Context SecurityContext context,
                                  @Context HttpServletRequest request) {
         return this.service.buscarPaciente(cpf, ClienteInfos.getClienteInfos(context, request,
-                                                                             TipoOperacaoAuditoria.CONSULTA,
-                                                                             Funcionalidade.RES));
+            TipoOperacaoAuditoria.CONSULTA,
+            Funcionalidade.RES));
     }
 
     @GET
@@ -45,11 +47,11 @@ public class RESEndpoint extends SegurancaEndpoint {
                                                 @Context HttpServletRequest request) {
         return this.service.buscarFichasMedicasParaPaciente(
             uriInfo.getQueryParameters()
-                   .getFirst("cpf"),
+                .getFirst("cpf"),
             uriInfo.getQueryParameters()
-                   .getFirst("de"),
+                .getFirst("de"),
             uriInfo.getQueryParameters()
-                   .getFirst("pagina"),
+                .getFirst("pagina"),
             ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.RES),
             ClienteInfos.getUsuario(context));
     }
@@ -60,17 +62,18 @@ public class RESEndpoint extends SegurancaEndpoint {
     public Object buscarEncontroMedico(@PathParam("identifier") String id, @Context SecurityContext context,
                                        @Context HttpServletRequest request) {
         return this.service.buscarFichaMedica(id, ClienteInfos.getClienteInfos(context, request,
-                                                                               TipoOperacaoAuditoria.CONSULTA,
-                                                                               Funcionalidade.RES));
+            TipoOperacaoAuditoria.CONSULTA,
+            Funcionalidade.RES));
     }
 
     @GET
-    @Path("/informacao/historico/{informacao}")
+    @Path("/informacao/historico")
     @Produces(MediaType.APPLICATION_JSON)
-    public Object buscarHistoricoDeInformacaoSaudeTrabalhador(@PathParam("informacao") InformacaoSaude dado,
+    public Object buscarHistoricoDeInformacaoSaudeTrabalhador(
                                                               @Context UriInfo uriInfo,
                                                               @Context SecurityContext context,
                                                               @Context HttpServletRequest request) {
+
         MultivaluedMap<String, String> query = uriInfo.getQueryParameters();
 
         if (query == null || query.isEmpty()) {
@@ -78,23 +81,35 @@ public class RESEndpoint extends SegurancaEndpoint {
         }
 
         validaParametrosObrigatorios(query);
-        ClienteAuditoria infos = ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA,
-                                                              Funcionalidade.RES);
-        return service.buscarHistoricoParaInformacaoSaude(dado, query, infos);
+        if (query.get("informacao") == null || query.get("informacao").isEmpty()) {
+            throw new BusinessException("Nenhuma informação de saúde informada");
+        }
+        List<String> informacoes = query.get("informacao");
+
+        try {
+            List<InformacaoSaude> informacoesSaude = informacoes.stream()
+                .map(InformacaoSaude::fromString)
+                .collect(Collectors.toList());
+            ClienteAuditoria infos = ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA,
+                Funcionalidade.RES);
+            return service.buscarHistoricoParaInformacaoSaude(informacoesSaude, query, infos);
+
+        } catch (IllegalArgumentException e) {
+            throw new BusinessException("Uma das informações de saúde buscada não é conhecida");
+        }
     }
 
     private void validaParametrosObrigatorios(MultivaluedMap<String, String> query) {
         if (query.getFirst("cpf") == null || query.getFirst("cpf")
-                                                  .isEmpty()) {
+            .isEmpty()) {
             throw new BusinessException("CPF não informado");
         }
     }
 
     @GET
-    @Path("/informacao/{informacao}")
+    @Path("/informacao")
     @Produces(MediaType.APPLICATION_JSON)
-    public Object buscarInformacaoSaudeTrabalhador(@PathParam("informacao") InformacaoSaude dado,
-                                                   @Context UriInfo uriInfo,
+    public Object buscarInformacaoSaudeTrabalhador(@Context UriInfo uriInfo,
                                                    @Context SecurityContext context,
                                                    @Context HttpServletRequest request) {
         MultivaluedMap<String, String> query = uriInfo.getQueryParameters();
@@ -104,25 +119,26 @@ public class RESEndpoint extends SegurancaEndpoint {
         }
 
         validaParametrosObrigatorios(query);
-        ClienteAuditoria clienteAuditoria = ClienteInfos.getClienteInfos(context, request,
-                                                                         TipoOperacaoAuditoria.CONSULTA,
-                                                                         Funcionalidade.RES);
-        return service.buscarUltimoRegistroInformacaoSaude(query.getFirst("cpf"), dado, clienteAuditoria);
-    }
+        if (query.get("informacao") == null || query.get("informacao").isEmpty()) {
+            throw new BusinessException("Nenhuma informação de saúde informada");
+        }
+        List<String> informacoes = query.get("informacao");
 
-    @GET
-    @Path("/informacao/ultimoEncontro/{informacao}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Object buscarInformacaoSaudeTrabalhadorUltimoEncontro(@PathParam("informacao") InformacaoSaude dado, @Context UriInfo uriInfo, @Context SecurityContext context, @Context HttpServletRequest request) {
-        MultivaluedMap<String, String> query = uriInfo.getQueryParameters();
+        try {
+            List<InformacaoSaude> informacoesSaude = informacoes.stream()
+                .map(InformacaoSaude::fromString)
+                .collect(Collectors.toList());
 
-        if (query == null || query.isEmpty()) {
-            throw new BusinessException("Nenhum parâmetro de busca informado");
+            ClienteAuditoria clienteAuditoria = ClienteInfos.getClienteInfos(context, request,
+                TipoOperacaoAuditoria.CONSULTA,
+                Funcionalidade.RES);
+            return service.buscarUltimoRegistroInformacaoSaude(query.getFirst("cpf"),
+                informacoesSaude,
+                clienteAuditoria);
+        } catch (IllegalArgumentException e) {
+            throw new BusinessException("Uma das informações de saúde buscada não é conhecida");
         }
 
-        validaParametrosObrigatorios(query);
-
-        return service.buscarInformacaoSaudeTrabalhadorUltimoEncontro(query.getFirst("cpf"), dado, ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.RES));
     }
 
 }

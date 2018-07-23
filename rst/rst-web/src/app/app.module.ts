@@ -19,6 +19,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ModalModule} from 'ngx-bootstrap';
 import { environment } from 'environments/environment';
 
+
 @NgModule({
               bootstrap: [AppComponent],
               declarations: [AppComponent],

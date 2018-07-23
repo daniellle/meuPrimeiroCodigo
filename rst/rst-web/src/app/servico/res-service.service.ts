@@ -5,15 +5,20 @@ import { AutenticacaoService } from 'app/servico/autenticacao.service';
 import { BloqueioService } from 'app/servico/bloqueio.service';
 import { BaseService } from 'app/servico/base.service';
 import { Observable } from 'rxjs/Observable';
-import { Path, History, TypedJSON, Event, ItemList, Cluster, Element } from '@ezvida/adl-core';
+import { Cluster, Element, Event, History, ItemList, TypedJSON, DvDate, DvText } from '@ezvida/adl-core';
 import { maxBy } from 'lodash';
+import { O_NONBLOCK } from 'constants';
+import { Imunizacao } from '../modelo/imunizacao.model';
+import { ValueSetItem } from '@ezvida/adl-core/am/ValueSetItem';
 
 @Injectable()
 export class ResService extends BaseService<any> {
 
     private API = '/v1/saude';
 
-    constructor(protected httpClient: HttpClient, protected bloqueio: BloqueioService, protected autenticacaoService: AutenticacaoService) {
+    constructor(protected httpClient: HttpClient,
+        protected bloqueio: BloqueioService,
+        protected autenticacaoService: AutenticacaoService) {
         super(httpClient, bloqueio);
     }
 
@@ -30,14 +35,48 @@ export class ResService extends BaseService<any> {
         return this.get(`${this.API}/paciente/${encodeURIComponent(cpf)}`);
     }
 
-    buscarHistoricoParaInformacaoSaude(dado: string, cpf: string): Observable<any> {
-        //         return resultado.result.map((elem) => {
-        //             return { data: elem.date, informacao: elem.dataValue };
-        //         });
+    buscarImunizacao(dado: string[], cpf: string): Observable<any> {
         const usuario = Seguranca.getUsuario() as any;
         let parametros = new HttpParams().set('cpf', cpf || usuario.sub);
 
-        return this.get(`${this.API}/informacao/historico/${encodeURIComponent(dado)}`, parametros)
+        dado.forEach((d: string) => parametros = parametros.append('informacao', d));
+        return this.get(`${this.API}/informacao/historico/`, parametros)
+            .map((resultado: History) => {
+                if (resultado) {
+                    const history = TypedJSON.parse(JSON.stringify(resultado), History);
+                    const lista: any[] = [];
+                    if (history.events) {
+                        history.events.map((event: Event) => {
+                            let objeto = {
+                                data: null,
+                                informacao: null,
+                            };
+                            (<ItemList>event.data).items.map((elemento: Element) => {
+                                if (elemento.name.value.toString() == 'Tipo de imunobiológico') {
+                                   objeto.informacao = elemento.value;
+                                }else{
+                                    objeto.data = elemento.value;
+                                }
+                            });
+                            lista.push(objeto);
+                        });
+                    }
+                    return lista;
+                }
+            }).catch((error) => {
+                console.log(error);
+                return Observable.empty();
+            });
+    }
+
+
+
+
+    buscarHistoricoParaInformacaoSaude(dado: string, cpf: string): Observable<any> {
+        const usuario = Seguranca.getUsuario() as any;
+        let parametros = new HttpParams().set('cpf', cpf || usuario.sub);
+        parametros = parametros.append('informacao', encodeURIComponent(dado));
+        return this.get(`${this.API}/informacao/historico/`, parametros)
             .map((resultado: History) => {
                 if (resultado) {
                     const history = TypedJSON.parse(JSON.stringify(resultado), History);
@@ -61,10 +100,15 @@ export class ResService extends BaseService<any> {
             });
     }
 
-    buscarValorParaInformacaoSaude(dado: string, cpf: string): Observable<any> {
+    buscarValorParaInformacaoSaude(dado: string | string[], cpf: string): Observable<any> {
         const usuario = Seguranca.getUsuario() as any;
         let parametros = new HttpParams().set('cpf', cpf || usuario.sub);
-        return this.get(`${this.API}/informacao/${encodeURIComponent(dado)}`, parametros)
+        if (dado instanceof Array) {
+            dado.forEach((d: string) => parametros = parametros.append('informacao', d));
+        } else {
+            parametros = parametros.append('informacao', encodeURIComponent(dado));
+        }
+        return this.get(`${this.API}/informacao`, parametros)
             .map((resultado: Cluster) => {
                 if (resultado) {
                     const elemento: Element = <Element>resultado.items[0];
@@ -78,22 +122,6 @@ export class ResService extends BaseService<any> {
             });
     }
 
-    buscarValorParaInformacaoSaudeUltimoEncontro(dado: string, cpf: string): Observable<any> {
-        const usuario = Seguranca.getUsuario() as any;
-        let parametros = new HttpParams().set('cpf', cpf || usuario.sub);
-        return this.get(`${this.API}/informacao/ultimoEncontro/${encodeURIComponent(dado)}`, parametros)
-            .map((resultado: Cluster) => {
-                if (resultado) {
-                    const elemento: Element = <Element>resultado.items[0];
-                    return elemento;
-                }
-
-                return null;
-            }).catch((erro) => {
-                console.error(erro);
-                return null;
-            });
-    }
 
     buscarEncontro(encontroId: string): Observable<any> {
         return this.get(`${this.API}/fichaMedica/${encontroId}`).catch((erro) => {
@@ -109,7 +137,8 @@ export class ResService extends BaseService<any> {
         if (!aPartirDe) {
             aPartirDe = new Date(0);
         }
-        const params = new HttpParams().set('de', aPartirDe.toString()).set('cpf', paciente).set('pagina', pagina.toString());
+        const params = new HttpParams().set('de', aPartirDe.toString()).set('cpf', paciente).set('pagina',
+            pagina.toString());
         return this.get(`${this.API}/fichaMedica`, params);
     }
 

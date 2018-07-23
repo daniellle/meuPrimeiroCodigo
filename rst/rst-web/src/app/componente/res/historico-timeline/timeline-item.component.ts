@@ -93,7 +93,7 @@ export class TimelineItemComponent implements OnInit {
 
     data: Date;
     expandido = false;
-    titulo = 'Encontro Médico';
+    titulo: string;
     composition: any;
     timelineIcon: string;
     estilo: {
@@ -185,6 +185,7 @@ export class TimelineItemComponent implements OnInit {
     }
 
     private definirTitulo(composition: any) {
+        this.titulo = composition.name.value;
     }
 
     private coletarInformacoesTemplate(composition: Composition): InformacoesTemplate[] {

@@ -231,4 +231,10 @@ export enum PermissoesEnum {
     USUARIO_DESATIVAR = 'usuario_desativar',
 
     USUARIO_CONSULTAR_DADOS = 'consultar_dados_usuario',
+
+    VACINA_AUTODECLARADA = 'vacina_autodeclarada',
+	VACINA_AUTODECLARADA_CONSULTAR = 'vacina_autodeclarada_consultar',
+	VACINA_AUTODECLARADA_CADASTRAR = 'vacina_autodeclarada_cadastrar',
+	VACINA_AUTODECLARADA_DESATIVAR = 'vacina_autodeclarada_desativar',
+	VACINA_AUTODECLARADA_ALTERAR = 'vacina_autodeclarada_alterar',
 }

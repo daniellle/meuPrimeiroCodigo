@@ -1,4 +1,4 @@
-<app-bloqueio [processado]='false'> </app-bloqueio>
+<app-bloqueio [processado]='false'></app-bloqueio>
 <div class='container-fluid'>
     <div class='row'>
         <div class='col-md-4 card-single card-idade'>
@@ -11,6 +11,7 @@
                 <div class='col-12 col-info-valor'>
                     <label>{{ idade || '--'}}</label>
                 </div>
+                <small style="margin-left: 5px">{{ disclaimerAferimento }}</small>
             </div>
         </div>
         <div class='col-md-4 card-single card-altura'>
@@ -23,6 +24,7 @@
                 <div class='col-12 col-info-valor'>
                     <label>{{ altura?.valor || '--'}}</label>
                 </div>
+                <small style="margin-left: 5px">{{ disclaimerAferimento }}</small>
             </div>
         </div>
         <div class='col-md-4 card-single card-circunferencia'>
@@ -35,6 +37,7 @@
                 <div class='col-12 col-info-valor'>
                     <label>{{ peso?.valor || '--'}}</label>
                 </div>
+                <small style="margin-left: 5px">{{ disclaimerAferimento }}</small>
             </div>
         </div>
     </div>
@@ -54,7 +57,9 @@
                     <div id="horizontal-line" class="horizontal-line" style="padding-left:8px">90 <hr></div> -->
                     <div class='row row-chart' *ngIf='!this.semDadosPressaoSuficiente'>
                         <div class='col-12' *ngIf='graficoPressaoSanguinea'>
-                            <canvas id="graficoPressao" baseChart [datasets]='graficoPressaoSanguinea.dados' [labels]='graficoPressaoSanguinea.labels' [options]='graficoPressaoSanguinea.opcoes' style='min-height:300px' height='300px' chartType="bar"></canvas>
+                            <canvas id="graficoPressao" baseChart [datasets]='graficoPressaoSanguinea.dados'
+                                    [labels]='graficoPressaoSanguinea.labels' [options]='graficoPressaoSanguinea.opcoes'
+                                    style='min-height:300px' height='300px' chartType="bar"></canvas>
                             <small>Fonte: Sociedade Brasileira de Hipertensão</small>
                         </div>
                     </div>
@@ -93,19 +98,27 @@
                             <div class='row '>
                                 <div class='col-12 col-imc-progress text-center '>
                                     <div class="progress">
-                                        <div class="progress-bar progress-bar-obeso" [class.selecionado]='imc?.valor>= 30' role="progressbar" style="width:100%; height:25%;">
+                                        <div class="progress-bar progress-bar-obeso"
+                                             [class.selecionado]='imc?.valor>= 30' role="progressbar"
+                                             style="width:100%; height:25%;">
                                             <label class='progress-label'> > ou = a 30 </label>
                                             <label class='progress-label'> Obeso </label>
                                         </div>
-                                        <div class="progress-bar progress-bar-sobrepeso" [class.selecionado]='24.9 < imc?.valor && imc?.valor <= 29.9 ' role="progressbar" style="width:100%; height: 25%;">
+                                        <div class="progress-bar progress-bar-sobrepeso"
+                                             [class.selecionado]='24.9 < imc?.valor && imc?.valor <= 29.9 '
+                                             role="progressbar" style="width:100%; height: 25%;">
                                             <label class='progress-label'> 24,9 - 29.9 </label>
                                             <label class='progress-label'> Sobrepeso </label>
                                         </div>
-                                        <div class="progress-bar progress-bar-normal" [class.selecionado]='18.5 < imc?.valor && imc?.valor <= 24.9' role="progressbar" style="width:100%; height: 25%;">
+                                        <div class="progress-bar progress-bar-normal"
+                                             [class.selecionado]='18.5 < imc?.valor && imc?.valor <= 24.9'
+                                             role="progressbar" style="width:100%; height: 25%;">
                                             <label class='progress-label'> 18,5 - 24,9 </label>
                                             <label class='progress-label'> Normal </label>
                                         </div>
-                                        <div class="progress-bar progress-bar-abaixo-peso" [class.selecionado]='imc?.valor <= 18.5' role="progressbar" style="width:100%; height: 25%;">
+                                        <div class="progress-bar progress-bar-abaixo-peso"
+                                             [class.selecionado]='imc?.valor <= 18.5' role="progressbar"
+                                             style="width:100%; height: 25%;">
                                             <label class='progress-label'> {{ '< ' }} 18,5</label>
                                             <label class='progress-label '> Abaixo do peso </label>
                                         </div>
@@ -114,9 +127,11 @@
                                 <small style="margin-top: 5px;">Fonte: ABESO</small>
                             </div>
                         </div>
-                        <div class='col-6 col-md-6 col-lg-4 col-imagem-corpo {{ getClasseImagemCorpo() }} {{getClasseNivelIMC()}}'>
+                        <div
+                            class='col-6 col-md-6 col-lg-4 col-imagem-corpo {{ getClasseImagemCorpo() }} {{getClasseNivelIMC()}}'>
 
                         </div>
+                        <small style="margin-left: 5px">{{ disclaimerAferimento }}</small>
                     </div>
                 </div>
             </div>
@@ -134,7 +149,10 @@
                     </div>
                     <div class='row row-chart' *ngIf='!this.semDadosPesoSuficiente'>
                         <div class='col-12' *ngIf='this.graficoPeso'>
-                            <canvas id="graficoPeso" baseChart [datasets]='graficoPeso.dados' [labels]='graficoPeso.labels' [colors]='graficoPeso.cores' [options]='graficoPeso.opcoes' style='min-height:300px' height='300px' chartType="line"></canvas>
+                            <canvas id="graficoPeso" baseChart [datasets]='graficoPeso.dados'
+                                    [labels]='graficoPeso.labels' [colors]='graficoPeso.cores'
+                                    [options]='graficoPeso.opcoes' style='min-height:300px' height='300px'
+                                    chartType="line"></canvas>
                         </div>
                         <small style="margin-top: 5px;">Referência: {{ referenciaAbdominal() }}</small>
                     </div>

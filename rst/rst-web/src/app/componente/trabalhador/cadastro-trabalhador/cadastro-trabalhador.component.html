@@ -1,7 +1,7 @@
 <ng2-toasty></ng2-toasty>
 <app-bloqueio></app-bloqueio>
 <p class="titulo-pagina">
-    Cadastro do Trabalhador
+    {{ 'app_rst_imunizacao_title_cadastrar_vacina' | recurso }}
 </p>
 
 <div class="container-form" [ngClass]="{ divDis : modoConsulta || isSomenteTrabalhador()}">
@@ -413,14 +413,6 @@
         </div>
 
         <div class="corpo-card">
-            <div class="row">
-                <div class="form-group col-md-12">
-                    <md-input-container [floatPlaceholder]="true">
-                        <textarea mdInput formControlName="descricaoVacinas" name="descricaoVacinas" id="descricaoVacinas" placeholder="{{ 'app_rst_labels_vacinas_auto_declarados' | recurso }}" type="text" maxlength="300"></textarea>
-                    </md-input-container>
-                </div>
-            </div>
-
             <div class="row">
                 <div class="form-group col-md-12">
                     <md-input-container [floatPlaceholder]="true">

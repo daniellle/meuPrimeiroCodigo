@@ -1,6 +1,6 @@
-import { DadosFilter } from './dados-filter.model';
-import { UsuarioPerfilSistema } from './usuario-perfil-sistema.model';
-import {SimNao} from "./enum/enum-simnao.model";
+import {DadosFilter} from './dados-filter.model';
+import {UsuarioPerfilSistema} from './usuario-perfil-sistema.model';
+
 export class Usuario {
 
   id: number;

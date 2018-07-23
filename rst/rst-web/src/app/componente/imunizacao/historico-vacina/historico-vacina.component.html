@@ -1,3 +1,109 @@
-<p>
-  historico-vacina works!
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    Histórico de vacinas autodeclaradas
 </p>
+<div class="container-pesquisar container-form">
+    <div class="row">
+        <div class="form-group col-md-8">
+            <md-input-container [floatPlaceholder]="true">
+                <input mdInput placeholder="{{ 'app_rst_labels_nome_vacina' | recurso }}" type="text" class="form-control" id="nome" name="nome" [(ngModel)]="filtroVacina.nome" maxlength="160" />
+            </md-input-container>
+        </div>
+        <div class="form-group col-md-4">
+            <div class="md-container">
+                
+                <md-select placeholder="Período" [(ngModel)]="filtroVacina.codPeriodo" id="periodo" appFormularioCamposErro>
+                        <md-option>
+                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                            </md-option>
+                            <md-option *ngFor='let key of keysPeriodoVacina' [value]="key">
+                                    {{periodo[key]}}
+                                </md-option>
+                </md-select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="btn-filter-pesquisar space-up">
+    <button type="button" class="btn-rodape btn btn-primary btn-cadastro" (click)="pesquisar();">{{ 'app_rst_btn_pesquisar' | recurso }}</button>
+    <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
+</div>
+
+<div class="container-form space-up" *ngIf="checkVacina()">
+    <div class="grid-pesquisa">
+        <table class="table table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th class="label text-center">
+                        <span>Data</span>
+                    </th>
+                    <th class="label">
+                        <span>Nome</span>
+                    </th>
+                    <th class="label">
+                        <span>Próximas doses</span>
+                    </th>
+                    <th class="label">
+                        <span></span>
+                    </th>
+                    <th class="label">
+                        <span></span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of vacinas; let i = index" (click)="selecionar(item)">
+                    <td class="col-quebra text-center">&nbsp;{{item.dataVacinacao | date: 'dd/MM/yyyy'}}</td>
+                    <td style="text-transform: capitalize;" class="col-quebra">&nbsp;{{item.nome}}</td>
+                    <td class="col-nao-quebra">
+                        <span *ngFor="let dose of item.listaProximasDoses">
+                                {{dose.dtProximaDoseVacina | date: 'dd/MM/yyyy'}}
+                        </span>
+                    </td>
+                    <td class="col-nao-quebra">
+                            <button class="btn-link" (click)="openModal(confirmar)">
+                                    <img class="lixo" src="assets/img/edit.svg" alt="Excluir">
+                                </button>
+                        <button class="btn-link" (click)="edit(item)">
+                            <span class="fa fa-pencil"></span>
+                        </button>
+                    </td>
+                    <td class="col-nao-quebra">
+                        <button class="btn-link" (click)="openModal(confirmar); selecionarVacinaRemover(item)">
+                            <img class="lixo" src="assets/img/trash.svg" alt="Excluir">
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="btn-paginacao">
+            <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #confirmar let-close="close" let-fechar="dismiss">
+    <div class="modal-header">
+        <p class="modal-title">Remover Vacina</p>
+    </div>
+    <div class="modal-body text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    Deseja realmente remover a vacina?
+                </div>
+                <div class="offset-md-1 col-10 row space-up">
+                    <div class=" col-6">
+                        <button type="button" class="btn-rodape btn btn-primary btn-cadastro"  (click)="close('remover'); remover() ">Sim</button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="fechar('cancelar')">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

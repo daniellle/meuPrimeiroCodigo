@@ -148,7 +148,7 @@ public class DepartamentoRegionalDAO extends BaseDAO<DepartamentoRegional, Long>
                                                                  DadosFilter segurancaFilter) {
         LOGGER.debug("Pesquisando paginado departamento regional por filtro");
 
-        ListaPaginada<DepartamentoRegional> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
+        ListaPaginada<DepartamentoRegional> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>() );
 
         StringBuilder jpql = new StringBuilder();
         Map<String, Object> parametros = Maps.newHashMap();

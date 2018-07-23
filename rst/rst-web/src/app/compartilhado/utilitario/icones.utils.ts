@@ -73,6 +73,14 @@ export class IconesUtils {
             svg_clean: 'assets/img/res/timeline/triagem_clean.svg',
             cor: '#37abc8',
         },
+        {
+            regex: /imunobiologico/i,
+            svg: 'assets/img/res/timeline/vacina.svg',
+            svg_full: 'assets/img/res/timeline/vacina_full.svg',
+            svg_bg: 'assets/img/res/timeline/triagem_bg.svg',
+            svg_clean: 'assets/img/res/timeline/triagem_clean.svg',
+            cor: '#ff802aff',
+        },
     ];
 
     public static getIconeTemplate(id: string): { svg: string, svg_full: string, svg_bg: string, svg_clean: string, cor: string } {

@@ -28,6 +28,7 @@ import { CompartilhadoModule } from 'app/compartilhado/compartilhado.module';
 import { PaginationModule, TypeaheadModule } from 'ngx-bootstrap';
 import { ResHomeComponent } from './res-home/res-home.component';
 import {PermissoesEnum} from "../../modelo/enum/enum-permissoes";
+import { ImunizacaoService } from '../../servico/imunizacao.service';
 
 const routes: Routes = [
     {
@@ -86,7 +87,7 @@ const routes: Routes = [
         ResHomeResolve, ResService, {
             provide: LOCALE_ID,
             useValue: 'pt-BR',
-        }],
+        }, ImunizacaoService],
     entryComponents: [
         TimelineItemComponent,
         ResItemComponent,

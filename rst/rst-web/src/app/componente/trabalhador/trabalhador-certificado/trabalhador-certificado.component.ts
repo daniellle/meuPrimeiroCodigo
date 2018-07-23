@@ -381,7 +381,6 @@ export class TrabalhadorCertificadoComponent extends BaseComponent implements On
         }
       });
     }
-    console.log(temPerfilTrab);
     return temPerfilTrab;
   }
 

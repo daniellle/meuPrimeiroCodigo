@@ -6,6 +6,8 @@ import { SegurancaModule } from '../seguranca/seguranca.module';
 import { AutorizacaoGuard } from '../seguranca/autorizacao.guard';
 import { TemplateModule } from '../compartilhado/template/template.module';
 import { TemplateComponent } from '../compartilhado/template/template.component';
+import { CalendarModule } from 'angular-calendar';
+
 
 const routes: Routes = [
 	{
@@ -245,8 +247,8 @@ const routes: Routes = [
 			{
 				path: 'minhaconta',
 				loadChildren: './minha-conta/minha-conta.module#MinhaContaModule',
-                canLoad: [AutorizacaoGuard],
-            },
+				canLoad: [AutorizacaoGuard],
+			},
 			{
 				path: 'grupopergunta',
 				loadChildren: './grupo-pergunta/grupo-pergunta.module#GrupoPerguntaModule',
@@ -317,7 +319,19 @@ const routes: Routes = [
 					permissoes: [PermissoesEnum.PESQUISA_SESI_CONSULTAR],
 				},
 			},
-				// {
+			{
+				path: 'imunizacao',
+				loadChildren: './imunizacao/imunizacao.module#ImunizacaoModule',
+				canLoad: [AutorizacaoGuard], data: {
+					permissoes: [PermissoesEnum.TRABALHADOR,
+					PermissoesEnum.TRABALHADOR_CADASTRAR,
+					PermissoesEnum.TRABALHADOR_ALTERAR,
+					PermissoesEnum.TRABALHADOR_CONSULTAR,
+					PermissoesEnum.TRABALHADOR_DESATIVAR,],
+				},
+			},
+
+			// {
 			// 	path: 'teste', component: TesteComponent,
 
 			// }
@@ -326,8 +340,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-	imports: [TemplateModule, SegurancaModule, RouterModule.forChild(routes)],
-//	declarations: [TesteComponent]
+	imports: [TemplateModule, SegurancaModule, RouterModule.forChild(routes), CalendarModule.forRoot()],
+	declarations: [],
+	//	declarations: [TesteComponent]
 })
 export class ComponenteModule {
 	constructor() {

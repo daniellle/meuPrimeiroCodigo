@@ -72,6 +72,9 @@ import {
     MdTooltipModule,
 } from '@angular/material';
 import { CALENDARIO_DIRECTIVES } from 'app/diretiva/calendario.directive';
+import { VacinaModalComponent } from 'app/compartilhado/modal-vacina-componenet/vacina-modal/vacina-modal.component';
+import { VacinaGridComponent } from 'app/compartilhado/modal-vacina-componenet/vacina-grid/vacina-grid.component';
+
 
 @NgModule({
     imports: [
@@ -125,7 +128,9 @@ import { CALENDARIO_DIRECTIVES } from 'app/diretiva/calendario.directive';
         EnderecoGridComponent, EnderecoModalComponent, InputCnpjCpfComponent, SegmentoModalComponent,
         SegmentoGridComponent, UatModalComponent, UatGridComponent, AssociacaoEmpresaSindicatoComponent,
         UnidadeModalComponent, UnidadeGridComponent, AssociacaoTrabalhadorLotacaoComponent, CALENDARIO_DIRECTIVES,
-        ModalSelecionarGrupoPerguntaComponent
+        ModalSelecionarGrupoPerguntaComponent,
+        VacinaModalComponent,
+        VacinaGridComponent
     ],
     exports: [
         CommonModule,
@@ -158,6 +163,8 @@ import { CALENDARIO_DIRECTIVES } from 'app/diretiva/calendario.directive';
         PaginationModule,
         UatModalComponent,
         UatGridComponent,
+        VacinaModalComponent,
+        VacinaGridComponent,
         AssociacaoEmpresaSindicatoComponent,
         UnidadeModalComponent,
         UnidadeGridComponent,

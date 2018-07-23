@@ -11,7 +11,7 @@
                 <div class='col-12 col-info-valor'>
                     <label>{{ idade ||'--'}}</label>
                 </div>
-                <small style="margin-left: 5px">Dados coletados em {{ hoje | date:'mediumDate'}}</small>
+                <small style="margin-left: 5px">{{ disclaimerAferimento }}</small>
             </div>
         </div>
         <div class='col-md-4 card-single card-altura'>
@@ -24,7 +24,7 @@
                 <div class='col-12 col-info-valor'>
                     <label>{{ altura?.valor ||'--'}}</label>
                 </div>
-                <small style="margin-left: 5px">Dados coletados em {{ hoje | date:'mediumDate'}}</small>
+                <small style="margin-left: 5px">{{ disclaimerAferimento }}</small>
             </div>
         </div>
 
@@ -38,7 +38,7 @@
                 <div class='col-12 col-info-valor'>
                     <label>{{ peso?.valor || '--'}}</label>
                 </div>
-                <small style="margin-left: 5px">Dados coletados em {{ hoje | date:'mediumDate'}}</small>
+                <small style="margin-left: 5px">{{ disclaimerAferimento }}</small>
             </div>
         </div>
     </div>
@@ -53,7 +53,10 @@
                     </div>
                     <div class='row row-chart' *ngIf='!this.semDadosPressaoSuficiente'>
                         <div class='col-12' *ngIf='graficoPressaoSanguinea'>
-                            <canvas baseChart [datasets]=' graficoPressaoSanguinea.dados' [colors]='graficoPressaoSanguinea.cores' [labels]='graficoPressaoSanguinea.labels' [options]='graficoPressaoSanguinea.opcoes' style='min-height:300px' height='300px' chartType="bar"></canvas>
+                            <canvas baseChart [datasets]=' graficoPressaoSanguinea.dados'
+                                    [colors]='graficoPressaoSanguinea.cores' [labels]='graficoPressaoSanguinea.labels'
+                                    [options]='graficoPressaoSanguinea.opcoes' style='min-height:300px' height='300px'
+                                    chartType="bar"></canvas>
                             <small>Fonte: Sociedade Brasileira de Hipertensão</small>
                         </div>
                     </div>
@@ -89,21 +92,28 @@
                             <div class='row'>
                                 <div class='col-12 col-imc-progress text-center'>
                                     <div class="progress">
-                                        <div class="progress-bar progress-bar-obeso" [class.selecionado]='imc?.valor>= 30' role="progressbar" style="width:100%; height:25%;">
+                                        <div class="progress-bar progress-bar-obeso"
+                                             [class.selecionado]='imc?.valor>= 30' role="progressbar"
+                                             style="width:100%; height:25%;">
                                             <label class='progress-label'> > ou = a 30 </label>
                                             <label class='progress-label'> Obeso </label>
                                         </div>
-                                        <div class="progress-bar progress-bar-sobrepeso" [class.selecionado]='24.9 < imc?.valor && imc?.valor <= 29.9' role="progressbar" style="width:100%; height: 25%;">
+                                        <div class="progress-bar progress-bar-sobrepeso"
+                                             [class.selecionado]='24.9 < imc?.valor && imc?.valor <= 29.9'
+                                             role="progressbar" style="width:100%; height: 25%;">
                                             <label class='progress-label'> 24,9 - 29.9 </label>
                                             <label class='progress-label'> Sobrepeso </label>
                                         </div>
-                                        <div class="progress-bar progress-bar-normal" [class.selecionado]='18.5 < imc?.valor && imc?.valor <= 24.9' role="progressbar" style="width:100%; height: 25%;">
+                                        <div class="progress-bar progress-bar-normal"
+                                             [class.selecionado]='18.5 < imc?.valor && imc?.valor <= 24.9'
+                                             role="progressbar" style="width:100%; height: 25%;">
                                             <label class='progress-label'> 18,5 - 24,9 </label>
                                             <label class='progress-label'> Normal </label>
                                         </div>
-                                        <div class="progress-bar progress-bar-abaixo-peso" [class.selecionado]='imc?.valor <= 18.5' role="progressbar" style="width:100%; height: 25%;">
-                                            <label class='progress-label'> {{'
-                                                <' }} 18,5</label>
+                                        <div class="progress-bar progress-bar-abaixo-peso"
+                                             [class.selecionado]='imc?.valor <= 18.5' role="progressbar"
+                                             style="width:100%; height: 25%;">
+                                            <label class='progress-label'> &lt; 18,5</label>
                                             <label class='progress-label'> Abaixo do peso </label>
                                         </div>
                                     </div>
@@ -111,29 +121,35 @@
                                 <small style="margin-top: 5px;">Fonte: ABESO</small>
                             </div>
                         </div>
-                        <div class='col-6 col-md-6 col-lg-4 col-imagem-corpo {{ getClasseImagemCorpo() }} {{getClasseNivelIMC()}}'>
+                        <div
+                            class='col-6 col-md-6 col-lg-4 col-imagem-corpo {{ getClasseImagemCorpo() }} {{getClasseNivelIMC()}}'>
 
                         </div>
                     </div>
                 </div>
+                <small style="margin-left: 5px">{{ disclaimerAferimento }}</small>
             </div>
         </div>
-        <div class='col-md-4 col-sm-6 col-xs-12 card-res'>
-            <div class='row row-card-content'>
-                <div class='col-12'>
-                    <div class='row row-titulo'>
-                        <div class='col-6 col-titulo' style="font-size: 15px;">
+        <div class='col-md-4 col-sm-6 col-xs-12 card-res '>
+            <div class='row row-card-content '>
+                <div class='col-12 '>
+                    <div class='row row-titulo '>
+                        <div class='col-6 col-titulo ' style="font-size: 15px;">
                             Circunferência Abdominal
                         </div>
                     </div>
-                    <div class='row row-chart' *ngIf='!this.semDadosPesoSuficiente'>
-                        <div class='col-12 ' *ngIf='this.graficoPeso'>
-                            <canvas baseChart [datasets]='graficoPeso.dados' [labels]='graficoPeso.labels' [colors]='graficoPeso.cores' [options]='graficoPeso.opcoes' style='min-height:300px' height='300px' chartType="line"></canvas>
+                    <div class='row row-chart' *ngIf="!this.semDadosCircunferenciaAbdominalSuficiente">
+                        <div class='col-12 ' *ngIf="this.graficoCircunferenciaAbdominal">
+                            <canvas baseChart [datasets]='graficoCircunferenciaAbdominal.dados'
+                                    [labels]='graficoCircunferenciaAbdominal.labels'
+                                    [colors]='graficoCircunferenciaAbdominal.cores'
+                                    [options]='graficoCircunferenciaAbdominal.opcoes' style='min-height:300px'
+                                    height='300px' chartType="line"></canvas>
                         </div>
                         <small style="margin-top: 5px;">Referência: {{ referenciaAbdominal() }}</small>
                     </div>
-                    <div class='row row-chart' *ngIf='this.semDadosPesoSuficiente'>
-                        <div class='col-12'>
+                    <div class='row row-chart ' *ngIf='this.semDadosPesoSuficiente '>
+                        <div class='col-12 '>
                             Não foi encontrado nenhum registro de circunferência abdominal.
                         </div>
                     </div>
@@ -141,158 +157,182 @@
             </div>
         </div>
     </div>
-    <div class='row row-medicamentos-alergias'>
-        <div class='col-md-4 col-sm-12 card-res card-vacinas card-exames'>
-            <div class='row row-card-content'>
-                <div class='col-12'>
-                    <div class='row row-titulo'>
-                        <div class='col-12 col-titulo' style="font-size: 15px;">
-                            {{'app_rst_labels_vacinas_auto_declaradas_minha_saude' | recurso}}
-                        </div>
-                    </div>
-                    <div class='row row-conteudo'>
-                        <div class='col-12 row-chart' *ngIf='vacinas?.length > 0'>
-                            <div class='row' *ngFor='let vacina of vacinas'>
-                                <div class='col-12'> {{vacina}}</div>
-                            </div>
-
-                            <div class="row" style="margin-top: 10px;">
-                                <div class='col-12'>
-                                    <small>{{'app_rst_labels_ultima_fco' | recurso}}</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class='col-12 row-chart' *ngIf='trabalhador?.descricaoVacinas?.length > 0'>
-                            <div class='row'>
-                                <div class='col-12 white-space'>{{trabalhador.descricaoVacinas}}</div>
-                            </div>
-
-                            <div class="row" style="margin-top: 10px;">
-                                <div class='col-12'>
-                                    <small>{{'app_rst_labels_fonte_trabalhador' | recurso}}</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class='col-12 row-chart' *ngIf='vacinas?.length == 0 && trabalhador?.descricaoVacinas?.length < 1'>
-                            {{'app_rst_labels_nenhuma_vacina_informada' | recurso}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class='col-md-4 col-sm-12 card-res card-alergias card-exames'>
-            <div class='row row-card-content'>
-                <div class='col-12'>
-                    <div class='row row-titulo'>
-                        <div class='col-12 col-titulo' style="font-size: 15px;">
-                            {{'app_rst_labels_alergias_auto_declaras_minha_saude' | recurso}}
-                        </div>
-                    </div>
-
-                    <div class='row row-conteudo'>
-                        <div class='col-12 row-chart' *ngIf='alergias?.length > 0'>
-                            <div class='row' *ngFor='let alergia of alergias'>
-                                <div class='col-12'> {{alergia}}</div>
-                            </div>
-
-                            <div class="row" style="margin-top: 10px;">
-                                <div class='col-12'>
-                                    <small>{{'app_rst_labels_ultima_fco' | recurso}}</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class='col-12 row-chart' *ngIf='trabalhador?.descricaoAlergias?.length > 0'>
-                            <div class='row'>
-                                <div class='col-12 white-space'>{{trabalhador.descricaoAlergias}}</div>
-                            </div>
-
-                            <div class="row" style="margin-top: 10px;">
-                                <div class='col-12'>
-                                    <small>{{'app_rst_labels_fonte_trabalhador' | recurso}}</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class='col-12 row-chart' *ngIf='alergias?.length == 0 && trabalhador?.descricaoAlergias?.length < 1'>
-                            {{'app_rst_labels_nenhuma_alergia_informada' | recurso}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class='col-md-4 col-sm-12 card-res card-medicamentos card-exames'>
-            <div class='row row-card-content'>
-                <div class='col-12'>
-                    <div class='row row-titulo'>
-                        <div class='col-6 col-titulo' style="font-size: 15px;">
-                            {{'app_rst_labels_medicamentos_auto_declarados_minha_saude' | recurso}}
-                        </div>
-                    </div>
-
-                    <div class='row row-conteudo'>
-                        <div class='col-12 row-chart' *ngIf='medicamentos?.length > 0'>
-                            <div class='row' *ngFor='let medicamento of medicamentos'>
-                                <div class='col-12'> {{medicamento}}</div>
-                            </div>
-
-                            <div class="row" style="margin-top: 10px;">
-                                <div class='col-12'>
-                                    <small>{{'app_rst_labels_ultima_fco' | recurso}}</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class='col-12 row-chart' *ngIf='trabalhador?.descricaoMedicamentos?.length > 0'>
-                            <div class='row'>
-                                <div class='col-12 white-space'>{{trabalhador.descricaoMedicamentos}}</div>
-                            </div>
-
-                            <div class="row" style="margin-top: 10px;">
-                                <div class='col-12'>
-                                    <small>{{'app_rst_labels_fonte_trabalhador' | recurso}}</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class='col-12 row-chart' *ngIf='medicamentos?.length == 0 && trabalhador?.descricaoMedicamentos?.length < 1'>
-                            {{'app_rst_labels_nenhum_medicamento_informado' | recurso}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row row-timeline">
-        <div class='col-12 card-res '>
-            <div class='row row-card-content'>
-                <div class='col-12'>
+    <div class='row row-medicamentos-alergias '>
+        <div class='col-md-6 col-sm-12 card-res card-vacinas card-exames '>
+            <div class='row row-card-content '>
+                <div class='col-12 '>
                     <div class='row row-titulo '>
-                        <div class='col-6 col-titulo'>
-                            Histórico
+                        <div class='col-12 col-titulo ' style="font-size: 15px;">
+                            Vacinas autodeclaradas
                         </div>
                     </div>
-                    <div id="timeline" class='row row-chart' *ngIf='encontrosTimeline'>
-                        <div class='col-12'>
-                            <app-timeline-item *ngFor="let elementoHistorico of paginaTimeline" [filtrarInformacoes]="filtrarInformacoes" [form]="form" [elementoHistorico]='elementoHistorico'>
-                            </app-timeline-item>
+                    <div class='row row-conteudo ' style="
+                    width: 105%;
+    padding: 0px 0px 0px 22px;
+                ">
+                            <div class='row row-conteudo ' style="
+                            width: 100%;
+                        ">
+                                    <div class='col-12 row-chart ' *ngIf='vacinasAutodeclaradas?.length> 0'>
+                                                    <div class='row' *ngFor='let vacina of vacinasAutodeclaradas'>
+                                                        <div class='col-6'> {{vacina.nome}}</div>
+                                                        <div class='col-6 text-right'> {{vacina.dataVacinacao | date: 'dd/MM/yyyy'}}</div>
+                                                    </div>
+                                        </div>
+                                        <div style="padding-left: 30px !important" class='col-12 row-chart' *ngIf='vacinasAutodeclaradas?.length == 0 && vacinasAutodeclaradas?.length < 1'>
+                                            {{'app_rst_labels_nenhuma_vacina_informada' | recurso}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class='row row-chart' *ngIf="encontrosTimeline" style='margin-top:8px'>
-                        <div class='col-12' style='display:flex;flex-flow:row-reverse'>
-                            <pagination nextText='Próxima' previousText='Anterior' [totalItems]="this.numeroEncontros" [itemsPerPage]='this.tamanhoPagina' [(ngModel)]="this.paginaAtual" (pageChanged)="navegar($event)"></pagination>
+                    <div class='col-md-6 col-sm-12 card-res card-vacinas card-exames'>
+                            <div class='row row-card-content'>
+                                <div class='col-12'>
+                                    <div class='row row-titulo'>
+                                        <div class='col-12 col-titulo' style="font-size: 15px;">
+                                            Imunizações
+                                        </div>
+                                    </div>
+                                    <div class='row row-conteudo ' style="
+                        width: 105%;
+        padding: 0px 0px 0px 22px;
+                    ">
+                                <div class='row row-conteudo ' style="
+                                width: 100%;
+                            ">
+                                        <div class='col-12 row-chart ' *ngIf='imunizacao?.length> 0'>
+                                                        <div class='row' *ngFor='let item of imunizacao'>
+                                                            <div class='col-6'> {{item.nome}}</div>
+                                                            <div class='col-6 text-right'> {{item?.data | date: 'dd/MM/yyyy'}}</div>
+                                                        </div>
+                                            </div>
+                                            <div style="padding-left: 30px !important" class='col-12 row-chart' *ngIf='vacinasAutodeclaradas?.length == 0 && vacinasAutodeclaradas?.length < 1'>
+                                                {{'app_rst_labels_nenhuma_vacina_informada' | recurso}}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                            <div class='col-12 row-chart' *ngIf='vacinas?.length == 0 && trabalhador?.descricaoVacinas?.length < 1'>
+                                                {{'app_rst_labels_nenhuma_vacina_informada' | recurso}}
+                                            </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div class='col-md-6 col-sm-12 card-res card-alergias card-exames space-up'>
+                        <div class='row row-card-content'>
+                            <div class='col-12'>
+                                <div class='row row-titulo'>
+                                    <div class='col-12 col-titulo' style="font-size: 15px;">
+                                        {{'app_rst_labels_alergias_auto_declaras_minha_saude' | recurso}}
+                                    </div>
+                                </div>
+
+                                <div class='row row-conteudo'>
+                                    <div class='col-12 row-chart' *ngIf='alergias?.length > 0'>
+                                        <div class='row' *ngFor='let alergia of alergias'>
+                                            <div class='col-12'> {{alergia}}</div>
+                                        </div>
+
+                                        <div class="row" style="margin-top: 10px;">
+                                            <div class='col-12'>
+                                                <small>{{'app_rst_labels_ultima_fco' | recurso}}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class='col-12 row-chart' *ngIf='trabalhador?.descricaoAlergias?.length > 0'>
+                                        <div class='row'>
+                                            <div class='col-12 white-space'>{{trabalhador.descricaoAlergias}}</div>
+                                        </div>
+
+                                        <div class="row" style="margin-top: 10px;">
+                                            <div class='col-12'>
+                                                <small>{{'app_rst_labels_fonte_trabalhador' | recurso}}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class='col-12 row-chart' *ngIf='alergias?.length == 0 && trabalhador?.descricaoAlergias?.length < 1'>
+                                        {{'app_rst_labels_nenhuma_alergia_informada' | recurso}}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class='row row-chart' *ngIf='!encontrosTimeline'>
-                        <div class='col-12'>
-                            <label *ngIf='carregandoTimeline'> Buscando dados históricos</label>
-                            <label *ngIf='!carregandoTimeline'> Nenhum dado encontrado </label>
+                    <div class='col-md-6 col-sm-12 card-res card-medicamentos card-exames space-up'>
+                        <div class='row row-card-content'>
+                            <div class='col-12'>
+                                <div class='row row-titulo'>
+                                    <div class='col-6 col-titulo' style="font-size: 15px;">
+                                        {{'app_rst_labels_medicamentos_auto_declarados_minha_saude' | recurso}}
+                                    </div>
+                                </div>
+
+                                <div class='row row-conteudo'>
+                                    <div class='col-12 row-chart' *ngIf='medicamentos?.length > 0'>
+                                        <div class='row' *ngFor='let medicamento of medicamentos'>
+                                            <div class='col-12'> {{medicamento}}</div>
+                                        </div>
+
+                                        <div class="row" style="margin-top: 10px;">
+                                            <div class='col-12'>
+                                                <small>{{'app_rst_labels_ultima_fco' | recurso}}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class='col-12 row-chart' *ngIf='trabalhador?.descricaoMedicamentos?.length > 0'>
+                                        <div class='row'>
+                                            <div class='col-12 white-space'>{{trabalhador.descricaoMedicamentos}}</div>
+                                        </div>
+
+                                        <div class="row" style="margin-top: 10px;">
+                                            <div class='col-12'>
+                                                <small>{{'app_rst_labels_fonte_trabalhador' | recurso}}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class='col-12 row-chart' *ngIf='medicamentos?.length == 0 && trabalhador?.descricaoMedicamentos?.length < 1'>
+                                        {{'app_rst_labels_nenhum_medicamento_informado' | recurso}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-timeline">
+                    <div class='col-12 card-res '>
+                        <div class='row row-card-content'>
+                            <div class='col-12'>
+                                <div class='row row-titulo '>
+                                    <div class='col-6 col-titulo'>
+                                        Histórico
+                                    </div>
+                                </div>
+                                <div id="timeline" class='row row-chart' *ngIf='encontrosTimeline'>
+                                    <div class='col-12'>
+                                        <app-timeline-item *ngFor="let elementoHistorico of paginaTimeline" [filtrarInformacoes]="filtrarInformacoes" [form]="form"
+                                            [elementoHistorico]='elementoHistorico'>
+                                        </app-timeline-item>
+                                    </div>
+                                </div>
+                                <div class='row row-chart' *ngIf="encontrosTimeline" style='margin-top:8px'>
+                                    <div class='col-12' style='display:flex;flex-flow:row-reverse'>
+                                        <pagination nextText='Próxima' previousText='Anterior' [totalItems]="this.numeroEncontros" [itemsPerPage]='this.tamanhoPagina'
+                                            [(ngModel)]="this.paginaAtual" (pageChanged)="navegar($event)"></pagination>
+                                    </div>
+                                </div>
+                                <div class='row row-chart' *ngIf='!encontrosTimeline'>
+                                    <div class='col-12'>
+                                        <label *ngIf='carregandoTimeline'> Buscando dados históricos</label>
+                                        <label *ngIf='!carregandoTimeline'> Nenhum dado encontrado </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
