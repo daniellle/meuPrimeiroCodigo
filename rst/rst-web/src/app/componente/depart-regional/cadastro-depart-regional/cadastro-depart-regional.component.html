@@ -34,7 +34,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <md-input-container [floatPlaceholder]="true">
-                        <input mdInput placeholder="{{ 'app_rst_labels_sigla_dr' | recurso }}" type="text" maxlength="2" formControlName="siglaDr" class="form-control" name="siglaDr" id="siglaDr" appFormularioCamposErro>
+                        <input mdInput required placeholder="{{ 'app_rst_labels_sigla_dr' | recurso }}" type="text" maxlength="2" formControlName="siglaDr" class="form-control" name="siglaDr" id="siglaDr" appFormularioCamposErro>
                     </md-input-container>
 
                 </div>
@@ -58,7 +58,7 @@
             <div class="row">
                 <div class="form-group col-md-8">
                     <md-input-container [floatPlaceholder]="true">
-                        <input mdInput placeholder="{{ 'app_rst_labels_endereco' | recurso }}" type="text" maxlength="100" formControlName="endereco" class="form-control" name="endereco" id="endereco" appFormularioCamposErro>
+                        <input mdInput required placeholder="{{ 'app_rst_labels_endereco' | recurso }}" type="text" maxlength="100" formControlName="endereco" class="form-control" name="endereco" id="endereco" appFormularioCamposErro>
                     </md-input-container>
                 </div>
                 <div class="form-group col-sd-6 col-md-4">
@@ -80,14 +80,14 @@
                 </div>
                 <div class="form-group col-md-4">
                     <md-input-container [floatPlaceholder]="true">
-                        <input mdInput placeholder="{{ 'app_rst_labels_CEP' | recurso }}" type="text" formControlName="cep" [textMask]="{mask: mascaraCep, guide: false}" class="form-control" name="cep" id="cep" appFormularioCamposErro>
+                        <input mdInput required placeholder="{{ 'app_rst_labels_CEP' | recurso }}" type="text" formControlName="cep" [textMask]="{mask: mascaraCep, guide: false}" class="form-control" name="cep" id="cep" appFormularioCamposErro>
                     </md-input-container>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-md-4">
                     <div class="md-container">
-                        <md-select placeholder="{{ 'app_rst_labels_estado' | recurso }}" name="estado" formControlName="estado" id="estado" (change)="buscarMunicipio()" appFormularioCamposErro>
+                        <md-select required placeholder="{{ 'app_rst_labels_estado' | recurso }}" name="estado" formControlName="estado" id="estado" (change)="buscarMunicipio()" appFormularioCamposErro>
                             <md-option>
                                 <option value="undefined">Selecione</option>
                             </md-option>
@@ -96,9 +96,9 @@
                     </div>
                 </div>
                 <div class="form-group col-md-4">
-                    <ng-select [options]="municipios" allowClear=true id="municipio" name="municipio" formControlName="municipio" maxlength="50" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}">
+                    <ng-select required [options]="municipios" allowClear=true id="municipio" name="municipio" formControlName="municipio" maxlength="50" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}">
                     </ng-select>
-                    <span class="floating-label">Município</span>
+                    <span class="floating-label">Município *</span>
                 </div>
             </div>
         </div>

@@ -170,6 +170,7 @@ export class CadastroDepartRegionalComponent extends BaseComponent implements On
       siglaDr: [
         { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
         Validators.compose([
+          Validators.required,
           Validators.maxLength(2),
         ]),
       ],
@@ -423,64 +424,77 @@ export class CadastroDepartRegionalComponent extends BaseComponent implements On
       }
     }
 
-    if (this.verificaEnderecoPreenchido()) {
-      // endereco
-      if (this.formulario.controls['endereco'].invalid) {
-        if (this.formulario.controls['endereco'].errors.required) {
-          this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.formulario.controls['endereco'],
-            MensagemProperties.app_rst_labels_endereco);
-          retorno = false;
-        }
-        if (this.formulario.controls['endereco'].errors.maxLength) {
-          this.mensagemErroComParametros('app_rst_quantidade_caracteres_maximos_invalido',
-            this.formulario.controls['endereco'], MensagemProperties.app_rst_labels_endereco,
-            this.formulario.controls['endereco'].errors.maxLength.requiredLength);
-          retorno = false;
-        }
-      }
-      // estado
-      if (this.formulario.controls['estado'].invalid) {
-        if (this.formulario.controls['estado'].errors.required) {
-          this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.formulario.controls['estado'],
-            MensagemProperties.app_rst_labels_estado);
-          retorno = false;
-        }
-        if (this.formulario.controls['estado'].errors.maxLength) {
-          this.mensagemErroComParametros('app_rst_quantidade_caracteres_maximos_invalido',
-            this.formulario.controls['estado'], MensagemProperties.app_rst_labels_estado,
-            this.formulario.controls['estado'].errors.maxLength.requiredLength);
-          retorno = false;
-        }
+      // razao social
+      if (this.formulario.controls['siglaDr'].invalid) {
+          if (this.formulario.controls['siglaDr'].errors.required) {
+              this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.formulario.controls['siglaDr'],
+                  MensagemProperties.app_rst_labels_sigla_dr);
+              retorno = false;
+          }
+          if (this.formulario.controls['siglaDr'].errors.maxLength) {
+              this.mensagemErroComParametros('app_rst_quantidade_caracteres_maximos_invalido',
+                  this.formulario.controls['siglaDr'], MensagemProperties.app_rst_labels_sigla_dr,
+                  this.formulario.controls['siglaDr'].errors.maxLength.requiredLength);
+              retorno = false;
+          }
       }
 
-      // municipio
-      if (this.formulario.controls['municipio'].value === null || this.formulario.controls['municipio'].value === undefined) {
-        this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.formulario.controls['municipio'],
-          MensagemProperties.app_rst_labels_municipio);
-        retorno = false;
-      }
-      if (this.formulario.controls['municipio'].invalid) {
-        if (this.formulario.controls['municipio'].errors.maxLength) {
-          this.mensagemErroComParametros('app_rst_quantidade_caracteres_maximos_invalido',
-            this.formulario.controls['municipio'], 'app_rst_labels_municipio',
-            this.formulario.controls['municipio'].errors.maxLength.requiredLength);
-          retorno = false;
+    // endereco
+    if (this.formulario.controls['endereco'].invalid) {
+        if (this.formulario.controls['endereco'].errors.required) {
+            this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.formulario.controls['endereco'],
+                MensagemProperties.app_rst_labels_endereco);
+            retorno = false;
         }
-      }
-      // cep
-      if (this.formulario.controls['cep'].invalid) {
+        if (this.formulario.controls['endereco'].errors.maxLength) {
+            this.mensagemErroComParametros('app_rst_quantidade_caracteres_maximos_invalido',
+                this.formulario.controls['endereco'], MensagemProperties.app_rst_labels_endereco,
+                this.formulario.controls['endereco'].errors.maxLength.requiredLength);
+            retorno = false;
+        }
+    }
+    // estado
+    if (this.formulario.controls['estado'].invalid) {
+        if (this.formulario.controls['estado'].errors.required) {
+            this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.formulario.controls['estado'],
+                MensagemProperties.app_rst_labels_estado);
+            retorno = false;
+        }
+        if (this.formulario.controls['estado'].errors.maxLength) {
+            this.mensagemErroComParametros('app_rst_quantidade_caracteres_maximos_invalido',
+                this.formulario.controls['estado'], MensagemProperties.app_rst_labels_estado,
+                this.formulario.controls['estado'].errors.maxLength.requiredLength);
+            retorno = false;
+        }
+    }
+
+    // municipio
+    if (this.formulario.controls['municipio'].value === null || this.formulario.controls['municipio'].value === undefined) {
+        this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.formulario.controls['municipio'],
+            MensagemProperties.app_rst_labels_municipio);
+        retorno = false;
+    }
+    if (this.formulario.controls['municipio'].invalid) {
+        if (this.formulario.controls['municipio'].errors.maxLength) {
+            this.mensagemErroComParametros('app_rst_quantidade_caracteres_maximos_invalido',
+                this.formulario.controls['municipio'], 'app_rst_labels_municipio',
+                this.formulario.controls['municipio'].errors.maxLength.requiredLength);
+            retorno = false;
+        }
+    }
+    // cep
+    if (this.formulario.controls['cep'].invalid) {
         if (this.formulario.controls['cep'].errors.required) {
-          this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.formulario.controls['cep'],
-            MensagemProperties.app_rst_labels_CEP);
-          retorno = false;
+            this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.formulario.controls['cep'],
+                MensagemProperties.app_rst_labels_CEP);
+            retorno = false;
         }
         if (this.formulario.controls['cep'].errors.maxLength) {
-          this.mensagemErroComParametros('app_rst_quantidade_caracteres_maximos_invalido',
-            this.formulario.controls['cep'], MensagemProperties.app_rst_labels_CEP,
-            this.formulario.controls['cep'].errors.maxLength.requiredLength);
-          retorno = false;
+            this.mensagemErroComParametros('app_rst_quantidade_caracteres_maximos_invalido',
+                this.formulario.controls['cep'], MensagemProperties.app_rst_labels_CEP,
+                this.formulario.controls['cep'].errors.maxLength.requiredLength);
+            retorno = false;
         }
-      }
     }
 
     if (this.formulario.controls['email'].value && this.formulario.controls['email'].invalid) {
@@ -617,6 +631,7 @@ export class CadastroDepartRegionalComponent extends BaseComponent implements On
   }
 
   isPermitidoEditar(): boolean {
-    return  this.naoTemPapel(PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.GDRP);
+      return this.naoTemPapel(PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.GDRP)
+          || this.usuarioLogado.dados.administrador;
   }
 }

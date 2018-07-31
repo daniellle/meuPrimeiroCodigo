@@ -380,7 +380,7 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 		StringBuilder jpql = new StringBuilder();
 
 		jpql.append(" SELECT COUNT(DISTINCT t2.ID_EMP_TRABALHADOR) from trabalhador t ");
-		jpql2.append(" SELECT DISTINCT t.id_trabalhador, t.dt_nascimento, t.fl_genero, t.no_cpf, t.nm_trabalhador, em.nm_fantasia, f2.ds_funcao, cbo.ds_cbo from trabalhador t ");
+		jpql2.append(" SELECT DISTINCT t.id_trabalhador, t.dt_nascimento, t.fl_genero, t.no_cpf, t.nm_trabalhador, em.nm_fantasia, f2.ds_funcao, cbo.ds_cbo, t.imagem from trabalhador t ");
 
 		this.joinTrabalhadorUsuario(jpql);
 		this.joinTrabalhadorUsuario(jpql2);

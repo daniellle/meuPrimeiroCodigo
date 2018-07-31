@@ -1,6 +1,28 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v2.39.0**
+===========
+
+(RELEASE EM 31/07/2018)
+
+**Novidades**
+	
+------------
+
+**Melhorias**
+
+	Modificado a apresentação dos dados da minha saúde exibindo os FCÓs mais recentes
+	
+------------
+
+**Correções**
+
+	Ajuste no usuario administrador para consultar empresas
+	Ajuste na exibição da idade no dashborad de saúde
+
+------------
+
 **v2.35.0**
 ===========
 

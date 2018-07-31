@@ -85,7 +85,7 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 
 		StringBuilder jpql = new StringBuilder();
 		Map<String, Object> parametros = Maps.newHashMap();
-		getQueryPaginado(jpql, parametros, empresaFilter, false, segurancaFilter);
+        getQueryPaginadoPesquisar(jpql, parametros, empresaFilter, false, segurancaFilter);
 		TypedQuery<Empresa> query = criarConsultaPorTipo(jpql.toString());
 		DAOUtil.setParameterMap(query, parametros);
 
@@ -104,120 +104,121 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 	public long getCountQueryPaginado(EmpresaFilter empresaFilter, DadosFilter segurancaFilter) {
 		Map<String, Object> parametros = Maps.newHashMap();
 		StringBuilder jpql = new StringBuilder();
-		getQueryPaginado(jpql, parametros, empresaFilter, true, segurancaFilter);
+        getQueryPaginadoPesquisar(jpql, parametros, empresaFilter, true, segurancaFilter);
 		Query query = criarConsulta(jpql.toString());
 		DAOUtil.setParameterMap(query, parametros);
 		return DAOUtil.getSingleResult(query);
 	}
 
-	private void getQueryPaginado(StringBuilder jpql, Map<String, Object> parametros, EmpresaFilter empresaFilter,
-			boolean count, DadosFilter segurancaFilter) {
+    private void getQueryPaginadoPesquisar(StringBuilder jpql, Map<String, Object> parametros, EmpresaFilter empresaFilter,
+                                  boolean count, DadosFilter segurancaFilter) {
 
-		boolean cpf = false;
-		boolean razaoSocial = false;
-		boolean nomeFantasia = false;
-		boolean status = false;
-		boolean porte = false;
-		boolean estado = true;
-		boolean cnae = false;
-		
-		setFiltroAplicado(false);
+        boolean cpf = false;
+        boolean razaoSocial = false;
+        boolean nomeFantasia = false;
+        boolean status = false;
+        boolean porte = false;
+        boolean estado = true;
+        boolean cnae = false;
 
-		if (count) {
-			jpql.append("select count(DISTINCT empresa.id) from Empresa empresa ");
-			jpql.append(" left join empresa.porteEmpresa porteEmpresa ");
-			jpql.append(" left join empresa.enderecosEmpresa enderecosEmpresa ");
-			jpql.append(" left join enderecosEmpresa.endereco endereco ");
-			jpql.append(" left join endereco.municipio municipio ");
-			jpql.append(" left join municipio.estado estado ");
-			jpql.append(" left join empresa.empresaCnaes empresaCnaes ");
-			jpql.append(" left join empresaCnaes.cnae cnae ");
-			
-			
+        setFiltroAplicado(false);
 
-		} else {
-			jpql.append("select DISTINCT empresa from Empresa empresa ");
-			jpql.append(" left join fetch empresa.porteEmpresa porteEmpresa ");
-			jpql.append(" left join fetch empresa.enderecosEmpresa enderecosEmpresa ");
-			jpql.append(" left join fetch enderecosEmpresa.endereco endereco ");
-			jpql.append(" left join fetch endereco.municipio municipio ");
-			jpql.append(" left join fetch municipio.estado estado ");
-			jpql.append(" left join fetch empresa.empresaCnaes empresaCnaes ");
-			jpql.append(" left join fetch empresaCnaes.cnae cnae ");
-		}
+        if (count) {
+            jpql.append("select count(DISTINCT empresa.id) from Empresa empresa ");
+            jpql.append(" left join empresa.porteEmpresa porteEmpresa ");
+            jpql.append(" left join empresa.enderecosEmpresa enderecosEmpresa ");
+            jpql.append(" left join enderecosEmpresa.endereco endereco ");
+            jpql.append(" left join endereco.municipio municipio ");
+            jpql.append(" left join municipio.estado estado ");
+            jpql.append(" left join empresa.empresaCnaes empresaCnaes ");
+            jpql.append(" left join empresaCnaes.cnae cnae ");
 
-		this.montaJoinFiltroDados(jpql, segurancaFilter);		
 
-		jpql.append(" where empresa.dataExclusao is null ");
-		setFiltroAplicado(true);
 
-		if (empresaFilter != null) {
-			
-			cpf = StringUtils.isNotEmpty(empresaFilter.getCnpj());
-			razaoSocial = StringUtils.isNotEmpty(empresaFilter.getRazaoSocial());
-			nomeFantasia = StringUtils.isNotEmpty(empresaFilter.getNomeFantasia());
-			status = StringUtils.isNotBlank(empresaFilter.getStatusCat());
-			porte = empresaFilter.getIdPorte() != null && empresaFilter.getIdPorte().intValue() > 0; 
-			estado = empresaFilter.getIdEstado() != null && empresaFilter.getIdEstado().intValue() > 0;
-			cnae = StringUtils.isNotEmpty(empresaFilter.getCodCnae());
+        } else {
+            jpql.append("select DISTINCT empresa from Empresa empresa ");
+            jpql.append(" left join empresa.porteEmpresa porteEmpresa ");
+            jpql.append(" left join empresa.enderecosEmpresa enderecosEmpresa ");
+            jpql.append(" left join enderecosEmpresa.endereco endereco ");
+            jpql.append(" left join endereco.municipio municipio ");
+            jpql.append(" left join municipio.estado estado ");
+            jpql.append(" left join empresa.empresaCnaes empresaCnaes ");
+            jpql.append(" left join empresaCnaes.cnae cnae ");
+        }
 
-			if (cpf) {
-				adicionarAnd(jpql);
-				jpql.append(" empresa.cnpj = :cnpj ");
-				parametros.put("cnpj", empresaFilter.getCnpj());
-				setFiltroAplicado(true);
-			}
+        this.montaJoinFiltroDados(jpql, segurancaFilter);
 
-			if (razaoSocial) {
-				adicionarAnd(jpql);
-				jpql.append(" set_simple_name(UPPER(empresa.razaoSocial)) like set_simple_name(:razaoSocial) escape :sc ");
-				parametros.put("sc", "\\");
-				parametros.put("razaoSocial", "%" + empresaFilter.getRazaoSocial().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
-				setFiltroAplicado(true);
-			}
-			
-			if (nomeFantasia) {
-				adicionarAnd(jpql);
-				jpql.append(" set_simple_name(UPPER(empresa.nomeFantasia)) like set_simple_name(:nomeFantasia) escape :sc ");
-				parametros.put("sc", "\\");
-				parametros.put("nomeFantasia", "%" + empresaFilter.getNomeFantasia().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
-				setFiltroAplicado(true);
-			}
-			
-			if (status) {				
-				this.filtrarDadosSituacao(jpql, empresaFilter);				
-			}
-			
-			if(porte)			
-			{
-				adicionarAnd(jpql);
-				jpql.append(" porteEmpresa.id = :idPorte ");
-				parametros.put("idPorte", empresaFilter.getIdPorte());
-				setFiltroAplicado(true);				
-			}	
-			
-			if (estado) {
-				adicionarAnd(jpql);
-				jpql.append(" estado.id = :idEstado ");
-				parametros.put("idEstado", empresaFilter.getIdEstado());
-				setFiltroAplicado(true);					
-			}
-			
-			if (cnae) {
-				adicionarAnd(jpql);
-				jpql.append(" UPPER(cnae.codigo) like :codigo escape :sc ");
-				parametros.put("sc", "\\");
-				parametros.put("codigo", "%" + empresaFilter.getCodCnae().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
-				setFiltroAplicado(true);
-			}
-		}
+        jpql.append(" where empresa.dataExclusao is null ");
+        setFiltroAplicado(true);
 
-		this.filtrarDadosSeguranca(segurancaFilter, jpql, parametros);
+        if (empresaFilter != null) {
 
-		if (!count) {
-			jpql.append(" order by empresa.razaoSocial ");
-		}
-	}
+            cpf = StringUtils.isNotEmpty(empresaFilter.getCnpj());
+            razaoSocial = StringUtils.isNotEmpty(empresaFilter.getRazaoSocial());
+            nomeFantasia = StringUtils.isNotEmpty(empresaFilter.getNomeFantasia());
+            status = StringUtils.isNotBlank(empresaFilter.getStatusCat());
+            porte = empresaFilter.getIdPorte() != null && empresaFilter.getIdPorte().intValue() > 0;
+            estado = empresaFilter.getIdEstado() != null && empresaFilter.getIdEstado().intValue() > 0;
+            cnae = StringUtils.isNotEmpty(empresaFilter.getCodCnae());
+
+            if (cpf) {
+                adicionarAnd(jpql);
+                jpql.append(" empresa.cnpj = :cnpj ");
+                parametros.put("cnpj", empresaFilter.getCnpj());
+                setFiltroAplicado(true);
+            }
+
+            if (razaoSocial) {
+                adicionarAnd(jpql);
+                jpql.append(" set_simple_name(UPPER(empresa.razaoSocial)) like set_simple_name(:razaoSocial) escape :sc ");
+                parametros.put("sc", "\\");
+                parametros.put("razaoSocial", "%" + empresaFilter.getRazaoSocial().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
+                setFiltroAplicado(true);
+            }
+
+            if (nomeFantasia) {
+                adicionarAnd(jpql);
+                jpql.append(" set_simple_name(UPPER(empresa.nomeFantasia)) like set_simple_name(:nomeFantasia) escape :sc ");
+                parametros.put("sc", "\\");
+                parametros.put("nomeFantasia", "%" + empresaFilter.getNomeFantasia().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
+                setFiltroAplicado(true);
+            }
+
+            if (status) {
+                this.filtrarDadosSituacao(jpql, empresaFilter);
+            }
+
+            if(porte)
+            {
+                adicionarAnd(jpql);
+                jpql.append(" porteEmpresa.id = :idPorte ");
+                parametros.put("idPorte", empresaFilter.getIdPorte());
+                setFiltroAplicado(true);
+            }
+
+            if (estado) {
+                adicionarAnd(jpql);
+                jpql.append(" estado.id = :idEstado ");
+                parametros.put("idEstado", empresaFilter.getIdEstado());
+                setFiltroAplicado(true);
+            }
+
+            if (cnae) {
+                adicionarAnd(jpql);
+                jpql.append(" UPPER(cnae.codigo) like :codigo escape :sc ");
+                parametros.put("sc", "\\");
+                parametros.put("codigo", "%" + empresaFilter.getCodCnae().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
+                setFiltroAplicado(true);
+            }
+        }
+
+        this.filtrarDadosSeguranca(segurancaFilter, jpql, parametros);
+
+        if (!count) {
+            jpql.append(" order by empresa.razaoSocial ");
+        }
+    }
+
 	
 	private void montaJoinFiltroDados(StringBuilder jpql, DadosFilter segurancaFilter) {
 		if (segurancaFilter != null && segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
@@ -258,13 +259,13 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 
 		StringBuilder jpql = new StringBuilder();
 		jpql.append("select c from Empresa c ");
-		jpql.append(" left join fetch c.porteEmpresa p ");
-		jpql.append(" left join fetch c.tipoEmpresa t ");
-		jpql.append(" left join fetch c.unidadeObra unidadeObra ");
-		jpql.append(" left join fetch c.telefoneEmpresa telefoneEmpresa ");
-		jpql.append(" left join fetch telefoneEmpresa.telefone telefone ");
-		jpql.append(" left join fetch c.enderecosEmpresa enderecosEmpresa ");
-		jpql.append(" left join fetch enderecosEmpresa.endereco endereco ");
+		jpql.append(" left join c.porteEmpresa p ");
+		jpql.append(" left join c.tipoEmpresa t ");
+		jpql.append(" left join c.unidadeObra unidadeObra ");
+		jpql.append(" left join c.telefoneEmpresa telefoneEmpresa ");
+		jpql.append(" left join telefoneEmpresa.telefone telefone ");
+		jpql.append(" left join c.enderecosEmpresa enderecosEmpresa ");
+		jpql.append(" left join enderecosEmpresa.endereco endereco ");
 		jpql.append(" order by c.cnpj ");
 		TypedQuery<Empresa> query = criarConsultaPorTipo(jpql.toString());
 

@@ -1,19 +1,19 @@
-import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
-import { Seguranca } from './../../../compartilhado/utilitario/seguranca.model';
-import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from 'app/componente/base.component';
-import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
-import { Router, ActivatedRoute } from '@angular/router';
-import { DepartRegionalService } from 'app/servico/depart-regional.service';
-import { BloqueioService } from 'app/servico/bloqueio.service';
-import { ToastyService } from 'ng2-toasty';
-import { FormBuilder } from '@angular/forms';
-import { DialogService } from 'ng2-bootstrap-modal';
-import { FiltroDepartRegional } from 'app/modelo/filtro-depart-regional.model';
-import { DepartamentoRegional } from 'app/modelo/departamento-regional.model';
-import { ListaPaginada } from 'app/modelo/lista-paginada.model';
-import { MascaraUtil } from 'app/compartilhado/utilitario/mascara.util';
-import { Situacao } from '../../../modelo/enum/enum-situacao.model';
+import {PermissoesEnum} from 'app/modelo/enum/enum-permissoes';
+import {Seguranca} from './../../../compartilhado/utilitario/seguranca.model';
+import {Component, OnInit} from '@angular/core';
+import {BaseComponent} from 'app/componente/base.component';
+import {MensagemProperties} from 'app/compartilhado/utilitario/recurso.pipe';
+import {ActivatedRoute, Router} from '@angular/router';
+import {DepartRegionalService} from 'app/servico/depart-regional.service';
+import {BloqueioService} from 'app/servico/bloqueio.service';
+import {ToastyService} from 'ng2-toasty';
+import {FormBuilder} from '@angular/forms';
+import {DialogService} from 'ng2-bootstrap-modal';
+import {FiltroDepartRegional} from 'app/modelo/filtro-depart-regional.model';
+import {DepartamentoRegional} from 'app/modelo/departamento-regional.model';
+import {ListaPaginada} from 'app/modelo/lista-paginada.model';
+import {MascaraUtil} from 'app/compartilhado/utilitario/mascara.util';
+import {Situacao} from '../../../modelo/enum/enum-situacao.model';
 
 @Component({
   selector: 'app-pesquisa-depart-regional',
@@ -42,12 +42,16 @@ export class PesquisaDepartRegionalComponent extends BaseComponent implements On
     this.title = MensagemProperties.app_rst_depart_regional_pesquisar;
     this.filtroDepartRegional = new FiltroDepartRegional();
     this.filtroDepartRegional.situacao = '';
-    this.modoConsulta = !Seguranca.isPermitido(['departamento_regional_cadastrar', 'departamento_regional_alterar',
-      'departamento_regional_desativar']);
+    this.modoConsulta = this.hasModoConsulta();
     this.buscarEstados();
   }
 
-  buscarEstados() {
+    private hasModoConsulta():boolean {
+        return !Seguranca.isPermitido(['departamento_regional_cadastrar', 'departamento_regional_alterar',
+            'departamento_regional_desativar']) || this.usuarioLogado.dados.administrador;
+    }
+
+    buscarEstados() {
     if (this.modoConsulta) {
       this.service.buscarEstados().subscribe((dados: any) => {
         this.estados = dados;
