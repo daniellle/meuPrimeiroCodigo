@@ -13,6 +13,7 @@
 **Melhorias**
 
 	Modificado a apresentação dos dados da minha saúde exibindo os FCÓs mais recentes
+	Modificado a obrigatoriedade dos campos de endereço e unidade sesi no cadastro de departamento regional
 	
 ------------
 
