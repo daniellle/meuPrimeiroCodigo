@@ -175,8 +175,8 @@ export class TimelineItemComponent implements OnInit {
     }
 
     private montarCabecalho(elementoHistorico: { created: Date; composition: any }) {
-        this.data = elementoHistorico.created;
         this.composition = elementoHistorico.composition;
+        this.data = this.composition.context.endTime.value;
 
         this.definirTitulo(this.composition);
 

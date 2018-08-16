@@ -1,6 +1,35 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+
+**v2.45.0**
+===========
+
+(RELEASE EM 15/08/2018)
+
+**Novidades**
+	
+	Gráficos de Hábitos de Vida com comparativos para as visões DN, DR e Empresa
+	Gráficos de Hábitos de Vida com comparativos para as visões DN, DR e Empresa
+	Filtro para ser aplicado em todos os indicadores
+
+------------
+
+**Melhorias**
+
+	Permitir a busca por empresa utilizando o CNPJ
+	Todas as categorias dos indicadores de SST selecionadas por default
+	Modificado cor de fundo para a mesma cor do portal
+
+------------
+
+**Correções**
+
+	Ajuste no campo de pesquisa “Unidade SESI”
+
+------------
+
+
 **v2.39.0**
 ===========
 

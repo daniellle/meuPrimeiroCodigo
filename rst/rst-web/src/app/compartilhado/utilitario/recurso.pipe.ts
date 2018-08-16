@@ -345,7 +345,7 @@ export const MensagemProperties = {
   app_rst_trabalhador_title_responder_quest: 'Responder Questionário',
   app_rst_trabalhador_dataFalecimento_maior_que_dataNascimento: 'A Data de Falecimento deve ser maior que a Data de Nascimento',
   app_rst_trabalhador_label_uplad_imagem: 'Modificar a imagem do seu perfil',
-
+    app_rst_trabalhador_title_meus_dados: 'Meus Dados',
 
   //Imunizacao
   app_rst_imunizacao_title_cadastrar_vacina: 'Cadastrar Vacina Autodeclarada',
