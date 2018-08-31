@@ -1,14 +1,13 @@
-
 # Diretórios .ignore
 bower_components/
 node_modules/
 .settings/
-#target/*
-target
+target/*
 build/
 dist/
 out/
-out-tsc/
+/*.env
+
 #Arquivos de Configuração de Projeto
 .project
 .gradle
@@ -16,15 +15,15 @@ out-tsc/
 *.log
 .idea
 *.iml
+
 # Visual Studio Code code
-.vscode/
+.vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
 !.vscode/launch.json
 !.vscode/tasks.json
+
 # JDT-specific (Eclipse Java Development Tools)		
 .classpath
-.factorypath
-tsconfig.app.json.js
-
-*.versionsBackup
+rst-web/package.json
+rst-web/.npmrc
