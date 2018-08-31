@@ -33,6 +33,12 @@
 ------------
 
 
+**Dependências**
+
+	Executar o script "rede_sesi_v2_55_0.sql" no banco Rede SESI.
+
+
+
 **v2.45.0**
 ===========
 
