@@ -108,21 +108,17 @@ public class AutorizacaoEndpoint extends SegurancaEndpoint<Token> {
     @Autenticacao(TipoOAuth.JWT_BEARER)
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_FORM_URLENCODED })
-    public Response atualizar(@Context SecurityContext context,	@Context HttpServletRequest request) throws OAuthSystemException, OAuthProblemException {
-        //@formatter:off
+    public Response atualizar(@Context SecurityContext context,	@Context HttpServletRequest request) throws OAuthSystemException {
         OAuthResponse response = OAuthASResponse.tokenResponse(HttpServletResponse.SC_OK)
-				.setTokenType(OAuth.OAUTH_HEADER_NAME)
+            .setTokenType(OAuth.OAUTH_HEADER_NAME)
             .setAccessToken(token.getTokenAcesso())
             .setRefreshToken(token.getTokenAtualizacao())
             .setExpiresIn(token.getExpiraEm().toString())
             .buildJSONMessage();
-		// @formatter:on
 
-        getResponse().setCharacterEncoding("UTF-8");
+        this.getResponse().setCharacterEncoding("UTF-8");
 
-        return Response.status(response.getResponseStatus()).type(MediaType.APPLICATION_JSON).header("Content-Version", getApplicationVersion())
-                .entity(response.getBody()).build();
-
+        return Response.status(response.getResponseStatus()).type(MediaType.APPLICATION_JSON).header("Content-Version", getApplicationVersion()).entity(response.getBody()).build();
     }
     
     @Override

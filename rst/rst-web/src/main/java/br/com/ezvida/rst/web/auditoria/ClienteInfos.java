@@ -41,7 +41,12 @@ public class ClienteInfos {
 		String nome = payload.getClaims().get("nome").asString();
 		String email = payload.getClaims().get("email").asString();
 		String login = payload.getClaims().get("sub").asString();
-        Integer hierarquia = payload.getClaims().get("nivel").asInt();
+        Integer hierarquia = null;
+
+        if (payload.getClaims().get("nivel") != null) {
+            hierarquia = payload.getClaims().get("nivel").asInt();
+        }
+
 		Usuario usuario = new Usuario(null, login, nome, null, null, email, hierarquia);
 		usuario.getPapeis().addAll(Sets.newHashSet(payload.getClaims().get("papeis").asList(String.class)));
 		usuario.getPermissoes().addAll(Sets.newHashSet(payload.getClaims().get("permissoes").asList(String.class)));
