@@ -1,0 +1,45 @@
+<app-bloqueio>
+</app-bloqueio>
+<div *ngIf="trabalhador.id">
+    <div class="titulo-pagina-intermediaria">
+        <div>Nome do trabalhador: {{trabalhador.nome}}</div>
+        <div>CPF: {{trabalhador.cpf | cpfPipe}}</div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-4 col-lg-3" *ngIf="hasPermissaoTrabalhador()">
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('cadastrar')" [titulo]="'Cadastro Básico'" [classCardCor]="'card-laranja'" [classImgFront]="'img_dadosbasico'" [classImgBack]="'img_dadosbasico'"></app-card-tela-intermediaria>
+        </div>
+
+        <div class="form-group col-md-4 col-lg-3" *ngIf="hasPermissaoDependente()">
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('dependente')" [titulo]="'Dependentes'" [classCardCor]="'card-musgo'" [classImgFront]="'img_dependentes'" [classImgBack]="'img_dependentes'"></app-card-tela-intermediaria>
+        </div>
+
+        <div class="form-group col-md-4 col-lg-3" *ngIf="!hasPermissaoCallCenter() && hasAcessMinhaConta()">
+            <app-card-tela-intermediaria (onNavegar)="openPageMinhaSaude('/res/minhasaude')" [titulo]="'Minha Saúde'" [classCardCor]="'card-roxo'" [classImgFront]="'img_minhasaude'" [classImgBack]="'img_minhasaude'"></app-card-tela-intermediaria>
+        </div>
+
+
+        <div class="form-group col-md-4 col-lg-3" *ngIf="hasPermissaoCertificado()">
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('certificado')" [titulo]="'Certificados'" [classCardCor]="'card-azul'" [classImgFront]="'img_certificado'" [classImgBack]="'img_certificado'"></app-card-tela-intermediaria>
+        </div>
+
+        <div class="form-group col-md-4 col-lg-3" *ngIf="hasPermissaoIGEV()">
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('igev')" [titulo]="'IGEV'" [classCardCor]="'card-azul'" [classImgFront]="'img_questionario'" [classImgBack]="'img_questionario_azul'"></app-card-tela-intermediaria>
+        </div>
+
+        <div class="form-group col-md-4 col-lg-3" *ngIf="hasAcessMinhaConta()">
+            <app-card-tela-intermediaria (onNavegar)="openPage('/cadastro/minhaconta')" [titulo]="'Minha Conta'" [classCardCor]="'card-roxo'" [classImgFront]="'img_minhaconta'" [classImgBack]="'img_minhaconta'"></app-card-tela-intermediaria>
+        </div>
+
+        <div class="form-group col-md-4 col-lg-3"*ngIf="hasPermissaoTrabalhador()">
+                <app-card-tela-intermediaria (onNavegar)="mudarPagina('/vacina-declarada/')" [titulo]="'Vacinas Autodeclaradas'" [classCardCor]="'card-laranja'" [classImgFront]="'img_vacina'" [classImgBack]="'img_vacina'"></app-card-tela-intermediaria>
+            </div>
+
+    </div>
+</div>
+<div class="row" *ngIf="!meusdados">
+    <div class="form-group col-12">
+        <button type="button" class="btn btn-secondary btn-cadastro" (click)='voltar()'>Voltar</button>
+    </div>
+</div>

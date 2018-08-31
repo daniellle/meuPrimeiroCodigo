@@ -1,0 +1,17 @@
+.card-group {
+  position: relative;
+  margin: 0;
+}
+
+.card {
+  margin-bottom: 0px;
+}
+
+form {
+  width: 100%;
+}
+
+img.logo {
+  width: 355px;
+  height: 95.75px;
+}

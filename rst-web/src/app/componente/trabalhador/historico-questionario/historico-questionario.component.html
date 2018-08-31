@@ -1,0 +1,87 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{title}}
+</p>
+
+<!--Grid -->
+<div class="container-form">
+    <div *ngIf="temQuestionario" class="grid-pesquisa" style="margin-top: -18px;">
+        <table class="table table-responsive table-hover">
+            <thead>
+                <tr style="font-size:16px;">
+                    <th><span class="label">{{ 'app_rst_menu_questionario' | recurso }}</span></th>
+                    <th class="label text-center"><span>{{ 'app_rst_labels_data' | recurso }}</span></th>
+                    <th class="label text-center"><span>{{ 'app_rst_labels_resultado' | recurso }}</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of questionarios" (click)="selecionar(item)">
+                    <td class="col-quebra">{{item.questionario.nome}}</td>
+                    <td class="col-nao-quebra text-center">{{item.dataQuestionarioTrabalhador | datePipe }}</td>
+                    <td class="col-nao-quebra text-center">
+                        <div class="imagem-resultado" *ngIf="(item.quantidadePonto >= 0 && item.quantidadePonto <= 2) " ><img class="ballColors" src="assets/img/check_verde.svg" alt="Baixo-Verde"></div>
+                        <div class="imagem-resultado" *ngIf="(item.quantidadePonto > 2 && item.quantidadePonto <= 5 )" ><img class="ballColors" src="assets/img/check_amarelo.svg" alt="Medio-Baixo-Amarelo"></div>
+                        <div class="imagem-resultado" *ngIf="(item.quantidadePonto > 5 && item.quantidadePonto <= 7 )" ><img class="ballColors" src="assets/img/check_laranja.svg" alt="Medio-Alto-Laranja"></div>
+                        <div class="imagem-resultado" *ngIf="(item.quantidadePonto > 7 && item.quantidadePonto < 10 )" ><img class="ballColors" src="assets/img/check_vermelho.svg" alt="Alto-Vermelho"></div>
+                        
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="btn-paginacao">
+            <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+        </div>
+    </div>
+    <div *ngIf="!temQuestionario">
+        <p>Sem questionários armazenados.</p>
+    </div>
+</div>
+<div *ngIf="temQuestionario" class="container-form space-up">
+    <div class="row">
+        <div class="grafico col-sm-1 mx-auto"></div>
+        <div class="col-sm-7 mx-auto">
+            <canvas id="grafico" baseChart baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+            <!-- <div style="padding-left:8px">
+                <hr class="zero">
+            </div> -->
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <div class="row space-up" style="margin-left:auto; margin-right:auto">
+        <div class="col-md-3 mx-auto">
+            <div class="row">
+                <div class="col-md-2"><img class="ballColors" src="assets/img/redball.svg" alt="Alto"></div>
+                <div class="col-md-10">Alto Risco</div>
+            </div>
+        </div>
+        <div class="col-md-3 mx-auto">
+            <div class="row">
+                <div class="col-md-2"><img class="ballColors" src="assets/img/orangeball.svg" alt="Médio Alto"></div>
+                <div class="col-md-10">Médio Alto</div>
+            </div>
+        </div>
+        <div class="col-md-3 mx-auto">
+            <div class="row">
+                <div class="col-md-2"><img class="ballColors" src="assets/img/yellowball.svg" alt="Médio Baixo"></div>
+                <div class="col-md-10">Médio Baixo</div>
+            </div>
+        </div>
+        <div class="col-md-3 mx-auto">
+            <div class="row">
+                <div class="col-md-2"><img class="ballColors" src="assets/img/greenball.svg" alt="Baixo Risco"></div>
+                <div class="col-md-10">Baixo Risco</div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+</div>
+<div class="btn-rodape-acoes space-up">
+    <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
+</div>

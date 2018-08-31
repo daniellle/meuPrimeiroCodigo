@@ -1,0 +1,41 @@
+<ng2-toasty></ng2-toasty>
+<div class="app flex-row align-items-center">
+    <form [formGroup]="formulario" (ngSubmit)="autenticar()">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-5">
+                    <div class="card-group mb-0">
+                        <app-bloqueio></app-bloqueio>
+                        <div class="card p-4">
+                            <div class="card-block">
+                                <div class="mb-3" style="text-align: center">
+                                    <img src="assets/img/tools.png" alt="Solutis" />
+                                </div>
+                                <div class="input-group mb-3" [ngClass]="{'has-danger has-feedback': formulario.controls['usuario'].invalid && formulario.controls['usuario'].touched}">
+                                    <span class="input-group-addon"><span class="icon-user"></span></span>
+                                    <input type="text" class="form-control" placeholder="{{ 'app_rst_usuario_email' | recurso }}" formControlName="usuario" appFormularioCamposErro [(ngModel)]="credencial.usuario" [ngClass]="{'form-control-danger': formulario.controls['usuario'].invalid && formulario.controls['usuario'].touched}">
+                                </div>
+                                <div class="input-group mb-4" [ngClass]="{'has-danger has-feedback': formulario.controls['senha'].invalid && formulario.controls['senha'].touched}">
+                                    <span class="input-group-addon"><span class="icon-lock"></span></span>
+                                    <input type="password" class="form-control" placeholder="{{ 'app_rst_usuario_senha' | recurso }}" formControlName="senha" appFormularioCamposErro [(ngModel)]="credencial.senha" [ngClass]="{'form-control-danger': formulario.controls['senha'].invalid && formulario.controls['senha'].touched}">
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <button type="submit" class="btn btn-primary px-4">
+                      <span class="fa fa-sign-in"></span> {{ 'app_rst_autenticacao_entar' | recurso }}
+                    </button>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <a class="btn btn-link px-0" routerLinkActive="active" [routerLink]="['/login/recuperar']">
+                                            <span class="fa fa-user"></span> {{ 'app_rst_usuario_recuperar_senha' | recurso }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

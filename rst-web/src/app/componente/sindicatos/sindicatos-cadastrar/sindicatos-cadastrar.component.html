@@ -1,0 +1,236 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{ title }}
+</p>
+
+<div class="container-form" [ngClass]="{ divDis : modoConsulta }">
+    <form [formGroup]="formulario">
+        <div class="container-subtitulo">
+            <p>{{'app_rst_label_dados_gerais' | recurso}}</p>
+        </div>
+        <div class="row">
+            <div class=" form-group col-md-8">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{ 'app_rst_labels_razao_social' | recurso }}" required type="text" maxlength="160" class="form-control" formControlName="razao" id="razao" appFormularioCamposErro>
+                </md-input-container>
+            </div>
+            <div class=" form-group col-md-4">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{ 'app_rst_labels_cnpj' | recurso }}" required type="text" maxlength="18" class="form-control" [textMask]="{mask: mascaraCnpj, guide: false}" formControlName="cnpj" id="cnpj" appFormularioCamposErro>
+                </md-input-container>
+            </div>
+        </div>
+        <div class="row">
+            <div class=" form-group col-md-5">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="Sigla" type="text" maxlength="30" class="form-control" formControlName="sigla" id="sigla" appFormularioCamposErro>
+                </md-input-container>
+            </div>  
+            <div class="form-group col-md-4">
+                <div class="md-container">
+                    <md-select placeholder="Tipo Abrangência" name="tipo_abrangencia" formControlName="tipo_abrangencia" id="tipo_abrangencia"  appFormularioCamposErro>
+                        <md-option>
+                            <option value=undefined>Não Definido</option>
+                        </md-option>
+                        <md-option [value]="1">Nacional</md-option>
+                        <md-option [value]="2">Interestadual</md-option>
+                        <md-option [value]="3">Estadual</md-option>
+                        <md-option [value]="4">Estadual Restrita</md-option>
+                        <md-option [value]="5">Intermunicipal</md-option>
+                        <md-option [value]="6">Municipal</md-option>
+                    </md-select>
+                </div>
+            </div>                      
+            <div class=" form-group col-md-3">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="Código Siga" type="number" maxlength="4" class="form-control"  formControlName="cd_siga" id="cd_siga" appFormularioCamposErro>
+                </md-input-container>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-9">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{ 'app_rst_labels_nome_fantasia' | recurso }}" type="text" maxlength="160" class="form-control" formControlName="nome" id="nome" appFormularioCamposErro>
+                </md-input-container>
+            </div>
+            <div class="form-group col-md-3" >
+                <my-date-picker  [options]="datePickerOptions" locale="pt-br" formControlName="dt_fundacao" name="dt_fundacao" (keyup)="maskDt($event, 'A')"></my-date-picker>
+                <span class="floating-label">Data de Fundação</span>
+            </div>            
+        </div>
+        <div class="row">
+            <div class=" form-group col-md-8">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="Nome Presidente" type="text" maxlength="60" class="form-control" formControlName="nome_presidente" id="nome_presidente" appFormularioCamposErro>
+                </md-input-container>
+            </div>  
+            <div class="form-group col-md-4">
+                <div class="md-container">
+                    <md-select placeholder="Sexo" name="sexo" formControlName="sexo" id="sexo"  appFormularioCamposErro>
+                        <md-option>
+                            <option value=undefined>Não Definido</option>
+                        </md-option>
+                        <md-option [value]="'M'">Masculino</md-option>
+                        <md-option [value]="'F'">Feminino</md-option>
+                    </md-select>
+                </div>
+            </div>                                 
+        </div>        
+        <!-- <div class="row">
+            <div class=" form-group col-md-6">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{ 'app_rst_labels_inscricao_estadual' | recurso }}" type="text" maxlength="20" class="form-control" formControlName="inscEstatual" id="inscEstatual" appFormularioCamposErro>
+                </md-input-container>
+            </div>
+            <div class=" form-group col-md-6">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{ 'app_rst_labels_inscricao_munincipal' | recurso }}" type="text" maxlength="20" class="form-control" formControlName="inscMunincipal" id="inscMunincipal" appFormularioCamposErro>
+                </md-input-container>
+            </div>
+        </div> -->
+
+        <div class="row">
+            <!-- <div class="form-check col-md-2 col-lg-2">
+                <mat-slide-toggle formControlName="SESMT" id="SESMT" appFormularioCamposErro placeholder="SESMT">
+                    <span>{{ 'app_rst_labels_sesmt' | recurso }}</span>
+                </mat-slide-toggle>
+            </div>
+            <div class="form-check col-md-2 col-lg-2">
+                <mat-slide-toggle type="checkbox" formControlName="CIPA" id="CIPA" appFormularioCamposErro placeholder="CIPA">
+                    <span>{{ 'app_rst_labels_cipa' | recurso }}</span>
+                </mat-slide-toggle>
+            </div> -->            
+            <div class="form-check col-md-6 col-lg-2">
+                <mat-slide-toggle type="checkbox" formControlName="filiado" id="filiado" appFormularioCamposErro placeholder="filiado">
+                    <span>Filiado</span>
+                </mat-slide-toggle>
+            </div>  
+            <div class="form-check col-md-6 col-lg-2">
+                <mat-slide-toggle type="checkbox" formControlName="sede_sindicato_nacional" id="sede_sindicato_nacional" appFormularioCamposErro placeholder="sede_sindicato_nacional">
+                    <span>Sede Sindicato Nacional</span>
+                </mat-slide-toggle>
+            </div>     <!--  -->
+        </div>
+        <br>
+    </form>
+</div>
+
+<div class="container-form space-up" [ngClass]="{ divDis : modoConsulta }">
+    <form [formGroup]="formulario">
+        <div class="container-subtitulo">
+            <p>{{ 'app_rst_labels_card_enderecoContato' | recurso}}</p>
+        </div>
+        <div class="corpo-card">
+            <div class="row">
+                <div class="form-group col-md-8">
+                    <md-input-container [floatPlaceholder]="true">
+                        <input mdInput placeholder="{{ 'app_rst_labels_endereco' | recurso }}" type="text" maxlength="100" class="form-control" formControlName="endereco" name="endereco" id="endereco" appFormularioCamposErro/>
+                    </md-input-container>
+                </div>
+                <div class="form-group col-md-4">
+                    <md-input-container [floatPlaceholder]="true">
+                        <input mdInput placeholder="{{ 'app_rst_labels_numero' | recurso }}" type="text" maxlength="5" class="form-control" formControlName="numero" name="numero" id="numero" appFormularioCamposErro/>
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <md-input-container [floatPlaceholder]="true">
+                        <input mdInput placeholder="{{ 'app_rst_labels_complemento' | recurso }}" type="text" maxlength="100" class="form-control" formControlName="complemento" name="complemento" id="complemento" appFormularioCamposErro/>
+                    </md-input-container>
+                </div>
+                <div class="form-group col-md-4">
+                    <md-input-container [floatPlaceholder]="true">
+                        <input mdInput placeholder="{{ 'app_rst_labels_bairro' | recurso }}" type="text" maxlength="50" class="form-control" formControlName="bairro" name="bairro" id="bairro" appFormularioCamposErro/>
+                    </md-input-container>
+                </div>
+                <div class="form-group col-md-4">
+                    <md-input-container [floatPlaceholder]="true">
+                        <input mdInput placeholder="{{ 'app_rst_labels_CEP' | recurso }}" type="text" [textMask]="{mask: mascaraCep, guide: false}" class="form-control" formControlName="cep" name="cep" id="cep" appFormularioCamposErro/>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <div class="md-container">
+                        <md-select placeholder="{{ 'app_rst_labels_estado' | recurso }}" name="estado" formControlName="estado" id="estado" (change)="buscarMunicipio()" appFormularioCamposErro>
+                            <md-option>
+                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                            </md-option>
+                            <md-option *ngFor='let estado of estados' [value]="estado.id">
+                                {{estado.descricao}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <ng-select [options]="municipios" allowClear=true formControlName="municipio" maxlength="50" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}">
+                    </ng-select>
+                    <span class="floating-label">Município</span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="row space-up">
+    <div class="form-group col-md-12">
+        <div class="container-form">
+            <form [formGroup]="formulario">
+                <div class="container-subtitulo">
+                    <p>Contato</p>
+                </div>
+                <div class="corpo-card">
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <md-input-container [floatPlaceholder]="true">
+                                <input mdInput placeholder="Home Page" type="text" maxlength="60" class="form-control" formControlName="home_page" name="home_page" id="home_page" appFormularioCamposErro/>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <md-input-container [floatPlaceholder]="true">
+                                <input mdInput placeholder="Nomem Contato" type="text" maxlength="40" class="form-control" formControlName="nm_contato" name="nm_contato" id="nm_contato" appFormularioCamposErro/>
+                            </md-input-container>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <md-input-container [floatPlaceholder]="true">
+                                <input mdInput placeholder="Area Contato" type="text" maxlength="40" class="form-control" formControlName="area_contato" name="area_contato" id="area_contato" appFormularioCamposErro/>
+                            </md-input-container>
+                        </div>                
+                    </div>
+        
+                    <div class="row">
+                    </div>
+                </div>                
+                <!--Grid Telefone -->
+                <!-- <telefone-modal #modal [modoConsulta]="modoConsulta" [(list)]="sindicato.telefone"></telefone-modal> -->
+                <telefone-grid [modal]="modal" [modoConsulta]="modoConsulta" *ngIf="existeTelefone()" [(list)]="sindicato.telefone"></telefone-grid>
+                <!--Fim Grid Telefone -->
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="container-form space-up" [ngClass]="{ divDis : modoConsulta }" *ngIf="showDataDesligamento">
+    <form [formGroup]="formulario">
+        <div class="container-subtitulo">
+            <p>Desativação</p>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-4">
+                <my-date-picker name="mydate" [options]="datePickerOptions" locale="pt-br" formControlName="dtDesativacao" name="dtDesativacao" (keyup)="maskDate($event, this.formulario, 'dtDesativacao')"></my-date-picker>
+                <span class="floating-label"> {{ 'app_rst_labels_data_desativacao' | recurso }} </span>
+            </div>
+        </div>
+    </form>
+</div> -->
+
+<div class="btn-rodape-acoes space-up">
+    <!-- <button *ngIf="!modoConsulta" type="submit" class="btn btn-primary btn-cadastro" routerLinkActive="active" (click)="salvar()">{{ 'app_rst_btn_salvar' | recurso }}</button> -->
+    <button type="button" class="btn btn-secondary btn-cadastro" (click)="voltar()"> {{ 'app_rst_btn_voltar' | recurso }}</button>
+</div>

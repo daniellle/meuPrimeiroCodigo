@@ -1,0 +1,61 @@
+<div class='row' [class.res-item-interno]='!itemExterno'>
+    <div class='col-lg-12'>
+        <div class='row'>
+            <div *ngIf='itemExterno' class="res-item-title mat-subheading-1">{{ titulo }}</div>
+            <div *ngIf='!itemExterno' class='res-item-sub-titulo'>
+                <label>{{ titulo }}</label>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-lg-12'>
+                <div class='row '>
+                    <div class='col-lg-12' [class.res-col-interna]='!itemExterno'>
+                        <ng-template appElementoDados>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-lg-12'>
+                <!-- <div class='row'>
+                    <div class='col-lg-12 mat-body-1 res-secao' *ngIf='diretivaEstados.conteiner.length > 0 && mostrarDivisoes'>
+                        Estados
+                    </div>
+                </div> -->
+                <div class='row '>
+                    <div class='col-lg-12' [class.res-col-interna]='!itemExterno'>
+                        <ng-template appElementoEstados>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-lg-12 '>
+                <!-- <div class='row'>
+                    <div class='col-lg-12 mat-body-1 res-secao' *ngIf='diretivaProtocolos.conteiner.length > 0 && mostrarDivisoes'>
+                        Protocolos
+                    </div>
+                </div> -->
+                <div class='row '>
+                    <div class='col-lg-12' [class.res-col-interna]='!itemExterno'>
+                        <ng-template appElementoProtocolos>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-lg-12'>
+                <div class='row'>
+                    <div class='col-lg-12' [class.res-col-interna]='!itemExterno'>
+                        <ng-template appElementoIndefinido>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

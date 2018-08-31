@@ -1,0 +1,1559 @@
+// Here you can add other styles
+// Navbar //
+.navbar-nav {
+    color: $navbar-color;
+}
+
+.nav {
+    font-weight: bold;
+}
+
+.sub-item {
+    padding-left: 60px !important;
+}
+
+// FIM - Navbar //
+// Form //
+.container-subtitulo {
+    border-bottom: 2px solid $cinza;
+    margin-bottom: 20px;
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: $azul;
+    font-size: 16px;
+    font-weight: lighter;
+}
+
+.container-subtitulo-pesquisa {
+    margin-bottom: 20px;
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: $branco;
+    font-size: 16px;
+    font-weight: lighter;
+}
+
+.corpo-card {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    border-radius: 4px;
+    border: 1px solid $cinza;
+}
+
+.form-control:disabled {
+    background: transparent;
+}
+
+.divDis .mydp,
+.divDis .mydp .selection,
+.divDis .mydp .selectiongroup,
+.divDis .mat-input-container,
+.divDis .md-container,
+.divDisabled,
+.divDis .mydp .btncleardisabled,
+.divDis .mydp .btndecreasedisabled,
+.divDis .mydp .btnincreasedisabled,
+.divDis .mydp .btnpickerdisabled,
+.divDis .mydp .headerbtndisabled,
+.divDis .mydp .headertodaybtndisabled,
+.divDis .mydp .selectiondisabled,
+.divDis .mydp .yearchangebtndisabled,
+.divDis .mydp .btnclear,
+.divDis .mydp .btnpicker,
+.divDis ng-select {
+    background-color: #efefef !important;
+    opacity: 1 !important;
+}
+
+.container-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.container-pesquisar.container-form {
+    background-color: $azul !important;
+}
+
+.space-up,
+.space_up {
+    margin-top: 1em;
+}
+
+.space-left {
+    margin-left: 1em;
+}
+
+.space-right {
+    margin-right: 1em;
+}
+
+.descricao-indicador {
+    width: 85%;
+}
+.md-custom{
+    //border-color: #ba88a5 !important;
+    //color: #ba88a5 !important;
+    //background-color: transparent !important;
+    margin-top: 0.5em;
+    padding: 7px !important;
+}
+
+// FIM - Form //
+.btn-rodape-acoes {
+    margin-bottom: 0px;
+}
+
+.btn-icon-pesquisar {
+    margin-left: 3px;
+    height: 35px;
+}
+
+.btn-voltar-out-form {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.btn-cadastro {
+    margin-bottom: 20px;
+}
+
+.btn-paginacao {
+    margin-bottom: 10px;
+}
+
+.btn-primary {
+    background-color: $roxo;
+    border-color: $roxo;
+}
+
+.btn-primary:hover {
+    background-color: $roxo-claro;
+    border-color: $roxo-claro;
+}
+
+.btn-secondary {
+    border-style: 2px solid;
+    border-color: $roxo;
+    color: $roxo;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.btn-secondary:hover {
+    all: none;
+    border-color: $roxo-claro;
+    color: $roxo-claro;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.btn:focus,
+.btn.focus {
+    outline: 0;
+    box-shadow: none;
+}
+
+.btn-img:focus {
+    box-shadow: none !important;
+}
+
+.searchlupa .btn {
+    position: relative;
+    z-index: 10 !important;
+    top: 12px;
+    border: transparent !important;
+    cursor: pointer;
+}
+
+.addResposta .btn {
+    position: relative;
+    z-index: 10 !important;
+    top: 12px;
+    border: transparent !important;
+    cursor: pointer;
+}
+
+.no-borda {
+    border-color: transparent !important;
+}
+
+.borda-segmento {
+    border: 1px solid;
+    border-color: rgba(85, 85, 85, 0.2);
+    border-radius: 5px;
+    width: 100%;
+    background-color: white;
+}
+
+.searchlupa .form-control {
+    border: transparent !important;
+}
+
+.searchlupa .fa {
+    color: $azul;
+    font-size: 20px;
+}
+
+.searchlupa .fa-times {
+    color: $orange;
+    font-size: 20px;
+}
+
+.addResposta .form-control {
+    border: transparent !important;
+}
+
+.addResposta .fa {
+    color: $azul;
+    font-size: 20px;
+}
+
+.addResposta .fa-times {
+    color: $orange;
+    font-size: 20px;
+}
+
+.titulo-pagina {
+    margin-bottom: 20px;
+    color: $cinza_escuro;
+    margin-top: 10px;
+    font-size: 22px;
+}
+
+.radio-tabela-pesquisa {
+    margin-top: 5px;
+}
+
+.col-radio-checkbok {
+    width: 10px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.btn {
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+button:focus {
+    outline: transparent !important;
+}
+
+.negrito {
+    font-weight: bold;
+}
+
+.btn-ver-mapa {
+    max-width: 200px;
+    max-height: 150px;
+    width: auto;
+    height: auto;
+}
+
+//slider//
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: white !important;
+}
+
+.mat-checked .mat-slide-toggle-thumb {
+    left: 14px !important;
+}
+
+.mat-slide-toggle-thumb {
+    width: 19px !important;
+    height: 19px !important;
+    line-height: 26px !important;
+    background-color: #FFFFFF !important;
+    border-radius: 50% !important;
+    position: relative !important;
+    left: 3px !important;
+    top: 6px !important;
+    transition: left 0.3s ease, background 0.3s ease, box-shadow 0.1s ease !important;
+    text-align: center !important;
+}
+
+.mat-slide-toggle-bar {
+    background-color: rgba(80, 80, 80, 0.7) !important;
+    width: 52px !important;
+    height: 26px !important;
+    border-radius: 15px !important;
+}
+
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: $azul !important;
+    width: 52px !important;
+    height: 26px !important;
+    border-radius: 15px !important;
+}
+
+//Modal //
+.img-modal-btn button:focus {
+    outline-color: transparent;
+}
+
+.img-modal-bt {
+    margin-bottom: 0 !important;
+}
+
+.modal-link-text {
+    padding-top: 15px;
+    color: $azul;
+    font-size: 16px;
+    font-weight: lighter;
+    text-decoration: underline;
+    text-underline-position: under;
+    -webkit-text-underline-position: under;
+    -ms-text-underline-position: below;
+}
+
+.cdk-overlay-container {
+    position: fixed;
+    z-index: 1060;
+}
+
+.modal-content {
+    border-radius: 10px;
+}
+
+.inner-link {
+    padding-bottom: 20px;
+}
+
+.fa-trash {
+    color: $orange;
+}
+
+.fa-trash:hover {
+    color: $orange-claro;
+    cursor: pointer;
+}
+.fa-pencil{
+    cursor:pointer;
+}
+
+.lixo {
+    height: 14px;
+    width: 14px;
+    cursor: pointer;
+}
+
+.icone {
+    height: 20px;
+    width: 20px;
+}
+
+//slide MD//
+.slide-line {
+    display: inherit;
+}
+
+.label-slide {
+    padding-top: 6px;
+}
+
+.label-slide-down {
+    padding-top: 6px;
+}
+
+@media only screen and (max-width: 434px) {
+    .label-slide {
+        padding-top: 0px;
+    }
+}
+
+@media only screen and (max-width: 338px) {
+    .label-slide-down {
+        padding-top: 0px;
+    }
+}
+
+//Calendario My Date Picker //
+.mydp {
+    border: 1px solid !important;
+    border-color: rgba(85, 85, 85, 0.2) !important;
+    border-radius: 5px !important;
+    width: 100% !important;
+    padding: 12px !important;
+    background-color: white;
+    // transform: translatey(-21px);
+    // z-index: 1;
+    // position: relative;
+}
+
+.floating-label {
+    // z-index: 2;
+    // position: relative;
+    // transform: translate(16px, 21px);
+    // color: #9f9f9f;
+    // width: 40%;
+    // font-size: 12px;
+    font-size: smaller;
+    position: absolute;
+    left: 36px;
+    top: 5px;
+    color: #b6b6b6;
+}
+
+.mydp:hover {
+    border: 1px solid $orange !important;
+}
+
+// .mydp .icon-mydpcalendar {
+//     display: none;
+// }
+// .selbtngroup .btnpicker.btnpickerenabled {
+//     display: none;
+// }
+.mydp .caltable {
+    color: black !important;
+    font-size: x-small !important;
+    background-color: white !important;
+}
+
+.mydp .highlight {
+    color: black !important;
+}
+
+.mydp .header td {
+    background-color: white !important;
+}
+
+.mydp .weekdaytitle {
+    background-color: white !important;
+    font-size: 9px !important;
+    color: #888da8 !important;
+}
+
+.mydp .currmonth {
+    background-color: white;
+    color: #4b4e65;
+    font-size: 9px;
+    height: auto;
+    width: auto;
+}
+
+.mydp .selector {
+    border-color: #e6ecf5 !important;
+    box-shadow: 0 0 34px 0 rgba(63, 66, 87, 0.1) !important;
+}
+
+.mydp .currmonth {
+    background-color: white !important;
+}
+
+.mydp .daycell *:hover {
+    border-radius: 100%;
+    background-color: $azul;
+}
+
+.mydp .selection {
+    font-size: small !important;
+    transform: translateY(6px);
+    color: #595872;
+    padding-left: 10px;
+}
+
+//INPUT SEGMENTO//
+#modalLupa.form-control {
+    z-index: 100 !important;
+    width: 100% !important;
+    top: 3px;
+    left: -21px;
+    color: #626379;
+}
+
+.lupa-textarea #modalLupa.form-control {
+    width: 105% !important;
+}
+
+#modalLupa span.mat-input-placeholder-wrapper {
+    left: -19px !important;
+}
+
+// #segmento .mat-input-placeholder {
+//     left: -18px !important;
+// }
+//MATERIAL INPUT ALTERATION//
+.mat-input-container,
+.md-container,
+ng-select>div,
+{
+    border: 1px solid;
+    border-color: rgba(85, 85, 85, 0.2);
+    border-radius: 5px;
+    width: 100%;
+    padding-right: 10px !important;
+    padding-left: 20px !important;
+    background-color: white;
+}
+
+.mat-input-underline {
+    display: none;
+}
+
+.mat-input-wrapper {
+    padding-bottom: 0.5px;
+}
+
+.mat-input-element {
+    padding-bottom: 16px !important;
+    font-size: small !important;
+    margin-top: 5px;
+}
+
+.mat-input-infix {
+    padding: 0;
+    border-top: 1.25em solid transparent;
+}
+
+.mat-input-placeholder-wrapper {
+    top: -0.94375em;
+    padding-top: 0.84375em;
+}
+
+.mat-input-container:focus-within {
+    border: 1px solid $orange;
+}
+
+.mat-input-container:active {
+    border: 1px solid $orange;
+}
+
+// SELECT MATERIAL//
+.mat-select {
+    width: 100%;
+}
+
+.mat-select-underline {
+    display: none;
+}
+
+.md-container,
+ng-select>div {
+    padding: 14px;
+}
+
+.mat-select-value {
+    color: rgb(94, 94, 118);
+    font-size: 13px;
+}
+
+.mat-select-placeholder {
+    padding: 0;
+    font-size: 14px;
+}
+
+.mat-select-placeholder.mat-floating-placeholder {
+    transform: translate(0px, 5px) !important;
+    font-size: x-small;
+}
+
+.mat-option.mat-selected:not(.mat-option-multiple) {
+    background: $orange;
+    color: white;
+}
+
+.mat-option {
+    color: #989db3;
+}
+
+ng-select>div>div.multiple input {
+    color: #a2a2a2;
+    opacity: 0.7;
+    font-size: 15px;
+    padding: 0 2px;
+}
+
+//NG - SELECT //
+select-dropdown .highlighted {
+    background-color: #F5F5F5 !important;
+}
+
+select-dropdown .selected {
+    background-color: $orange !important;
+    color: white !important;
+}
+
+select-dropdown>div .options ul li {
+    color: #989db3;
+    font-size: medium;
+}
+
+ng-select>div>div.multiple input {
+    color: #a2a2a2;
+    opacity: 0.7;
+    font-size: 15px;
+    position: absolute;
+    left: 22px;
+    top: 20px;
+}
+
+ng-select>div>div.multiple>div.option {
+    border: 1px solid #dedede !important;
+    color: #716e6e !important;
+    padding: 0 4px !important;
+    position: relative;
+    top: 7px;
+}
+
+.divDis .md-container:focus-within,
+.divDis ng-select ng-touched,
+.divDis ng-select>div:focus-within,
+.divDis .mydp:hover {
+    all: none;
+    border: 1px solid #d1d1d1 !important;
+}
+
+.md-container:focus-within,
+ng-select ng-touched {
+    all: none;
+    border: 1px solid $orange;
+}
+
+ng-select>div:focus-within,
+ng-select>div.open.focus.below,
+{
+    all: none !important;
+    border: 1px solid $orange !important;
+    border-radius: 5px;
+    outline-color: transparent !important;
+}
+
+ng-select>div.focus.below {
+    outline-color: transparent !important;
+}
+
+ng-select>div>div.single>div.value {
+    position: relative;
+    left: -11px;
+    font-size: small;
+    top: 2px;
+}
+
+.option>ng-select>div>div.multiple input {
+    visibility: hidden !important;
+}
+
+//RADIO INPUT MATERIAL //
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    border-color: $orange !important;
+    /* color: red; */
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+    background-color: $orange;
+}
+
+.mat-radio-label-content {
+    padding-right: 10px !important;
+}
+
+.mat-radio-button:focus {
+    outline: none !important;
+    border: 0;
+}
+
+.search .mat-radio-outer-circle {
+    border-color: white;
+}
+
+//CHECKBOX MATERIAL//
+.mat-checkbox-checkmark-path {
+    stroke: $cinza !important;
+}
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: $orange !important;
+}
+
+.mat-checkbox-frame {
+    border-width: 0.5px !important;
+    // border-color: rgba(189, 184, 184, 0.7) !important;
+    border-color: rgba(0, 0, 0, 0.4) !important;
+}
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: $orange !important;
+    width: 95%;
+    height: 94%;
+    position: static;
+}
+
+.mat-checkbox-checked .mat-checkbox-frame {
+    border-color: transparent !important;
+}
+
+//ALERT INFO//
+.alert-info {
+    border-radius: 5px;
+}
+
+// GRID PESQUISA //
+.pesquisa-situacao {
+    color: #ffffff;
+}
+
+.table td+td {
+    border-top: 1px solid rgb(222, 222, 222) !important;
+}
+
+
+
+th {
+    border-top: transparent;
+    text-align: left;
+    color: #9f9f9f;
+    font-weight: 500;
+}
+
+.table thead th {
+    border-bottom: 1px solid #cfd8dc;
+    border-top: transparent;
+}
+
+.grid-pesquisa {
+    margin-top: 5px;
+}
+
+.col-radio-checkbox {
+    margin: auto;
+    width: 10px;
+}
+
+.col-nao-quebra {
+    white-space: nowrap;
+}
+
+.col-nome {
+    text-align: left;
+}
+
+.col-email {
+    text-align: left;
+}
+
+.col-data-nascimento {
+    min-width: 152px;
+}
+
+.btn-novo-grid {
+    padding-left: 0px;
+}
+
+.col-check {
+    width: 15%;
+}
+
+.col-quebra {
+    word-break: break-all;
+}
+
+.col-quebra-palavra {
+    word-break: normal;
+}
+
+// Tabela Endereço
+.col-endereco {
+    min-width: 200px;
+    text-align: left;
+}
+
+.col-bairro {
+    text-align: left;
+}
+
+.col-estado {
+    text-align: left;
+}
+
+//Campos Obrigatórios
+.asterisco {
+    color: $orange;
+    padding-right: 2px;
+}
+
+.obrigatorio::before {
+    content: "* ";
+    color: $orange;
+}
+
+.col-municipio {
+    text-align: left;
+}
+
+.col-numero {
+    text-align: right;
+}
+
+.col-fifty-grid {
+    width: 50%;
+}
+
+//End Campos Obrigatórios
+//Container Acesso Publico
+.container-publico {
+    padding: 10px;
+    max-width: 500px;
+    min-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+// Demo styles
+// $border: 1px solid $cinza;
+// $padding: 5px;
+// $label-font-size: 13px;
+// // float label
+// .float-label {
+//   .input-float {
+//     float: left;
+//     position: relative;
+//     width: 100%;
+//     border: $border;
+//     border-radius: 4px;
+//     padding-top: $padding + $label-font-size;
+//     padding-bottom: $padding;
+//     padding-left: 5px;
+//   }
+//   input, textarea {
+//     display: block;
+//     width: 100%;
+//     border: 0;
+//     outline: 0;
+//     resize: none;
+//     // inactive but shown label (exceptions: opacity and top)
+//     & + label {
+//       position: absolute;
+//       top: 10px;
+//       transition: top 0.2s ease, opacity 0.2s ease;
+//       opacity: 0;
+//       // Some nice styling
+//       font-size: $label-font-size;
+//       font-weight: 600;
+//       color: #ccc;
+//     }
+//     // THE MAGIC
+//     // as soon as we start typing, the "required" attribute will
+//     // set the state to valid and our pseudo selector will match
+//     &:valid + label {
+//       opacity: 1;
+//       top: 3px;
+//     }
+//     // and we highlight the focused input label
+//     &:focus + label {
+//       color: #2c8efe;
+//     }
+//   }
+// }
+.inativar_dependente {
+    position: absolute;
+    top: 30px;
+}
+
+.titulo-pagina-intermediaria {
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.img_dadosbasico {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: -8px;
+    background-position-y: -3px;
+    background-size: 145px 145px;
+}
+
+.front.img_dadosbasico {
+    background-image: url("../img/edit.svg");
+}
+
+.back.img_dadosbasico {
+    background-image: url("../img/edit_cor.svg");
+}
+
+.img_certificado {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: -10px;
+    background-size: 150px 150px;
+    background-position-y: -8px;
+}
+
+.img_vacina{
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: -10px;
+    background-size: 150px 150px;
+    background-position-y: -8px;
+}
+
+.back.img_certificado {
+    background-image: url("../img/certificados_cor.svg");
+}
+
+.front.img_certificado {
+    background-image: url("../img/certificados.svg");
+}
+
+.back.img_vacina {
+    background-image: url("../img/vacina_laranja.svg");
+}
+
+.front.img_vacina {
+    background-image: url("../img/vacina_branca.svg");
+}
+
+
+.img_minhasaude {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: 7px;
+    background-position-y: -2px;
+    background-size: 140px 140px;
+}
+
+.front.img_minhasaude {
+    background-image: url("../img/minhasaude.svg");
+}
+
+.back.img_minhasaude {
+    background-image: url("../img/minhasaude_cor.svg");
+}
+
+.img_dependentes {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: 5px;
+    background-position-y: -5px;
+    background-size: 143px 143px;
+}
+
+.front.img_dependentes {
+    background-image: url("../img/dependente.svg");
+}
+
+.back.img_dependentes {
+    background-image: url("../img/dependente_cor.svg");
+}
+
+.img_cargo {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: -20px;
+    background-size: 144px 144px;
+    background-position-y: -6px;
+}
+
+.front.img_cargo {
+    background-image: url("../img/cargo.svg");
+}
+
+.back.img_cargo {
+    background-image: url("../img/cargo_cor.svg");
+}
+
+.img_funcao {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: -18px;
+    background-size: 145px 145px;
+    background-position-y: -8px;
+}
+
+.front.img_funcao {
+    background-image: url("../img/funcao.svg");
+}
+
+.back.img_funcao {
+    background-image: url("../img/funcao_cor.svg");
+}
+
+.img_setor {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: -5px;
+    background-size: 150px 150px;
+    background-position-y: -9px;
+}
+
+.front.img_setor {
+    background-image: url("../img/setor.svg");
+}
+
+.back.img_setor {
+    background-image: url("../img/setor_cor.svg");
+}
+
+.img_jornada {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: -5px;
+    background-size: 150px 150px;
+    background-position-y: -8px;
+}
+
+.front.img_jornada {
+    background-image: url("../img/jornada.svg");
+}
+
+.back.img_jornada {
+    background-image: url("../img/jornada_cor.svg");
+}
+
+.img_lotacao {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: -15px;
+    background-size: 150px 150px;
+    background-position-y: -8px;
+}
+
+.front.img_lotacao {
+    background-image: url("../img/lotacao.svg");
+}
+
+.back.img_lotacao {
+    background-image: url("../img/lotacao_cor.svg");
+}
+
+.img_sindicato {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: 6px;
+    background-size: 150px 150px;
+    background-position-y: -8px;
+}
+
+.front.img_sindicato {
+    background-image: url("../img/sindicato.svg");
+}
+
+.back.img_sindicato {
+    background-image: url("../img/sindicato_cor.svg");
+}
+
+.img_trabalhador {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: -5px;
+    background-size: 150px 150px;
+    background-position-y: -8px;
+}
+
+.front.img_trabalhador {
+    background-image: url("../img/trabalhador.svg");
+}
+
+.back.img_trabalhador {
+    background-image: url("../img/trabalhador_cor.svg");
+}
+
+.img_produtoservico {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: 0px;
+    background-size: 150px 150px;
+    background-position-y: -8px;
+}
+
+.front.img_produtoservico {
+    background-image: url("../img/produtosservicos.svg");
+}
+
+.back.img_produtoservico {
+    background-image: url("../img/produtosservicos_cor.svg");
+}
+
+.img_empresa {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: 0px;
+    background-size: 150px 150px;
+    background-position-y: -8px;
+}
+
+.front.img_empresa {
+    background-image: url("../img/empresa.svg");
+}
+
+.back.img_empresa {
+    background-image: url("../img/empresa_verde.svg");
+}
+
+.img_departamento {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: 0px;
+    background-size: 150px 150px;
+    background-position-y: -8px;
+}
+
+.front.img_departamento {
+    background-image: url("../img/departamento.svg");
+}
+
+.back.img_departamento {
+    background-image: url("../img/departamento_azul.svg");
+}
+
+.img_grupo {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: 0px;
+    background-size: 150px 150px;
+    background-position-y: -8px;
+}
+
+.front.img_grupo {
+    background-image: url("../img/grupo.svg");
+}
+
+.back.img_grupo {
+    background-image: url("../img/grupo_laranja.svg");
+}
+
+.img_pergunta {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: 0px;
+    background-size: 150px 150px;
+    background-position-y: -8px;
+}
+
+.front.img_pergunta {
+    background-image: url("../img/pergunta.svg");
+}
+
+.back.img_pergunta {
+    background-image: url("../img/pergunta_verde.svg");
+}
+
+.img_resposta {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: 0px;
+    background-size: 150px 150px;
+    background-position-y: -8px;
+}
+
+.front.img_resposta {
+    background-image: url("../img/resposta.svg");
+}
+
+.back.img_resposta {
+    background-image: url("../img/resposta_roxo.svg");
+}
+
+.img_indicador {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: 0px;
+    background-size: 150px 150px;
+    background-position-y: -8px;
+}
+
+.front.img_indicador {
+    background-image: url("../img/indicador.svg");
+}
+
+.back.img_indicador {
+    background-image: url("../img/indicador_azul.svg");
+}
+
+.img_classificacao {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: 0px;
+    background-size: 150px 150px;
+    background-position-y: -8px;
+}
+
+.front.img_classificacao {
+    background-image: url("../img/cassificacao.svg");
+}
+
+.back.img_classificacao {
+    background-image: url("../img/cassificacao_azul.svg");
+}
+
+.img_questionario {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: 0px;
+    background-size: 150px 150px;
+    background-position-y: -8px;
+}
+
+.front.img_questionario {
+    background-image: url("../img/questionario.svg");
+}
+
+.back.img_questionario {
+    background-image: url("../img/questionario_roxo.svg");
+}
+
+.img_questionario_azul {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: 0px;
+    background-size: 150px 150px;
+    background-position-y: -8px;
+}
+
+.back.img_questionario_azul {
+    background-image: url("../img/questionario_azul.svg");
+}
+
+.img_resultado_questionario {
+    width: 100%;
+}
+
+.img_minhaconta {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: 7px;
+    background-position-y: -2px;
+    background-size: 140px 140px;
+}
+
+.front.img_minhaconta {
+    background-image: url("../img/minhaconta.svg");
+}
+
+.back.img_minhaconta {
+    background-image: url("../img/minhaconta_roxo.svg");
+}
+
+// INICIO Effect CSS Flip CARD
+.flip_container_card {
+    position: relative;
+    width: 100%;
+    height: 200px;
+}
+
+.flip_container_card {
+    perspective: 1000;
+    transform-style: preserve-3d;
+}
+
+.flipper_card {
+    width: 100%;
+    height: 100%;
+    transition: 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.flip_container_card:hover .front,
+.flip_container_card.hover .front {
+    transform: rotateY(180deg);
+}
+
+.flip_container_card:hover .back,
+.flip_container_card.hover .back {
+    transform: rotateY(0deg);
+}
+
+.front,
+.back {
+    backface-visibility: hidden;
+    transition: 0.6s;
+    transform-style: preserve-3d;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.front {
+    z-index: 2;
+    transform: rotateY(0deg);
+}
+
+.back {
+    transform: rotateY(-180deg);
+}
+
+.face {
+    width: 100%;
+    height: 100%;
+    color: white;
+    backface-visibility: hidden;
+    border-radius: 5%;
+}
+
+.face.back {
+    display: block;
+    transform: rotateY(180deg);
+    box-sizing: border-box;
+}
+
+.flipper_card-titulo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 155px;
+    text-align: right;
+    margin-right: 25px;
+}
+
+// FIM - Effect CSS Flip CARD
+.front.card-azul {
+    background-color: $azul;
+}
+
+.back.card-azul {
+    background-color: white;
+    color: $azul;
+}
+
+.front.card-laranja {
+    background-color: $orange;
+}
+
+.back.card-laranja {
+    background-color: white;
+    color: $orange;
+}
+
+.front.card-musgo {
+    background-color: $musgo;
+}
+
+.back.card-musgo {
+    background-color: white;
+    color: $musgo;
+}
+
+.front.card-roxo {
+    background-color: $roxo-escuro;
+}
+
+.mat-expansion-panel-header.mat-expanded .seta {
+    height: 18px;
+    width: 35px;
+    background-image: url('../img/seta_azul_up.svg');
+    position: relative;
+    top: 25px;
+}
+
+.mat-expansion-panel-header .seta {
+    height: 18px;
+    width: 35px;
+    background-image: url('../img/seta_azul_down.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: relative;
+    top: 15px;
+}
+
+.back.card-roxo {
+    background-color: $branco;
+    color: $roxo-escuro;
+}
+
+//Telas Externas //
+.tela-externa {
+    height: 100vh;
+    background: url("../img/bg.svg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: center;
+    background-color: #8d226d;
+}
+
+@media only screen and (max-width: 1390px) {
+    .tela-externa {
+        /* The file size of this background image is 93% smaller
+         to improve page load speed on mobile internet connections */
+        background-image: url("../img/login_tablet.svg");
+        background-attachment: fixed;
+        height: 100vh;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .tela-externa {
+        /* The file size of this background image is 93% smaller
+         to improve page load speed on mobile internet connections */
+        background-image: url("../img/login_mobile.svg");
+        background-attachment: fixed;
+        height: 100vh;
+    }
+}
+
+.tela-externa .container-form {
+    border-radius: 14px !important;
+}
+
+.tela-externa .titulo-pagina {
+    color: white !important;
+}
+
+.mat-expansion-panel:not([class*=mat-elevation-z]) {
+    box-shadow: none !important;
+}
+
+//HORIZONTAL LINE - GRÁFICO //
+hr.zero {
+    background-color: #fff;
+    background-color: #fff;
+    border-top: 1px solid #8c8b8b;
+    position: relative;
+    top: -69px;
+}
+
+.grafico {
+    background-image: url("../img/barra_grafico.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-top: 1.95%;
+    margin-bottom: 0.6%;
+    margin-right: -25% !important;
+}
+
+@media only screen and (max-width: 2540px) {
+    .grafico {
+        background-image: url("../img/barra_grafico.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        margin-top: 1.8%;
+        margin-bottom: 1.6%;
+        margin-right: -26% !important;
+    }
+}
+
+@media only screen and (max-width: 2112px) {
+    .grafico {
+        background-image: url("../img/barra_grafico.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        margin-top: 1.8%;
+        margin-bottom: 1.6%;
+        margin-right: -27% !important;
+    }
+}
+
+.ballColors {
+    width: 20px;
+    height: 20px;
+    margin: auto;
+}
+
+//RESPOSTA QUESTIONARIO//
+.lista-resposta {
+    padding: 33px;
+}
+
+.white-space {
+    white-space: pre-line;
+}
+
+.mesangem-classificacao {
+    // font-size: small;
+}
+
+//GRID QUESTIONARIO//
+.lixeira-grid {
+    width: 5% !important;
+}
+
+.mat-checkbox-background,
+.mat-checkbox-frame {
+    border-radius: 0px !important;
+}
+
+.jqx-widget-content{
+    border-color: transparent !important;
+}
+
+.jqx-widget{
+    width: 85% !important;
+    margin-left: 5% !important;
+}
+
+.jqx-calendar .jqx-widget-header{
+    display: none !important;
+}
+
+.jqx-calendar table{
+    margin-top: -5px !important;
+}
+
+.jqx-calendar-cell-today{
+    color: #ffffff !important;
+    background-color: #5d0746cc !important;
+    border: 1px solid #5d0746 !important;
+    border-radius: 29px !important;
+}
+
+.red{
+    color: red;
+}
+
+#calendarioAuto .mydp{
+    border: 0px !important;
+    border-color: transparent !important;
+    border-radius: 0px !important;
+}
+
+#calendarioAuto .mydp .selector{
+    border: 0px !important;
+    box-shadow: 0 0 0 0 transparent !important;
+}
+
+#calendarioAuto .mydp .header{
+    display: none !important;
+}
+
+#calendarioAuto .mydp .markcurrday{
+    text-decoration: none !important;
+    background-color: #5e24465e !important;
+    width: 25px !important;
+    height: 47px !important;
+    border-radius: 25px !important;
+    color: white !important;
+    padding: 4px !important;
+}
+
+#calendarioAuto .mydp .markdate{
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 4px;
+}
+
+#calendarioAuto .mydp{
+    font-size: 12px;
+}
+
+.listar-vacinas{
+    margin-top: -2px;
+    height: 40px;
+    overflow-y: auto;
+    font-size: small;
+    color: #a7afb3;
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    background-color: #5e2446;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+    ;
+}

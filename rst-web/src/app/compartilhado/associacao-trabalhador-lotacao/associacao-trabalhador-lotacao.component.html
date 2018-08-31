@@ -1,0 +1,46 @@
+<div class="container-form space-up">
+    <div class="container-subtitulo">
+        <p>{{title}}</p>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <label class="col-form-label"><strong>{{ 'app_rst_labels_unidade_obra' | recurso}}:</strong> </label>
+            <span>{{model.empresaLotacao.unidadeObra.descricao}}</span>
+        </div>
+
+        <div class="col-12">
+            <label class="col-form-label"><strong>{{ 'app_rst_empresa_setor_title' | recurso}}:</strong> </label>
+            <span>{{model.empresaLotacao.empresaSetor.setor.sigla}}</span>
+        </div>
+
+        <div class="col-12">
+            <label class="col-form-label"><strong>{{ 'app_rst_labels_cargo' | recurso}}:</strong> </label>
+            <span>{{model.empresaLotacao.empresaCbo.cbo.descricao }}</span>
+        </div>
+
+        <div class="col-12">
+            <label class="col-form-label"><strong>{{ 'app_rst_empresa_funcao_title' | recurso}}:</strong> </label>
+            <span>{{model.empresaLotacao.empresaFuncao.funcao.descricao }}</span>
+        </div>
+
+        <div class="col-12">
+            <label class="col-form-label"><strong>{{ 'app_rst_labels_jornada' | recurso}}:</strong> </label>
+            <span>{{model.empresaLotacao.empresaJornada.jornada.descricao + '-' + model.empresaLotacao.empresaJornada.jornada.qtdHoras}}</span>
+        </div>
+
+        <div class="col-sm-4 col-md-4" [ngClass]="{ divDis : modoConsulta }">
+            <my-date-picker [options]="datePickerOptions" locale="pt-br" [disabled]="modoConsulta" [(ngModel)]="dataAssociacao" name="dataAssociacao" (keyup)="maskDt($event, 'A')"></my-date-picker>
+            <span class="floating-label"> {{ 'app_rst_labels_dataAssociacao' | recurso }} </span>
+        </div>
+
+        <div class="form-group col-sm-4 col-md-4" [ngClass]="{ divDis : modoConsulta }">
+            <my-date-picker [options]="datePickerOptions" locale="pt-br" [disabled]="modoConsulta" [(ngModel)]="dataDesligamento" name="dataDesligamento" (keyup)="maskDt($event, 'D')"></my-date-picker>
+            <span class="floating-label"> {{ 'app_rst_labels_dataDesligamento' | recurso }} </span>
+        </div>
+    </div>
+</div>
+
+<div class="btn-rodape-acoes space-up">
+    <button class="btn btn-primary" [(disabled)]="modoConsulta" (click)="adicionarEmpresaTrabalhadorLotacao()">{{ 'app_rst_btn_salvar' | recurso}}</button>
+    <button class="btn btn-secondary" [(disabled)]="modoConsulta" (click)="limpar()">{{ 'app_rst_btn_cancelar' | recurso}}</button>
+</div>

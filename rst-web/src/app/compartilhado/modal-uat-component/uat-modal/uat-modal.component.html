@@ -1,0 +1,74 @@
+<div *ngIf="existeUat()">
+    <button *ngIf="!modoConsulta" class="btn-img" (click)="adicionarUats()">
+                <div class="modal-link-text inner-link">Adicionar nova unidade SESI</div></button>
+</div>
+<div *ngIf="!existeUat()">
+    <div class="img-modal-btn row">
+        <button *ngIf="!modoConsulta" class="btn-img col-md-12" (click)="adicionarUats()">
+                    <div class="col-md-12"><img class=" modal-btn-img-link" src="assets/img/add.svg" alt="Adicionar"></div>
+                    <div class="col-md-12 modal-link-text">Adicionar unidade SESI
+                    </div>
+                </button>
+    </div>
+</div>
+
+
+<ng-template #uatModalComponent let-close="close" let-fechar="dismiss">
+    <div class="modal-header">
+        <p class="modal-title">{{ 'app_rst_labels_pesquisa_uat' | recurso }}</p>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            <div class="row">
+                <div class="form-group col-sm-12">
+                    <md-input-container for="cnpj" [floatPlaceholder]="true">
+                        <input mdInput placeholder="{{ 'app_rst_labels_cnpj' | recurso }}" name="cnpj" [textMask]="{mask: mascaraCnpj, guide: false}" [(ngModel)]="filtro.cnpj">
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <md-input-container for="razaoSocial" [floatPlaceholder]="true">
+                        <input mdInput placeholder="{{ 'app_rst_labels_razao_social' | recurso }}" maxlength="160" name="razaoSocial" [(ngModel)]="filtro.razaoSocial">
+                    </md-input-container>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer-cnae">
+        <button type="button" class="btn btn-primary" (click)="pesquisar();">{{'app_rst_btn_pesquisar' | recurso}}</button>
+        <button type="button" class="btn btn-secondary" (click)="fechar('cancelar')">{{ 'app_rst_btn_cancelar' | recurso }}</button>
+    </div>
+
+    <div class="grid-pesquisa col-md-12" *ngIf="uats.length > 0">
+        <table class="table table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th class="text-center col-nome"><span class="label">{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
+                    <th class="text-center"><span class="label">{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of uats">
+                    <td class="text-center">
+                        <!-- <mat-checkbox class="example-margin" [(ngModel)]="checks[item.id]"></mat-checkbox> -->
+                        <!-- <input type="checkbox" [(ngModel)]="checks[item.id]" (click)="selecionar(item, $event, item.id)"> -->
+                        <fieldset>
+                            <md-checkbox [(ngModel)]="checks[item.id]" name="rdoLista" (change)="selecionar(item, $event, item.id)" class="radio-tabela-pesquisa"></md-checkbox>
+                        </fieldset>
+                    </td>
+                    <td class="col-quebra">{{item.razaoSocial}}</td>
+                    <td class="text-center col-nao-quebra">{{item.cnpj | cnpjPipe }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="btn-paginacao">
+            <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+        </div>
+    </div>
+    <div class="modal-footer" *ngIf="uats.length > 0">
+        <button type="button" class="btn btn-primary" (click)="close('adicionar')">{{ 'app_rst_btn_salvar' | recurso }}</button>
+    </div>
+</ng-template>

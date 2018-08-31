@@ -1,0 +1,52 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{title}}
+</p>
+
+<div class="container-form container-pesquisar">
+    <form class="float-label">
+        <div class="row">
+            <div class="form-group col-md-6">
+                <div class="md-container">
+                    <md-select placeholder=" {{ 'app_rst_labels_linha' | recurso }}" name="linha" [(ngModel)]="filtro.idLinha" id="linha">
+                        <md-option value="">{{'app_rst_labels_todos' | recurso}}</md-option>
+                        <md-option *ngFor="let linha of listaLinha" [value]="linha.id">{{linha.descricao}}</md-option>
+                    </md-select>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{'app_rst_labels_produto' | recurso}}" type="text" name="nome" maxlength="160" [(ngModel)]="filtro.nome" class="form-control" id="nome">
+                </md-input-container>
+            </div>
+        </div>
+
+    </form>
+</div>
+<div class="btn-filter-pesquisar space-up">
+    <button type="button" class="btn btn-primary" (click)="pesquisar();">{{'app_rst_btn_pesquisar' | recurso}}</button>
+    <button type="button" class="btn btn-primary" (click)="incluir()" *ngIf="hasPermissaoCadastro()">{{'app_rst_btn_novo' | recurso}}</button>
+</div>
+<div class="container-form space-up" *ngIf="isNotEmpty(listaProdutosServicos)">
+    <div class="grid-pesquisa">
+        <table class="table table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th class="label">{{ 'app_rst_labels_linha' | recurso }}</th>
+                    <th class="label">{{ 'app_rst_labels_produto' | recurso }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr (click)="selecionar(item)" *ngFor="let item of listaProdutosServicos">
+                    <td class="col-quebra col-fifty-grid">{{item.linha.descricao}}</td>
+                    <td class="col-quebra col-fifty-grid">{{item.nome}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="btn-paginacao">
+            <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+        </div>
+    </div>
+</div>

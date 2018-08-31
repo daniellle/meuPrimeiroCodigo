@@ -1,0 +1,6 @@
+Dockerfile
+node_modules
+target
+build
+rst-app/target
+/**/target

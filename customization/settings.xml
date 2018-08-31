@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings
+	xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+	
+	<localRepository>/opt/workdir/maven-work</localRepository>
+	
+	<pluginGroups></pluginGroups>
+	<proxies></proxies>
+	<servers>
+                <server>
+                       <id>nexus.solutis.net.br</id>
+                       <username>NEXUS_USER</username>
+                       <password>NEXUS_USER_PASSW</password>
+                </server>
+	</servers>
+  <profiles>
+    <profile>
+      <id>solutis-nexus</id>
+      <repositories>
+        <repository>
+	      <id>central</id>
+              <url> http://central.maven.org/maven2</url>
+	 </repository>
+        <repository>
+	      <id>nexus.solutis.net.br</id>
+              <url>http://NEXUS_URL/content/groups/public</url>
+	 </repository>
+      </repositories>
+     <pluginRepositories>
+        <pluginRepository>
+          <id>solutis-nexus</id>
+          <url>http://central</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+   </profile>
+  </profiles>
+  <activeProfiles>
+    <activeProfile>solutis-nexus</activeProfile>
+  </activeProfiles>
+</settings>
+

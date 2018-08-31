@@ -1,0 +1,52 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{title}}
+</p>
+
+<div class="container-pesquisar container-form">
+    <form class="float-label">
+        <div class="row">
+            <div class="form-group col-md-12">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{'app_rst_labels_descricao' | recurso}}" type="text" name="descricao" maxlength="160" [(ngModel)]="filtro.descricao" class="form-control" id="descricao" />
+                </md-input-container>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="btn-filter-pesquisar space-up">
+    <button type="button" class="btn btn-primary" (click)="pesquisar();">{{'app_rst_btn_pesquisar' | recurso}}</button>
+    <button type="button" class="btn btn-primary" (click)="incluir()" *ngIf="hasPermissaoCadastro()">{{'app_rst_btn_novo' | recurso}}</button>
+</div>
+<div class="container-form space-up" *ngIf="isNotEmpty(listaIndicadorQuestionario)">
+    <div class="grid-pesquisa">
+        <table class="table table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th class="label">{{ 'app_rst_labels_descricao' | recurso }}</th>
+                    <th class="label">{{ 'app_rst_labels_orientacao' | recurso }}</th>
+                    <th class="label">{{ 'app_rst_labels_incentivo' | recurso }}</th>
+                    <th class="label text-center" style="width: 10%;" *ngIf="!this.modoConsulta">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr (click)="selecionar(item)" *ngFor="let item of listaIndicadorQuestionario">
+                    <td class="col-quebra col-thirty-grid">{{item.descricao}}</td>
+                    <td class="col-quebra col-thirty-grid">{{item.orientacao}}</td>
+                    <td class="col-quebra col-thirty-grid">{{item.incentivo}}</td>
+                    <td class="text-center" *ngIf="!this.modoConsulta">
+                        <button class="btn-link" (click)="$event.stopPropagation(); excluir(item)"><img class="lixo" src="assets/img/trash.svg" alt="Excluir"></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="btn-paginacao">
+            <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+        </div>
+    </div>
+</div>
+<div class="btn-rodape-acoes space-up">
+    <button type="button" class="btn btn-secondary btn-cadastro" (click)="voltar();">{{ 'app_rst_btn_voltar' | recurso }}</button>
+</div>

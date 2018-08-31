@@ -1,0 +1,102 @@
+<ng2-toasty>
+</ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{'app_rst_produtos_title_menu' | recurso}}
+</p>
+
+<div class="container-form" *ngIf="hasPermissaoCadastrar()">
+    <div class="row">
+        <div class="form-group col-sm-4">
+            <div class="md-container">
+                <md-select placeholder="{{'app_rst_labels_linha' | recurso}}" name="linha" [(ngModel)]="filtro.idLinha" id="selectlinha">
+                    <md-option value="">{{'app_rst_labels_selecione' | recurso}}</md-option>
+                    <md-option *ngFor='let linha of listaLinhas' [value]="linha.id">{{linha.descricao}}</md-option>
+                </md-select>
+            </div>
+        </div>
+        <div class="form-group col-sm-8">
+            <md-input-container [floatPlaceholder]="true">
+                <input mdInput placeholder="{{'app_rst_labels_produto' | recurso}}" type="text" class="form-control" id="nome" [(ngModel)]="filtro.nome" name="nome" #produtoServicoFiltro="ngModel">
+            </md-input-container>
+        </div>
+    </div>
+</div>
+
+<div class="btn-filter-pesquisar space-up" *ngIf="hasPermissaoCadastrar()">
+    <button class="btn btn-primary" (click)="pesquisar()">Pesquisar</button>
+</div>
+
+<div class="container-form space-up" *ngIf="temPrdodutoServico ">
+    <div class="row grid-pesquisa">
+        <div class="col-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center">&nbsp;</th>
+                        <th class="col-nome col-quebra">{{ 'app_rst_labels_linha' | recurso }}</th>
+                        <th class="text-center col-nome col-quebra">{{ 'app_rst_labels_produto' | recurso }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listaProdutoServico, let i = index">
+                        <th class="label text-center" disabled="modoConsulta">
+                            <fieldset>
+                                <md-checkbox [(ngModel)]="checks[item.id]" name="ProdutosServico" (change)="selectDeselectProdutoServico(item, $event, item.id)" class="radio-tabela-pesquisa"></md-checkbox>
+                            </fieldset>
+                        </th>
+                        <td class="col-quebra col-fifty-grid">{{item.linha.descricao}}</td>
+                        <td class="col-quebra col-fifty-grid">{{item.nome}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="btn-paginacao">
+                <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                    (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="btn-filter-pesquisar space-up" *ngIf="temPrdodutoServico" disabled="modoConsulta">
+    <button class="btn btn-primary" (click)="salvar()">{{ 'app_rst_btn_salvar' | recurso}}</button>
+</div>
+
+<div class="container-form space-up">
+    <div class="container-subtitulo">
+        <p>{{'app_rst_departamento_subtitulo_produtos_e_servicos_associados' | recurso}}</p>
+    </div>
+
+    <span *ngIf="!temUatProduto">Nenhum registro adicionado.</span>
+
+    <div class="row grid-pesquisa" *ngIf="temUatProduto">
+        <div class="col-12">
+            <table class="table table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <th>{{ 'app_rst_labels_linha' | recurso }}</th>
+                        <th>{{ 'app_rst_labels_produto' | recurso }}</th>
+                        <th class="text-center" *ngIf="!modoConsulta">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listaUatProdutoServico; let i = index">
+                        <td class="col-nome col-quebra col-fifty-grid">{{item.produtoServico.linha.descricao}}</td>
+                        <td class="col-nome col-quebra col-fifty-grid">{{item.produtoServico.nome}}</td>
+                        <td class="text-center" *ngIf="!modoConsulta">
+                            <button class="btn-link" (click)="remover(item)"><img class="lixo" src="assets/img/trash.svg" alt="Excluir"></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="btn-paginacao">
+                <pagination [firstText]="paginacaoUatProdutoServico.textPrimeiro" [lastText]="paginacaoUatProdutoServico.textUltimo" [nextText]="paginacaoUatProdutoServico.textProximo" [previousText]="paginacaoUatProdutoServico.textAnterior" [totalItems]="paginacaoUatProdutoServico.totalItens"
+                    [(ngModel)]="paginacaoUatProdutoServico.pagina" [itemsPerPage]="paginacaoUatProdutoServico.qtdRegistro" (numPages)="paginacaoUatProdutoServico.numPages = $event" (pageChanged)="pageChangedUatProdutoServico($event)" [maxSize]="paginacaoUatProdutoServico.maxSize"
+                    class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="btn-filter-pesquisar space-up">
+    <button type="button" class="btn btn-secondary btn-cadastro" (click)="voltar();">{{ 'app_rst_btn_voltar' | recurso }}</button>
+</div>

@@ -1,0 +1,111 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    Cadastro do Dependente
+</p>
+
+<div class="container-form" *ngIf="!isSomenteTrabalhador()">
+    <form [formGroup]="trabalhadorDependenteForm">
+        <div class="corpo-card">
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div class="input-group">
+                        <md-input-container [ngClass]="{'divDisabled': cpf.disabled}" [floatPlaceholder]="true">
+                            <input #cpf mdInput formControlName="cpf" name="cpf" id="cpf" [textMask]="{mask: mascaraCpf, guide: false}" (blur)="buscarDependente($event)" appFormularioCamposErro placeholder="{{ 'app_rst_labels_cpf' | recurso }}" type="text" required/>
+                        </md-input-container>
+                        <button *ngIf="selecionado" type="button" class="btn btn-secondary" aria-label="Left Align" (click)='limparFormComCpf()'>
+                            <span class="fa fa-times" aria-hidden="true"></span>
+                        </button>
+                    </div>
+
+                </div>
+                <div class="form-group col-md-6" [ngClass]="{ divDis : trabalhadorDependenteForm.controls.tipoDependente.disabled}">
+                    <div class="md-container">
+                        <md-select formControlName="tipoDependente" id="tipoDependente" placeholder="{{ 'app_rst_dependente_tipo' | recurso }}" appFormularioCamposErro required>
+                            <md-option>
+                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                            </md-option>
+                            <md-option *ngFor='let key of keysTiposDependente' [value]="key">
+                                {{tipoDependente[key]}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <md-input-container [ngClass]="{'divDisabled': nome.disabled}" [floatPlaceholder]="true">
+                        <input #nome mdInput formControlName="nome" name="nome" id="nome" appFormularioCamposErro placeholder="{{ 'app_rst_labels_nome' | recurso }}" type="text" maxlength="160" required/>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-4" [ngClass]="{ divDis : trabalhadorDependenteForm.controls.dataNascimento.disabled}">
+                    <my-date-picker class="prof" [options]="datePickerOptions" locale="pt-br" formControlName="dataNascimento" name="dataNascimento" (keyup)="maskDate($event, this.trabalhadorDependenteForm, 'dataNascimento')"></my-date-picker>
+                    <span class="floating-label">{{ 'app_rst_labels_data_nascimento_required' | recurso }}</span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="genero" class="col-form-label"><span class="asterisco">* </span> {{ 'app_rst_labels_genero' | recurso }}</label>
+                    <div>
+                        <md-radio-group formControlName="genero" disableRipple>
+                            <md-radio-button disableRipple id="sexoMasculino" name="genero" [value]="genero.M" class="md-primary">{{ 'app_rst_valor_masculino' | recurso }}</md-radio-button>
+                            <md-radio-button disableRipple id="sexoFeminino" name="genero" [value]="genero.F"> {{ 'app_rst_valor_feminino' | recurso }} </md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="form-check-label col-md-8 inativar_dependente" for="inativar">
+                            <md-checkbox name="inativar" id="inativar" formControlName="inativo" class="form-check-input"  appFormularioCamposErro>
+                                    {{'app_rst_dependente_inativar_dependente' | recurso}}</md-checkbox></label>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="btn-filter-pesquisar space-up">
+    <button type="button" class="btn btn-primary" (click)='salvar()' *ngIf="hasPermissaoInclusao()">Salvar</button>
+    <button type="button" class="btn btn-secondary" (click)='voltar()'>Voltar</button>
+</div>
+
+<div class="container-form space-up">
+    <div class="container-subtitulo">
+        <p>{{'app_rst_dependente_associados' | recurso}}</p>
+    </div>
+    <div *ngIf="!isNotEmpty(listaTrabalhadorDependente)" class="row">
+        <div class="form-group col-md-12">
+            {{ 'app_rst_nenhum_registro_encontrado' | recurso }}
+        </div>
+    </div>
+    <div class="row grid-pesquisa" *ngIf="isNotEmpty(listaTrabalhadorDependente)">
+        <div class="col-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th><span>Nome</span></th>
+                        <th><span>Data de Nascimento</span></th>
+                        <th><span>CPF</span></th>
+                        <th><span>Situação</span></th>
+                        <th><span>&nbsp;</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listaTrabalhadorDependente; let i = index" (click)="selecionarDependente(item, i)">
+                        <td class="col-quebra">{{ item.dependente.nome }}</td>
+                        <td class="col-data-nascimento">{{ item.dependente.dataNascimento }}</td>
+                        <td class="col-nao-quebra">{{ getCpfFormatado(item.dependente.cpf)}}</td>
+                        <td>{{ item.inativo | inativo }}</td>
+                        <td class="text-center"><button class="btn-link" (click)="remover(item)" *ngIf="!modoConsulta && !isSomenteTrabalhador()"><img class="lixo" src="assets/img/trash.svg" alt="Excluir"></button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="btn-paginacao">
+                <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                    (numPages)="paginacao.numPages = $event" (pageChanged)="pageChangedTrabalhadorDependente($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+            </div>
+        </div>
+    </div>
+</div>

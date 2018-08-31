@@ -1,0 +1,68 @@
+<!-- <ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio> -->
+<p class="titulo-pagina">
+    {{resultadoQuestionario.tituloQuestionario}}
+</p>
+<div class="container-form">
+    <form novalidate>
+        <div class="row">
+            <div class="col-11 mx-auto">
+                <span>
+                    <img class="img_resultado_questionario" src="{{resultadoQuestionario.classificacao.url}}" alt="{{resultadoQuestionario.classificacao.classificacao}}">
+                </span>
+            </div>
+        </div>
+
+        <div class="row" [ngClass]="{ 'baixo-risco': isBaixoRisco(), 'medio-risco': isMedioRisco(), 'medio-alto-risco': isMedioAltoRisco(), 'alto-risco': isAltoRisco()}">
+            <div class="col-11 mx-auto container-resultado">
+                <div class="white-space mesangem-classificacao padding-text">{{resultadoQuestionario.classificacao.mensagem}}</div>
+            </div>
+        </div>
+
+        <div class="row lista-resposta">
+            <div class="col-md-12" *ngFor="let indicador of resultadoQuestionario.listaIndicadores">
+                <div class="row  space-up">
+
+                    <span class="spcae-up space-left">
+                        <img *ngIf="!indicador.aprovado" class="icone" src="assets/img/seta_laranja_down.svg" alt="Não Aprovado">
+                        <img *ngIf="indicador.aprovado" class="icone" src="assets/img/seta_verde_down.svg" alt="Aprovado">
+                    </span>
+
+                    <p class="space-left descricao-indicador">{{indicador.descricao}}</p>
+                    <div>
+                        <span class="space-left">
+                            <img *ngIf="!indicador.aprovado" class="icone" src="assets/img/erro.svg" alt="Não Aprovado">
+                            <img *ngIf="indicador.aprovado" class="icone" src="assets/img/acerto.svg" alt="Aprovado">
+                         </span>
+                        <span class="space-left space-right">
+                            <img (click)="openModalResultado(indicador.orientacao)" *ngIf="!indicador.aprovado" class="plus-icons" src="assets/img/info.svg" alt="Informações">
+                            <img (click)="openModalResultado(indicador.incentivo)" *ngIf="indicador.aprovado"  class="plus-icons" src="assets/img/curtir.svg" alt="Informações">
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="btn-rodape-acoes space-up">
+    <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
+</div>
+
+<ng-template #modalResultado let-close="close" let-fechar="dismiss">
+    <div>
+        <div class="modal-header">
+            <p class="modal-title">{{'app_rst_questionario_indicador_orientacao' | recurso}}</p>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <div class="row">
+                    {{orientacaoModal}}
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer-cnae">
+            <button type="button" class="btn btn-secondary" (click)="fechar('cancelar')">{{ 'app_rst_btn_fechar' | recurso }}</button>
+        </div>
+    </div>
+</ng-template>

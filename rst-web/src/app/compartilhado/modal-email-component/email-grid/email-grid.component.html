@@ -1,0 +1,16 @@
+<div class="grid-pesquisa">
+    <table class="table table-responsive table-hover">
+        <thead>
+            <th><span class="label">&nbsp;</span></th>
+            <th class=""><span class="label">E-mail</span></th>
+            <th *ngIf="!modoConsulta" class="text-center"><span class="label">&nbsp;</span></th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of list; let i = index" (click)="selecionar(item, i)">
+                <td class="text-center"><img *ngIf="item.email.notificacao" class="img-contato" src="assets/img/mini_notificacao.svg" alt="Notificacao" /></td>
+                <td>{{item.email.descricao}}</td>
+                <td *ngIf="!modoConsulta"><button class="btn-link" (click)="removeEmail(item)"><img class="lixo" src="assets/img/trash.svg" alt="Excluir"></button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

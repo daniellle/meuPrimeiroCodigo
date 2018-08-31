@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1.3754073mm"
+   height="83.548607mm"
+   viewBox="0 0 1.3754073 83.548589"
+   version="1.1"
+   id="svg7532"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="imc_bar.svg">
+  <defs
+     id="defs7526" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="-959.19606"
+     inkscape:cy="154.02898"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1018"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7529">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-166.85276,-106.03824)">
+    <path
+       style="opacity:1;vector-effect:none;fill:#8d216c;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 168.22817,168.70004 v 20.19914 c 0,0.38097 -0.3067,0.68767 -0.6877,0.68767 -0.381,0 -0.6877,-0.3067 -0.6877,-0.68767 v -20.19914 z"
+       id="rect5535-4-6-6-26-0-3-0-9"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cssscc" />
+    <rect
+       style="opacity:1;vector-effect:none;fill:#f8b656;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect5535-4-6-6-2-9-5-5-8-9"
+       width="20.887163"
+       height="1.3753409"
+       x="-168.69966"
+       y="-168.2281"
+       rx="7.1851564e-006"
+       ry="0.00019974295"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"
+       inkscape:export-filename="C:\Users\gabriella.nery\Desktop\tela_paciente_3.png"
+       transform="matrix(0,-1,-1,0,0,0)" />
+    <rect
+       style="opacity:1;vector-effect:none;fill:#6dcdf5;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect5535-4-6-6-2-0-1-0-0-2-4"
+       width="20.887163"
+       height="1.3753409"
+       x="126.92538"
+       y="-168.2281"
+       rx="7.1851564e-006"
+       ry="0.00019974295"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"
+       inkscape:export-filename="C:\Users\gabriella.nery\Desktop\tela_paciente_3.png"
+       transform="rotate(90)" />
+    <path
+       style="opacity:1;vector-effect:none;fill:#ff5e38;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 168.22817,126.92416 v -20.19825 c 0,-0.38097 -0.3067,-0.68767 -0.6877,-0.68767 -0.381,0 -0.6877,0.3067 -0.6877,0.68767 v 20.19825 z"
+       id="rect5535-4-6-6-2-0-0-8-6-0-1-7"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cssscc" />
+  </g>
+</svg>

@@ -1,0 +1,38 @@
+<div *ngIf="existeVacina()">
+    <button class="btn-img" (click)="adicionarVacina()">
+          <div class="modal-link-text">Adicionar Próxima Dose</div></button>
+</div>
+<div *ngIf="!existeVacina()">
+    <div class="img-modal-btn row">
+        <button class="btn-img no-focus col-md-12" (click)="adicionarVacina()">
+              <div class="col-md-12"><img class=" modal-btn-img-link" src="assets/img/add.svg" alt="Adicionar"></div>
+              <div class="col-md-12 modal-link-text">Adicionar próxima dose
+              </div>
+          </button>
+    </div>
+</div>
+
+<ng-template #modalVacina let-close="close" let-fechar="dismiss">
+    <div class="modal-header">
+        <p class="modal-title">Próxima Dose</p>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <md-input-container [floatPlaceholder]="true">
+                        <input disabled="true" mdInput placeholder="Nome" name="nome" [(ngModel)]="nomeDaVacina">
+                    </md-input-container>
+                </div>
+                <div class="form-group col-sm-6">
+                    <my-date-picker [options]="datePickerOptions" locale="pt-br" [(ngModel)]="data" name="dtProximaDoseVacina" (keyup)="maskDt($event, data)"></my-date-picker>
+                    <span class="floating-label"> {{ 'app_rst_labels_data_proxima_dose' | recurso }} </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="close('adicionar')">{{ 'app_rst_btn_salvar' | recurso }}</button>
+        <button type="button" class="btn btn-secondary" (click)="fechar('cancelar')">{{ 'app_rst_btn_cancelar' | recurso }}</button>
+    </div>
+</ng-template>
