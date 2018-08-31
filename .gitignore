@@ -1,7 +1,7 @@
 
 # Diretórios .ignore
 bower_components/
-node_modules/
+#node_modules/
 .settings/
 #target/*
 target
