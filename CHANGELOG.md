@@ -35,7 +35,7 @@
 
 **Dependências**
 
-	Executar o script "rede_sesi_v2_55_0.sql" no banco Rede SESI.
+	Executar o script "rede_sesi_v2_55_0.sql" no banco Rede SESI..
 
 
 
