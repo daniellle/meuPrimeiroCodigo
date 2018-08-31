@@ -12,6 +12,7 @@ Características
 * JUnit / Mockito / Power Mokito
 * fw-ezvida
 * girst-apiclient
+* adl-core
 * AJP
 * Wildfly
 * PostgreSQL
@@ -29,15 +30,15 @@ Considerações
 
 5- Utiliza a biblioteca [adl-core](https://github.com/ezvida/adl-core) para se conectar ao Projeto [Girst](https://github.com/ezvida/rst-girst) através de requisições Restfull com Tokens e obter as autorizações do usuário logado.
 
-5- É utilizado nos ambientes da Rede Sesi Viva+ através de um iframe em uma Aplicação Django.
+6- É utilizado nos ambientes da Rede Sesi Viva+ através de um iframe em uma Aplicação Django.
 
-6- Conecta-se ao banco de dados SESI_RST para armazenamento de dados.
+7- Conecta-se ao banco de dados SESI_RST para armazenamento de dados.
 
-7- As parametrizações do projeto devem ser alteradas na tabela parametros do banco de dados SESI_RST.
+8- As parametrizações do projeto devem ser alteradas na tabela parametros do banco de dados SESI_RST.
 
-8- Utiliza o pacote ELK para salvar dados de Auditoria.
+9- Utiliza o pacote ELK para salvar dados de Auditoria.
 
-9- Disponibiliza API de consulta a alguns de seus dados para outros sistemas, como Portal, Res Online e Microserviço IGEV
+10- Disponibiliza API de consulta a alguns de seus dados para outros sistemas, como Portal, Res Online e Microserviço IGEV
 
 Dependências
 ============
@@ -46,7 +47,7 @@ Dependências
 
 2) Npm  : 5.6.0 
 
-3) JDK : [jdk8-downloads-2133151](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+3) Oracle JDK : [jdk8-downloads-2133151](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 
 4) girst-apiclient (publicado no Nexus)
 
@@ -59,21 +60,21 @@ Dependências
 BUILD
 ==========
 
-Entre no diretório rst-cadastros/rst da aplicação e execute o comando abaixo de acordo com o ambiente que deseja gerar o pacote.
-Após build com sucesso o pacote estará disponível na pasta rst-cadastros/rst/rst-app/target.
+Entre no diretório rst-cadastros da aplicação e execute o comando abaixo de acordo com o ambiente que deseja gerar o pacote.
+Após build com sucesso o pacote estará disponível na pasta rst-cadastros/rst-cadastros-app/target.
 
 1) Ambiente Demo
-
-mvn -e clean package -P coverage -P frontend -Dmaven.test.skip=true -Dfrontend.environment=demo
+	
+	mvn -e clean package -P coverage -P frontend -Dmaven.test.skip=true -Dfrontend.environment=demo
 
 2) Ambiente Test
 
-mvn -e clean package -P coverage -P frontend -Dmaven.test.skip=true -Dfrontend.environment=test
+	mvn -e clean package -P coverage -P frontend -Dmaven.test.skip=true -Dfrontend.environment=test
 
 3) Ambiente Homolog
 
-mvn -e clean package -P coverage -P frontend -Dmaven.test.skip=true -Dfrontend.environment=homolog
+	mvn -e clean package -P coverage -P frontend -Dmaven.test.skip=true -Dfrontend.environment=homolog
 
 4) Ambiente Prod
 
-mvn -e clean package -P coverage -P frontend -Dmaven.test.skip=true -Dfrontend.environment=prod
+	mvn -e clean package -P coverage -P frontend -Dmaven.test.skip=true -Dfrontend.environment=prod
