@@ -1,0 +1,29 @@
+# Diretórios .ignore
+bower_components/
+node_modules/
+.settings/
+target/*
+build/
+dist/
+out/
+/*.env
+
+#Arquivos de Configuração de Projeto
+.project
+.gradle
+*.lock
+*.log
+.idea
+*.iml
+
+# Visual Studio Code code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# JDT-specific (Eclipse Java Development Tools)		
+.classpath
+rst-web/package.json
+rst-web/.npmrc

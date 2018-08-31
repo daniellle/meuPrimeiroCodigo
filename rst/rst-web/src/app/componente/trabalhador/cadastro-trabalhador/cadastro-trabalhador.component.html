@@ -1,0 +1,459 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{ 'app_rst_trabalhador_title_meus_dados' | recurso }}
+</p>
+
+<div class="container-form" [ngClass]="{ divDis : modoConsulta || isSomenteTrabalhador()}">
+    <form novalidate [formGroup]="trabalhadorForm">
+        <div class="container-subtitulo" style="height:50px;">
+            <div class="row">
+                    <div class="col-sm-4">{{'app_rst_label_dados_gerais' | recurso}}</div>
+                    <div class="col-sm-8 text-right" *ngIf="temEmpPerfil()">
+                        <div *ngIf="temvidaAtiva">
+                           <span id="vidaAtiva" class="col-quebra-palavra">{{ vidaAtiva }}</span>
+                        </div>
+                        <div *ngIf="!temvidaAtiva">
+                            <span id="semvidaAtiva" class="col-quebra-palavra" style="color:red">{{ vidaAtiva }}</span>
+                         </div>
+                    </div>
+            </div>
+        </div>
+        <div class="corpo-card">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="row">
+                        <div class="form-img form-group col-sm-12 col-md-12 img-center">
+                            <img *ngIf="!temImagem" class="img" src="assets/img/user_photo.svg" alt="Adicionar">
+                            <img *ngIf="temImagem" class=" img img-circulo" [src]="foto.image" alt="Foto" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+                        </div>
+                    </div>
+                    <div class="row  form-group btn-img-group" *ngIf="!modoConsulta">
+                        <div class="col img-center">
+                            <button class="btn-img " (click)="adicionarImagem()">
+                                    <img  src="assets/img/upload.svg" alt="Adicionar">
+                                 </button>
+                            <button class="btn-img " (click)="excluirImagem()">
+                                        <img  src="assets/img/trash.svg" alt="Excluir">
+                                 </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <md-input-container [ngClass]="{'divDisabled': nome.disabled}" [floatPlaceholder]="true">
+                                <input #nome mdInput formControlName="nome" name="nome" id="nome" appFormularioCamposErro placeholder="{{ 'app_rst_labels_nome_completo' | recurso }}" type="text" maxlength="160" required/>
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group  col-md-6">
+                            <md-input-container [floatPlaceholder]="true" [ngClass]="{'divDisabled': cpf.disabled}">
+                                <input #cpf mdInput placeholder="{{ 'app_rst_labels_cpf' | recurso }}" type="text" class="form-control" formControlName="cpf" id="cpf" appFormularioCamposErro [textMask]="{mask: mascaraCpf, guide: false}" required/>
+                            </md-input-container>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <md-input-container [floatPlaceholder]="true" [ngClass]="{'divDisabled': nit.disabled}">
+                                <input #nit mdInput placeholder="{{ 'app_rst_labels_nit' | recurso }}" type="text" class="form-control" formControlName="nit" id="nit" appFormularioCamposErro [textMask]="{mask: mascaraNit, guide: false}" required/>
+                            </md-input-container>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <md-input-container [floatPlaceholder]="true" [ngClass]="{'divDisabled': rg.disabled}">
+                                <input #rg mdInput formControlName="rg" name="rg" id="rg" appFormularioCamposErro placeholder="{{ 'app_rst_labels_rg' | recurso }}" type="text" maxlength="14" />
+                            </md-input-container>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <md-input-container [floatPlaceholder]="true" [ngClass]="{'divDisabled': orgaoRg.disabled}">
+                                <input #orgaoRg mdInput formControlName="orgaoRg" name="orgaoRg" id="orgaoRg" appFormularioCamposErro placeholder="{{ 'app_rst_labels_orgaoRg' | recurso }}" type="text" maxlength="10" />
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <my-date-picker class="prof" id="dataNascimento" [options]="datePickerOptions" locale="pt-br" formControlName="dataNascimento" name="dataNascimento" (keyup)="maskDate($event, this.trabalhadorForm, 'dataNascimento')"></my-date-picker>
+                    <span class="floating-label"> {{ 'app_rst_labels_data_nascimento_required' | recurso }} </span>
+                </div>
+                <div class="form-group col-md-4" *ngIf="!isMeusDados() && !isSomenteTrabalhador()">
+                    <my-date-picker class="prof" [options]="datePickerOptions" locale="pt-br" formControlName="dataFalecimento" name="dataFalecimento" (keyup)="maskDate($event, this.trabalhadorForm, 'dataFalecimento')"></my-date-picker>
+                    <span class="floating-label">{{ 'app_rst_labels_data_falecimento' | recurso }}</span>
+                </div>
+                <div class="form-group col-md-4">
+                    <div class="md-container">
+                        <md-select (change)="selectNacionalidade()" formControlName="nacionalidade" id="nacionalidade" placeholder="{{ 'app_rst_labels_nacionalidade' | recurso }}" appFormularioCamposErro>
+                            <md-option>
+                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                            </md-option>
+                            <md-option *ngFor='let key of keysNacionalidade' [value]="key">
+                                {{nacionalidade[key]}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div *ngIf="checkEstrangeiro() || checkNaturalizado()" class="form-group col-md-4">
+                    <div class="md-container">
+                        <md-select formControlName="pais" id="pais" placeholder="{{ 'app_rst_labels_pais_nascimento' | recurso }}" appFormularioCamposErro>
+                            <md-option>
+                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                            </md-option>
+                            <md-option *ngFor='let pais of paises' [value]="pais.id">
+                                {{pais.descricao}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div *ngIf="checkNaturalizado()" class="form-group col-md-4">
+                    <my-date-picker class="prof" [options]="datePickerOptions" locale="pt-br" formControlName="dataNaturalizacao" name="dataNaturalizacao" (keyup)="maskDate($event, this.trabalhadorForm, 'dataNaturalizacao')"></my-date-picker>
+                    <span class="floating-label">{{ 'app_rst_labels_data_naturalizacao' | recurso }} </span>
+                </div>
+                <div *ngIf="checkEstrangeiro() || checkNaturalizado()" class="form-group col-md-4">
+                    <my-date-picker class="prof" [options]="datePickerOptions" locale="pt-br" formControlName="dataEntradaPais" name="dataEntradaPais" (keyup)="maskDate($event, this.trabalhadorForm, 'dataEntradaPais')"></my-date-picker>
+                    <span class="floating-label">{{ 'app_rst_labels_data_entrada_pais' | recurso }}</span>
+                </div>
+                <div *ngIf="checkBrasileiro()" class="form-group col-md-4">
+                    <div class="md-container">
+                        <md-select formControlName="estadoNacionalidade" (change)="estadoNacionalidadelterado()" id="estadoNacionalidade" placeholder="{{ 'app_rst_labels_estado_nascimento' | recurso }}" appFormularioCamposErro>
+                            <md-option>
+                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                            </md-option>
+                            <md-option *ngFor='let estado of estados' [value]="estado.id">
+                                {{estado.descricao}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div *ngIf="checkBrasileiro()" class="form-group col-md-4">
+                    <ng-select [options]="municipiosNacionalidade" allowClear=true formControlName="municipioNacionalidade" maxlength="50" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}">
+                    </ng-select>
+                    <span class="floating-label">{{ 'app_rst_labels_municipio' | recurso }}</span>
+                </div>
+            </div>
+            <div class="row">
+
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <md-input-container [floatPlaceholder]="true" [ngClass]="{'divDisabled': ctps.disabled}">
+                        <input #ctps mdInput formControlName="ctps" name="ctps" id="ctps" appFormularioCamposErro placeholder="{{ 'app_rst_labels_ctps' | recurso }}" type="text" maxlength="10" />
+                    </md-input-container>
+                </div>
+                <div class="form-group col-md-4">
+                    <md-input-container [floatPlaceholder]="true" [ngClass]="{'divDisabled': serieCtps.disabled}">
+                        <input #serieCtps mdInput formControlName="serieCtps" name="serieCtps" id="serieCtps" appFormularioCamposErro placeholder="{{ 'app_rst_labels_serieCtps' | recurso }}" type="text" maxlength="10" />
+                    </md-input-container>
+                </div>
+                <div class="form-group col-md-4">
+                    <md-input-container [floatPlaceholder]="true" [ngClass]="{'divDisabled': ufCtps.disabled}">
+                        <input #ufCtps mdInput formControlName="ufCtps" name="ufCtps" id="ufCtps" appFormularioCamposErro placeholder="{{ 'app_rst_labels_ufCtps' | recurso }}" type="text" maxlength="2" />
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <md-input-container [floatPlaceholder]="true" [ngClass]="{'divDisabled': nomeMae.disabled}">
+                        <input #nomeMae mdInput formControlName="nomeMae" name="nomeMae" id="nomeMae" appFormularioCamposErro placeholder="{{ 'app_rst_labels_nome_mae' | recurso }}" type="text" maxlength="160" />
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <md-input-container [floatPlaceholder]="true" [ngClass]="{'divDisabled': nomePai.disabled}">
+                        <input #nomePai mdInput formControlName="nomePai" name="nomePai" id="nomePai" appFormularioCamposErro placeholder="{{ 'app_rst_labels_nome_pai' | recurso }}" type="text" maxlength="160" />
+                    </md-input-container>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="container-form space-up">
+    <form novalidate [formGroup]="trabalhadorForm" [ngClass]="{ divDis : modoConsulta || isSomenteTrabalhador()}">
+        <div class="container-subtitulo">
+            <p>{{'app_rst_labels_informações_adicionais' | recurso}}</p>
+        </div>
+        <div class="corpo-card">
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <div class="md-container">
+                        <md-select formControlName="brPdh" id="brPdh" placeholder="{{ 'app_rst_labels_brPdh' | recurso }}" appFormularioCamposErro>
+                            <md-option>
+                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                            </md-option>
+                            <md-option *ngFor='let key of keysBrpdh' [value]="key">
+                                {{brpdh[key]}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <div class="md-container">
+                        <md-select formControlName="escolaridade" id="escolaridade" placeholder="{{ 'app_rst_labels_escolaridade' | recurso }}" appFormularioCamposErro>
+                            <md-option>
+                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                            </md-option>
+                            <md-option *ngFor='let key of keysEscolaridade' [value]="key">
+                                {{escolaridade[key]}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <div class="md-container">
+                        <md-select formControlName="faixaSalarial" id="faixaSalarial" placeholder="{{ 'app_rst_labels_faixaSalarial' | recurso }}" appFormularioCamposErro>
+                            <md-option>
+                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                            </md-option>
+                            <md-option *ngFor='let key of keysFaixaSalarial' [value]="key">
+                                {{faixaSalarial[key]}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="genero" class="col-form-label"><span class="asterisco">* </span> {{ 'app_rst_labels_genero' | recurso }}</label>
+                    <div>
+                        <md-radio-group formControlName="genero" disableRipple>
+                            <md-radio-button disableRipple id="sexoMasculino" name="genero" [value]="genero.M" class="md-primary">{{ 'app_rst_valor_masculino' | recurso }}</md-radio-button>
+                            <md-radio-button disableRipple id="sexoFeminino" name="genero" [value]="genero.F"> {{ 'app_rst_valor_feminino' | recurso }} </md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <div class="md-container">
+                        <md-select formControlName="raca" id="raca" placeholder="{{ 'app_rst_labels_racaCor' | recurso }}" appFormularioCamposErro>
+                            <md-option>
+                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                            </md-option>
+                            <md-option *ngFor='let key of keysRaca' [value]="key">
+                                {{raca[key]}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <div class="md-container">
+                        <md-select formControlName="tipoSanguineo" id="tipoSanguineo" placeholder="{{ 'app_rst_labels_tipo_sanguineo' | recurso }}" appFormularioCamposErro>
+                            <md-option>
+                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                            </md-option>
+                            <md-option *ngFor='let key of keystipoSanguineo' [value]="key">
+                                {{tipoSanguineo[key]}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <div class="md-container">
+                        <md-select formControlName="estadoCivil" id="estadoCivil" placeholder="{{ 'app_rst_labels_estadoCivil' | recurso }}" required appFormularioCamposErro>
+                            <md-option>
+                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                            </md-option>
+                            <md-option *ngFor='let key of keysEstadoCivil' [value]="key">
+                                {{estadoCivil[key]}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <div class="md-container">
+                        <md-select formControlName="profissao" id="profissao" placeholder="{{ 'app_rst_labels_profissao' | recurso }}" appFormularioCamposErro>
+                            <md-option>
+                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                            </md-option>
+                            <md-option *ngFor='let profissao of profissoes' [value]="profissao.id">
+                                {{profissao.descricao}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <div class="md-container">
+                        <md-select formControlName="situacaoTrabalhador" id="situacaoTrabalhador" placeholder="{{ 'app_rst_labels_situacao_trabalhador' | recurso }}" appFormularioCamposErro>
+                            <md-option>
+                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                            </md-option>
+                            <md-option *ngFor='let key of keysSituacaoTrabalhador' [value]="key">
+                                {{situacaoTrabalhador[key]}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="corpo-card">
+            <div class="row">
+                <div class="form-check col-lg-6">
+                    <mat-slide-toggle name="planoSaude" id="planoSaude" formControlName="planoSaude" appFormularioCamposErro>
+                        <div>
+                            <span class="col-quebra-palavra">{{'app_rst_labels_possui_plano_saude' | recurso}}</span>
+                        </div>
+                    </mat-slide-toggle>
+
+
+                </div>
+                <div class="form-check col-lg-6">
+                    <mat-slide-toggle name="possuiAutomovel" id="possuiAutomovel" formControlName="possuiAutomovel" appFormularioCamposErro>
+                        <span class="col-quebra-palavra">{{'app_rst_labels_possui_automovel' | recurso}}</span>
+                    </mat-slide-toggle>
+
+
+                </div>
+            </div>
+            <div class="row space-up">
+                <div class="form-check col-md-12">
+                    <label class="form-check-label col-md-12" for="notificacao">
+                                <md-checkbox name="notificacao" id="notificacao" formControlName="notificacao" class="form-check-input"  appFormularioCamposErro>
+                                {{'app_rst_labels_notificacao_campanhas_sms_email_whatsapp' | recurso}}</md-checkbox></label>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="container-form space-up">
+    <form novalidate [formGroup]="trabalhadorForm" [ngClass]="{ divDis : modoConsulta}">
+        <div class="container-subtitulo">
+            <p>{{'app_rst_labels_endereco' | recurso}}</p>
+        </div>
+        <div class="corpo-card">
+            <div class="row">
+                <div class="form-group col-md-8">
+                    <md-input-container [ngClass]="{'divDisabled': endereco.disabled}" [floatPlaceholder]="true">
+                        <input #endereco mdInput formControlName="endereco" name="endereco" id="endereco" appFormularioCamposErro placeholder="{{ 'app_rst_labels_endereco' | recurso }}" type="text" maxlength="100" />
+                    </md-input-container>
+                </div>
+                <div class="form-group col-md-4">
+                    <md-input-container [ngClass]="{'divDisabled': numero.disabled}" [floatPlaceholder]="true">
+                        <input #numero mdInput formControlName="numero" name="numero" id="numero" appFormularioCamposErro placeholder="{{ 'app_rst_labels_numero' | recurso }}" type="text" maxlength="5" />
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <md-input-container [ngClass]="{'divDisabled': complemento.disabled}" [floatPlaceholder]="true">
+                        <input #complemento mdInput formControlName="complemento" name="complemento" id="complemento" appFormularioCamposErro placeholder="{{ 'app_rst_labels_complemento' | recurso }}" type="text" maxlength="100" />
+                    </md-input-container>
+                </div>
+                <div class="form-group col-md-4">
+                    <md-input-container [ngClass]="{'divDisabled': bairro.disabled}" [floatPlaceholder]="true">
+                        <input #bairro mdInput formControlName="bairro" name="bairro" id="bairro" appFormularioCamposErro placeholder="{{ 'app_rst_labels_bairro' | recurso }}" type="text" maxlength="50" />
+                    </md-input-container>
+                </div>
+                <div class="form-group col-md-4">
+                    <md-input-container [ngClass]="{'divDisabled': cep.disabled}" [floatPlaceholder]="true">
+                        <input #cep mdInput formControlName="cep" name="cep" id="cep" appFormularioCamposErro placeholder="{{ 'app_rst_labels_CEP' | recurso }}" type="text" [textMask]="{mask: mascaraCep, guide: false}" />
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <div class="md-container">
+                        <md-select (change)="estadoAlterado()" formControlName="estado" id="estado" placeholder="{{ 'app_rst_labels_estado' | recurso }}" appFormularioCamposErro>
+                            <md-option>
+                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                            </md-option>
+                            <md-option *ngFor='let estado of estados' [value]="estado.id">
+                                {{estado.descricao}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <ng-select [options]="municipios" allowClear=true formControlName="municipio" maxlength="50" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}">
+                    </ng-select>
+                    <span class="floating-label">{{ 'app_rst_labels_municipio' | recurso }}</span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="row space-up">
+    <div class="form-group col-sm-8 col-md-6">
+        <div class="container-form">
+            <!--Grid Telefone -->
+            <form [formGroup]="trabalhadorForm">
+                <div class="container-subtitulo">
+                    <p>{{'app_rst_labels_adicionar_telefone' | recurso}}</p>
+                </div>
+                <telefone-modal #modal [(list)]="trabalhador.listaTelefoneTrabalhador" [modoConsulta]="modoConsulta&& !isSomenteTrabalhador()"></telefone-modal>
+                <telefone-grid [modal]="modal" *ngIf="existeTelefone()" [(list)]="trabalhador.listaTelefoneTrabalhador" [modoConsulta]="modoConsulta && !isSomenteTrabalhador()"></telefone-grid>
+            </form>
+            <!--Fim Grid Telefone -->
+        </div>
+    </div>
+    <div class="form-group col-sm-8 col-md-6">
+        <div class="container-form">
+            <!--Grid Email -->
+            <form [formGroup]="trabalhadorForm">
+                <div class="container-subtitulo">
+                    <p>E-mail</p>
+                </div>
+                <app-email-modal #email [(list)]="trabalhador.listaEmailTrabalhador" [modoConsulta]="modoConsulta && !isSomenteTrabalhador()"></app-email-modal>
+                <app-email-grid [modalEmail]="email" *ngIf="existeEmail()" [modoConsulta]="modoConsulta && !isSomenteTrabalhador()" [(list)]="trabalhador.listaEmailTrabalhador"></app-email-grid>
+            </form>
+            <!--Fim Email -->
+        </div>
+    </div>
+</div>
+
+<div class="container-form" [ngClass]="{ divDis : modoConsulta}">
+    <form [formGroup]="trabalhadorForm">
+        <div class="container-subtitulo">
+            <p>{{'app_rst_labels_vacinas_alergias_medicamentos_auto_declarados' | recurso}}</p>
+        </div>
+
+        <div class="corpo-card">
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <md-input-container [floatPlaceholder]="true">
+                        <textarea mdInput formControlName="descricaoAlergias" name="descricaoAlergias" id="descricaoAlergias" placeholder="{{ 'app_rst_labels_alergias_auto_declarados' | recurso }}" type="text" maxlength="300"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <md-input-container [floatPlaceholder]="true">
+                        <textarea mdInput formControlName="descricaoMedicamentos" name="descricaoMedicamentos" id="descricaoMedicamentos" placeholder="{{ 'app_rst_labels_medicamentos_auto_declarados' | recurso }}" type="text" maxlength="300"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="btn-rodape-acoes">
+    <button type="button " class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!modoConsulta" (click)="salvar()">{{'app_rst_btn_salvar' | recurso}}</button>
+    <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
+</div>
+<form [formGroup]="trabalhadorForm">
+    <ng-template #upload let-close="close" let-fechar="dismiss">
+        <div class="modal-header">
+            <p class="modal-title">{{'app_rst_trabalhador_label_uplad_imagem' | recurso}} </p>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <div class="row">
+                    <div id="cropper" class=" ">
+                        <img-cropper #cropper [image]="foto" [settings]="cropperSettings"></img-cropper>
+                        <!-- <input id='input-file' type='file' value='' /> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="close('adicionar')">{{ 'app_rst_btn_salvar' | recurso }}</button>
+            <button type="button" class="btn btn-secondary" (click)="fechar('cancelar')">{{ 'app_rst_btn_cancelar' | recurso }}</button>
+        </div>
+    </ng-template>
+</form>

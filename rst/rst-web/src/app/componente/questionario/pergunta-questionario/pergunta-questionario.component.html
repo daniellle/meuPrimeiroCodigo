@@ -1,0 +1,173 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{title}}
+</p>
+
+<div class="container-form space-up" *ngIf="idQuestionario">
+    <form novalidate [formGroup]="perguntaQuestionarioForm">
+        <div class="corpo-card">
+            <div class="row">
+                <div class="form-group col-md-9">
+                    <div class="borda-segmento">
+                        <div id="modalLupa" #modalLupa class="input-group searchlupa">
+                            <md-input-container style="border-color:transparent" [floatPlaceholder]="true">
+                                <input mdInput placeholder="{{'app_rst_labels_grupo' | recurso }}" type="text" name="grupo" id="modalLupa" formControlName="grupo" class="form-control" required appFormularioCamposErro>
+                            </md-input-container>
+                            <app-modal-selecionar-grupo [isGrupoSelecionado]="perguntaQuestionario.grupoPergunta.id" [modoConsulta]="modoConsulta" (onLimpar)="limparGrupo()" (onAdicionar)="selecionarGrupo($event)">
+                            </app-modal-selecionar-grupo>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-3">
+                    <md-input-container [floatPlaceholder]="true">
+                        <input mdInput formControlName="ordemGrupo" name="ordemGrupo" id="ordemGrupo" maxlength="4" appFormularioCamposErro placeholder="{{ 'app_rst_labels_ordem_grupo' | recurso }}" type="text" maxlength="160" required/>
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-9">
+                    <div class="borda-segmento">
+                        <div id="modalLupa" #modalLupa class="input-group searchlupa lupa-textarea">
+                            <md-input-container style="border-color:transparent" [floatPlaceholder]="true">
+                                <textarea mdInput placeholder="{{'app_rst_labels_pergunta' | recurso }}" formControlName="pergunta" type="text" name="pergunta" id="modalLupa" class="form-control" required appFormularioCamposErro rows="3"></textarea>
+                            </md-input-container>
+                            <app-modal-selecionar-pergunta [isPerguntaSelecionada]="perguntaQuestionario.pergunta.id" [modoConsulta]="modoConsulta" (onLimpar)="limparPergunta()" (onAdicionar)="selecionarPergunta($event)"></app-modal-selecionar-pergunta>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-3">
+                    <md-input-container [floatPlaceholder]="true">
+                        <input mdInput formControlName="ordemPergunta" maxlength="4" name="ordemPergunta" id="ordemPergunta" appFormularioCamposErro placeholder="{{ 'app_rst_labels_ordem_pergunta' | recurso }}" type="text" maxlength="2" required/>
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-12">
+                    <div class="borda-segmento">
+                        <div id="modalLupa" #modalLupa class="input-group searchlupa">
+                            <md-input-container style="border-color:transparent" [floatPlaceholder]="true">
+                                <input mdInput placeholder="{{'app_rst_labels_indicador' | recurso }}" type="text" name="indicador" id="modalLupa" formControlName="indicador" class="form-control" appFormularioCamposErro>
+                            </md-input-container>
+                            <app-modal-selecionar-indicador [isIndicadorSelecionado]="perguntaQuestionario.indicadorQuestionario.id" [modoConsulta]="modoConsulta" (onLimpar)="limparIndicador()" (onAdicionar)="selecionarIndicador($event)">
+                            </app-modal-selecionar-indicador>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="tipoResposta" class="col-form-label obrigatorio">{{ 'app_rst_labels_tipo_resposta' | recurso }}</label>
+                    <div>
+                        <md-radio-group formControlName="tipoResposta" disableRipple>
+                            <md-radio-button disableRipple [id]="key" name="tipoResposta" *ngFor="let key of keysTipoResposta" [value]=key class="md-primary">{{tipoResposta[key]}}</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="container-form space-up">
+    <div class="container-subtitulo">
+        <p>{{'app_rst_labels_respostas' | recurso}}</p>
+    </div>
+    <div class="corpo-card">
+        <div class="row">
+            <div class="form-group col-md-12">
+                <app-modal-selecionar-resposta (onAdicionar)="selecionarRespostaQuestionario($event)" [isRespostasQuestionario]="isNotEmpty(perguntaQuestionario.respostaQuestionarios)" [modoConsulta]="modoConsulta"></app-modal-selecionar-resposta>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-responsive" *ngIf="isNotEmpty(perguntaQuestionario.respostaQuestionarios)">
+        <thead>
+            <tr>
+                <th>
+                    <span class="label">{{'app_rst_labels_resposta' | recurso}}</span>
+                </th>
+                <th>
+                    <span class="label">{{'app_rst_labels_pontuacao' | recurso}}</span>
+                </th>
+                <th>
+                    <span class="label">{{'app_rst_labels_ordem' | recurso}}</span>
+                </th>
+                <th *ngIf="!modoConsulta" class="text-center">
+                    <span class="label">&nbsp;</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of perguntaQuestionario.respostaQuestionarios; let i = index">
+                <td class="text-left">{{item.resposta.descricao}}</td>
+                <td class="col-quebra">{{item.pontuacao}}</td>
+                <td>{{item.ordemResposta}}</td>
+                <td *ngIf="!modoConsulta" class="text-center">
+                    <button class="btn-link" (click)="removeResposta(i)">
+                        <img class="lixo" src="assets/img/trash.svg" alt="Excluir">   
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="btn-rodape-acoes space-up">
+    <button type="button " class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!this.modoConsulta" (click)="salvar()">{{'app_rst_btn_salvar' | recurso}}</button>
+    <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="voltar()">{{'app_rst_btn_cancelar' | recurso}}</button>
+</div>
+
+<div class="container-form space-up">
+    <div class="container-subtitulo">
+        <p>{{'app_rst_labels_perguntas_adicionadas' | recurso}}</p>
+    </div>
+    <div class="corpo-card">
+        <div *ngIf="isEmpty(listaPerguntaQuestionario)" class="row">
+            <div class="form-group col-md-12">
+                {{ 'app_rst_nenhuma_pergunta_adicionada' | recurso }}
+            </div>
+        </div>
+        <div class="grid-pesquisa" *ngIf="isNotEmpty(listaPerguntaQuestionario)">
+            <table class="table table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="label">{{'app_rst_labels_ordem_grupo' | recurso}}</span>
+                        </th>
+                        <th>
+                            <span class="label">{{'app_rst_labels_grupo' | recurso}}</span>
+                        </th>
+                        <th>
+                            <span class="label">{{'app_rst_labels_ordem_pergunta' | recurso}}</span>
+                        </th>
+                        <th>
+                            <span class="label">{{'app_rst_labels_pergunta' | recurso}}</span>
+                        </th>
+                        <th *ngIf="!modoConsulta" class="text-center">
+                            <span class="label">&nbsp;</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listaPerguntaQuestionario; let i = index" (click)="selecionar(item)">
+                        <td>{{item.ordemGrupo}}</td>
+                        <td class="col-quebra">{{item.grupoPergunta.descricao}}</td>
+                        <td>{{item.ordemPergunta}}</td>
+                        <td class="col-quebra">{{item.pergunta.descricao}}</td>
+                        <td *ngIf="!modoConsulta" class="text-center">
+                            <button class="btn-link" (click)="$event.stopPropagation();removePergunta(item)">
+                                <img class="lixo" src="assets/img/trash.svg" alt="Excluir">   
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="btn-paginacao">
+                <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                    (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+            </div>
+        </div>
+    </div>
+    <div class="btn-rodape-acoes space-up">
+        <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
+    </div>
+</div>

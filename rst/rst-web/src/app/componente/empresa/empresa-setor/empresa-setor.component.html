@@ -1,0 +1,101 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+
+<p class="titulo-pagina">
+    {{ title }}
+</p>
+
+<div class="container-form" *ngIf="hasPermissaoCadastrar()">
+    <form class="float-label">
+        <div class="row">
+            <div class="form-group col-md-3">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput [(ngModel)]="filtro.sigla" name="sigla" id="sigla" appFormularioCamposErro placeholder="{{ 'app_rst_labels_sigla' | recurso }}" type="text" maxlength="10" />
+                </md-input-container>
+            </div>
+            <div class="form-group col-md-8">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput [(ngModel)]="filtro.descricao" name="descricao" id="descricao" appFormularioCamposErro placeholder="{{ 'app_rst_labels_descricao' | recurso }}" type="text" maxlength="80" />
+                </md-input-container>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="btn-filter-pesquisar space-up" *ngIf="hasPermissaoCadastrar()">
+    <button type="button" class="btn btn-primary" (click)="pesquisarSetor();">{{ 'app_rst_btn_pesquisar' | recurso }}</button>
+</div>
+
+<div class="container-form space-up" *ngIf="!isListaVazia() && !modoConsulta">
+    <div class="grid-pesquisa">
+        <table class="table table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th class="label" style="width: 15%;"><span>{{ 'app_rst_labels_sigla' | recurso }}</span></th>
+                    <th class="label"><span>{{ 'app_rst_labels_descricao' | recurso }}</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of setores">
+                    <th class="label text-center">
+                        <fieldset>
+                            <md-checkbox [(ngModel)]="checks[item.id]" name="rdoLista" (change)="selectDeselectSetor(item, $event, item.id)" class="radio-tabela-pesquisa"></md-checkbox>
+                        </fieldset>
+                    </th>
+                    <td class="col-nome col-nao-quebra">&nbsp;{{item.sigla}}</td>
+                    <td class="col-nome col-quebra">&nbsp;{{item.descricao}}</td>
+
+                </tr>
+            </tbody>
+        </table>
+        <div class="btn-paginacao">
+            <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+        </div>
+    </div>
+</div>
+
+<div class="btn-filter-pesquisar space-up" *ngIf="!isListaVazia() && !modoConsulta">
+    <button type="button" class="btn btn-primary" (click)="add();">{{ 'app_rst_btn_salvar' | recurso }}</button>
+</div>
+
+<div class="container-form space-up">
+    <div class="container-subtitulo">
+        <p>{{'app_rst_empresa_setores_adicionados' | recurso}}</p>
+    </div>
+    <div *ngIf="isEmpty(empresasSetor)" class="row">
+        <div class="form-group col-md-12">
+            {{ 'app_rst_msg_nenhum_registro_adicionado' | recurso }}
+        </div>
+    </div>
+    <div *ngIf="isNotEmpty(empresasSetor)">
+        <table class="table table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th class="label" style="width: 15%;"><span>{{ 'app_rst_labels_sigla' | recurso }}</span></th>
+                    <th class="label"><span>{{ 'app_rst_labels_descricao' | recurso }}</span></th>
+                    <th class="label text-center" style="width: 10%;" *ngIf="hasPermissaoDesativar()">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of empresasSetor">
+                    <td class="col-nome col-nao-quebra">&nbsp;{{item.setor.sigla}}</td>
+                    <td class="col-nome col-quebra">&nbsp;{{item.setor.descricao}}</td>
+                    <td class="text-center" *ngIf="hasPermissaoDesativar()">
+                        <button class="btn-link" (click)="desativarEmpresaSetor(item)"><img class="lixo" src="assets/img/trash.svg" alt="Excluir"></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="btn-paginacao" *ngIf="isNotEmpty(empresasSetor)">
+            <pagination [firstText]="paginacaoEmpresaSetor.textPrimeiro" [lastText]="paginacaoEmpresaSetor.textUltimo" [nextText]="paginacaoEmpresaSetor.textProximo" [previousText]="paginacaoEmpresaSetor.textAnterior" [totalItems]="paginacaoEmpresaSetor.totalItens"
+                [(ngModel)]="paginacaoEmpresaSetor.pagina" [itemsPerPage]="paginacaoEmpresaSetor.qtdRegistro" (numPages)="paginacaoEmpresaSetor.numPages = $event" (pageChanged)="pageChangedSetorEmpresa($event)" [maxSize]="paginacaoEmpresaSetor.maxSize" class="pagination-sm justify-content-center"
+                [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+        </div>
+    </div>
+</div>
+<div class="btn-rodape-acoes space-up">
+    <button type="button" class="btn btn-secondary btn-cadastro" (click)="voltar();">{{ 'app_rst_btn_voltar' | recurso }}</button>
+</div>

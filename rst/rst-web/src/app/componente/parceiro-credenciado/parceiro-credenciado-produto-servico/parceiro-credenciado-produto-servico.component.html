@@ -1,0 +1,113 @@
+<ng2-toasty>
+</ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{'app_rst_produtos_title_menu' | recurso}}
+</p>
+
+<div class="container-form" *ngIf="!modoConsulta" [ngClass]="{ divDis : modoConsulta }">
+    <div class="row">
+        <div class="form-group col-sm-6">
+            <div class="md-container">
+                <md-select for="linha" placeholder="{{'app_rst_labels_linha' | recurso}}" name="linha" [(ngModel)]="filtro.idLinha" id="selectlinha">
+                    <md-option>
+                        <option value="">{{ 'app_rst_labels_selecione' | recurso }}</option>
+                    </md-option>
+                    <md-option *ngFor='let linha of listaLinhas' [value]="linha.id">{{linha.descricao}}
+                    </md-option>
+                </md-select>
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <md-input-container [floatPlaceholder]="true">
+                <input for="nome" mdInput placeholder="{{'app_rst_labels_produto' | recurso}}" type="text" class="form-control" id="nome" [(ngModel)]="filtro.nome" name="nome" #produtoServicoFiltro="ngModel" />
+            </md-input-container>
+        </div>
+    </div>
+</div>
+
+<div class="row space-up" *ngIf="!modoConsulta">
+    <div class="form-group col-12">
+        <button class="btn btn-primary" (click)="pesquisar()">Pesquisar</button>
+    </div>
+</div>
+
+<div class="container-form" *ngIf="!modoConsulta && temPrdodutoServico" [ngClass]="{ divDis : modoConsulta }">
+    <div *ngIf="temPrdodutoServico ">
+        <div class="row grid-pesquisa">
+            <div class="col-12">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="label" style="width: 10%;">&nbsp;</th>
+                            <th class="label">{{ 'app_rst_labels_linha' | recurso }}</th>
+                            <th class="">{{ 'app_rst_labels_produto' | recurso }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of listaProdutoServico">
+                            <td class="text-center">
+                                <fieldset>
+                                    <md-checkbox [(ngModel)]="checks[item.id]" type="checkbox" name="ProdutosServico" (change)="selectDeselectProdutoServico(item, $event, item.id )">
+                                    </md-checkbox>
+                                </fieldset>
+                                <!-- <input type="checkbox" name="ProdutosServico" class="radio-tabela-pesquisa" (click)="selectDeselectProdutoServico(item, $event, i )"> -->
+                            </td>
+                            <td class="col-quebra">{{item.linha.descricao}}</td>
+                            <td class="col-quebra">{{item.nome}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="btn-paginacao">
+                    <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                        (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="btn-filter-pesquisar space-up" *ngIf="!modoConsulta && temPrdodutoServico">
+    <span *ngIf="!modoConsulta">
+            <button type="button" class="btn btn-primary" (click)="salvar();">{{ 'app_rst_btn_salvar' | recurso }}</button>
+        </span>
+</div>
+
+<div class="container-form space-up">
+    <div class="container-subtitulo">
+        <p>{{'app_rst_departamento_subtitulo_produtos_e_servicos_associados' | recurso}}</p>
+    </div>
+
+    <span *ngIf="!temParceiroProduto">Nenhum registro adicionado.</span>
+
+    <div class="row grid-pesquisa" *ngIf="temParceiroProduto">
+        <div class="col-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="">{{ 'app_rst_labels_linha' | recurso }}</th>
+                        <th class="">{{ 'app_rst_labels_produto' | recurso }}</th>
+                        <th class="text-center">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listaParceiroProdutoServico; let i = index">
+                        <td class="col-quebra col-fifty-grid">{{item.produtoServico.linha.descricao}}</td>
+                        <td class="col-quebra col-fifty-grid">{{item.produtoServico.nome}}</td>
+                        <td class="text-center" *ngIf="!modoConsulta">
+                            <button class="btn-link" (click)="remover(item)"><img class="lixo" src="assets/img/trash.svg" alt="Excluir"></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="btn-paginacao">
+                <pagination [firstText]="paginacaoParceiroProdutoServico.textPrimeiro" [lastText]="paginacaoParceiroProdutoServico.textUltimo" [nextText]="paginacaoParceiroProdutoServico.textProximo" [previousText]="paginacaoParceiroProdutoServico.textAnterior" [totalItems]="paginacaoParceiroProdutoServico.totalItens"
+                    [(ngModel)]="paginacaoParceiroProdutoServico.pagina" [itemsPerPage]="paginacaoParceiroProdutoServico.qtdRegistro" (numPages)="paginacaoParceiroProdutoServico.numPages = $event" (pageChanged)="pageChangedParceiroProdutoServico($event)"
+                    [maxSize]="paginacaoParceiroProdutoServico.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="btn-rodape-acoes space-up">
+    <button type="button" class="btn btn-secondary btn-cadastro" (click)="voltar();">{{ 'app_rst_btn_voltar' | recurso }}</button>
+</div>

@@ -1,0 +1,4 @@
+rootProject.name = 'rst'
+include 'rst-service'
+include 'rst-web'
+include 'rst-app'

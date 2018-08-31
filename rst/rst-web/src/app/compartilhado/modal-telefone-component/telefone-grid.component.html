@@ -1,0 +1,22 @@
+<div class="grid-pesquisa">
+    <table class="table table-responsive table-hover">
+        <thead>
+            <tr>
+                <th><span class="label">&nbsp;</span></th>
+                <th class="text-center"><span class="label">Telefone</span></th>
+                <th class="text-center"><span class="label">Tipo</span></th>
+                <th *ngIf="!modoConsulta" class="text-center"><span class="label">&nbsp;</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of list; let i = index" (click)="selecionar(item, i)">
+                <td class="text-center"><img *ngIf="item.telefone.contato" class="img-contato" src="assets/img/mini_favorite.svg" alt="Favorito"></td>
+                <td class="text-center col-nao-quebra">{{item.telefone.numero | telefonePipe}}</td>
+                <td class="text-center col-nome">{{tiposTelefone[item.telefone.tipo]}}</td>
+                <td *ngIf="!modoConsulta" class="text-center">
+                    <button class="btn-link" (click)="removeTel(item)"><img class="lixo" src="assets/img/trash.svg" alt="Excluir"></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

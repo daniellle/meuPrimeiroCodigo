@@ -1,0 +1,59 @@
+group "br.com.ezvida.rst"
+version "1.0.0-SNAPSHOT"
+
+apply plugin: "maven"
+
+buildscript {
+
+    repositories {
+        maven {
+            url "http://nexus.solutis.com.br/content/groups/public"
+        }
+    }
+
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:${ioSpringDependencyManagementVersion}"
+    }
+
+}
+
+allprojects {
+
+    apply plugin: "java"
+    apply plugin: "io.spring.dependency-management"
+
+    group "br.com.ezvida.rst"
+    version "1.0.0-SNAPSHOT"
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    ext.RepoConfigurator = {
+        maven {
+            url = uri("http://nexus.solutis.net.br/content/groups/public")
+        }
+        mavenLocal()
+    }
+
+    buildscript.repositories RepoConfigurator
+
+    repositories RepoConfigurator
+
+}
+
+subprojects {
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+}
+
+project(":rst-app") {
+    apply plugin: "ear"
+    dependencies {
+        deploy project(":rst-service")
+        deploy project(path: ":rst-web", configuration: "archives")
+    }
+}

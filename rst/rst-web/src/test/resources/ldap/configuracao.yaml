@@ -1,0 +1,9 @@
+producao:
+  endereco: "ldap://ad.itoc.solutis.net.br:3268"
+  cliente: "svc.sonar@solutis.net.br"
+  credencial: "S0n@R#2Oi6"
+
+desenvolvimento:
+  endereco: "ldap://ad.itoc.solutis.net.br:3268"
+  cliente: "svc.sonar@solutis.net.br"
+  credencial: "S0n@R#2Oi6"

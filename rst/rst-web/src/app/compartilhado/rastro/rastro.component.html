@@ -1,0 +1,11 @@
+<!-- Rastros -->
+<ol class="breadcrumb">
+  <ng-template ngFor let-rastro [ngForOf]="breadcrumbs" let-last=last>
+    <li class="breadcrumb-item"
+        *ngIf="rastro.label.title && rastro.url.substring(rastro.url.length-1) == '/' || rastro.label.title&&last"
+        [ngClass]="{active: last}">
+      <a *ngIf="!last" [routerLink]="rastro.url">{{rastro.label.title}}</a>
+      <span *ngIf="last" [routerLink]="rastro.url">{{rastro.label.title}}</span>
+    </li>
+  </ng-template>
+</ol>

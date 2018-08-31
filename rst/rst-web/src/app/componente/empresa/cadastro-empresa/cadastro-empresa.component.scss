@@ -1,0 +1,39 @@
+.imagem {
+    weight: 10%;
+    height: 10%;
+}
+
+.text {
+    text-align: center;
+}
+
+.center-principal {
+    margin-left: 44%;
+}
+
+::ng-deep .borda-segmento md-input-container .mat-input-wrapper {
+  padding-left: 20px;
+  padding-right: 10px;
+}
+
+@mixin mat-radio-theme($theme) {
+    $foreground: map-get($theme, foreground);
+  
+    .mat-radio-outer-circle {
+      border-color: mat-color($foreground, secondary-text);
+    }
+  
+    .mat-radio-disabled .mat-radio-outer-circle {
+      border-color: mat-color($foreground, disabled);
+    }
+  
+    .mat-radio-disabled {
+      .mat-radio-ripple .mat-ripple-element, .mat-radio-inner-circle {
+        background-color: mat-color($foreground, disabled);
+      }
+  
+      .mat-radio-label-content {
+        color: mat-color($foreground, disabled);
+      }
+    }
+}

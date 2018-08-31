@@ -1,0 +1,24 @@
+<app-bloqueio></app-bloqueio>
+
+<div *ngIf="existeDepartamento">
+
+    <div class="titulo-pagina-intermediaria">
+        <div>Razão Social: {{departamentoRegional.razaoSocial}}</div>
+        <div>CNPJ: {{departamentoRegional.cnpj | cnpjPipe }}</div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-4 col-lg-3" *ngIf="hasPermissaoDadosBasicos()">
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('cadastrar')" [titulo]="'Cadastro Básico'" [classCardCor]="'card-laranja'" [classImgFront]="'img_dadosbasico'" [classImgBack]="'img_dadosbasico'"></app-card-tela-intermediaria>
+        </div>
+
+        <div class="form-group col-md-4 col-lg-3" *ngIf="hasPermissaoProdutosServicos()">
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('produtoseservicos')" [titulo]="'Produtos e Serviços'" [classCardCor]="'card-musgo'" [classImgFront]="'img_produtoservico'" [classImgBack]="'img_produtoservico'"></app-card-tela-intermediaria>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-12">
+            <button type="button" class="btn btn-secondary btn-cadastro" (click)='voltar()'>Voltar</button>
+        </div>
+    </div>
+</div>

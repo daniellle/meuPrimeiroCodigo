@@ -1,0 +1,72 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{'app_rst_usuario_departamento_regional_subtitulo_associar_departamento' | recurso}}
+</p>
+
+<div class="container-form">
+    <div class="row">
+        <div class="form-group col-sm-8">
+            <md-input-container [floatPlaceholder]="true">
+                <input mdInput placeholder="{{ 'app_rst_labels_razao_social' | recurso }}" type="text" name="razaoSocial" [(ngModel)]="filtro.razaoSocial" class="form-control" id="razaoSocial" maxlength="160" #razaoSocialFiltro="ngModel">
+            </md-input-container>
+        </div>
+        <div class="form-group col-sm-4">
+            <md-input-container [floatPlaceholder]="true">
+                <input mdInput placeholder="{{ 'app_rst_labels_cnpj' | recurso }}" type="text" [textMask]="{mask: mascaraCnpj, guide: false}" name="cnpj" [(ngModel)]="filtro.cnpj" class="form-control" id="cnpj" #cnpjFiltro="ngModel">
+            </md-input-container>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-6 col-lg-4">
+            <div class="md-container">
+                <md-select mdInput placeholder="{{'app_rst_labels_estado' | recurso}}" name="depRegional" [(ngModel)]="filtro.idEstado" id="estado ">
+                    <md-option value=undefined>Todos</md-option>
+                    <md-option *ngFor='let estado of estados' [value]="estado.id">{{estado.descricao}}</md-option>
+                </md-select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="btn-filter-pesquisar space-up">
+    <button class="btn btn-primary" (click)="pesquisar()">{{'app_rst_btn_pesquisar' | recurso}}</button>
+    <button class="btn btn-secondary" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
+</div>
+
+<div class="container-form space-up" *ngIf="isNotEmpty(listaDepartamento)">
+    <div class="grid-pesquisa">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="label text-center">&nbsp;</th>
+                    <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
+                    <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                    <th class="label"><span>{{ 'app_rst_labels_municipio' | recurso }}</span></th>
+                    <th class="label"><span>{{ 'app_rst_labels_sigla_dr' | recurso }}</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of listaDepartamento">
+                    <td class="text-center">
+                        <fieldset>
+                            <md-checkbox [(ngModel)]="checks[item.id]" name="rdoLista" (change)="selecionar(item, $event, item.id)" class="radio-tabela-pesquisa"></md-checkbox>
+                        </fieldset>
+                    </td>
+                    <td class="col-quebra col-nome">{{item.razaoSocial}}</td>
+                    <td class="col-nao-quebra">{{item.cnpj | cnpjPipe}}</td>
+                    <td class="col-quebra col-nome">{{item.listaEndDepRegional && item.listaEndDepRegional[0] ? item.listaEndDepRegional[0].endereco.municipio.descricao : ''}}</td>
+                    <td class="col-nao-quebra">{{item.siglaDR}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="btn-paginacao">
+            <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+        </div>
+    </div>
+</div>
+
+<div class="btn-rodape-acoes space-up" *ngIf="isNotEmpty(listaDepartamento)">
+    <button type="button" class="btn btn-primary" (click)="adicionarUsuarioEntidade()">{{ 'app_rst_btn_salvar' | recurso }}</button>
+</div>
