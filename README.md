@@ -4,6 +4,7 @@
 Características
 -------------------------
 
+- Java
 - EJB / JAX-RS
 - Angular / Bootstrap
 - JPA (Hibernate / HSQLDB)
@@ -30,6 +31,8 @@ Considerações
 - As parametrizações do projeto devem ser alteradas na tabela parametros do banco de dados SESI_RST.
 - Utiliza o pacote ELK para salvar dados de Auditoria.
 - Disponibiliza API de consulta a alguns de seus dados para outros sistemas, como Portal, Res Online e Microserviço IGEV
+- Uma das urls de acesso é <host_ambiente>/rst/cadastro/usuario.
+- Deve ser dado permissão aos usuários através da tela de usuários.
 - Mais informações ver arquivo [dev.md](https://github.com/ezvida/rst-aplicacoes/blob/release/rst/dev.md)
 
 Dependências
