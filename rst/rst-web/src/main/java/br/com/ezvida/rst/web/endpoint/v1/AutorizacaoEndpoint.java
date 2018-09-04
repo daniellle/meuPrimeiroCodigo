@@ -120,7 +120,7 @@ public class AutorizacaoEndpoint extends SegurancaEndpoint<Token> {
 
         return Response.status(response.getResponseStatus()).type(MediaType.APPLICATION_JSON).header("Content-Version", getApplicationVersion()).entity(response.getBody()).build();
     }
-    
+
     @Override
     public void validar(Payload payload) {
         token = service.validar(payload);
