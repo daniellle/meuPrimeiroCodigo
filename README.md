@@ -11,6 +11,7 @@ Características
 - OAuth com JWT
 - Maven / Nexus
 - JUnit / Mockito / Power Mokito
+- NodeJS
 - fw-ezvida
 - girst-apiclient
 - adl-core
@@ -31,7 +32,7 @@ Considerações
 - As parametrizações do projeto devem ser alteradas na tabela parametros do banco de dados SESI_RST.
 - Conecta-se ao Projeto [edge-server](https://github.com/ezvida/edge-server) através de requisições Restfull com Tokens para obter dados de Vacinas Autodeclaradas.
 - Utiliza o pacote ELK para salvar dados de Auditoria.
-- Disponibiliza API de consulta a alguns de seus dados para outros sistemas, como Portal, Res Online e Microserviço IGEV
+- Disponibiliza API de consulta a alguns de seus dados para outros sistemas, como Portal, Res Online e Microserviço IGEV.
 - Uma das urls de acesso é <host_ambiente>/rst/cadastro/usuario.
 - Deve ser dado permissão aos usuários através da tela de usuários.
 - Mais informações ver arquivo [dev.md](https://github.com/ezvida/rst-aplicacoes/blob/release/rst/dev.md)
@@ -46,6 +47,7 @@ Dependências
 - fw (publicado no Nexus)
 - adl-core (publicada no Nexus)
 - Configuração do settings.xml do maven apontando para o Nexus instalado
+- Configuração do .npmrc apontando para o Nexus instalado
 
 Build
 -------------------------
