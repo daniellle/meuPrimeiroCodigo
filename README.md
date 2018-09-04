@@ -25,10 +25,11 @@ Considerações
 - Utiliza componentes da biblioteca [fw](https://github.com/ezvida/fw-ezvida).
 - Possui integração com o [Shibboleth](https://www.shibboleth.net/) para obter o usuário logado através do protocolo AJP configurado no servidor Wildfly.
 - Utiliza a biblioteca [girst-apiclient](https://github.com/ezvida/rst-girst-api-client) para se conectar ao Projeto [Girst](https://github.com/ezvida/rst-girst) através de requisições Restfull com Tokens e obter as autorizações do usuário logado.
-- Utiliza a biblioteca [adl-core](https://github.com/ezvida/adl-core) para se conectar ao Projeto [Girst](https://github.com/ezvida/rst-girst) através de requisições Restfull com Tokens e obter as autorizações do usuário logado.
+- Utiliza a biblioteca [adl-core](https://github.com/ezvida/adl-core) para ler as fichas (FCO, Imunização) obtidas do Projeto [RES](https://github.com/ezvida/ezehr-sl) através de requisições Restfull com Tokens.
 - É utilizado nos ambientes da Rede Sesi Viva+ através de um iframe em uma Aplicação Django.
 - Conecta-se ao banco de dados SESI_RST para armazenamento de dados.
 - As parametrizações do projeto devem ser alteradas na tabela parametros do banco de dados SESI_RST.
+- Conecta-se ao Projeto [edge-server](https://github.com/ezvida/edge-server) através de requisições Restfull com Tokens para obter dados de Vacinas Autodeclaradas.
 - Utiliza o pacote ELK para salvar dados de Auditoria.
 - Disponibiliza API de consulta a alguns de seus dados para outros sistemas, como Portal, Res Online e Microserviço IGEV
 - Uma das urls de acesso é <host_ambiente>/rst/cadastro/usuario.
