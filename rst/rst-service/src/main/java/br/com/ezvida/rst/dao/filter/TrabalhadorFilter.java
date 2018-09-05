@@ -28,6 +28,9 @@ public class TrabalhadorFilter extends FilterBase {
 	@QueryParam("estado")
 	private Long idEstado;
 
+	@QueryParam("fromMinhaConta")
+	private Boolean fromMinhaConta;
+
 	public Long getId() {
 		return id;
 	}
@@ -75,5 +78,12 @@ public class TrabalhadorFilter extends FilterBase {
 	public Long getIdEstado() {
 		return idEstado;
 	}
-	
+
+    public Boolean getFromMinhaConta() {
+        return fromMinhaConta;
+    }
+
+    public void setFromMinhaConta(Boolean fromMinhaConta) {
+        this.fromMinhaConta = fromMinhaConta;
+    }
 }

@@ -46,7 +46,9 @@ export class TrabalhadorService extends BaseService<Trabalhador> {
 
     const params = new HttpParams()
       .append('id', filtro.id)
-      .append('aplicarDadosFilter', filtro.aplicarDadosFilter ? 'true' : 'false');
+      .append('aplicarDadosFilter', filtro.aplicarDadosFilter ? 'true' : 'false')
+      .append('fromMinhaConta', filtro.fromMinhaConta ? 'true' : 'false')
+      .append('cpf', filtro.cpf);
 
     return super.get('/v1/trabalhadores/', params)
       .map((response: Response) => {
