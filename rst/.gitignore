@@ -2,7 +2,7 @@
 bower_components/
 node_modules/
 .settings/
-target/*
+target/
 build/
 dist/
 out/
@@ -17,7 +17,7 @@ out/
 *.iml
 
 # Visual Studio Code code
-.vscode/*
+.vscode/
 !.vscode/extensions.json
 !.vscode/settings.json
 !.vscode/launch.json
@@ -25,5 +25,4 @@ out/
 
 # JDT-specific (Eclipse Java Development Tools)		
 .classpath
-rst-web/package.json
 rst-web/.npmrc
