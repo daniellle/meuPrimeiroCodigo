@@ -1,13 +1,13 @@
-import { FiltroTrabalhador } from './../../../modelo/filtro-trabalhador.model';
-import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
-import { Seguranca } from './../../../compartilhado/utilitario/seguranca.model';
-import { environment } from './../../../../environments/environment';
-import { MascaraUtil } from './../../../compartilhado/utilitario/mascara.util';
-import { Trabalhador } from './../../../modelo/trabalhador.model';
-import { TrabalhadorService } from 'app/servico/trabalhador.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-import { Usuario } from 'app/modelo/usuario.model';
+import {FiltroTrabalhador} from './../../../modelo/filtro-trabalhador.model';
+import {PermissoesEnum} from 'app/modelo/enum/enum-permissoes';
+import {Seguranca} from './../../../compartilhado/utilitario/seguranca.model';
+import {environment} from './../../../../environments/environment';
+import {MascaraUtil} from './../../../compartilhado/utilitario/mascara.util';
+import {Trabalhador} from './../../../modelo/trabalhador.model';
+import {TrabalhadorService} from 'app/servico/trabalhador.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Usuario} from 'app/modelo/usuario.model';
 
 @Component({
   selector: 'app-trabalhador-intermediario',
@@ -47,7 +47,8 @@ export class TrabalhadorIntermediarioComponent implements OnInit {
   }
 
   hasPermissionSaude() {
-    return (this.usuarioLogado.sub === this.trabalhador.cpf);
+    return Seguranca.isPermitido([PermissoesEnum.TRABALHADOR_MINHA_SAUDE,
+        PermissoesEnum.TRABALHADOR_MINHA_SAUDE_CONSULTAR]);
   }
 
   hasAcessMinhaConta() {

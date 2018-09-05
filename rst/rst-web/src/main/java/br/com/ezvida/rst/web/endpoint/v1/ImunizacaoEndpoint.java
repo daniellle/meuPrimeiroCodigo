@@ -58,9 +58,9 @@ public class ImunizacaoEndpoint extends SegurancaEndpoint {
     @Path("/ultimas-vacinas/{limit}")
     @Produces(MediaType.APPLICATION_JSON)
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.VACINA_AUTODECLARADA, PermissionConstants.VACINA_AUTODECLARADA_CONSULTAR }))
-    public List<VacinaAutodeclaradaDTO> buscarUltimasVacinas(@PathParam("limit") int limite,@Context SecurityContext context,
-                                               @Context HttpServletRequest request) {
-        return this.service.buscarUltimasVacinas(limite, ClienteInfos.getUsuario(context));
+    public List<VacinaAutodeclaradaDTO> buscarUltimasVacinas(@PathParam("limit") int limite, @QueryParam("login") String login,
+                                                             @Context SecurityContext context, @Context HttpServletRequest request) {
+        return this.service.buscarUltimasVacinas(limite, login);
     }
 
     @GET

@@ -76,6 +76,10 @@ export enum PermissoesEnum {
     TRABALHADOR_DEPENDENTE_CONSULTAR = 'trabalhador_dependente_consultar',
     TRABALHADOR_DEPENDENTE_DESATIVAR = 'trabalhador_dependente_desativar',
 
+    //TRABALHADOR
+    TRABALHADOR_MINHA_SAUDE = 'trabalhador_minha_saude',
+    TRABALHADOR_MINHA_SAUDE_CONSULTAR = 'trabalhador_minha_saude_consultar',
+
     // REDE CREDENCIADA
     REDE_CREDENCIADA = 'rede_credenciada',
     REDE_CREDENCIADA_CADASTRAR = 'rede_credenciada_cadastrar',
