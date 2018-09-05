@@ -19,6 +19,7 @@ import {MascaraUtil} from "../../compartilhado/utilitario/mascara.util";
 import {isNullOrUndefined} from "util";
 import {Trabalhador} from "../../modelo/trabalhador.model";
 import {TrabalhadorService} from "../../servico/trabalhador.service";
+import {PerfilEnum} from "../../modelo/enum/enum-perfil";
 
 
 @Component({
@@ -296,19 +297,15 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
     }
 
     voltar(): void {
-        //this.router.navigate([`${environment.url_portal}`]);
-        if(!isNullOrUndefined(this.idTrab)){
+        if (this.usuarioLogado.papeis.includes(PerfilEnum.TRA)) {
             this.router.navigate([`${environment.path_raiz_cadastro}/trabalhador/${this.idTrab}`]);
-        }
-        else{
+        } else{
             if(isNullOrUndefined(this.trabalhador)){
                 this.router.navigate([`${environment.url_portal}`]);
-            }
-            else {
+            } else {
                 this.router.navigate([`${environment.path_raiz_cadastro}`]);
             }
         }
-
     }
 
 }
