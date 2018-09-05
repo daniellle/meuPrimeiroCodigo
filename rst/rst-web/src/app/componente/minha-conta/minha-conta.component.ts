@@ -298,7 +298,9 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
 
     voltar(): void {
         if (this.usuarioLogado.papeis.includes(PerfilEnum.TRA)) {
-            this.router.navigate([`${environment.path_raiz_cadastro}/trabalhador/${this.idTrab}`]);
+            this.router.navigate([`${environment.path_raiz_cadastro}/trabalhador/${this.idTrab}`], {
+                queryParams: { "fromMinhaConta": "true" }
+            });
         } else{
             if(isNullOrUndefined(this.trabalhador)){
                 this.router.navigate([`${environment.url_portal}`]);

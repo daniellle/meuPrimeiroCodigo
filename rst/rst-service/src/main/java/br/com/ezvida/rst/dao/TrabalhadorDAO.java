@@ -35,16 +35,17 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 		LOGGER.debug("Buscando Trabalhador por Id");
 		
 		Long id = trabalhadorFilter.getId();
+		Boolean usuarioLogadoSePesquisando = this.usuarioLogadoIgualTrabalhadorPesquisado(trabalhadorFilter.getCpf(), id);
 
 		StringBuilder jpql = new StringBuilder();
 		Map<String, Object> parametros = Maps.newHashMap();
 
-		montarJoinPesquisarPorId(segurancaFilter, jpql);
+		this.montarJoinPesquisarPorId(segurancaFilter, jpql);
 
 		jpql.append(" where trabalhador.id = :id");
 
 		if (segurancaFilter != null && trabalhadorFilter.isAplicarDadosFilter()) {
-			filtroIdsPesquisarPorId(segurancaFilter, id, jpql, parametros);
+			this.filtroIdsPesquisarPorId(segurancaFilter, trabalhadorFilter, usuarioLogadoSePesquisando, id, jpql, parametros);
 		}
 
 		TypedQuery<Trabalhador> query = criarConsultaPorTipo(jpql.toString());
@@ -54,28 +55,34 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 		return DAOUtil.getSingleResult(query);
 	}
 
-	private void filtroIdsPesquisarPorId(DadosFilter segurancaFilter, Long id, StringBuilder jpql,
-			Map<String, Object> parametros) {
+	private void filtroIdsPesquisarPorId(DadosFilter segurancaFilter, TrabalhadorFilter trabalhadorFilter, Boolean usuarioLogadoSePesquisando, Long id, StringBuilder jpql, Map<String, Object> parametros) {
 		if (segurancaFilter.temIdsEmpresa() && !segurancaFilter.isAdministrador()) {
-			jpql.append(" and empresa.id IN (:idsEmpresa) ");
-			parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
+		    if (!(Boolean.TRUE.equals(trabalhadorFilter.getFromMinhaConta()) && usuarioLogadoSePesquisando)) {
+                jpql.append(" and empresa.id IN (:idsEmpresa) ");
+                parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
+            }
 		}
 
 		if (segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
-			if (id != null || segurancaFilter.temIdsEmpresa()) {
-				jpql.append(" and ");
-			}
+            if (!(Boolean.TRUE.equals(trabalhadorFilter.getFromMinhaConta()) && usuarioLogadoSePesquisando)) {
+                if (id != null || segurancaFilter.temIdsEmpresa()) {
+                    jpql.append(" and ");
+                }
 
-			jpql.append(" depRegional.id IN (:idsDepRegional) ");
-			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
+                jpql.append(" depRegional.id IN (:idsDepRegional) ");
+                parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
+            }
 		}
 
 		if (segurancaFilter.temIdsTrabalhador() && !segurancaFilter.isAdministrador()) {
-			if (id != null || segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()) {
-				jpql.append(" and ");
-			}
-			jpql.append(" trabalhador.id IN (:idsTrabalhador) ");
-			parametros.put("idsTrabalhador", segurancaFilter.getIdsTrabalhador());
+            if (!(Boolean.TRUE.equals(trabalhadorFilter.getFromMinhaConta()) && usuarioLogadoSePesquisando)) {
+                if (id != null || segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()) {
+                    jpql.append(" and ");
+                }
+
+                jpql.append(" trabalhador.id IN (:idsTrabalhador) ");
+                parametros.put("idsTrabalhador", segurancaFilter.getIdsTrabalhador());
+            }
 		}
 	}
 
@@ -475,4 +482,11 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 			query.setParameter("idEmpresa", empresas);
 		}
 	}
+
+	private Boolean usuarioLogadoIgualTrabalhadorPesquisado(String cpfDoUsuarioLogado, Long idTrabalhador) {
+        Query query = this.getEm().createNativeQuery(" SELECT EXISTS ( SELECT 1 FROM Trabalhador WHERE no_cpf = :cpfDoUsuarioLogado AND id_trabalhador = :idTrabalhador) ");
+        query.setParameter("cpfDoUsuarioLogado", cpfDoUsuarioLogado);
+        query.setParameter("idTrabalhador", idTrabalhador);
+        return (Boolean) query.getSingleResult();
+    }
 }
