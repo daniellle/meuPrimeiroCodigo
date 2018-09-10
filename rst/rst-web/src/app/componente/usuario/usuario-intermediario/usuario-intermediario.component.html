@@ -23,6 +23,10 @@
         <div class="form-group col-md-4 col-lg-3" *ngIf="temPerfilDR">
             <app-card-tela-intermediaria (onNavegar)="mudarPagina('departamentoregional')" [titulo]="'Departamento Regional'" [classCardCor]="'card-azul'" [classImgFront]="'img_departamento'" [classImgBack]="'img_departamento'"></app-card-tela-intermediaria>
         </div>
+
+        <div class="form-group col-md-4 col-lg-3" *ngIf="temUnidPerfil()">
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('unidadesesi')" [titulo]="'Unidade SESI'" [classCardCor]="'card-roxo'" [classImgFront]="'img_lotacao'" [classImgBack]="'img_lotacao'"></app-card-tela-intermediaria>
+        </div>
     </div>
     <div class="row">
         <div class="form-group col-12">

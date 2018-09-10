@@ -51,6 +51,10 @@ public class UsuarioEntidade extends AbstractData {
     @JoinColumn(name = "id_sindicato_fk", referencedColumnName = "ID_SINDICATO", nullable = true)
     private Sindicato sindicato;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_und_atd_trab_fk", referencedColumnName = "ID_UND_ATD_TRABALHADOR", nullable = true)
+    private UnidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador;
+
     @Column(name = "perfil", length = 11)
     private String perfil;
 
@@ -149,6 +153,14 @@ public class UsuarioEntidade extends AbstractData {
         this.sindicato = sindicato;
     }
 
+    public UnidadeAtendimentoTrabalhador getUnidadeAtendimentoTrabalhador() {
+        return unidadeAtendimentoTrabalhador;
+    }
+
+    public void setUnidadeAtendimentoTrabalhador(UnidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador) {
+        this.unidadeAtendimentoTrabalhador = unidadeAtendimentoTrabalhador;
+    }
+
     public String getPerfil() {
         return perfil;
     }
@@ -158,97 +170,42 @@ public class UsuarioEntidade extends AbstractData {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
-        result = prime * result + ((departamentoRegional == null) ? 0 : departamentoRegional.hashCode());
-        result = prime * result + ((email == null) ? 0 : email.hashCode());
-        result = prime * result + ((empresa == null) ? 0 : empresa.hashCode());
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-        result = prime * result + ((parceiro == null) ? 0 : parceiro.hashCode());
-        result = prime * result + ((redeCredenciada == null) ? 0 : redeCredenciada.hashCode());
-        result = prime * result + ((sindicato == null) ? 0 : sindicato.hashCode());
-        result = prime * result + ((termo == null) ? 0 : termo.hashCode());
-        result = prime * result + ((getDataAlteracao() == null) ? 0 : getDataAlteracao().hashCode());
-        result = prime * result + ((getDataCriacao() == null) ? 0 : getDataCriacao().hashCode());
-        result = prime * result + ((getDataExclusao() == null) ? 0 : getDataExclusao().hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        UsuarioEntidade that = (UsuarioEntidade) o;
+
+        if (!id.equals(that.id)) return false;
+        if (!nome.equals(that.nome)) return false;
+        if (!cpf.equals(that.cpf)) return false;
+        if (!email.equals(that.email)) return false;
+        if (termo != that.termo) return false;
+        if (!empresa.equals(that.empresa)) return false;
+        if (!departamentoRegional.equals(that.departamentoRegional)) return false;
+        if (!parceiro.equals(that.parceiro)) return false;
+        if (!redeCredenciada.equals(that.redeCredenciada)) return false;
+        if (!sindicato.equals(that.sindicato)) return false;
+        if (!unidadeAtendimentoTrabalhador.equals(that.unidadeAtendimentoTrabalhador)) return false;
+        return perfil.equals(that.perfil);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        UsuarioEntidade other = (UsuarioEntidade) obj;
-        if (cpf == null) {
-            if (other.cpf != null)
-                return false;
-        } else if (!cpf.equals(other.cpf))
-            return false;
-        if (departamentoRegional == null) {
-            if (other.departamentoRegional != null)
-                return false;
-        } else if (!departamentoRegional.equals(other.departamentoRegional))
-            return false;
-        if (email == null) {
-            if (other.email != null)
-                return false;
-        } else if (!email.equals(other.email))
-            return false;
-        if (empresa == null) {
-            if (other.empresa != null)
-                return false;
-        } else if (!empresa.equals(other.empresa))
-            return false;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        if (nome == null) {
-            if (other.nome != null)
-                return false;
-        } else if (!nome.equals(other.nome))
-            return false;
-        if (parceiro == null) {
-            if (other.parceiro != null)
-                return false;
-        } else if (!parceiro.equals(other.parceiro))
-            return false;
-        if (redeCredenciada == null) {
-            if (other.redeCredenciada != null)
-                return false;
-        } else if (!redeCredenciada.equals(other.redeCredenciada))
-            return false;
-        if (sindicato == null) {
-            if (other.sindicato != null)
-                return false;
-        } else if (!sindicato.equals(other.sindicato))
-            return false;
-        if (termo != other.termo)
-            return false;
-        if (getDataAlteracao() == null) {
-            if (other.getDataAlteracao() != null)
-                return false;
-        } else if (!getDataAlteracao().equals(other.getDataAlteracao()))
-            return false;
-        if (getDataCriacao() == null) {
-            if (other.getDataCriacao() != null)
-                return false;
-        } else if (!getDataCriacao().equals(other.getDataCriacao()))
-            return false;
-        if (getDataExclusao() == null) {
-            if (other.getDataExclusao() != null)
-                return false;
-        } else if (!getDataExclusao().equals(other.getDataExclusao()))
-            return false;
-        return true;
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + id.hashCode();
+        result = 31 * result + nome.hashCode();
+        result = 31 * result + cpf.hashCode();
+        result = 31 * result + email.hashCode();
+        result = 31 * result + termo.hashCode();
+        result = 31 * result + empresa.hashCode();
+        result = 31 * result + departamentoRegional.hashCode();
+        result = 31 * result + parceiro.hashCode();
+        result = 31 * result + redeCredenciada.hashCode();
+        result = 31 * result + sindicato.hashCode();
+        result = 31 * result + unidadeAtendimentoTrabalhador.hashCode();
+        result = 31 * result + perfil.hashCode();
+        return result;
     }
-
 }

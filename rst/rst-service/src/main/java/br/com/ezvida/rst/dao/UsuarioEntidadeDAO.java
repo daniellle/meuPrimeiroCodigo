@@ -35,6 +35,7 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 			jpql.append(" left join fetch usuarioEntidade.parceiro parceiro ");
 			jpql.append(" left join fetch usuarioEntidade.redeCredenciada redeCredenciada ");
 			jpql.append(" left join fetch usuarioEntidade.sindicato sindicato ");
+			jpql.append(" left join fetch usuarioEntidade.unidadeAtendimentoTrabalhador unidade ");
 		}
 
 		jpql.append(" where usuarioEntidade.cpf = :cpf and usuarioEntidade.dataExclusao is null ");
@@ -345,6 +346,15 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 		return jpql;
 	}
 
+	private StringBuilder consultaExistenciaUsuarioEntidadeUnidadeSESI(StringBuilder jpql) {
+		jpql.append("select unidade.id from UsuarioEntidade usuarioEntidade ");
+		jpql.append(" left join usuarioEntidade.unidadeAtendimentoTrabalhador unidade ");
+		jpql.append(" where usuarioEntidade.dataExclusao is null ");
+		jpql.append(" and usuarioEntidade.cpf = :cpf  ");
+		jpql.append(" and unidade.id = :idUnidade  ");
+		return jpql;
+	}
+
 	public Long verificandoExistenciaUsuarioEntidade(UsuarioEntidade usuarioEntidade) {
 		StringBuilder jpql = new StringBuilder();
 		if (usuarioEntidade.getEmpresa() != null && usuarioEntidade.getEmpresa().getId() != null && StringUtils.isNotEmpty(usuarioEntidade.getPerfil())) {
@@ -358,6 +368,11 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 		if (usuarioEntidade.getDepartamentoRegional() != null
 				&& usuarioEntidade.getDepartamentoRegional().getId() != null) {
 			consultaExistenciaUsuarioEntidadeDepartamento(jpql);
+		}
+
+		if (usuarioEntidade.getUnidadeAtendimentoTrabalhador() != null
+				&& usuarioEntidade.getUnidadeAtendimentoTrabalhador().getId() != null) {
+			consultaExistenciaUsuarioEntidadeUnidadeSESI(jpql);
 		}
 
 		TypedQuery<Long> query = getEm().createQuery(jpql.toString(), Long.class);

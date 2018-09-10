@@ -93,6 +93,9 @@ public class Usuario extends BaseEntity<Long> {
     @Transient
     private Set<Long> idTrabalhadores;
 
+    @Transient
+    private Set<Long> idUnidadesSESI;
+
     public Usuario() {
         // Padrão
     }
@@ -113,6 +116,7 @@ public class Usuario extends BaseEntity<Long> {
         this.idRedesCredenciadas = Sets.newHashSet();
         this.idSindicatos = Sets.newHashSet();
         this.idTrabalhadores = Sets.newHashSet();
+        this.idUnidadesSESI = Sets.newHashSet();
     }
 
     @Override
@@ -267,6 +271,14 @@ public class Usuario extends BaseEntity<Long> {
 
     public void setHierarquia(Integer hierarquia) {
         this.hierarquia = hierarquia;
+    }
+
+    public Set<Long> getIdUnidadesSESI() {
+        return idUnidadesSESI;
+    }
+
+    public void setIdUnidadesSESI(Set<Long> idUnidadesSESI) {
+        this.idUnidadesSESI = idUnidadesSESI;
     }
 
     @Override

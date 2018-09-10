@@ -25,4 +25,5 @@ export enum PerfilEnum {
     GCDN = 'GCDN',
     MTSDR = 'MTSDR',
     GCDR = 'GCDR',
+    GUS = 'GUS',
 }
