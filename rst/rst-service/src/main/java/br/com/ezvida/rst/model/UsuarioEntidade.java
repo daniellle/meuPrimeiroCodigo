@@ -2,6 +2,7 @@ package br.com.ezvida.rst.model;
 
 import br.com.ezvida.rst.converter.SimNaoConverter;
 import br.com.ezvida.rst.enums.SimNao;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -53,6 +54,7 @@ public class UsuarioEntidade extends AbstractData {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_und_atd_trab_fk", referencedColumnName = "ID_UND_ATD_TRABALHADOR", nullable = true)
+    @JsonProperty("uat")
     private UnidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador;
 
     @Column(name = "perfil", length = 11)

@@ -24,7 +24,7 @@
     <button class="btn btn-secondary" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
 </div>
 
-<div class="container-form space-up" *ngIf="isNotEmpty(listaDepartamento)">
+<div class="container-form space-up" *ngIf="isNotEmpty(listaUnidade)">
     <div class="grid-pesquisa">
         <table class="table table-hover">
             <thead>
@@ -33,11 +33,11 @@
                     <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
                     <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
                     <th class="label"><span>{{ 'app_rst_labels_municipio' | recurso }}</span></th>
-                    <th class="label"><span>{{ 'app_rst_labels_sigla_dr' | recurso }}</span></th>
+                    <th class="label"><span>{{ 'app_rst_labels_situacao' | recurso }}</span></th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of listaDepartamento">
+                <tr *ngFor="let item of listaUnidade">
                     <td class="text-center">
                         <fieldset>
                             <md-checkbox [(ngModel)]="checks[item.id]" name="rdoLista" (change)="selecionar(item, $event, item.id)" class="radio-tabela-pesquisa"></md-checkbox>
@@ -45,8 +45,8 @@
                     </td>
                     <td class="col-quebra col-nome">{{item.razaoSocial}}</td>
                     <td class="col-nao-quebra">{{item.cnpj | cnpjPipe}}</td>
-                    <td class="col-quebra col-nome">{{item.listaEndDepRegional && item.listaEndDepRegional[0] ? item.listaEndDepRegional[0].endereco.municipio.descricao : ''}}</td>
-                    <td class="col-nao-quebra">{{item.siglaDR}}</td>
+                    <td class="col-quebra">{{getEndereco(item)}}</td>
+                    <td class="col-nao-quebra">{{getSituacaoPorData(item.dataDesativacao)}}</td>
                 </tr>
             </tbody>
         </table>
@@ -57,6 +57,6 @@
     </div>
 </div>
 
-<div class="btn-rodape-acoes space-up" *ngIf="isNotEmpty(listaDepartamento)">
+<div class="btn-rodape-acoes space-up" *ngIf="isNotEmpty(listaUnidade)">
     <button type="button" class="btn btn-primary" (click)="adicionarUsuarioEntidade()">{{ 'app_rst_btn_salvar' | recurso }}</button>
 </div>

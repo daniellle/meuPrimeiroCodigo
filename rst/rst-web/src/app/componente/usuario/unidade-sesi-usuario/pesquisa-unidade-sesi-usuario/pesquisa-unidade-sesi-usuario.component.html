@@ -18,11 +18,11 @@
         </div>
     </div>
     <div class="row">
-        <div class="form-group col-md-6 col-lg-4">
+        <div class="form-group col-sm-6 col-lg-4">
             <div class="md-container">
-                <md-select mdInput placeholder="{{'app_rst_labels_estado' | recurso}}" name="depRegional" [(ngModel)]="filtro.idEstado" id="estado ">
-                    <md-option value=undefined>Todos</md-option>
-                    <md-option *ngFor='let estado of estados' [value]="estado.id">{{estado.descricao}}</md-option>
+                <md-select placeholder="{{'app_rst_labels_departamento_regional' | recurso}}" name="depRegional" [(ngModel)]="filtro.idEstado" id="selectDepRegional ">
+                    <md-option value=undefined>{{'app_rst_labels_selecione' | recurso}}</md-option>
+                    <md-option *ngFor='let depart of departamentos' [value]="depart.id">{{depart.razaoSocial}}</md-option>
                 </md-select>
             </div>
         </div>
@@ -51,18 +51,16 @@
                         <th class="label"><span class="label">{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
                         <th class="label"><span class="label">{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
                         <th class="label"><span class="label">{{ 'app_rst_labels_municipio' | recurso }}</span></th>
-                        <th class="label"><span class="label">{{ 'app_rst_labels_sigla_dr' | recurso }}</span></th>
                         <th class="label text-center" *ngIf="!modoConsulta">&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of listaUsuarioEntidade">
-                        <td class="col-quebra col-nome">{{item.departamentoRegional.razaoSocial}}</td>
-                        <td class="col-nao-quebra">{{item.departamentoRegional.cnpj | cnpjPipe}}</td>
-                        <td class="col-quebra col-nome">{{item.departamentoRegional.listaEndDepRegional && item.departamentoRegional.listaEndDepRegional[0] ? item.departamentoRegional.listaEndDepRegional[0].endereco.municipio.descricao : ''}}</td>
-                        <td class="col-nao-quebra">{{item.departamentoRegional.siglaDR}}</td>
+                        <td class="col-quebra col-nome">{{item.uat.razaoSocial}}</td>
+                        <td class="col-nao-quebra">{{item.uat.cnpj | cnpjPipe}}</td>
+                        <td class="col-quebra col-nome">{{item.uat.endereco && item.uat.endereco[0] ? item.uat.endereco[0].endereco.municipio.descricao : ''}}</td>
                         <td class="text-center" *ngIf="!modoConsulta">
-                            <button class="btn-link" (click)="removerDepartamento(item)"><img class="lixo" src="assets/img/trash.svg" alt="Excluir"></button>
+                            <button class="btn-link" (click)="removerUnidade(item)"><img class="lixo" src="assets/img/trash.svg" alt="Excluir"></button>
                         </td>
                     </tr>
                 </tbody>

@@ -1,22 +1,23 @@
-import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
-import { Seguranca } from './../../../../compartilhado/utilitario/seguranca.model';
-import { environment } from './../../../../../environments/environment';
-import { UsuarioService } from './../../../../servico/usuario.service';
-import { UsuarioPerfilSistema } from './../../../../modelo/usuario-perfil-sistema.model';
-import { Usuario } from './../../../../modelo/usuario.model';
-import { DepartRegionalService } from 'app/servico/depart-regional.service';
-import { MensagemProperties } from './../../../../compartilhado/utilitario/recurso.pipe';
-import { Component } from '@angular/core';
-import { Paginacao } from './../../../../modelo/paginacao.model';
-import { UsuarioEntidadeService } from './../../../../servico/usuario-entidade.service';
-import { UsuarioEntidade } from './../../../../modelo/usuario-entidade.model';
-import { ListaPaginada } from './../../../../modelo/lista-paginada.model';
-import { BloqueioService } from 'app/servico/bloqueio.service';
-import { ToastyService } from 'ng2-toasty';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FiltroUsuarioEntidade } from './../../../../modelo/filtro-usuario-entidade.model';
-import { OnInit } from '@angular/core';
-import { BaseComponent } from 'app/componente/base.component';
+import {PermissoesEnum} from 'app/modelo/enum/enum-permissoes';
+import {Seguranca} from './../../../../compartilhado/utilitario/seguranca.model';
+import {environment} from './../../../../../environments/environment';
+import {UsuarioService} from './../../../../servico/usuario.service';
+import {UsuarioPerfilSistema} from './../../../../modelo/usuario-perfil-sistema.model';
+import {Usuario} from './../../../../modelo/usuario.model';
+import {DepartRegionalService} from 'app/servico/depart-regional.service';
+import {MensagemProperties} from './../../../../compartilhado/utilitario/recurso.pipe';
+import {Component, OnInit} from '@angular/core';
+import {Paginacao} from './../../../../modelo/paginacao.model';
+import {UsuarioEntidadeService} from './../../../../servico/usuario-entidade.service';
+import {UsuarioEntidade} from './../../../../modelo/usuario-entidade.model';
+import {ListaPaginada} from './../../../../modelo/lista-paginada.model';
+import {BloqueioService} from 'app/servico/bloqueio.service';
+import {ToastyService} from 'ng2-toasty';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FiltroUsuarioEntidade} from './../../../../modelo/filtro-usuario-entidade.model';
+import {BaseComponent} from 'app/componente/base.component';
+import {FiltroDepartRegional} from "../../../../modelo/filtro-depart-regional.model";
+import {DepartamentoRegional} from "../../../../modelo/departamento-regional.model";
 
 @Component({
   selector: 'app-pesquisa-unidade-sesi-usuario',
@@ -26,11 +27,12 @@ import { BaseComponent } from 'app/componente/base.component';
 export class PesquisaUnidadeSESIUsuarioComponent extends BaseComponent implements OnInit {
 
   idUsuario: number;
+  idDepRegional: number;
   filtro: FiltroUsuarioEntidade;
   filtroSelecionado: FiltroUsuarioEntidade;
   listaUsuarioEntidade: UsuarioEntidade[];
   usuario: Usuario;
-  public estados: any[];
+  public departamentos: DepartamentoRegional[];
 
   constructor(
     private router: Router,
@@ -44,11 +46,13 @@ export class PesquisaUnidadeSESIUsuarioComponent extends BaseComponent implement
     super(bloqueioService, dialogo);
     this.buscarUsuario();
     this.tipoTela();
+    this.buscarDepartamentos();
   }
 
   ngOnInit() {
     this.listaUsuarioEntidade = new Array<UsuarioEntidade>();
     this.filtro = new FiltroUsuarioEntidade();
+    this.filtroSelecionado = new FiltroUsuarioEntidade();
   }
 
   tipoTela() {
@@ -71,14 +75,14 @@ export class PesquisaUnidadeSESIUsuarioComponent extends BaseComponent implement
     });
   }
 
-  buscarEstados() {
-    if (!this.modoConsulta) {
-      this.departamentoService.buscarEstados().subscribe((dados: any) => {
-        this.estados = dados;
-      }, (error) => {
-        this.mensagemError(error);
-      });
-    }
+  buscarDepartamentos() {
+      if (!this.modoConsulta) {
+          this.departamentoService.listarTodos(new FiltroDepartRegional()).subscribe((dados: any) => {
+              this.departamentos = dados;
+          }, (error) => {
+              this.mensagemError(error);
+          });
+      }
   }
 
   pesquisar(): void {
@@ -112,7 +116,7 @@ export class PesquisaUnidadeSESIUsuarioComponent extends BaseComponent implement
     if (this.isUndefined(filtro.idEstado)) {
       filtro.idEstado = '0';
     }
-    this.usuarioEntidadeService.pesquisarPaginado(filtro, paginacao, MensagemProperties.app_rst_labels_departamento_regional).
+    this.usuarioEntidadeService.pesquisarPaginado(filtro, paginacao, MensagemProperties.app_rst_menu_uat).
       subscribe((retorno: ListaPaginada<UsuarioEntidade>) => {
         if (this.filtro.idEstado === '0') {
           this.filtro.idEstado = undefined;
@@ -120,13 +124,16 @@ export class PesquisaUnidadeSESIUsuarioComponent extends BaseComponent implement
         if (retorno.quantidade > 0) {
           this.listaUsuarioEntidade = retorno.list;
           this.paginacao = this.getPaginacao(this.paginacao, retorno);
+        }else {
+            this.listaUsuarioEntidade = new Array<UsuarioEntidade>();
+            this.mensagemError(MensagemProperties.app_rst_nenhum_registro_encontrado);
         }
       }, (error) => {
         this.mensagemError(error);
       });
   }
 
-  public removerDepartamento(item: UsuarioEntidade) {
+  public removerUnidade(item: UsuarioEntidade) {
     this.usuarioEntidadeService.desativar(item).subscribe((response: UsuarioEntidade) => {
       this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
       this.removerItem(item);
