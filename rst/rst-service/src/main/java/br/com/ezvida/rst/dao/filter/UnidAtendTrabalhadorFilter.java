@@ -4,35 +4,42 @@ import javax.ws.rs.QueryParam;
 
 public class UnidAtendTrabalhadorFilter extends FilterBase {
 
-	@QueryParam("cnpj")
-	private String cnpj;
+    @QueryParam("cnpj")
+    private String cnpj;
 
-	@QueryParam("razaoSocial")
-	private String razaoSocial;
+    @QueryParam("razaoSocial")
+    private String razaoSocial;
 
-	@QueryParam("idDepRegional")
-	private Long idDepRegional;
+    @QueryParam("idDepRegional")
+    private Long idDepRegional;
 
-	@QueryParam("statusCat")
-	private String statusCat;
+    @QueryParam("statusCat")
+    private String statusCat;
 
-	public String getCnpj() {
-		return cnpj;
-	}
+    @QueryParam("cpfUsuarioAssociado")
+    private String cpfUsuarioAssociado;
 
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
-	}
+    public String getCnpj() {
+        return cnpj;
+    }
 
-	public String getRazaoSocial() {
-		return razaoSocial;
-	}
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
 
-	public Long getIdDepRegional() {
-		return idDepRegional;
-	}
+    public String getRazaoSocial() {
+        return razaoSocial;
+    }
 
-	public String getStatusCat() {
-		return statusCat;
-	}
+    public Long getIdDepRegional() {
+        return idDepRegional;
+    }
+
+    public String getStatusCat() {
+        return statusCat;
+    }
+
+    public String getCpfUsuarioAssociado() {
+        return cpfUsuarioAssociado;
+    }
 }

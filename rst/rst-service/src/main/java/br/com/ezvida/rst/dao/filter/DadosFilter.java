@@ -56,8 +56,6 @@ public class DadosFilter implements Serializable {
 
     private boolean getorUnidadeSESI;
 
-    private boolean temIdsDepartamentoRegional;
-
     private boolean temIdsEmpresa;
 
     private boolean temIdsSindicato;
@@ -130,7 +128,6 @@ public class DadosFilter implements Serializable {
         this.idsRedeCredenciada = redesCredenciadas;
         this.idsSindicato = sindicatos;
 
-        this.temIdsDepartamentoRegional = CollectionUtils.isNotEmpty(this.idsDepartamentoRegional);
         this.temIdsEmpresa = CollectionUtils.isNotEmpty(this.idsEmpresa);
         this.temIdsParceiro = CollectionUtils.isNotEmpty(this.idsParceiro);
         this.temIdsRedeCredenciada = CollectionUtils.isNotEmpty(this.idsRedeCredenciada);
@@ -252,7 +249,7 @@ public class DadosFilter implements Serializable {
     }
 
     public boolean temIdsDepRegional() {
-        return temIdsDepartamentoRegional;
+        return CollectionUtils.isNotEmpty(this.idsDepartamentoRegional);
     }
 
     public boolean temIdsEmpresa() {

@@ -43,7 +43,8 @@ export class UatService extends BaseService<Uat> {
       .append('idDepRegional', filtroUat.idDepRegional > 0 ? filtroUat.idDepRegional.toString() : '0')
       .append('statusCat', filtroUat.situacao)
       .append('pagina', paginacao.pagina.toString())
-      .append('qtdRegistro', paginacao.qtdRegistro.toString());
+      .append('qtdRegistro', paginacao.qtdRegistro.toString())
+      .append('cpfUsuarioAssociado', filtroUat.cpfUsuarioAssociado);
     return super.get('/v1/uats/paginado', params)
       .map((response: ListaPaginada<Uat>) => {
         return this.parseResponsePaginado(response);
