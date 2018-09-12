@@ -21,150 +21,151 @@ import fw.core.jpa.DAOUtil;
 
 public class LinhaDAO extends BaseDAO<Linha, Long> {
 
-	private static final String ORDER_BY = "descricao";
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(LinhaDAO.class);
-	
-	@Inject
-	public LinhaDAO(EntityManager em) {
-		super(em, Linha.class, ORDER_BY);
-	}
-	
-	public Linha pesquisarPorDescricao(String descricao) {
-		LOGGER.debug("Pesquisando Linha por Descricao");
+    private static final String ORDER_BY = "descricao";
 
-		StringBuilder jpql = new StringBuilder();
-		jpql.append("select linha from Linha linha where upper(linha.descricao) = :descricao");
-		jpql.append(" order by linha.descricao");
-		TypedQuery<Linha> query = criarConsultaPorTipo(jpql.toString());
-		query.setParameter("descricao", descricao.toUpperCase());
+    private static final Logger LOGGER = LoggerFactory.getLogger(LinhaDAO.class);
 
-		return DAOUtil.getSingleResult(query);
-	}
-	
-	public List<Linha> pesquisarTodos(DadosFilter segurancaFilter, boolean habilitaFiltro) {
-		LOGGER.debug("Pesquisando Linhas");
+    @Inject
+    public LinhaDAO(EntityManager em) {
+        super(em, Linha.class, ORDER_BY);
+    }
 
-		Map<String, Object> parametros = Maps.newHashMap();
-		StringBuilder jpql = new StringBuilder();
-		
-		jpql.append("select DISTINCT linha from Linha linha ");
-		
-		if (segurancaFilter != null && habilitaFiltro ) {
-			
-			montarJoinPesquisarTodos(segurancaFilter, jpql);
-			
-			montarFiltroPesquisarTodos(segurancaFilter, parametros, jpql);
-		}
-		jpql.append(" order by linha.descricao ");
-		
-		TypedQuery<Linha> query = criarConsultaPorTipo(jpql.toString());
-		
-		DAOUtil.setParameterMap(query, parametros);
-		
-		return query.getResultList();
-	}
+    public Linha pesquisarPorDescricao(String descricao) {
+        LOGGER.debug("Pesquisando Linha por Descricao");
 
-	private void montarFiltroPesquisarTodos(DadosFilter segurancaFilter, Map<String, Object> parametros,
-			StringBuilder jpql) {
-		if (segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
-			jpql.append(" departamentoRegional.id IN (:idsDepRegional) ");
-			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
-		}
-		
-		if (segurancaFilter.temIdsDepRegional() && (segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador()) && !segurancaFilter.isAdministrador()) {
-			jpql.append(" and ");
-		}
-		
-		if (segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador() && !segurancaFilter.isAdministrador()) {
-			jpql.append(" empresa.id IN (:idsEmpresa) ");
-			parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
-		}
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("select linha from Linha linha where upper(linha.descricao) = :descricao");
+        jpql.append(" order by linha.descricao");
+        TypedQuery<Linha> query = criarConsultaPorTipo(jpql.toString());
+        query.setParameter("descricao", descricao.toUpperCase());
 
-		if (segurancaFilter.temIdsUnidadeSESI()) {
-			if (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador() && !segurancaFilter.isAdministrador()) {
-				jpql.append(" and ");
-			}
-			jpql.append(" unidadeAtendimentoTrabalhador.id IN (:idsUnidadeSESI) ");
-			parametros.put("idsUnidadeSESI", segurancaFilter.getIdsUnidadeSESI());
-		}
-	}
+        return DAOUtil.getSingleResult(query);
+    }
 
-	private void montarJoinPesquisarTodos(DadosFilter segurancaFilter, StringBuilder jpql) {
-		if (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador() && !segurancaFilter.isAdministrador()) {
-			jpql.append(" inner join fetch linha.produtosServicos produtoServico ");
-			jpql.append(" inner join produtoServico.departamentoRegionalProdutoServicos departamentoRegionalProdutoServicos");
-			jpql.append(" inner join departamentoRegionalProdutoServicos.departamentoRegional departamentoRegional");
-		}
-		
-		if (segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador() || segurancaFilter.temIdsUnidadeSESI() && !segurancaFilter.isAdministrador()) {
-			jpql.append(" inner join departamentoRegional.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador");
-			jpql.append(" inner join unidadeAtendimentoTrabalhador.empresaUats empresaUats");
-			jpql.append(" inner join empresaUats.empresa empresa");
-		}
-		
-		if (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador() || segurancaFilter.temIdsUnidadeSESI() && !segurancaFilter.isAdministrador()) {
-			jpql.append("  where ");
-		}
-	}
-	
-	public List<Linha> buscarLinhasPorIdDepartamento(Long id) {
-		LOGGER.debug("Pesquisando Linhas");
+    public List<Linha> pesquisarTodos(DadosFilter segurancaFilter, boolean habilitaFiltro) {
+        LOGGER.debug("Pesquisando Linhas");
 
-		Map<String, Object> parametros = Maps.newHashMap();
-		StringBuilder jpql = new StringBuilder();
+        Map<String, Object> parametros = Maps.newHashMap();
+        StringBuilder jpql = new StringBuilder();
 
-		jpql.append("select DISTINCT linha from Linha linha ");
+        jpql.append("select DISTINCT linha from Linha linha ");
 
-		jpql.append(" inner join fetch linha.produtosServicos produtoServico ");
-		jpql.append(
-				" inner join produtoServico.departamentoRegionalProdutoServicos departamentoRegionalProdutoServicos");
-		jpql.append(" inner join departamentoRegionalProdutoServicos.departamentoRegional departamentoRegional");
+        if (segurancaFilter != null && habilitaFiltro) {
 
-		jpql.append(" where departamentoRegional.id = :id ");
-		parametros.put("id", id);
-		
-		jpql.append(" and ");
-		jpql.append(" departamentoRegionalProdutoServicos.dataExclusao is null ");
-		
-		jpql.append(" order by linha.descricao ");
+            montarJoinPesquisarTodos(segurancaFilter, jpql);
 
-		TypedQuery<Linha> query = criarConsultaPorTipo(jpql.toString());
+            montarFiltroPesquisarTodos(segurancaFilter, parametros, jpql);
+        }
+        jpql.append(" order by linha.descricao ");
 
-		DAOUtil.setParameterMap(query, parametros);
+        TypedQuery<Linha> query = criarConsultaPorTipo(jpql.toString());
 
-		return query.getResultList();
-	}
-	
-	public List<Linha> buscarLinhasPorIdUat(String ids) {
-		LOGGER.debug("Pesquisando Linhas");
+        DAOUtil.setParameterMap(query, parametros);
 
-		Map<String, Object> parametros = Maps.newHashMap();
-		StringBuilder jpql = new StringBuilder();
-		
-		List<String> listaIdsString = Arrays.asList(ids.split(","));
-		List<Long> listaIdsLong = new ArrayList<Long>();
-		listaIdsString.stream().forEach(n -> listaIdsLong.add(Long.parseLong(n)));
+        return query.getResultList();
+    }
 
-		jpql.append("select DISTINCT linha from Linha linha ");
+    private void montarFiltroPesquisarTodos(DadosFilter segurancaFilter, Map<String, Object> parametros,
+                                            StringBuilder jpql) {
+        if (segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
+            jpql.append(" departamentoRegional.id IN (:idsDepRegional) ");
+            parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
+        }
 
-		jpql.append(" inner join fetch linha.produtosServicos produtoServico ");
-		jpql.append(
-				" inner join produtoServico.unidadeAtendimentoTrabalhadorProdutoServico uatProdutoServico");
-		jpql.append(" inner join uatProdutoServico.uat uat");
+        if (segurancaFilter.temIdsDepRegional() && (segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador()) && !segurancaFilter.isAdministrador()) {
+            jpql.append(" and ");
+        }
 
-		jpql.append(" where uat.id IN :id ");
-		parametros.put("id", listaIdsLong);
-		
-		jpql.append(" and ");
-		jpql.append(" uatProdutoServico.dataExclusao is null ");
-		
-		jpql.append(" order by linha.descricao ");
+        if (segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador() && !segurancaFilter.isAdministrador()) {
+            jpql.append(" empresa.id IN (:idsEmpresa) ");
+            parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
+        }
 
-		TypedQuery<Linha> query = criarConsultaPorTipo(jpql.toString());
+        if (segurancaFilter.temIdsUnidadeSESI()) {
+            if (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador() && !segurancaFilter.isAdministrador()) {
+                jpql.append(" and ");
+            }
+            jpql.append(" unidadeAtendimentoTrabalhador.id IN (:idsUnidadeSESI) ");
+            parametros.put("idsUnidadeSESI", segurancaFilter.getIdsUnidadeSESI());
+        }
+    }
 
-		DAOUtil.setParameterMap(query, parametros);
+    private void montarJoinPesquisarTodos(DadosFilter segurancaFilter, StringBuilder jpql) {
+        if (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador() || segurancaFilter.temIdsUnidadeSESI() && !segurancaFilter.isAdministrador()) {
+            jpql.append(" inner join fetch linha.produtosServicos produtoServico ");
+            jpql.append(" inner join produtoServico.departamentoRegionalProdutoServicos departamentoRegionalProdutoServicos");
+            jpql.append(" inner join departamentoRegionalProdutoServicos.departamentoRegional departamentoRegional");
+            jpql.append(" inner join departamentoRegional.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador");
+        }
 
-		return query.getResultList();
-	}
+        if (segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador() && !segurancaFilter.isAdministrador()) {
+            jpql.append(" inner join departamentoRegional.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador");
+            jpql.append(" inner join unidadeAtendimentoTrabalhador.empresaUats empresaUats");
+            jpql.append(" inner join empresaUats.empresa empresa");
+        }
+
+        if (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.isTrabalhador() || segurancaFilter.temIdsUnidadeSESI() && !segurancaFilter.isAdministrador()) {
+            jpql.append("  where ");
+        }
+    }
+
+    public List<Linha> buscarLinhasPorIdDepartamento(Long id) {
+        LOGGER.debug("Pesquisando Linhas");
+
+        Map<String, Object> parametros = Maps.newHashMap();
+        StringBuilder jpql = new StringBuilder();
+
+        jpql.append("select DISTINCT linha from Linha linha ");
+
+        jpql.append(" inner join fetch linha.produtosServicos produtoServico ");
+        jpql.append(
+                " inner join produtoServico.departamentoRegionalProdutoServicos departamentoRegionalProdutoServicos");
+        jpql.append(" inner join departamentoRegionalProdutoServicos.departamentoRegional departamentoRegional");
+
+        jpql.append(" where departamentoRegional.id = :id ");
+        parametros.put("id", id);
+
+        jpql.append(" and ");
+        jpql.append(" departamentoRegionalProdutoServicos.dataExclusao is null ");
+
+        jpql.append(" order by linha.descricao ");
+
+        TypedQuery<Linha> query = criarConsultaPorTipo(jpql.toString());
+
+        DAOUtil.setParameterMap(query, parametros);
+
+        return query.getResultList();
+    }
+
+    public List<Linha> buscarLinhasPorIdUat(String ids) {
+        LOGGER.debug("Pesquisando Linhas");
+
+        Map<String, Object> parametros = Maps.newHashMap();
+        StringBuilder jpql = new StringBuilder();
+
+        List<String> listaIdsString = Arrays.asList(ids.split(","));
+        List<Long> listaIdsLong = new ArrayList<Long>();
+        listaIdsString.stream().forEach(n -> listaIdsLong.add(Long.parseLong(n)));
+
+        jpql.append("select DISTINCT linha from Linha linha ");
+
+        jpql.append(" inner join fetch linha.produtosServicos produtoServico ");
+        jpql.append(
+                " inner join produtoServico.unidadeAtendimentoTrabalhadorProdutoServico uatProdutoServico");
+        jpql.append(" inner join uatProdutoServico.uat uat");
+
+        jpql.append(" where uat.id IN :id ");
+        parametros.put("id", listaIdsLong);
+
+        jpql.append(" and ");
+        jpql.append(" uatProdutoServico.dataExclusao is null ");
+
+        jpql.append(" order by linha.descricao ");
+
+        TypedQuery<Linha> query = criarConsultaPorTipo(jpql.toString());
+
+        DAOUtil.setParameterMap(query, parametros);
+
+        return query.getResultList();
+    }
 }

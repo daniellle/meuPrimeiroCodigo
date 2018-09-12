@@ -49,6 +49,7 @@ export class CadastroUnidadeSESIUsuarioComponent extends BaseComponent implement
         super(bloqueioService, dialogo);
     }
 
+    //TODO FAZER VALIDAÇÃO PARA PODER ASSOCIAR DR ANTES DE ASSOCIAR A UNIDADE (MOSTRAR UNIDADES APENAS DA DR)
     ngOnInit() {
         this.listaSelecionados = new Array<Uat>();
         this.filtroUat = new FiltroUat();
