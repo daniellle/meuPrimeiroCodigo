@@ -126,7 +126,6 @@ export class PesquisaUnidadeSESIUsuarioComponent extends BaseComponent implement
           this.paginacao = this.getPaginacao(this.paginacao, retorno);
         }else {
             this.listaUsuarioEntidade = new Array<UsuarioEntidade>();
-            this.mensagemError(MensagemProperties.app_rst_nenhum_registro_encontrado);
         }
       }, (error) => {
         this.mensagemError(error);
