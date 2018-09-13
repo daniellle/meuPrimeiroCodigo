@@ -73,7 +73,7 @@ public class UnidadeAtendimentoTrabalhadorService extends BaseService {
                 dados.setIdsDepartamentoRegional(departamentos.parallelStream().map(u ->
                         u.getDepartamentoRegional().getId()).collect(Collectors.toSet()));
             } else {
-                throw new BusinessErrorException(getMensagem("É necessário associar a uma DR antes de fazer essa operação"));
+                throw new BusinessErrorException("É necessário associar a uma DR antes de fazer essa operação");
             }
 
         }
