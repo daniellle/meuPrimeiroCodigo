@@ -11,7 +11,7 @@
                 <div class='col-12 col-info-valor'>
                     <label>{{ idade ||'--'}}</label>
                 </div>
-                <small style="margin-left: 5px">{{ disclaimerAferimento }}</small>
+                <small style="margin-left: 5px">{{ disclaimerAferimento }} {{dataRegistro}}</small>
             </div>
         </div>
         <div class='col-md-4 card-single card-altura'>
@@ -24,7 +24,7 @@
                 <div class='col-12 col-info-valor'>
                     <label>{{ altura?.valor ||'--'}}</label>
                 </div>
-                <small style="margin-left: 5px">{{ disclaimerAferimento }}</small>
+                <small style="margin-left: 5px">{{ disclaimerAferimento }} {{dataRegistro}}</small>
             </div>
         </div>
 
@@ -38,7 +38,7 @@
                 <div class='col-12 col-info-valor'>
                     <label>{{ peso?.valor || '--'}}</label>
                 </div>
-                <small style="margin-left: 5px">{{ disclaimerAferimento }}</small>
+                <small style="margin-left: 5px">{{ disclaimerAferimento }} {{dataRegistro}}</small>
             </div>
         </div>
     </div>
@@ -62,7 +62,7 @@
                     </div>
                     <div class='row row-chart' *ngIf='this.semDadosPressaoSuficiente'>
                         <div class='col-12'>
-                            Não foi encontrado nenhum registro de pressão arterial.
+                            Registro não encontrado.
                         </div>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                     </div>
                     <div class='row row-chart row-imc text-center'>
                         <div class='col-12 text-left' *ngIf='this.imc == null'>
-                            Não foi encontrado nenhum registro de IMC.
+                            Registro não encontrado.
                         </div>
                         <div *ngIf='!(this.imc == null)' class='col-6 col-md-6 col-lg-8 col-info-imc text-left'>
                             <div class='row row-info-imc'>
@@ -127,7 +127,7 @@
                         </div>
                     </div>
                 </div>
-                <small style="margin-left: 5px">{{ disclaimerAferimento }}</small>
+                <small style="margin-left: 5px">{{ disclaimerAferimento }} {{dataRegistro}} </small>
             </div>
         </div>
         <div class='col-md-4 col-sm-6 col-xs-12 card-res '>
@@ -150,7 +150,7 @@
                     </div>
                     <div class='row row-chart ' *ngIf='this.semDadosPesoSuficiente '>
                         <div class='col-12 '>
-                            Não foi encontrado nenhum registro de circunferência abdominal.
+                            Registro não encontrado.
                         </div>
                     </div>
                 </div>
@@ -303,7 +303,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="row row-timeline">
+
+
+    <div class="row row-timeline">
+
+        <!--<div class="row center">
+            <div class="col-12">
+                <div class="periodos btn-group">
+                    <label *ngFor="let periodo of periodos" class="btn btn-success"  (click)="$event.stopPropagation();atualizarPeriodo(periodo);" [(ngModel)]="periodoEscolhido" uncheckable>{{periodo}}</label>
+                </div>
+            </div>
+        </div>-->
                     <div class='col-12 card-res '>
                         <div class='row row-card-content'>
                             <div class='col-12'>
@@ -335,4 +345,4 @@
                         </div>
                     </div>
                 </div>
-            </div>
+</div>

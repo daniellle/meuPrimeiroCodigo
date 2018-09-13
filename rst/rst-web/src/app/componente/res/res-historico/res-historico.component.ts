@@ -11,6 +11,7 @@ import {Trabalhador} from "../../../modelo/trabalhador.model";
 import {ImunizacaoService} from '../../../servico/imunizacao.service';
 import {Vacina} from 'app/modelo/vacina.model';
 import {Imunizacao} from '../../../modelo/imunizacao.model';
+const moment = require('moment');
 
 @Component({
     selector: 'app-res-historico',
@@ -47,9 +48,15 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
     descricaoMedicamentos: string;
     descricaoAlergias: string;
     descricaoVacinas: string;
+    dataRegistro: string;
     trabalhador: Trabalhador;
     imunizacao: Imunizacao[] = [];
     vacinasAutodeclaradas: Vacina[] = new Array<Vacina>();
+
+    periodoEscolhido = 'Última semana';
+    periodoEscolhidoDate: Date;
+    periodos = ['Última semana', 'Último mês', '03 meses', '06 meses', '09 meses', '12 meses', 'Todos'];
+
 
     constructor(protected trabalhadorService: TrabalhadorService,
                 protected route: ActivatedRoute,
@@ -61,7 +68,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
     }
 
     ngOnInit() {
-        this.buscaDadosHistoricos();
+        this.buscaDadosHistoricos(this.periodoEscolhidoDate);
         this.buscarDadosTrabalhador();
         this.buscarVacinasAutodeclaradas();
     }
@@ -126,6 +133,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
             this.filtrarInformacoes = encontrosMedicos.filtrarInformacoes;
             this.encontrosTimeline = {};
             this.encontrosTimeline[0] = encontrosMedicos.resultado.result;
+            this.dataRegistro = moment(encontrosMedicos.resultado.result[0].created).format("DD/MM/YYYY");
             this.paginaTimeline = this.encontrosTimeline[0];
             this.numeroEncontros = encontrosMedicos.resultado.max;
         }
@@ -155,7 +163,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
         }
     }
 
-    private buscaDadosHistoricos() {
+    private buscaDadosHistoricos(periodo?: Date) {
         this.cpf = (Seguranca.getUsuario() as any).sub;
         if (localStorage.getItem('trabalhador_cpf')) {
             this.cpf = localStorage.getItem('trabalhador_cpf');
@@ -169,8 +177,14 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
         chamadas.push(...this.DADOS_HISTORICOS.map((dado) => this.service.buscarHistoricoParaInformacaoSaude(dado,
             this.cpf)
             .catch((err) => Observable.of(null))));
-        chamadas.push(this.service.buscarHistorico(this.cpf)
-            .catch((err) => Observable.of(null)));
+        if(!periodo){
+            chamadas.push(this.service.buscarHistorico(this.cpf)
+                .catch((err) => Observable.of(null)));
+        }
+        else{
+            chamadas.push(this.service.buscarHistorico(this.cpf, periodo)
+                .catch((err) => Observable.of(null)));
+        }
         chamadas.push(this.service.buscarPaciente(this.cpf));
         chamadas.push(this.service.buscaAlergias(this.cpf, 'ALERGIA')
             .catch((err) => Observable.of(null)));
@@ -253,6 +267,66 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
         }
     }
 
+  atualizarPeriodo(periodo: string) {
+
+        console.log(this.periodoEscolhido);
+
+        if(periodo == "Última semana"){
+            this.periodoEscolhido = periodo;
+            this.periodoEscolhidoDate = moment(new Date()).subtract(7, 'days');
+            this.buscaDadosHistoricos(this.periodoEscolhidoDate);
+
+        }
+        else if (periodo == "Último mês"){
+            this.periodoEscolhido = periodo;
+            this.periodoEscolhidoDate = moment(new Date()).subtract(30, 'days');
+            this.buscaDadosHistoricos(this.periodoEscolhidoDate);
+        }
+        else if(periodo == "03 meses"){
+            this.periodoEscolhido = periodo;
+            this.periodoEscolhidoDate = moment(new Date()).subtract(90, 'days');
+            this.buscaDadosHistoricos(this.periodoEscolhidoDate);
+        }
+        else if(periodo == "06 meses"){
+            this.periodoEscolhido = periodo;
+            this.periodoEscolhidoDate = moment(new Date()).subtract(180, 'days');
+            this.buscaDadosHistoricos(this.periodoEscolhidoDate);
+        }
+        else if(periodo == "09 meses"){
+            this.periodoEscolhido = periodo;
+            this.periodoEscolhidoDate = moment(new Date()).subtract(270, 'days');
+            this.buscaDadosHistoricos(this.periodoEscolhidoDate);
+        }
+        else if(periodo== "12 meses"){
+            this.periodoEscolhido = periodo;
+            this.periodoEscolhidoDate = moment(new Date()).subtract(365, 'days');
+            this.buscaDadosHistoricos(this.periodoEscolhidoDate);
+        }
+        else if(periodo == "Todos"){
+            this.periodoEscolhido = periodo;
+            this.periodoEscolhidoDate = new Date(0);
+            this.buscaDadosHistoricos();
+        }
+      /* const index = this.periodos.indexOf(periodo);
+
+     if (index >= 0) {
+         this.periodoAtual = this.periodosGraficos[index];
+        // this.timelineHelper.bloquearHistoria = true;
+
+         this.timelineHelper
+             .atualizarTimeline(this.periodoAtual)
+             .subscribe((resultado) => {
+                 if (resultado) {
+                     this.timelineHelper.iniciarTimeline(resultado);
+                 }
+             }, (error: any) => {
+                 this.mensagemAtencao(error.message);
+             }, () => this.timelineHelper.bloquearHistoria = false);
+
+       //  this.graficoHelper.atualizarGraficosIndicadores(this.periodoAtual, this.altura, this.peso, this.temperatura,
+            // this.imc, this.pressaoSanguinea);
+     }*/
+ }
 }
 
 // tslint:disable-next-line:max-classes-per-file

@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 
 @Stateless
 public class RESService extends BaseService {
-    //Teste do jenkins 2
+
 
     private static final long serialVersionUID = -8961797164029557197L;
 
@@ -338,7 +338,7 @@ public class RESService extends BaseService {
         params.put("documentType", "cpf");
         params.put("document", cpf);
         params.put("archetypeId", informacoes.get(0).getIdArquetipo());
-        params.put("from", LocalDate.now().minus(1, ChronoUnit.YEARS).toString());
+        params.put("from", LocalDate.now().minus(200, ChronoUnit.YEARS).toString());
         Call<Map<String, Object>> chamada;
 
         if (!historico) {
@@ -376,7 +376,7 @@ public class RESService extends BaseService {
          * @return
          */
 
-        @GET("v2/compositions")
+        @GET("v2/compositions/")
         @Headers({"Content-Type: application/x-www-form-urlencoded"})
         Call<Map<String, Object>> buscarInformacaoSaude(@Header("Authorization") String authorization,
                                                         @QueryMap(encoded = true) Map<String, String> params,
