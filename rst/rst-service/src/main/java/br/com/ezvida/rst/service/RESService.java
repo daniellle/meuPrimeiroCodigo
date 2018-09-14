@@ -160,7 +160,7 @@ public class RESService extends BaseService {
         Map<String, String> query = MapBuilder
                 .criar("quantity", "5")
                 .incluir("page", pagina)
-                .incluir("fromDate", de)
+                .incluir("from", de)
              //   .incluir(" archetypeId", TEMPLATE)
                 .incluir("document", cpf)
                 .build();

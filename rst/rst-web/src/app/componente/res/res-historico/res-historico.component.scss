@@ -38,3 +38,43 @@
 .card-exames {
     margin-bottom:10px;
 }
+
+.row-periodo {
+    label {
+        &.btn-success {
+            border-color: lightgray;
+            background-color: #e6e6e6;
+            color: gray;
+            &:active,
+            &:hover,
+            &.active {
+                background-color: gray;
+                color: white;
+            }
+        }
+        &:first-of-type {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+        &:last-of-type {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+    }
+    margin-bottom: 1em;
+    // margin-left: 20%;
+}
+
+.md-button:not([disabled]):hover {
+    background-color: transparent;
+}
+
+button {
+    outline: 0;
+}
+.row-top-16 {
+    margin-top: 16px;
+    text-align: center;
+    font-weight: normal;
+    font-style: normal;
+}

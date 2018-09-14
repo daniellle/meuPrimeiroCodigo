@@ -304,16 +304,16 @@
                     </div>
                 </div>
 
+    <div class="row center row-top-16 row-periodo">
+        <div class="col-12">
+            <div class="periodos btn-group">
+                <label *ngFor="let periodo of periodos" class="btn btn-success"   (click)="$event.stopPropagation();atualizarPeriodo(periodo);"  uncheckable>{{periodo}}</label>
+            </div>
+        </div>
+    </div>
 
     <div class="row row-timeline">
 
-        <!--<div class="row center">
-            <div class="col-12">
-                <div class="periodos btn-group">
-                    <label *ngFor="let periodo of periodos" class="btn btn-success"  (click)="$event.stopPropagation();atualizarPeriodo(periodo);" [(ngModel)]="periodoEscolhido" uncheckable>{{periodo}}</label>
-                </div>
-            </div>
-        </div>-->
                     <div class='col-12 card-res '>
                         <div class='row row-card-content'>
                             <div class='col-12'>
