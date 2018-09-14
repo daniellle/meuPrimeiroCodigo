@@ -156,6 +156,10 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             if (usuarioEntidade.getSindicato() != null) {
                 usuario.getIdSindicatos().add(usuarioEntidade.getSindicato().getId());
             }
+
+            if (usuarioEntidade.getUnidadeAtendimentoTrabalhador() != null) {
+                usuario.getIdUnidadesSESI().add(usuarioEntidade.getUnidadeAtendimentoTrabalhador().getId());
+            }
         }
     }
 

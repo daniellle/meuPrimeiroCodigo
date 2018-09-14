@@ -156,6 +156,14 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 				parametros.put("idsDepRegional", dados.getIdsDepartamentoRegional());
 				setFiltroAplicado(true);
 			}
+
+			if(dados.temIdsUnidadeSESI()){
+				String conectorLogico  = dados.temIdsEmpresa() || dados.temIdsDepRegional() ? " OR " : isFiltroAplicado() ? " AND " : " ";
+				jpql.append(conectorLogico);
+				jpql.append(" (und_atd_trabalhador.id_und_atd_trabalhador IN (:idsUnidadeSESI)) ");
+				parametros.put("idsUnidadeSESI", dados.getIdsUnidadeSESI());
+				setFiltroAplicado(true);
+			}
 		}
 	}
 

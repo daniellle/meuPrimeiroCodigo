@@ -134,4 +134,12 @@ export abstract class BaseService<T> {
       });
 
   }
+
+    isVazia(valor: any): boolean {
+        return valor || valor === undefined || valor === null || valor === '';
+    }
+
+    isNotVazia(valor: any): boolean {
+        return !this.isVazia(valor);
+    }
 }

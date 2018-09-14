@@ -8,6 +8,7 @@ import {Component, OnInit} from '@angular/core';
 import 'chartjs-plugin-datalabels';
 import {Seguranca} from '../../../compartilhado/utilitario/seguranca.model';
 import * as _ from 'lodash';
+import {isNullOrUndefined} from "util";
 
 const moment = require('moment');
 
@@ -17,24 +18,24 @@ const moment = require('moment');
     styleUrls: ['./res-home.component.scss']
 })
 export class ResHomeComponent extends BaseComponent implements OnInit {
-    
+
     DADOS_HISTORICOS = [
         'PRESSAO_SISTOLICA',
         'PRESSAO_DIASTOLICA',
         'CIRCUNFERENCIA_ABDOMINAL'
     ];
-    
+
     DADOS_BASICOS = [
         'PESO',
         'ALTURA',
         'IMC',
         'IDADE'
     ];
-    
-    disclaimerAferimento = 'Informações aferidas no último ano';
-    
+
+    disclaimerAferimento = 'Registro de: ';
+
     idade: any;
-    
+
     sistolica: DadoBasico;
     diastolica: DadoBasico;
     peso: DadoBasico;
@@ -44,58 +45,58 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
     graficoPressaoSanguinea: any;
     graficoCircunferenciaAbdominal: any;
     paciente: any;
-    
+
     semDadosCircunferenciaAbdominalSuficiente = true;
     semDadosPressaoSuficiente = true;
-    
+
     constructor(protected route: ActivatedRoute,
                 protected router: Router,
                 protected service: ResService,
                 protected bloqueioService: BloqueioService) {
         super(bloqueioService);
     }
-    
+
     ngOnInit() {
         this.resolve();
     }
-    
+
     tratarDadosBasicos(dados) {
         if ( dados.paciente ) {
             this.paciente = dados.paciente;
         }
-        
+
         this.criarGraficoDeCircunferencia(dados.circunferenciaAbdominal);
-        
+
         if ( dados.altura ) {
             this.altura = new DadoBasico({
                 magnitude: dados.altura.value.magnitude as number,
                 units: dados.altura.value.units
             });
         }
-        
+
         if ( dados.idade ) {
             this.idade = dados.idade.value.value;
         }
-        
+
         if ( dados.peso ) {
             this.peso = new DadoBasico({
                 magnitude: dados.peso.value.magnitude as number,
                 units: dados.peso.value.units
             });
         }
-        
+
         if ( dados.imc ) {
             this.imc = new DadoBasico({magnitude: dados.imc.value.magnitude as number, units: dados.imc.value.units});
         } else {
             this.calcularImc();
         }
-        
+
         this.criarGraficoDePressao(dados.sistolica || [], dados.diastolica || []);
         this.calcularIdade();
     }
-    
+
     criarGraficoDeCircunferencia(circunferencias: Array<{ data: string, informacao: any }>) {
-        
+
         if ( !circunferencias || circunferencias.length === 0
              || circunferencias.every(c => Number(c.informacao!.magnitude) <= 0) ) {
             this.semDadosCircunferenciaAbdominalSuficiente = true;
@@ -108,9 +109,9 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
             let dados = [
                 {data: []}
             ];
-            
+
             this.ordenarArrayDeCircunferenciaAbdominal(circunferencias);
-            
+
             let quantidade_de_datas_sem_repeticao_sem_zero = 0;
             circunferencias.forEach((circunferencia) => {
                 if ( circunferencia.informacao
@@ -122,10 +123,10 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
                     quantidade_de_datas_sem_repeticao_sem_zero++;
                 }
             });
-            
+
             let contador = 0;
             circunferencias.forEach((circunferencia) => {
-                
+
                 if ( circunferencia.informacao
                      && circunferencia.informacao.magnitude !== 0
                      && circunferencia.informacao !== undefined
@@ -137,10 +138,10 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
                     contador++;
                 }
             });
-            
+
             labelsComDatas = Array.from(setLabelsComDatas);
             setLabelsComDatas = new Set();
-            
+
             const posicoesAIgnorar = labelsComDatas.length - 3;
             let contador2 = 0;
             labelsComDatas.forEach((data) => {
@@ -149,7 +150,7 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
                 }
                 contador2++;
             });
-            
+
             labelsComDatas = Array.from(setLabelsComDatas);
             for (const circunferencia of circunferencias) {
                 if ( circunferencia.informacao
@@ -158,24 +159,24 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
                      && circunferencia.informacao !== null
                      && circunferencia.informacao.magnitude !== undefined
                      && circunferencia.informacao.magnitude !== null ) {
-                    
+
                     const data = new Date(circunferencia.data);
                     const dataFormatada = `${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()}`;
-                    
+
                     //Verificação se o registro está entre os 3 registros que vão ser exibidos.
                     if ( labelsComDatas.indexOf(dataFormatada) > -1 ) {
-                        
+
                         //Verificar se a data do registro já foi inserida para colocar ele em outro dataset.
                         const index = datasJaInseridas.indexOf(dataFormatada);
                         if ( index != -1 ) {
                             let list = [];
-                            
+
                             for (let i = 0; i < labelsComDatas.length; i++) {
                                 list.push(undefined);
                             }
-                            
+
                             list[index] = circunferencia.informacao.magnitude;
-                            
+
                             dados.push({
                                 data: list
                             });
@@ -184,15 +185,15 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
                             datasJaInseridas.push(dataFormatada);
                         }
                     }
-                    
+
                     i++;
                     if ( i > labelsComDatas.length ) {
                         break;
                     }
-                    
+
                 }
             }
-            
+
             this.graficoCircunferenciaAbdominal = {
                 tooltips: false,
                 dados: dados,
@@ -228,10 +229,10 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
             };
         }
     }
-    
+
     obterObjetoDeCoresPorDataset(quantidadeDeDataSets: number) {
         let retorno = [];
-        
+
         for (let i = 0; i < quantidadeDeDataSets; i++) {
             retorno.push({
                 backgroundColor: 'rgba(175, 99, 152, 0.2)',
@@ -242,65 +243,69 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
                 pointHoverRadius: '5'
             });
         }
-        
+
         return retorno;
     }
-    
-    criarGraficoDePressao(sistolicas: Array<{ data: string, informacao: Path }>,
-                          diastolicas: Array<{ data: string, informacao: Path }>) {
+
+    criarGraficoDePressao(sistolicas: Array<{ data: string, informacao: Path }>, diastolicas: Array<{ data: string, informacao: Path }>) {
         if ( (!sistolicas && !diastolicas) || (sistolicas.length === 0 && diastolicas.length === 0) ) {
             this.semDadosPressaoSuficiente = true;
             return;
         }
-        
+
         this.ordenarArrayDePressaoSanguinea(sistolicas);
         this.ordenarArrayDePressaoSanguinea(diastolicas);
-        
+
         let labelsComData = [];
         let serieSistolica = [];
         let serieDiastolica = [];
         let referenciaSistolica = [];
         let referenciaDiastolica = [];
         let i = 0;
-        
+
         for (let sistolica of sistolicas) {
             if ( sistolica.informacao ) {
                 const data = new Date(sistolica.data);
-                
+
                 //Procura a pressão diastolica para fazer o match com a sistolica.
                 //O parametro de busca é a data do atendimento.
                 //Caso o paciente tenha 2 atendimentos no mesmo horário, o que é impossível, utiliza o primeiro.
                 const diastolica = diastolicas.filter(element => {
                     return new Date(element.data).getTime() === new Date(sistolica.data).getTime();
                 })[0];
-                
+
+                if (isNullOrUndefined(diastolica)) {
+                    continue;
+                }
+
                 //Se a pressão sistólica e diastólica forem 0 não adiciona no gráfico.
                 if ( (sistolica.informacao as any).magnitude === undefined || (sistolica.informacao as any).magnitude
                      === null || (sistolica.informacao as any).magnitude === 0 &&
+
                      (diastolica.informacao as any).magnitude === undefined || (diastolica.informacao as any).magnitude
                      === null || (diastolica.informacao as any).magnitude === 0 ) {
                     continue;
                 }
-                
+
                 //Caso o paciente não tenha valor de pressão diastolica, impossivel só ter 1 dos 2,  não monta as
                 // barras.
                 if ( diastolica !== undefined ) {
                     this.semDadosPressaoSuficiente = false;
-                    
+
                     //Adiciona as medições em par nas listas.
                     serieSistolica.push((sistolica.informacao as any).magnitude);
                     serieDiastolica.push((diastolica.informacao as any).magnitude);
-                    
+
                     //Adiciona as referencias base de pressão normal.
                     referenciaSistolica.push(120);
                     referenciaDiastolica.push(80);
-                    
+
                     //Monta a label do grafico
                     labelsComData.push(`${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()}`);
-                    
+
                     //Remove da lista para caso exista pressões repetidas.
                     diastolicas.splice(diastolicas.indexOf(diastolica), 1);
-                    
+
                     i++;
                     if ( i > 2 ) {
                         break;
@@ -308,7 +313,7 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
                 }
             }
         }
-        
+
         this.graficoPressaoSanguinea = {
             dados: [
                 {
@@ -396,11 +401,11 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
             }
         };
     }
-    
+
     getClasseImagemCorpo(): string {
         return 'homem';
     }
-    
+
     getClasseNivelIMC(): string {
         const imc = this.imc ? this.imc.valor : null;
         if ( imc ) {
@@ -416,7 +421,7 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
         }
         return 'normal';
     }
-    
+
     referenciaAbdominal(): string {
         if ( this.paciente ) {
             if ( this.paciente.gender ) {
@@ -429,17 +434,17 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
         }
         return '';
     }
-    
+
     private calcularIdade() {
-        
-        
+
+
         if ( _.isNil(this.idade) && !_.isNil(this.paciente) && !_.isNil(this.paciente.birthDate) ) {
             this.idade = moment().diff(moment(this.paciente.birthDate), 'years');
         }
     }
-    
+
     private calcularImc() {
-        
+
         if ( !_.isNil(this.altura) && !_.isNil(this.altura.valor) &&
              !_.isNil(this.peso) && !_.isNil(this.peso.valor) ) {
             const altura = Number(this.altura.valor) / 100;
@@ -450,7 +455,7 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
             });
         }
     }
-    
+
     private resolve() {
         const cpf = (Seguranca.getUsuario() as any).sub;
         const chamadas: any[] = this.DADOS_BASICOS.map((dado) => this.service
@@ -473,42 +478,42 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
             });
         });
     }
-    
+
     private ordenarArrayDeCircunferenciaAbdominal(collection: Array<{ data: string, informacao: Path }>) {
         collection.sort(function (a, b) {
             if ( new Date(a.data) > new Date(b.data) ) {
                 return 1;
             }
-            
+
             if ( new Date(a.data) < new Date(b.data) ) {
                 return -1;
             }
-            
+
             return 0;
         });
     }
-    
+
     private ordenarArrayDePressaoSanguinea(collection: Array<{ data: string, informacao: Path }>) {
         collection.sort(function (a, b) {
             if ( new Date(a.data) > new Date(b.data) ) {
                 return 1;
             }
-            
+
             if ( new Date(a.data) < new Date(b.data) ) {
                 return -1;
             }
-            
+
             return 0;
         });
     }
-    
+
 }
 
 // tslint:disable-next-line:max-classes-per-file
 export class DadoBasico {
     valor: any;
     unidade: string;
-    
+
     constructor(valor: { magnitude: any, units: string } | any) {
         this.valor = valor.magnitude;
         this.unidade = valor.units;

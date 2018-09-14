@@ -1,17 +1,16 @@
-import { MascaraUtil } from 'app/compartilhado/utilitario/mascara.util';
-import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
-import { DepartamentoRegional } from './../modelo/departamento-regional.model';
-import { MensagemErro } from './../modelo/mensagem-erro.model';
-import { FiltroUsuarioEntidade } from './../modelo/filtro-usuario-entidade.model';
-import { UsuarioEntidade } from './../modelo/usuario-entidade.model';
-import { Observable } from 'rxjs/Observable';
-import { ListaPaginada } from './../modelo/lista-paginada.model';
-import { Paginacao } from 'app/modelo/paginacao.model';
-import { Injectable } from '@angular/core';
-import { AutenticacaoService } from 'app/servico/autenticacao.service';
-import { BloqueioService } from 'app/servico/bloqueio.service';
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { BaseService } from 'app/servico/base.service';
+import {MascaraUtil} from 'app/compartilhado/utilitario/mascara.util';
+import {MensagemProperties} from 'app/compartilhado/utilitario/recurso.pipe';
+import {MensagemErro} from './../modelo/mensagem-erro.model';
+import {FiltroUsuarioEntidade} from './../modelo/filtro-usuario-entidade.model';
+import {UsuarioEntidade} from './../modelo/usuario-entidade.model';
+import {Observable} from 'rxjs/Observable';
+import {ListaPaginada} from './../modelo/lista-paginada.model';
+import {Paginacao} from 'app/modelo/paginacao.model';
+import {Injectable} from '@angular/core';
+import {AutenticacaoService} from 'app/servico/autenticacao.service';
+import {BloqueioService} from 'app/servico/bloqueio.service';
+import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
+import {BaseService} from 'app/servico/base.service';
 
 @Injectable()
 export class UsuarioEntidadeService extends BaseService<UsuarioEntidade> {
@@ -37,6 +36,10 @@ export class UsuarioEntidadeService extends BaseService<UsuarioEntidade> {
     if (tipo === MensagemProperties.app_rst_labels_departamento_regional) {
       return '/v1/usuario-entidade/departamento-regional/paginado';
     }
+
+    if (tipo === MensagemProperties.app_rst_menu_uat) {
+        return '/v1/usuario-entidade/unidade-sesi/paginado';
+    }
   }
 
   pesquisarPaginado(filtro: FiltroUsuarioEntidade, paginacao: Paginacao, endpoint: string):
@@ -45,32 +48,6 @@ export class UsuarioEntidadeService extends BaseService<UsuarioEntidade> {
       .map((response: ListaPaginada<UsuarioEntidade>) => {
         if (!response.list) {
           response.list = new Array<UsuarioEntidade>();
-        }
-        return response;
-      }).catch((error) => {
-        return Observable.throw(error);
-      });
-  }
-
-  pesquisarPaginadoSindicato(filtro: FiltroUsuarioEntidade, paginacao: Paginacao):
-    Observable<ListaPaginada<UsuarioEntidade>> {
-    return super.get('/v1/usuario-entidade/sindicato/paginado', this.getParams(filtro, paginacao))
-      .map((response: ListaPaginada<UsuarioEntidade>) => {
-        if (!response.list) {
-          response.list = new Array<UsuarioEntidade>();
-        }
-        return response;
-      }).catch((error) => {
-        return Observable.throw(error);
-      });
-  }
-
-  pesquisarPaginadoDepartamento(filtro: FiltroUsuarioEntidade, paginacao: Paginacao):
-    Observable<ListaPaginada<DepartamentoRegional>> {
-    return super.get('/v1/usuario-entidade/departamento-regional/paginado', this.getParams(filtro, paginacao))
-      .map((response: ListaPaginada<DepartamentoRegional>) => {
-        if (!response.list) {
-          response.list = new Array<DepartamentoRegional>();
         }
         return response;
       }).catch((error) => {

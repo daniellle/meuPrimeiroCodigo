@@ -113,7 +113,7 @@ public class CredencialService extends BaseService {
 		LOGGER.info("Criando filtro de dados", usuario.getLogin(), usuario.getId(), usuario);
 
 		DadosFilter dadosFilter = new DadosFilter(usuario.getPapeis(), usuario.getIdDepartamentos(), usuario.getIdEmpresas(),
-				usuario.getIdParceiros(), usuario.getIdRedesCredenciadas(), usuario.getIdSindicatos(), usuario.getIdTrabalhadores());
+				usuario.getIdParceiros(), usuario.getIdRedesCredenciadas(), usuario.getIdSindicatos(), usuario.getIdTrabalhadores(), usuario.getIdUnidadesSESI());
 
 		String dados = StringUtils.EMPTY;
 		try {

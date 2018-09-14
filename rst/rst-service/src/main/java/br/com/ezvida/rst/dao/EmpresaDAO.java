@@ -47,7 +47,7 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 		jpql.append(" left join fetch empresa.segmento segmento ");
 		jpql.append(" left join fetch empresa.ramoEmpresa ramoEmpresa ");
 
-		if (segurancaFilter != null && segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
+		if (segurancaFilter != null && temIdsDepRegionalOuTemIdsEmpresa(segurancaFilter) && !segurancaFilter.isAdministrador()) {
 			jpql.append(" inner join empresa.empresaUats empresaUats ");
 			jpql.append(" inner join empresaUats.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador ");
 			jpql.append(" inner join unidadeAtendimentoTrabalhador.departamentoRegional departamentoRegional ");
@@ -68,6 +68,14 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 
 				jpql.append(" departamentoRegional.id IN (:idsDepRegional) ");
 				parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
+			}
+
+			if (segurancaFilter.temIdsUnidadeSESI()) {
+				if (id != null || segurancaFilter.temIdsEmpresa() || segurancaFilter.temIdsDepRegional()) {
+					jpql.append(" and ");
+				}
+				jpql.append(" unidadeAtendimentoTrabalhador.id IN (:idsUnidadeSESI) ");
+				parametros.put("idsUnidadeSESI", segurancaFilter.getIdsUnidadeSESI());
 			}
 		}
 
@@ -221,7 +229,7 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 
 	
 	private void montaJoinFiltroDados(StringBuilder jpql, DadosFilter segurancaFilter) {
-		if (segurancaFilter != null && segurancaFilter.temIdsDepRegional() && !segurancaFilter.isAdministrador()) {
+		if (segurancaFilter != null && temIdsDepRegionalOuTemIdsEmpresa(segurancaFilter) && !segurancaFilter.isAdministrador()) {
 			jpql.append(" inner join empresa.empresaUats empresaUats ");
 			jpql.append(" inner join empresaUats.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador ");
 			jpql.append(" inner join unidadeAtendimentoTrabalhador.departamentoRegional departamentoRegional ");
@@ -249,6 +257,13 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 				adicionarAnd(jpql);
 				jpql.append(" departamentoRegional.id IN (:idsDepRegional) ");
 				parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
+				setFiltroAplicado(true);
+			}
+
+			if (segurancaFilter.temIdsUnidadeSESI()) {
+				adicionarAnd(jpql);
+				jpql.append(" unidadeAtendimentoTrabalhador.id IN (:idsUnidadeSESI) ");
+				parametros.put("idsUnidadeSESI", segurancaFilter.getIdsUnidadeSESI());
 				setFiltroAplicado(true);
 			}
 		}
@@ -299,7 +314,7 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 	}
 
 	private boolean temIdsDepRegionalOuTemIdsEmpresa(DadosFilter segurancaFilter) {
-		return segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa();
+		return segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.temIdsUnidadeSESI();
 	}
 
 	public List<Empresa> buscarEmpresasPorIds(Set<Long> ids) {

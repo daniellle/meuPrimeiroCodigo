@@ -132,7 +132,8 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
     @Path("/perfil")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_ALTERAR, PermissionConstants.TRABALHADOR, PermissionConstants.TRABALHADOR_CONSULTAR}))
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_ALTERAR, PermissionConstants.TRABALHADOR, PermissionConstants.TRABALHADOR_CONSULTAR,
+        PermissionConstants.PERFIL, PermissionConstants.PERFIL_CONSULTAR}))
     public Response alterarPerfil(@Context SecurityContext context,
                                   @Context HttpServletRequest request, @Encoded br.com.ezvida.girst.apiclient.model.UsuarioCredencial usuarioCredencial) {
         LOGGER.debug("Atualizando o perfil e senha do usuario");
@@ -145,7 +146,8 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
     @GET
     @Path("/buscarperfil")
     @Produces(MediaType.APPLICATION_JSON)
-    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.TRABALHADOR, PermissionConstants.TRABALHADOR_CONSULTAR}))
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.TRABALHADOR, PermissionConstants.TRABALHADOR_CONSULTAR,
+        PermissionConstants.PERFIL, PermissionConstants.PERFIL_CONSULTAR}))
     public Response getPerfilByLogin(@Context HttpServletRequest request, @Context SecurityContext context) {
 
         Usuario usuarioLogado = ClienteInfos.getUsuario(context);

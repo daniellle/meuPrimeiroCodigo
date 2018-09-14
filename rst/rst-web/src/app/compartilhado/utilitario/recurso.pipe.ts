@@ -533,6 +533,10 @@ export const MensagemProperties = {
   app_rst_usuario_departamento_regional_subtitulo_associar_departamento: 'Associar Departamento Regional',
   app_rst_usuario_departamento_regional_adicionados: 'Departamentos Regionais Adicionados',
 
+  // Usuario Unidade SESI
+  app_rst_usuario_unidade_sesi_associados_title: 'Unidades SESI Associadas',
+  app_rst_usuario_unidade_sesi_subtitulo_associar_unidade: 'Associar Unidade SESI',
+
   // Recuperar Senha
   app_rst_recupera_senha_titulo: 'Recuperar Senha',
   app_rst_recupera_senha_sucesso: 'Um link para cadastrar uma nova senha foi enviado para o seu email',

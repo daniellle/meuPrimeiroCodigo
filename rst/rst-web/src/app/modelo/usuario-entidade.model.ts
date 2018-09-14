@@ -3,6 +3,8 @@ import { RedeCredenciada } from './rede-credenciada.model';
 import { Parceiro } from './parceiro.model';
 import { DepartamentoRegional } from 'app/modelo/departamento-regional.model';
 import { Empresa } from 'app/modelo/empresa.model';
+import {UnidadeAtendimentoTrabalhador} from "./unid-atend-trabalhador.model";
+import {Uat} from "./uat.model";
 
 export class UsuarioEntidade {
     id: number;
@@ -15,6 +17,7 @@ export class UsuarioEntidade {
     parceiro: Parceiro;
     redeCredenciada: RedeCredenciada;
     sindicato: Sindicato;
+    uat: Uat;
     perfil: string;
 
 }
