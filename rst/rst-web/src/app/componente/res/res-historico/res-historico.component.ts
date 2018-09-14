@@ -177,14 +177,8 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
         chamadas.push(...this.DADOS_HISTORICOS.map((dado) => this.service.buscarHistoricoParaInformacaoSaude(dado,
             this.cpf)
             .catch((err) => Observable.of(null))));
-        if(!periodo){
             chamadas.push(this.service.buscarHistorico(this.cpf)
                 .catch((err) => Observable.of(null)));
-        }
-        else{
-            chamadas.push(this.service.buscarHistorico(this.cpf, periodo)
-                .catch((err) => Observable.of(null)));
-        }
         chamadas.push(this.service.buscarPaciente(this.cpf));
         chamadas.push(this.service.buscaAlergias(this.cpf, 'ALERGIA')
             .catch((err) => Observable.of(null)));
@@ -223,6 +217,33 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
             this.mensagemError(error);
         });
     }
+
+
+    private buscaDadosHistoricosComPeriodo(periodo?: Date) {
+        this.cpf = (Seguranca.getUsuario() as any).sub;
+        if (localStorage.getItem('trabalhador_cpf')) {
+            this.cpf = localStorage.getItem('trabalhador_cpf');
+            localStorage.removeItem('trabalhador_cpf');
+        }
+
+        this.carregandoTimeline = true;
+        const chamadas: any[] = this.DADOS_BASICOS.map((dado) => this.service.buscarValorParaInformacaoSaude(dado,
+            this.cpf)
+            .catch((err) => Observable.of(null)));
+        chamadas.push(...this.DADOS_HISTORICOS.map((dado) => this.service.buscarHistoricoParaInformacaoSaude(dado,
+            this.cpf)
+            .catch((err) => Observable.of(null))));
+        chamadas.push(this.service.buscarHistorico(this.cpf, periodo)
+            .catch((err) => Observable.of(null)));
+        Observable.forkJoin(chamadas).subscribe((result) => {
+            this.tratarResultado({
+                encontrosMedicos: result[7],
+            });
+        }, (error) => {
+            this.mensagemError(error);
+        });
+    }
+
 
     private tratarResultado(dados) {
         this.bloqueioService.bloquear();
@@ -274,33 +295,33 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
         if(periodo == "Última semana"){
             this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(7, 'days');
-            this.buscaDadosHistoricos(this.periodoEscolhidoDate);
+            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
 
         }
         else if (periodo == "Último mês"){
             this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(30, 'days');
-            this.buscaDadosHistoricos(this.periodoEscolhidoDate);
+            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
         }
         else if(periodo == "03 meses"){
             this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(90, 'days');
-            this.buscaDadosHistoricos(this.periodoEscolhidoDate);
+            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
         }
         else if(periodo == "06 meses"){
             this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(180, 'days');
-            this.buscaDadosHistoricos(this.periodoEscolhidoDate);
+            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
         }
         else if(periodo == "09 meses"){
             this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(270, 'days');
-            this.buscaDadosHistoricos(this.periodoEscolhidoDate);
+            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
         }
         else if(periodo== "12 meses"){
             this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(365, 'days');
-            this.buscaDadosHistoricos(this.periodoEscolhidoDate);
+            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
         }
         else if(periodo == "Todos"){
             this.periodoEscolhido = periodo;
