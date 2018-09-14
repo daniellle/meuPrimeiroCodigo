@@ -491,9 +491,15 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
         jpql.append(" inner join empresaUats.unidadeAtendimentoTrabalhador uat ");
         jpql.append(" inner join uat.departamentoRegional dr ");
         jpql.append(" where ue.cpf = :cpf and dr.id in (:idDepartamentos) ");
+        if (dadosFilter.temIdsUnidadeSESI()) {
+            jpql.append(" and uat.id IN (:idsUnidadeSESI) ");
+        }
         TypedQuery<UsuarioEntidade> query = criarConsultaPorTipo(jpql.toString());
         query.setParameter("cpf", cpf);
         query.setParameter("idDepartamentos", dadosFilter.getIdsDepartamentoRegional());
+        if (dadosFilter.temIdsUnidadeSESI()) {
+            query.setParameter("idsUnidadeSESI", dadosFilter.getIdsUnidadeSESI());
+        }
 
         return query.getResultList();
     }
@@ -505,7 +511,7 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
         jpql.append(" inner join sindicato.empresaSindicato empresaSindicato ");
         jpql.append(" inner join empresaSindicato.empresa empresa ");
 
-        if (dadosFilter.isGestorDr() || dadosFilter.isDiretoriaDr()) {
+        if (dadosFilter.isGestorDr() || dadosFilter.isDiretoriaDr() || dadosFilter.temIdsUnidadeSESI()) {
             jpql.append(" inner join empresa.empresaUats empresaUats ");
             jpql.append(" inner join empresaUats.unidadeAtendimentoTrabalhador uat ");
             jpql.append(" inner join uat.departamentoRegional dr ");
@@ -515,6 +521,8 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 
         if (dadosFilter.isGestorDr() || dadosFilter.isDiretoriaDr()) {
             jpql.append(" and dr.id in (:idDepartamentos) ");
+        } else if (dadosFilter.temIdsUnidadeSESI()) {
+            jpql.append(" and uat.id IN (:idsUnidadeSESI) ");
         } else if (dadosFilter.isGestorEmpresa()) {
             jpql.append(" and empresa.id in (:idEmpresa) ");
         }
@@ -524,6 +532,8 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 
         if (dadosFilter.isGestorDr() || dadosFilter.isDiretoriaDr()) {
             query.setParameter("idDepartamentos", dadosFilter.getIdsDepartamentoRegional());
+        } else if (dadosFilter.temIdsUnidadeSESI()) {
+            query.setParameter("idsUnidadeSESI", dadosFilter.getIdsUnidadeSESI());
         } else if (dadosFilter.isGestorEmpresa()) {
             query.setParameter("idEmpresa", dadosFilter.getIdsEmpresa());
         }
@@ -535,10 +545,19 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
         StringBuilder jpql = new StringBuilder();
         jpql.append(" select distinct ue from UsuarioEntidade ue ");
         jpql.append(" inner join ue.departamentoRegional dr ");
+        if (dadosFilter.temIdsUnidadeSESI()) {
+            jpql.append(" inner join dr.unidadeAtendimentoTrabalhador uat");
+        }
         jpql.append(" where ue.cpf = :cpf and dr.id in (:idDepartamentos) ");
+        if (dadosFilter.temIdsUnidadeSESI()) {
+            jpql.append(" and uat.id IN (:idsUnidadeSESI) ");
+        }
         TypedQuery<UsuarioEntidade> query = criarConsultaPorTipo(jpql.toString());
         query.setParameter("idDepartamentos", dadosFilter.getIdsDepartamentoRegional());
         query.setParameter("cpf", cpf);
+        if (dadosFilter.temIdsUnidadeSESI()) {
+            query.setParameter("idsUnidadeSESI", dadosFilter.getIdsUnidadeSESI());
+        }
         return query.getResultList();
     }
 }

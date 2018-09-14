@@ -168,13 +168,13 @@ public class UsuarioEntidadeService extends BaseService {
 
         Set<String> cpfs = Sets.newHashSet();
 
-        if (dadosFilter.temIdsDepRegional()) {
+        if (dadosFilter.temIdsDepRegional() || dadosFilter.temIdsUnidadeSESI()) {
             cpfs.addAll(usuarioEntidadeDAO.pesquisarPorDepartRegional(cpf, dadosFilter).stream().map(ue -> ue.getCpf()).collect(Collectors.toList()));
             cpfs.addAll(usuarioEntidadeDAO.pesquisarPorDepartRegionalEmEmpresa(cpf, dadosFilter).stream().map(ue -> ue.getCpf())
                     .collect(Collectors.toList()));
         }
 
-        if (dadosFilter.temIdsEmpresa() || dadosFilter.temIdsDepRegional()) {
+        if (dadosFilter.temIdsEmpresa() || dadosFilter.temIdsDepRegional() || dadosFilter.temIdsUnidadeSESI()) {
 
             cpfs.addAll(usuarioEntidadeDAO.pesquisarPorDepartRegionalEmSindicato(cpf, dadosFilter).stream().map(ue -> ue.getCpf())
                     .collect(Collectors.toList()));

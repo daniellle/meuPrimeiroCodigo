@@ -31,6 +31,7 @@ public class DadosFilter implements Serializable {
     public static final String GESTOR_CONTEUDO_DN = "GCDN";
     public static final String MEDICO_TRABALHO_DR = "MTSDR";
     public static final String GESTOR_COMERCIAL_DR = "GCDR";
+    public static final String GESTOR_UNIDADE_SESI = "GUS";
 
 
     private boolean administrador;
@@ -53,7 +54,7 @@ public class DadosFilter implements Serializable {
 
     private boolean gestorRedeCredenciada;
 
-    private boolean temIdsDepartamentoRegional;
+    private boolean getorUnidadeSESI;
 
     private boolean temIdsEmpresa;
 
@@ -64,6 +65,8 @@ public class DadosFilter implements Serializable {
     private boolean temIdsRedeCredenciada;
 
     private boolean temIdsTrabalhador;
+
+    private boolean temIdsUnidadeSESI;
 
     private Set<String> papeis;
 
@@ -79,6 +82,8 @@ public class DadosFilter implements Serializable {
 
     private Set<Long> idsTrabalhador;
 
+    private Set<Long> idsUnidadeSESI;
+
     private Set<String> listaPerfisPermitidos;
 
     public DadosFilter() {
@@ -86,7 +91,7 @@ public class DadosFilter implements Serializable {
     }
 
     public DadosFilter(Set<String> papeis, Set<Long> departamentos, Set<Long> empresas, Set<Long> parceiros,
-                       Set<Long> redesCredenciadas, Set<Long> sindicatos, Set<Long> idsTrabalhadores) {
+                       Set<Long> redesCredenciadas, Set<Long> sindicatos, Set<Long> idsTrabalhadores, Set<Long> idsUnidadeSESI) {
 
         this.papeis = papeis;
         this.administrador = contemPapel(ADMINISTRADOR);
@@ -99,6 +104,7 @@ public class DadosFilter implements Serializable {
         this.gestorRedeCredenciada = contemPapel(GESTOR_REDE);
         this.gestorSindicato = contemPapel(GESTOR_SINDICATO);
         this.trabalhador = contemPapel(TRABALHADOR);
+        this.getorUnidadeSESI = contemPapel(GESTOR_UNIDADE_SESI);
 
         if (diretoriaDr || gestorDr) {
             this.idsDepartamentoRegional = addHash(departamentos);
@@ -108,20 +114,25 @@ public class DadosFilter implements Serializable {
             this.idsEmpresa = addHash(empresas);
         }
 
-        if (trabalhador && !(diretoriaDr || gestorDr || gestorEmpresa)) {
+        if (getorUnidadeSESI && !(diretoriaDr || gestorDr || gestorEmpresa)) {
+            this.idsUnidadeSESI = addHash(idsUnidadeSESI);
+        }
+
+        if (trabalhador && !(getorUnidadeSESI || diretoriaDr || gestorDr || gestorEmpresa)) {
             this.idsTrabalhador = addHash(idsTrabalhadores);
         }
+
 
         // TODO SO PREEENCHER DE ACORDO COM O PERFIL
         this.idsParceiro = parceiros;
         this.idsRedeCredenciada = redesCredenciadas;
         this.idsSindicato = sindicatos;
 
-        this.temIdsDepartamentoRegional = CollectionUtils.isNotEmpty(this.idsDepartamentoRegional);
         this.temIdsEmpresa = CollectionUtils.isNotEmpty(this.idsEmpresa);
         this.temIdsParceiro = CollectionUtils.isNotEmpty(this.idsParceiro);
         this.temIdsRedeCredenciada = CollectionUtils.isNotEmpty(this.idsRedeCredenciada);
         this.temIdsSindicato = CollectionUtils.isNotEmpty(this.idsSindicato);
+        this.temIdsUnidadeSESI = CollectionUtils.isNotEmpty(this.idsUnidadeSESI);
 
         this.temIdsTrabalhador = CollectionUtils.isNotEmpty(this.idsTrabalhador);
 
@@ -148,6 +159,10 @@ public class DadosFilter implements Serializable {
 
         if (isGestorSindicato()) {
             listaPerfisPermitidos = Sets.newHashSet("NA");
+        }
+
+        if (isGetorUnidadeSESI()) {
+            listaPerfisPermitidos = Sets.newHashSet(GESTOR_UNIDADE_SESI);
         }
 
         if (isGestorEmpresa()) {
@@ -221,12 +236,20 @@ public class DadosFilter implements Serializable {
         this.idsTrabalhador = idsTrabalhador;
     }
 
+    public Set<Long> getIdsUnidadeSESI() {
+        return idsUnidadeSESI;
+    }
+
+    public void setIdsUnidadeSESI(Set<Long> idsUnidadeSESI) {
+        this.idsUnidadeSESI = idsUnidadeSESI;
+    }
+
     public boolean temIdsSindicato() {
         return temIdsSindicato;
     }
 
     public boolean temIdsDepRegional() {
-        return temIdsDepartamentoRegional;
+        return CollectionUtils.isNotEmpty(this.idsDepartamentoRegional);
     }
 
     public boolean temIdsEmpresa() {
@@ -243,6 +266,10 @@ public class DadosFilter implements Serializable {
 
     public boolean temIdsTrabalhador() {
         return temIdsTrabalhador;
+    }
+
+    public boolean temIdsUnidadeSESI() {
+        return temIdsUnidadeSESI;
     }
 
     public boolean isDiretoriaDr() {
@@ -293,6 +320,10 @@ public class DadosFilter implements Serializable {
         return administrador;
     }
 
+    public boolean isGetorUnidadeSESI() {
+        return getorUnidadeSESI;
+    }
+
     public boolean contemPapel(String papel) {
         return papeis.contains(papel);
     }
@@ -302,7 +333,7 @@ public class DadosFilter implements Serializable {
         for (String p : papeis) {
             if (contemPapel(p)) {
                 set.add(true);
-            }else{
+            } else {
                 set.add(false);
             }
         }

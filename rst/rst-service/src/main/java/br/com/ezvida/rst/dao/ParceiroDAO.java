@@ -93,7 +93,7 @@ public class ParceiroDAO extends BaseDAO<Parceiro, Long> {
 		jpql.append(" left join parceiro.parceiroEspecialidades parceiroEspecialidades ");
 		jpql.append(" left join parceiroEspecialidades.especialidade especialidade ");
 
-		if (segurancaFilter != null && !segurancaFilter.isAdministrador() && segurancaFilter.temIdsDepRegional()) {
+		if (segurancaFilter != null && !segurancaFilter.isAdministrador() && segurancaFilter.temIdsDepRegional() || segurancaFilter.isGetorUnidadeSESI()) {
 			jpql.append(" left join parceiro.parceiroProdutoServicos parceiroProdutoServicos ");
 			jpql.append(" left join parceiroProdutoServicos.produtoServico produtoServico ");
 			jpql.append(
@@ -142,6 +142,13 @@ public class ParceiroDAO extends BaseDAO<Parceiro, Long> {
 			jpql.append("  and departamentoRegional.id IN (:idsDepRegional) ");
 			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
 
+		}
+		if(segurancaFilter.isGetorUnidadeSESI()){
+			if (cnpj || razaoSocialNome || especialidade || status || temIdDepRegional){
+				jpql.append(" and ");
+			}
+			jpql.append(" uat.id IN (:idsUnidadeSESI) ");
+			parametros.put("idsUnidadeSESI", segurancaFilter.getIdsUnidadeSESI());
 		}
 	}
 

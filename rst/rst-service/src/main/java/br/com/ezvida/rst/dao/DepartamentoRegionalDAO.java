@@ -109,8 +109,18 @@ public class DepartamentoRegionalDAO extends BaseDAO<DepartamentoRegional, Long>
                 parametros.put("idsEmpresa", dados.getIdsEmpresa());
             }
 
-            if (dados.temIdsTrabalhador()) {
+            if (dados.temIdsUnidadeSESI()) {
                 if (dados.temIdsEmpresa() || dados.temIdsDepRegional() || !Situacao.TODOS.equals(situacao)) {
+                    jpql.append(" and ");
+                } else {
+                    jpql.append(" where ");
+                }
+                jpql.append(" unidadeAtendimentoTrabalhador.id IN (:idsUnidadeSESI) ");
+                parametros.put("idsUnidadeSESI", dados.getIdsUnidadeSESI());
+            }
+
+            if (dados.temIdsTrabalhador()) {
+                if (dados.temIdsUnidadeSESI() || dados.temIdsEmpresa() || dados.temIdsDepRegional() || !Situacao.TODOS.equals(situacao)) {
                     jpql.append(" and ");
                 } else {
                     jpql.append(" where ");
@@ -173,6 +183,8 @@ public class DepartamentoRegionalDAO extends BaseDAO<DepartamentoRegional, Long>
 
     private void getQueryPaginado(StringBuilder jpql, Map<String, Object> parametros,
                                   DepartamentoRegionalFilter departamentoRegionalFilter, boolean count, DadosFilter segurancaFilter) {
+        String undSesi = "left join d.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador ";
+        boolean isUnid = segurancaFilter.temIdsUnidadeSESI() && !segurancaFilter.isAdministrador();
 
         if (count) {
             jpql.append("select count(d.id) from DepartamentoRegional d ");
@@ -180,12 +192,18 @@ public class DepartamentoRegionalDAO extends BaseDAO<DepartamentoRegional, Long>
             jpql.append("left join listaEnd.endereco endereco ");
             jpql.append("left join endereco.municipio municipio ");
             jpql.append("left join municipio.estado estado ");
+            if(isUnid){
+                jpql.append(undSesi);
+            }
         } else {
             jpql.append("select d from DepartamentoRegional d ");
             jpql.append("left join fetch d.listaEndDepRegional listaEnd ");
             jpql.append("left join fetch listaEnd.endereco endereco ");
             jpql.append("left join fetch endereco.municipio municipio ");
             jpql.append("left join fetch municipio.estado estado ");
+            if(isUnid){
+                jpql.append(undSesi);
+            }
         }
 
         if (departamentoRegionalFilter != null) {
@@ -260,6 +278,11 @@ public class DepartamentoRegionalDAO extends BaseDAO<DepartamentoRegional, Long>
             jpql.append("and");
             jpql.append(" d.id IN (:idsDepRegional) ");
             parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
+        }
+        if (segurancaFilter.temIdsUnidadeSESI() && !segurancaFilter.isAdministrador()) {
+            jpql.append(" and ");
+            jpql.append(" unidadeAtendimentoTrabalhador.id IN (:idsUnidadeSESI) ");
+            parametros.put("idsUnidadeSESI", segurancaFilter.getIdsUnidadeSESI());
         }
         if (!count) {
             jpql.append(" order by d.razaoSocial");

@@ -73,10 +73,12 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
 
     dadosTrabalhador(){
         this.meusdados = this.activatedRoute.snapshot.params.id === 'meusdados';
+        if (this.meusdados) {
             this.trabalhadorService.buscarMeusDados().subscribe((trabalhador) => {
                 this.trabalhador = trabalhador;
                 this.idTrab = this.trabalhador.id;
             });
+        }
     }
 
     inicializarImagem() {
