@@ -1,6 +1,41 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v2.65.0**
+===========
+
+(RELEASE EM 14/09/2018)
+
+**Novidades**
+	
+- [CADASTROS] Criação de novos perfis (GLPI 1722)
+	- Gestor Unidade SESI (GUS)
+- [CADASTROS] Regra de exibição de dados de saúde do trabalhador em Dashboard deve ser alterada (GLPI 2214)
+
+------------
+
+**Melhorias**
+
+------------
+
+**Correções**
+
+- [CADASTROS] Imunizações migradas não aparecem no BOX IMUNIZAÇÕES (GLPI 2225)
+- [CADASTROS] Idade do Trabalhador esta Incorreta (GLPI 2034)
+- [CADASTROS] Perfil médico do trabalho deve visualizar card de minha saúde do trabalhador (GLPI 2190)
+
+	
+------------
+
+**Instruções para deploy**
+
+1. Executar o script [rede_sesi_v2_65_0.sql](https://github.com/ezvida/rst-aplicacoes/blob/master/Documenta%C3%A7%C3%A3o/BANCO/v.2.65.0/rede_sesi_v2_65_0.sql) no banco Rede SESI.
+2. Executar o script [rede_rst_v2_65_0.sql](https://github.com/ezvida/rst-aplicacoes/blob/master/Documenta%C3%A7%C3%A3o/BANCO/v.2.65.0/sesi_rst_v2_65_0.sql) no banco SESI RST.
+3. Realizar deploy do [build](https://github.com/ezvida/rst-cadastros/blob/release/rst/README.md) do ear nos respectivos ambientes
+
+------------
+
+
 **v2.59.0**
 ===========
 
