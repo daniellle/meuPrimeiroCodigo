@@ -11,6 +11,7 @@ import {Trabalhador} from "../../../modelo/trabalhador.model";
 import {ImunizacaoService} from '../../../servico/imunizacao.service';
 import {Vacina} from 'app/modelo/vacina.model';
 import {Imunizacao} from '../../../modelo/imunizacao.model';
+
 const moment = require('moment');
 
 @Component({
@@ -150,7 +151,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
             this.paginaTimeline = this.encontrosTimeline[pagina];
         }
         else {
-            this.service.buscarHistorico(this.paciente.cpf, null, $event.page - 1).subscribe((resultado) => {
+            this.service.buscarHistorico(this.paciente.cpf, this.periodoEscolhidoDate, $event.page - 1).subscribe((resultado) => {
                 this.filtrarInformacoes = resultado.filtrarInformacoes;
 
                 if (resultado.resultado.result) {
@@ -177,8 +178,8 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
         chamadas.push(...this.DADOS_HISTORICOS.map((dado) => this.service.buscarHistoricoParaInformacaoSaude(dado,
             this.cpf)
             .catch((err) => Observable.of(null))));
-            chamadas.push(this.service.buscarHistorico(this.cpf)
-                .catch((err) => Observable.of(null)));
+        chamadas.push(this.service.buscarHistorico(this.cpf)
+            .catch((err) => Observable.of(null)));
         chamadas.push(this.service.buscarPaciente(this.cpf));
         chamadas.push(this.service.buscaAlergias(this.cpf, 'ALERGIA')
             .catch((err) => Observable.of(null)));
@@ -225,21 +226,20 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
             this.cpf = localStorage.getItem('trabalhador_cpf');
             localStorage.removeItem('trabalhador_cpf');
         }
-
+        let encontrosMedico: any;
         this.carregandoTimeline = true;
-        const chamadas: any[] = this.DADOS_BASICOS.map((dado) => this.service.buscarValorParaInformacaoSaude(dado,
-            this.cpf)
-            .catch((err) => Observable.of(null)));
-        chamadas.push(...this.DADOS_HISTORICOS.map((dado) => this.service.buscarHistoricoParaInformacaoSaude(dado,
-            this.cpf)
-            .catch((err) => Observable.of(null))));
-        chamadas.push(this.service.buscarHistorico(this.cpf, periodo)
-            .catch((err) => Observable.of(null)));
-        Observable.forkJoin(chamadas).subscribe((result) => {
-            this.tratarResultado({
-                encontrosMedicos: result[7],
-            });
+        this.service.buscarHistorico(this.cpf, periodo).subscribe((result) => {
+            encontrosMedico = result;
+            if (encontrosMedico) {
+                this.carregarTimeline(encontrosMedico);
+            }
+            else {
+                this.carregandoTimeline = false;
+            }
+            this.bloqueioService.desbloquear();
         }, (error) => {
+            this.carregandoTimeline = false;
+            this.bloqueioService.desbloquear();
             this.mensagemError(error);
         });
     }
@@ -288,66 +288,63 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
         }
     }
 
-  atualizarPeriodo(periodo: string) {
+    atualizarPeriodo(periodo: string) {
 
-        console.log(this.periodoEscolhido);
-
-        if(periodo == "Última semana"){
+        this.limparPaginacao();
+        if (periodo == "Última semana") {
             this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(7, 'days');
             this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
 
+
         }
-        else if (periodo == "Último mês"){
+        else if (periodo == "Último mês") {
             this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(30, 'days');
             this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
+
+
         }
-        else if(periodo == "03 meses"){
+        else if (periodo == "03 meses") {
             this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(90, 'days');
             this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
+
+
         }
-        else if(periodo == "06 meses"){
+        else if (periodo == "06 meses") {
             this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(180, 'days');
             this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
+
+
         }
-        else if(periodo == "09 meses"){
+        else if (periodo == "09 meses") {
             this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(270, 'days');
             this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
+
+
         }
-        else if(periodo== "12 meses"){
+        else if (periodo == "12 meses") {
             this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(365, 'days');
             this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
+
+
         }
-        else if(periodo == "Todos"){
+        else if (periodo == "Todos") {
             this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = new Date(0);
-            this.buscaDadosHistoricos();
+            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
         }
-      /* const index = this.periodos.indexOf(periodo);
+    }
 
-     if (index >= 0) {
-         this.periodoAtual = this.periodosGraficos[index];
-        // this.timelineHelper.bloquearHistoria = true;
-
-         this.timelineHelper
-             .atualizarTimeline(this.periodoAtual)
-             .subscribe((resultado) => {
-                 if (resultado) {
-                     this.timelineHelper.iniciarTimeline(resultado);
-                 }
-             }, (error: any) => {
-                 this.mensagemAtencao(error.message);
-             }, () => this.timelineHelper.bloquearHistoria = false);
-
-       //  this.graficoHelper.atualizarGraficosIndicadores(this.periodoAtual, this.altura, this.peso, this.temperatura,
-            // this.imc, this.pressaoSanguinea);
-     }*/
- }
+    private limparPaginacao() {
+        this.numeroEncontros = 0;
+        this.tamanhoPagina = 5;
+        this.paginaAtual = 0;
+    }
 }
 
 // tslint:disable-next-line:max-classes-per-file
