@@ -103,10 +103,12 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
     @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CADASTRAR}))
     public Response criar(@Encoded br.com.ezvida.girst.apiclient.model.Usuario usuario, @Context SecurityContext context,
                           @Context HttpServletRequest request) {
+        Usuario usuarioLogado = ClienteInfos.getUsuario(context);
+        LOGGER.debug("Criando usuário {}", usuarioLogado.getLogin());
         return Response.status(HttpServletResponse.SC_CREATED).type(MediaType.APPLICATION_JSON)
             .header("Content-Version", getApplicationVersion())
             .entity(serializar(usuarioService.cadastrarUsuario(usuario
-                , ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.INCLUSAO
+                , usuarioLogado, ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.INCLUSAO
                     , Funcionalidade.USUARIOS)))).build();
     }
 
@@ -117,8 +119,10 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
     @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_ALTERAR}))
     public Response alterar(@Encoded br.com.ezvida.girst.apiclient.model.Usuario usuario, @Context SecurityContext context,
                             @Context HttpServletRequest request) {
+        Usuario usuarioLogado = ClienteInfos.getUsuario(context);
+        LOGGER.debug("Alterando usuário {}", usuarioLogado.getLogin());
         return Response.status(HttpServletResponse.SC_OK).entity(serializar(usuarioService.alterarUsuario(usuario,
-            ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.USUARIOS))))
+            usuarioLogado, ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.USUARIOS))))
             .header("Content-Version", getApplicationVersion())
             .type(MediaType.APPLICATION_JSON).build();
     }
@@ -128,7 +132,8 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
     @Path("/perfil")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_ALTERAR}))
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_ALTERAR, PermissionConstants.TRABALHADOR, PermissionConstants.TRABALHADOR_CONSULTAR,
+        PermissionConstants.PERFIL, PermissionConstants.PERFIL_CONSULTAR}))
     public Response alterarPerfil(@Context SecurityContext context,
                                   @Context HttpServletRequest request, @Encoded br.com.ezvida.girst.apiclient.model.UsuarioCredencial usuarioCredencial) {
         LOGGER.debug("Atualizando o perfil e senha do usuario");
@@ -141,7 +146,8 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
     @GET
     @Path("/buscarperfil")
     @Produces(MediaType.APPLICATION_JSON)
-    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.TRABALHADOR, PermissionConstants.TRABALHADOR_CONSULTAR}))
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.TRABALHADOR, PermissionConstants.TRABALHADOR_CONSULTAR,
+        PermissionConstants.PERFIL, PermissionConstants.PERFIL_CONSULTAR}))
     public Response getPerfilByLogin(@Context HttpServletRequest request, @Context SecurityContext context) {
 
         Usuario usuarioLogado = ClienteInfos.getUsuario(context);
@@ -165,8 +171,10 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
     @Consumes(MediaType.APPLICATION_JSON)
     @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_DESATIVAR}))
     public Response remover(@Context HttpServletRequest request, @Encoded @QueryParam("id") String id, @Context SecurityContext context) {
+        Usuario usuarioLogado = ClienteInfos.getUsuario(context);
+        LOGGER.debug("Removendo usuário {}{}", usuarioLogado.getLogin(), id);
         return Response.status(HttpServletResponse.SC_OK)
-            .entity(serializar(usuarioService.desativarUsuario(id
+            .entity(serializar(usuarioService.desativarUsuario(id, usuarioLogado
                 , ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.USUARIOS))))
             .header("Content-Version", getApplicationVersion())
             .type(MediaType.APPLICATION_JSON).build();

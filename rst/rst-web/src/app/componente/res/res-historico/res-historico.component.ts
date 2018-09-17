@@ -1,16 +1,18 @@
-import { OperationalTemplate } from '@ezvida/adl-core';
-import { BloqueioService } from '../../../servico/bloqueio.service';
-import { Seguranca } from '../../../compartilhado/utilitario/seguranca.model';
-import { Observable } from 'rxjs/Observable';
-import { ResService } from '../../../servico/res-service.service';
-import { ResHomeComponent } from '../res-home/res-home.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { TrabalhadorService } from "../../../servico/trabalhador.service";
-import { Trabalhador } from "../../../modelo/trabalhador.model";
-import { ImunizacaoService } from '../../../servico/imunizacao.service';
-import { Vacina } from 'app/modelo/vacina.model';
-import { Imunizacao } from '../../../modelo/imunizacao.model';
+import {OperationalTemplate} from '@ezvida/adl-core';
+import {BloqueioService} from '../../../servico/bloqueio.service';
+import {Seguranca} from '../../../compartilhado/utilitario/seguranca.model';
+import {Observable} from 'rxjs/Observable';
+import {ResService} from '../../../servico/res-service.service';
+import {ResHomeComponent} from '../res-home/res-home.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {TrabalhadorService} from "../../../servico/trabalhador.service";
+import {Trabalhador} from "../../../modelo/trabalhador.model";
+import {ImunizacaoService} from '../../../servico/imunizacao.service';
+import {Vacina} from 'app/modelo/vacina.model';
+import {Imunizacao} from '../../../modelo/imunizacao.model';
+
+const moment = require('moment');
 
 @Component({
     selector: 'app-res-historico',
@@ -47,9 +49,16 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
     descricaoMedicamentos: string;
     descricaoAlergias: string;
     descricaoVacinas: string;
+    dataRegistro: string;
     trabalhador: Trabalhador;
     imunizacao: Imunizacao[] = [];
     vacinasAutodeclaradas: Vacina[] = new Array<Vacina>();
+
+    periodoEscolhido = 'Última semana';
+    periodoEscolhidoDate: Date;
+    periodos = ['Última semana', 'Último mês', '03 meses', '06 meses', '09 meses', '12 meses', 'Todos'];
+
+
     constructor(protected trabalhadorService: TrabalhadorService,
                 protected route: ActivatedRoute,
                 protected router: Router,
@@ -60,12 +69,13 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
     }
 
     ngOnInit() {
-        this.buscaDadosHistoricos();
+        this.buscaDadosHistoricos(this.periodoEscolhidoDate);
         this.buscarDadosTrabalhador();
         this.buscarVacinasAutodeclaradas();
     }
 
-    ngAfterViewInit() { }
+    ngAfterViewInit() {
+    }
 
     nomeTrabalhador(): string {
         if (this.cpf !== Seguranca.getUsuario().login && this.paciente) {
@@ -74,17 +84,19 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
         return null;
     }
 
-    tratarImunizacao(imunizacao: any){
-        imunizacao.forEach(element => {
-            console.log(element);
-            let imunizar = new Imunizacao();
-            imunizar.nome = element.informacao.value;
-            if(element.data){
-                imunizar.data = new Date(element.data.value)
-            }
-            console.log(imunizar);
-            this.imunizacao.push(imunizar);
-        });
+    tratarImunizacao(imunizacao: any) {
+        if (imunizacao) {
+            imunizacao.forEach(element => {
+                console.log(element);
+                let imunizar = new Imunizacao();
+                imunizar.nome = element.informacao.value;
+                if (element.data) {
+                    imunizar.data = new Date(element.data.value)
+                }
+                console.log(imunizar);
+                this.imunizacao.push(imunizar);
+            });
+        }
     }
 
     tratarVacinas(vacinas: any) {
@@ -122,6 +134,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
             this.filtrarInformacoes = encontrosMedicos.filtrarInformacoes;
             this.encontrosTimeline = {};
             this.encontrosTimeline[0] = encontrosMedicos.resultado.result;
+            this.dataRegistro = moment(encontrosMedicos.resultado.result[0].created).format("DD/MM/YYYY");
             this.paginaTimeline = this.encontrosTimeline[0];
             this.numeroEncontros = encontrosMedicos.resultado.max;
         }
@@ -138,7 +151,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
             this.paginaTimeline = this.encontrosTimeline[pagina];
         }
         else {
-            this.service.buscarHistorico(this.paciente.cpf, null, $event.page - 1).subscribe((resultado) => {
+            this.service.buscarHistorico(this.paciente.cpf, this.periodoEscolhidoDate, $event.page - 1).subscribe((resultado) => {
                 this.filtrarInformacoes = resultado.filtrarInformacoes;
 
                 if (resultado.resultado.result) {
@@ -151,7 +164,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
         }
     }
 
-    private buscaDadosHistoricos() {
+    private buscaDadosHistoricos(periodo?: Date) {
         this.cpf = (Seguranca.getUsuario() as any).sub;
         if (localStorage.getItem('trabalhador_cpf')) {
             this.cpf = localStorage.getItem('trabalhador_cpf');
@@ -184,18 +197,9 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
             .catch((err) => Observable.of(null)));
         chamadas.push(this.service.buscaVacinas(this.cpf, 'VACINA_OUTRAS')
             .catch((err) => Observable.of(null)));
-        chamadas.push(this.service. buscarImunizacao(['IMUNIZACAO_NOME', 'IMUNIZACAO_DATA'], this.cpf)
+        chamadas.push(this.service.buscarImunizacao(['IMUNIZACAO_NOME', 'IMUNIZACAO_DATA'], this.cpf)
             .catch((err) => Observable.of(null)));
         Observable.forkJoin(chamadas).subscribe((result) => {
-            console.log(result);
-            // const listaVacinas = [];
-            // listaVacinas.push({ nome: 'Hepatite B', resultado: result[11] });
-            // listaVacinas.push({ nome: 'Tríplice viral', resultado: result[12] });
-            // listaVacinas.push({ nome: 'Dupla adulto (difteria e tétano)', resultado: result[13] });
-            // listaVacinas.push({ nome: 'Febre amarela', resultado: result[14] });
-            // listaVacinas.push({ nome: 'Influenza', resultado: result[15] });
-            // listaVacinas.push({ nome: 'Outras', resultado: result[16] });
-
             this.tratarResultado({
                 peso: result[0],
                 altura: result[1],
@@ -214,6 +218,32 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
             this.mensagemError(error);
         });
     }
+
+
+    private buscaDadosHistoricosComPeriodo(periodo?: Date) {
+        this.cpf = (Seguranca.getUsuario() as any).sub;
+        if (localStorage.getItem('trabalhador_cpf')) {
+            this.cpf = localStorage.getItem('trabalhador_cpf');
+            localStorage.removeItem('trabalhador_cpf');
+        }
+        let encontrosMedico: any;
+        this.carregandoTimeline = true;
+        this.service.buscarHistorico(this.cpf, periodo).subscribe((result) => {
+            encontrosMedico = result;
+            if (encontrosMedico) {
+                this.carregarTimeline(encontrosMedico);
+            }
+            else {
+                this.carregandoTimeline = false;
+            }
+            this.bloqueioService.desbloquear();
+        }, (error) => {
+            this.carregandoTimeline = false;
+            this.bloqueioService.desbloquear();
+            this.mensagemError(error);
+        });
+    }
+
 
     private tratarResultado(dados) {
         this.bloqueioService.bloquear();
@@ -249,13 +279,72 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
     }
 
     buscarVacinasAutodeclaradas() {
-        this.imunizacaoService.buscaVacinasAutodeclaradas(this.QUANTIDADE_PESQUISA_VACINA).subscribe((retorno: Vacina[]) => {
-            this.vacinasAutodeclaradas = retorno;
-        }, error => {
-            this.mensagemError(error);
-        });
+        if (this.cpf !== null) {
+            this.imunizacaoService.buscaVacinasAutodeclaradas(this.QUANTIDADE_PESQUISA_VACINA, this.cpf).subscribe((retorno: Vacina[]) => {
+                this.vacinasAutodeclaradas = retorno;
+            }, error => {
+                this.mensagemError(error);
+            });
+        }
     }
 
+    atualizarPeriodo(periodo: string) {
+
+        this.limparPaginacao();
+        if (periodo == "Última semana") {
+            this.periodoEscolhido = periodo;
+            this.periodoEscolhidoDate = moment(new Date()).subtract(7, 'days');
+            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
+
+
+        }
+        else if (periodo == "Último mês") {
+            this.periodoEscolhido = periodo;
+            this.periodoEscolhidoDate = moment(new Date()).subtract(30, 'days');
+            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
+
+
+        }
+        else if (periodo == "03 meses") {
+            this.periodoEscolhido = periodo;
+            this.periodoEscolhidoDate = moment(new Date()).subtract(90, 'days');
+            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
+
+
+        }
+        else if (periodo == "06 meses") {
+            this.periodoEscolhido = periodo;
+            this.periodoEscolhidoDate = moment(new Date()).subtract(180, 'days');
+            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
+
+
+        }
+        else if (periodo == "09 meses") {
+            this.periodoEscolhido = periodo;
+            this.periodoEscolhidoDate = moment(new Date()).subtract(270, 'days');
+            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
+
+
+        }
+        else if (periodo == "12 meses") {
+            this.periodoEscolhido = periodo;
+            this.periodoEscolhidoDate = moment(new Date()).subtract(365, 'days');
+            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
+
+
+        }
+        else if (periodo == "Todos") {
+            this.periodoEscolhido = periodo;
+            this.periodoEscolhidoDate = new Date(0);
+            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
+        }
+    }
+
+    private limparPaginacao() {
+        this.numeroEncontros = 0;
+        this.tamanhoPagina = 5;
+        this.paginaAtual = 0;
+    }
 }
 
 // tslint:disable-next-line:max-classes-per-file

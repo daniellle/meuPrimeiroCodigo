@@ -66,6 +66,9 @@ public class Usuario extends BaseEntity<Long> {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(name = "nivel")
+    private Integer hierarquia;
+
     @Transient
     private Set<String> papeis;
 
@@ -90,17 +93,21 @@ public class Usuario extends BaseEntity<Long> {
     @Transient
     private Set<Long> idTrabalhadores;
 
+    @Transient
+    private Set<Long> idUnidadesSESI;
+
     public Usuario() {
         // Padrão
     }
 
-    public Usuario(String dn, String login, String nome, String sobrenome, String cargo, String email) {
+    public Usuario(String dn, String login, String nome, String sobrenome, String cargo, String email, Integer hierarquia) {
         this.dn = dn;
         this.login = login;
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.cargo = cargo;
         this.email = email;
+        this.hierarquia = hierarquia;
         this.papeis = Sets.newHashSet();
         this.permissoes = Sets.newHashSet();
         this.idDepartamentos = Sets.newHashSet();
@@ -109,6 +116,7 @@ public class Usuario extends BaseEntity<Long> {
         this.idRedesCredenciadas = Sets.newHashSet();
         this.idSindicatos = Sets.newHashSet();
         this.idTrabalhadores = Sets.newHashSet();
+        this.idUnidadesSESI = Sets.newHashSet();
     }
 
     @Override
@@ -255,6 +263,22 @@ public class Usuario extends BaseEntity<Long> {
 
     public void setIdTrabalhadores(Set<Long> idTrabalhadores) {
         this.idTrabalhadores = idTrabalhadores;
+    }
+
+    public Integer getHierarquia() {
+        return hierarquia;
+    }
+
+    public void setHierarquia(Integer hierarquia) {
+        this.hierarquia = hierarquia;
+    }
+
+    public Set<Long> getIdUnidadesSESI() {
+        return idUnidadesSESI;
+    }
+
+    public void setIdUnidadesSESI(Set<Long> idUnidadesSESI) {
+        this.idUnidadesSESI = idUnidadesSESI;
     }
 
     @Override

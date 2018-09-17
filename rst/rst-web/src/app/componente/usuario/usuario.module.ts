@@ -24,11 +24,14 @@ import {DialogService} from 'ng2-bootstrap-modal';
 import {BloqueioService} from './../../servico/bloqueio.service';
 import {CompartilhadoModule} from './../../compartilhado/compartilhado.module';
 import {MensagemProperties} from './../../compartilhado/utilitario/recurso.pipe';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {PesquisaUsuarioComponent} from './pesquisa-usuario/pesquisa-usuario.component';
 import {ManterUsuarioComponent} from './manter-usuario/manter-usuario.component';
-import { ParametroService } from '../../servico/parametro.service';
+import {ParametroService} from '../../servico/parametro.service';
+import {PesquisaUnidadeSESIUsuarioComponent} from "./unidade-sesi-usuario/pesquisa-unidade-sesi-usuario/pesquisa-unidade-sesi-usuario.component";
+import {CadastroUnidadeSESIUsuarioComponent} from "./unidade-sesi-usuario/cadastro-unidade-sesi-usuario/cadastro-unidade-sesi-usuario.component";
+import {UatService} from "../../servico/uat.service";
 
 const routes: Routes = [
     {
@@ -129,6 +132,26 @@ const routes: Routes = [
                 PermissoesEnum.USUARIO_ENTIDADE_CONSULTAR, PermissoesEnum.USUARIO_ENTIDADE_DESATIVAR],
         },
     },
+    {
+        path: ':id/unidadesesi', component: PesquisaUnidadeSESIUsuarioComponent,
+        canActivate: [AutorizacaoGuard],
+        data: {
+            title: MensagemProperties.app_rst_usuario_unidade_sesi_associados_title,
+            permissoes: [PermissoesEnum.USUARIO_ENTIDADE,
+                PermissoesEnum.USUARIO_ENTIDADE_CADASTRAR, PermissoesEnum.USUARIO_ENTIDADE_ALTERAR,
+                PermissoesEnum.USUARIO_ENTIDADE_CONSULTAR, PermissoesEnum.USUARIO_ENTIDADE_DESATIVAR],
+        },
+    },
+    {
+        path: ':id/unidadesesi/associar', component: CadastroUnidadeSESIUsuarioComponent,
+        canActivate: [AutorizacaoGuard],
+        data: {
+            title: MensagemProperties.app_rst_usuario_unidade_sesi_subtitulo_associar_unidade,
+            permissoes: [PermissoesEnum.USUARIO_ENTIDADE,
+                PermissoesEnum.USUARIO_ENTIDADE_CADASTRAR, PermissoesEnum.USUARIO_ENTIDADE_ALTERAR,
+                PermissoesEnum.USUARIO_ENTIDADE_CONSULTAR, PermissoesEnum.USUARIO_ENTIDADE_DESATIVAR],
+        },
+    },
 ];
 
 @NgModule({
@@ -150,6 +173,8 @@ const routes: Routes = [
         CadastroSindicatoUsuarioComponent,
         PesquisaDepartamentoUsuarioComponent,
         CadastroDepartamentoUsuarioComponent,
+        PesquisaUnidadeSESIUsuarioComponent,
+        CadastroUnidadeSESIUsuarioComponent,
     ],
     providers: [
         UsuarioService,
@@ -163,7 +188,8 @@ const routes: Routes = [
         SindicatoService,
         DepartRegionalService,
         EmpresaTrabalhadorService,
-        ParametroService
+        ParametroService,
+        UatService
     ],
 })
 export class UsuarioModule {

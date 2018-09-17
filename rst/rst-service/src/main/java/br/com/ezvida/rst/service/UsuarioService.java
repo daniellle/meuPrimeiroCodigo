@@ -35,12 +35,12 @@ public interface UsuarioService extends Serializable {
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     br.com.ezvida.girst.apiclient.model.Usuario cadastrarUsuario(
-            br.com.ezvida.girst.apiclient.model.Usuario usuario
+            br.com.ezvida.girst.apiclient.model.Usuario usuario, Usuario usuarioLogado
             , ClienteAuditoria auditoria);
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     br.com.ezvida.girst.apiclient.model.Usuario alterarUsuario(
-            br.com.ezvida.girst.apiclient.model.Usuario usuario, ClienteAuditoria auditoria);
+            br.com.ezvida.girst.apiclient.model.Usuario usuario, Usuario usuarioLogado, ClienteAuditoria auditoria);
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     br.com.ezvida.girst.apiclient.model.Usuario sicronizarTrabalhadorUsuario(Trabalhador trabalhador, ClienteAuditoria auditoria);
@@ -49,7 +49,7 @@ public interface UsuarioService extends Serializable {
     br.com.ezvida.girst.apiclient.model.Usuario alterarPerfilSenha(br.com.ezvida.girst.apiclient.model.UsuarioCredencial usuarioCredencial, ClienteAuditoria auditoria);
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    br.com.ezvida.girst.apiclient.model.Usuario desativarUsuario(String id, ClienteAuditoria auditoria);
+    br.com.ezvida.girst.apiclient.model.Usuario desativarUsuario(String id, Usuario usuarioLogado, ClienteAuditoria auditoria);
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     br.com.ezvida.girst.apiclient.model.Usuario buscarPorEmail(String email);

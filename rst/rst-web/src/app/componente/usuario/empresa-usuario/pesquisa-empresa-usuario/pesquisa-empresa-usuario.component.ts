@@ -335,9 +335,4 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
         return this.hasTrabalhador && !this.hasProfissionalSaude && !this.hasSegurancaTrabalho && !this.hasRecursoHumano
             && !this.hasGestorEmpresa && !this.hasGestorEmpresaMaster;
     }
-
-    hasPermissao() {
-        return super.hasPermissao(PermissoesEnum.USUARIO_ENTIDADE) ||
-            super.hasPermissao(PermissoesEnum.USUARIO_ENTIDADE_CADASTRAR);
-    }
 }

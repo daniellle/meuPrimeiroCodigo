@@ -20,4 +20,10 @@ export enum PerfilEnum {
     GEEMM = 'GEEMM',
     GDRM = 'GDRM',
     EPI = 'EPI',
+    SUDR = 'SUDR',
+    MTSDN = 'MTSDN',
+    GCDN = 'GCDN',
+    MTSDR = 'MTSDR',
+    GCDR = 'GCDR',
+    GUS = 'GUS',
 }

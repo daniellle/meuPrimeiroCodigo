@@ -34,7 +34,7 @@
     </form>
     <div class="row">
         <div class="btn-rodape-acoes col-sm-4 mx-auto">
-            <button type="button" (click)="abrirTermo();" class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!modoConsulta">{{'app_rst_btn_continuar' | recurso}}</button>
+            <button id="btnContinuar" type="button" (click)="abrirTermo();" class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!modoConsulta">{{'app_rst_btn_continuar' | recurso}}</button>
         </div>
     </div>
 </div>
@@ -101,7 +101,7 @@
     </div>
     <a (click)="mostrar()">
         <div class="text-center modal-title space-up visualizar">
-            <span>Visualizar   
+            <span>Visualizar
                     <img [ngClass]="{'img-size': !show , 'rotate': show }"  src="assets/img/seta_baixo.svg" alt="estender" />
                 </span>
         </div>

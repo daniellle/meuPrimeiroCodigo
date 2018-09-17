@@ -240,6 +240,9 @@ public class PermissionConstants {
 	
 	public static final String USUARIO_DADOS_CONSULTAR = "consultar_dados_usuario";
 
+	public static final String PERFIL = "perfil";
+	public static final String PERFIL_CONSULTAR = "perfil_consultar";
+
 	public static final String SISTEMA_AUTORIZAR = "sistema_autorizar";
 
 	public static final String VACINA_AUTODECLARADA = "vacina_autodeclarada";

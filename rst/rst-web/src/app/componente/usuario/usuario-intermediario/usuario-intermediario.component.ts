@@ -70,21 +70,25 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
     }
 
     private temSindPerfil() {
-        // return this.usuario.perfisSistema.find((element) =>
-        // element.perfil.codigo === PerfilEnum.GESI) != null;
         return false;
     }
 
     private temEmpPerfil(): boolean {
-        const isPermitido = this.temPapel(PerfilEnum.ADM, PerfilEnum.GDNA, PerfilEnum.GDRA, PerfilEnum.GDRM,
-            PerfilEnum.DIDN, PerfilEnum.DIDR, PerfilEnum.ATD, PerfilEnum.GEEMM);
+        const isPermitido = this.temPapel(PerfilEnum.ADM, PerfilEnum.GDNA, PerfilEnum.MTSDN, PerfilEnum.GDRA, PerfilEnum.GDRM,
+            PerfilEnum.SUDR, PerfilEnum.DIDN, PerfilEnum.DIDR, PerfilEnum.ATD, PerfilEnum.GEEMM, PerfilEnum.MTSDR, PerfilEnum.GCDR);
         const isPerfil = this.contemPerfil([PerfilEnum.GEEM, PerfilEnum.GEEMM, PerfilEnum.TRA, PerfilEnum.PFS,
             PerfilEnum.ST, PerfilEnum.RH], this.usuario);
         return isPerfil && isPermitido;
     }
 
     private temDRPerfil(): boolean {
-        return this.temPapel(PerfilEnum.ADM, PerfilEnum.GDNA, PerfilEnum.DIDN, PerfilEnum.ATD, PerfilEnum.GDRM)
-            && this.contemPerfil([PerfilEnum.DIDR, PerfilEnum.GDRA, PerfilEnum.GDRM], this.usuario);
+        return this.temPapel(PerfilEnum.ADM, PerfilEnum.GDNA, PerfilEnum.MTSDN, PerfilEnum.DIDN, PerfilEnum.ATD, PerfilEnum.GDRM)
+            && this.contemPerfil([PerfilEnum.DIDR, PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.SUDR,
+                PerfilEnum.MTSDR, PerfilEnum.GCDR, PerfilEnum.GUS], this.usuario);
+    }
+
+    private temUnidPerfil(): boolean {
+        return this.temPapel(PerfilEnum.ADM, PerfilEnum.GDNA, PerfilEnum.MTSDN, PerfilEnum.DIDN, PerfilEnum.ATD, PerfilEnum.GDRM)
+            && this.contemPerfil([PerfilEnum.GUS], this.usuario);
     }
 }

@@ -1,25 +1,5 @@
 package br.com.ezvida.rst.service;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
-import org.apache.oltu.oauth2.common.OAuth;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.Payload;
-
 import br.com.ezvida.girst.apiclient.client.CredencialClient;
 import br.com.ezvida.rst.anotacoes.Preferencial;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
@@ -27,12 +7,29 @@ import br.com.ezvida.rst.enums.Credencial;
 import br.com.ezvida.rst.model.Token;
 import br.com.ezvida.rst.model.Usuario;
 import br.com.ezvida.rst.utils.SegurancaUtils;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.Payload;
 import fw.core.common.encode.JacksonMapper;
 import fw.core.service.BaseService;
 import fw.security.exception.UnauthenticatedException;
 import fw.security.exception.UnauthorizedException;
 import fw.security.interceptor.ChaveSeguranca;
 import fw.security.interceptor.TipoOAuth;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
+import org.apache.oltu.oauth2.common.OAuth;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.Nonnull;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.Map;
 
 @Stateless
 public class CredencialService extends BaseService {
@@ -116,7 +113,7 @@ public class CredencialService extends BaseService {
 		LOGGER.info("Criando filtro de dados", usuario.getLogin(), usuario.getId(), usuario);
 
 		DadosFilter dadosFilter = new DadosFilter(usuario.getPapeis(), usuario.getIdDepartamentos(), usuario.getIdEmpresas(),
-				usuario.getIdParceiros(), usuario.getIdRedesCredenciadas(), usuario.getIdSindicatos(), usuario.getIdTrabalhadores());
+				usuario.getIdParceiros(), usuario.getIdRedesCredenciadas(), usuario.getIdSindicatos(), usuario.getIdTrabalhadores(), usuario.getIdUnidadesSESI());
 
 		String dados = StringUtils.EMPTY;
 		try {
@@ -144,6 +141,7 @@ public class CredencialService extends BaseService {
             JWT.create().withSubject(usuario.getLogin())
                 .withClaim("nome", usuario.getNome())
                 .withClaim("email", usuario.getEmail())
+				.withClaim("nivel", usuario.getHierarquia())
                 .withArrayClaim("papeis", usuario.getPapeis().stream().toArray(String[]::new))
                 .withArrayClaim("permissoes", usuario.getPermissoes().stream().toArray(String[]::new))
                 .withClaim("dados", dados)
@@ -157,6 +155,7 @@ public class CredencialService extends BaseService {
                 JWT.create().withSubject(usuario.getLogin())
                     .withClaim("nome", usuario.getNome())
                     .withClaim("email", usuario.getEmail())
+					.withClaim("nivel", usuario.getHierarquia())
                     .withArrayClaim("papeis", usuario.getPapeis().stream().toArray(String[]::new))
                     .withArrayClaim("permissoes", usuario.getPermissoes().stream().toArray(String[]::new))
                     .withClaim("dados", dados)

@@ -258,12 +258,12 @@ public class ImunizacaoService extends BaseService {
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<VacinaAutodeclaradaDTO> buscarUltimasVacinas(int limite, Usuario usuario) {
+    public List<VacinaAutodeclaradaDTO> buscarUltimasVacinas(int limite, String login) {
         Retrofit retrofit = getRetroFit();
 
         try {
             Response<List<VacinaAutodeclaradaDTO>> response = retrofit.create(ImunizacaoAPI.class)
-                    .buscarUltimasVacinas(limite, this.getToken(), usuario.getLogin())
+                    .buscarUltimasVacinas(limite, this.getToken(), login)
                     .execute();
             if (response == null || !response.isSuccessful()) {
                 LOGGER.debug("Não foi possível obter a lista de vacinas", response == null ? null : response.errorBody().toString());

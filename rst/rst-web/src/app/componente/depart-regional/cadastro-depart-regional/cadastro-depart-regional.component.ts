@@ -1,31 +1,31 @@
-import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
-import { Seguranca } from './../../../compartilhado/utilitario/seguranca.model';
-import { environment } from './../../../../environments/environment';
-import { DatePicker } from './../../../compartilhado/utilitario/date-picker';
-import { ValidateData, ValidateDataFutura, ValidarDataFutura } from 'app/compartilhado/validators/data.validator';
+import {PermissoesEnum} from 'app/modelo/enum/enum-permissoes';
+import {Seguranca} from './../../../compartilhado/utilitario/seguranca.model';
+import {environment} from './../../../../environments/environment';
+import {DatePicker} from './../../../compartilhado/utilitario/date-picker';
+import {ValidarDataFutura, ValidateData, ValidateDataFutura} from 'app/compartilhado/validators/data.validator';
 
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BaseComponent } from 'app/componente/base.component';
-import { DepartRegionalService } from 'app/servico/depart-regional.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BloqueioService } from 'app/servico/bloqueio.service';
-import { ToastyService } from 'ng2-toasty';
-import { DialogService } from 'ng2-bootstrap-modal';
-import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
-import { DepartamentoRegional } from 'app/modelo/departamento-regional.model';
-import { Municipio } from 'app/modelo/municipio.model';
-import { MascaraUtil } from 'app/compartilhado/utilitario/mascara.util';
-import { TelefoneDepartamentoRegional } from 'app/modelo/telefone-departamento-regional.model';
-import { EnderecoDepartamentoRegional } from 'app/modelo/endereco-departamento-regional.model';
-import { EmailDepartamentoRegional } from 'app/modelo/email-departamento-regional.model';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { EstadoService } from 'app/servico/estado.service';
-import { TipoEndereco } from 'app/modelo/enum/enum-tipo-endereco.model';
-import { TipoEmail } from 'app/modelo/enum/enum-tipo-email.model';
-import { ValidateCNPJ } from 'app/compartilhado/validators/cnpj.validator';
-import { EnumValues } from 'enum-values';
-import { ValidateEmail } from 'app/compartilhado/validators/email.validator';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BaseComponent} from 'app/componente/base.component';
+import {DepartRegionalService} from 'app/servico/depart-regional.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {BloqueioService} from 'app/servico/bloqueio.service';
+import {ToastyService} from 'ng2-toasty';
+import {DialogService} from 'ng2-bootstrap-modal';
+import {MensagemProperties} from 'app/compartilhado/utilitario/recurso.pipe';
+import {DepartamentoRegional} from 'app/modelo/departamento-regional.model';
+import {Municipio} from 'app/modelo/municipio.model';
+import {MascaraUtil} from 'app/compartilhado/utilitario/mascara.util';
+import {TelefoneDepartamentoRegional} from 'app/modelo/telefone-departamento-regional.model';
+import {EnderecoDepartamentoRegional} from 'app/modelo/endereco-departamento-regional.model';
+import {EmailDepartamentoRegional} from 'app/modelo/email-departamento-regional.model';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {EstadoService} from 'app/servico/estado.service';
+import {TipoEndereco} from 'app/modelo/enum/enum-tipo-endereco.model';
+import {TipoEmail} from 'app/modelo/enum/enum-tipo-email.model';
+import {ValidateCNPJ} from 'app/compartilhado/validators/cnpj.validator';
+import {EnumValues} from 'enum-values';
+import {ValidateEmail} from 'app/compartilhado/validators/email.validator';
 import {PerfilEnum} from "../../../modelo/enum/enum-perfil";
 
 @Component({
@@ -631,7 +631,7 @@ export class CadastroDepartRegionalComponent extends BaseComponent implements On
   }
 
   isPermitidoEditar(): boolean {
-      return this.naoTemPapel(PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.GDRP)
+      return this.naoTemPapel(PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.GDRP, PerfilEnum.MTSDR, PerfilEnum.GCDR)
           || this.usuarioLogado.dados.administrador;
   }
 }

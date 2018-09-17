@@ -8,6 +8,7 @@ target
 build/
 dist/
 out/
+out-tsc/
 #Arquivos de Configuração de Projeto
 .project
 .gradle
@@ -24,3 +25,6 @@ out/
 # JDT-specific (Eclipse Java Development Tools)		
 .classpath
 .factorypath
+tsconfig.app.json.js
+
+*.versionsBackup

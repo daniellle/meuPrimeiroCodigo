@@ -124,6 +124,23 @@ public class UsuarioEntidadeEndpoint extends SegurancaEndpoint<UsuarioEntidade> 
 				.build();
 	}
 
+    @GET
+    @Encoded
+    @Path("unidade-sesi/paginado")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Autorizacao(permissoes = @Permissao(value = { PermissionConstants.USUARIO_ENTIDADE,
+        PermissionConstants.USUARIO_ENTIDADE_CADASTRAR, PermissionConstants.USUARIO_ENTIDADE_ALTERAR,
+        PermissionConstants.USUARIO_ENTIDADE_CONSULTAR, PermissionConstants.USUARIO_ENTIDADE_DESATIVAR }))
+    public Response pesquisarUnidadeSESI(@BeanParam UsuarioEntidadeFilter filtro,
+                                                  @Context SecurityContext context, @Context HttpServletRequest request) {
+        return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(usuarioEntidadeService.pesquisarUnidadeSESI(filtro, ClienteInfos
+                .getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS))))
+            .build();
+    }
+
 	@POST
 	@Encoded
 	@Path("cadastrar")

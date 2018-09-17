@@ -1,26 +1,9 @@
 package br.com.ezvida.rst.service;
 
-import java.io.InputStream;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
-
-import br.com.ezvida.girst.apiclient.model.*;
-import br.com.ezvida.rst.enums.SimNao;
-import br.com.ezvida.rst.model.*;
-import br.com.ezvida.rst.model.Usuario;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-
 import br.com.ezvida.girst.apiclient.client.UsuarioClient;
+import br.com.ezvida.girst.apiclient.model.ListaPaginada;
+import br.com.ezvida.girst.apiclient.model.Perfil;
+import br.com.ezvida.girst.apiclient.model.UsuarioPerfilSistema;
 import br.com.ezvida.girst.apiclient.model.filter.UsuarioFilter;
 import br.com.ezvida.rst.anotacoes.Prod;
 import br.com.ezvida.rst.auditoria.logger.LogAuditoria;
@@ -28,11 +11,26 @@ import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.UsuarioGirstViewDAO;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.enums.Ambiente;
+import br.com.ezvida.rst.enums.SimNao;
+import br.com.ezvida.rst.model.*;
 import br.com.ezvida.rst.model.dto.UsuarioDTO;
 import br.com.ezvida.rst.service.excpetions.RegistroNaoEncontradoException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import fw.core.common.util.ResourceUtil;
 import fw.core.exception.BusinessErrorException;
 import fw.core.service.BaseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import java.io.InputStream;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Stateless
 @Prod
@@ -47,6 +45,9 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
     private static final String CODIGO_PERFIL_DIRETOR_DR = "DIDR";
     private static final String CODIGO_PERFIL_GESTOR_DR_APLICACOES = "GDRA";
     private static final String CODIGO_PERFIL_GESTOR_DR_APLICACOES_MASTER = "GDRM";
+    private static final String CODIGO_PERFIL_SUPERITENDENTE_DR= "SUDR";
+    private static final String CODIGO_PERFIL_MEDICO_TRABALHADOR_DR = "MTSDR";
+    private static final String CODIGO_PERFIL_GESTOR_COMERCIAL_DR = "GCDR";
 
     @Inject
     private UsuarioClient usuarioClient;
@@ -88,8 +89,10 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
         Usuario usuario = null;
         if (usuarioGirst != null) {
             LOGGER.debug("Criando usuario do rst");
+            Integer hieraquia = getHieraquia(usuarioGirst);
+
             usuario = new Usuario(null, usuarioGirst.getLogin(), usuarioGirst.getNome(), null, null,
-                    usuarioGirst.getEmail());
+                    usuarioGirst.getEmail(), hieraquia);
 
             List<br.com.ezvida.girst.apiclient.model.Perfil> perfis = usuarioGirst.getPerfisSistema().stream()
                     .map(UsuarioPerfilSistema::getPerfil).collect(Collectors.toList());
@@ -107,6 +110,17 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
         }
 
         return usuario;
+    }
+
+    private Integer getHieraquia(br.com.ezvida.girst.apiclient.model.Usuario usuarioGirst) {
+        Integer hieraquia = null;
+        for (UsuarioPerfilSistema ups: usuarioGirst.getPerfisSistema()) {
+            if(ups.getPerfil() != null && ups.getPerfil().getHierarquia() != null
+                    && (hieraquia == null || ups.getPerfil().getHierarquia() < hieraquia)){
+                hieraquia = ups.getPerfil().getHierarquia();
+            }
+        }
+        return hieraquia;
     }
 
     private void getEntidadesFiltradas(Usuario usuario) {
@@ -141,6 +155,10 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
             if (usuarioEntidade.getSindicato() != null) {
                 usuario.getIdSindicatos().add(usuarioEntidade.getSindicato().getId());
+            }
+
+            if (usuarioEntidade.getUnidadeAtendimentoTrabalhador() != null) {
+                usuario.getIdUnidadesSESI().add(usuarioEntidade.getUnidadeAtendimentoTrabalhador().getId());
             }
         }
     }
@@ -220,10 +238,12 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public br.com.ezvida.girst.apiclient.model.Usuario cadastrarUsuario(
             br.com.ezvida.girst.apiclient.model.Usuario usuario
-            , ClienteAuditoria auditoria) {
+            , Usuario usuarioLogado, ClienteAuditoria auditoria) {
         if (auditoria != null) {
             LogAuditoria.registrar(LOGGER, auditoria, "cadastro de usuário: ", usuario);
         }
+
+        validarHierarquia(usuarioLogado, usuario);
 
         br.com.ezvida.girst.apiclient.model.Usuario u;
 
@@ -240,8 +260,9 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public br.com.ezvida.girst.apiclient.model.Usuario alterarUsuario(
-            br.com.ezvida.girst.apiclient.model.Usuario usuario, ClienteAuditoria auditoria) {
+            br.com.ezvida.girst.apiclient.model.Usuario usuario, Usuario usuarioLogado, ClienteAuditoria auditoria) {
 
+        validarHierarquia(usuarioLogado, usuario);
         br.com.ezvida.girst.apiclient.model.Usuario usuarioAnterior = buscarPorId(usuario.getId().toString(), null);
         if (auditoria != null && usuarioAnterior != null && usuarioAnterior.getPerfisSistema() != null
                 && usuarioAnterior.getPerfisSistema().size() > 0) {
@@ -266,7 +287,10 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
                     }
                     if (perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_DIRETOR_DR)
                             || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_DR_APLICACOES)
-                            || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_DR_APLICACOES_MASTER)) {
+                            || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_DR_APLICACOES_MASTER)
+                            || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_SUPERITENDENTE_DR)
+                            || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_MEDICO_TRABALHADOR_DR)
+                            || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_COMERCIAL_DR)) {
                         List<UsuarioEntidade> listaDepartamentosAssociados = usuarioEntidadeService
                                 .pesquisarTodosDepartamentosAssociadas(usuario.getLogin());
                         if (listaDepartamentosAssociados != null && listaDepartamentosAssociados.size() > 0) {
@@ -355,11 +379,13 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public br.com.ezvida.girst.apiclient.model.Usuario desativarUsuario(String id, ClienteAuditoria auditoria) {
+    public br.com.ezvida.girst.apiclient.model.Usuario desativarUsuario(String id, Usuario usuarioLogado, ClienteAuditoria auditoria) {
         LogAuditoria.registrar(LOGGER, auditoria, "desativar usuário: " + id);
 
-        br.com.ezvida.girst.apiclient.model.Usuario u;
+        br.com.ezvida.girst.apiclient.model.Usuario userRemov = buscarPorLogin(id);
+        validarHierarquia(usuarioLogado, userRemov);
 
+        br.com.ezvida.girst.apiclient.model.Usuario u;
         try {
             u = this.usuarioClient.remover(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), id, null);
         } catch (Exception e) {
@@ -368,6 +394,17 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
         }
 
         return u;
+    }
+
+    private void validarHierarquia(Usuario usuarioLogado, br.com.ezvida.girst.apiclient.model.Usuario usuarioModicar) {
+        if (usuarioLogado != null && usuarioModicar != null) {
+            Integer hierarquiaMod = getHieraquia(usuarioModicar);
+
+            if (usuarioLogado.getHierarquia() != null && hierarquiaMod != null
+                    && usuarioLogado.getHierarquia() != 0 && hierarquiaMod < usuarioLogado.getHierarquia()) {
+                throw new BusinessErrorException("Não é permitido modificar um usuario superior ao logado");
+            }
+        }
     }
 
     @Override

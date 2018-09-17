@@ -15,7 +15,7 @@
             <app-card-tela-intermediaria (onNavegar)="mudarPagina('dependente')" [titulo]="'Dependentes'" [classCardCor]="'card-musgo'" [classImgFront]="'img_dependentes'" [classImgBack]="'img_dependentes'"></app-card-tela-intermediaria>
         </div>
 
-        <div class="form-group col-md-4 col-lg-3" *ngIf="!hasPermissaoCallCenter() && hasAcessMinhaConta()">
+        <div class="form-group col-md-4 col-lg-3" *ngIf="!hasPermissaoCallCenter() && hasPermissionSaude()">
             <app-card-tela-intermediaria (onNavegar)="openPageMinhaSaude('/res/minhasaude')" [titulo]="'Minha Saúde'" [classCardCor]="'card-roxo'" [classImgFront]="'img_minhasaude'" [classImgBack]="'img_minhasaude'"></app-card-tela-intermediaria>
         </div>
 

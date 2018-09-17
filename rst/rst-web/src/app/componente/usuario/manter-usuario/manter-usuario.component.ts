@@ -21,7 +21,6 @@ import {Usuario} from './../../../modelo/usuario.model';
 import {UsuarioService} from './../../../servico/usuario.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit} from '@angular/core';
-import {SistemaEnum} from 'app/modelo/enum/enum-sistema.model';
 
 export interface IHash {
     [details: number]: boolean;
@@ -39,11 +38,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     id: number;
     usuario: Usuario;
     perfis: Perfil[];
-    perfisPortal: Perfil[];
-    perfisCadastro: Perfil[];
-    perfisDw: Perfil[];
-    perfisGirst: Perfil[];
-    perfisResOnline: Perfil[];
     sistemas: Sistema[];
     perfisSistemas: UsuarioPerfilSistema[];
     sistemaSelecionado?: Sistema;
@@ -64,7 +58,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         super(bloqueioService, dialogo);
         this.idSistemas = null;
         this.sistemaSelecionado = null;
-        this.buscarPerfis();
         this.buscarSistemas();
     }
 
@@ -76,13 +69,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             this.usuario.perfisSistema = new Array<UsuarioPerfilSistema>();
             this.perfisSistemas = new Array<UsuarioPerfilSistema>();
 
-            this.perfisPortal = new Array<Perfil>();
-            this.perfisCadastro = new Array<Perfil>();
-            this.perfisDw = new Array<Perfil>();
-            this.perfisGirst = new Array<Perfil>();
-            this.perfisResOnline = new Array<Perfil>();
-
-            if ( this.id ) {
+            if (this.id) {
                 this.modoAlterar = true;
                 this.buscarUsuario();
             }
@@ -96,8 +83,8 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     buscarUsuario(): void {
         this.usuarioService.buscarUsuarioById(this.id).subscribe((retorno: Usuario) => {
             this.usuario = retorno;
-            if ( this.usuario ) {
-                if ( !this.usuario.perfisSistema ) {
+            if (this.usuario) {
+                if (!this.usuario.perfisSistema) {
                     this.usuario.perfisSistema = new Array<UsuarioPerfilSistema>();
                 }
                 this.converterModelParaForm();
@@ -110,45 +97,45 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     validarCampos(): Boolean {
         let isValido: Boolean = true;
 
-        if ( this.usuarioForm.controls['nome'].invalid ) {
-            if ( this.usuarioForm.controls['nome'].errors.required ) {
+        if (this.usuarioForm.controls['nome'].invalid) {
+            if (this.usuarioForm.controls['nome'].errors.required) {
                 this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.usuarioForm.controls['nome'],
                     MensagemProperties.app_rst_labels_nome);
                 isValido = false;
             }
         }
 
-        if ( this.usuarioForm.controls['login'].invalid ) {
-            if ( this.usuarioForm.controls['login'].errors.required ) {
+        if (this.usuarioForm.controls['login'].invalid) {
+            if (this.usuarioForm.controls['login'].errors.required) {
                 this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.usuarioForm.controls['login'],
                     MensagemProperties.app_rst_labels_login_cpf);
                 isValido = false;
             }
 
-            if ( !this.usuarioForm.controls['login'].errors.required
-                 && this.usuarioForm.controls['login'].errors.validCPF ) {
+            if (!this.usuarioForm.controls['login'].errors.required
+                && this.usuarioForm.controls['login'].errors.validCPF) {
                 this.mensagemErroComParametros('app_rst_campo_invalido', this.usuarioForm.controls['login'],
                     MensagemProperties.app_rst_labels_login_cpf);
                 isValido = false;
             }
         }
 
-        if ( this.usuarioForm.controls['email'].invalid ) {
-            if ( this.usuarioForm.controls['email'].errors.required ) {
+        if (this.usuarioForm.controls['email'].invalid) {
+            if (this.usuarioForm.controls['email'].errors.required) {
                 this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.usuarioForm.controls['email'],
                     MensagemProperties.app_rst_labels_email);
                 isValido = false;
             }
 
-            if ( !this.usuarioForm.controls['email'].errors.required
-                 && this.usuarioForm.controls['email'].errors.validEmail ) {
+            if (!this.usuarioForm.controls['email'].errors.required
+                && this.usuarioForm.controls['email'].errors.validEmail) {
                 this.mensagemErroComParametros('app_rst_campo_invalido', this.usuarioForm.controls['email'],
                     MensagemProperties.app_rst_labels_email);
                 isValido = false;
             }
         }
 
-        if ( this.isListaVazia() ) {
+        if (this.isListaVazia()) {
             this.mensagemError(MensagemProperties.app_rst_usuario_validacao_selecione_sistema_perfil);
             isValido = false;
         }
@@ -156,8 +143,10 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         return isValido;
     }
 
+    //TODO FAZER VALIDACAO NO BACKEND PARA PERMITIR APENAS PERFIS VINCULADOS AO SISTEMA
+
     salvar(): void {
-        if ( this.validarCampos() ) {
+        if (this.validarCampos()) {
             this.converterFormParaModel();
             this.usuarioService.salvarUsuario(this.usuario).subscribe((retorno: Usuario) => {
                 this.usuario = retorno;
@@ -171,16 +160,16 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     }
 
     associarPerfil(): void {
-        if ( this.idSistemas && this.perfisSistemas.length > 0 ) {
+        if (this.idSistemas && this.perfisSistemas.length > 0) {
             this.sistemaSelecionado = this.sistemas.filter((s) => s.id === Number(this.idSistemas))[0];
 
             const perfisRemover: UsuarioPerfilSistema[] = this.usuario.perfisSistema
-                                                              .filter((ps) => ps.sistema.id
-                                                                              === Number(this.sistemaSelecionado.id));
-            if ( perfisRemover.length > 0 ) {
+                .filter((ps) => ps.sistema.id
+                    === Number(this.sistemaSelecionado.id));
+            if (perfisRemover.length > 0) {
                 perfisRemover.forEach((pr) => {
                     const index: number = this.usuario.perfisSistema.indexOf(pr);
-                    if ( index > -1 ) {
+                    if (index > -1) {
                         this.usuario.perfisSistema.splice(index, 1);
                     }
                 });
@@ -246,21 +235,9 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     voltar(): void {
         this.router.navigate([this.id ? `${environment.path_raiz_cadastro}/usuario/${this.id}` :
-                              `${environment.path_raiz_cadastro}/usuario`]);
+            `${environment.path_raiz_cadastro}/usuario`]);
     }
 
-    buscarPerfis(): void {
-        this.perfilService.buscarTodos().subscribe((retorno: any) => {
-            this.perfis = retorno;
-            this.filtrarPerfisSistemaPortal();
-            this.filtrarPerfisSistemaCadastro();
-            this.filtrarPerfisSistemaGirst();
-            this.filtrarPerfisSistemaDw();
-            this.filtrarPerfisSistemaResOnline();
-        }, (error) => {
-            this.mensagemError(error);
-        });
-    }
 
     buscarSistemas(): void {
         this.sistemaService.buscarSistemasPermitidos(Seguranca.getUsuario()).subscribe((retorno: any) => {
@@ -271,15 +248,15 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     }
 
     modificarPerfil(perfil?: Perfil, event?: any): void {
-        if ( perfil && event.checked ) {
+        if (perfil && event.checked) {
             const usuarioPerfilSistema = new UsuarioPerfilSistema(perfil);
             this.perfisSistemas.push(usuarioPerfilSistema);
             this.perfisSelecionados[perfil.id] = true;
         } else {
             const perfilRemover: UsuarioPerfilSistema = this.perfisSistemas.filter((e) => e.perfil.id
-                                                                                          === Number(perfil.id))[0];
+                === Number(perfil.id))[0];
             const index = this.perfisSistemas.indexOf(perfilRemover);
-            if ( index > -1 ) {
+            if (index > -1) {
                 this.perfisSistemas.splice(index, 1);
             }
             this.perfisSelecionados[perfil.id] = false;
@@ -298,9 +275,9 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         this.idSistemas = id;
         this.filtrarPerfis();
 
-        if ( this.usuario.perfisSistema ) {
+        if (this.usuario.perfisSistema) {
             this.usuario.perfisSistema.forEach((element) => {
-                if ( Number(element.sistema.id) === Number(id) ) {
+                if (Number(element.sistema.id) === Number(id)) {
                     this.sistemaSelecionado = element.sistema;
                     this.modificarPerfil(element.perfil, event);
                 }
@@ -314,7 +291,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         this.usuario.perfisSistema.forEach((ps) => {
             const id = ps.sistema.id;
 
-            if ( !sistemas[id] ) {
+            if (!sistemas[id]) {
                 sistemas[id] = {id, sistema: ps.sistema.nome, perfil: ''};
             }
             sistemas[id].perfil = ps.perfil.nome.toString().concat('; ').concat(sistemas[id].perfil);
@@ -328,11 +305,11 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     excluirAssociacaoPerfil(idSistema: number): void {
         const sistemaPerfis: UsuarioPerfilSistema[] = this.usuario.perfisSistema.filter((ps) => ps.sistema.id
-                                                                                                === Number(idSistema));
+            === Number(idSistema));
 
         sistemaPerfis.forEach((element) => {
             const i = this.usuario.perfisSistema.indexOf(element, 0);
-            if ( i > -1 ) {
+            if (i > -1) {
                 this.usuario.perfisSistema.splice(i, 1);
             }
         });
@@ -345,133 +322,17 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     filtrarPerfis() {
         const sistema = this.sistemas.filter((s) => s.id === Number(this.idSistemas))[0];
-
-        if ( sistema ) {
-            if ( sistema.codigo.toUpperCase() === SistemaEnum.PORTAL ) {
-                this.perfis = this.perfisPortal;
-            }
-            if ( sistema.codigo.toUpperCase() === SistemaEnum.CADASTRO ) {
-                this.perfis = this.perfisCadastro;
-            }
-            if ( sistema.codigo.toUpperCase() === SistemaEnum.GIRST ) {
-                this.perfis = this.perfisGirst;
-            }
-            if ( sistema.codigo.toUpperCase() === SistemaEnum.DW ) {
-                this.perfis = this.perfisDw;
-            }
-            if ( sistema.codigo.toUpperCase() === SistemaEnum.RESONLINE ) {
-                this.perfis = this.perfisResOnline;
-            }
+        if(sistema){
+            this.perfis = sistema.sistemaPerfis.map(value => value.perfil)
+                .filter(value => value.codigo != PerfilEnum.TRA);
+        }else{
+            this.perfis = [];
         }
     }
 
-    filtrarPerfisSistemaPortal() {
-        this.perfisPortal = this.processPerfis(null, [PerfilEnum.GDNA, PerfilEnum.GDRA,
-            PerfilEnum.GEEM, PerfilEnum.GEPC, PerfilEnum.GERC, PerfilEnum.GESI, PerfilEnum.TRA, PerfilEnum.PFS,
-            PerfilEnum.GEEMM, PerfilEnum.GDRM]);
-    }
-
-    filtrarPerfisSistemaCadastro() {
-        if ( this.temPapel(PerfilEnum.GEEMM) ) {
-            this.perfisCadastro = this.processPerfis([PerfilEnum.GEEM, PerfilEnum.RH, PerfilEnum.ST], [PerfilEnum.PFS]);
-        }
-        if ( this.temPapel(PerfilEnum.GDRA) ) {
-            this.perfisCadastro = this.processPerfis([PerfilEnum.GEEM, PerfilEnum.GEPC,
-                PerfilEnum.GERC, PerfilEnum.GESI, PerfilEnum.PFS], null);
-        }
-        if ( this.temPapel(PerfilEnum.GDRM) ) {
-            this.perfisCadastro = this.processPerfis([PerfilEnum.GEEM, PerfilEnum.GEPC,
-                PerfilEnum.GERC, PerfilEnum.GESI, PerfilEnum.PFS, PerfilEnum.GDRA], null);
-        }
-        if ( this.temPapel(PerfilEnum.GDNA) ) {
-            this.perfisCadastro = this.processPerfis(null,
-                this.naoPerfisPortal(PerfilEnum.ADM, PerfilEnum.ATD, PerfilEnum.GDNA, PerfilEnum.TRA, PerfilEnum.SUPS,
-                    PerfilEnum.SUPG));
-        }
-        if ( this.temPapel(PerfilEnum.ADM) ) {
-            this.perfisCadastro = this.processPerfis(null, this.naoPerfisPortal(PerfilEnum.TRA));
-        }
-
-    }
-
-    filtrarPerfisSistemaDw() {
-        if ( this.temPapel(PerfilEnum.GEEMM) ) {
-            this.perfisDw = this.processPerfis([PerfilEnum.GEEM, PerfilEnum.RH, PerfilEnum.ST],
-                null);
-        }
-        if ( this.temPapel(PerfilEnum.GDRA) ) {
-            this.perfisDw = this.processPerfis([PerfilEnum.GEEM, PerfilEnum.GEPC,
-                PerfilEnum.GERC, PerfilEnum.GESI, PerfilEnum.EPI], null);
-        }
-        if ( this.temPapel(PerfilEnum.GDRM) ) {
-            this.perfisDw = this.processPerfis([PerfilEnum.GEEM, PerfilEnum.GEPC,
-                PerfilEnum.GERC, PerfilEnum.GESI, PerfilEnum.GDRA, PerfilEnum.EPI], null);
-        }
-        if ( this.temPapel(PerfilEnum.GDNA) ) {
-            this.perfisDw = this.processPerfis(null,
-                this.naoPerfisPortal(PerfilEnum.ADM, PerfilEnum.ATD, PerfilEnum.GDNA, PerfilEnum.TRA,
-                    PerfilEnum.SUPS, PerfilEnum.SUPG));
-        }
-        if ( this.temPapel(PerfilEnum.ADM) ) {
-            this.perfisDw = this.processPerfis(null, this.naoPerfisPortal(PerfilEnum.TRA));
-        }
-    }
-
-    filtrarPerfisSistemaGirst() {
-        this.perfisGirst = this.processPerfis([PerfilEnum.ADM], null);
-    }
-
-    filtrarPerfisSistemaResOnline() {
-        if ( this.naoTemPapel(PerfilEnum.ADM) && this.temPapel(PerfilEnum.GDRA, PerfilEnum.GDRM) ) {
-            this.perfisResOnline = this.processPerfis([PerfilEnum.PFS], null);
-        }
-        if ( this.temPapel(PerfilEnum.GDNA) ) {
-            this.perfisResOnline = this.processPerfis([PerfilEnum.PFS], this.naoPerfisPortal(PerfilEnum.ADM,
-                PerfilEnum.ATD, PerfilEnum.GDNA, PerfilEnum.TRA));
-        }
-        if ( this.temPapel(PerfilEnum.ADM) ) {
-            this.perfisResOnline = this.processPerfis([PerfilEnum.PFS, PerfilEnum.ADM], this.naoPerfisPortal());
-        }
-    }
 
     temPermissaoDesativar(): boolean {
         return !this.modoConsulta && Boolean(Seguranca.isPermitido(['usuario_desativar']));
-    }
-
-    public processPerfis(permitidos: PerfilEnum[], naoPermitidos: PerfilEnum[]): Perfil[] {
-        let lista = new Array<Perfil>();
-        let set = new Set<String>();
-        this.perfis.forEach(element => {
-            if ( this.isEmpty(naoPermitidos) ) {
-                if ( permitidos.find(p => p === element.codigo) && !set.has(element.codigo) ) {
-                    set.add(element.codigo);
-                    lista.push(element);
-                }
-            } else {
-                if ( this.isNotEmpty(permitidos) ) {
-                    if ( (permitidos.find(p => p === element.codigo))
-                         && !naoPermitidos.find(p => p === element.codigo) && !set.has(element.codigo) ) {
-                        set.add(element.codigo);
-                        lista.push(element);
-                    }
-                } else if ( !naoPermitidos.find(p => p === element.codigo) && !set.has(element.codigo) ) {
-                    set.add(element.codigo);
-                    lista.push(element);
-                }
-            }
-        });
-        return lista;
-    }
-
-    private naoPerfisPortal(...mais: PerfilEnum[]): PerfilEnum[] {
-        let perfis = new Array<PerfilEnum>();
-        perfis.push(PerfilEnum.GDNP, PerfilEnum.GDRP);
-        if ( this.isNotEmpty(mais) ) {
-            mais.forEach(p => {
-                perfis.push(p);
-            });
-        }
-        return perfis;
     }
 
 }

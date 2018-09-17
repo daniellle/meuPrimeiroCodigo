@@ -75,8 +75,10 @@ export class ImunizacaoService extends BaseService<Vacina> {
       });
   }
 
-  buscaVacinasAutodeclaradas(pesquisa: number) : Observable<Vacina[]>{
-    return super.get('/v1/vacinas-autodeclaradas/ultimas-vacinas/' + pesquisa)
+  buscaVacinasAutodeclaradas(pesquisa: number, cpf: string) : Observable<Vacina[]>{
+      const params = new HttpParams()
+          .append('login', cpf);
+    return super.get('/v1/vacinas-autodeclaradas/ultimas-vacinas/' + pesquisa, params)
       .map((response: Response) => {
         return response;
       }).catch((error: Response) => {

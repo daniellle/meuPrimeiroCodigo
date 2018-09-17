@@ -1,35 +1,35 @@
-import { FiltroDepartRegional } from 'app/modelo/filtro-depart-regional.model';
-import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
-import { Seguranca } from './../../../compartilhado/utilitario/seguranca.model';
-import { environment } from './../../../../environments/environment';
-import { DatePicker } from './../../../compartilhado/utilitario/date-picker';
-import { DepartRegionalService } from './../../../servico/depart-regional.service';
-import { ValidarDataFutura, ValidateData } from 'app/compartilhado/validators/data.validator';
-import { MensagemProperties } from './../../../compartilhado/utilitario/recurso.pipe';
-import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from 'app/componente/base.component';
-import { ToastyService } from 'ng2-toasty';
-import { DialogService } from 'ng2-bootstrap-modal';
-import { BloqueioService } from 'app/servico/bloqueio.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import {FiltroDepartRegional} from 'app/modelo/filtro-depart-regional.model';
+import {PermissoesEnum} from 'app/modelo/enum/enum-permissoes';
+import {Seguranca} from './../../../compartilhado/utilitario/seguranca.model';
+import {environment} from './../../../../environments/environment';
+import {DatePicker} from './../../../compartilhado/utilitario/date-picker';
+import {DepartRegionalService} from './../../../servico/depart-regional.service';
+import {ValidarDataFutura, ValidateData} from 'app/compartilhado/validators/data.validator';
+import {MensagemProperties} from './../../../compartilhado/utilitario/recurso.pipe';
+import {Component, OnInit} from '@angular/core';
+import {BaseComponent} from 'app/componente/base.component';
+import {ToastyService} from 'ng2-toasty';
+import {DialogService} from 'ng2-bootstrap-modal';
+import {BloqueioService} from 'app/servico/bloqueio.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-import { Uat } from 'app/modelo/uat.model';
-import { UatService } from 'app/servico/uat.service';
-import { MascaraUtil } from 'app/compartilhado/utilitario/mascara.util';
-import { DepartamentoRegional } from 'app/modelo/departamento-regional.model';
-import { TelefoneUnidAtendTrabalhador } from 'app/modelo/telefone-unid-atend-trabalhador.model';
-import { Email } from 'app/modelo/email.model';
-import { EmailUnidAtendTrabalhador } from 'app/modelo/email-unid-atend-trabalhador.model';
-import { EnderecoUnidAtendTrabalhador } from 'app/modelo/endereco-unid-atend-trabalhador.model';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { EstadoService } from 'app/servico/estado.service';
-import { TipoEmail } from 'app/modelo/enum/enum-tipo-email.model';
-import { TipoEndereco } from 'app/modelo/enum/enum-tipo-endereco.model';
-import { EnumValues } from 'enum-values';
-import { ValidateCNPJ } from 'app/compartilhado/validators/cnpj.validator';
-import { ValidateEmail } from 'app/compartilhado/validators/email.validator';
+import {Uat} from 'app/modelo/uat.model';
+import {UatService} from 'app/servico/uat.service';
+import {MascaraUtil} from 'app/compartilhado/utilitario/mascara.util';
+import {DepartamentoRegional} from 'app/modelo/departamento-regional.model';
+import {TelefoneUnidAtendTrabalhador} from 'app/modelo/telefone-unid-atend-trabalhador.model';
+import {Email} from 'app/modelo/email.model';
+import {EmailUnidAtendTrabalhador} from 'app/modelo/email-unid-atend-trabalhador.model';
+import {EnderecoUnidAtendTrabalhador} from 'app/modelo/endereco-unid-atend-trabalhador.model';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {EstadoService} from 'app/servico/estado.service';
+import {TipoEmail} from 'app/modelo/enum/enum-tipo-email.model';
+import {TipoEndereco} from 'app/modelo/enum/enum-tipo-endereco.model';
+import {EnumValues} from 'enum-values';
+import {ValidateCNPJ} from 'app/compartilhado/validators/cnpj.validator';
+import {ValidateEmail} from 'app/compartilhado/validators/email.validator';
 import {PerfilEnum} from "../../../modelo/enum/enum-perfil";
 
 @Component({
@@ -605,7 +605,8 @@ export class CadastroUatComponent extends BaseComponent implements OnInit {
   }
 
   isPermitidoEditar(): boolean {
-      return this.naoTemPapel(PerfilEnum.GDNA, PerfilEnum.GDNP, PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.GDRP);
+      return this.naoTemPapel(PerfilEnum.GDNA, PerfilEnum.MTSDN, PerfilEnum.GDNP, PerfilEnum.GDRA, PerfilEnum.SUDR,
+          PerfilEnum.GDRM, PerfilEnum.GDRP, PerfilEnum.MTSDR, PerfilEnum.GCDR);
   }
 
 }

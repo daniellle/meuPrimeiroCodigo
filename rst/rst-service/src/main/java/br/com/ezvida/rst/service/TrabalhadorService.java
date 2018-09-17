@@ -239,7 +239,7 @@ public class TrabalhadorService extends BaseService {
 
             Usuario usuario = buscarTrabalhadorJaCadastrado(trab.getCpf());
             if (usuario == null) {
-                usuario = usuarioService.cadastrarUsuario(primeiroAcesso.getUsuario(), null);
+                usuario = usuarioService.cadastrarUsuario(primeiroAcesso.getUsuario(), null, null);
 
                 if (usuario == null) {
                     throw new BusinessErrorException(getMensagem("app_validacao_error"));
@@ -254,7 +254,7 @@ public class TrabalhadorService extends BaseService {
                 usuario.setSenha(primeiroAcesso.getUsuario().getSenha());
                 usuario.setEmail(primeiroAcesso.getUsuario().getEmail());
 
-                usuarioService.alterarUsuario(usuario, getAuditoriaNovoUsuario(usuario));
+                usuarioService.alterarUsuario(usuario, null, getAuditoriaNovoUsuario(usuario));
             }
 
             trab.setTermo(SimNao.SIM);

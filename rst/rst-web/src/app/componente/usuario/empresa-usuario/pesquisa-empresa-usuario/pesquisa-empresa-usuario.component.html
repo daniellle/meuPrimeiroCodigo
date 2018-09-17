@@ -34,7 +34,7 @@
 
 <div class="btn-filter-pesquisar space-up" *ngIf="!isSomenteTrabalhador()">
     <button class="btn btn-primary" (click)="pesquisar()">{{'app_rst_btn_pesquisar' | recurso}}</button>
-    <button class="btn btn-primary" (click)="novo()">{{'app_rst_btn_novo' | recurso}}</button>
+    <button class="btn btn-primary"  *ngIf="!modoConsulta" (click)="novo()">{{'app_rst_btn_novo' | recurso}}</button>
     <button class="btn btn-secondary" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
 </div>
 

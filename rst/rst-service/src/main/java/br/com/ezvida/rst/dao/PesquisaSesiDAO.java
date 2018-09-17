@@ -70,6 +70,12 @@ public class PesquisaSesiDAO extends BaseDAO<UnidadeAtendimentoTrabalhador, Long
 				parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
 			}
 
+			if (segurancaFilter.isGetorUnidadeSESI()) {
+				jpql.append(" and ");
+				jpql.append(" uat.id IN (:idsUnidadeSESI) ");
+				parametros.put("idsUnidadeSESI", segurancaFilter.getIdsUnidadeSESI());
+			}
+
 			if (segurancaFilter.temIdsTrabalhador()) {
 
 				jpql.append(" and ");
@@ -213,9 +219,17 @@ public class PesquisaSesiDAO extends BaseDAO<UnidadeAtendimentoTrabalhador, Long
 			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
 		}
 
+		if (segurancaFilter.isGetorUnidadeSESI()) {
+			if(segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()){
+				jpql.append(" and ");
+			}
+			jpql.append(" uat.id IN (:idsUnidadeSESI) ");
+			parametros.put("idsUnidadeSESI", segurancaFilter.getIdsUnidadeSESI());
+		}
+
 		if (segurancaFilter.temIdsTrabalhador()) {
 
-			if (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()) {
+			if (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.temIdsUnidadeSESI()) {
 				jpql.append(" and ");
 			}
 

@@ -23,7 +23,7 @@ public class UsuarioServiceDev implements UsuarioService {
     @Override
     public Usuario getUsuario(String login) {
         logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
-        Usuario u = new Usuario("", login, "Super", "Homem", "ADM", "super@homem.com");
+        Usuario u = new Usuario("", login, "Super", "Homem", "ADM", "super@homem.com", 0);
         u.setPermissoes(new HashSet<>(Arrays.asList("funcao",
                 "setor",
                 "trabalhador",
@@ -98,13 +98,13 @@ public class UsuarioServiceDev implements UsuarioService {
     }
 
     @Override
-    public br.com.ezvida.girst.apiclient.model.Usuario cadastrarUsuario(br.com.ezvida.girst.apiclient.model.Usuario usuario, ClienteAuditoria auditoria) {
+    public br.com.ezvida.girst.apiclient.model.Usuario cadastrarUsuario(br.com.ezvida.girst.apiclient.model.Usuario usuario, Usuario usuarioLogado, ClienteAuditoria auditoria) {
         logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
         return null;
     }
 
     @Override
-    public br.com.ezvida.girst.apiclient.model.Usuario alterarUsuario(br.com.ezvida.girst.apiclient.model.Usuario usuario, ClienteAuditoria auditoria) {
+    public br.com.ezvida.girst.apiclient.model.Usuario alterarUsuario(br.com.ezvida.girst.apiclient.model.Usuario usuario, Usuario usuarioLogado, ClienteAuditoria auditoria) {
         logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
         return null;
     }
@@ -122,7 +122,7 @@ public class UsuarioServiceDev implements UsuarioService {
     }
 
     @Override
-    public br.com.ezvida.girst.apiclient.model.Usuario desativarUsuario(String id, ClienteAuditoria auditoria) {
+    public br.com.ezvida.girst.apiclient.model.Usuario desativarUsuario(String id, Usuario usuarioLogado, ClienteAuditoria auditoria) {
         logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
         return null;
     }

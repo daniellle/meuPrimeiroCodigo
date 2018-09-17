@@ -53,7 +53,7 @@ public class UsuarioServiceProdTest extends BaseService{
 		String mensagemErro = "";
 		try {
 			Usuario usuario = new Usuario();
-			usuarioService.cadastrarUsuario(usuario,auditoria);
+			usuarioService.cadastrarUsuario(usuario, null, auditoria);
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}
@@ -68,7 +68,7 @@ public class UsuarioServiceProdTest extends BaseService{
 		try {
 			this.usuario.setNome("Usuário Alterado");
 				
-			Mockito.when(usuarioService.alterarUsuario(this.usuario, this.auditoria)).thenReturn(this.usuario);
+			Mockito.when(usuarioService.alterarUsuario(this.usuario, null, this.auditoria)).thenReturn(this.usuario);
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}
@@ -81,7 +81,7 @@ public class UsuarioServiceProdTest extends BaseService{
 		LOGGER.debug("Testando desativar usuário ");
 		String mensagemErro = "";
 		try {				
-			usuarioService.desativarUsuario(this.usuario.getId().toString(),auditoria);
+			usuarioService.desativarUsuario(this.usuario.getId().toString(), null, auditoria);
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}

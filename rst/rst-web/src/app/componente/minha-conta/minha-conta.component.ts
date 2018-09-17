@@ -16,6 +16,10 @@ import {UsuarioService} from "../../servico/usuario.service";
 import {ValidateEmail} from "../../compartilhado/validators/email.validator";
 import {ValidateCPF} from "../../compartilhado/validators/cpf.validator";
 import {MascaraUtil} from "../../compartilhado/utilitario/mascara.util";
+import {isNullOrUndefined} from "util";
+import {Trabalhador} from "../../modelo/trabalhador.model";
+import {TrabalhadorService} from "../../servico/trabalhador.service";
+import {PerfilEnum} from "../../modelo/enum/enum-perfil";
 
 
 @Component({
@@ -27,10 +31,13 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
 
     public usuarioPerfilForm: FormGroup;
     id: number;
+    idTrab: number;
     login: string;
     usuario: Usuario;
     senhaConfirmacao: string;
     senhaAtual: string;
+    meusdados: boolean;
+    trabalhador: Trabalhador;
     foto: any;
     cropperSettings: CropperSettings;
     @ViewChild('cropper')
@@ -50,7 +57,8 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
         protected dialogo: ToastyService,
         private modalService: NgbModal,
         private dialogService: DialogService,
-        private usuarioService: UsuarioService
+        private usuarioService: UsuarioService,
+        private trabalhadorService: TrabalhadorService,
     ) {
         super(bloqueioService, dialogo, estadoService);
     }
@@ -60,6 +68,17 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
         this.createForm();
         this.title = MensagemProperties.app_rst_usuario_title_minha_conta;
         this.buscarUsuario();
+        this.dadosTrabalhador();
+    }
+
+    dadosTrabalhador(){
+        this.meusdados = this.activatedRoute.snapshot.params.id === 'meusdados';
+        if (this.meusdados) {
+            this.trabalhadorService.buscarMeusDados().subscribe((trabalhador) => {
+                this.trabalhador = trabalhador;
+                this.idTrab = this.trabalhador.id;
+            });
+        }
     }
 
     inicializarImagem() {
@@ -75,6 +94,7 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
     }
 
     buscarUsuario(): void {
+
         this.usuarioService.buscarPerfil().subscribe((retorno: Usuario) => {
             this.usuario = new Usuario();
             this.usuario = retorno;
@@ -201,7 +221,7 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
                 .subscribe((user: Usuario) => {
                     if (user) {
                         this.mensagemSucesso(MensagemProperties.app_rst_minhaconta);
-                        // this.voltar();
+                        this.voltar();
                     }
                 }, (error) => {
                     this.mensagemError(error);
@@ -279,7 +299,17 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
     }
 
     voltar(): void {
-        this.router.navigate([`${environment.path_raiz_cadastro}`]);
+        if (this.usuarioLogado.papeis.includes(PerfilEnum.TRA)) {
+            this.router.navigate([`${environment.path_raiz_cadastro}/trabalhador/${this.idTrab}`], {
+                queryParams: { "fromMinhaConta": "true" }
+            });
+        } else{
+            if(isNullOrUndefined(this.trabalhador)){
+                this.router.navigate([`${environment.url_portal}`]);
+            } else {
+                this.router.navigate([`${environment.path_raiz_cadastro}`]);
+            }
+        }
     }
 
 }

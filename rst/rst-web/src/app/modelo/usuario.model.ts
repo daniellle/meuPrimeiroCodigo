@@ -16,6 +16,7 @@ export class Usuario {
   apelido: string;
   exibirApelido: boolean;
   foto: ByteString;
+  nivel: number;
 
   constructor(
     id?: number,
@@ -28,6 +29,7 @@ export class Usuario {
     apelido?: string,
     exibirApelido?: boolean,
     foto?: ByteString,
+    nivel?: number,
   ) {
 
     this.id = id;
@@ -41,6 +43,7 @@ export class Usuario {
     this.apelido = apelido;
     this.exibirApelido = exibirApelido;
     this.foto = foto;
+    this.nivel = nivel;
   }
 
 }

@@ -49,6 +49,7 @@ public class ParametroService extends BaseService {
     public static final String SOLICITACAO_EMAIL_SESI_CORPO_TEXTO = "solicitacao_email_sesi_corpo_texto";
     private static final long serialVersionUID = -542751432948139228L;
     private static final String RES_URL = "res_url";
+    //private static final String RES_URL = "http://localhost:8000";
     private static final String IMUNIZACAO_URL = "imunizacao_url";
     @Inject
     private ParametroDAO parametroDao;
@@ -94,7 +95,9 @@ public class ParametroService extends BaseService {
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public String getRESUrl() {
+
         return carregarPorNome(RES_URL);
+        //return RES_URL;
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)

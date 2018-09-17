@@ -156,7 +156,7 @@
     <button type="button " class="btn-rodape btn btn-primary btn-cadastro " (click)="salvar()">
         {{'app_rst_btn_salvar' | recurso}}
     </button>
-    <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="voltar()">{{'app_rst_btn_voltar' |
+    <button *ngIf="isSomenteTrabalhador()" type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="voltar()">{{'app_rst_btn_voltar' |
         recurso}}
     </button>
 </div>

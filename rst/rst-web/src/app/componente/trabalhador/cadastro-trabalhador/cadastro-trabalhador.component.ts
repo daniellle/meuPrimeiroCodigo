@@ -699,8 +699,8 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
             this.prepareSave();
             this.service.salvar(this.trabalhador).subscribe((response: Trabalhador) => {
                 let user = Seguranca.getUsuario();
-                if (this.contemPerfil([PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.GEEM, PerfilEnum.TRA], user)
-                    && !this.trabalhador.id) {
+                if (this.contemPerfil([PerfilEnum.GDRA, PerfilEnum.SUDR, PerfilEnum.GDRM, PerfilEnum.GEEM,
+                        PerfilEnum.TRA, PerfilEnum.MTSDR, PerfilEnum.GCDR], user) && !this.trabalhador.id) {
                     this.trabalhador = response;
                     this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso_trabalhador);
                 } else {

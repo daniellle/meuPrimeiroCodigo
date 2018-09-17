@@ -1,13 +1,13 @@
-import { FiltroTrabalhador } from './../../../modelo/filtro-trabalhador.model';
-import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
-import { Seguranca } from './../../../compartilhado/utilitario/seguranca.model';
-import { environment } from './../../../../environments/environment';
-import { MascaraUtil } from './../../../compartilhado/utilitario/mascara.util';
-import { Trabalhador } from './../../../modelo/trabalhador.model';
-import { TrabalhadorService } from 'app/servico/trabalhador.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-import { Usuario } from 'app/modelo/usuario.model';
+import {FiltroTrabalhador} from './../../../modelo/filtro-trabalhador.model';
+import {PermissoesEnum} from 'app/modelo/enum/enum-permissoes';
+import {Seguranca} from './../../../compartilhado/utilitario/seguranca.model';
+import {environment} from './../../../../environments/environment';
+import {MascaraUtil} from './../../../compartilhado/utilitario/mascara.util';
+import {Trabalhador} from './../../../modelo/trabalhador.model';
+import {TrabalhadorService} from 'app/servico/trabalhador.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Usuario} from 'app/modelo/usuario.model';
 
 @Component({
   selector: 'app-trabalhador-intermediario',
@@ -22,12 +22,7 @@ export class TrabalhadorIntermediarioComponent implements OnInit {
   public meusdados: boolean;
   public usuarioLogado: Usuario;
 
-  constructor(
-    private router: Router,
-    private service: TrabalhadorService,
-    private activatedRoute: ActivatedRoute,
-  ) {
-  }
+  constructor(private router: Router, private service: TrabalhadorService, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
     this.trabalhador = new Trabalhador();
@@ -47,7 +42,8 @@ export class TrabalhadorIntermediarioComponent implements OnInit {
   }
 
   hasPermissionSaude() {
-    return (this.usuarioLogado.sub === this.trabalhador.cpf);
+    return Seguranca.isPermitido([PermissoesEnum.TRABALHADOR_MINHA_SAUDE,
+        PermissoesEnum.TRABALHADOR_MINHA_SAUDE_CONSULTAR]);
   }
 
   hasAcessMinhaConta() {
@@ -114,9 +110,17 @@ export class TrabalhadorIntermediarioComponent implements OnInit {
     const filtro = new FiltroTrabalhador();
     filtro.id = this.id.toString();
     filtro.aplicarDadosFilter = true;
-    this.service.buscarPorId(filtro).subscribe((trabalhador) => {
-      this.trabalhador = trabalhador;
-      this.cpfFormatdo = MascaraUtil.formatarCpf(this.trabalhador.cpf);
-    });
+    filtro.cpf = this.usuarioLogado.sub;
+
+
+      this.activatedRoute.queryParams.subscribe(params => {
+          filtro.fromMinhaConta = params["fromMinhaConta"];
+
+          this.service.buscarPorId(filtro).subscribe((trabalhador) => {
+              this.trabalhador = trabalhador;
+              this.cpfFormatdo = MascaraUtil.formatarCpf(this.trabalhador.cpf);
+          });
+      });
   }
+
 }
