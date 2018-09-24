@@ -208,14 +208,14 @@
                                                             <div class='col-6 text-right'> {{item?.data | date: 'dd/MM/yyyy'}}</div>
                                                         </div>
                                             </div>
-                                            <div style="padding-left: 30px !important" class='col-12 row-chart' *ngIf='vacinasAutodeclaradas?.length == 0 && vacinasAutodeclaradas?.length < 1'>
+                                            <div style="padding-left: 30px !important" class='col-12 row-chart' *ngIf='vacinas?.length == 0 && imunizacao.length == 0'>
                                                 {{'app_rst_labels_nenhuma_vacina_informada' | recurso}}
                                             </div>
                                         </div>
                                     </div>
-                                            <div class='col-12 row-chart' *ngIf='vacinas?.length == 0 && imunizacao.length == 0'>
+                                            <!--<div class='col-12 row-chart' *ngIf='vacinasAutodeclaradas?.length == 0 && vacinasAutodeclaradas?.length < 1 '>
                                                 {{'app_rst_labels_nenhuma_vacina_informada' | recurso}}
-                                            </div>
+                                            </div>-->
                                 </div>
                             </div>
                         </div>
