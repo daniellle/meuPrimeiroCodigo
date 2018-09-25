@@ -1,16 +1,13 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
-**v2.65.0**
+**v2.66.2**
 ===========
 
-(RELEASE EM 14/09/2018)
+(RELEASE EM 21/09/2018)
 
 **Novidades**
 	
-- [CADASTROS] Criação de novos perfis (GLPI 1722)
-	- Gestor Unidade SESI (GUS)
-- [CADASTROS] Regra de exibição de dados de saúde do trabalhador em Dashboard deve ser alterada (GLPI 2214)
 
 ------------
 
@@ -20,90 +17,16 @@
 
 **Correções**
 
-- [CADASTROS] Imunizações migradas não aparecem no BOX IMUNIZAÇÕES (GLPI 2225)
-- [CADASTROS] Idade do Trabalhador esta Incorreta (GLPI 2034)
-- [CADASTROS] Perfil médico do trabalho deve visualizar card de minha saúde do trabalhador (GLPI 2190)
+- [CADASTROS] Resultado do IMC no DASHBOARD de saúde está desconfigurado (GLPI 2133)
 
 	
 ------------
 
 **Instruções para deploy**
 
-1. Executar o script [rede_sesi_v2_65_0.sql](https://github.com/ezvida/rst-aplicacoes/blob/master/Documenta%C3%A7%C3%A3o/BANCO/v.2.65.0/rede_sesi_v2_65_0.sql) no banco Rede SESI.
-2. Executar o script [rede_rst_v2_65_0.sql](https://github.com/ezvida/rst-aplicacoes/blob/master/Documenta%C3%A7%C3%A3o/BANCO/v.2.65.0/sesi_rst_v2_65_0.sql) no banco SESI RST.
-3. Realizar deploy do [build](https://github.com/ezvida/rst-cadastros/blob/release/rst/README.md) do ear nos respectivos ambientes
+1. Realizar deploy do [build](https://github.com/ezvida/rst-cadastros/blob/release/rst/README.md) do ear nos respectivos ambientes
 
 ------------
-
-
-**v2.59.0**
-===========
-
-(RELEASE EM 05/09/2018)
-
-**Novidades**
-	
-- [CADASTROS] Criação de novos perfis (GLPI 1722)
-	- Superintendente DR (SUDR)
-	- Gestor Comercial  SESI DR  (GCDR)
-	- Gestor Comercial  SESI DN  (GCDN)
-
-------------
-
-**Melhorias**
-
-------------
-
-**Correções**
-
-- [CADASTROS] Erro ao tentar trocar foto do usuário para APP em Homologa (GLPI 9999)
-	
-------------
-
-**Instruções para deploy**
-
-1. Executar o script [rede_sesi_v2_59_0.sql](https://github.com/ezvida/rst-aplicacoes/blob/master/Documenta%C3%A7%C3%A3o/BANCO/v.2.59.0/rede_sesi_v2_59_0.sql) no banco Rede SESI.
-2. Realizar deploy do [build](https://github.com/ezvida/rst-cadastros/blob/release/rst/README.md) do ear nos respectivos ambientes
-
-------------
-
-
-**v2.55.0**
-===========
-
-(RELEASE EM 31/08/2018)
-
-**Novidades**
-	
-- [CADASTROS] Criação de novos perfis (GLPI 1722)
-	- Médico do Trabalho SESI DN (MTSDN)
-	- Médico do Trabalho SESI DR (MTSDR)
-	- Gestor de Conteúdos SESI DN (GCODN)
-	- Gestor de Conteúdos SESI DR (GCODR)
-	- Gestor de Conteúdos Indústria (GCOI)
-		
-- [CADASTROS] Cadastro de Empresa Master por Gestor DR (GLPI 1695)
-- [CADASTROS] Ocultar perfis no cadastro de usuário (GLPI 1692)
-
-------------
-
-**Melhorias**
-
-------------
-
-**Correções**
-
-- [CADASTROS] Ajustar fluxo de MINHA CONTA (GLPI 1890)	
-	
-------------
-
-**Instruções para deploy**
-
-1. Executar o script [rede_sesi_v2_55_0.sql](https://github.com/ezvida/rst-aplicacoes/blob/master/Documenta%C3%A7%C3%A3o/BANCO/v.2.55.0/rede_sesi_v2_55_0.sql) no banco Rede SESI.
-2. Realizar deploy do [build](https://github.com/ezvida/rst-cadastros/blob/release/rst/README.md) do ear nos respectivos ambientes
-
-------------
-
 
 **v2.45.0**
 ===========
