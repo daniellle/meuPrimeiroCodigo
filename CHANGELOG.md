@@ -1,10 +1,10 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
-**v2.66.2**
+**v2.65.1**
 ===========
 
-(RELEASE EM 21/09/2018)
+(RELEASE EM 25/09/2018)
 
 **Novidades**
 	
