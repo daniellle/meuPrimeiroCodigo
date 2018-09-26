@@ -1,6 +1,33 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v2.71.0**
+===========
+
+(RELEASE EM 26/09/2018)
+
+**Novidades**
+
+------------
+
+**Melhorias**
+
+------------
+
+**Correções**
+
+- Ajuste em imunizações - Minha Saúde (GLPI 2448)
+- Ajuste ao excluir o usuário
+	
+------------
+
+**Instruções para deploy**
+
+1. Realizar deploy do [build](https://github.com/ezvida/rst-cadastros/blob/release/rst/README.md) do ear nos respectivos ambientes
+
+------------
+
+
 **v2.65.1**
 ===========
 
