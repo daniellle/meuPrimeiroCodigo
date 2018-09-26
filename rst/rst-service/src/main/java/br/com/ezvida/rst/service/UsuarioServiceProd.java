@@ -382,7 +382,7 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
     public br.com.ezvida.girst.apiclient.model.Usuario desativarUsuario(String id, Usuario usuarioLogado, ClienteAuditoria auditoria) {
         LogAuditoria.registrar(LOGGER, auditoria, "desativar usuário: " + id);
 
-        br.com.ezvida.girst.apiclient.model.Usuario userRemov = buscarPorLogin(id);
+        br.com.ezvida.girst.apiclient.model.Usuario userRemov = buscarPorId(id, auditoria);
         validarHierarquia(usuarioLogado, userRemov);
 
         br.com.ezvida.girst.apiclient.model.Usuario u;
