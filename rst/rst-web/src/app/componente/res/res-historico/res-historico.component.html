@@ -82,7 +82,7 @@
                         </div>
                         <div *ngIf='!(this.imc == null)' class='col-6 col-md-6 col-lg-8 col-info-imc text-left'>
                             <div class='row row-info-imc'>
-                                <div class='col-3 col-valor-imc' style="margin-bottom: 0">
+                                <div class='col-2 col-valor-imc' style="margin-bottom: 0">
                                     {{ imc?.valor }}
                                 </div>
                                 <div class='col-7 col-unidade-imc'>
@@ -208,15 +208,14 @@
                                                             <div class='col-6 text-right'> {{item?.data | date: 'dd/MM/yyyy'}}</div>
                                                         </div>
                                             </div>
-                                            <div style="padding-left: 30px !important" class='col-12 row-chart' *ngIf='vacinasAutodeclaradas?.length == 0 && vacinasAutodeclaradas?.length < 1'>
+                                            <div style="padding-left: 30px !important" class='col-12 row-chart' *ngIf='vacinas?.length == 0 && imunizacao.length == 0'>
                                                 {{'app_rst_labels_nenhuma_vacina_informada' | recurso}}
                                             </div>
                                         </div>
                                     </div>
-
-                                            <div class='col-12 row-chart' *ngIf='vacinas?.length == 0 && trabalhador?.descricaoVacinas?.length < 1'>
+                                            <!--<div class='col-12 row-chart' *ngIf='vacinasAutodeclaradas?.length == 0 && vacinasAutodeclaradas?.length < 1 '>
                                                 {{'app_rst_labels_nenhuma_vacina_informada' | recurso}}
-                                            </div>
+                                            </div>-->
                                 </div>
                             </div>
                         </div>
