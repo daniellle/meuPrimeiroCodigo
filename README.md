@@ -40,7 +40,7 @@ Considerações
 Dependências
 -------------------------
 
-- Node v9.9.0
+- Node 8 ou 9
 - Npm 5.6.0 
 - Oracle JDK 8+
 - girst-apiclient (publicado no Nexus)
@@ -52,7 +52,7 @@ Dependências
 Build
 -------------------------
 
-Entre no diretório rst-cadastros da aplicação e execute o comando abaixo de acordo com o ambiente que deseja gerar o pacote.
+Entre no diretório rst-cadastros/rst da aplicação e execute o comando abaixo de acordo com o ambiente que deseja gerar o pacote.
 Após build com sucesso o pacote estará disponível na pasta rst-cadastros/rst-cadastros-app/target.
 
 1) Ambiente Demo

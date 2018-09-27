@@ -365,7 +365,7 @@
                             </execution>
                             <execution>
                                 <id>build</id>
-			
+
                                 <phase>generate-sources</phase>
                                 <configuration>
 				    <skip>${skip.npm.build}</skip>
