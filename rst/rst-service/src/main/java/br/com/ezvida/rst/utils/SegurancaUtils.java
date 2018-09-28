@@ -23,7 +23,7 @@ public class SegurancaUtils {
     public String validarAutenticacao(HttpServletRequest request) {
         if (ambiente == Ambiente.DESENVOLVIMENTO) {
             LOGGER.warn(" UTILIZANDO SEGURANÇA DO AMBIENTE DE DESENVOLVIMENTO");
-             return "65020081515"; // administrador
+            // return "65020081515"; // administrador
             // return "37139762520"; // adm
             // return "09934689421"; // dna
             // return "48552219026"; // gestor dn aplicacoes
@@ -32,7 +32,7 @@ public class SegurancaUtils {
             // return "71141598973"; // gestor empresa master
             // return "92883645361"; // gestor empresa
             // return "46335766744"; // trabalhador
-            // return "37139762520"; // carol adm
+             return "37139762520"; // carol adm
             // return "64432620005"; //profissonal saude
             // return "19743559698"; //recursos humanos
             // return "93693744181"; // MTSDN
