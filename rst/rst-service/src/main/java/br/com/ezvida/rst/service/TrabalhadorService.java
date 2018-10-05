@@ -125,6 +125,10 @@ public class TrabalhadorService extends BaseService {
             throw new BusinessErrorException(getMensagem("app_rst_trabalhador_ja_rezlizou_primeiro_acesso"));
         }
 
+        if((trabalhador.getId() != null) && usuarioService.buscarPorLogin(trabalhador.getCpf()) != null){
+            throw new BusinessErrorException(getMensagem("app_rst_autenticacao_ja_possui_usuario"));
+        }
+
         if (trabalhador != null) {
             trabalhador.setListaTelefoneTrabalhador(
                     telefoneTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
