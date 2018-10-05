@@ -1,6 +1,40 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v2.75.0**
+===========
+
+(RELEASE EM 05/10/2018)
+
+**Novidades**
+
+[CADASTROS] Ajustes nas permissões de cadastro conforme perfil (GLPI 2199)
+[CADASTROS] Todas as mensagens de erro do portal devem constar o telefone o call center  (GLPI 2301)
+
+------------
+
+**Melhorias**
+
+[CADASTROS] Em Unidades SESI - Campo Departamento Regional deve ser aumentado (GLPI 2286)
+[CADASTROS] Ajustar foto de Minha Conta (GLPI 1899)
+
+------------
+
+**Correções**
+
+- [CADASTROS] Erros identificados no MINHA SAÚDE 03 (GLPI 2133)
+- [CADASTROS] Erro para visualizar permissões no cadastramento de usuários (RST > Sustentação) (GLPI 2598 e 2592)
+	
+------------
+
+**Instruções para deploy**
+
+1. Executar o script(https://github.com/ezvida/rst-aplicacoes/tree/master/Documenta%C3%A7%C3%A3o/BANCO/v2.75.0) no banco REDE_SESI.
+2. Realizar deploy do [build](https://github.com/ezvida/rst-cadastros/blob/release/rst/README.md) do ear nos respectivos ambientes.
+3. Atualizar arquivo da tera de erro padrão do Shibboleth (erro.jsp)
+
+------------
+
 **v2.71.0**
 ===========
 
