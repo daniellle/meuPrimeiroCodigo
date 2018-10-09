@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.enterprise.inject.New;
 import javax.inject.Inject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -106,6 +107,7 @@ public class TrabalhadorService extends BaseService {
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Trabalhador buscarTrabalhadorPrimeiroAcesso(String cpf, String dataNascimento) {
+        Usuario u;
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date date = null;
         try {
@@ -125,17 +127,24 @@ public class TrabalhadorService extends BaseService {
             throw new BusinessErrorException(getMensagem("app_rst_trabalhador_ja_rezlizou_primeiro_acesso"));
         }
 
-        if((trabalhador.getId() != null) && usuarioService.buscarPorLogin(trabalhador.getCpf()) != null){
+        try{
+           u = usuarioService.buscarPorLogin(trabalhador.getCpf();
+        }
+        catch (Exception e){
+            if (trabalhador != null) {
+                trabalhador.setListaTelefoneTrabalhador(
+                        telefoneTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
+                trabalhador.setListaEmailTrabalhador(emailTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
+                trabalhador.setListaEnderecoTrabalhador(
+                        enderecoTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
+            }
+        }
+
+        if(trabalhador.getId() != null && u != null){
             throw new BusinessErrorException(getMensagem("app_rst_autenticacao_ja_possui_usuario"));
         }
 
-        if (trabalhador != null) {
-            trabalhador.setListaTelefoneTrabalhador(
-                    telefoneTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
-            trabalhador.setListaEmailTrabalhador(emailTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
-            trabalhador.setListaEnderecoTrabalhador(
-                    enderecoTrabalhadorService.pesquisarPorTrabalhador(trabalhador.getId()));
-        }
+
 
         return trabalhador;
     }
