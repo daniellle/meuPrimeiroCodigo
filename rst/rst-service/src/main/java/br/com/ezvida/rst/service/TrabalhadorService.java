@@ -107,7 +107,7 @@ public class TrabalhadorService extends BaseService {
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Trabalhador buscarTrabalhadorPrimeiroAcesso(String cpf, String dataNascimento) {
-        Usuario u;
+        Usuario u = null;
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date date = null;
         try {
@@ -128,7 +128,7 @@ public class TrabalhadorService extends BaseService {
         }
 
         try{
-           u = usuarioService.buscarPorLogin(trabalhador.getCpf();
+           u = usuarioService.buscarPorLogin(trabalhador.getCpf());
         }
         catch (Exception e){
             if (trabalhador != null) {
