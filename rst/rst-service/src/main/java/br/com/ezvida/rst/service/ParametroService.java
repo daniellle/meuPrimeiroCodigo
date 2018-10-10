@@ -44,9 +44,10 @@ public class ParametroService extends BaseService {
     public static final String EMAIL_USERNAME_SESI = "email_username_sesi";
     public static final String EMAIL_ASSUNTO_SESI = "email_assunto_sesi";
     public static final String TAMANHO_MAXIMO_UPLOAD_ARQUIVO = "tamanho_maximo_upload_arquivo";
-	public static final String TOKEN_ACESSO_CLIENTE_RST = "token_acesso_cliente_rst";
+    public static final String TOKEN_ACESSO_CLIENTE_RST = "token_acesso_cliente_rst";
     public static final String SOLICITACAO_EMAIL_SESI = "solicitacao_email_sesi";
     public static final String SOLICITACAO_EMAIL_SESI_CORPO_TEXTO = "solicitacao_email_sesi_corpo_texto";
+    public static final String SOLICITACAO_TELEFONE_CENTRAL_RELACIONAMENTO = "telefone_central_relacionamento_sesi_viva_mais";
     private static final long serialVersionUID = -542751432948139228L;
     private static final String RES_URL = "res_url";
     //private static final String RES_URL = "http://localhost:8000";
@@ -189,9 +190,14 @@ public class ParametroService extends BaseService {
         return carregarPorNome(TAMANHO_MAXIMO_UPLOAD_ARQUIVO);
     }
 
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public String getTokenAcessoClienteRst() {
-		return carregarPorNome(TOKEN_ACESSO_CLIENTE_RST);
-	}
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public String getTokenAcessoClienteRst() {
+        return carregarPorNome(TOKEN_ACESSO_CLIENTE_RST);
+    }
+
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public String getSolicitacaoTelefoneCentralRelacionamento() {
+        return carregarPorNome(SOLICITACAO_TELEFONE_CENTRAL_RELACIONAMENTO);
+    }
 
 }
