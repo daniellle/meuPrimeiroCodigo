@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,9 +83,11 @@ public class ParametroEndpoint extends SegurancaEndpoint<Parametro> {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getSolicitacaoTelefoneCentralRelacionamento() {
-        LOGGER.debug("Buscando parametro telefone de central de relacionamento");
+         LOGGER.debug("Buscando parametro telefone de central de relacionamento");
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-            .header("Content-Version", getApplicationVersion()).entity(serializar(parametroService.getSolicitacaoTelefoneCentralRelacionamento()))
+            .header("Content-Version", getApplicationVersion()).entity(parametroService.getSolicitacaoTelefoneCentralRelacionamento())
             .build();
     }
+
+
 }
