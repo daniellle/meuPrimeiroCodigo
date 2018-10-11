@@ -196,8 +196,8 @@ public class ParametroService extends BaseService {
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public String getSolicitacaoTelefoneCentralRelacionamento() {
-        return carregarPorNome(SOLICITACAO_TELEFONE_CENTRAL_RELACIONAMENTO);
+    public Parametro getSolicitacaoTelefoneCentralRelacionamento() {
+        return carregarParametroPorNome(SOLICITACAO_TELEFONE_CENTRAL_RELACIONAMENTO);
     }
 
 }
