@@ -2,21 +2,13 @@ package br.com.ezvida.rst.model;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
+import br.com.ezvida.rst.utils.DateJsonDeserializer;
+import br.com.ezvida.rst.utils.DateJsonSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "UND_OBRA", uniqueConstraints = @UniqueConstraint(name = "PK_UNIDADE_OBRA", columnNames = {
@@ -42,9 +34,15 @@ public class UnidadeObra extends AbstractData {
 	@JoinColumn(name = "id_empresa_fk", referencedColumnName = "ID_EMPRESA", nullable = false)
 	private Empresa empresa;
 
+	@JsonDeserialize(using = DateJsonDeserializer.class)
+	@JsonSerialize(using = DateJsonSerializer.class)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_contrato_ini")
 	private Date dataContratoInicio;
 
+	@JsonDeserialize(using = DateJsonDeserializer.class)
+	@JsonSerialize(using = DateJsonSerializer.class)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_contrato_fim")
 	private Date dataContratoFim;
 

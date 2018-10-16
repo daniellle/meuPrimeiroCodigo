@@ -56,6 +56,9 @@ public class EmpresaTrabalhadorLotacao extends AbstractData {
 	@Column(name = "dt_desligamento")
 	private Date dataDesligamento;
 
+	@Column(name = "fl_inativo")
+	private Character flagInativo;
+
 	@PrePersist
 	public void prePersist() {
 		setDataCriacao(new Date());

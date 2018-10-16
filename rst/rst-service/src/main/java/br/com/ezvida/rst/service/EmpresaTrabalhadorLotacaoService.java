@@ -133,4 +133,15 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 		return CollectionUtils.isNotEmpty(empresaTrabalhadorLotacaoDAO
 				.verificarDataEmpresaTrabalhadorLotacaoSuperiorDemissao(empresaTrabalhador));
 	}
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public EmpresaTrabalhadorLotacao validarTrabalhador(Long id){
+		EmpresaTrabalhadorLotacao empresaTrabalhadorLotacao = empresaTrabalhadorLotacaoDAO.validarTrabalhador(id);
+
+		if( empresaTrabalhadorLotacao == null ){
+			throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
+		}
+
+		return empresaTrabalhadorLotacao;
+	}
 }
