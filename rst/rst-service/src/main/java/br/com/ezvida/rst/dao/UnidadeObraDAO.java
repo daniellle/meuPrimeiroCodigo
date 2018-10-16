@@ -1,9 +1,11 @@
 package br.com.ezvida.rst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
@@ -42,6 +44,25 @@ public class UnidadeObraDAO extends BaseRstDAO<UnidadeObra, Long> {
 		sqlBuilder.append(" and unidadeObra.cei = :cei ");
 		TypedQuery<UnidadeObra> query = criarConsultaPorTipo(sqlBuilder.toString());
 		query.setParameter("cei", cei);
+		return DAOUtil.getSingleResult(query);
+	}
+
+	public UnidadeObra validar(Long id){
+		LOGGER.debug("Validando unidade obra ativos pelo código da empresa...");
+
+		StringBuilder sqlBuilder = new StringBuilder();
+		sqlBuilder.append(" select unidadeObra from UnidadeObra unidadeObra ");
+		sqlBuilder.append(" inner join fetch unidadeObra.empresa empresa ");
+		sqlBuilder.append(" where empresa.id = :idEmpresa ");
+		sqlBuilder.append(" and unidadeObra.dataContratoInicio is not null and unidadeObra.dataContratoInicio <= :dataHoje ");
+		sqlBuilder.append(" and unidadeObra.dataContratoFim is not null and unidadeObra.dataContratoFim > :dataHoje ");
+		sqlBuilder.append(" and unidadeObra.flagInativo = :flagInativo");
+
+		TypedQuery<UnidadeObra> query = criarConsultaPorTipo(sqlBuilder.toString());
+		query.setParameter("idEmpresa", id);
+		query.setParameter("dataHoje", new Date(), TemporalType.DATE);
+		query.setParameter("flagInativo", "N".charAt(0) );
+
 		return DAOUtil.getSingleResult(query);
 	}
 }

@@ -53,4 +53,16 @@ public class UnidadeObraEndpoint extends SegurancaEndpoint<UnidadeObra> {
 				.entity(serializar(unidadeObraService.buscarPorEmpresa(idEmpresa))).build();
 	}
 
+	@GET
+    @Encoded
+    @Path("/validarUnidade/{idEmpresa}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response validarUnidadeObraPorEmpresa(@Encoded @PathParam("idEmpresa") Long idEmpresa){
+        LOGGER.debug("Validando a Unidade de Obra");
+        return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(unidadeObraService.validarPorEmpresa(idEmpresa))).build();
+    }
+
 }

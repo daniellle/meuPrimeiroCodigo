@@ -78,6 +78,18 @@ public class UnidadeObraService extends BaseService {
 		unidadeObraDAO.salvar(unidadeObra);
 	}
 
+	public UnidadeObra validarPorEmpresa(Long id){
+		LOGGER.debug("Validando Unidade Obra...");
+		UnidadeObra unidadeObra = unidadeObraDAO.validar(id);
+
+		if( unidadeObra == null ){
+			throw new BusinessErrorException(getMensagem("app_rst_unidade_invalida",
+					getMensagem("app_rst_label_unidade_obra")));
+		}
+
+		return unidadeObra;
+	}
+
 	private void validar(UnidadeObra unidadeObra) {
 		LOGGER.debug("Validando Unidade Obra...");
 
