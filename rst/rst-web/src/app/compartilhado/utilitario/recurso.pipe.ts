@@ -215,7 +215,7 @@ export const MensagemProperties = {
   app_rst_labels_login_cpf: 'Login/CPF',
   app_rst_labels_titulo: 'Título',
   app_rst_labels_perfil: 'Perfil',
-  app_rst_labels_validade: 'Validade',
+  app_rst_labels_validade: 'Ciclo Preenchimento',
   app_rst_labels_resposta: 'Resposta',
   app_rst_labels_grupo: 'Grupo',
   app_rst_labels_indicador: 'Indicador',
