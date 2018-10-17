@@ -53,13 +53,13 @@ public class UnidadeObraDAO extends BaseRstDAO<UnidadeObra, Long> {
 		StringBuilder sqlBuilder = new StringBuilder();
 		sqlBuilder.append(" select unidadeObra from UnidadeObra unidadeObra ");
 		sqlBuilder.append(" inner join fetch unidadeObra.empresa empresa ");
-		sqlBuilder.append(" where empresa.id = :idEmpresa ");
+		sqlBuilder.append(" where unidadeObra.id = :id ");
 		sqlBuilder.append(" and unidadeObra.dataContratoInicio is not null and unidadeObra.dataContratoInicio <= :dataHoje ");
 		sqlBuilder.append(" and unidadeObra.dataContratoFim is not null and unidadeObra.dataContratoFim > :dataHoje ");
 		sqlBuilder.append(" and unidadeObra.flagInativo = :flagInativo");
 
 		TypedQuery<UnidadeObra> query = criarConsultaPorTipo(sqlBuilder.toString());
-		query.setParameter("idEmpresa", id);
+		query.setParameter("id", id);
 		query.setParameter("dataHoje", new Date(), TemporalType.DATE);
 		query.setParameter("flagInativo", "N".charAt(0) );
 

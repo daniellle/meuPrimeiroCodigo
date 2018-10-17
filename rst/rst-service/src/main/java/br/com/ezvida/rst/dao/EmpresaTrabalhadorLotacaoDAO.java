@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
@@ -218,20 +219,20 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 
 		jpql.append(" select empresaTrabalhadorLotacao ");
 		jpql.append(" from EmpresaTrabalhadorLotacao empresaTrabalhadorLotacao ");
-		jpql.append(" inner join fetch empresaTrabalhadorLotacao.empresaTrabalhador empresaTrabalhador ");
-		jpql.append(" inner join fetch empresaTrabalhador.trabalhador  trabalhador");
-		jpql.append(" inner join fetch empresaTrabalhadorLotacao.empresaLotacao empresaLotacao");
-		jpql.append(" inner join fetch empresaLotacao.unidadeObra unidadeObra ");
-		jpql.append(" where trabalhador.id = :idTrabalhador ");
+		jpql.append(" left join fetch empresaTrabalhadorLotacao.empresaTrabalhador empresaTrabalhador ");
+		jpql.append(" left join fetch empresaTrabalhador.trabalhador  trabalhador");
+		jpql.append(" left join fetch empresaTrabalhadorLotacao.empresaLotacao empresaLotacao");
+		jpql.append(" left join fetch empresaLotacao.unidadeObra unidadeObra ");
+		jpql.append(" where empresaTrabalhadorLotacao.id = :id ");
 		jpql.append(" and unidadeObra.dataContratoInicio is not null and unidadeObra.dataContratoInicio <= :dataHoje ");
-		jpql.append(" and unidadeObra.dataContratoFim is not null and unidadeObra.dataContratoInicio > :dataHoje ");
+		jpql.append(" and unidadeObra.dataContratoFim is not null and unidadeObra.dataContratoFim > :dataHoje ");
 		jpql.append(" and unidadeObra.flagInativo = :flagInativo ");
-		jpql.append(" and empresaTrabalhadorLotacao.dataDesligamento is not null and empresaTrabalhadorLotacao.dataDesligamento > :dataHoje ");
+		jpql.append(" and empresaTrabalhadorLotacao.dataDesligamento is null ");
 		jpql.append(" and empresaTrabalhadorLotacao.flagInativo = :flagInativo ");
 
 		TypedQuery<EmpresaTrabalhadorLotacao> query = criarConsultaPorTipo(jpql.toString(), EmpresaTrabalhadorLotacao.class);
-		query.setParameter("idTrabalhador", id);
-		query.setParameter("dataHoje", new Date());
+		query.setParameter("id", id);
+		query.setParameter("dataHoje", new Date(), TemporalType.TIMESTAMP);
 		query.setParameter("flagInativo", "N".charAt(0));
 
 		return DAOUtil.getSingleResult(query);
