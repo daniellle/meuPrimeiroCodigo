@@ -99,17 +99,17 @@ public class EmpresaTrabalhadorLotacaoEndpoint extends SegurancaEndpoint<Empresa
 
     @GET
     @Encoded
-    @Path("/validar-empregado/{idEmpregado}")
+    @Path("/validar-trabalhador/{cpf}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Autorizacao(permissoes = @Permissao(value = { PermissionConstants.EMPRESA_TRABALHADOR_LOTACAO,
         PermissionConstants.EMPRESA_TRABALHADOR_LOTACAO_CADASTRAR, PermissionConstants.EMPRESA_TRABALHADOR_LOTACAO_ALTERAR,
         PermissionConstants.EMPRESA_TRABALHADOR_LOTACAO_CONSULTAR, PermissionConstants.EMPRESA_TRABALHADOR_LOTACAO_DESATIVAR }))
-    public Response validarEmpregado(@Encoded @PathParam("idEmpregado") Long idEmpregado, @Context SecurityContext context
+    public Response validarEmpregado(@Encoded @PathParam("cpf") String cpf, @Context SecurityContext context
         , @Context HttpServletRequest request){
         LOGGER.debug("Validando trabalhador");
         return Response.status(HttpServletResponse.SC_OK)
-            .entity(serializar(empresaTrabalhadorLotacaoService.validarTrabalhador(idEmpregado)))
+            .entity(serializar(empresaTrabalhadorLotacaoService.validarTrabalhador(cpf)))
             .type(MediaType.APPLICATION_JSON).build();
     }
 }

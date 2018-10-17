@@ -1,6 +1,7 @@
 package br.com.ezvida.rst.service;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -135,13 +136,13 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public EmpresaTrabalhadorLotacao validarTrabalhador(Long id){
-		EmpresaTrabalhadorLotacao empresaTrabalhadorLotacao = empresaTrabalhadorLotacaoDAO.validarTrabalhador(id);
+	public List<EmpresaTrabalhadorLotacao> validarTrabalhador(String cpf){
+		List<EmpresaTrabalhadorLotacao> empresaTrabalhadorLotacaoList = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
 
-		if( empresaTrabalhadorLotacao == null ){
+		if( empresaTrabalhadorLotacaoList == null || empresaTrabalhadorLotacaoList.size() == 0){
 			throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
 		}
 
-		return empresaTrabalhadorLotacao;
+		return empresaTrabalhadorLotacaoList;
 	}
 }

@@ -214,7 +214,7 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		return query.getResultList();
 	}
 
-	public EmpresaTrabalhadorLotacao validarTrabalhador(Long id){
+	public List<EmpresaTrabalhadorLotacao> validarTrabalhador(String cpf){
 		StringBuilder jpql = new StringBuilder();
 
 		jpql.append(" select empresaTrabalhadorLotacao ");
@@ -223,7 +223,7 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		jpql.append(" left join fetch empresaTrabalhador.trabalhador  trabalhador");
 		jpql.append(" left join fetch empresaTrabalhadorLotacao.empresaLotacao empresaLotacao");
 		jpql.append(" left join fetch empresaLotacao.unidadeObra unidadeObra ");
-		jpql.append(" where empresaTrabalhadorLotacao.id = :id ");
+		jpql.append(" where trabalhador.cpf = :cpf ");
 		jpql.append(" and unidadeObra.dataContratoInicio is not null and unidadeObra.dataContratoInicio <= :dataHoje ");
 		jpql.append(" and unidadeObra.dataContratoFim is not null and unidadeObra.dataContratoFim > :dataHoje ");
 		jpql.append(" and unidadeObra.flagInativo = :flagInativo ");
@@ -231,11 +231,11 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		jpql.append(" and empresaTrabalhadorLotacao.flagInativo = :flagInativo ");
 
 		TypedQuery<EmpresaTrabalhadorLotacao> query = criarConsultaPorTipo(jpql.toString(), EmpresaTrabalhadorLotacao.class);
-		query.setParameter("id", id);
+		query.setParameter("cpf", cpf);
 		query.setParameter("dataHoje", new Date(), TemporalType.TIMESTAMP);
 		query.setParameter("flagInativo", "N".charAt(0));
 
-		return DAOUtil.getSingleResult(query);
+		return query.getResultList();
 	}
 
 }

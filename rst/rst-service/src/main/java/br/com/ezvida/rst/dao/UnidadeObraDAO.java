@@ -47,22 +47,22 @@ public class UnidadeObraDAO extends BaseRstDAO<UnidadeObra, Long> {
 		return DAOUtil.getSingleResult(query);
 	}
 
-	public UnidadeObra validar(Long id){
+	public List<UnidadeObra> validar(String cnpj){
 		LOGGER.debug("Validando unidade obra ativos pelo código da empresa...");
 
 		StringBuilder sqlBuilder = new StringBuilder();
 		sqlBuilder.append(" select unidadeObra from UnidadeObra unidadeObra ");
 		sqlBuilder.append(" inner join fetch unidadeObra.empresa empresa ");
-		sqlBuilder.append(" where unidadeObra.id = :id ");
+		sqlBuilder.append(" where empresa.cnpj = :cnpj ");
 		sqlBuilder.append(" and unidadeObra.dataContratoInicio is not null and unidadeObra.dataContratoInicio <= :dataHoje ");
 		sqlBuilder.append(" and unidadeObra.dataContratoFim is not null and unidadeObra.dataContratoFim > :dataHoje ");
 		sqlBuilder.append(" and unidadeObra.flagInativo = :flagInativo");
 
 		TypedQuery<UnidadeObra> query = criarConsultaPorTipo(sqlBuilder.toString());
-		query.setParameter("id", id);
+		query.setParameter("cnpj", cnpj);
 		query.setParameter("dataHoje", new Date(), TemporalType.DATE);
 		query.setParameter("flagInativo", "N".charAt(0) );
 
-		return DAOUtil.getSingleResult(query);
+		return query.getResultList();
 	}
 }
