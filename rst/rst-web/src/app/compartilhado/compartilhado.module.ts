@@ -130,7 +130,7 @@ import { VacinaGridComponent } from 'app/compartilhado/modal-vacina-componenet/v
         UnidadeModalComponent, UnidadeGridComponent, AssociacaoTrabalhadorLotacaoComponent, CALENDARIO_DIRECTIVES,
         ModalSelecionarGrupoPerguntaComponent,
         VacinaModalComponent,
-        VacinaGridComponent
+        VacinaGridComponent,
     ],
     exports: [
         CommonModule,
