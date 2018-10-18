@@ -9,6 +9,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import br.com.ezvida.rst.utils.ValidadorUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,13 +81,24 @@ public class UnidadeObraService extends BaseService {
 
 	public List<UnidadeObra> validarPorEmpresa(String cnpj){
 		LOGGER.debug("Validando Unidade Obra...");
-		List<UnidadeObra> unidadeObras = unidadeObraDAO.validar(cnpj);
+		List<UnidadeObra> unidadeObras;
 
-		if( unidadeObras == null || unidadeObras.size() == 0){
-			throw new BusinessErrorException(getMensagem("app_rst_unidade_invalida",
-					getMensagem("app_rst_label_unidade_obra")));
+		if( cnpj != null ) {
+			cnpj = cnpj.replace(".","").replace("-","").replace("/","");
+			if (ValidadorUtils.isValidCNPJ(cnpj)) {
+				unidadeObras = unidadeObraDAO.validar(cnpj);
+				if (unidadeObras == null || unidadeObras.size() == 0) {
+					throw new BusinessErrorException(getMensagem("app_rst_unidade_invalida",
+							getMensagem("app_rst_label_unidade_obra")));
+				}
+			} else {
+				throw new BusinessErrorException(getMensagem("app_rst_unidade_cnpj_invalida",
+						getMensagem("app_rst_label_cnpj")));
+			}
+		}else{
+			throw new BusinessErrorException(getMensagem("app_rst_unidade_cnpj_invalida",
+					getMensagem("app_rst_label_cnpj")));
 		}
-
 		return unidadeObras;
 	}
 

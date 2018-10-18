@@ -8,6 +8,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import br.com.ezvida.rst.utils.ValidadorUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -137,10 +138,21 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<EmpresaTrabalhadorLotacao> validarTrabalhador(String cpf){
-		List<EmpresaTrabalhadorLotacao> empresaTrabalhadorLotacaoList = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
+		List<EmpresaTrabalhadorLotacao> empresaTrabalhadorLotacaoList;
 
-		if( empresaTrabalhadorLotacaoList == null || empresaTrabalhadorLotacaoList.size() == 0){
-			throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
+		if( cpf != null ) {
+			cpf = cpf.replace(".","").replace("-","");
+			if (ValidadorUtils.isValidCPF(cpf)) {
+				empresaTrabalhadorLotacaoList = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
+
+				if (empresaTrabalhadorLotacaoList == null || empresaTrabalhadorLotacaoList.size() == 0) {
+					throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
+				}
+			} else {
+				throw new BusinessErrorException(getMensagem("app_rst_empregado_cpf_invalido"));
+			}
+		}else{
+			throw new BusinessErrorException(getMensagem("app_rst_empregado_cpf_invalido"));
 		}
 
 		return empresaTrabalhadorLotacaoList;
