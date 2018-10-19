@@ -73,7 +73,22 @@ Deixe o nome como está no de baixo no final, antes do .ear, coloque a data de h
 
 # Um documento auxiliar pode ser encontrado em: [Doc](https://docs.google.com/document/d/12R7p-5y0QOlEIvBe_p0T0OIxLn0vWr3TmTSlKtlbcrE/edit?usp=sharing) 
 
-Gerando chave privada, necessário uma senha
+## Crie o módulo no wildfly
+
+Em wildfly-10.1.0.Final\modules crie a estrutura de pastas de acordo com o pacote do projeto:
+```
+	br > com > ezvida > rst > load > main
+```
+Crie um arquivo chamado module.xml com o conteúdo abaixo:
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:jboss:module:1.1" name="br.com.ezvida.rst.load">
+<resources>
+    <resource-root path="."/>
+</resources>
+</module>
+```
+Crie uma pasta certificados e crie as chaves abaixo dentro dela:
 
 ```
 openssl genrsa -aes256 -out chave.pem 2048
