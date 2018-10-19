@@ -39,8 +39,8 @@ public class SegurancaUtils {
             // return "97739727989"; // GCDN
             // return  "83855096740"; //MTSDR
             // return "78907216410"; //GCDR
-             //return "95901290801"; //GUS
-            return "04265927947"; // Superintendente DR
+            return "95901290801"; //GUS
+            //return "04265927947"; // Superintendente DR
         }
         LOGGER.debug("SessionLogin {}", request.getAttribute(SHIB_SESSION_LOGIN));
         if (request.getAttribute(SHIB_SESSION_ID) == null || request.getAttribute(SHIB_SESSION_LOGIN) == null) {

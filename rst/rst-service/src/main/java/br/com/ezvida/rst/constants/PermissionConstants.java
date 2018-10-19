@@ -251,4 +251,10 @@ public class PermissionConstants {
 	public static final String VACINA_AUTODECLARADA_DESATIVAR = "vacina_autodeclarada_desativar";
 	public static final String VACINA_AUTODECLARADA_ALTERAR = "vacina_autodeclarada_alterar";
 
+	public static final String SISTEMA_CREDENCIADO_CADASTRAR = "sistema_credenciado_cadastrar";
+	public static final String SISTEMA_CREDENCIADO_ALTERAR = "sistema_credenciado_alterar";
+	public static final String SISTEMA_CREDENCIADO_RESETAR_CLIENT_SECRET = "sistema_credenciado_resetar_client_secret";
+	public static final String SISTEMA_CREDENCIADO_PESQUISAR = "sistema_credenciado_pesquisar";
+	public static final String SISTEMA_CREDENCIADO_ATIVAR_DESATIVAR = "sistema_credenciado_ativar_desativar";
+
 }
