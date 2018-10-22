@@ -13,6 +13,7 @@ import { DialogService } from 'ng2-bootstrap-modal';
 import { Router } from '@angular/router';
 import { BaseComponent } from 'app/componente/base.component';
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { IMyDateModel } from 'mydatepicker';
 
 @Component({
@@ -34,6 +35,7 @@ export class PrimeiroAcessoComponent extends BaseComponent implements OnInit {
     protected bloqueioService: BloqueioService,
     protected dialogo: ToastyService,
     private dialogService: DialogService,
+    private location: Location
     ) {
     super(bloqueioService, dialogo);
     this.createForm();
@@ -43,6 +45,10 @@ export class PrimeiroAcessoComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     this.confirmarSenha = null;
     this.title = MensagemProperties.app_rst_primeiro_acesso_title_primeiro_acesso_trabalhador;
+  }
+
+  voltar() {
+    this.location.back();
   }
 
   inicializarPrimeiroAcesso() {

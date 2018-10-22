@@ -13,7 +13,7 @@
                         <div class="row">
                             <div class="form-group col-sm-11 mx-auto" [ngClass]="{ divDis : cpf.disabled }">
                                 <md-input-container [floatPlaceholder]="true">
-                                    <input required for="cpf" mdInput placeholder="{{'app_rst_labels_cpf' | recurso}}" type="text" (blur)="pesquisar(null)" name="cpf" id="cpf" [textMask]="{mask: mascaraCpf, guide: false}" #cpf formControlName="cpf" class="form-control" />
+                                    <input required maxlength="11" for="cpf" mdInput placeholder="{{'app_rst_labels_cpf' | recurso}}" type="text" (blur)="pesquisar(null)" name="cpf" id="cpf" [textMask]="{mask: mascaraCpf, guide: false}" #cpf formControlName="cpf" class="form-control" />
                                 </md-input-container>
                             </div>
                         </div>
@@ -26,10 +26,17 @@
                     </form>
                 </div>
                 <br/>
-                <div class="calendario" *ngIf="!existeTrabalhador()">
+                <div [ngStyle]="{'display': existeTrabalhador() ? 'inline-box' : 'none' }" *ngIf="!existeTrabalhador()" class="calendario">
                 </div>
                 <div *ngIf="existeTrabalhador()" class="container-form">
                     <app-termo-uso-modal #modalTermoUso [(primeiroAcesso)]="primeiroAcesso" [(formularioSenha)]="formularioSenha" [(formulario)]="formulario"></app-termo-uso-modal>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row justify-content-end">
+                    <div class="col">
+                        <button type="button " class="btn btn-primary btn-blue-border float-right" (click)="voltar()">{{'app_rst_retorno_pagina_inicial' | recurso}}</button>
+                    </div>
                 </div>
             </div>
         </div>
