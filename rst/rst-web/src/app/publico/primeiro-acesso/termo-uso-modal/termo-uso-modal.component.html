@@ -21,14 +21,14 @@
         <div class="row">
             <div class="form-group col-sm-11 mx-auto">
                 <md-input-container [floatPlaceholder]="true">
-                    <input required mdInput placeholder="{{'app_rst_labels_senha' | recurso}}" type="password" maxlength="256" name="senha" id="senha" formControlName="senha" class="form-control" />
+                    <input required mdInput placeholder="{{'app_rst_labels_senha' | recurso}}" type="password" minlength="8" maxlength="50" name="senha" id="senha" formControlName="senha" class="form-control" />
                 </md-input-container>
             </div>
         </div>
         <div class="row">
             <div class="form-group col-sm-11 mx-auto">
                 <md-input-container [floatPlaceholder]="true">
-                    <input required mdInput placeholder="{{'app_rst_labels_confirmar_senha' | recurso}}" type="password" maxlength="256" name="confirmarSenha" id="confirmarSenha" formControlName="confirmarSenha" class="form-control" />
+                    <input required mdInput placeholder="{{'app_rst_labels_confirmar_senha' | recurso}}" type="password" minlength="8" maxlength="50" name="confirmarSenha" id="confirmarSenha" formControlName="confirmarSenha" class="form-control" />
                 </md-input-container>
             </div>
         </div>
