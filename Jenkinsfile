@@ -45,8 +45,9 @@ pipeline {
                   script {
                       // Baixando dependencias e contruindo projeto
                       withCredentials([[$class:'FileBinding', credentialsId: 'settings-xml', variable: 'SETTINGS']]) {                   
-                        dir('rst/rst-app')
-                        sh "mvn clean package -s $SETTINGS -DskipTests"
+                        dir('rst/rst-app'){
+                          sh "mvn clean package -s $SETTINGS -DskipTests"
+                        }
                       }
                       // Movendo .jar
                       sh "mv target/*.jar ."
