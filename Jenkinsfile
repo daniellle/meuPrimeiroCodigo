@@ -1,5 +1,5 @@
 def appName = 'rst-cadastro'
-def groupName = 'sesi-viva-rst'
+def groupName = 'sesi-viva'
 
 def artifactName = "rst-app-*.ear"
 
