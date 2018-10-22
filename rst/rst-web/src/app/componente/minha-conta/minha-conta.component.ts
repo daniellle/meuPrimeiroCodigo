@@ -20,6 +20,7 @@ import {isNullOrUndefined} from "util";
 import {Trabalhador} from "../../modelo/trabalhador.model";
 import {TrabalhadorService} from "../../servico/trabalhador.service";
 import {PerfilEnum} from "../../modelo/enum/enum-perfil";
+import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
 
 
 @Component({
@@ -73,12 +74,10 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
 
     dadosTrabalhador(){
         this.meusdados = this.activatedRoute.snapshot.params.id === 'meusdados';
-        if (this.meusdados) {
             this.trabalhadorService.buscarMeusDados().subscribe((trabalhador) => {
                 this.trabalhador = trabalhador;
                 this.idTrab = this.trabalhador.id;
             });
-        }
     }
 
     inicializarImagem() {
@@ -299,7 +298,7 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
     }
 
     voltar(): void {
-        if (this.usuarioLogado.papeis.includes(PerfilEnum.TRA)) {
+        if (this.usuarioLogado.permissoes.includes(PermissoesEnum.TRABALHADOR)) {
             this.router.navigate([`${environment.path_raiz_cadastro}/trabalhador/${this.idTrab}`], {
                 queryParams: { "fromMinhaConta": "true" }
             });

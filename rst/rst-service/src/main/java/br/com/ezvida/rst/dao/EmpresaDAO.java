@@ -351,4 +351,33 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 
 		return query.getResultList();
 	}
+
+	public Empresa buscarEmpresaCadastroPorCnpj(String cnpj){
+		LOGGER.debug("Pesquisando Empresa por CNPJ");
+
+		StringBuilder jpql = new StringBuilder();
+		jpql.append("select empresa from Empresa empresa ");
+		jpql.append(" left join fetch empresa.porteEmpresa porteEmpresa ");
+		jpql.append(" left join fetch empresa.tipoEmpresa tipoEmpresa ");
+		jpql.append(" left join fetch empresa.segmento segmento ");
+		jpql.append(" left join fetch empresa.ramoEmpresa ramoEmpresa ");
+		jpql.append(" left join fetch empresa.empresaCnaes empresaCnaes ");
+		jpql.append(" left join fetch empresaCnaes.cnae cnae ");
+		jpql.append(" left join empresa.empresaUats empresaUats ");
+		jpql.append(" left join empresaUats.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador ");
+		jpql.append(" left join unidadeAtendimentoTrabalhador.departamentoRegional departamentoRegional ");
+		jpql.append(" left join empresa.enderecosEmpresa enderecosEmpresa ");
+		jpql.append(" left join enderecosEmpresa.endereco endereco ");
+		jpql.append(" left join endereco.municipio municipio ");
+		jpql.append(" left join municipio.estado estado ");
+		jpql.append(" where empresa.cnpj = :cnpj");
+		jpql.append(" and empresa.dataExclusao is null ");
+
+		TypedQuery<Empresa> query = criarConsultaPorTipo(jpql.toString());
+		query.setParameter("cnpj", cnpj);
+
+		return DAOUtil.getSingleResult(query);
+
+
+	}
 }

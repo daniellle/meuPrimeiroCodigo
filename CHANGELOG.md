@@ -1,6 +1,26 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v2.81.0**
+===========
+
+(RELEASE EM 22/10/2018)
+
+**Novidades**
+
+[CADASTROS] Link Criação de Senhas Primeiro Acesso (GLPI 2493)
+[CADASTROS] Indisponibilidade de Dados em Produção /Trabalhador (GLPI 2520 e 2595)
+[CADASTROS] Remover restrição para responder o formulário de IGEV (GLPI 1641)
+[CADASTROS] Melhorar mecanismo de esqueci minha senha (GLPI 1533)
+[CADASTROS] Card Departamento Regional Superintendente (GLPI 2729)
+[CADASTROS] PERFIL Médico do Trabalho SESI DR deve visualizar os mesmos cards do trabalhador que os demais perfis médicos (GLPI 2535)
+[CADASTROS] Erro Cadastro de Usuário Master por Superintendente (GLPI 2675)
+[CADASTROS] Erro - circunferência abdominal não é exibida em dashboard de saúde (GLPI 2445)
+[CADASTROS] Gestão de Fornecedores - API com retorno de dados do CNPJ.
+
+Obs.: Conforme definição da EZVIDA, a SOLUTIS desenvolveu um serviço para retornar os dados por CNPJ em formato JSON e a Tela de Indicadores em i-frame exibindo os dados de outro CNPJ requerido, a ser informado através de uma estrutura de URL (exemplo: https://www.sesivivamais.com.br/......indicadores/CNPJ).
+Vale ressaltar que não foi definido no escopo o serviço que deverá ser consultado para validar se o usuário logado tem permissão para visualizar os dados do CNPJ em questão, desta forma, a aplicação de Indicadores da Rede SESI VIVA+ NÃO fará essa validação. Assim, outros usuários que estejam logados na rede SESI VIVA+, caso conheçam a URL, poderão ter acesso indevido aos dados do CNPJ requerido, essa situação se caracteriza como uma falha de segurança no controle de permissões da rede SESI VIVA+. 
+
 **v2.75.0**
 ===========
 

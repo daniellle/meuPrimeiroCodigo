@@ -119,7 +119,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 					}
 					jpql.append(
 							"  and (codigo_perfil in ('GEEM', 'GEEMM', 'TRA')  and vw_usuario_entidade.id_empresa_fk IS NULL )) )");
-					jpql.append(" and codigo_perfil not in ('ADM', 'ATD', 'DIDN', 'DIDR', 'GDNA', 'MTSDN', 'GDNP', 'GDRM') ");
+					jpql.append(" and codigo_perfil not in ('ADM', 'ATD', 'DIDN', 'DIDR', 'GDNA', 'MTSDN', 'GDNP') ");
 				}
 
 				if (dados.isGestorDn()) {
@@ -153,6 +153,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 				jpql.append(conectorLogico);
 				jpql.append(" (vw_usuario_entidade.id_departamento_regional_fk IN (:idsDepRegional) OR ");
 				jpql.append(" departamento_regional.id_departamento_regional IN (:idsDepRegional)) ");
+				jpql.append("             and vw_usuario_entidade.id_departamento_regional_fk is not null");
 				parametros.put("idsDepRegional", dados.getIdsDepartamentoRegional());
 				setFiltroAplicado(true);
 			}
@@ -227,6 +228,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 			}
 			jpql.append(" (vw_usuario_entidade.id_departamento_regional_fk = :idDepartamentoRegional OR ");
 			jpql.append(" departamento_regional.id_departamento_regional = :idDepartamentoRegional) ");
+			jpql.append("             and vw_usuario_entidade.id_departamento_regional_fk is not null");
 			parametros.put("idDepartamentoRegional", usuarioFilter.getIdDepartamentoRegional());
 		}
 	}

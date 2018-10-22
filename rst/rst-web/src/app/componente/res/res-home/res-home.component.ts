@@ -74,9 +74,6 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
             });
         }
 
-        if ( dados.idade ) {
-            this.idade = dados.idade.value.value;
-        }
 
         if ( dados.peso ) {
             this.peso = new DadoBasico({
@@ -85,11 +82,7 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
             });
         }
 
-        if ( dados.imc ) {
-            this.imc = new DadoBasico({magnitude: dados.imc.value.magnitude as number, units: dados.imc.value.units});
-        } else {
-            this.calcularImc();
-        }
+        this.calcularImc();
 
         this.criarGraficoDePressao(dados.sistolica || [], dados.diastolica || []);
         this.calcularIdade();
@@ -436,7 +429,6 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
     }
 
     private calcularIdade() {
-
 
         if ( _.isNil(this.idade) && !_.isNil(this.paciente) && !_.isNil(this.paciente.birthDate) ) {
             this.idade = moment().diff(moment(this.paciente.birthDate), 'years');
