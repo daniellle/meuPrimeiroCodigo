@@ -1,5 +1,5 @@
 def appName = 'rst-cadastro'
-def groupName = 'Sesi Viva+'
+def groupName = 'sesi-viva'
 
 def artifactName = ".ear"
 
@@ -50,7 +50,7 @@ pipeline {
                         }
                       }
                       // Movendo .jar
-                      sh "mv target/*.jar ."
+                      sh "mv rst/rst-app/target/*.ear ."
                     }
                   }
                 }
