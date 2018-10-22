@@ -4,7 +4,7 @@
 **v2.81.0**
 ===========
 
-(RELEASE EM 1/10/2018)
+(RELEASE EM 22/10/2018)
 
 **Novidades**
 
