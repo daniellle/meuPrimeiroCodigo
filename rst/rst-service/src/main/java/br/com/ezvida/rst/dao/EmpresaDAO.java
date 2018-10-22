@@ -1,9 +1,6 @@
 package br.com.ezvida.rst.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -379,5 +376,41 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 		return DAOUtil.getSingleResult(query);
 
 
+	}
+
+	public List<String> findCNPJByIdsDepartamentoRegional(Collection<Long> ids) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select ");
+		sql.append("	empresa.no_cnpj as cnpj ");
+		sql.append("from ");
+		sql.append("	departamento_regional dr ");
+		sql.append("inner join und_atd_trabalhador unidade on ");
+		sql.append("	dr.id_departamento_regional = unidade.id_departamento_regional_fk ");
+		sql.append("inner join empresa_uat uat on ");
+		sql.append("	unidade.id_und_atd_trabalhador = uat.id_und_atd_trabalhador_fk ");
+		sql.append("inner join empresa empresa on ");
+		sql.append("	uat.id_empresa_fk = empresa.id_empresa ");
+		sql.append("where ");
+		sql.append("	dr.id_departamento_regional in (:listIds) ");
+		Query query = getEm().createNativeQuery(sql.toString());
+		query.setParameter("listIds", ids);
+		return query.getResultList();
+	}
+
+	public List<String> findCNPJByIdsUnidadeSesi(Collection<Long> ids) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select ");
+		sql.append("	empresa.no_cnpj as cnpj ");
+		sql.append("from ");
+		sql.append("	und_atd_trabalhador unidade ");
+		sql.append("inner join empresa_uat uat on ");
+		sql.append("	uat.id_und_atd_trabalhador_fk = unidade.id_und_atd_trabalhador ");
+		sql.append("inner join empresa on ");
+		sql.append("	uat.id_empresa_fk = empresa.id_empresa ");
+		sql.append("where ");
+		sql.append("	unidade.id_und_atd_trabalhador in (:listIds) ");
+		Query query = getEm().createNativeQuery(sql.toString());
+		query.setParameter("listIds", ids);
+		return query.getResultList();
 	}
 }
