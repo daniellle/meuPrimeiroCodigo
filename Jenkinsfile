@@ -1,5 +1,5 @@
-def appName = 'refat-api'
-def groupName = 'nomedogruporocket'
+def appName = 'rst-cadastro'
+def groupName = 'Sesi Viva+'
 
 def artifactName = ".ear"
 
@@ -27,7 +27,7 @@ pipeline {
       """
 }
   }
-  options { buildDiscarder(logRotator(numToKeepStr: '10')) }
+  options { buildDiscarder(logRotator(numToKeepStr: '1000')) }
   stages {
     stage ('Inicializar') {
       steps {
@@ -45,6 +45,7 @@ pipeline {
                   script {
                       // Baixando dependencias e contruindo projeto
                       withCredentials([[$class:'FileBinding', credentialsId: 'settings-xml', variable: 'SETTINGS']]) {                   
+                        dir('rst/rst-app')
                         sh "mvn clean package -s $SETTINGS -DskipTests"
                       }
                       // Movendo .jar
