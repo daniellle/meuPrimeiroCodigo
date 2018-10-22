@@ -1,7 +1,7 @@
 def appName = 'rst-cadastro'
 def groupName = 'sesi-viva'
 
-def artifactName = ".ear"
+def artifactName = "rst-app-*.ear"
 
 
 pipeline {
