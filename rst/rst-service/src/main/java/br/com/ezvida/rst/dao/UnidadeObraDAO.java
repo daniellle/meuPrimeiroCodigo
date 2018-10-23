@@ -51,12 +51,13 @@ public class UnidadeObraDAO extends BaseRstDAO<UnidadeObra, Long> {
 		LOGGER.debug("Validando unidade obra ativos pelo código da empresa...");
 
 		StringBuilder sqlBuilder = new StringBuilder();
-		sqlBuilder.append(" select unidadeObra from UnidadeObra unidadeObra ");
+		sqlBuilder.append(" select unidadeObra from UnidadeObraContratoUat unidadeObraContratoUat");
+		sqlBuilder.append(" inner join fetch unidadeObraContratoUat.unidadeObra unidadeObra");
 		sqlBuilder.append(" inner join fetch unidadeObra.empresa empresa ");
 		sqlBuilder.append(" where empresa.cnpj = :cnpj ");
-		sqlBuilder.append(" and unidadeObra.dataContratoInicio is not null and unidadeObra.dataContratoInicio <= :dataHoje ");
-		sqlBuilder.append(" and unidadeObra.dataContratoFim is not null and unidadeObra.dataContratoFim > :dataHoje ");
-		sqlBuilder.append(" and unidadeObra.flagInativo = :flagInativo");
+		sqlBuilder.append(" and unidadeObraContratoUat.dataContratoInicio is not null and unidadeObraContratoUat.dataContratoInicio <= :dataHoje ");
+		sqlBuilder.append(" and unidadeObraContratoUat.dataContratoFim is not null and unidadeObraContratoUat.dataContratoFim > :dataHoje ");
+		sqlBuilder.append(" and unidadeObraContratoUat.flagInativo = :flagInativo");
 
 		TypedQuery<UnidadeObra> query = criarConsultaPorTipo(sqlBuilder.toString());
 		query.setParameter("cnpj", cnpj);

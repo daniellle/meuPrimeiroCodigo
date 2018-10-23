@@ -78,30 +78,7 @@ public class UnidadeObraService extends BaseService {
 		validar(unidadeObra);
 		unidadeObraDAO.salvar(unidadeObra);
 	}
-
-	public List<UnidadeObra> validarPorEmpresa(String cnpj){
-		LOGGER.debug("Validando Unidade Obra...");
-		List<UnidadeObra> unidadeObras;
-
-		if( cnpj != null ) {
-			cnpj = cnpj.replace(".","").replace("-","").replace("/","");
-			if (ValidadorUtils.isValidCNPJ(cnpj)) {
-				unidadeObras = unidadeObraDAO.validar(cnpj);
-				if (unidadeObras == null || unidadeObras.size() == 0) {
-					throw new BusinessErrorException(getMensagem("app_rst_unidade_invalida",
-							getMensagem("app_rst_label_unidade_obra")));
-				}
-			} else {
-				throw new BusinessErrorException(getMensagem("app_rst_unidade_cnpj_invalida",
-						getMensagem("app_rst_label_cnpj")));
-			}
-		}else{
-			throw new BusinessErrorException(getMensagem("app_rst_unidade_cnpj_invalida",
-					getMensagem("app_rst_label_cnpj")));
-		}
-		return unidadeObras;
-	}
-
+	
 	private void validar(UnidadeObra unidadeObra) {
 		LOGGER.debug("Validando Unidade Obra...");
 

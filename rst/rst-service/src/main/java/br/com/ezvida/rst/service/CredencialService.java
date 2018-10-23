@@ -10,6 +10,7 @@ import br.com.ezvida.rst.utils.SegurancaUtils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.Payload;
 import fw.core.common.encode.JacksonMapper;
+import fw.core.exception.BusinessErrorException;
 import fw.core.service.BaseService;
 import fw.security.exception.UnauthenticatedException;
 import fw.security.exception.UnauthorizedException;
@@ -48,6 +49,9 @@ public class CredencialService extends BaseService {
     @Inject
     private APIClientService apiClientService;
 
+    @Inject
+    private EmpresaTrabalhadorLotacaoService empresaTrabalhadorLotacaoService;
+
 
     @Inject
 	private SegurancaUtils segurancaUtils;
@@ -59,9 +63,14 @@ public class CredencialService extends BaseService {
 			String login = segurancaUtils.validarAutenticacao(request);
 
 			LOGGER.debug("Solicitando autorizacao do usuario [ {} ]", login);
-            
+
+			empresaTrabalhadorLotacaoService.validarTrabalhador(login);
+
 			return gerarToken(usuarioService.getUsuario(login));
 
+		} catch (BusinessErrorException e){
+			LOGGER.error(e.getMessage(), e);
+			throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
 		} catch (UnauthenticatedException e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new UnauthenticatedException(e.getMessage(), e);
