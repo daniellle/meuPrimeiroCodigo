@@ -13,7 +13,7 @@
                         <div class="row">
                             <div class="form-group col-sm-11 mx-auto" [ngClass]="{ divDis : cpf.disabled }">
                                 <md-input-container [floatPlaceholder]="true">
-                                    <input required maxlength="11" for="cpf" mdInput placeholder="{{'app_rst_labels_cpf' | recurso}}" type="text" (blur)="pesquisar(null)" name="cpf" id="cpf" [textMask]="{mask: mascaraCpf, guide: false}" #cpf formControlName="cpf" class="form-control" />
+                                    <input required for="cpf" mdInput placeholder="{{'app_rst_labels_cpf' | recurso}}" type="text" (blur)="pesquisar(null)" name="cpf" id="cpf" [textMask]="{mask: mascaraCpf, guide: false}" #cpf formControlName="cpf" class="form-control" />
                                 </md-input-container>
                             </div>
                         </div>
