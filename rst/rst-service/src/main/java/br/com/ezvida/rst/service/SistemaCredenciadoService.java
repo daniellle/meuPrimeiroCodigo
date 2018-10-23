@@ -118,20 +118,20 @@ public class SistemaCredenciadoService extends BaseService {
         filter.setListCNPJ(new ArrayList<>());
         if (dados.isAdministrador() || dados.isGestorDn()) {
             return sistemaCredenciadoClient.pesquisar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), filter);
-        } else if (dados.isGestorDr() || dados.isGetorUnidadeSESI()) {
+        } else if (dados.isGestorDr()) {
             if (dados.getIdsDepartamentoRegional() != null && !dados.getIdsDepartamentoRegional().isEmpty()) {
                 List<String> listCNPJDR = empresaService.findCNPJByIdsDepartamentoRegional(dados.getIdsDepartamentoRegional() != null ? dados.getIdsDepartamentoRegional() : new HashSet<>());
                 filter.getListCNPJ().addAll(listCNPJDR);
             }
-
+        } else if (dados.isGetorUnidadeSESI()) {
             if (dados.getIdsUnidadeSESI() != null && !dados.getIdsUnidadeSESI().isEmpty()) {
                 List<String> listCNPJUnidadeSesi = empresaService.findCNPJByIdsUnidadeSesi(dados.getIdsUnidadeSESI() != null ? dados.getIdsUnidadeSESI() : new HashSet<>());
                 filter.getListCNPJ().addAll(listCNPJUnidadeSesi);
             }
+        }
 
-            if (filter.getListCNPJ() != null && !filter.getListCNPJ().isEmpty()) {
-                listaPaginada = sistemaCredenciadoClient.pesquisar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), filter);
-            }
+        if (filter.getListCNPJ() != null && !filter.getListCNPJ().isEmpty()) {
+            listaPaginada = sistemaCredenciadoClient.pesquisar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), filter);
         }
 
         return listaPaginada;
