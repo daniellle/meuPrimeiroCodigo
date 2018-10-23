@@ -82,7 +82,7 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
     }
 
     private temDRPerfil(): boolean {
-        return this.temPapel(PerfilEnum.ADM, PerfilEnum.GDNA, PerfilEnum.MTSDN, PerfilEnum.DIDN, PerfilEnum.ATD, PerfilEnum.GDRM)
+        return this.temPapel(PerfilEnum.ADM, PerfilEnum.GDNA, PerfilEnum.MTSDN, PerfilEnum.DIDN, PerfilEnum.ATD, PerfilEnum.GDRM, PerfilEnum.SUDR)
             && this.contemPerfil([PerfilEnum.DIDR, PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.SUDR,
                 PerfilEnum.MTSDR, PerfilEnum.GCDR, PerfilEnum.GUS], this.usuario);
     }

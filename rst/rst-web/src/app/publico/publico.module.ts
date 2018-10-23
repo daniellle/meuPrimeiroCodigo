@@ -15,6 +15,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SolicitarEmailComponent } from './solicitar-email/solicitar-email.component';
+import { ParametroService } from 'app/servico/parametro.service';
 
 const routes: Routes = [
   {
@@ -65,6 +66,7 @@ const routes: Routes = [
     AutenticacaoService,
     TrabalhadorService,
     SolicitarEmailService,
+    ParametroService,
   ],
 })
 export class PublicoModule { }

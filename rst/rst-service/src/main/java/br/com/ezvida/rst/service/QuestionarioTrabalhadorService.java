@@ -72,7 +72,7 @@ public class QuestionarioTrabalhadorService extends BaseService {
         if (questionarioTrabalhador != null) {
             Days dias = Days.daysBetween(new DateTime(questionarioTrabalhador.getDataQuestionarioTrabalhador()),
                     new DateTime());
-            if (dias.getDays() > questionarioTrabalhador.getQuestionario().getPeriodicidade().getQuantidadeDias()) {
+            if (questionarioTrabalhador.getQuestionario().getPeriodicidade().getQuantidadeDias() == null || dias.getDays() > questionarioTrabalhador.getQuestionario().getPeriodicidade().getQuantidadeDias()) {
                 return true;
             } else {
                 return false;

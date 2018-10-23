@@ -226,4 +226,20 @@ public class EmpresaService extends BaseService {
 		return empresas;
 	}
 
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public Empresa buscarEmpresaCadastroPorCnpj(String cnpj) {
+        LOGGER.debug("Pesquisando Empresas por cpf");
+        if (cnpj == null) {
+            throw new BusinessErrorException(getMensagem("app_rst_id_consulta_nulo"));
+        }
+
+        Empresa empresa = empresaDAO.buscarEmpresaCadastroPorCnpj(cnpj);
+
+        if (empresa == null) {
+            throw new RegistroNaoEncontradoException(getMensagem("app_rst_nenhum_registro_encontrado"));
+        }
+
+		return empresa;
+	}
+
 }
