@@ -356,12 +356,12 @@ public class DepartamentoRegionalDAO extends BaseDAO<DepartamentoRegional, Long>
         sql.append("where ");
         sql.append("	 empresa.no_cnpj = :cnpj ");
         if (listId != null && !listId.isEmpty()) {
-            sql.append(" and departamento_regional.id_departamento_regional in (:listId) ");
+            sql.append(" and dr.id_departamento_regional in (:listId) ");
         }
         Query query = this.getEm().createNativeQuery(sql.toString());
         query.setParameter("cnpj", cnpj);
         if (listId != null && !listId.isEmpty()) {
-            query.setParameter("listId", cnpj);
+            query.setParameter("listId", listId);
         }
         return DAOUtil.getSingleResult(query);
     }

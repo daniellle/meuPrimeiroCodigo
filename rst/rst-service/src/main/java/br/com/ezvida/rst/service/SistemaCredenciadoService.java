@@ -161,14 +161,14 @@ public class SistemaCredenciadoService extends BaseService {
         }
 
         listaRetorno.getList().addAll(set);
-        listaRetorno.setQuantidade(new Long(listaRetorno.getList().size()));
+        listaRetorno.setQuantidade(listaPaginada.getQuantidade() - new Long(listaRetorno.getList().size()));
         return listaRetorno;
     }
 
 
     private boolean valido(SistemaCredenciado sistemaCredenciado) {
         return sistemaCredenciado != null &&
-                ValidadorUtils.isValidCNPJ(sistemaCredenciado.getCnpj()) &&
+                ValidadorUtils.isValidCNPJ(StringUtil.removeCaracteresEspeciais(sistemaCredenciado.getCnpj())) &&
                 StringUtils.isNotBlank(sistemaCredenciado.getEmailResponsavel()) &&
                 StringUtils.isNotBlank(sistemaCredenciado.getNomeResponsavel()) &&
                 StringUtils.isNotBlank(sistemaCredenciado.getSistema()) &&

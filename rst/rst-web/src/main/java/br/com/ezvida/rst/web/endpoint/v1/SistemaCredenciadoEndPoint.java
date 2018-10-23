@@ -96,7 +96,7 @@ public class SistemaCredenciadoEndPoint extends SegurancaEndpoint<SistemaCredenc
                                                        @QueryParam("sistema") String sistema,
                                                        @QueryParam("bloqueado") Boolean bloqueado,
                                                        @DefaultValue("1") @QueryParam("pagina") Integer pagina,
-                                                       @DefaultValue("20") @QueryParam("quantidadeRegistros") Integer quantidadeRegistros) {
+                                                       @DefaultValue("10") @QueryParam("quantidadeRegistros") Integer quantidadeRegistros) {
         try {
             SistemaCredenciadoFilter sistemaCredenciadoFilter = new SistemaCredenciadoFilter(cnpj, nomeResponsavel, sistema, bloqueado, pagina, quantidadeRegistros);
             ListaPaginada<SistemaCredenciado> mensagem = sistemaCredenciadoService.pesquisarPaginado(sistemaCredenciadoFilter, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.SISTEMAS_CREDENCIADOS));
