@@ -8,11 +8,11 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
-public class UnidadeObraServiceTest extends BaseService {
+public class UnidadeObraContratoUatServiceTest extends BaseService {
 
     @InjectMocks
     @Spy
-    private UnidadeObraService service;
+    private UnidadeObraContratoUatService service;
 
     @Before
     public void inicializar() throws Exception {

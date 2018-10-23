@@ -1,0 +1,46 @@
+package br.com.ezvida.rst.service;
+
+import br.com.ezvida.rst.dao.UnidadeObraContratoUatDAO;
+import br.com.ezvida.rst.model.UnidadeObra;
+import br.com.ezvida.rst.model.UnidadeObraContratoUat;
+import br.com.ezvida.rst.utils.ValidadorUtils;
+import fw.core.exception.BusinessErrorException;
+import fw.core.service.BaseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import java.util.List;
+
+@Stateless
+public class UnidadeObraContratoUatService extends BaseService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UnidadeObraContratoUatService.class);
+
+    @Inject
+    private UnidadeObraContratoUatDAO unidadeObraContratoUatDAO;
+
+    public List<UnidadeObraContratoUat> validarPorEmpresa(String cnpj){
+        LOGGER.debug("Validando Unidade Obra...");
+        List<UnidadeObraContratoUat> unidadeObraContratoUats;
+
+        if( cnpj != null ) {
+            cnpj = cnpj.replace(".","").replace("-","").replace("/","");
+            if (ValidadorUtils.isValidCNPJ(cnpj)) {
+                unidadeObraContratoUats = unidadeObraContratoUatDAO.validar(cnpj);
+                if (unidadeObraContratoUats == null || unidadeObraContratoUats.size() == 0) {
+                    throw new BusinessErrorException(getMensagem("app_rst_unidade_invalida",
+                            getMensagem("app_rst_label_unidade_obra")));
+                }
+            } else {
+                throw new BusinessErrorException(getMensagem("app_rst_unidade_cnpj_invalida",
+                        getMensagem("app_rst_label_cnpj")));
+            }
+        }else{
+            throw new BusinessErrorException(getMensagem("app_rst_unidade_cnpj_invalida",
+                    getMensagem("app_rst_label_cnpj")));
+        }
+        return unidadeObraContratoUats;
+    }
+}

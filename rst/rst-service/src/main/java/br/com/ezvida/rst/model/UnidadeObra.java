@@ -1,14 +1,11 @@
 package br.com.ezvida.rst.model;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.*;
 
-import br.com.ezvida.rst.utils.DateJsonDeserializer;
-import br.com.ezvida.rst.utils.DateJsonSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "UND_OBRA", uniqueConstraints = @UniqueConstraint(name = "PK_UNIDADE_OBRA", columnNames = {
@@ -34,20 +31,8 @@ public class UnidadeObra extends AbstractData {
 	@JoinColumn(name = "id_empresa_fk", referencedColumnName = "ID_EMPRESA", nullable = false)
 	private Empresa empresa;
 
-	@JsonDeserialize(using = DateJsonDeserializer.class)
-	@JsonSerialize(using = DateJsonSerializer.class)
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "dt_contrato_ini")
-	private Date dataContratoInicio;
-
-	@JsonDeserialize(using = DateJsonDeserializer.class)
-	@JsonSerialize(using = DateJsonSerializer.class)
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "dt_contrato_fim")
-	private Date dataContratoFim;
-
-	@Column(name = "fl_inativo")
-	private Character flagInativo;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "unidadeObra")
+	private Set<UnidadeObraContratoUat> unidadeObraContratoUats;
 	
 	@PreUpdate
 	public void preUpdate() {
@@ -93,28 +78,12 @@ public class UnidadeObra extends AbstractData {
 		this.empresa = empresa;
 	}
 
-	public Date getDataContratoInicio() {
-		return dataContratoInicio;
+	public Set<UnidadeObraContratoUat> getUnidadeObraContratoUats() {
+		return unidadeObraContratoUats;
 	}
 
-	public void setDataContratoInicio(Date dataContratoInicio) {
-		this.dataContratoInicio = dataContratoInicio;
-	}
-
-	public Date getDataContratoFim() {
-		return dataContratoFim;
-	}
-
-	public void setDataContratoFim(Date dataContratoFim) {
-		this.dataContratoFim = dataContratoFim;
-	}
-
-	public Character getFlagInativo() {
-		return flagInativo;
-	}
-
-	public void setFlagInativo(Character flagInativo) {
-		this.flagInativo = flagInativo;
+	public void setUnidadeObraContratoUats(Set<UnidadeObraContratoUat> unidadeObraContratoUats) {
+		this.unidadeObraContratoUats = unidadeObraContratoUats;
 	}
 
 	@Override
@@ -125,9 +94,6 @@ public class UnidadeObra extends AbstractData {
 		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
 		result = prime * result + ((empresa == null) ? 0 : empresa.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((dataContratoInicio == null) ? 0 : dataContratoInicio.hashCode());
-		result = prime * result + ((dataContratoFim == null) ? 0 : dataContratoFim.hashCode());
-		result = prime * result + ((flagInativo == null) ? 0 : flagInativo.hashCode());
 		result = prime * result + ((getDataAlteracao() == null) ? 0 : getDataAlteracao().hashCode());
 		result = prime * result + ((getDataCriacao() == null) ? 0 : getDataCriacao().hashCode());
 		result = prime * result + ((getDataExclusao() == null) ? 0 : getDataExclusao().hashCode());

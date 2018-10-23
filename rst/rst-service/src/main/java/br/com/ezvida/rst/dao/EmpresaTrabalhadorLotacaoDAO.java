@@ -223,10 +223,11 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		jpql.append(" left join fetch empresaTrabalhador.trabalhador  trabalhador");
 		jpql.append(" left join fetch empresaTrabalhadorLotacao.empresaLotacao empresaLotacao");
 		jpql.append(" left join fetch empresaLotacao.unidadeObra unidadeObra ");
+		jpql.append(" left join fetch unidadeObra.unidadeObraContratoUats unidadeObraContratoUat ");
 		jpql.append(" where trabalhador.cpf = :cpf ");
-		jpql.append(" and unidadeObra.dataContratoInicio is not null and unidadeObra.dataContratoInicio <= :dataHoje ");
-		jpql.append(" and unidadeObra.dataContratoFim is not null and unidadeObra.dataContratoFim > :dataHoje ");
-		jpql.append(" and unidadeObra.flagInativo = :flagInativo ");
+		jpql.append(" and unidadeObraContratoUat.dataContratoInicio is not null and unidadeObraContratoUat.dataContratoInicio <= :dataHoje ");
+		jpql.append(" and unidadeObraContratoUat.dataContratoFim is not null and unidadeObraContratoUat.dataContratoFim > :dataHoje ");
+		jpql.append(" and unidadeObraContratoUat.flagInativo = :flagInativo ");
 		jpql.append(" and empresaTrabalhadorLotacao.dataDesligamento is null ");
 		jpql.append(" and empresaTrabalhadorLotacao.flagInativo = :flagInativo ");
 
