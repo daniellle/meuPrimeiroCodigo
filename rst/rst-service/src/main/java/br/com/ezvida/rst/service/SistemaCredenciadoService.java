@@ -3,10 +3,10 @@ package br.com.ezvida.rst.service;
 import br.com.ezvida.girst.apiclient.client.SistemaCredenciadoClient;
 import br.com.ezvida.girst.apiclient.model.ListaPaginada;
 import br.com.ezvida.girst.apiclient.model.SistemaCredenciado;
+import br.com.ezvida.girst.apiclient.model.filter.SistemaCredenciadoFilter;
 import br.com.ezvida.rst.auditoria.logger.LogAuditoria;
 import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
-import br.com.ezvida.rst.dao.filter.SistemaCredenciadoFilter;
 import br.com.ezvida.rst.utils.StringUtil;
 import br.com.ezvida.rst.utils.ValidadorUtils;
 import fw.core.exception.BusinessException;
@@ -18,8 +18,10 @@ import org.slf4j.LoggerFactory;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.math.BigInteger;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Stateless
 public class SistemaCredenciadoService extends BaseService {
@@ -108,63 +110,32 @@ public class SistemaCredenciadoService extends BaseService {
             , ClienteAuditoria auditoria) {
 
         LogAuditoria.registrar(LOGGER, auditoria, "Pesquisando sistema credenciado: " + filter);
-
-        Map<String, String> filtro = new HashMap<>();
-
-        if (filter.getPagina() != null) {
-            filtro.put("pagina", filter.getPagina().toString());
+        ListaPaginada<SistemaCredenciado> listaPaginada = new ListaPaginada<>(0l, new ArrayList<>());
+        if (filter.getCnpj() != null) {
+            filter.setCnpj(StringUtil.removeCaracteresEspeciais(filter.getCnpj()));
         }
 
-        if (filter.getQuantidadeRegistro() != null) {
-            filtro.put("quantidadeRegistros", filter.getQuantidadeRegistro().toString());
-        }
+        filter.setListCNPJ(new ArrayList<>());
+        if (dados.isAdministrador() || dados.isGestorDn()) {
+            return sistemaCredenciadoClient.pesquisar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), filter);
+        } else if (dados.isGestorDr() || dados.isGetorUnidadeSESI()) {
+            if (dados.getIdsDepartamentoRegional() != null && !dados.getIdsDepartamentoRegional().isEmpty()) {
+                List<String> listCNPJDR = empresaService.findCNPJByIdsDepartamentoRegional(dados.getIdsDepartamentoRegional() != null ? dados.getIdsDepartamentoRegional() : new HashSet<>());
+                filter.getListCNPJ().addAll(listCNPJDR);
+            }
 
-        if (StringUtils.isNotBlank(filter.getCnpj())) {
-            filtro.put("cnpj", StringUtil.removeCaracteresEspeciais(filter.getCnpj()));
-        }
+            if (dados.getIdsUnidadeSESI() != null && !dados.getIdsUnidadeSESI().isEmpty()) {
+                List<String> listCNPJUnidadeSesi = empresaService.findCNPJByIdsUnidadeSesi(dados.getIdsUnidadeSESI() != null ? dados.getIdsUnidadeSESI() : new HashSet<>());
+                filter.getListCNPJ().addAll(listCNPJUnidadeSesi);
+            }
 
-        if (StringUtils.isNotBlank(filter.getNomeResponsavel())) {
-            filtro.put("nomeResponsavel", filter.getNomeResponsavel());
-        }
-
-        if (StringUtils.isNotBlank(filter.getSistema())) {
-            filtro.put("sistema", filter.getSistema());
-        }
-
-        if (filter.getBloqueado() != null) {
-            filtro.put("bloqueado", filter.getBloqueado().toString());
-        }
-
-        ListaPaginada<SistemaCredenciado> listaPaginada = sistemaCredenciadoClient.pesquisar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), filtro);
-        ListaPaginada<SistemaCredenciado> listaRetorno = new ListaPaginada<>(0l, new ArrayList<SistemaCredenciado>());
-        Set<SistemaCredenciado> set = new HashSet<>();
-        if (listaPaginada != null && !listaPaginada.getList().isEmpty()) {
-            if (dados.isAdministrador() || dados.isGestorDn()) {
-                return listaPaginada;
-            } else if (dados.isGestorDr()) {
-                List<String> listCNPJDR = empresaService.findCNPJByIdsDepartamentoRegional(dados.getIdsDepartamentoRegional());
-                listCNPJDR.forEach(c -> {
-                    Optional<SistemaCredenciado> optionalSistemaCredenciado = listaPaginada.getList().stream().filter(p -> c.equals(p.getCnpj())).findFirst();
-                    if (optionalSistemaCredenciado.isPresent()) {
-                        set.add(optionalSistemaCredenciado.get());
-                    }
-                });
-            } else if (dados.isGetorUnidadeSESI()) {
-                List<String> listCNPJUnidadeSesi = empresaService.findCNPJByIdsUnidadeSesi(dados.getIdsUnidadeSESI());
-                listCNPJUnidadeSesi.forEach(c -> {
-                    Optional<SistemaCredenciado> optionalSistemaCredenciado = listaPaginada.getList().stream().filter(p -> c.equals(p.getCnpj())).findFirst();
-                    if (optionalSistemaCredenciado.isPresent()) {
-                        set.add(optionalSistemaCredenciado.get());
-                    }
-                });
+            if (filter.getListCNPJ() != null && !filter.getListCNPJ().isEmpty()) {
+                listaPaginada = sistemaCredenciadoClient.pesquisar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), filter);
             }
         }
 
-        listaRetorno.getList().addAll(set);
-        listaRetorno.setQuantidade(listaPaginada.getQuantidade() - new Long(listaRetorno.getList().size()));
-        return listaRetorno;
+        return listaPaginada;
     }
-
 
     private boolean valido(SistemaCredenciado sistemaCredenciado) {
         return sistemaCredenciado != null &&

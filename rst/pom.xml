@@ -112,7 +112,7 @@
         <jacoco.out.it.file>jacoco-it.exec</jacoco.out.it.file>
 
         <!-- Api Client GIRST -->
-        <br.com.ezvida.girst.api-client.version>1.8.0</br.com.ezvida.girst.api-client.version>
+        <br.com.ezvida.girst.api-client.version>1.8.1</br.com.ezvida.girst.api-client.version>
 
     </properties>
 

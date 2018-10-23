@@ -2,8 +2,8 @@ package br.com.ezvida.rst.web.endpoint.v1;
 
 import br.com.ezvida.girst.apiclient.model.ListaPaginada;
 import br.com.ezvida.girst.apiclient.model.SistemaCredenciado;
+import br.com.ezvida.girst.apiclient.model.filter.SistemaCredenciadoFilter;
 import br.com.ezvida.rst.constants.PermissionConstants;
-import br.com.ezvida.rst.dao.filter.SistemaCredenciadoFilter;
 import br.com.ezvida.rst.enums.Funcionalidade;
 import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.service.SistemaCredenciadoService;
@@ -83,23 +83,19 @@ public class SistemaCredenciadoEndPoint extends SegurancaEndpoint<SistemaCredenc
         }
     }
 
-    @GET
+    @POST
     @Encoded
     @Path("/paginado")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.SISTEMA_CREDENCIADO_PESQUISAR}))
-    public javax.ws.rs.core.Response pesquisarPaginado(@Context SecurityContext context,
-                                                       @Context HttpServletRequest request,
-                                                       @QueryParam("cnpj") String cnpj,
-                                                       @QueryParam("nomeResponsavel") String nomeResponsavel,
-                                                       @QueryParam("sistema") String sistema,
-                                                       @QueryParam("bloqueado") Boolean bloqueado,
-                                                       @DefaultValue("1") @QueryParam("pagina") Integer pagina,
-                                                       @DefaultValue("10") @QueryParam("quantidadeRegistros") Integer quantidadeRegistros) {
+    public javax.ws.rs.core.Response pesquisarPaginado(
+        @Context SecurityContext context,
+        @Context HttpServletRequest request,
+        @Encoded SistemaCredenciadoFilter sistemaCredenciadoFilter
+    ) {
         try {
-            SistemaCredenciadoFilter sistemaCredenciadoFilter = new SistemaCredenciadoFilter(cnpj, nomeResponsavel, sistema, bloqueado, pagina, quantidadeRegistros);
-            ListaPaginada<SistemaCredenciado> mensagem = sistemaCredenciadoService.pesquisarPaginado(sistemaCredenciadoFilter, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.SISTEMAS_CREDENCIADOS));
+            ListaPaginada<SistemaCredenciado> mensagem = sistemaCredenciadoService.pesquisarPaginado(sistemaCredenciadoFilter != null ? sistemaCredenciadoFilter : new SistemaCredenciadoFilter(), ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.SISTEMAS_CREDENCIADOS));
             return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
                 .header("Content-Version", getApplicationVersion())
                 .entity(serializar(mensagem)).build();
@@ -150,7 +146,7 @@ public class SistemaCredenciadoEndPoint extends SegurancaEndpoint<SistemaCredenc
         @Context HttpServletRequest request,
         @Encoded SistemaCredenciado sistemaCredenciado) {
         try {
-            String mensagem = sistemaCredenciadoService.ativarDesativar(sistemaCredenciado, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.SISTEMAS_CREDENCIADOS));
+            String mensagem = sistemaCredenciadoService.ativarDesativar(sistemaCredenciado, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ATIVAR_DESATIVAR, Funcionalidade.SISTEMAS_CREDENCIADOS));
             return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
                 .header("Content-Version", getApplicationVersion())
                 .entity(serializar(mensagem)).build();
