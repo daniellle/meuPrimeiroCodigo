@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 export class ParametroService extends BaseService<Parametro> {
 
   constructor(protected httpClient: HttpClient, protected bloqueio: BloqueioService) {
-    super(httpClient, bloqueio);
+    super(httpClient, bloqueio,);
   }
 
   buscarTermoUso(): Observable<Parametro> {
@@ -41,6 +41,15 @@ export class ParametroService extends BaseService<Parametro> {
 
   buscarTokenAcessoClienteRst(): Observable<string> {
     return super.getPublic('/v1/parametro/token_acesso_cliente_rst')
+    .map((response: Response) => {
+      return response;
+    }).catch((error: Response) => {
+      return Observable.throw(error);
+    });
+  }
+
+  buscarTelefoneCentralRelacionamento(): Observable<Parametro> {
+    return super.getPublic('/v1/parametro/telefone-relacionamento')
     .map((response: Response) => {
       return response;
     }).catch((error: Response) => {

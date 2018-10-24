@@ -135,10 +135,10 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             }
         }
 
-        if (this.isListaVazia()) {
-            this.mensagemError(MensagemProperties.app_rst_usuario_validacao_selecione_sistema_perfil);
-            isValido = false;
-        }
+        // if (this.isListaVazia()) {
+        //     this.mensagemError(MensagemProperties.app_rst_usuario_validacao_selecione_sistema_perfil);
+        //     isValido = false;
+        // }
 
         return isValido;
     }
@@ -160,7 +160,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     }
 
     associarPerfil(): void {
-        if (this.idSistemas && this.perfisSistemas.length > 0) {
             this.sistemaSelecionado = this.sistemas.filter((s) => s.id === Number(this.idSistemas))[0];
 
             const perfisRemover: UsuarioPerfilSistema[] = this.usuario.perfisSistema
@@ -184,9 +183,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             this.idSistemas = null;
             this.perfisSelecionados = [];
             this.perfisSistemas = Array<UsuarioPerfilSistema>();
-        } else {
-            this.mensagemError(MensagemProperties.app_rst_usuario_validacao_selecione_sistema_perfil);
-        }
+       
     }
 
     converterModelParaForm(): void {
