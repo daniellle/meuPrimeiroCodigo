@@ -1,6 +1,14 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v2.81.1**
+===========
+
+(RELEASE EM 24/10/2018)
+
+- [CADASTROS] Erro arquivo pon.xml (versão 2.81.0) to (versão 2.81.1)
+- [CADASTROS] Erro campo CPF do Primeiro Acesso
+
 **v2.81.0**
 ===========
 
