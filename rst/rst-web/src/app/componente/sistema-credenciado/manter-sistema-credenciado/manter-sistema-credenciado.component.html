@@ -1,0 +1,84 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{title}}
+</p>
+
+<form novalidate [formGroup]="sistemaCredenciadoForm">
+    <div class="container-form">
+
+        <div class="container-subtitulo">
+            <p>{{ 'app_rst_label_dados_gerais' | recurso }}</p>
+        </div>
+
+        <div class="row">
+
+            <div class="form-group col-md-4" [ngClass]="{ divDis : modoAlterar || modoConsulta }">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{'app_rst_labels_cnpj' | recurso}}" [textMask]="{mask: mascaraCnpj, guide: false}"
+                        type="text" name="cnpj" id="cnpj" formControlName="cnpj" class="form-control" required
+                        appFormularioCamposErro>
+                </md-input-container>
+            </div>
+
+
+            <div class="form-group col-md-4" [ngClass]="{ divDis : modoAlterar || modoConsulta }">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{'app_rst_labels_nome_responsavel' | recurso}}" type="text" name="nomeResponsavel"
+                        id="nomeResponsavel" formControlName="nomeResponsavel" class="form-control" required
+                        appFormularioCamposErro>
+                </md-input-container>
+            </div>
+
+            <div class="form-group col-md-4" [ngClass]="{ divDis : modoAlterar || modoConsulta }">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{'app_rst_labels_email_responsavel' | recurso}}" type="text" name="emailResponsavel"
+                        id="emailResponsavel" formControlName="emailResponsavel" class="form-control" required
+                        appFormularioCamposErro>
+                </md-input-container>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="form-group col-md-4" [ngClass]="{ divDis : modoAlterar || modoConsulta }">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{'app_rst_telefone_responsavel' | recurso}}" [textMask]="{mask: mascaraTelefone, guide: false}"
+                        type="text" name="telefoneResponsavel" id="telefoneResponsavel" formControlName="telefoneResponsavel"
+                        class="form-control" required appFormularioCamposErro>
+                </md-input-container>
+            </div>
+
+
+            <div class="form-group col-md-4" [ngClass]="{ divDis : modoAlterar || modoConsulta }">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{'app_rst_label_sistema' | recurso}}" type="text" name="sistema" id="sistema"
+                        formControlName="sistema" class="form-control" required appFormularioCamposErro>
+                </md-input-container>
+            </div>
+
+
+
+            <div class="form-group col-md-4" [ngClass]="{ divDis : modoAlterar || modoConsulta }">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{'app_rst_label_entidade' | recurso}}" type="text" name="entidade" id="entidade"
+                        formControlName="entidade" class="form-control" required appFormularioCamposErro>
+                </md-input-container>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</form>
+
+<div class="btn-rodape-acoes space-up">
+    <button type="button " class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!modoConsulta" (click)="salvar()">
+        {{'app_rst_btn_salvar' | recurso}}
+    </button>
+    <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="voltar()">{{'app_rst_btn_voltar'
+        | recurso}}
+    </button>
+</div>

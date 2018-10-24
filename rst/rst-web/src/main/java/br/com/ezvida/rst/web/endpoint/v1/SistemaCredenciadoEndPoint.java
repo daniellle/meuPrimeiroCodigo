@@ -8,6 +8,7 @@ import br.com.ezvida.rst.enums.Funcionalidade;
 import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.service.SistemaCredenciadoService;
 import br.com.ezvida.rst.web.auditoria.ClienteInfos;
+import br.com.ezvida.rst.web.util.Response;
 import fw.core.exception.BusinessException;
 import fw.security.binding.Autorizacao;
 import fw.security.binding.Permissao;
@@ -42,20 +43,10 @@ public class SistemaCredenciadoEndPoint extends SegurancaEndpoint<SistemaCredenc
         @Context SecurityContext context,
         @Context HttpServletRequest request,
         @Encoded SistemaCredenciado sistemaCredenciado) {
-        try {
             String mensagem = sistemaCredenciadoService.cadastrar(sistemaCredenciado, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.INCLUSAO, Funcionalidade.SISTEMAS_CREDENCIADOS));
             return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
                 .header("Content-Version", getApplicationVersion())
-                .entity(serializar(mensagem)).build();
-        } catch (BusinessException e) {
-            return javax.ws.rs.core.Response.status(HttpServletResponse.SC_BAD_REQUEST).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-                .entity(serializar(e.getMessage())).build();
-        } catch (Exception e) {
-            return javax.ws.rs.core.Response.status(HttpServletResponse.SC_BAD_REQUEST).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-                .entity(serializar(getMensagem("app_validacao_error"))).build();
-        }
+                .entity(serializar(new Response<>(mensagem))).build();
     }
 
     @PUT
