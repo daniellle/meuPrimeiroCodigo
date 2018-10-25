@@ -156,31 +156,26 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 
 				if( usuario != null ) {
 
-					boolean perfilValido = false;
+					boolean perfilPraValidar = false;
 					for( UsuarioPerfilSistema perfilSistema : usuario.getPerfisSistema() ){
 
-						if( perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("MTSDN")
-							|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GCDN")
-								|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("MTSDR")
-								|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GCDR")
-								|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GDRM")
-								|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GDRA")){
-							perfilValido = true;
-							break;
+						if( perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GEEM")
+							|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GEEMM")
+								|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("PFS")){
+							perfilPraValidar = true;
 						}
 
 					}
 
 
-					empresaTrabalhadorLotacaoList = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
+					if(perfilPraValidar) {
+						empresaTrabalhadorLotacaoList = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
+						if (empresaTrabalhadorLotacaoList == null || empresaTrabalhadorLotacaoList.size() == 0) {
 
-					if (empresaTrabalhadorLotacaoList == null || empresaTrabalhadorLotacaoList.size() == 0) {
-
-						if( !perfilValido ) {
 							throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
 						}
-
 					}
+
 
 
 				} else {

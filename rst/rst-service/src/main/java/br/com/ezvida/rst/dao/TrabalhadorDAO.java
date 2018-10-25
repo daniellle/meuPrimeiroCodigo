@@ -5,6 +5,8 @@ import br.com.ezvida.rst.dao.filter.ListaPaginada;
 import br.com.ezvida.rst.dao.filter.TrabalhadorFilter;
 import br.com.ezvida.rst.enums.Situacao;
 import br.com.ezvida.rst.model.Trabalhador;
+import br.com.ezvida.rst.model.UnidadeObra;
+import br.com.ezvida.rst.model.UnidadeObraContratoUat;
 import com.google.common.collect.Maps;
 import fw.core.jpa.BaseDAO;
 import fw.core.jpa.DAOUtil;
@@ -390,7 +392,17 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 
     public Long buscarVidaAtiva(String id) {
         LOGGER.debug("Pesquisando Vida Ativa do trabalhador por id.");
-        Query query = criarConsulta("select count(t.id) from EmpresaTrabalhador t where t.trabalhador.id = :id and t.dataFimContrato >= current_date ");
+        //Query query = criarConsulta("select count(t.id) from EmpresaTrabalhador t where t.trabalhador.id = :id and t.dataFimContrato >= current_date ");
+        StringBuilder jqpl = new StringBuilder();
+        jqpl.append("select count(t.id_trabalhador) from UnidadeObraContratoUat uocu inner join uocu.unidadeObra o on uocu.id_und_obra_fk = o.id_und_obra ")
+             .append(" inner join EmpresaLotacao l on o.id_und_obra = l.id_und_obra_fk ")
+             .append(" inner join EmpresaTrabalhadorLotacao l2 on l.id_empresa_lotacao = l2.id_emp_lotacao_fk ")
+             .append(" inner join EmpresaTrabalhador et on l2.id_empr_trabalhador_fk = et.id_emp_trabalhador ")
+             .append(" inner join Trabalhador t on et.id_trabalhador_fk = t.id_trabalhador ")
+             .append(" where ((l2.dt_desligamento is null or l2.dt_desligamento > now()) and (l2.fl_inativo = 'N' or l2.fl_inativo is null)) ")
+             .append(" and (uocu.dt_contrato_ini is not null and uocu.dt_contrato_ini < now()) and (uocu.dt_contrato_fim is null or uocu.dt_contrato_fim > now()) ")
+             .append(" and t.id_trabalhador =:id ");
+        Query query = criarConsultaPorTipo(jqpl.toString());
         query.setParameter("id", Long.parseLong(id));
         return DAOUtil.getSingleResult(query);
     }

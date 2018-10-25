@@ -64,6 +64,8 @@ public class CredencialService extends BaseService {
 
 			LOGGER.debug("Solicitando autorizacao do usuario [ {} ]", login);
 
+
+
 			empresaTrabalhadorLotacaoService.validarTrabalhador(login);
 
 			return gerarToken(usuarioService.getUsuario(login));

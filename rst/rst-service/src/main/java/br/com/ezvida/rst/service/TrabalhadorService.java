@@ -65,6 +65,9 @@ public class TrabalhadorService extends BaseService {
     private UsuarioEntidadeService usuarioEntidadeService;
 
     @Inject
+    private EmpresaTrabalhadorLotacaoService empresaTrabalhadorLotacaoService;
+
+    @Inject
     @Preferencial
     private UsuarioService usuarioService;
 
@@ -109,6 +112,7 @@ public class TrabalhadorService extends BaseService {
     public Trabalhador buscarTrabalhadorPrimeiroAcesso(String cpf, String dataNascimento) {
         Usuario u = null;
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
         Date date = null;
         try {
             date = (Date) formatter.parse(dataNascimento);
@@ -125,6 +129,13 @@ public class TrabalhadorService extends BaseService {
         if (trabalhador.getId() != null && trabalhador.getTermo() != null
                 && trabalhador.getTermo().equals(SimNao.SIM)) {
             throw new BusinessErrorException(getMensagem("app_rst_trabalhador_ja_rezlizou_primeiro_acesso"));
+        }
+
+        try{
+            empresaTrabalhadorLotacaoService.validarTrabalhador(trabalhador.getCpf());
+        }
+        catch (Exception e){
+            throw new BusinessErrorException(getMensagem("app_rst_primeiro_acesso_erro_vida_inativa"));
         }
 
         try{
@@ -246,6 +257,11 @@ public class TrabalhadorService extends BaseService {
         if (trab != null) {
             if (trab.getDataFalecimento() != null) {
                 throw new BusinessErrorException(getMensagem("app_rst_primeiro_acesso_erro_data_falecimento"));
+            }
+            String id = trab.getId().toString();
+
+            if(buscarTrabalhadorVidaAtiva(id) == null){
+                throw new BusinessErrorException(getMensagem("app_rst_primeiro_acesso_erro_vida_inativa"));
             }
 
             definirPerfilSistema(primeiroAcesso);
