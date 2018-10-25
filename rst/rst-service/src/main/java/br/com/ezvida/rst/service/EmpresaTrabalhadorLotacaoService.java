@@ -8,6 +8,9 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import br.com.ezvida.girst.apiclient.model.Usuario;
+import br.com.ezvida.girst.apiclient.model.UsuarioPerfilSistema;
+import br.com.ezvida.rst.anotacoes.Preferencial;
 import br.com.ezvida.rst.utils.ValidadorUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -36,6 +39,10 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 
 	@Inject
 	private EmpresaTrabalhadorService empresaTrabalhadorService;
+
+	@Inject
+	@Preferencial
+	private UsuarioService usuarioService;
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public ListaPaginada<EmpresaTrabalhadorLotacao> pesquisarPaginado(
@@ -138,16 +145,48 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<EmpresaTrabalhadorLotacao> validarTrabalhador(String cpf){
-		List<EmpresaTrabalhadorLotacao> empresaTrabalhadorLotacaoList;
+
+		List<EmpresaTrabalhadorLotacao> empresaTrabalhadorLotacaoList = null;
 
 		if( cpf != null ) {
 			cpf = cpf.replace(".","").replace("-","");
 			if (ValidadorUtils.isValidCPF(cpf)) {
-				empresaTrabalhadorLotacaoList = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
 
-				if (empresaTrabalhadorLotacaoList == null || empresaTrabalhadorLotacaoList.size() == 0) {
+				Usuario usuario = usuarioService.buscarPorLogin(cpf);
+
+				if( usuario != null ) {
+
+					boolean perfilValido = false;
+					for( UsuarioPerfilSistema perfilSistema : usuario.getPerfisSistema() ){
+
+						if( perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("MTSDN")
+							|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GCDN")
+								|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("MTSDR")
+								|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GCDR")
+								|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GDRM")
+								|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GDRA")){
+							perfilValido = true;
+							break;
+						}
+
+					}
+
+
+					empresaTrabalhadorLotacaoList = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
+
+					if (empresaTrabalhadorLotacaoList == null || empresaTrabalhadorLotacaoList.size() == 0) {
+
+						if( !perfilValido ) {
+							throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
+						}
+
+					}
+
+
+				} else {
 					throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
 				}
+
 			} else {
 				throw new BusinessErrorException(getMensagem("app_rst_empregado_cpf_invalido"));
 			}
