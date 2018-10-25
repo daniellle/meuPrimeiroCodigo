@@ -246,7 +246,7 @@ export class ManterSistemaCredenciadoComponent extends BaseComponent implements 
             this.converterFormParaModel();
             this.sistemaCredenciadoService.salvar(this.sistemaCredenciado).subscribe((retorno: any) => {
             this.mensagemSucesso(retorno['content']);
-               // this.voltar();
+            this.voltar();
             }, (error) => {
                 this.mensagemError(error['content'] || error);
             });

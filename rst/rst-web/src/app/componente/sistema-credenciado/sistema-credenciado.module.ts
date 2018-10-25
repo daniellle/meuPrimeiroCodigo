@@ -12,8 +12,19 @@ import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
 import { AutorizacaoGuard } from 'app/seguranca/autorizacao.guard';
 import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
 import { CompartilhadoModule } from 'app/compartilhado/compartilhado.module';
+import { PesquisaSistemaCredenciadoComponent } from './pesquisa-sistema-credenciado/pesquisa-sistema-credenciado.component';
 
 const routes: Routes = [
+
+    {
+        path: '', component: PesquisaSistemaCredenciadoComponent,
+        canActivate: [AutorizacaoGuard],
+        data: {
+            title: MensagemProperties.app_rst_sistema_credenciado_pesquisar,
+            permissoes: [PermissoesEnum.SISTEMA_CREDENCIADO_PESQUISAR],
+        },
+    },
+
     {
         path: 'cadastrar', component: ManterSistemaCredenciadoComponent,
         canActivate: [AutorizacaoGuard],
@@ -32,7 +43,7 @@ const routes: Routes = [
         RouterModule,
         PaginationModule.forRoot(),
     ],
-    declarations: [ManterSistemaCredenciadoComponent],
+    declarations: [ManterSistemaCredenciadoComponent, PesquisaSistemaCredenciadoComponent],
     providers: [
         BloqueioService,
         PerfilService,

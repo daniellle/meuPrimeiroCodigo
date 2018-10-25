@@ -9,7 +9,6 @@ import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.service.SistemaCredenciadoService;
 import br.com.ezvida.rst.web.auditoria.ClienteInfos;
 import br.com.ezvida.rst.web.util.Response;
-import fw.core.exception.BusinessException;
 import fw.security.binding.Autorizacao;
 import fw.security.binding.Permissao;
 import fw.web.endpoint.SegurancaEndpoint;
@@ -43,10 +42,10 @@ public class SistemaCredenciadoEndPoint extends SegurancaEndpoint<SistemaCredenc
         @Context SecurityContext context,
         @Context HttpServletRequest request,
         @Encoded SistemaCredenciado sistemaCredenciado) {
-            String mensagem = sistemaCredenciadoService.cadastrar(sistemaCredenciado, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.INCLUSAO, Funcionalidade.SISTEMAS_CREDENCIADOS));
-            return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-                .entity(serializar(new Response<>(mensagem))).build();
+        String mensagem = sistemaCredenciadoService.cadastrar(sistemaCredenciado, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.INCLUSAO, Funcionalidade.SISTEMAS_CREDENCIADOS));
+        return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(new Response<>(mensagem))).build();
     }
 
     @PUT
@@ -58,23 +57,14 @@ public class SistemaCredenciadoEndPoint extends SegurancaEndpoint<SistemaCredenc
         @Context SecurityContext context,
         @Context HttpServletRequest request,
         @Encoded SistemaCredenciado sistemaCredenciado) {
-        try {
-            String mensagem = sistemaCredenciadoService.alterar(sistemaCredenciado, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.SISTEMAS_CREDENCIADOS));
-            return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-                .entity(serializar(mensagem)).build();
-        } catch (BusinessException e) {
-            return javax.ws.rs.core.Response.status(HttpServletResponse.SC_BAD_REQUEST).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-                .entity(serializar(e.getMessage())).build();
-        } catch (Exception e) {
-            return javax.ws.rs.core.Response.status(HttpServletResponse.SC_BAD_REQUEST).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-                .entity(serializar(getMensagem("app_validacao_error"))).build();
-        }
+
+        String mensagem = sistemaCredenciadoService.alterar(sistemaCredenciado, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.SISTEMAS_CREDENCIADOS));
+        return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(mensagem)).build();
     }
 
-    @POST
+    @GET
     @Encoded
     @Path("/paginado")
     @Produces(MediaType.APPLICATION_JSON)
@@ -83,22 +73,18 @@ public class SistemaCredenciadoEndPoint extends SegurancaEndpoint<SistemaCredenc
     public javax.ws.rs.core.Response pesquisarPaginado(
         @Context SecurityContext context,
         @Context HttpServletRequest request,
-        @Encoded SistemaCredenciadoFilter sistemaCredenciadoFilter
+        @QueryParam("cnpj") String cnpj,
+        @QueryParam("nomeResponsavel") String nomeResponsavel,
+        @QueryParam("sistema") String sistema,
+        @QueryParam("bloqueado") Boolean bloqueado,
+        @DefaultValue("1") @QueryParam("pagina") Integer pagina,
+        @DefaultValue("20") @QueryParam("qtdRegistro") Integer quantidadeRegistro
     ) {
-        try {
-            ListaPaginada<SistemaCredenciado> mensagem = sistemaCredenciadoService.pesquisarPaginado(sistemaCredenciadoFilter != null ? sistemaCredenciadoFilter : new SistemaCredenciadoFilter(), ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.SISTEMAS_CREDENCIADOS));
-            return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-                .entity(serializar(mensagem)).build();
-        } catch (BusinessException e) {
-            return javax.ws.rs.core.Response.status(HttpServletResponse.SC_BAD_REQUEST).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-                .entity(serializar(e.getMessage())).build();
-        } catch (Exception e) {
-            return javax.ws.rs.core.Response.status(HttpServletResponse.SC_BAD_REQUEST).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-                .entity(serializar(getMensagem("app_validacao_error"))).build();
-        }
+        SistemaCredenciadoFilter sistemaCredenciadoFilter = new SistemaCredenciadoFilter(cnpj, nomeResponsavel, sistema, bloqueado, pagina, quantidadeRegistro);
+        ListaPaginada<SistemaCredenciado> mensagem = sistemaCredenciadoService.pesquisarPaginado(sistemaCredenciadoFilter, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.SISTEMAS_CREDENCIADOS));
+        return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(mensagem)).build();
     }
 
     @GET
@@ -111,20 +97,10 @@ public class SistemaCredenciadoEndPoint extends SegurancaEndpoint<SistemaCredenc
         @Context SecurityContext context,
         @Context HttpServletRequest request) {
 
-        try {
-            SistemaCredenciado sistemaCredenciado = sistemaCredenciadoService.findById(id, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.SISTEMAS_CREDENCIADOS));
-            return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-                .entity(serializar(sistemaCredenciado)).build();
-        } catch (BusinessException e) {
-            return javax.ws.rs.core.Response.status(HttpServletResponse.SC_BAD_REQUEST).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-                .entity(serializar(e.getMessage())).build();
-        } catch (Exception e) {
-            return javax.ws.rs.core.Response.status(HttpServletResponse.SC_BAD_REQUEST).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-                .entity(serializar(getMensagem("app_validacao_error"))).build();
-        }
+        SistemaCredenciado sistemaCredenciado = sistemaCredenciadoService.findById(id, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.SISTEMAS_CREDENCIADOS));
+        return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(sistemaCredenciado)).build();
     }
 
     @PUT
@@ -136,19 +112,10 @@ public class SistemaCredenciadoEndPoint extends SegurancaEndpoint<SistemaCredenc
         @Context SecurityContext context,
         @Context HttpServletRequest request,
         @Encoded SistemaCredenciado sistemaCredenciado) {
-        try {
-            String mensagem = sistemaCredenciadoService.ativarDesativar(sistemaCredenciado, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ATIVAR_DESATIVAR, Funcionalidade.SISTEMAS_CREDENCIADOS));
-            return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-                .entity(serializar(mensagem)).build();
-        } catch (BusinessException e) {
-            return javax.ws.rs.core.Response.status(HttpServletResponse.SC_BAD_REQUEST).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-                .entity(serializar(e.getMessage())).build();
-        } catch (Exception e) {
-            return javax.ws.rs.core.Response.status(HttpServletResponse.SC_BAD_REQUEST).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion())
-                .entity(serializar(getMensagem("app_validacao_error"))).build();
-        }
+
+        String mensagem = sistemaCredenciadoService.ativarDesativar(sistemaCredenciado, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ATIVAR_DESATIVAR, Funcionalidade.SISTEMAS_CREDENCIADOS));
+        return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(mensagem)).build();
     }
 }

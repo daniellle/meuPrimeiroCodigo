@@ -619,6 +619,8 @@ export const MensagemProperties = {
 
   //Sistema Credenciado
   app_rst_sistema_credenciado_cadastrar: 'Cadastro de Sistema Credenciado',
+  app_rst_sistema_credenciado_pesquisar: 'Pesquisar Sistema Credenciado',
+  app_rst_sistema_credenciado: 'Sistema Credenciado',
 
   senha_atual: 'Digite sua Senha Atual',
   nova_senha: 'Digite a sua Nova Senha',
