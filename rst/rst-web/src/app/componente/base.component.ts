@@ -320,7 +320,6 @@ export abstract class BaseComponent {
 
     naoTemPapel(...papeis: PerfilEnum[]): boolean {
         if (this.isNotEmpty(papeis)) {
-            console.log(papeis);
             return !this.contemPapel(papeis);
         }
     }
