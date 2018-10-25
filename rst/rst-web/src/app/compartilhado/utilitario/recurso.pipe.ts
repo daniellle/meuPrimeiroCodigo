@@ -252,6 +252,8 @@ export const MensagemProperties = {
   app_rst_telefone_responsavel: 'Telefone Responsável',
   app_rst_label_sistema: 'Sistema',
   app_rst_label_entidade: 'Entidade',
+  app_rst_label_data_criacao: 'Data de criação',
+
   // MSG COMPARTILHADAS
   app_rst_msg_nenhum_registro_adicionado: 'Nenhum registro adicionado.',
   app_rst_campo_obrigatorio: 'O campo {0} é obrigatório',
@@ -621,6 +623,7 @@ export const MensagemProperties = {
   app_rst_sistema_credenciado_cadastrar: 'Cadastro de Sistema Credenciado',
   app_rst_sistema_credenciado_pesquisar: 'Pesquisar Sistema Credenciado',
   app_rst_sistema_credenciado: 'Sistema Credenciado',
+  app_rst_sistema_credenciado_alterar: 'Alterar Sistema Credenciado',
 
   senha_atual: 'Digite sua Senha Atual',
   nova_senha: 'Digite a sua Nova Senha',

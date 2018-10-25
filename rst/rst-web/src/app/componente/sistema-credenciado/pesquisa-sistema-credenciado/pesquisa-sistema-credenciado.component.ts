@@ -52,7 +52,7 @@ export class PesquisaSistemaCredenciadoComponent extends BaseComponent implement
                         this.mensagemError(MensagemProperties.app_rst_nenhum_registro_encontrado);
                     }
                 }, (error) => {
-                    this.mensagemError(error.content || error);
+                    this.mensagemError(error);
                 });
         }
     }
@@ -92,5 +92,11 @@ export class PesquisaSistemaCredenciadoComponent extends BaseComponent implement
             }, (error) => {
                 this.mensagemError(error);
             });
+    }
+
+    selecionar(model: any) {
+        if (model && model.id) {
+            this.router.navigate([model.id], { relativeTo: this.activatedRoute });
+        }
     }
 }

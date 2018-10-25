@@ -33,6 +33,15 @@ const routes: Routes = [
             permissoes: [PermissoesEnum.SISTEMA_CREDENCIADO_CADASTRAR],
         },
     },
+
+    {
+        path: ':id', component: ManterSistemaCredenciadoComponent,
+        canActivate: [AutorizacaoGuard],
+        data: {
+            title: MensagemProperties.app_rst_sistema_credenciado_alterar,
+            permissoes: [PermissoesEnum.SISTEMA_CREDENCIADO_ALTERAR],
+        },
+    },
 ];
 
 @NgModule({

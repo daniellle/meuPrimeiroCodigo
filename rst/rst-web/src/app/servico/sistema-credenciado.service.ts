@@ -37,9 +37,9 @@ export class SistemaCredenciadoService extends BaseService<SistemaCredenciado> {
 
     public editar(sistemaCredenciado: SistemaCredenciado): Observable<String> {
         return super.put(SistemaCredenciadoService.ENDPOINT, sistemaCredenciado)
-            .map((response: Response) => {
+            .map((response: any) => {
                 return response;
-            }).catch((error: Response) => {
+            }).catch((error: any) => {
                 return Observable.throw(error);
             }).finally(() => {
                 this.bloqueioService.evento.emit(true);

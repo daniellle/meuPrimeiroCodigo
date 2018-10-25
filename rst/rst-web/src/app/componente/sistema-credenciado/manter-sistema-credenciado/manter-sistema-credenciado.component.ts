@@ -6,13 +6,13 @@ import { BaseComponent } from 'app/componente/base.component';
 import { BloqueioService } from 'app/servico/bloqueio.service';
 import { SistemaCredenciadoService } from 'app/servico/sistema-credenciado.service';
 import { SistemaCredenciado } from 'app/modelo/sistema-credenciado.model';
-import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
-import { Seguranca } from 'app/compartilhado/utilitario/seguranca.model';
 import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
 import { ValidateCNPJ } from 'app/compartilhado/validators/cnpj.validator';
 import { ValidateEmail } from 'app/compartilhado/validators/email.validator';
 import { MascaraUtil } from 'app/compartilhado/utilitario/mascara.util';
 import { environment } from 'environments/environment.homolog';
+import { Seguranca } from 'app/compartilhado/utilitario/seguranca.model';
+import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
 
 @Component({
     selector: 'app-manter-sistema-credenciado',
@@ -36,6 +36,11 @@ export class ManterSistemaCredenciadoComponent extends BaseComponent implements 
         super(bloqueioService, dialogo);
     }
 
+    private emModoConsulta() {
+        this.modoConsulta = !Seguranca.isPermitido(
+            [PermissoesEnum.SISTEMA_CREDENCIADO_CADASTRAR, PermissoesEnum.SISTEMA_CREDENCIADO_ALTERAR]);
+    }
+
     ngOnInit() {
         this.route.params.subscribe((params) => {
             this.id = params['id'];
@@ -45,7 +50,7 @@ export class ManterSistemaCredenciadoComponent extends BaseComponent implements 
                 this.buscarPorId();
             }
         });
-        this.modoConsulta = !Seguranca.isPermitido([PermissoesEnum.SISTEMA_CREDENCIADO_CADASTRAR]);
+
         this.title = MensagemProperties.app_rst_sistema_credenciado_cadastrar;
         this.criarForm();
     }
@@ -65,7 +70,7 @@ export class ManterSistemaCredenciadoComponent extends BaseComponent implements 
         this.sistemaCredenciadoForm = this.formBuilder.group({
 
             cnpj: [
-                { value: null, disabled: this.modoConsulta || this.modoAlterar },
+                { value: null, disabled: this.modoAlterar || this.emModoConsulta() },
                 Validators.compose([
                     ValidateCNPJ,
                     Validators.required,
@@ -73,7 +78,7 @@ export class ManterSistemaCredenciadoComponent extends BaseComponent implements 
             ],
 
             nomeResponsavel: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.emModoConsulta() },
                 Validators.compose([
                     Validators.required,
                     Validators.maxLength(160),
@@ -81,7 +86,7 @@ export class ManterSistemaCredenciadoComponent extends BaseComponent implements 
             ],
 
             emailResponsavel: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.emModoConsulta() },
                 Validators.compose([
                     Validators.required,
                     Validators.maxLength(100),
@@ -90,14 +95,14 @@ export class ManterSistemaCredenciadoComponent extends BaseComponent implements 
             ],
 
             telefoneResponsavel: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.emModoConsulta() },
                 Validators.compose([
                     Validators.maxLength(11),
                 ]),
             ],
 
             sistema: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.modoAlterar || this.emModoConsulta() },
                 Validators.compose([
                     Validators.required,
                     Validators.maxLength(160),
@@ -105,7 +110,7 @@ export class ManterSistemaCredenciadoComponent extends BaseComponent implements 
             ],
 
             entidade: [
-                { value: null, disabled: this.modoConsulta },
+                { value: null, disabled: this.modoAlterar || this.emModoConsulta() },
                 Validators.compose([
                     Validators.required,
                     Validators.maxLength(8),
@@ -234,22 +239,27 @@ export class ManterSistemaCredenciadoComponent extends BaseComponent implements 
         this.sistemaCredenciado.telefoneResponsavel = MascaraUtil.removerMascara(formModel.telefoneResponsavel.value);
         this.sistemaCredenciado.sistema = formModel.sistema.value;
         this.sistemaCredenciado.entidade = formModel.entidade.value;
+        this.sistemaCredenciado.dataCriacao = null;
+        this.sistemaCredenciado.dataAtualizacao = null;
+        this.sistemaCredenciado.dataDesativacao = null;
     }
 
     voltar(): void {
-        this.router.navigate([this.id ? `${environment.path_raiz_cadastro}/sistema-credenciado/${this.id}` :
-            `${environment.path_raiz_cadastro}/sistema-credenciado`]);
+        this.router.navigate([`${environment.path_raiz_cadastro}/sistema-credenciado`]);
     }
 
     salvar(): void {
         if (this.validarCampos()) {
             this.converterFormParaModel();
             this.sistemaCredenciadoService.salvar(this.sistemaCredenciado).subscribe((retorno: any) => {
-            this.mensagemSucesso(retorno['content']);
-            this.voltar();
+                this.mensagemSucesso(retorno['content']);
+                this.voltar();
             }, (error) => {
                 this.mensagemError(error['content'] || error);
-            });
+            }
+                , () => {
+                    this.voltar();
+                });
         }
     }
 

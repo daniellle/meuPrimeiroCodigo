@@ -72,13 +72,22 @@
                     <tr>
                         <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
                         <th class="label"><span>{{ 'app_rst_labels_nome_responsavel' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_email_responsavel' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_telefone_responsavel' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_label_sistema' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_label_entidade' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_label_data_criacao' | recurso }}</span></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!--Selecionar item evento click na proxima tr-->
-                    <tr *ngFor="let item of sistemasCredenciados" >
-                        <td class="col-quebra">&nbsp;{{item.cnpj | cnpjPipe }}</td>
+                    <tr *ngFor="let item of sistemasCredenciados" (click)="selecionar(item)">
+                        <td class="">&nbsp;{{item.cnpj | cnpjPipe }}</td>
                         <td class="col-quebra">&nbsp;{{item.nomeResponsavel}}</td>
+                        <td class="col-quebra">&nbsp;{{item.emailResponsavel}}</td>
+                        <td class="">&nbsp;{{item?.telefoneResponsavel | telefonePipe}}</td>
+                        <td class="">&nbsp;{{item.sistema}}</td>
+                        <td class="">&nbsp;{{item.entidade}}</td>
+                        <td class="">&nbsp;{{item?.dataCriacao | date: 'dd/MM/yyyy' }}</td>
                     </tr>
                 </tbody>
             </table>
