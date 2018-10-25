@@ -24,6 +24,7 @@ export const MensagemProperties = {
   app_rst_menu_sair: 'Sair',
   app_rst_registro_novo: 'Novo',
   app_rst_autenticacao_entar: 'Entrar',
+  app_rst_retorno_pagina_inicial:'Retornar para a Página Inicial',
 
   // LABELS COMPARTILHADOS
   app_rst_menu_cadastro: 'Cadastro',

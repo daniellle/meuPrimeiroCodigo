@@ -17,3 +17,17 @@ api_private: 'https://dev-www.sesivivamais.com.br/rst/api/private',
 api_public: 'https://dev-www.sesivivamais.com.br/rst/api/public',
 url_portal: 'https://dev-www.sesivivamais.com.br',
 */
+
+/*
+ api_private: 'https://sp.duendeverde.itoc.solutis.net.br/rst/api/private',
+    api_public: 'https://sp.duendeverde.itoc.solutis.net.br/rst/api/public',
+    imunizacao_api: 'http://localhost:8081',
+    url_portal: 'https://sp.duendeverde.itoc.solutis.net.br',
+ */
+
+/*
+ api_private: 'https://sso-ezvida.solutis.com.br/rst/api/private',
+    api_public: 'https://sso-ezvida.solutis.com.br/rst/api/public',
+    imunizacao_api: 'http://localhost:8081',
+    url_portal: 'https://sso-ezvida.solutis.com.br',
+ */

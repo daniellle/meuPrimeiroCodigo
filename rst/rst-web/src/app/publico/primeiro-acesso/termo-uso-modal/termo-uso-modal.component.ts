@@ -123,6 +123,11 @@ export class TermoUsoModalComponent extends BaseComponent implements OnInit {
       verificador = false;
     }
 
+    if (verificador && !this.validarPassPattern(this.formularioSenha.controls['confirmarSenha'].value)) {
+      this.mensagemError(MensagemProperties.app_rst_alterar_senha_confirmar_invalido);
+      verificador = false;
+    }
+
     return verificador;
   }
 
@@ -222,7 +227,7 @@ export class TermoUsoModalComponent extends BaseComponent implements OnInit {
   }
 
   getPattern(): string {
-    return '(?=^.{8,}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$';
+    return '(?=^.{8,50}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$';
   }
 
   validarPassPattern(senha: string): boolean {
