@@ -163,6 +163,7 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 							|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GEEMM")
 								|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("PFS")){
 							perfilPraValidar = true;
+							break;
 						}
 
 					}
