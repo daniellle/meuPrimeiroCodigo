@@ -83,6 +83,10 @@ export class PesquisaSistemaCredenciadoComponent extends BaseComponent implement
         return Seguranca.isPermitido([PermissoesEnum.SISTEMA_CREDENCIADO_CADASTRAR]);
     }
 
+    hasPermissaoAtivarDesativar() {
+        return Seguranca.isPermitido([PermissoesEnum.SISTEMA_CREDENCIADO_ATIVAR_DESATIVAR]);
+    }
+
     pageChanged(event: any): void {
         this.removerMascara();
         this.paginacao.pagina = event.page;
@@ -98,5 +102,16 @@ export class PesquisaSistemaCredenciadoComponent extends BaseComponent implement
         if (model && model.id) {
             this.router.navigate([model.id], { relativeTo: this.activatedRoute });
         }
+    }
+
+    ativarDesativar(model: any) {
+        model.dataCriacao = null;
+        model.dataAtualizacao = null;
+        model.dataDesativacao = null; this.sistemaCredenciadoService.ativarDesativar(model).subscribe((retorno: any) => {
+            this.mensagemSucesso(retorno['content']);
+            this.pesquisar();
+        }, (error) => {
+            this.mensagemError(error['content'] || error);
+        });
     }
 }

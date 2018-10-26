@@ -116,6 +116,6 @@ public class SistemaCredenciadoEndPoint extends SegurancaEndpoint<SistemaCredenc
         String mensagem = sistemaCredenciadoService.ativarDesativar(sistemaCredenciado, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ATIVAR_DESATIVAR, Funcionalidade.SISTEMAS_CREDENCIADOS));
         return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
             .header("Content-Version", getApplicationVersion())
-            .entity(serializar(mensagem)).build();
+            .entity(serializar(new Response<>(mensagem))).build();
     }
 }

@@ -35,7 +35,7 @@ export class SistemaCredenciadoService extends BaseService<SistemaCredenciado> {
         }
     }
 
-    public editar(sistemaCredenciado: SistemaCredenciado): Observable<String> {
+    public editar(sistemaCredenciado: SistemaCredenciado): Observable<any> {
         return super.put(SistemaCredenciadoService.ENDPOINT, sistemaCredenciado)
             .map((response: any) => {
                 return response;
@@ -62,6 +62,17 @@ export class SistemaCredenciadoService extends BaseService<SistemaCredenciado> {
                 return response;
             }).catch((error: any) => {
                 return Observable.throw(error);
+            });
+    }
+
+    public ativarDesativar(sistemaCredenciado: SistemaCredenciado): Observable<any> {
+        return super.put(`${SistemaCredenciadoService.ENDPOINT}ativardesativar`, sistemaCredenciado)
+            .map((response: any) => {
+                return response;
+            }).catch((error: any) => {
+                return Observable.throw(error);
+            }).finally(() => {
+                this.bloqueioService.evento.emit(true);
             });
     }
 
