@@ -1,6 +1,14 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v2.81.2**
+===========
+
+(RELEASE EM 26/10/2018)
+
+- [CADASTROS] Corrigido: Ao acessar o módulo com o perfil SUPERINTENDENTE DR e tentar criar um perfil GESTOR DR MASTER não consigo vincular um DR ao novo usuário cadastrado. Surge mensagem de erro e o resultado de pesquisa para o DR não é exibido.
+- [CADASTROS] Corrigido: O Gestor DR Aplicações tenta criar usuário GESTOR UNIDADE SESI Card do DR e da Unidade não são exibidos para vinculação.
+
 **v2.81.1**
 ===========
 
