@@ -76,6 +76,16 @@ export class SistemaCredenciadoService extends BaseService<SistemaCredenciado> {
             });
     }
 
+    public resetarClientSecret(sistemaCredenciado: SistemaCredenciado): Observable<any> {
+        return super.putPublic('/v1/oauth/credencial/reset', sistemaCredenciado).map((response: any) => {
+            return response;
+        }).catch((error: any) => {
+            return Observable.throw(error);
+        }).finally(() => {
+            this.bloqueioService.evento.emit(true);
+        });
+    }
+
     private getParams(filtro: FiltroSistemaCredenciado, paginacao: Paginacao): HttpParams {
         let params = new HttpParams();
 

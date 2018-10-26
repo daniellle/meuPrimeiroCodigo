@@ -150,6 +150,6 @@ public class AutenticacaoEndpoint extends SegurancaEndpoint<Token> {
         String mensagem = sistemaCredenciadoService.resetarClientSecret(sistemaCredenciado);
         return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
             .header("Content-Version", getApplicationVersion())
-            .entity(serializar(mensagem)).build();
+            .entity(serializar(new br.com.ezvida.rst.web.util.Response<>(mensagem))).build();
     }
 }

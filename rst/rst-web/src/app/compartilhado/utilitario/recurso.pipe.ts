@@ -254,6 +254,7 @@ export const MensagemProperties = {
   app_rst_label_sistema: 'Sistema',
   app_rst_label_entidade: 'Entidade',
   app_rst_label_data_criacao: 'Data de criação',
+  app_rst_label_client_id: 'Client id',
 
   // MSG COMPARTILHADAS
   app_rst_msg_nenhum_registro_adicionado: 'Nenhum registro adicionado.',
@@ -625,6 +626,7 @@ export const MensagemProperties = {
   app_rst_sistema_credenciado_pesquisar: 'Pesquisar Sistema Credenciado',
   app_rst_sistema_credenciado: 'Sistema Credenciado',
   app_rst_sistema_credenciado_alterar: 'Alterar Sistema Credenciado',
+  app_rst_sistema_credenciado_reset_client_secret: 'Reset client secret',
 
   senha_atual: 'Digite sua Senha Atual',
   nova_senha: 'Digite a sua Nova Senha',
