@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </form>
-            <div class="container-form space-up">
+            <div *ngIf="showCardCentral()" class="container-form space-up">
                 <div class="container-subtitulo">
                     <p>
                         Central de Atendimento
@@ -35,7 +35,9 @@
                 </div>
 
                 <div class="row">
-
+                    <div class="form-group col-sm-11 mx-auto">
+                        Parece que o e-mail não foi encontrado, verifique se está correto.Se necessário Entre em contato com a central de relacionamento do Sesi Viva+ através de {{telefone}}.
+                    </div>
                 </div>
             </div>
         </div>
