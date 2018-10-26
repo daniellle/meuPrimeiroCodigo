@@ -133,6 +133,18 @@ public class UsuarioEntidadeService extends BaseService {
         return usuarioEntidade;
     }
 
+    @TransactionAttribute (TransactionAttributeType.REQUIRED)
+    public Object alterarUsuarioEntidade(UsuarioEntidade usuarioEntidade, ClienteAuditoria auditoria){
+        if(usuarioEntidade.getId() != null){
+            usuarioEntidade = usuarioEntidadeDAO.pesquisarPorId(usuarioEntidade.getId());
+            if(usuarioEntidade.getDataAlteracao() == null ){
+                usuarioEntidade.setDataAlteracao(new Date());
+                salvar(usuarioEntidade, auditoria);
+            }
+        }
+        return usuarioEntidade;
+    }
+
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<UsuarioEntidade> validarAcessoAoUsuario(String cpf, DadosFilter dadosFilter, ClienteAuditoria auditoria) {
 
