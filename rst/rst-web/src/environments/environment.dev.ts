@@ -1,8 +1,8 @@
 export const environment = {
     production: true,
     envName: 'dev',
-	api_private: 'http://localhost:8080/rst/api/private',
-	api_public: 'http://localhost:8080/rst/api/public',
+    api_private: 'https://sp.duendeverde.itoc.solutis.net.br/rst/api/private',
+    api_public: 'https://sp.duendeverde.itoc.solutis.net.br/rst/api/public',
     imunizacao_api: 'http://localhost:8081',
     url_portal: 'https://sp.duendeverde.itoc.solutis.net.br',
     path_raiz_cadastro: 'cadastro',
