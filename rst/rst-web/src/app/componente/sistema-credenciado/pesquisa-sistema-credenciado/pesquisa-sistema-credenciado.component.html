@@ -77,7 +77,7 @@
                         <th class="label"><span>{{ 'app_rst_label_sistema' | recurso }}</span></th>
                         <th class="label"><span>{{ 'app_rst_label_entidade' | recurso }}</span></th>
                         <th class="label"><span>{{ 'app_rst_label_data_criacao' | recurso }}</span></th>
-                        <th class="label" style="width: 10%;" *ngIf="hasPermissaoAtivarDesativar()">&nbsp;</th>
+                        <th class="label" *ngIf="hasPermissaoAtivarDesativar()"><span>{{ 'app_rst_labels_status' | recurso }}</span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -85,12 +85,13 @@
                         <td class="">&nbsp;{{item.cnpj | cnpjPipe }}</td>
                         <td class="col-quebra">&nbsp;{{item.nomeResponsavel}}</td>
                         <td class="col-quebra">&nbsp;{{item.emailResponsavel}}</td>
-                        <td class="">&nbsp;{{item?.telefoneResponsavel | telefonePipe}}</td>
-                        <td class="">&nbsp;{{item.sistema}}</td>
-                        <td class="">&nbsp;{{item.entidade}}</td>
-                        <td class="">&nbsp;{{item?.dataCriacao | date: 'dd/MM/yyyy' }}</td>
+                        <td>&nbsp;{{item?.telefoneResponsavel | telefonePipe}}</td>
+                        <td>&nbsp;{{item.sistema}}</td>
+                        <td>&nbsp;{{item.entidade | uppercase}}</td>
+                        <td>&nbsp;{{item?.dataCriacao | date: 'dd/MM/yyyy' }}</td>
                         <td class="text-center" *ngIf="hasPermissaoAtivarDesativar()">
-                            <button class="btn-link" (click)="$event.stopPropagation(); ativarDesativar(item)">
+                            <button class="btn-link" (click)="$event.stopPropagation(); ativarDesativar(item)" #tooltip="mdTooltip" color="'grey'"
+                                [mdTooltip]="item.dataDesativacao  ? 'Ativar' : 'Desativar' " [mdTooltipPosition]="'below'">
                                 <img class="lixo" [src]="item.dataDesativacao  ? 'assets/img/check_verde.svg' : 'assets/img/trash.svg' ">
                             </button>
                         </td>

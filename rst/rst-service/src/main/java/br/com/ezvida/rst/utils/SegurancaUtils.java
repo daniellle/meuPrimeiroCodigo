@@ -23,10 +23,10 @@ public class SegurancaUtils {
     public String validarAutenticacao(HttpServletRequest request) {
         if (ambiente == Ambiente.DESENVOLVIMENTO) {
             LOGGER.warn(" UTILIZANDO SEGURANÇA DO AMBIENTE DE DESENVOLVIMENTO");
-            return "65020081515"; // administrador
+            //return "65020081515"; // administrador
             // return "37139762520"; // adm
             //return "37139762520"; // adm
-            //return "09934689421"; // dna
+            return "09934689421"; // dna
             // return "48552219026"; // gestor dn aplicacoes
              //return "56866951135"; // gestor dr master
             // return "74055251564"; // gestor dr aplicacoes

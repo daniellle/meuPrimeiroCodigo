@@ -24,6 +24,7 @@ export class ManterSistemaCredenciadoComponent extends BaseComponent implements 
     id: number;
     sistemaCredenciado: SistemaCredenciado;
     public sistemaCredenciadoForm: FormGroup;
+    public listEntidades: any[];
 
     constructor(
         private router: Router,
@@ -52,6 +53,7 @@ export class ManterSistemaCredenciadoComponent extends BaseComponent implements 
         });
 
         this.title = MensagemProperties.app_rst_sistema_credenciado_cadastrar;
+        this.listEntidades = this.sistemaCredenciadoService.getListEntidades();
         this.criarForm();
     }
 
@@ -110,7 +112,7 @@ export class ManterSistemaCredenciadoComponent extends BaseComponent implements 
             ],
 
             entidade: [
-                { value: null, disabled: this.modoAlterar || this.emModoConsulta() },
+                { value: undefined, disabled: this.modoAlterar || this.emModoConsulta() },
                 Validators.compose([
                     Validators.required,
                     Validators.maxLength(8),

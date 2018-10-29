@@ -86,6 +86,17 @@ export class SistemaCredenciadoService extends BaseService<SistemaCredenciado> {
         });
     }
 
+    public getListEntidades(): any[] {
+        const listEntidades = [
+            { codigo: 'admin', descricao: 'Admin' },
+            { codigo: 'dn', descricao: 'DN' },
+            { codigo: 'dr', descricao: 'DR' },
+            { codigo: 'unidade', descricao: 'Unidade' },
+            { codigo: 'empresa', descricao: 'Empresa' },
+        ];
+        return listEntidades;
+    }
+
     private getParams(filtro: FiltroSistemaCredenciado, paginacao: Paginacao): HttpParams {
         let params = new HttpParams();
 
