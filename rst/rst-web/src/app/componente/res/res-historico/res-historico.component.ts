@@ -56,7 +56,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
 
     periodoEscolhido = 'Última semana';
     periodoEscolhidoDate: Date;
-    periodos = ['Última semana', 'Último mês', '03 meses', '06 meses', '09 meses', '12 meses', 'Todos'];
+    periodos = ['Último mês', '03 meses', '06 meses', '09 meses', '12 meses', 'Todos'];
 
 
     constructor(protected trabalhadorService: TrabalhadorService,
@@ -291,14 +291,8 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
     atualizarPeriodo(periodo: string) {
 
         this.limparPaginacao();
-        if (periodo == "Última semana") {
-            this.periodoEscolhido = periodo;
-            this.periodoEscolhidoDate = moment(new Date()).subtract(7, 'days');
-            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
 
-
-        }
-        else if (periodo == "Último mês") {
+        if (periodo == "Último mês") {
             this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(30, 'days');
             this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
