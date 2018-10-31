@@ -274,7 +274,7 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             }
             auditoria.getTipoOperacao();
 
-            if(auditoria.getTipoOperacao().getCodigo() == "2"){
+            if (auditoria.getTipoOperacao().getCodigo() == "2") {
                 if (perfisRemovidos.size() > 0) {
                     for (UsuarioPerfilSistema perfil : perfisRemovidos) {
                         if (perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_EMPRESA)
@@ -303,38 +303,37 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
                         }
                     }
                 }
-            }
-
-            if (perfisRemovidos.size() > 0) {
-                for (UsuarioPerfilSistema perfil : perfisRemovidos) {
-                    if (perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_EMPRESA)
-                            || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_EMPRESA_MASTER)) {
-                        List<UsuarioEntidade> listaEmpresasAssociadas = usuarioEntidadeService
-                                .pesquisarTodasEmpresasAssociadas(usuario.getLogin());
-                        if (listaEmpresasAssociadas != null && listaEmpresasAssociadas.size() > 0) {
-                            for (UsuarioEntidade item : listaEmpresasAssociadas) {
-                                usuarioEntidadeService.desativarUsuarioEntidade(item, auditoria);
+            } else {
+                if (perfisRemovidos.size() > 0) {
+                    for (UsuarioPerfilSistema perfil : perfisRemovidos) {
+                        if (perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_EMPRESA)
+                                || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_EMPRESA_MASTER)) {
+                            List<UsuarioEntidade> listaEmpresasAssociadas = usuarioEntidadeService
+                                    .pesquisarTodasEmpresasAssociadas(usuario.getLogin());
+                            if (listaEmpresasAssociadas != null && listaEmpresasAssociadas.size() > 0) {
+                                for (UsuarioEntidade item : listaEmpresasAssociadas) {
+                                    usuarioEntidadeService.desativarUsuarioEntidade(item, auditoria);
+                                }
                             }
                         }
-                    }
-                    if (perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_DIRETOR_DR)
-                            || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_DR_APLICACOES)
-                            || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_DR_APLICACOES_MASTER)
-                            || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_SUPERITENDENTE_DR)
-                            || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_MEDICO_TRABALHADOR_DR)
-                            || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_COMERCIAL_DR)) {
-                        List<UsuarioEntidade> listaDepartamentosAssociados = usuarioEntidadeService
-                                .pesquisarTodosDepartamentosAssociadas(usuario.getLogin());
-                        if (listaDepartamentosAssociados != null && listaDepartamentosAssociados.size() > 0) {
-                            for (UsuarioEntidade item : listaDepartamentosAssociados) {
-                                usuarioEntidadeService.desativarUsuarioEntidade(item, auditoria);
+                        if (perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_DIRETOR_DR)
+                                || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_DR_APLICACOES)
+                                || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_DR_APLICACOES_MASTER)
+                                || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_SUPERITENDENTE_DR)
+                                || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_MEDICO_TRABALHADOR_DR)
+                                || perfil.getPerfil().getCodigo().equals(CODIGO_PERFIL_GESTOR_COMERCIAL_DR)) {
+                            List<UsuarioEntidade> listaDepartamentosAssociados = usuarioEntidadeService
+                                    .pesquisarTodosDepartamentosAssociadas(usuario.getLogin());
+                            if (listaDepartamentosAssociados != null && listaDepartamentosAssociados.size() > 0) {
+                                for (UsuarioEntidade item : listaDepartamentosAssociados) {
+                                    usuarioEntidadeService.desativarUsuarioEntidade(item, auditoria);
+                                }
                             }
                         }
                     }
                 }
             }
         }
-
         if (auditoria != null) {
             LogAuditoria.registrar(LOGGER, auditoria, "Alteração do usuário: " + usuario);
         }
