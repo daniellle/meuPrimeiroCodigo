@@ -1,6 +1,21 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v2.87.0**
+===========
+(RELEASE EM 05/11/2018)
+
+- [CADASTRO] - Consertado erro que fazia Gestor perder a associação com a empresa caso fosse alterado o perfil (GLPI 3050)
+- [CADASTRO] - Consertado erro que card vacinas autodeclaradas não estar acessível (GLPI 3020)
+- [CADASTRO] - Consertado erro que não mostrava os perfis GESTOR UNIDADE SESI e GESTOR MEDICO DO TRABALHO EMPRESA para GESTOR associar (GLPI 2610)
+- [CADASTRO] - Desativada edição de foto em CADASTRO BÁSICO(GLPI 3017)
+- [CADASTRO] - Alteração da posição do Ícone de mudança de foto(GLPI 3017)
+- [CADASTRO] - Consertado erro que direcionava usuário para tela em branco(GLPI 3017)
+- [CADASTRO] - Mudanças estéticas solicitadas por DR/BA(GLPI 2951)
+- [CADASTRO] - Adicionado redirecionamento para usuário que tenha email incorreto ao fazer login(GLPI 1533)
+- [CADASTRO] - Consertado erro que bloqueava campos na tela de criar nova empresa
+- [CADASTRO] - Adicionado opção de preencher Formulário IGEV a qualquer tempo.
+
 **v2.75.0**
 ===========
 
