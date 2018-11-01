@@ -997,7 +997,7 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
     }
 
     isPermitidoEditar(): boolean {
-        return this.naoTemPapel(PerfilEnum.GEEM,PerfilEnum.GEEMM);
+        return this.naoTemPapel(PerfilEnum.GEEM,PerfilEnum.GEEMM) || this.temPapel(PerfilEnum.ADM);
     }
 
     showAppSegmentoModal(): boolean {

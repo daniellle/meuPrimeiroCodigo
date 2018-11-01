@@ -419,9 +419,9 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
         if ( this.paciente ) {
             if ( this.paciente.gender ) {
                 if ( this.paciente.gender === 'M' ) {
-                    return '94 cm';
+                    return 'Menor ou igual a 94 cm';
                 } else if ( this.paciente.gender === 'F' ) {
-                    return '60 cm';
+                    return 'Menor ou igual a 80 cm';
                 }
             }
         }

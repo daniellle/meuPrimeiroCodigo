@@ -97,7 +97,8 @@
 .descricao-indicador {
     width: 85%;
 }
-.md-custom{
+
+.md-custom {
     //border-color: #ba88a5 !important;
     //color: #ba88a5 !important;
     //background-color: transparent !important;
@@ -338,8 +339,9 @@ button:focus {
     color: $orange-claro;
     cursor: pointer;
 }
-.fa-pencil{
-    cursor:pointer;
+
+.fa-pencil {
+    cursor: pointer;
 }
 
 .lixo {
@@ -708,8 +710,6 @@ ng-select>div>div.single>div.value {
     border-top: 1px solid rgb(222, 222, 222) !important;
 }
 
-
-
 th {
     border-top: transparent;
     text-align: left;
@@ -890,7 +890,7 @@ th {
     background-position-y: -8px;
 }
 
-.img_vacina{
+.img_vacina {
     height: 120px;
     background-repeat: no-repeat;
     background-position-x: -10px;
@@ -913,7 +913,6 @@ th {
 .front.img_vacina {
     background-image: url("../img/vacina_branca.svg");
 }
-
 
 .img_minhasaude {
     height: 120px;
@@ -1299,9 +1298,9 @@ th {
 }
 
 .flipper_card-titulo {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
-    margin-top: 140px;
+    margin-top: 130px;
     text-align: right;
     margin-right: 25px;
 }
@@ -1476,50 +1475,50 @@ hr.zero {
     border-radius: 0px !important;
 }
 
-.jqx-widget-content{
+.jqx-widget-content {
     border-color: transparent !important;
 }
 
-.jqx-widget{
+.jqx-widget {
     width: 85% !important;
     margin-left: 5% !important;
 }
 
-.jqx-calendar .jqx-widget-header{
+.jqx-calendar .jqx-widget-header {
     display: none !important;
 }
 
-.jqx-calendar table{
+.jqx-calendar table {
     margin-top: -5px !important;
 }
 
-.jqx-calendar-cell-today{
+.jqx-calendar-cell-today {
     color: #ffffff !important;
     background-color: #5d0746cc !important;
     border: 1px solid #5d0746 !important;
     border-radius: 29px !important;
 }
 
-.red{
+.red {
     color: red;
 }
 
-#calendarioAuto .mydp{
+#calendarioAuto .mydp {
     border: 0px !important;
     border-color: transparent !important;
     border-radius: 0px !important;
 }
 
-#calendarioAuto .mydp .selector{
+#calendarioAuto .mydp .selector {
     border: 0px !important;
     box-shadow: 0 0 0 0 transparent !important;
 }
 
-#calendarioAuto .mydp .header{
+#calendarioAuto .mydp .header {
     display: none !important;
 }
 
-#calendarioAuto .mydp .markcurrday{
+#calendarioAuto .mydp .markcurrday {
     text-decoration: none !important;
     background-color: #5e24465e !important;
     width: 25px !important;
@@ -1529,18 +1528,18 @@ hr.zero {
     padding: 4px !important;
 }
 
-#calendarioAuto .mydp .markdate{
+#calendarioAuto .mydp .markdate {
     position: absolute;
     width: 6px;
     height: 6px;
     border-radius: 4px;
 }
 
-#calendarioAuto .mydp{
+#calendarioAuto .mydp {
     font-size: 12px;
 }
 
-.listar-vacinas{
+.listar-vacinas {
     margin-top: -2px;
     height: 40px;
     overflow-y: auto;
