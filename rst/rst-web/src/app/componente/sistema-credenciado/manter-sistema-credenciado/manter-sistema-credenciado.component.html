@@ -22,7 +22,7 @@
             </div>
 
 
-            <div class="form-group col-md-4" [ngClass]="{ divDis : modoAlterar || modoConsulta }">
+            <div class="form-group col-md-4" [ngClass]="{ divDis : modoConsulta }">
                 <md-input-container [floatPlaceholder]="true">
                     <input mdInput placeholder="{{'app_rst_labels_nome_responsavel' | recurso}}" type="text" name="nomeResponsavel"
                         id="nomeResponsavel" formControlName="nomeResponsavel" class="form-control" required
@@ -30,7 +30,7 @@
                 </md-input-container>
             </div>
 
-            <div class="form-group col-md-4" [ngClass]="{ divDis : modoAlterar || modoConsulta }">
+            <div class="form-group col-md-4" [ngClass]="{ divDis : modoConsulta }">
                 <md-input-container [floatPlaceholder]="true">
                     <input mdInput placeholder="{{'app_rst_labels_email_responsavel' | recurso}}" type="text" name="emailResponsavel"
                         id="emailResponsavel" formControlName="emailResponsavel" class="form-control" required
@@ -42,7 +42,7 @@
 
         <div class="row">
 
-            <div class="form-group col-md-4" [ngClass]="{ divDis : modoAlterar || modoConsulta }">
+            <div class="form-group col-md-4" [ngClass]="{ divDis : modoConsulta }">
                 <md-input-container [floatPlaceholder]="true">
                     <input mdInput placeholder="{{'app_rst_telefone_responsavel' | recurso}}" [textMask]="{mask: mascaraTelefone, guide: false}"
                         type="text" name="telefoneResponsavel" id="telefoneResponsavel" formControlName="telefoneResponsavel"
