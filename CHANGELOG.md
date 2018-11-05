@@ -1,6 +1,22 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
+**v2.87.0**
+===========
+(RELEASE EM 05/11/2018)
 
+- [CADASTRO] - Consertado erro que fazia Gestor perder a associação com a empresa caso fosse alterado o perfil (GLPI 3050)
+- [CADASTRO] - Consertado erro que card vacinas autodeclaradas não estar acessível (GLPI 3020)
+- [CADASTRO] - Consertado erro que não mostrava os perfis GESTOR UNIDADE SESI e GESTOR MEDICO DO TRABALHO EMPRESA para GESTOR associar (GLPI 2610)
+- [CADASTRO] - Desativada edição de foto em CADASTRO BÁSICO(GLPI 3017)
+- [CADASTRO] - Alteração da posição do Ícone de mudança de foto(GLPI 3017)
+- [CADASTRO] - Consertado erro que direcionava usuário para tela em branco(GLPI 3017)
+- [CADASTRO] - Mudanças estéticas solicitadas por DR/BA(GLPI 2951)
+- [CADASTRO] - Adicionado redirecionamento para usuário que tenha email incorreto ao fazer login(GLPI 1533)
+- [CADASTRO] - Consertado erro que bloqueava campos na tela de criar nova empresa
+- [CADASTRO] - Adicionado opção de preencher Formulário IGEV a qualquer tempo.
+
+**v2.81.2**
+===========
 
 (RELEASE EM 26/10/2018)
 
@@ -35,20 +51,6 @@
 Obs.: Conforme definição da EZVIDA, a SOLUTIS desenvolveu um serviço para retornar os dados por CNPJ em formato JSON e a Tela de Indicadores em i-frame exibindo os dados de outro CNPJ requerido, a ser informado através de uma estrutura de URL (exemplo: https://www.sesivivamais.com.br/......indicadores/CNPJ).
 Vale ressaltar que não foi definido no escopo o serviço que deverá ser consultado para validar se o usuário logado tem permissão para visualizar os dados do CNPJ em questão, desta forma, a aplicação de Indicadores da Rede SESI VIVA+ NÃO fará essa validação. Assim, outros usuários que estejam logados na rede SESI VIVA+, caso conheçam a URL, poderão ter acesso indevido aos dados do CNPJ requerido, essa situação se caracteriza como uma falha de segurança no controle de permissões da rede SESI VIVA+. 
 =======
-**v2.87.0**
-===========
-(RELEASE EM 05/11/2018)
-
-- [CADASTRO] - Consertado erro que fazia Gestor perder a associação com a empresa caso fosse alterado o perfil (GLPI 3050)
-- [CADASTRO] - Consertado erro que card vacinas autodeclaradas não estar acessível (GLPI 3020)
-- [CADASTRO] - Consertado erro que não mostrava os perfis GESTOR UNIDADE SESI e GESTOR MEDICO DO TRABALHO EMPRESA para GESTOR associar (GLPI 2610)
-- [CADASTRO] - Desativada edição de foto em CADASTRO BÁSICO(GLPI 3017)
-- [CADASTRO] - Alteração da posição do Ícone de mudança de foto(GLPI 3017)
-- [CADASTRO] - Consertado erro que direcionava usuário para tela em branco(GLPI 3017)
-- [CADASTRO] - Mudanças estéticas solicitadas por DR/BA(GLPI 2951)
-- [CADASTRO] - Adicionado redirecionamento para usuário que tenha email incorreto ao fazer login(GLPI 1533)
-- [CADASTRO] - Consertado erro que bloqueava campos na tela de criar nova empresa
-- [CADASTRO] - Adicionado opção de preencher Formulário IGEV a qualquer tempo.
 
 **v2.75.0**
 ===========
