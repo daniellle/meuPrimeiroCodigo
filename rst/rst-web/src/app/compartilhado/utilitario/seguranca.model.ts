@@ -38,7 +38,6 @@ export class Seguranca {
 		if (usuario == null || usuario.permissoes == null) {
 			return false;
 		}
-
 		return permissoes.some((permissao) => {
 			return usuario.permissoes.indexOf(permissao) >= 0;
 		});
