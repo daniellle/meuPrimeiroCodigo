@@ -3,7 +3,7 @@
 
 **v2.87.1**
 ===========
-(RELEASE EM 0711/2018)
+(RELEASE EM 07/11/2018)
 - [CADASTRO] - Consertado erro que impedia que Gestor Unidade Sesi cadastrasse Gestor Empresa e Gestor Empresa Master (GLPI 3246)
 
 
