@@ -8,6 +8,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BaseComponent } from './../../componente/base.component';
 import { Component, OnInit } from '@angular/core';
+import { ParametroService } from 'app/servico/parametro.service';
+import { Parametro } from 'app/modelo/parametro.model';
 
 @Component({
   selector: 'app-recuperar-senha',
@@ -18,6 +20,8 @@ export class RecuperarSenhaComponent extends BaseComponent implements OnInit {
 
   public form: FormGroup;
   public email: String;
+  public telefone = '';
+  public central = false;
 
   constructor(
     private router: Router,
@@ -27,21 +31,26 @@ export class RecuperarSenhaComponent extends BaseComponent implements OnInit {
     protected formBuilder: FormBuilder,
     protected dialogo: ToastyService,
     private dialogService: DialogService,
+    private parametroService: ParametroService,
   ) {
     super(bloqueioService, dialogo);
     this.title = MensagemProperties.app_rst_recupera_senha_titulo;
     this.criarForm();
+    this.buscarTelefone();
   }
 
   ngOnInit() {
+    this.buscarTelefone();
   }
 
   enviar(): void {
     if (this.validarEmail()) {
       this.autenticacaoService.recuperarSenha(this.form.controls.email.value).subscribe((retorno: any) => {
         this.mensagemSucesso(MensagemProperties.app_rst_recupera_senha_sucesso);
+        this.central = false;
       }, (error) => {
         this.mensagemError(error);
+        this.central = true;
       });
     }
   }
@@ -75,6 +84,18 @@ export class RecuperarSenhaComponent extends BaseComponent implements OnInit {
     }
 
     return isValido;
+  }
+
+  buscarTelefone() {
+    this.parametroService.buscarTelefoneCentralRelacionamento().subscribe((response: Parametro) => {
+      this.telefone = response.valor;
+    }, (error) => {
+      this.mensagemError(error);
+    });
+  }
+
+  showCardCentral():boolean{
+    return this.central;
   }
 
 }
