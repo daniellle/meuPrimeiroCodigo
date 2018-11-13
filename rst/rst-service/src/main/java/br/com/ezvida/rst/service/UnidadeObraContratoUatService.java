@@ -1,6 +1,9 @@
 package br.com.ezvida.rst.service;
 
+import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.UnidadeObraContratoUatDAO;
+import br.com.ezvida.rst.dao.filter.ListaPaginada;
+import br.com.ezvida.rst.dao.filter.UnidadeObraContratoUatFilter;
 import br.com.ezvida.rst.model.UnidadeObra;
 import br.com.ezvida.rst.model.UnidadeObraContratoUat;
 import br.com.ezvida.rst.utils.ValidadorUtils;
@@ -42,5 +45,12 @@ public class UnidadeObraContratoUatService extends BaseService {
                     getMensagem("app_rst_label_cnpj")));
         }
         return unidadeObraContratoUats;
+    }
+
+
+    public ListaPaginada<UnidadeObraContratoUat> pesquisarPaginado (UnidadeObraContratoUatFilter unidadeObraContratoUatFilter, ClienteAuditoria auditoria){
+
+        return unidadeObraContratoUatDAO.pesquisarPaginado(unidadeObraContratoUatFilter);
+
     }
 }

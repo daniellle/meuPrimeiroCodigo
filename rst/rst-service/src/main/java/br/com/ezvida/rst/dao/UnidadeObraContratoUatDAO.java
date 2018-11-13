@@ -1,16 +1,24 @@
 package br.com.ezvida.rst.dao;
 
+import br.com.ezvida.rst.dao.filter.ListaPaginada;
+import br.com.ezvida.rst.dao.filter.UnidadeObraContratoUatFilter;
 import br.com.ezvida.rst.model.UnidadeObra;
 import br.com.ezvida.rst.model.UnidadeObraContratoUat;
+import com.google.common.collect.Maps;
+import fw.core.jpa.DAOUtil;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat, Long> {
 
@@ -40,4 +48,108 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
 
         return query.getResultList();
     }
+
+    public List<UnidadeObraContratoUat> listarTodos(Long idEmpresa){
+        LOGGER.debug("Listando todos os contratos");
+
+        StringBuilder query = new StringBuilder();
+        query.append(" select * from unidadeObraContratoUat")
+            .append(" join und_obra o on und_obra_contrato_uat.id_und_obra_fk = o.id_und_obra ")
+            .append(" join und_atd_trabalhador u on und_obra_contrato_uat.id_und_atd_trabalhador_fk = u.id_und_atd_trabalhador ")
+            .append(" where o.id_empresa_fk = :idEmpresa ")
+            .append(" order by und_obra_contrato_uat.fl_inativo ");
+        TypedQuery<UnidadeObraContratoUat> typedQuery = criarConsultaPorTipo(query.toString());
+        typedQuery.setParameter("idEmpresa", idEmpresa);
+
+        return typedQuery.getResultList();
+    }
+
+    public ListaPaginada<UnidadeObraContratoUat> pesquisarPaginado(UnidadeObraContratoUatFilter unidadeObraContratoUatFilter) {
+
+        ListaPaginada<UnidadeObraContratoUat> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
+
+        StringBuilder jpql = new StringBuilder();
+        //Map<String, Object> parametros = Maps.newHashMap();
+
+        getQueryPaginado(jpql, unidadeObraContratoUatFilter, false);
+
+        TypedQuery<UnidadeObraContratoUat> query = criarConsultaPorTipo(jpql.toString());
+        query.setParameter("idEmpresa", unidadeObraContratoUatFilter.getIdEmpresa());
+        //DAOUtil.setParameterMap(query, parametros);
+
+        listaPaginada.setQuantidade(getCountQueryPaginado(unidadeObraContratoUatFilter));
+
+        if (unidadeObraContratoUatFilter != null) {
+            query.setFirstResult((unidadeObraContratoUatFilter.getPagina() - 1) * unidadeObraContratoUatFilter.getQuantidadeRegistro());
+            query.setMaxResults(unidadeObraContratoUatFilter.getQuantidadeRegistro());
+        }
+
+        listaPaginada.setList(query.getResultList());
+
+        return listaPaginada;
+    }
+
+    private Long getCountQueryPaginado(UnidadeObraContratoUatFilter unidadeObraContratoUatFilter) {
+        //Map<String, Object> parametros = Maps.newHashMap();
+        StringBuilder jpql = new StringBuilder();
+
+        getQueryPaginado(jpql, unidadeObraContratoUatFilter, true);
+
+        Query query = criarConsulta(jpql.toString());
+        query.setParameter("idEmpresa", unidadeObraContratoUatFilter.getIdEmpresa());
+
+        //DAOUtil.setParameterMap(query, parametros);
+
+        return DAOUtil.getSingleResult(query);
+    }
+
+    private void getQueryPaginado(StringBuilder jpql, UnidadeObraContratoUatFilter unidadeObraContratoUatFilter, boolean count) {
+
+        if (count) {
+            jpql.append(" select count(id_und_obra_contrato_uat) ");
+            jpql.append("  from und_obra_contrato_uat ");
+            jpql.append("  join und_obra o on und_obra_contrato_uat.id_und_obra_fk = o.id_und_obra ");
+            jpql.append(" join und_atd_trabalhador u on und_obra_contrato_uat.id_und_atd_trabalhador_fk = u.id_und_atd_trabalhador ");
+        } else {
+            jpql.append(" select * ");
+            jpql.append(" from und_obra_contrato_uat ");
+            jpql.append(" join und_obra o on und_obra_contrato_uat.id_und_obra_fk = o.id_und_obra ");
+            jpql.append(" join und_atd_trabalhador u on und_obra_contrato_uat.id_und_atd_trabalhador_fk = u.id_und_atd_trabalhador ");
+        }
+
+
+        jpql.append(" where o.id_empresa_fk = :idEmpresa ");
+
+      /*  if (unidadeObraContratoUatFilter != null) {
+
+            boolean codigo = StringUtils.isNotBlank(unidadeObraContratoUatFilter.getCodigo());
+            boolean descricao = StringUtils.isNotBlank(funcaoFilter.getDescricao());
+            boolean id = funcaoFilter.getIdEmpresa() != null;
+
+            if (id) {
+                jpql.append(" and empresa.id = :idEmpresa ");
+                parametros.put("idEmpresa", funcaoFilter.getIdEmpresa());
+            }
+
+            if (descricao) {
+                jpql.append(" and upper(funcao.descricao) like :descricao escape :sc ");
+                parametros.put("sc", "\\");
+                parametros.put("descricao", "%" + funcaoFilter.getDescricao().replace("%", "\\%").toUpperCase() + "%");
+            }
+
+            if (codigo) {
+                jpql.append(" and upper(funcao.codigo) like :codigo escape :sc ");
+                funcaoFilter.setCodigo(funcaoFilter.getCodigo().replace("%", "\\%").toUpperCase());
+                parametros.put("sc", "\\");
+                parametros.put("codigo", "%" + funcaoFilter.getCodigo().concat("%").toUpperCase());
+            }
+
+            if (!count) {
+                jpql.append(" order by funcao.descricao ");
+            }
+        }*/
+
+    }
+
+
 }

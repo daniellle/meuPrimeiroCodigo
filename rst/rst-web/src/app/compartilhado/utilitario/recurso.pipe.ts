@@ -452,6 +452,10 @@ export const MensagemProperties = {
   app_rst_usuario_label_sistemas: 'Sistemas',
   app_rst_usuario_label_perfis: 'Perfis',
 
+    //Empresa Contrato
+    app_rst_empresa_contrato_title: 'Contratos',
+
+
   // Empresa Função
   app_rst_empresa_funcao_title: 'Função',
   app_rst_empresa_funcao_adicionadas: 'Funções Adicionadas',
@@ -459,6 +463,8 @@ export const MensagemProperties = {
   // Empresa Setor
   app_rst_empresa_setor_title: 'Setor',
   app_rst_empresa_setores_adicionados: 'Setores Adicionados',
+
+
 
   // Empresa Sindicato
   app_rst_sindicato_ja_cadastrado: 'O Sindicato selecionado já foi adicionado',
