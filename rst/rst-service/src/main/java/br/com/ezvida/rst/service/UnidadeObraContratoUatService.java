@@ -88,9 +88,9 @@ public class UnidadeObraContratoUatService extends BaseService {
         unidadeObraContratoUat.setFlagInativo(flag);
         unidadeObraContratoUat.setDataInativo(new Date());
 
-        unidadeObraContratoUatDAO.atualizar(unidadeObraContratoUat);
+        unidadeObraContratoUatDAO.salvar(unidadeObraContratoUat);
 
-        return unidadeObraContratoUat;
+        return null;
     }
 
     public UnidadeObraContratoUat desativar( UnidadeObraContratoUat unidadeObraContratoUat){
@@ -100,19 +100,26 @@ public class UnidadeObraContratoUatService extends BaseService {
                     getMensagem("app_rst_unidade_obra_contrato_id_invalido") ) );
         }
 
+        Integer flag = Integer.parseInt( unidadeObraContratoUat.getFlagInativo().toString() );
+
         unidadeObraContratoUat = unidadeObraContratoUatDAO.pesquisarPorId(unidadeObraContratoUat.getId());
+
+        Integer flagAtual = Integer.parseInt( unidadeObraContratoUat.getFlagInativo().toString() );
 
         if( unidadeObraContratoUat == null ){
             throw new BusinessErrorException(getMensagem("app_rst_unidade_invalida",
                     getMensagem("app_rst_label_unidade_obra")));
+        }else if( flag < flagAtual){
+            throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_perfil_invalido",
+                    getMensagem("app_rst_unidade_obra_contrato_perfil_invalido")));
         }
 
         unidadeObraContratoUat.setFlagInativo(null);
         unidadeObraContratoUat.setDataInativo(null);
 
-        unidadeObraContratoUatDAO.atualizar(unidadeObraContratoUat);
+        unidadeObraContratoUatDAO.salvar(unidadeObraContratoUat);
 
-        return unidadeObraContratoUat;
+        return null;
     }
 
     private void validarContrato(UnidadeObraContratoUat unidadeObraContratoUat){
