@@ -11,6 +11,9 @@ import {ListaPaginada} from "../modelo/lista-paginada.model";
 import {MensagemProperties} from "../compartilhado/utilitario/recurso.pipe";
 import {EmpresaSindicato} from "../modelo/empresa-sindicato.model";
 import {FiltroEmpresa} from "../modelo/filtro-empresa.model";
+import {Contrato} from "../modelo/contrato.model";
+import {EmpresaTrabalhador} from "../modelo/empresa-trabalhador.model";
+import {FiltroEmpresaContrato} from "../modelo/filtro-empresa-contrato.model";
 
 @Injectable()
 export class EmpresaContratoService extends BaseService<EmpresaContrato>{
@@ -20,13 +23,13 @@ export class EmpresaContratoService extends BaseService<EmpresaContrato>{
       super(httpClient, bloqueio);
   }
 
-  pesquisarContratos(filtro: FiltroEmpresa, paginacao: Paginacao): Observable<ListaPaginada<EmpresaContrato>>{
-      const params = new HttpParams().append('id', filtro.id.toString())
+  pesquisarContratos(filtro: FiltroEmpresaContrato, paginacao: Paginacao): Observable<ListaPaginada<Contrato>>{
+      const params = new HttpParams().append('id', filtro.idEmpresa.toString())
           .append('pagina', paginacao.pagina.toString())
           .append('qtdRegistro', paginacao.qtdRegistro.toString());
-      return super.get('/v1/unidades-obras-contratos-uat/contratos', params)
-          .map((response: ListaPaginada<EmpresaContrato>) => {
-              if (!response.list) { response.list = new Array<EmpresaContrato>(); }
+      return super.get('/v1/unidades-obras-contratos-uat/contratos/' + filtro.idEmpresa)
+          .map((response: ListaPaginada<Contrato>) => {
+              if (!response.list) { response.list = new Array<Contrato>(); }
               return response;
           }).catch((error) => {
               const erro = error.error.mensagem ? error.error.mensagem : MensagemProperties.app_rst_erro_geral;
@@ -34,10 +37,23 @@ export class EmpresaContratoService extends BaseService<EmpresaContrato>{
           });
   }
 
-  criarNovoContrato(){
-
+  salvar(contrato: Contrato): Observable<Contrato>{
+      return super.post(`/v1/unidades-obras-contratos-uat/`, contrato)
+          .map((response: EmpresaTrabalhador) => {
+              return response;
+          }).catch((error) => {
+              return Observable.throw(error);
+          });
   }
 
+ /* desbloquearContrato(contrato: Contrato): Observable<Contrato>{
+
+  }*/
+
+ /*bloquearContrato(contrato: Contrato): Observable<Contrato>{
+
+ }
+*/
   listarContratos(){
 
   }

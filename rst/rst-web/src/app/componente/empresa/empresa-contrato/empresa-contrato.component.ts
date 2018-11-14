@@ -24,9 +24,9 @@ export interface IHash {
 
 
 @Component({
-  selector: 'app-empresa-contrato',
-  templateUrl: './empresa-contrato.component.html',
-  styleUrls: ['./empresa-contrato.component.scss']
+    selector: 'app-empresa-contrato',
+    templateUrl: './empresa-contrato.component.html',
+    styleUrls: ['./empresa-contrato.component.scss']
 })
 export class EmpresaContratoComponent extends BaseComponent implements OnInit {
 
@@ -40,70 +40,66 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
     public checks: IHash = {};
     public contratos: Contrato[];
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              private empresaService: EmpresaService,
-              protected bloqueioService: BloqueioService,
-              protected dialogo: ToastyService,
-              private dialogService: DialogService,
-              private empresaContratoService: EmpresaContratoService) {
-      super(bloqueioService, dialogo);
-      this.title = MensagemProperties.app_rst_empresa_contrato_title;
-  }
+    constructor(private route: ActivatedRoute,
+                private router: Router,
+                private empresaService: EmpresaService,
+                protected bloqueioService: BloqueioService,
+                protected dialogo: ToastyService,
+                private dialogService: DialogService,
+                private empresaContratoService: EmpresaContratoService) {
+        super(bloqueioService, dialogo);
+        this.title = MensagemProperties.app_rst_empresa_contrato_title;
+    }
 
-  ngOnInit() {
-      this.getIdEmpresa();
-      this.pesquisarContratos();
-  }
+    ngOnInit() {
+        this.getIdEmpresa();
+        this.pesquisarContratos();
+    }
 
-  getIdEmpresa(){
-      this.route.params.subscribe((params) => {
-          this.idEmpresa = params['id'];
-          if (this.idEmpresa) {
-              this.filtro = new FiltroEmpresaContrato();
-              this.filtroPage = new FiltroEmpresaContrato();
-              this.filtro.idEmpresa = this.idEmpresa;
-          }
-      }, (error) => {
-          this.mensagemError(error);
-      });
-  }
+    getIdEmpresa() {
+        this.idEmpresa = this.route.snapshot.params['id'];
+        if (this.idEmpresa) {
+            this.filtro = new FiltroEmpresaContrato();
+            this.filtroPage = new FiltroEmpresaContrato();
+            this.filtro.idEmpresa = this.idEmpresa;
+        }
+    }
 
-  voltar(){
-      if (this.route.snapshot.url[0].path === 'minhaempresa') {
-          this.router.navigate([`${environment.path_raiz_cadastro}/empresa/minhaempresa`]);
-      } else {
-          this.router.navigate([`${environment.path_raiz_cadastro}/empresa/${this.idEmpresa}`]);
-      }
-  }
+    voltar() {
+        if (this.route.snapshot.url[0].path === 'minhaempresa') {
+            this.router.navigate([`${environment.path_raiz_cadastro}/empresa/minhaempresa`]);
+        } else {
+            this.router.navigate([`${environment.path_raiz_cadastro}/empresa/${this.idEmpresa}`]);
+        }
+    }
 
-  criarCadastro(){
-      this.router.navigate([`${environment.path_raiz_cadastro}/empresa/${this.idEmpresa}/contrato/cadastrarcontrato`]);
-  }
+    criarCadastro() {
+        this.router.navigate([`${environment.path_raiz_cadastro}/empresa/${this.idEmpresa}/contrato/cadastrarcontrato`]);
+    }
 
 
     public isListaVazia(): boolean {
         return this.contratos === undefined || this.contratos.length === 0;
     }
 
-    pesquisarContratos(){
-      this.empresasContrato = new Array<EmpresaContrato>();
-      this.filtro.idEmpresa = this.idEmpresa;
-      this.empresaContratoService.pesquisarContratos(this.filtro.idEmpresa, new Paginacao(1, 10))
-          .subscribe((retorno: ListaPaginada<EmpresaContrato>) =>{
+    pesquisarContratos() {
+        this.contratos = new Array<Contrato>();
+        this.filtro.idEmpresa = this.idEmpresa;
+        this.empresaContratoService.pesquisarContratos(this.filtro, new Paginacao(1, 10))
+            .subscribe((retorno: ListaPaginada<Contrato>) => {
                 this.paginacaoEmpresaContrato = this.getPaginacao(this.paginacao, retorno)
-              this.verificarRetornoEmpresasContrato(retorno);
-          }, (error) => {
-              this.mensagemError(error);
-          });
+                this.verificarRetornoEmpresasContrato(retorno);
+            }, (error) => {
+                this.mensagemError(error);
+            });
     }
 
-    verificarRetornoEmpresasContrato(retorno: ListaPaginada<EmpresaContrato>) {
-    if (retorno && retorno.list) {
-        this.empresasContrato = retorno.list;
-    } else {
-        this.empresasContrato = new Array<EmpresaContrato>();
+    verificarRetornoEmpresasContrato(retorno: ListaPaginada<Contrato>) {
+        if (retorno && retorno.list) {
+            this.contratos = retorno.list;
+        } else {
+            this.contratos = new Array<Contrato>();
+        }
     }
-}
 
 }

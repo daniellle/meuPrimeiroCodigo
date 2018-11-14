@@ -1,3 +1,54 @@
-<p>
-  cadastro-empresa-contrato works!
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{ title }}
 </p>
+<div class="container-form" [ngClass]="{ divDis : modoConsulta }">
+    <form [formGroup]="contratoForm">
+        <alert *ngIf="inconsistencia" type="info" dismissible="true">
+            <p>{{mensagemInconsistencia}}</p>
+        </alert>
+        <div class="container-subtitulo">
+            <p>{{'app_rst_label_dados_gerais' | recurso}}</p>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <ng-select [options]="unidadesObra" allowClear=true formControlName="unidadeObras" maxlength="50" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}">
+                </ng-select>
+                <span class="floating-label">{{ 'app_rst_labels_unidade_obra' | recurso }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-4">
+                <my-date-picker class="prof" id="dataInicioContrato" [options]="datePickerOptions" locale="pt-br" formControlName="dataInicioContrato" name="dataInicioContrato" (keyup)="maskDate($event, this.contratoForm, 'dataInicioContrato')"></my-date-picker>
+                <span class="floating-label"> {{ 'app_rst_labels_data_inicio_contrato' | recurso }} </span>
+            </div>
+            <div class="form-group col-md-4">
+                <my-date-picker class="prof" id="dataFimContrato" [options]="datePickerOptions" locale="pt-br" formControlName="dataFimContrato" name="dataFimContrato" (keyup)="maskDate($event, this.contratoForm, 'dataFimContrato')"></my-date-picker>
+                <span class="floating-label"> {{ 'app_rst_labels_data_fim_contrato' | recurso }} </span>
+            </div>
+            <div class="form-group col-md-4">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{'app_rst_labels_ano_vigencia_contrato' | recurso}}" maxlength="4" type="number" name="anoVigencia" id="anoVigencia" formControlName="anoVigencia" required class="form-control" appFormularioCamposErro>
+                </md-input-container>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6 col-lg-6">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{'app_rst_labels_programa_contrato' | recurso}}" maxlength="20" type="text" name="programaContrato" id="programaContrato" formControlName="programaContrato" class="form-control" appFormularioCamposErro>
+                </md-input-container>
+            </div>
+            <div class="form-group col-md-6 col-lg-6">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{'app_rst_labels_unidade_sesi_nome' | recurso}}" maxlength="20" type="text" name="unidadeSesiNome" id="unidadeSesiNome" formControlName="unidadeSesiNome" class="form-control" appFormularioCamposErro>
+                </md-input-container>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="btn-rodape-acoes space-up">
+    <button *ngIf="!modoConsulta" type="button" class="btn btn-primary btn-cadastro" (click)="salvar()"> {{ 'app_rst_btn_salvar' | recurso }}</button>
+    <button type="button" class="btn btn-secondary btn-cadastro" (click)="voltar()"> {{ 'app_rst_btn_voltar' | recurso }}</button>
+</div>

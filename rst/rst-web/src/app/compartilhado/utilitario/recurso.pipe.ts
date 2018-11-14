@@ -460,6 +460,7 @@ export const MensagemProperties = {
 
     //Empresa Contrato
     app_rst_empresa_contrato_title: 'Contratos',
+    app_rst_empresa_contrato_cadastrar_title: 'Cadastrar Contrato',
 
 
   // Empresa Função
