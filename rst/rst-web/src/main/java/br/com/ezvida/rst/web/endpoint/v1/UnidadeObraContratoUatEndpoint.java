@@ -1,6 +1,5 @@
 package br.com.ezvida.rst.web.endpoint.v1;
 
-import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.constants.PermissionConstants;
 import br.com.ezvida.rst.dao.filter.UnidadeObraContratoUatFilter;
 import br.com.ezvida.rst.enums.Funcionalidade;
@@ -8,6 +7,7 @@ import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.model.UnidadeObraContratoUat;
 import br.com.ezvida.rst.service.UnidadeObraContratoUatService;
 import br.com.ezvida.rst.web.auditoria.ClienteInfos;
+import com.google.common.base.Charsets;
 import fw.security.binding.Autorizacao;
 import fw.security.binding.Permissao;
 import fw.web.endpoint.SegurancaEndpoint;
@@ -62,6 +62,19 @@ public class UnidadeObraContratoUatEndpoint extends SegurancaEndpoint<UnidadeObr
                         TipoOperacaoAuditoria.CONSULTA,
                         Funcionalidade.EMPRESA), empresaId)))
                     .build();
+    }
+
+    @POST
+    @Encoded
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response solicitarEmailSesi(@Encoded UnidadeObraContratoUat unidadeObraContratoUat,  @Context SecurityContext context
+        , @Context HttpServletRequest request) {
+        getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
+        return Response.status(HttpServletResponse.SC_OK)
+            .entity(unidadeObraContratoUatService.salvar(unidadeObraContratoUat))
+            .type(MediaType.APPLICATION_JSON).build();
+
     }
 
 }
