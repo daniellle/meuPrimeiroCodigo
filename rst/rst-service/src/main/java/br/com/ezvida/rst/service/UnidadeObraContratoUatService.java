@@ -53,4 +53,39 @@ public class UnidadeObraContratoUatService extends BaseService {
         return unidadeObraContratoUatDAO.pesquisarPaginado(unidadeObraContratoUatFilter);
 
     }
+
+    public UnidadeObraContratoUat salvar( UnidadeObraContratoUat unidadeObraContratoUat){
+
+        validarContrato(unidadeObraContratoUat);
+
+        unidadeObraContratoUat.setFlagInativo("N".charAt(0));
+
+        unidadeObraContratoUatDAO.salvar(unidadeObraContratoUat);
+
+        return unidadeObraContratoUat;
+    }
+
+    private void validarContrato(UnidadeObraContratoUat unidadeObraContratoUat){
+
+        if( unidadeObraContratoUat.getUnidadeObra() == null || unidadeObraContratoUat.getUnidadeObra().getId() == null ) {
+            throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_unidade_obra_invalido",
+                    getMensagem("app_rst_unidade_obra_contrato_unidade_obra_invalido") ) );
+        }else if( unidadeObraContratoUat.getTipoPrograma() == null || unidadeObraContratoUat.getTipoPrograma().getId() == null ){
+            throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_programa_invalido",
+                    getMensagem("app_rst_unidade_obra_contrato_programa_invalido") ) );
+        }else if( unidadeObraContratoUat.getUnidadeAtendimentoTrabalhador() == null || unidadeObraContratoUat.getUnidadeAtendimentoTrabalhador().getId() == null ){
+            throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_unidade_sesi_invalido",
+                    getMensagem("app_rst_unidade_obra_contrato_unidade_sesi_invalido") ) );
+        }else if( unidadeObraContratoUat.getDataContratoInicio() == null ){
+            throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_inicio_contrato_invalido",
+                    getMensagem("app_rst_unidade_obra_contrato_inicio_contrato_invalido") ) );
+        }else if( unidadeObraContratoUat.getDataContratoFim() == null ){
+            throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_fim_contrato_invalido",
+                    getMensagem("app_rst_unidade_obra_contrato_fim_contrato_invalido") ) );
+        }else if( unidadeObraContratoUat.getAnoVigencia() == null ){
+            throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_ano_vigencia_invalido",
+                    getMensagem("app_rst_unidade_obra_contrato_ano_vigencia_invalido") ) );
+        }
+
+    }
 }
