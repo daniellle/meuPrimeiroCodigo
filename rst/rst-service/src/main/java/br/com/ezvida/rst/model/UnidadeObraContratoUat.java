@@ -46,6 +46,12 @@ public class UnidadeObraContratoUat extends BaseEntity<Long> {
     @Column(name = "dt_contrato_fim")
     private Date dataContratoFim;
 
+    @JsonDeserialize(using = DateJsonDeserializer.class)
+    @JsonSerialize(using = DateJsonSerializer.class)
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "dt_inativo")
+    private Date dataInativo;
+
     @Column(name = "fl_inativo")
     private Character flagInativo;
 
@@ -116,5 +122,13 @@ public class UnidadeObraContratoUat extends BaseEntity<Long> {
 
     public void setAnoVigencia(String anoVigencia) {
         this.anoVigencia = anoVigencia;
+    }
+
+    public Date getDataInativo() {
+        return dataInativo;
+    }
+
+    public void setDataInativo(Date dataInativo) {
+        this.dataInativo = dataInativo;
     }
 }

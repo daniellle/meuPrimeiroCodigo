@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 
 @Stateless
@@ -61,6 +62,55 @@ public class UnidadeObraContratoUatService extends BaseService {
         unidadeObraContratoUat.setFlagInativo("N".charAt(0));
 
         unidadeObraContratoUatDAO.salvar(unidadeObraContratoUat);
+
+        return unidadeObraContratoUat;
+    }
+
+    public UnidadeObraContratoUat ativar( UnidadeObraContratoUat unidadeObraContratoUat){
+
+        if( unidadeObraContratoUat.getId() == null ){
+            throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_id_invalido",
+                    getMensagem("app_rst_unidade_obra_contrato_id_invalido") ) );
+        }else if( unidadeObraContratoUat.getFlagInativo() == null){
+            throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_flag_inativo_perfil_invalido",
+                    getMensagem("app_rst_unidade_obra_contrato_flag_inativo_perfil_invalido") ) );
+        }
+
+        Character flag = unidadeObraContratoUat.getFlagInativo();
+
+        unidadeObraContratoUat = unidadeObraContratoUatDAO.pesquisarPorId(unidadeObraContratoUat.getId());
+
+        if( unidadeObraContratoUat == null ){
+            throw new BusinessErrorException(getMensagem("app_rst_unidade_invalida",
+                    getMensagem("app_rst_label_unidade_obra")));
+        }
+
+        unidadeObraContratoUat.setFlagInativo(flag);
+        unidadeObraContratoUat.setDataInativo(new Date());
+
+        unidadeObraContratoUatDAO.atualizar(unidadeObraContratoUat);
+
+        return unidadeObraContratoUat;
+    }
+
+    public UnidadeObraContratoUat desativar( UnidadeObraContratoUat unidadeObraContratoUat){
+
+        if( unidadeObraContratoUat.getId() == null ){
+            throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_id_invalido",
+                    getMensagem("app_rst_unidade_obra_contrato_id_invalido") ) );
+        }
+
+        unidadeObraContratoUat = unidadeObraContratoUatDAO.pesquisarPorId(unidadeObraContratoUat.getId());
+
+        if( unidadeObraContratoUat == null ){
+            throw new BusinessErrorException(getMensagem("app_rst_unidade_invalida",
+                    getMensagem("app_rst_label_unidade_obra")));
+        }
+
+        unidadeObraContratoUat.setFlagInativo(null);
+        unidadeObraContratoUat.setDataInativo(null);
+
+        unidadeObraContratoUatDAO.atualizar(unidadeObraContratoUat);
 
         return unidadeObraContratoUat;
     }
