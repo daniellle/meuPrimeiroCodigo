@@ -48,7 +48,6 @@ export class AutorizacaoGuard implements CanLoad, CanActivate, CanActivateChild 
     
     canLoad(route: Route): Observable<boolean> | Promise<boolean> | boolean {
         if ( Seguranca.isAutenticado() === null || !Seguranca.isAutenticado() ) {
-            console.log(`autenticando`);
             this.service.autenticar().subscribe((autenticado: boolean) => {
                 if ( autenticado ) {
                     const verificadoPermissoes: boolean = this.verificarPermissoes(route);
@@ -62,7 +61,6 @@ export class AutorizacaoGuard implements CanLoad, CanActivate, CanActivateChild 
             });
         } else {
             const autorizado: boolean = this.verificarPermissoes(route);
-            console.log(`autorizado ${autorizado}`);
             if ( !autorizado ) {
                 this.router.navigate(['/acessonegado']);
             }
@@ -75,7 +73,6 @@ export class AutorizacaoGuard implements CanLoad, CanActivate, CanActivateChild 
         if ( route.data && route.data['permissoes'] ) {
             permissoes = route.data['permissoes'] as string[];
         }
-        
         return permissoes == null || Seguranca.isPermitido(permissoes);
     }
     
