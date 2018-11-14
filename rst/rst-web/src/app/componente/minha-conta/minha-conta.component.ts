@@ -73,8 +73,9 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
     }
 
     dadosTrabalhador(){
+        console.log(this.activatedRoute.snapshot.params);
         this.meusdados = this.activatedRoute.snapshot.params.id === 'meusdados';
-            this.trabalhadorService.buscarMeusDados().subscribe((trabalhador) => {
+        this.trabalhadorService.buscarMeusDados().subscribe((trabalhador) => {
                 this.trabalhador = trabalhador;
                 this.idTrab = this.trabalhador.id;
             });
@@ -93,7 +94,6 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
     }
 
     buscarUsuario(): void {
-
         this.usuarioService.buscarPerfil().subscribe((retorno: Usuario) => {
             this.usuario = new Usuario();
             this.usuario = retorno;
@@ -297,17 +297,15 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
         this.temImagem = false;
     }
 
+    podeVoltar(){
+        return this.usuarioLogado.permissoes.includes(PermissoesEnum.TRABALHADOR);
+    }
+
     voltar(): void {
         if (this.usuarioLogado.permissoes.includes(PermissoesEnum.TRABALHADOR)) {
-            this.router.navigate([`${environment.path_raiz_cadastro}/trabalhador/${this.idTrab}`], {
+            this.router.navigate([`${environment.path_raiz_cadastro}/trabalhador/meusdados`], {
                 queryParams: { "fromMinhaConta": "true" }
             });
-        } else{
-            if(isNullOrUndefined(this.trabalhador)){
-                this.router.navigate([`${environment.url_portal}`]);
-            } else {
-                this.router.navigate([`${environment.path_raiz_cadastro}`]);
-            }
         }
     }
 
