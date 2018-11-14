@@ -66,15 +66,16 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
 
     public ListaPaginada<UnidadeObraContratoUat> pesquisarPaginado(UnidadeObraContratoUatFilter unidadeObraContratoUatFilter) {
 
-        ListaPaginada<UnidadeObraContratoUat> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
+            ListaPaginada<UnidadeObraContratoUat> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
 
         StringBuilder jpql = new StringBuilder();
         //Map<String, Object> parametros = Maps.newHashMap();
 
         getQueryPaginado(jpql, unidadeObraContratoUatFilter, false);
 
-        TypedQuery<UnidadeObraContratoUat> query = criarConsultaPorTipo(jpql.toString());
-        query.setParameter("idEmpresa", unidadeObraContratoUatFilter.getIdEmpresa());
+        Query query = criarConsultaNativa(jpql.toString());
+
+        query.setParameter("idEmpresa", 1038); //unidadeObraContratoUatFilter.getIdEmpresa());
         //DAOUtil.setParameterMap(query, parametros);
 
         listaPaginada.setQuantidade(getCountQueryPaginado(unidadeObraContratoUatFilter));
@@ -95,8 +96,8 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
 
         getQueryPaginado(jpql, unidadeObraContratoUatFilter, true);
 
-        Query query = criarConsulta(jpql.toString());
-        query.setParameter("idEmpresa", unidadeObraContratoUatFilter.getIdEmpresa());
+        Query query = criarConsultaNativa(jpql.toString());
+        query.setParameter("idEmpresa", 1038);//unidadeObraContratoUatFilter.getIdEmpresa());
 
         //DAOUtil.setParameterMap(query, parametros);
 
