@@ -48,9 +48,9 @@ public class UnidadeObraContratoUatService extends BaseService {
     }
 
 
-    public ListaPaginada<UnidadeObraContratoUat> pesquisarPaginado (UnidadeObraContratoUatFilter unidadeObraContratoUatFilter, ClienteAuditoria auditoria){
+    public ListaPaginada<UnidadeObraContratoUat> pesquisarPaginado(UnidadeObraContratoUatFilter unidadeObraContratoUatFilter, ClienteAuditoria auditoria, Long empresaId){
 
-        return unidadeObraContratoUatDAO.pesquisarPaginado(unidadeObraContratoUatFilter);
+        return unidadeObraContratoUatDAO.pesquisarPaginado(unidadeObraContratoUatFilter, empresaId);
 
     }
 }

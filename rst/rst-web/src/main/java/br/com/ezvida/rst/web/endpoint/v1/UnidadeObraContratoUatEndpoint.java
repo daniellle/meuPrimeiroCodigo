@@ -47,18 +47,20 @@ public class UnidadeObraContratoUatEndpoint extends SegurancaEndpoint<UnidadeObr
 
     @GET
     @Encoded
-    @Path("/contratos")
+    @Path("/contratos/{empresaId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Autorizacao(permissoes = @Permissao(value = {
         PermissionConstants.EMPRESA
     }))
-    public Response pesquisarPaginado(@BeanParam UnidadeObraContratoUatFilter unidadeObraContratoUatFilter,  @Context SecurityContext context, @Context HttpServletRequest request){
+    public Response pesquisarPaginado(@BeanParam UnidadeObraContratoUatFilter unidadeObraContratoUatFilter,
+                                      @Context SecurityContext context, @Context HttpServletRequest request, @Encoded @PathParam("empresaId") Long empresaId){
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
             .header("Content-Version", getApplicationVersion()).entity(
                 serializar(
-                    unidadeObraContratoUatService.pesquisarPaginado(unidadeObraContratoUatFilter, ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA,
-                        Funcionalidade.EMPRESA))))
+                    unidadeObraContratoUatService.pesquisarPaginado(unidadeObraContratoUatFilter, ClienteInfos.getClienteInfos(context, request,
+                        TipoOperacaoAuditoria.CONSULTA,
+                        Funcionalidade.EMPRESA), empresaId)))
                     .build();
     }
 

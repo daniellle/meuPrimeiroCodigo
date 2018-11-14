@@ -21,7 +21,7 @@ public class UnidadeObraContratoUat extends BaseEntity<Long> {
     @SequenceGenerator(name = "seq_und_obra_cont_id_und_obra_", sequenceName = "seq_und_obra_cont_id_und_obra_", allocationSize = 1)
     private Long id;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_und_obra_fk")
     private UnidadeObra unidadeObra;

@@ -89,13 +89,13 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
     pesquisarContratos(){
       this.empresasContrato = new Array<EmpresaContrato>();
       this.filtro.idEmpresa = this.idEmpresa;
-      this.empresaContratoService.pesquisarContratos(this.filtro.idEmpresa, new Paginacao(1, 10))
-          .subscribe((retorno: ListaPaginada<EmpresaContrato>) =>{
-                this.paginacaoEmpresaContrato = this.getPaginacao(this.paginacao, retorno)
-              this.verificarRetornoEmpresasContrato(retorno);
-          }, (error) => {
-              this.mensagemError(error);
-          });
+    //   this.empresaContratoService.pesquisarContratos(this.filtro.idEmpresa, new Paginacao(1, 10))
+    //       .subscribe((retorno: ListaPaginada<EmpresaContrato>) =>{
+    //             this.paginacaoEmpresaContrato = this.getPaginacao(this.paginacao, retorno)
+    //           this.verificarRetornoEmpresasContrato(retorno);
+    //       }, (error) => {
+    //           this.mensagemError(error);
+    //       });
     }
 
     verificarRetornoEmpresasContrato(retorno: ListaPaginada<EmpresaContrato>) {
