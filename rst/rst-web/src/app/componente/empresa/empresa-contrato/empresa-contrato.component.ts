@@ -4,7 +4,6 @@ import {ToastyService} from "ng2-toasty";
 import {SetorService} from "../../../servico/setor.service";
 import {EmpresaService} from "../../../servico/empresa.service";
 import {DialogService} from "ng2-bootstrap-modal";
-import {EmpresaSetorService} from "../../../servico/empresa-setor.service";
 import {BloqueioService} from "../../../servico/bloqueio.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MensagemProperties} from "../../../compartilhado/utilitario/recurso.pipe";
@@ -12,10 +11,12 @@ import {EmpresaContratoService} from "../../../servico/empresa-contrato.service"
 import {environment} from "../../../../environments/environment";
 import {FiltroSetor} from "../../../modelo/filtro-setor.model";
 import {Paginacao} from "../../../modelo/paginacao.model";
-import {EmpresaSetor} from "../../../modelo/empresa-setor.model";
-import {Setor} from "../../../modelo/setor.model";
 import {FiltroEmpresa} from "../../../modelo/filtro-empresa.model";
 import {Contrato} from "../../../modelo/contrato.model";
+import {EmpresaContrato} from "../../../modelo/empresa-contrato.model";
+import {FiltroEmpresaContrato} from "../../../modelo/filtro-empresa-contrato.model";
+import {ListaPaginada} from "../../../modelo/lista-paginada.model";
+import {EmpresaFuncao} from "../../../modelo/empresa-funcao.model";
 
 export interface IHash {
     [details: number]: boolean;
@@ -30,12 +31,12 @@ export interface IHash {
 export class EmpresaContratoComponent extends BaseComponent implements OnInit {
 
     public title: string;
-    @Input() public filtro: FiltroSetor;
-    public filtroPage: FiltroSetor;
+    @Input() public filtro: FiltroEmpresaContrato;
+    public filtroPage: FiltroEmpresaContrato;
     public idEmpresa: number;
     public emFiltro: FiltroEmpresa;
-    public empresasSetor: EmpresaSetor[];
-    public paginacaoEmpresaSetor: Paginacao = new Paginacao(1, 10);
+    public empresasContrato: EmpresaContrato[];
+    public paginacaoEmpresaContrato: Paginacao = new Paginacao(1, 10);
     public checks: IHash = {};
     public contratos: Contrato[];
 
@@ -47,19 +48,20 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
               private dialogService: DialogService,
               private empresaContratoService: EmpresaContratoService) {
       super(bloqueioService, dialogo);
-      this.getIdEmpresa();
       this.title = MensagemProperties.app_rst_empresa_contrato_title;
   }
 
   ngOnInit() {
+      this.getIdEmpresa();
+      this.pesquisarContratos();
   }
 
   getIdEmpresa(){
       this.route.params.subscribe((params) => {
           this.idEmpresa = params['id'];
           if (this.idEmpresa) {
-              this.filtro = new FiltroSetor();
-              this.filtroPage = new FiltroSetor();
+              this.filtro = new FiltroEmpresaContrato();
+              this.filtroPage = new FiltroEmpresaContrato();
               this.filtro.idEmpresa = this.idEmpresa;
           }
       }, (error) => {
@@ -83,5 +85,25 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
     public isListaVazia(): boolean {
         return this.contratos === undefined || this.contratos.length === 0;
     }
+
+    pesquisarContratos(){
+      this.empresasContrato = new Array<EmpresaContrato>();
+      this.filtro.idEmpresa = this.idEmpresa;
+      this.empresaContratoService.pesquisarContratos(this.filtro.idEmpresa, new Paginacao(1, 10))
+          .subscribe((retorno: ListaPaginada<EmpresaContrato>) =>{
+                this.paginacaoEmpresaContrato = this.getPaginacao(this.paginacao, retorno)
+              this.verificarRetornoEmpresasContrato(retorno);
+          }, (error) => {
+              this.mensagemError(error);
+          });
+    }
+
+    verificarRetornoEmpresasContrato(retorno: ListaPaginada<EmpresaContrato>) {
+    if (retorno && retorno.list) {
+        this.empresasContrato = retorno.list;
+    } else {
+        this.empresasContrato = new Array<EmpresaContrato>();
+    }
+}
 
 }
