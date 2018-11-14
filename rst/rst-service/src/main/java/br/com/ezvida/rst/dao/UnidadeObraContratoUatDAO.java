@@ -152,41 +152,4 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
 
     }
 
-    public int ativarContrato(UnidadeObraContratoUat unidadeObraContratoUat){
-        StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append("update ").
-                append(getTipoClasse().getSimpleName()).
-                append(" set flagInativo = :flagInativo, ")
-                .append(" dataInativo = :dataInativo ");
-
-        sqlBuilder.append(" where id = :id");
-
-        Query query = criarConsulta(sqlBuilder.toString());
-
-        query.setParameter("id", unidadeObraContratoUat.getId());
-        query.setParameter("flagInativo", unidadeObraContratoUat.getFlagInativo() );
-        query.setParameter("dataInativo", new Date() );
-
-        return query.executeUpdate();
-    }
-
-    public int desativarContrato(UnidadeObraContratoUat unidadeObraContratoUat){
-        StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder.append("update ").
-                append(getTipoClasse().getSimpleName()).
-                append(" set flagInativo = :flagInativo, ")
-                .append(" dataInativo = :dataInativo ");
-
-        sqlBuilder.append(" where id = :id");
-
-        Query query = criarConsulta(sqlBuilder.toString());
-
-        query.setParameter("id", unidadeObraContratoUat.getId());
-        query.setParameter("flagInativo", null );
-        query.setParameter("dataInativo", null );
-
-        return query.executeUpdate();
-    }
-
-
 }
