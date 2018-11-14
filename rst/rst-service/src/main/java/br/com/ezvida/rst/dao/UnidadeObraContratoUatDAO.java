@@ -68,7 +68,9 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
 
     public ListaPaginada<UnidadeObraContratoUat> pesquisarPaginado(UnidadeObraContratoUatFilter unidadeObraContratoUatFilter, Long empresaId) {
 
-            ListaPaginada<UnidadeObraContratoUat> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
+        Long quantidade = getCountQueryPaginado(unidadeObraContratoUatFilter, empresaId);
+
+        ListaPaginada<UnidadeObraContratoUat> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
 
         StringBuilder jpql = new StringBuilder();
 
@@ -78,7 +80,7 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
 
         query.setParameter("idEmpresa", empresaId);
 
-        listaPaginada.setQuantidade(getCountQueryPaginado(unidadeObraContratoUatFilter, empresaId));
+        listaPaginada.setQuantidade(quantidade);
 
         if (unidadeObraContratoUatFilter != null) {
             query.setFirstResult((unidadeObraContratoUatFilter.getPagina() - 1) * unidadeObraContratoUatFilter.getQuantidadeRegistro());
@@ -97,7 +99,7 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
         getQueryPaginado(jpql, unidadeObraContratoUatFilter, true);
 
         Query query = criarConsulta(jpql.toString());
-//        query.setParameter("idEmpresa", empresaId);//unidadeObraContratoUatFilter.getIdEmpresa());
+        query.setParameter("idEmpresa", empresaId);//unidadeObraContratoUatFilter.getIdEmpresa());
 
         //DAOUtil.setParameterMap(query, parametros);
 
@@ -108,13 +110,20 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
 
         if (count) {
             jpql.append(" select count(unidadeObraContratoUat) ");
+
+            jpql.append(" from UnidadeObraContratoUat unidadeObraContratoUat");
+
+            jpql.append(" join unidadeObraContratoUat.unidadeObra unidadeObra");
+            jpql.append(" join unidadeObra.empresa empresa ");
+
         } else {
             jpql.append(" select unidadeObraContratoUat ");
-        }
-        jpql.append(" from UnidadeObraContratoUat unidadeObraContratoUat");
 
-        jpql.append(" left join fetch unidadeObraContratoUat.unidadeObra unidadeObra");
-        jpql.append(" left join fetch unidadeObra.empresa empresa ");
+            jpql.append(" from UnidadeObraContratoUat unidadeObraContratoUat");
+
+            jpql.append(" left join fetch unidadeObraContratoUat.unidadeObra unidadeObra");
+            jpql.append(" left join fetch unidadeObra.empresa empresa ");
+        }
 
         jpql.append(" where empresa.id = :idEmpresa ");
 
