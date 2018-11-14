@@ -7,6 +7,8 @@ import br.com.ezvida.girst.apiclient.model.filter.SistemaCredenciadoFilter;
 import br.com.ezvida.rst.auditoria.logger.LogAuditoria;
 import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
+import br.com.ezvida.rst.enums.EntidadeEnum;
+import br.com.ezvida.rst.model.OrigemDados;
 import br.com.ezvida.rst.utils.StringUtil;
 import br.com.ezvida.rst.utils.ValidadorUtils;
 import fw.core.exception.BusinessException;
@@ -41,6 +43,9 @@ public class SistemaCredenciadoService extends BaseService {
     @Inject
     private EmpresaService empresaService;
 
+    @Inject
+    private OrigemDadosService origemDadosService;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SistemaCredenciadoService.class);
 
     public String cadastrar(SistemaCredenciado sistemaCredenciado, DadosFilter dados
@@ -51,6 +56,7 @@ public class SistemaCredenciadoService extends BaseService {
             sistemaCredenciado.setCnpj(StringUtil.removeCaracteresEspeciais(sistemaCredenciado.getCnpj()));
             sistemaCredenciado.setTelefoneResponsavel(StringUtil.removeCaracteresEspeciais(sistemaCredenciado.getTelefoneResponsavel()));
             if (validarFiltroDados(dados, auditoria, sistemaCredenciado)) {
+                validarSistemaEntidade(sistemaCredenciado);
                 return sistemaCredenciadoClient.cadastrar(apiClientService.getURL(), sistemaCredenciado, apiClientService.getOAuthToken().getAccess_token());
             } else {
                 LOGGER.debug("Não é possível cadastrar sistema credenciado para o CNPJ informado.");
@@ -174,6 +180,15 @@ public class SistemaCredenciadoService extends BaseService {
             }
         }
         return next;
+    }
+
+    public void validarSistemaEntidade(SistemaCredenciado sistemaCredenciado) {
+        if (!EntidadeEnum.EMPRESA.getValue().equals(sistemaCredenciado.getEntidade())) {
+            BigInteger result = origemDadosService.countByDescricao(sistemaCredenciado.getSistema());
+            if (result.compareTo(BigInteger.ZERO) == 0) {
+                throw new BusinessException(getMensagem("app_rst_sistema_invalido_origem_dados"));
+            }
+        }
     }
 
 }
