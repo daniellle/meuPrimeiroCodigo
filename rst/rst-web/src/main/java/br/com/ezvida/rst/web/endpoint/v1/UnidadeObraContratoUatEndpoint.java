@@ -47,18 +47,20 @@ public class UnidadeObraContratoUatEndpoint extends SegurancaEndpoint<UnidadeObr
 
     @GET
     @Encoded
-    @Path("/contratos")
+    @Path("/contratos/{empresaId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Autorizacao(permissoes = @Permissao(value = {
         PermissionConstants.EMPRESA
     }))
-    public Response pesquisarPaginado(@BeanParam UnidadeObraContratoUatFilter unidadeObraContratoUatFilter,  @Context SecurityContext context, @Context HttpServletRequest request){
+    public Response pesquisarPaginado(@BeanParam UnidadeObraContratoUatFilter unidadeObraContratoUatFilter,
+                                      @Context SecurityContext context, @Context HttpServletRequest request, @Encoded @PathParam("empresaId") Long empresaId){
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
             .header("Content-Version", getApplicationVersion()).entity(
                 serializar(
-                    unidadeObraContratoUatService.pesquisarPaginado(unidadeObraContratoUatFilter, ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA,
-                        Funcionalidade.EMPRESA))))
+                    unidadeObraContratoUatService.pesquisarPaginado(unidadeObraContratoUatFilter, ClienteInfos.getClienteInfos(context, request,
+                        TipoOperacaoAuditoria.CONSULTA,
+                        Funcionalidade.EMPRESA), empresaId)))
                     .build();
     }
 
@@ -66,11 +68,39 @@ public class UnidadeObraContratoUatEndpoint extends SegurancaEndpoint<UnidadeObr
     @Encoded
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response solicitarEmailSesi(@Encoded UnidadeObraContratoUat unidadeObraContratoUat,  @Context SecurityContext context
+    public Response salvar(@Encoded UnidadeObraContratoUat unidadeObraContratoUat,  @Context SecurityContext context
         , @Context HttpServletRequest request) {
         getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
         return Response.status(HttpServletResponse.SC_OK)
             .entity(unidadeObraContratoUatService.salvar(unidadeObraContratoUat))
+            .type(MediaType.APPLICATION_JSON).build();
+
+    }
+
+    @PUT
+    @Encoded
+    @Path("/ativar")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response ativar(@Encoded UnidadeObraContratoUat unidadeObraContratoUat,  @Context SecurityContext context
+        , @Context HttpServletRequest request) {
+        getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
+        return Response.status(HttpServletResponse.SC_OK)
+            .entity(unidadeObraContratoUatService.ativar(unidadeObraContratoUat))
+            .type(MediaType.APPLICATION_JSON).build();
+
+    }
+
+    @PUT
+    @Encoded
+    @Path("/desativar")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response desativar(@Encoded UnidadeObraContratoUat unidadeObraContratoUat,  @Context SecurityContext context
+        , @Context HttpServletRequest request) {
+        getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
+        return Response.status(HttpServletResponse.SC_OK)
+            .entity(unidadeObraContratoUatService.desativar(unidadeObraContratoUat))
             .type(MediaType.APPLICATION_JSON).build();
 
     }

@@ -54,32 +54,34 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
         LOGGER.debug("Listando todos os contratos");
 
         StringBuilder query = new StringBuilder();
-        query.append(" select * from unidadeObraContratoUat")
-            .append(" join und_obra o on und_obra_contrato_uat.id_und_obra_fk = o.id_und_obra ")
-            .append(" join und_atd_trabalhador u on und_obra_contrato_uat.id_und_atd_trabalhador_fk = u.id_und_atd_trabalhador ")
-            .append(" where o.id_empresa_fk = :idEmpresa ")
-            .append(" order by und_obra_contrato_uat.fl_inativo ");
+        query.append(" select unidadeObraContratoUat from UnidadeObraContratoUat unidadeObraContratoUat")
+//              .append(" inner join fetch unidadeObraContratoUat unidadeObra")
+//              .append(" inner join fetch unidadeObra.empresa empresa ")
+//            .append(" join und_obra o on und_obra_contrato_uat.id_und_obra_fk = o.id_und_obra ")
+//            .append(" join und_atd_trabalhador u on und_obra_contrato_uat.id_und_atd_trabalhador_fk = u.id_und_atd_trabalhador ")
+            .append(" where empresa.id = :idEmpresa ")
+            .append(" order by unidadeObraContratoUat.flagInativo ");
         TypedQuery<UnidadeObraContratoUat> typedQuery = criarConsultaPorTipo(query.toString());
-        typedQuery.setParameter("idEmpresa", idEmpresa);
+//        typedQuery.setParameter("idEmpresa", idEmpresa);
 
         return typedQuery.getResultList();
     }
 
-    public ListaPaginada<UnidadeObraContratoUat> pesquisarPaginado(UnidadeObraContratoUatFilter unidadeObraContratoUatFilter) {
+    public ListaPaginada<UnidadeObraContratoUat> pesquisarPaginado(UnidadeObraContratoUatFilter unidadeObraContratoUatFilter, Long empresaId) {
 
-            ListaPaginada<UnidadeObraContratoUat> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
+        Long quantidade = getCountQueryPaginado(unidadeObraContratoUatFilter, empresaId);
+
+        ListaPaginada<UnidadeObraContratoUat> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
 
         StringBuilder jpql = new StringBuilder();
-        //Map<String, Object> parametros = Maps.newHashMap();
 
         getQueryPaginado(jpql, unidadeObraContratoUatFilter, false);
 
-        Query query = criarConsultaNativa(jpql.toString());
+        Query query = criarConsulta(jpql.toString());
 
-        query.setParameter("idEmpresa", 1038); //unidadeObraContratoUatFilter.getIdEmpresa());
-        //DAOUtil.setParameterMap(query, parametros);
+        query.setParameter("idEmpresa", empresaId);
 
-        listaPaginada.setQuantidade(getCountQueryPaginado(unidadeObraContratoUatFilter));
+        listaPaginada.setQuantidade(quantidade);
 
         if (unidadeObraContratoUatFilter != null) {
             query.setFirstResult((unidadeObraContratoUatFilter.getPagina() - 1) * unidadeObraContratoUatFilter.getQuantidadeRegistro());
@@ -91,14 +93,14 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
         return listaPaginada;
     }
 
-    private Long getCountQueryPaginado(UnidadeObraContratoUatFilter unidadeObraContratoUatFilter) {
+    private Long getCountQueryPaginado(UnidadeObraContratoUatFilter unidadeObraContratoUatFilter, Long empresaId) {
         //Map<String, Object> parametros = Maps.newHashMap();
         StringBuilder jpql = new StringBuilder();
 
         getQueryPaginado(jpql, unidadeObraContratoUatFilter, true);
 
-        Query query = criarConsultaNativa(jpql.toString());
-        query.setParameter("idEmpresa", 1038);//unidadeObraContratoUatFilter.getIdEmpresa());
+        Query query = criarConsulta(jpql.toString());
+        query.setParameter("idEmpresa", empresaId);//unidadeObraContratoUatFilter.getIdEmpresa());
 
         //DAOUtil.setParameterMap(query, parametros);
 
@@ -108,50 +110,24 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
     private void getQueryPaginado(StringBuilder jpql, UnidadeObraContratoUatFilter unidadeObraContratoUatFilter, boolean count) {
 
         if (count) {
-            jpql.append(" select count(id_und_obra_contrato_uat) ");
-            jpql.append("  from und_obra_contrato_uat ");
-            jpql.append("  join und_obra o on und_obra_contrato_uat.id_und_obra_fk = o.id_und_obra ");
-            jpql.append(" join und_atd_trabalhador u on und_obra_contrato_uat.id_und_atd_trabalhador_fk = u.id_und_atd_trabalhador ");
+            jpql.append(" select count(unidadeObraContratoUat) ");
+
+            jpql.append(" from UnidadeObraContratoUat unidadeObraContratoUat");
+
+            jpql.append(" join unidadeObraContratoUat.unidadeObra unidadeObra");
+            jpql.append(" join unidadeObra.empresa empresa ");
+
         } else {
-            jpql.append(" select * ");
-            jpql.append(" from und_obra_contrato_uat ");
-            jpql.append(" join und_obra o on und_obra_contrato_uat.id_und_obra_fk = o.id_und_obra ");
-            jpql.append(" join und_atd_trabalhador u on und_obra_contrato_uat.id_und_atd_trabalhador_fk = u.id_und_atd_trabalhador ");
+            jpql.append(" select unidadeObraContratoUat ");
+
+            jpql.append(" from UnidadeObraContratoUat unidadeObraContratoUat");
+
+            jpql.append(" left join fetch unidadeObraContratoUat.unidadeObra unidadeObra");
+            jpql.append(" left join fetch unidadeObra.empresa empresa ");
         }
 
-
-        jpql.append(" where o.id_empresa_fk = :idEmpresa ");
-
-      /*  if (unidadeObraContratoUatFilter != null) {
-
-            boolean codigo = StringUtils.isNotBlank(unidadeObraContratoUatFilter.getCodigo());
-            boolean descricao = StringUtils.isNotBlank(funcaoFilter.getDescricao());
-            boolean id = funcaoFilter.getIdEmpresa() != null;
-
-            if (id) {
-                jpql.append(" and empresa.id = :idEmpresa ");
-                parametros.put("idEmpresa", funcaoFilter.getIdEmpresa());
-            }
-
-            if (descricao) {
-                jpql.append(" and upper(funcao.descricao) like :descricao escape :sc ");
-                parametros.put("sc", "\\");
-                parametros.put("descricao", "%" + funcaoFilter.getDescricao().replace("%", "\\%").toUpperCase() + "%");
-            }
-
-            if (codigo) {
-                jpql.append(" and upper(funcao.codigo) like :codigo escape :sc ");
-                funcaoFilter.setCodigo(funcaoFilter.getCodigo().replace("%", "\\%").toUpperCase());
-                parametros.put("sc", "\\");
-                parametros.put("codigo", "%" + funcaoFilter.getCodigo().concat("%").toUpperCase());
-            }
-
-            if (!count) {
-                jpql.append(" order by funcao.descricao ");
-            }
-        }*/
+        jpql.append(" where empresa.id = :idEmpresa ");
 
     }
-
 
 }
