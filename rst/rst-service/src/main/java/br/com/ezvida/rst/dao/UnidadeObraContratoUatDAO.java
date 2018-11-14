@@ -123,6 +123,8 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
             jpql.append(" from UnidadeObraContratoUat unidadeObraContratoUat");
 
             jpql.append(" left join fetch unidadeObraContratoUat.unidadeObra unidadeObra");
+            jpql.append(" left join fetch unidadeObraContratoUat.tipoPrograma tipoPrograma");
+            jpql.append(" left join fetch unidadeObraContratoUat.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador");
             jpql.append(" left join fetch unidadeObra.empresa empresa ");
         }
 

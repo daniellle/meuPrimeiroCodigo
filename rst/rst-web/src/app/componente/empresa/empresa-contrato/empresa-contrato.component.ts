@@ -24,9 +24,9 @@ export interface IHash {
 
 
 @Component({
-    selector: 'app-empresa-contrato',
-    templateUrl: './empresa-contrato.component.html',
-    styleUrls: ['./empresa-contrato.component.scss']
+  selector: 'app-empresa-contrato',
+  templateUrl: './empresa-contrato.component.html',
+  styleUrls: ['./empresa-contrato.component.scss']
 })
 export class EmpresaContratoComponent extends BaseComponent implements OnInit {
 
@@ -35,7 +35,6 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
     public filtroPage: FiltroEmpresaContrato;
     public idEmpresa: number;
     public emFiltro: FiltroEmpresa;
-    public empresasContrato: EmpresaContrato[];
     public paginacaoEmpresaContrato: Paginacao = new Paginacao(1, 10);
     public checks: IHash = {};
     public contratos: Contrato[];
@@ -97,6 +96,7 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
     verificarRetornoEmpresasContrato(retorno: ListaPaginada<Contrato>) {
         if (retorno && retorno.list) {
             this.contratos = retorno.list;
+            console.log(this.contratos);
         } else {
             this.contratos = new Array<Contrato>();
         }

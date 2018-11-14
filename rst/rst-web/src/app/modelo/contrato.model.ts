@@ -4,12 +4,12 @@ import {TipoPrograma} from "./tipo-programa.model";
 
 export class  Contrato{
     id: number;
-    dataInicio: Date;
-    dataFim: Date;
+    dataContratoInicio: Date;
+    dataContratoFim: Date;
     unidadeObra: UnidadeObra;
     anoVigencia: number;
     fl_inativo: string;
-    programa: TipoPrograma;
-    unidade_sesi: UnidadeAtendimentoTrabalhador;
+    tipoPrograma: TipoPrograma;
+    unidadeAtendimentoTrabalhador: UnidadeAtendimentoTrabalhador;
 
 }

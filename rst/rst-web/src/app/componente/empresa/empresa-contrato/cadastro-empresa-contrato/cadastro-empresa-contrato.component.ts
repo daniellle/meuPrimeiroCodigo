@@ -80,13 +80,13 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     private prepareSave(model: Contrato): Contrato {
         const contrato = {
             id: model.id,
-            dataInicio: model.dataInicio,
-            dataFim: model.dataFim,
+            dataContratoInicio: model.dataContratoInicio,
+            dataContratoFim: model.dataContratoFim,
             unidadeObra: model.unidadeObra,
             anoVigencia: model.anoVigencia,
-            unidade_sesi: model.unidade_sesi,
+            unidadeAtendimentoTrabalhador: model.unidadeAtendimentoTrabalhador,
             fl_inativo: model.fl_inativo,
-            programa: model.programa
+            tipoPrograma: model.tipoPrograma
         };
         return contrato as Contrato;
     }
@@ -115,17 +115,16 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
 
     createForm() {
         this.contratoForm = this.formBuilder.group({
-            dataInicio: [
+            dataContratoInicio: [
                 {value: null},
                 Validators.compose([
                     Validators.required, ValidateData,
                 ]),
             ],
-            dataFim: [
+            dataContratoFim: [
                 {value: null},
                 Validators.compose([
                     Validators.required,
-                    Validators.maxLength(160),
                     ValidateData
                 ]),
             ],
@@ -143,8 +142,8 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
                     Validators.required
                 ]),
             ],
-            unidadeSesi: [
-                {value: undefined},
+            unidadeAtendimentoTrabalhador: [
+                {value: null},
                 Validators.compose([
                     Validators.maxLength(100),
                     Validators.required
