@@ -11,5 +11,4 @@ export class  Contrato{
     flagInativo: string;
     tipoPrograma: TipoPrograma;
     unidadeAtendimentoTrabalhador: UnidadeAtendimentoTrabalhador;
-
 }
