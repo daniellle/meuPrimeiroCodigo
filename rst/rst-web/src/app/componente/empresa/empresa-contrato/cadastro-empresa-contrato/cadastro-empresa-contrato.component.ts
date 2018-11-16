@@ -113,6 +113,10 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
                 this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['anoVigencia'],
                     MensagemProperties.app_rst_labels_ano_vigencia);
             }
+           else{
+                this.mensagemError("Inserir um valor de ano entre 1900 e 3000");
+                return;
+            }
         }
         if (this.contratoForm.controls['unidadeAtendimentoTrabalhador'].errors) {
             if (this.contratoForm.controls['unidadeAtendimentoTrabalhador'].errors.required) {
