@@ -35,15 +35,15 @@
                     <th class="label text-center">
                     </th>
                     <td class="col-nome col-nao-quebra">&nbsp;{{item.unidadeObra.descricao}}</td>
-                    <td class="col-nome col-quebra">&nbsp;{{item.dataContratoInicio}}</td>
-                    <td class="col-nome col-quebra">&nbsp;{{item.dataContratoFim}}</td>
+                    <td class="col-nome col-nao-quebra">&nbsp;{{item.dataContratoInicio}}</td>
+                    <td class="col-nome col-nao-quebra">&nbsp;{{item.dataContratoFim}}</td>
                     <td class="col-nome col-quebra">&nbsp;{{item.anoVigencia}}</td>
                     <td class="col-nome col-quebra">&nbsp;{{item.tipoPrograma.sigla}}</td>
                     <td class="col-nome col-quebra">&nbsp;{{item.unidadeAtendimentoTrabalhador.nomeFantasia}}</td>
                     <td class="col-nome col-quebra">
                         <div class="form-check col-md-2">
                             <mat-slide-toggle name="cipa" id="cipa" (change)="mudaStatus($event, item.id) "
-                           [checked]="item.flagInativo == undefined">
+                           [checked]="item.flagInativo == undefined || item.flagInativo == 'N' ">
                             </mat-slide-toggle>
                         </div>
                     </td>

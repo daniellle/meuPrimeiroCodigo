@@ -12,4 +12,5 @@ export class  Contrato{
     tipoPrograma: TipoPrograma;
     unidadeAtendimentoTrabalhador: UnidadeAtendimentoTrabalhador;
 
+
 }

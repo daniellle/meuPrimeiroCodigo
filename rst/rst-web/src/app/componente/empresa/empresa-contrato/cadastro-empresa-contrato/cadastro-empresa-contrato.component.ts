@@ -82,9 +82,9 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         this.model = new Contrato();
         this.listaContratos = new Array<Contrato>();
         this.unidadesObra = new Array<UnidadeObra>();
-        this.createForm();
         this.carregarCombo();
         this.title = MensagemProperties.app_rst_empresa_contrato_cadastrar_title;
+        this.createForm();
 
     }
 
@@ -101,13 +101,13 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         }
         if (this.contratoForm.controls['dataContratoInicio'].errors) {
                 if (this.contratoForm.controls['dataContratoInicio'].errors.required) {
-                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['dataInicio'],
+                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['dataContratoInicio'],
                     MensagemProperties.app_rst_labels_data_inicio);
             }
         }
         if (this.contratoForm.controls['dataContratoFim'].errors) {
             if (this.contratoForm.controls['dataContratoFim'].errors.required) {
-                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['dataFim'],
+                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['dataContratoFim'],
                     MensagemProperties.app_rst_labels_data_fim);
             }
         }
@@ -173,43 +173,45 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     createForm() {
         this.contratoForm = this.formBuilder.group({
             dataContratoInicio: [
-                {value: null},
+                {value: undefined, pristine: false},
                 Validators.compose([
                     Validators.required, ValidateData,
                 ]),
             ],
             dataContratoFim: [
-                {value: null},
+                {value: undefined, pristine: false},
                 Validators.compose([
                     Validators.required,
                     ValidateData
                 ]),
             ],
             unidadeObra: [
-                {value: undefined},
+                {value: undefined, pristine: false},
                 Validators.compose([
                     Validators.required,
                     Validators.maxLength(160),
                 ]),
             ],
             anoVigencia: [
-                {value: null},
+                {value: undefined, pristine: false},
                 Validators.compose([
                     Validators.maxLength(4),
                     Validators.required,
                     Validators.minLength(4),
+                    Validators.min(1900),
+                    Validators.max(3000),
 
                 ]),
             ],
             unidadeAtendimentoTrabalhador: [
-                {value: null},
+                {value: undefined, pristine: false},
                 Validators.compose([
                     Validators.maxLength(100),
                     Validators.required
                 ]),
             ],
             tipoPrograma: [
-                {value: null},
+                {value: undefined, pristine: false},
                 Validators.compose([
                     Validators.maxLength(100),
                     Validators.required
