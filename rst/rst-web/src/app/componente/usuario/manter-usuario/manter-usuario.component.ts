@@ -1,26 +1,27 @@
-import {PermissoesEnum} from 'app/modelo/enum/enum-permissoes';
-import {Seguranca} from './../../../compartilhado/utilitario/seguranca.model';
-import {PerfilEnum} from 'app/modelo/enum/enum-perfil';
-import {environment} from './../../../../environments/environment';
-import {MascaraUtil} from './../../..//compartilhado/utilitario/mascara.util';
-import {IHash} from './../../empresa/empresa-funcao/empresa-funcao.component';
-import {UsuarioPerfilSistema} from './../../../modelo/usuario-perfil-sistema.model';
-import {Sistema} from './../../../modelo/sistema.model';
-import {Perfil} from './../../../modelo/perfil.model';
-import {SistemaService} from './../../../servico/sistema.service';
-import {PerfilService} from './../../../servico/perfil.service';
-import {DialogService} from 'ng2-bootstrap-modal';
-import {ValidateEmail} from './../../..//compartilhado/validators/email.validator';
-import {ValidateCPF} from './../../..//compartilhado/validators/cpf.validator';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ToastyService} from 'ng2-toasty';
-import {BloqueioService} from './../../../servico/bloqueio.service';
-import {BaseComponent} from './../../..//componente/base.component';
-import {MensagemProperties} from './../../..//compartilhado/utilitario/recurso.pipe';
-import {Usuario} from './../../../modelo/usuario.model';
-import {UsuarioService} from './../../../servico/usuario.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Component, OnInit} from '@angular/core';
+import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
+import { Seguranca } from './../../../compartilhado/utilitario/seguranca.model';
+import { PerfilEnum } from 'app/modelo/enum/enum-perfil';
+import { environment } from './../../../../environments/environment';
+import { MascaraUtil } from './../../..//compartilhado/utilitario/mascara.util';
+import { IHash } from './../../empresa/empresa-funcao/empresa-funcao.component';
+import { UsuarioPerfilSistema } from './../../../modelo/usuario-perfil-sistema.model';
+import { Sistema } from './../../../modelo/sistema.model';
+import { Perfil } from './../../../modelo/perfil.model';
+import { SistemaService } from './../../../servico/sistema.service';
+import { PerfilService } from './../../../servico/perfil.service';
+import { DialogService } from 'ng2-bootstrap-modal';
+import { ValidateEmail } from './../../..//compartilhado/validators/email.validator';
+import { ValidateCPF } from './../../..//compartilhado/validators/cpf.validator';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastyService } from 'ng2-toasty';
+import { BloqueioService } from './../../../servico/bloqueio.service';
+import { BaseComponent } from './../../..//componente/base.component';
+import { MensagemProperties } from './../../..//compartilhado/utilitario/recurso.pipe';
+import { Usuario } from './../../../modelo/usuario.model';
+import { UsuarioService } from './../../../servico/usuario.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { SistemaEnum } from 'app/modelo/enum/enum-sistema.model';
 
 export interface IHash {
     [details: number]: boolean;
@@ -75,7 +76,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             }
         });
         this.modoConsulta = !Seguranca.isPermitido([PermissoesEnum.USUARIO, PermissoesEnum.USUARIO_CADASTRAR,
-            PermissoesEnum.USUARIO_ALTERAR, PermissoesEnum.USUARIO_DESATIVAR]);
+        PermissoesEnum.USUARIO_ALTERAR, PermissoesEnum.USUARIO_DESATIVAR]);
         this.title = MensagemProperties.app_rst_usuario_title_cadastrar;
         this.criarForm();
     }
@@ -160,30 +161,30 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     }
 
     associarPerfil(): void {
-            this.sistemaSelecionado = this.sistemas.filter((s) => s.id === Number(this.idSistemas))[0];
+        this.sistemaSelecionado = this.sistemas.filter((s) => s.id === Number(this.idSistemas))[0];
 
-            const perfisRemover: UsuarioPerfilSistema[] = this.usuario.perfisSistema
-                .filter((ps) => ps.sistema.id
-                    === Number(this.sistemaSelecionado.id));
-            if (perfisRemover.length > 0) {
-                perfisRemover.forEach((pr) => {
-                    const index: number = this.usuario.perfisSistema.indexOf(pr);
-                    if (index > -1) {
-                        this.usuario.perfisSistema.splice(index, 1);
-                    }
-                });
-            }
-
-            this.perfisSistemas.forEach((element) => {
-                element.sistema = this.sistemaSelecionado;
-                this.usuario.perfisSistema.push(element);
+        const perfisRemover: UsuarioPerfilSistema[] = this.usuario.perfisSistema
+            .filter((ps) => ps.sistema.id
+                === Number(this.sistemaSelecionado.id));
+        if (perfisRemover.length > 0) {
+            perfisRemover.forEach((pr) => {
+                const index: number = this.usuario.perfisSistema.indexOf(pr);
+                if (index > -1) {
+                    this.usuario.perfisSistema.splice(index, 1);
+                }
             });
+        }
 
-            this.sistemaSelecionado = null;
-            this.idSistemas = null;
-            this.perfisSelecionados = [];
-            this.perfisSistemas = Array<UsuarioPerfilSistema>();
-       
+        this.perfisSistemas.forEach((element) => {
+            element.sistema = this.sistemaSelecionado;
+            this.usuario.perfisSistema.push(element);
+        });
+
+        this.sistemaSelecionado = null;
+        this.idSistemas = null;
+        this.perfisSelecionados = [];
+        this.perfisSistemas = Array<UsuarioPerfilSistema>();
+
     }
 
     converterModelParaForm(): void {
@@ -206,21 +207,21 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     criarForm(): void {
         this.usuarioForm = this.formBuilder.group({
             nome: [
-                {value: null, disabled: this.modoConsulta},
+                { value: null, disabled: this.modoConsulta },
                 Validators.compose([
                     Validators.required,
                     Validators.maxLength(160)
                 ])
             ],
             login: [
-                {value: null, disabled: this.modoAlterar || this.modoConsulta},
+                { value: null, disabled: this.modoAlterar || this.modoConsulta },
                 Validators.compose([
                     Validators.required,
                     ValidateCPF
                 ])
             ],
             email: [
-                {value: null, disabled: this.modoConsulta},
+                { value: null, disabled: this.modoConsulta },
                 Validators.compose([
                     Validators.required,
                     Validators.maxLength(255),
@@ -267,8 +268,8 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     selecionarSistemaPerfil(id: number): void {
         this.perfisSelecionados = [];
         this.perfisSistemas = [];
-        const target_r: any = {checked: true};
-        const event: any = {checked: target_r};
+        const target_r: any = { checked: true };
+        const event: any = { checked: target_r };
         this.idSistemas = id;
         this.filtrarPerfis();
 
@@ -289,7 +290,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             const id = ps.sistema.id;
 
             if (!sistemas[id]) {
-                sistemas[id] = {id, sistema: ps.sistema.nome, perfil: ''};
+                sistemas[id] = { id, sistema: ps.sistema.nome, perfil: '' };
             }
             sistemas[id].perfil = ps.perfil.nome.toString().concat('; ').concat(sistemas[id].perfil);
         });
@@ -303,14 +304,23 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     excluirAssociacaoPerfil(idSistema: number): void {
         const sistemaPerfis: UsuarioPerfilSistema[] = this.usuario.perfisSistema.filter((ps) => ps.sistema.id
             === Number(idSistema));
-
         sistemaPerfis.forEach((element) => {
+            this.usuario.perfisSistema;
             const i = this.usuario.perfisSistema.indexOf(element, 0);
-            if (i > -1) {
-                this.usuario.perfisSistema.splice(i, 1);
+            if (element.perfil.codigo !== PerfilEnum.TRA) {
+                if (i > -1) {
+                    this.usuario.perfisSistema.splice(i, 1);
+                }
             }
         });
+        console.log(sistemaPerfis);
     }
+
+    isNotOnlyTrabalhador(perfis: any) {
+        perfis = perfis.split("; ");
+        return perfis.length > 1;
+    }
+
 
     selecionarSistema(): void {
         this.filtrarPerfis();
@@ -319,10 +329,10 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     filtrarPerfis() {
         const sistema = this.sistemas.filter((s) => s.id === Number(this.idSistemas))[0];
-        if(sistema){
+        if (sistema) {
             this.perfis = sistema.sistemaPerfis.map(value => value.perfil)
                 .filter(value => value.codigo != PerfilEnum.TRA);
-        }else{
+        } else {
             this.perfis = [];
         }
     }
