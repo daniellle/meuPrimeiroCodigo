@@ -17,6 +17,7 @@ import {EmpresaContrato} from "../../../modelo/empresa-contrato.model";
 import {FiltroEmpresaContrato} from "../../../modelo/filtro-empresa-contrato.model";
 import {ListaPaginada} from "../../../modelo/lista-paginada.model";
 import {EmpresaFuncao} from "../../../modelo/empresa-funcao.model";
+import {FormGroup} from "@angular/forms";
 
 export interface IHash {
     [details: number]: boolean;
@@ -38,6 +39,7 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
     public paginacaoEmpresaContrato: Paginacao = new Paginacao(1, 10);
     public checks: IHash = {};
     public contratos: Contrato[];
+    public statusForm: FormGroup;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,

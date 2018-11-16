@@ -22,6 +22,7 @@ import {ValidateCNPJ} from "../../../../compartilhado/validators/cnpj.validator"
 import {ValidarNit} from "../../../../compartilhado/validators/nit.validator";
 import {ValidateEmail} from "../../../../compartilhado/validators/email.validator";
 import {MensagemProperties} from "../../../../compartilhado/utilitario/recurso.pipe";
+import {UatService} from "../../../../servico/uat.service";
 
 @Component({
     selector: 'app-cadastro-empresa-contrato',
@@ -42,6 +43,8 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     mensagemInconsistencia: string;
     contratoForm: FormGroup;
     unidadesObra: UnidadeObra[];
+    unidadeObra: UnidadeObra;
+    unidadesAT: UnidadeAtendimentoTrabalhador[];
 
 
     constructor(
@@ -54,6 +57,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         protected dialogo: ToastyService,
         private contratoService: EmpresaContratoService,
         private unidadeObraService: UnidadeObraService,
+        private unidadeATService: UatService,
     ) {
         super(bloqueioService, dialogo);
     }
@@ -85,7 +89,6 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
             unidadeObra: model.unidadeObra,
             anoVigencia: model.anoVigencia,
             unidadeAtendimentoTrabalhador: model.unidadeAtendimentoTrabalhador,
-            fl_inativo: model.fl_inativo,
             tipoPrograma: model.tipoPrograma
         };
         return contrato as Contrato;
@@ -110,6 +113,14 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         }, (error) => {
             this.mensagemError(error);
         });
+
+        this.unidadeATService.pesquisarTodos().subscribe(response => {
+            this.unidadesAT = response;
+        },(error) => {
+            this.mensagemError(error);
+        });
+
+
     }
 
 
