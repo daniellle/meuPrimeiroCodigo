@@ -23,6 +23,12 @@ import {ValidarNit} from "../../../../compartilhado/validators/nit.validator";
 import {ValidateEmail} from "../../../../compartilhado/validators/email.validator";
 import {MensagemProperties} from "../../../../compartilhado/utilitario/recurso.pipe";
 import {UatService} from "../../../../servico/uat.service";
+import {Usuario} from "../../../../modelo/usuario.model";
+import {Seguranca} from "../../../../compartilhado/utilitario/seguranca.model";
+import {Perfil} from "../../../../modelo/perfil.model";
+import {PerfilEnum} from "../../../../modelo/enum/enum-perfil";
+import {TipoProgramaService} from "../../../../servico/tipo-programa.service";
+import {TipoPrograma} from "../../../../modelo/tipo-programa.model";
 
 @Component({
     selector: 'app-cadastro-empresa-contrato',
@@ -45,6 +51,9 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     unidadesObra: UnidadeObra[];
     unidadeObra: UnidadeObra;
     unidadesAT: UnidadeAtendimentoTrabalhador[];
+    usuarioLogado: Usuario;
+    flagUsuario: string;
+    tiposPrograma: TipoPrograma[];
 
 
     constructor(
@@ -58,12 +67,14 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         private contratoService: EmpresaContratoService,
         private unidadeObraService: UnidadeObraService,
         private unidadeATService: UatService,
+        private tipoProgramaService: TipoProgramaService,
     ) {
         super(bloqueioService, dialogo);
     }
 
     ngOnInit() {
         this.setEmpresa();
+        this.usuarioLogado = Seguranca.getUsuario();
         this.contrato = new Contrato();
         this.empresa = new Empresa();
         this.filtro = new FiltroEmpresaContrato();
@@ -76,10 +87,6 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
 
     }
 
-
-    carregarUnidadesObra(id: number) {
-
-    }
 
     private prepareSave(model: Contrato): Contrato {
         const contrato = {
@@ -120,6 +127,11 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
             this.mensagemError(error);
         });
 
+        this.tipoProgramaService.pesquisarTodos().subscribe(response =>{
+            this.tiposPrograma = response;
+        },(error) => {
+            this.mensagemError(error);
+        });
 
     }
 

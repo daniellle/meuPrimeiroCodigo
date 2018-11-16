@@ -17,13 +17,12 @@ export class TipoProgramaService extends BaseService<TipoPrograma>{
       super(httpClient, bloqueio);
   }
 
-  pesquisarTodos(): Observable<List<TipoPrograma>>{
-      return super.get('/v1/uats/')
+  pesquisarTodos(): Observable<TipoPrograma[]>{
+      return super.get('/v1/tipo-programa')
           .map((response: Response) => {
               return response;
           }).catch((error: Response) => {
               return Observable.throw(error);
           });
   }
-
 }
