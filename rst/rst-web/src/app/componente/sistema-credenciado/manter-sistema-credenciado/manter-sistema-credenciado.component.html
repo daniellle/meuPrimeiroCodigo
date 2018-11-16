@@ -70,6 +70,7 @@
 
             <ng-template #comboSistema>
                 <div class="form-group col-md-4" [ngClass]="{ divDis : modoAlterar || modoConsulta }">
+                        <div class="md-container">
                     <md-select formControlName="sistema" id="sistema" placeholder="{{'app_rst_label_sistema' | recurso}}"
                         appFormularioCamposErro>
                         <md-option>
@@ -80,6 +81,7 @@
                         </md-option>
                     </md-select>
                 </div>
+            </div>
             </ng-template>
 
             <ng-template #inputTextSistema>
