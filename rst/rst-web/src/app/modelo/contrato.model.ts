@@ -4,8 +4,8 @@ import {TipoPrograma} from "./tipo-programa.model";
 
 export class  Contrato{
     id: number;
-    dataContratoInicio: Date | string;
-    dataContratoFim: Date | string;
+    dataContratoInicio: Date | string | any;
+    dataContratoFim: Date | string | any;
     unidadeObra: UnidadeObra;
     anoVigencia: number;
     fl_inativo: string;

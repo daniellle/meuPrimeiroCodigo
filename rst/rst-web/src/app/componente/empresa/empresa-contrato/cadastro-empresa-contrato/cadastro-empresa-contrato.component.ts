@@ -134,13 +134,12 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     salvar() {
         if (this.contratoForm.valid) {
             this.contrato = this.contratoForm.getRawValue() as Contrato
-            this.contrato.dataContratoFim = moment( this.contrato.dataContratoFim).format('YYYY-MM-DD')
-            this.contrato.dataContratoInicio = moment( this.contrato.dataContratoInicio).format('YYYY-MM-DD')
-            console.log(this.contrato);
+            this.contrato.dataContratoFim = this.contrato.dataContratoFim.formatted;
+            this.contrato.dataContratoInicio = this.contrato.dataContratoInicio.formatted;
             this.contratoService.salvar(this.contrato)
                 .subscribe(() => {
                     this.mensagemSucesso("Contrato criado com sucesso");
-                    this.router.navigate([`${environment.path_raiz_cadastro}/empresa/minhaempresa/${this.idEmpresa}/contrato`]);
+                    this.router.navigate([`${environment.path_raiz_cadastro}/empresa/${this.idEmpresa}/contrato`]);
                 })
         }
         else {
