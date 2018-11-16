@@ -104,4 +104,9 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
         }
     }
 
+    mudaStatus(value, contratoId: number) {
+        console.log(value)
+        console.log(contratoId)
+    }
+
 }

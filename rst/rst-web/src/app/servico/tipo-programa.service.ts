@@ -17,7 +17,7 @@ export class TipoProgramaService extends BaseService<TipoPrograma>{
       super(httpClient, bloqueio);
   }
 
-  pesquisarTodos(): Observable<List<TipoPrograma>>{
+  pesquisarTodos(): Observable<TipoPrograma[]>{
       return super.get('/v1/uats/')
           .map((response: Response) => {
               return response;
