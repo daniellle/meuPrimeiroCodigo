@@ -5,7 +5,6 @@ import {FiltroEmpresaContrato} from "../../../../modelo/filtro-empresa-contrato.
 import {Paginacao} from "../../../../modelo/paginacao.model";
 import {TrabalhadorService} from "../../../../servico/trabalhador.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {EmpresaTrabalhadorService} from "../../../../servico/empresa-trabalhador.service";
 import {EmpresaService} from "../../../../servico/empresa.service";
 import {BloqueioService} from "../../../../servico/bloqueio.service";
 import {ToastyService} from "ng2-toasty";
@@ -16,20 +15,14 @@ import {UnidadeAtendimentoTrabalhador} from "../../../../modelo/unid-atend-traba
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {environment} from "../../../../../environments/environment";
 import {UnidadeObra} from "../../../../modelo/unidade-obra.model";
-import {EmpresaTrabalhador} from "../../../../modelo/empresa-trabalhador.model";
 import {ValidateData} from "../../../../compartilhado/validators/data.validator";
-import {ValidateCNPJ} from "../../../../compartilhado/validators/cnpj.validator";
-import {ValidarNit} from "../../../../compartilhado/validators/nit.validator";
-import {ValidateEmail} from "../../../../compartilhado/validators/email.validator";
 import {MensagemProperties} from "../../../../compartilhado/utilitario/recurso.pipe";
 import {UatService} from "../../../../servico/uat.service";
 import {Usuario} from "../../../../modelo/usuario.model";
 import {Seguranca} from "../../../../compartilhado/utilitario/seguranca.model";
-import {Perfil} from "../../../../modelo/perfil.model";
-import {PerfilEnum} from "../../../../modelo/enum/enum-perfil";
 import {TipoProgramaService} from "../../../../servico/tipo-programa.service";
 import {TipoPrograma} from "../../../../modelo/tipo-programa.model";
-import * as moment from 'moment';
+import { datasContratoValidator } from './datas-contrato.validator';
 
 @Component({
     selector: 'app-cadastro-empresa-contrato',
@@ -60,9 +53,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     constructor(
         private router: Router,
         private formBuilder: FormBuilder,
-        private empresaService: EmpresaService,
         private activatedRoute: ActivatedRoute,
-        private trabalhadorService: TrabalhadorService,
         protected bloqueioService: BloqueioService,
         protected dialogo: ToastyService,
         private contratoService: EmpresaContratoService,
@@ -143,6 +134,8 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
                 })
         }
         else {
+            this.contratoForm.updateValueAndValidity()
+            console.log(this.contratoForm.errors);
             this.verificarCampos();
         }
 
@@ -173,50 +166,52 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     createForm() {
         this.contratoForm = this.formBuilder.group({
             dataContratoInicio: [
-                {value: undefined, pristine: false},
-                Validators.compose([
+                '',
+                [
                     Validators.required, ValidateData,
-                ]),
+                ],
             ],
             dataContratoFim: [
-                {value: undefined, pristine: false},
-                Validators.compose([
+                '',
+                [
                     Validators.required,
                     ValidateData
-                ]),
+                ],
             ],
             unidadeObra: [
-                {value: undefined, pristine: false},
-                Validators.compose([
+                '',
+                [
                     Validators.required,
                     Validators.maxLength(160),
-                ]),
+                ],
             ],
             anoVigencia: [
-                {value: undefined, pristine: false},
-                Validators.compose([
+                '',
+                [
                     Validators.maxLength(4),
                     Validators.required,
                     Validators.minLength(4),
                     Validators.min(1900),
                     Validators.max(3000),
 
-                ]),
+                ],
             ],
             unidadeAtendimentoTrabalhador: [
-                {value: undefined, pristine: false},
-                Validators.compose([
+                '',
+                [
                     Validators.maxLength(100),
                     Validators.required
-                ]),
+                ],
             ],
             tipoPrograma: [
-                {value: undefined, pristine: false},
-                Validators.compose([
+                '',
+                [
                     Validators.maxLength(100),
                     Validators.required
-                ]),
+                ],
             ]
+        }, {
+            validator: datasContratoValidator
         });
     }
 
