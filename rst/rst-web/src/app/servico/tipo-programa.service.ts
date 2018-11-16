@@ -25,4 +25,5 @@ export class TipoProgramaService extends BaseService<TipoPrograma>{
               return Observable.throw(error);
           });
   }
+
 }

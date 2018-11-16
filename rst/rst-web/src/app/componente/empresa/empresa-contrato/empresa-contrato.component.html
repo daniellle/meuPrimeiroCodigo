@@ -40,7 +40,12 @@
                     <td class="col-nome col-quebra">&nbsp;{{item.anoVigencia}}</td>
                     <td class="col-nome col-quebra">&nbsp;{{item.tipoPrograma.sigla}}</td>
                     <td class="col-nome col-quebra">&nbsp;{{item.unidadeAtendimentoTrabalhador.nomeFantasia}}</td>
-                    <td class="col-nome col-quebra">&nbsp;{{item.fl_inativo}}</td>
+                    <td class="col-nome col-quebra">
+                        <div class="form-check col-md-2">
+                            <mat-slide-toggle name="cipa" id="cipa" (change)="mudaStatus($event, item.id)">
+                            </mat-slide-toggle>
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>
