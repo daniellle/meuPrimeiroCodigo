@@ -19,7 +19,7 @@
                         <md-option>
                             <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
                         </md-option>
-                        <md-option *ngFor="let unidade of unidadesObra" [value]="unidade.descricao">
+                        <md-option *ngFor="let unidade of unidadesObra" [value]="unidade">
                             {{unidade.descricao}}
                         </md-option>
                     </md-select>
@@ -29,13 +29,13 @@
         <div class="row">
             <div class="form-group col-md-4">
                 <my-date-picker class="prof" id="dataInicioContrato" [options]="datePickerOptions" locale="pt-br"
-                                formControlName="dataContratoInicio" name="dataContratoInicio"
+                                formControlName="dataContratoInicio" name="dataContratoInicio" required
                                 (keyup)="maskDate($event, this.contratoForm, 'dataContratoInicio')"></my-date-picker>
                 <span class="floating-label"> {{ 'app_rst_labels_data_inicio_contrato' | recurso }} </span>
             </div>
             <div class="form-group col-md-4">
                 <my-date-picker class="prof" id="dataFimContrato" [options]="datePickerOptions" locale="pt-br"
-                                formControlName="dataContratoFim" name="dataContratoFim"
+                                formControlName="dataContratoFim" name="dataContratoFim" required
                                 (keyup)="maskDate($event, this.contratoForm, 'dataContratoFim')"></my-date-picker>
                 <span class="floating-label"> {{ 'app_rst_labels_data_final_contrato' | recurso }} </span>
             </div>
@@ -55,7 +55,7 @@
                         <md-option>
                             <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
                         </md-option>
-                        <md-option *ngFor="let tipoPrograma of tiposPrograma" [value]="tipoPrograma.descricao">
+                        <md-option *ngFor="let tipoPrograma of tiposPrograma" [value]="tipoPrograma">
                             {{tipoPrograma.descricao}}
                         </md-option>
                     </md-select>
@@ -68,7 +68,7 @@
                         <md-option>
                             <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
                         </md-option>
-                        <md-option *ngFor="let unidade of unidadesAT" [value]="unidade.nomeFantasia">
+                        <md-option *ngFor="let unidade of unidadesAT" [value]="unidade">
                             {{unidade.nomeFantasia}}
                         </md-option>
                     </md-select>
