@@ -46,18 +46,12 @@ export class EmpresaContratoService extends BaseService<EmpresaContrato>{
           });
   }
 
- /* desbloquearContrato(contrato: Contrato): Observable<Contrato>{
-
-  }*/
-
- /*bloquearContrato(contrato: Contrato): Observable<Contrato>{
-
- }
-*/
-  listarContratos(){
-
+ desbloquearContrato(obj: Object): Observable<any>{
+    return super.put('/v1/unidades-obras-contratos-uat/ativar', obj);
   }
 
-
-
+ bloquearContrato(obj: Object): Observable<any>{
+    return super.put('/v1/unidades-obras-contratos-uat/desativar', obj);
+ }
+ 
 }
