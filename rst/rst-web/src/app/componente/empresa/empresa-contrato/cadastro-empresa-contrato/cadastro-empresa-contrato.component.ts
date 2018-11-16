@@ -120,6 +120,9 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
                     MensagemProperties.app_rst_labels_unidade_sesi);
             }
         }
+        if(this.contratoForm.errors.intervaloDeDatas){
+            this.mensagemError("A data final deve ser maior que a data de início");
+        }
     }
 
     salvar() {
