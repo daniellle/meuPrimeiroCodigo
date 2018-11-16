@@ -74,8 +74,8 @@
                         <th class="label"><span>{{ 'app_rst_labels_nome_responsavel' | recurso }}</span></th>
                         <th class="label"><span>{{ 'app_rst_labels_email_responsavel' | recurso }}</span></th>
                         <th class="label"><span>{{ 'app_rst_telefone_responsavel' | recurso }}</span></th>
-                        <th class="label"><span>{{ 'app_rst_label_sistema' | recurso }}</span></th>
                         <th class="label"><span>{{ 'app_rst_label_entidade' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_label_sistema' | recurso }}</span></th>
                         <th class="label"><span>{{ 'app_rst_label_data_criacao' | recurso }}</span></th>
                         <th class="label" *ngIf="hasPermissaoAtivarDesativar()"><span>{{ 'app_rst_labels_status' | recurso }}</span></th>
                     </tr>
@@ -86,8 +86,8 @@
                         <td class="col-quebra">&nbsp;{{item.nomeResponsavel}}</td>
                         <td class="col-quebra">&nbsp;{{item.emailResponsavel}}</td>
                         <td>&nbsp;{{item?.telefoneResponsavel | telefonePipe}}</td>
-                        <td>&nbsp;{{item.sistema}}</td>
                         <td>&nbsp;{{item.entidade | uppercase}}</td>
+                        <td>&nbsp;{{item.sistema}}</td>
                         <td>&nbsp;{{item?.dataCriacao | date: 'dd/MM/yyyy' }}</td>
                         <td class="text-center" *ngIf="hasPermissaoAtivarDesativar()">
                             <button class="btn-link" (click)="$event.stopPropagation(); ativarDesativar(item)" #tooltip="mdTooltip" color="'grey'"

@@ -13,6 +13,7 @@ import { AutorizacaoGuard } from 'app/seguranca/autorizacao.guard';
 import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
 import { CompartilhadoModule } from 'app/compartilhado/compartilhado.module';
 import { PesquisaSistemaCredenciadoComponent } from './pesquisa-sistema-credenciado/pesquisa-sistema-credenciado.component';
+import { OrigemDadosService } from 'app/servico/origem-dados.service';
 
 const routes: Routes = [
 
@@ -58,6 +59,8 @@ const routes: Routes = [
         PerfilService,
         SistemaCredenciadoService,
         ToastyService,
-        DialogService],
+        DialogService,
+        OrigemDadosService,
+    ],
 })
 export class SistemaCredenciadoModule { }

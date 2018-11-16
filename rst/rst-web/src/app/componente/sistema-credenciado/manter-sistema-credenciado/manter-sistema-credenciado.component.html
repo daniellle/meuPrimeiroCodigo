@@ -50,18 +50,10 @@
                 </md-input-container>
             </div>
 
-
-            <div class="form-group col-md-4" [ngClass]="{ divDis : modoAlterar || modoConsulta }">
-                <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{'app_rst_label_sistema' | recurso}}" type="text" name="sistema" id="sistema"
-                        formControlName="sistema" class="form-control" required appFormularioCamposErro>
-                </md-input-container>
-            </div>
-
             <div class="form-group col-md-4" [ngClass]="{ divDis : modoAlterar || modoConsulta }">
                 <div class="md-container">
                     <md-select formControlName="entidade" id="entidade" placeholder="{{ 'app_rst_label_entidade' | recurso }}"
-                        appFormularioCamposErro>
+                        appFormularioCamposErro (change)="changeEntidade()">
                         <md-option>
                             <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
                         </md-option>
@@ -71,6 +63,34 @@
                     </md-select>
                 </div>
             </div>
+
+            <div *ngIf="showComboSistema then comboSistema; else inputTextSistema">
+
+            </div>
+
+            <ng-template #comboSistema>
+                <div class="form-group col-md-4" [ngClass]="{ divDis : modoAlterar || modoConsulta }">
+                    <md-select formControlName="sistema" id="sistema" placeholder="{{'app_rst_label_sistema' | recurso}}"
+                        appFormularioCamposErro>
+                        <md-option>
+                            <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                        </md-option>
+                        <md-option *ngFor='let e of listOrigemDados' [value]="e.descricao">
+                            {{e.descricao}}
+                        </md-option>
+                    </md-select>
+                </div>
+            </ng-template>
+
+            <ng-template #inputTextSistema>
+                <div class="form-group col-md-4" [ngClass]="{ divDis : modoAlterar || modoConsulta }">
+                    <md-input-container [floatPlaceholder]="true">
+                        <input mdInput placeholder="{{'app_rst_label_sistema' | recurso}}" type="text" name="sistema"
+                            id="sistema" formControlName="sistema" class="form-control" required
+                            appFormularioCamposErro>
+                    </md-input-container>
+                </div>
+            </ng-template>
 
         </div>
 

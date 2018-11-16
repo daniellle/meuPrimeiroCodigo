@@ -13,6 +13,8 @@ import { MascaraUtil } from 'app/compartilhado/utilitario/mascara.util';
 import { environment } from 'environments/environment.homolog';
 import { Seguranca } from 'app/compartilhado/utilitario/seguranca.model';
 import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
+import { OrigemDadosService } from 'app/servico/origem-dados.service';
+import { OrigemDados } from 'app/modelo/origem-dados.model';
 
 @Component({
     selector: 'app-manter-sistema-credenciado',
@@ -25,6 +27,8 @@ export class ManterSistemaCredenciadoComponent extends BaseComponent implements 
     sistemaCredenciado: SistemaCredenciado;
     public sistemaCredenciadoForm: FormGroup;
     public listEntidades: any[];
+    public listOrigemDados: any[];
+    public showComboSistema = false;
 
     constructor(
         private router: Router,
@@ -33,6 +37,7 @@ export class ManterSistemaCredenciadoComponent extends BaseComponent implements 
         protected dialogo: ToastyService,
         protected bloqueioService: BloqueioService,
         protected formBuilder: FormBuilder,
+        private origemDadosService: OrigemDadosService
     ) {
         super(bloqueioService, dialogo);
     }
@@ -262,6 +267,18 @@ export class ManterSistemaCredenciadoComponent extends BaseComponent implements 
                 , () => {
                     this.voltar();
                 });
+        }
+    }
+
+    public changeEntidade() {
+        if (this.sistemaCredenciadoForm.get('entidade').value !== 'empresa') {
+            this.showComboSistema = true;
+            this.sistemaCredenciadoForm.get('sistema').setValue(undefined);
+            this.origemDadosService.listarOrigemDados().subscribe((dados: OrigemDados[]) => {
+                this.listOrigemDados = dados;
+            });
+        }else {
+            this.showComboSistema = false;
         }
     }
 
