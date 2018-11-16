@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -154,7 +155,29 @@ public class UnidadeObraContratoUatService extends BaseService {
         }else if( unidadeObraContratoUat.getAnoVigencia() == null ){
             throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_ano_vigencia_invalido",
                     getMensagem("app_rst_unidade_obra_contrato_ano_vigencia_invalido") ) );
+        }else{
+            int diff = getZeroTimeDate(unidadeObraContratoUat.getDataContratoFim() ).compareTo(getZeroTimeDate(unidadeObraContratoUat.getDataContratoInicio() ) );
+
+            if( diff < 0 ){
+                throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_datas_invalido",
+                        getMensagem("app_rst_unidade_obra_contrato_datas_invalido") ) );
+            }
         }
 
+    }
+
+    private Date getZeroTimeDate(Date fecha) {
+        Date res = fecha;
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime( fecha );
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        res = calendar.getTime();
+
+        return res;
     }
 }
