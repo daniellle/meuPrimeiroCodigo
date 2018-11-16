@@ -11,6 +11,7 @@
 -[CADASTROS] Ajustes no campo de foto - já solicitado no chamado 1899 (GLPI 3017)
 -[CADASTROS] Fazer script para colocar perfil TRABALHADOR para ANDREA FERREIRA LEITE cpf 82099340153 (GLPI 3089)
 -[CADASTROS] Não é possível pesquisar usuários pelo menu CADASTRO DE USUÁRIOS (GLPI 3369)
+-[CADASTROS] Mudança de mensagem para email não encontrado em "Esqueci minha senha" (GLPI 1533)
 
 **v2.87.1**
 ===========
