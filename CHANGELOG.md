@@ -1,6 +1,17 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v.2.91.0**
+============
+(RELEASE EM 16/11/2018)
+-[CADASTROS] IGEV - Habilitar a possibilidade de preencher formulário a qualquer tempo (GLPI 3309)
+-[CADASTROS] Card Vacinas Autodeclaradas não está acessível (GLPI 3020)
+-[CADASTROS] Minha Saúde - Ajustes solicitados pelo DR/BA - email de 16/10/2018 (GLPI 2951)
+-[CADASTROS] Erro combo Pesquisa Departamento Regional /AC (GLPI 3144)
+-[CADASTROS] Ajustes no campo de foto - já solicitado no chamado 1899 (GLPI 3017)
+-[CADASTROS] Fazer script para colocar perfil TRABALHADOR para ANDREA FERREIRA LEITE cpf 82099340153 (GLPI 3089)
+-[CADASTROS] Não é possível pesquisar usuários pelo menu CADASTRO DE USUÁRIOS (GLPI 3369)
+
 **v2.87.1**
 ===========
 (RELEASE EM 07/11/2018)
