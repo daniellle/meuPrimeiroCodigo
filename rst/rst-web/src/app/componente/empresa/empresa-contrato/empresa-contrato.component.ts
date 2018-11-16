@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {BaseComponent} from "../../base.component";
 import {ToastyService} from "ng2-toasty";
-import {SetorService} from "../../../servico/setor.service";
 import {EmpresaService} from "../../../servico/empresa.service";
 import {DialogService} from "ng2-bootstrap-modal";
 import {BloqueioService} from "../../../servico/bloqueio.service";
@@ -9,15 +8,15 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {MensagemProperties} from "../../../compartilhado/utilitario/recurso.pipe";
 import {EmpresaContratoService} from "../../../servico/empresa-contrato.service";
 import {environment} from "../../../../environments/environment";
-import {FiltroSetor} from "../../../modelo/filtro-setor.model";
 import {Paginacao} from "../../../modelo/paginacao.model";
 import {FiltroEmpresa} from "../../../modelo/filtro-empresa.model";
 import {Contrato} from "../../../modelo/contrato.model";
-import {EmpresaContrato} from "../../../modelo/empresa-contrato.model";
 import {FiltroEmpresaContrato} from "../../../modelo/filtro-empresa-contrato.model";
 import {ListaPaginada} from "../../../modelo/lista-paginada.model";
-import {EmpresaFuncao} from "../../../modelo/empresa-funcao.model";
 import {FormGroup} from "@angular/forms";
+import {Usuario} from "../../../modelo/usuario.model";
+import {Seguranca} from "../../../compartilhado/utilitario/seguranca.model";
+import {PerfilEnum} from "../../../modelo/enum/enum-perfil";
 
 export interface IHash {
     [details: number]: boolean;
@@ -25,9 +24,9 @@ export interface IHash {
 
 
 @Component({
-  selector: 'app-empresa-contrato',
-  templateUrl: './empresa-contrato.component.html',
-  styleUrls: ['./empresa-contrato.component.scss']
+    selector: 'app-empresa-contrato',
+    templateUrl: './empresa-contrato.component.html',
+    styleUrls: ['./empresa-contrato.component.scss']
 })
 export class EmpresaContratoComponent extends BaseComponent implements OnInit {
 
@@ -40,6 +39,8 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
     public checks: IHash = {};
     public contratos: Contrato[];
     public statusForm: FormGroup;
+    public usuarioLogado: Usuario;
+    public flagUsuario: string;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -53,6 +54,7 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.usuarioLogado = Seguranca.getUsuario();
         this.getIdEmpresa();
         this.pesquisarContratos();
     }
@@ -65,6 +67,19 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
             this.filtro.idEmpresa = this.idEmpresa;
         }
     }
+
+    verPerfil() {
+        this.usuarioLogado.papeis.forEach(perfil => {
+            if (perfil === PerfilEnum.ADM || perfil === PerfilEnum.GDNA || perfil === PerfilEnum.DIDN) {
+                this.flagUsuario = "3";
+            }
+            else if (perfil === PerfilEnum.SUDR || perfil === PerfilEnum.DIDR || perfil === PerfilEnum.GDRA
+                || perfil === PerfilEnum.GDRM) {
+                this.flagUsuario == "2";
+            }
+        });
+    }
+
 
     voltar() {
         if (this.route.snapshot.url[0].path === 'minhaempresa') {

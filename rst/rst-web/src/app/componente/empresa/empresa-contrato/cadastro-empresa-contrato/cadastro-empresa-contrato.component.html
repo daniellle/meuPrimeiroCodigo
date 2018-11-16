@@ -55,8 +55,8 @@
                         <md-option>
                             <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
                         </md-option>
-                        <md-option *ngFor="let tipoPrograma of tipoProgramas" [value]="unidade.descricao">
-                            {{unidade.descricao}}
+                        <md-option *ngFor="let tipoPrograma of tiposPrograma" [value]="tipoPrograma.descricao">
+                            {{tipoPrograma.descricao}}
                         </md-option>
                     </md-select>
                 </div>

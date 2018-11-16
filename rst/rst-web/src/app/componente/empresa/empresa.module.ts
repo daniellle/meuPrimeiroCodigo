@@ -47,6 +47,7 @@ import { AutorizacaoGuard } from '../../seguranca/autorizacao.guard';
 import { EmpresaContratoComponent } from './empresa-contrato/empresa-contrato.component';
 import {EmpresaContratoService} from "../../servico/empresa-contrato.service";
 import { CadastroEmpresaContratoComponent } from './empresa-contrato/cadastro-empresa-contrato/cadastro-empresa-contrato.component';
+import {TipoProgramaService} from "../../servico/tipo-programa.service";
 
 const routes: Routes = [
     {
@@ -512,6 +513,6 @@ const routes: Routes = [
     providers: [EmpresaService, DialogService, PorteEmpresaService, EstadoService, TipoEmpresaService, UatService, UnidadeObraService,
         RamoEmpresaService, EmpresaJornadaService, JornadaService, SindicatoService, EmpresaCboService, CboService, FuncaoService,
         SetorService, EmpresaLotacaoService, EmpresaSindicatoService, EmpresaFuncaoService, EmpresaSetorService, EmpresaTrabalhadorService,
-        TrabalhadorService, EmpresaContratoService],
+        TrabalhadorService, EmpresaContratoService, TipoProgramaService],
 })
 export class EmpresaModule { }
