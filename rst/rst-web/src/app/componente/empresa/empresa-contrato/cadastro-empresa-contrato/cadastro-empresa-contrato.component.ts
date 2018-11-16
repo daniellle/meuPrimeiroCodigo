@@ -29,6 +29,7 @@ import {Perfil} from "../../../../modelo/perfil.model";
 import {PerfilEnum} from "../../../../modelo/enum/enum-perfil";
 import {TipoProgramaService} from "../../../../servico/tipo-programa.service";
 import {TipoPrograma} from "../../../../modelo/tipo-programa.model";
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-cadastro-empresa-contrato',
@@ -87,34 +88,68 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
 
     }
 
-
-    private prepareSave(model: Contrato): Contrato {
-        const contrato = {
-            id: model.id,
-            dataContratoInicio: model.dataContratoInicio,
-            dataContratoFim: model.dataContratoFim,
-            unidadeObra: model.unidadeObra,
-            anoVigencia: model.anoVigencia,
-            unidadeAtendimentoTrabalhador: model.unidadeAtendimentoTrabalhador,
-            tipoPrograma: model.tipoPrograma
-        };
-        return contrato as Contrato;
-    }
-
-
     setEmpresa() {
         this.idEmpresa = this.activatedRoute.snapshot.params['id'];
     }
 
+    verificarCampos() {
+        if (this.contratoForm.controls['unidadeObra'].errors) {
+            if (this.contratoForm.controls['unidadeObra'].errors.required) {
+                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['unidadeObra'],
+                    MensagemProperties.app_rst_labels_unidade_obra);
+            }
+        }
+        if (this.contratoForm.controls['dataContratoInicio'].errors) {
+                if (this.contratoForm.controls['dataContratoInicio'].errors.required) {
+                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['dataInicio'],
+                    MensagemProperties.app_rst_labels_data_inicio);
+            }
+        }
+        if (this.contratoForm.controls['dataContratoFim'].errors) {
+            if (this.contratoForm.controls['dataContratoFim'].errors.required) {
+                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['dataFim'],
+                    MensagemProperties.app_rst_labels_data_fim);
+            }
+        }
+        if (this.contratoForm.controls['tipoPrograma'].errors) {
+            if (this.contratoForm.controls['tipoPrograma'].errors.required) {
+                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['tipoPrograma'],
+                    MensagemProperties.app_rst_labels_tipo_programa);
+            }
+        }
+        if (this.contratoForm.controls['anoVigencia'].errors) {
+            if (this.contratoForm.controls['anoVigencia'].errors.required) {
+                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['anoVigencia'],
+                    MensagemProperties.app_rst_labels_ano_vigencia);
+            }
+        }
+        if (this.contratoForm.controls['unidadeAtendimentoTrabalhador'].errors) {
+            if (this.contratoForm.controls['unidadeAtendimentoTrabalhador'].errors.required) {
+                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['unidadeAtendimentoTrabalhador'],
+                    MensagemProperties.app_rst_labels_unidade_sesi);
+            }
+        }
+    }
+
     salvar() {
+        if (this.contratoForm.valid) {
+            this.contrato = this.contratoForm.getRawValue() as Contrato
+            this.contrato.dataContratoFim = moment( this.contrato.dataContratoFim).format('YYYY-MM-DD')
+            this.contrato.dataContratoInicio = moment( this.contrato.dataContratoInicio).format('YYYY-MM-DD')
+            console.log(this.contrato);
+            this.contratoService.salvar(this.contrato)
+                .subscribe(() => {
+                    this.mensagemSucesso("Contrato criado com sucesso");
+                    this.router.navigate([`${environment.path_raiz_cadastro}/empresa/minhaempresa/${this.idEmpresa}/contrato`]);
+                })
+        }
+        else {
+            this.verificarCampos();
+        }
 
     }
 
-    validar() {
-
-    }
-
-    carregarCombo(){
+    carregarCombo() {
         this.unidadeObraService.pesquisarPorEmpresa(this.idEmpresa).subscribe(response => {
             this.unidadesObra = response;
         }, (error) => {
@@ -123,13 +158,13 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
 
         this.unidadeATService.pesquisarTodos().subscribe(response => {
             this.unidadesAT = response;
-        },(error) => {
+        }, (error) => {
             this.mensagemError(error);
         });
 
-        this.tipoProgramaService.pesquisarTodos().subscribe(response =>{
+        this.tipoProgramaService.pesquisarTodos().subscribe(response => {
             this.tiposPrograma = response;
-        },(error) => {
+        }, (error) => {
             this.mensagemError(error);
         });
 
@@ -162,7 +197,9 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
                 {value: null},
                 Validators.compose([
                     Validators.maxLength(4),
-                    Validators.required
+                    Validators.required,
+                    Validators.minLength(4),
+
                 ]),
             ],
             unidadeAtendimentoTrabalhador: [
