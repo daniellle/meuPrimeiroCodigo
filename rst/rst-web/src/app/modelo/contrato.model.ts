@@ -8,7 +8,7 @@ export class  Contrato{
     dataContratoFim: Date | string;
     unidadeObra: UnidadeObra;
     anoVigencia: number;
-    fl_inativo: string;
+    flagInativo: string;
     tipoPrograma: TipoPrograma;
     unidadeAtendimentoTrabalhador: UnidadeAtendimentoTrabalhador;
 

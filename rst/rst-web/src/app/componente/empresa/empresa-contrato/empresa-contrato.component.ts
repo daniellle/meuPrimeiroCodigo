@@ -113,15 +113,34 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
     verificarRetornoEmpresasContrato(retorno: ListaPaginada<Contrato>) {
         if (retorno && retorno.list) {
             this.contratos = retorno.list;
-            console.log(this.contratos);
+            this.contratos.forEach(contrato =>{
+                console.log(contrato.flagInativo)
+            });
         } else {
             this.contratos = new Array<Contrato>();
         }
     }
 
     mudaStatus(value, contratoId: number) {
-        console.log(value)
-        console.log(contratoId)
+        this.verPerfil();
+        const flagContrato = {
+            id: contratoId,
+            flagInativo: this.flagUsuario
+        }
+        if(value.checked == true){
+            this.empresaContratoService.desbloquearContrato(flagContrato).subscribe(
+                () => {
+                    this.mensagemSucesso("Contrato desbloqueado com sucesso");
+                }
+            )
+        }
+        else{
+            this.empresaContratoService.bloquearContrato(flagContrato).subscribe(
+                () => {
+                    this.mensagemSucesso("Contrato bloqueado com sucesso");
+                }
+            )
+        }
     }
 
 }
