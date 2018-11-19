@@ -8,7 +8,6 @@ import br.com.ezvida.rst.auditoria.logger.LogAuditoria;
 import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.enums.EntidadeEnum;
-import br.com.ezvida.rst.model.OrigemDados;
 import br.com.ezvida.rst.utils.StringUtil;
 import br.com.ezvida.rst.utils.ValidadorUtils;
 import fw.core.exception.BusinessException;
@@ -55,13 +54,8 @@ public class SistemaCredenciadoService extends BaseService {
         if (valido(sistemaCredenciado)) {
             sistemaCredenciado.setCnpj(StringUtil.removeCaracteresEspeciais(sistemaCredenciado.getCnpj()));
             sistemaCredenciado.setTelefoneResponsavel(StringUtil.removeCaracteresEspeciais(sistemaCredenciado.getTelefoneResponsavel()));
-            if (validarFiltroDados(dados, auditoria, sistemaCredenciado)) {
-                validarSistemaEntidade(sistemaCredenciado);
-                return sistemaCredenciadoClient.cadastrar(apiClientService.getURL(), sistemaCredenciado, apiClientService.getOAuthToken().getAccess_token());
-            } else {
-                LOGGER.debug("Não é possível cadastrar sistema credenciado para o CNPJ informado.");
-                throw new BusinessException("Não é possível cadastrar sistema credenciado para o CNPJ informado.");
-            }
+            validarSistemaEntidade(sistemaCredenciado);
+            return sistemaCredenciadoClient.cadastrar(apiClientService.getURL(), sistemaCredenciado, apiClientService.getOAuthToken().getAccess_token());
         } else {
             LOGGER.debug("Sistema Credenciado com dados inválidos.");
             throw new BusinessException("Sistema Credenciado com dados inválidos.");
@@ -74,12 +68,7 @@ public class SistemaCredenciadoService extends BaseService {
         LogAuditoria.registrar(LOGGER, auditoria, "Alteracao de Sistema  Credenciado:" + sistemaCredenciado);
         sistemaCredenciado.setCnpj(StringUtil.removeCaracteresEspeciais(sistemaCredenciado.getCnpj()));
         sistemaCredenciado.setTelefoneResponsavel(StringUtil.removeCaracteresEspeciais(sistemaCredenciado.getTelefoneResponsavel()));
-        if (validarFiltroDados(dados, auditoria, sistemaCredenciado)) {
-            return sistemaCredenciadoClient.alterar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), sistemaCredenciado);
-        } else {
-            LOGGER.debug("Não é possível alterar sistema credenciado.");
-            throw new BusinessException("Não é possível alterar sistema credenciado.");
-        }
+        return sistemaCredenciadoClient.alterar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), sistemaCredenciado);
     }
 
     public String ativarDesativar(SistemaCredenciado sistemaCredenciado, DadosFilter dados
@@ -87,12 +76,7 @@ public class SistemaCredenciadoService extends BaseService {
 
         LogAuditoria.registrar(LOGGER, auditoria, "Ativar Desativar Sistema Credenciado:" + sistemaCredenciado);
         sistemaCredenciado.setCnpj(StringUtil.removeCaracteresEspeciais(sistemaCredenciado.getCnpj()));
-        if (validarFiltroDados(dados, auditoria, sistemaCredenciado)) {
-            return sistemaCredenciadoClient.ativarDesativar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), sistemaCredenciado);
-        } else {
-            LOGGER.debug("Não é possível modificar status do sistema credenciado.");
-            throw new BusinessException("Não é possível modificar status do sistema credenciado.");
-        }
+        return sistemaCredenciadoClient.ativarDesativar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), sistemaCredenciado);
     }
 
     public String resetarClientSecret(SistemaCredenciado sistemaCredenciado) {
@@ -105,10 +89,6 @@ public class SistemaCredenciadoService extends BaseService {
             , ClienteAuditoria auditoria) {
         LogAuditoria.registrar(LOGGER, auditoria, "Buscar por id:" + id);
         SistemaCredenciado sistemaCredenciado = sistemaCredenciadoClient.buscarPorId(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), id);
-        if (!validarFiltroDados(dados, auditoria, sistemaCredenciado)) {
-            LOGGER.debug("Sistema Credenciado não encontrado");
-            sistemaCredenciado = null;
-        }
         return sistemaCredenciado;
     }
 
@@ -116,31 +96,10 @@ public class SistemaCredenciadoService extends BaseService {
             , ClienteAuditoria auditoria) {
 
         LogAuditoria.registrar(LOGGER, auditoria, "Pesquisando sistema credenciado: " + filter);
-        ListaPaginada<SistemaCredenciado> listaPaginada = new ListaPaginada<>(0l, new ArrayList<>());
         if (filter.getCnpj() != null) {
             filter.setCnpj(StringUtil.removeCaracteresEspeciais(filter.getCnpj()));
         }
-
-        filter.setListCNPJ(new ArrayList<>());
-        if (dados.isAdministrador() || dados.isGestorDn()) {
-            return sistemaCredenciadoClient.pesquisar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), filter);
-        } else if (dados.isGestorDr()) {
-            if (dados.getIdsDepartamentoRegional() != null && !dados.getIdsDepartamentoRegional().isEmpty()) {
-                List<String> listCNPJDR = empresaService.findCNPJByIdsDepartamentoRegional(dados.getIdsDepartamentoRegional() != null ? dados.getIdsDepartamentoRegional() : new HashSet<>());
-                filter.getListCNPJ().addAll(listCNPJDR);
-            }
-        } else if (dados.isGetorUnidadeSESI()) {
-            if (dados.getIdsUnidadeSESI() != null && !dados.getIdsUnidadeSESI().isEmpty()) {
-                List<String> listCNPJUnidadeSesi = empresaService.findCNPJByIdsUnidadeSesi(dados.getIdsUnidadeSESI() != null ? dados.getIdsUnidadeSESI() : new HashSet<>());
-                filter.getListCNPJ().addAll(listCNPJUnidadeSesi);
-            }
-        }
-
-        if (filter.getListCNPJ() != null && !filter.getListCNPJ().isEmpty()) {
-            listaPaginada = sistemaCredenciadoClient.pesquisar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), filter);
-        }
-
-        return listaPaginada;
+        return sistemaCredenciadoClient.pesquisar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), filter);
     }
 
     private boolean valido(SistemaCredenciado sistemaCredenciado) {
@@ -148,6 +107,7 @@ public class SistemaCredenciadoService extends BaseService {
                 ValidadorUtils.isValidCNPJ(StringUtil.removeCaracteresEspeciais(sistemaCredenciado.getCnpj())) &&
                 StringUtils.isNotBlank(sistemaCredenciado.getEmailResponsavel()) &&
                 StringUtils.isNotBlank(sistemaCredenciado.getNomeResponsavel()) &&
+                sistemaCredenciado.getEntidade() != null &&
                 StringUtils.isNotBlank(sistemaCredenciado.getSistema()) &&
                 ValidadorUtils.isValidEmail(sistemaCredenciado.getEmailResponsavel()) &&
                 validarLengthTelefone(sistemaCredenciado.getTelefoneResponsavel());
@@ -162,30 +122,16 @@ public class SistemaCredenciadoService extends BaseService {
         return result;
     }
 
-    public boolean validarFiltroDados(DadosFilter dados, ClienteAuditoria auditoria, SistemaCredenciado sistemaCredenciado) {
-        boolean next = false;
-        if (sistemaCredenciado.getCnpj() != null) {
-            if (dados.isAdministrador() || dados.isGestorDn()) {
-                next = true;
-            } else if (dados.isGestorDr()) {
-                Set<Long> listIdDepartamentosRegionais = dados.getIdsDepartamentoRegional();
-                if (listIdDepartamentosRegionais != null && !listIdDepartamentosRegionais.isEmpty() && departamentoRegionalService.countByIdsAndCNPJ(listIdDepartamentosRegionais, StringUtil.removeCaracteresEspeciais(sistemaCredenciado.getCnpj())).compareTo(BigInteger.ZERO) > 0) {
-                    next = true;
-                }
-            } else if (dados.isGetorUnidadeSESI()) {
-                Set<Long> listIdUnidades = dados.getIdsUnidadeSESI();
-                if (listIdUnidades != null && !listIdUnidades.isEmpty() && unidadeAtendimentoTrabalhadorService.countByListIdAndCNPJ(listIdUnidades, StringUtil.removeCaracteresEspeciais(sistemaCredenciado.getCnpj())).compareTo(BigInteger.ZERO) > 0) {
-                    next = true;
-                }
-            }
-        }
-        return next;
-    }
 
     public void validarSistemaEntidade(SistemaCredenciado sistemaCredenciado) {
+        BigInteger result = origemDadosService.countByDescricao(sistemaCredenciado.getSistema());
+        boolean empty = result.compareTo(BigInteger.ZERO) == 0;
         if (!EntidadeEnum.EMPRESA.getValue().equals(sistemaCredenciado.getEntidade())) {
-            BigInteger result = origemDadosService.countByDescricao(sistemaCredenciado.getSistema());
-            if (result.compareTo(BigInteger.ZERO) == 0) {
+            if (empty) {
+                throw new BusinessException(getMensagem("app_rst_sistema_invalido_origem_dados"));
+            }
+        } else {
+            if (!empty) {
                 throw new BusinessException(getMensagem("app_rst_sistema_invalido_origem_dados"));
             }
         }
