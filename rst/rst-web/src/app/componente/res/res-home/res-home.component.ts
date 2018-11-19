@@ -45,6 +45,7 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
     graficoPressaoSanguinea: any;
     graficoCircunferenciaAbdominal: any;
     paciente: any;
+    dataRegistro: any; 
 
     semDadosCircunferenciaAbdominalSuficiente = true;
     semDadosPressaoSuficiente = true;
@@ -59,6 +60,7 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         this.resolve();
     }
+
 
     tratarDadosBasicos(dados) {
         if ( dados.paciente ) {
@@ -80,6 +82,10 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
                 magnitude: dados.peso.value.magnitude as number,
                 units: dados.peso.value.units
             });
+        }
+
+        if (dados.encontrosMedicos && dados.encontrosMedicos.resultado.result){
+                this.dataRegistro = moment(dados.encontrosMedicos.resultado.result[0].created).format("DD/MM/YYYY");
         }
 
         this.calcularImc();
@@ -356,7 +362,6 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
                             maxTicksLimit: 1,
                             stepSize: 15,
                             callback: (value, index, values) => {
-                                //console.log(value);
                                 if ( value === 130 ) {
                                     return 'Sistólica ' + value;
                                 }
@@ -457,6 +462,7 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
                                                                  .buscarHistoricoParaInformacaoSaude(dado, cpf)
                                                                  .catch(() => Observable.of(null))));
         chamadas.push(this.service.buscarPaciente());
+        chamadas.push(this.service.buscarHistorico(cpf));
         Observable.forkJoin(chamadas).subscribe((result) => {
             this.tratarDadosBasicos({
                 peso: result[0],
@@ -466,7 +472,8 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
                 sistolica: result[4],
                 diastolica: result[5],
                 circunferenciaAbdominal: result[6],
-                paciente: result[7]
+                paciente: result[7],
+                encontrosMedicos: result[8],
             });
         });
     }
@@ -498,6 +505,8 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
             return 0;
         });
     }
+
+
 
 }
 
