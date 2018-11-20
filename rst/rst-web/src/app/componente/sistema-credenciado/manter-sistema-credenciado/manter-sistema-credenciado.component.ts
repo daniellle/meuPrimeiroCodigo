@@ -69,7 +69,7 @@ export class ManterSistemaCredenciadoComponent extends BaseComponent implements 
                 this.converterModelParaForm();
             }
         }, (error) => {
-            this.mensagemError(error);
+            this.voltar();
         });
     }
 
