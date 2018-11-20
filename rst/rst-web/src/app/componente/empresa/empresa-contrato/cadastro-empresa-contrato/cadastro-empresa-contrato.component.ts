@@ -23,6 +23,8 @@ import {Seguranca} from "../../../../compartilhado/utilitario/seguranca.model";
 import {TipoProgramaService} from "../../../../servico/tipo-programa.service";
 import {TipoPrograma} from "../../../../modelo/tipo-programa.model";
 import { datasContratoValidator } from './datas-contrato.validator';
+import {Subject} from "rxjs/Subject";
+import {Observable} from "rxjs/Observable";
 
 @Component({
     selector: 'app-cadastro-empresa-contrato',
@@ -48,6 +50,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     usuarioLogado: Usuario;
     flagUsuario: string;
     tiposPrograma: TipoPrograma[];
+    public delayerUndObra = new Subject<string>();
 
 
     constructor(
@@ -62,6 +65,8 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         private tipoProgramaService: TipoProgramaService,
     ) {
         super(bloqueioService, dialogo);
+        this.delayerUndObra.debounceTime(500).distinctUntilChanged().switchMap((text) => this.unidadesObra = this.pesquisarUnidadeObrasPorNome(text))
+            .subscribe();
     }
 
     ngOnInit() {
@@ -149,12 +154,6 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     }
 
     carregarCombo() {
-        this.unidadeObraService.pesquisarPorEmpresa(this.idEmpresa).subscribe(response => {
-            this.unidadesObra = response;
-        }, (error) => {
-            this.mensagemError(error);
-        });
-
         this.unidadeATService.pesquisarTodos().subscribe(response => {
             this.unidadesAT = response;
         }, (error) => {
@@ -167,6 +166,15 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
             this.mensagemError(error);
         });
 
+    }
+
+    pesquisarUnidadeObrasPorNome(text: string): UnidadeObra[]{
+        this.unidadeObraService.pesquisarPorNome(text, this.idEmpresa).subscribe( response =>{
+            this.unidadesObra = response;
+        }, (error) => {
+            this.mensagemError(error);
+        });
+        return this.unidadesObra;
     }
 
 
@@ -199,7 +207,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
                     Validators.required,
                     Validators.minLength(4),
                     Validators.min(1900),
-                    Validators.max(3000),
+                    Validators.max(2600),
 
                 ],
             ],
@@ -226,7 +234,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         if (this.activatedRoute.snapshot.url[0].path === 'minhaempresa') {
             this.router.navigate([`${environment.path_raiz_cadastro}/empresa/minhaempresa/${this.idEmpresa}/contrato`]);
         } else {
-            this.router.navigate([`${environment.path_raiz_cadastro}/empresa/${this.idEmpresa}/`]);
+            this.router.navigate([`${environment.path_raiz_cadastro}/empresa/${this.idEmpresa}/contrato`]);
         }
     }
 

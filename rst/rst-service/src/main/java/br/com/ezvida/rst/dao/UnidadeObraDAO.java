@@ -1,5 +1,6 @@
 package br.com.ezvida.rst.dao;
 
+import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +33,20 @@ public class UnidadeObraDAO extends BaseRstDAO<UnidadeObra, Long> {
 		sqlBuilder.append(" order by unidadeObra.descricao ");
 		TypedQuery<UnidadeObra> query = criarConsultaPorTipo(sqlBuilder.toString());
 		query.setParameter("idEmpresa", id);
+
+		return query.getResultList();
+	}
+
+	public List<UnidadeObra> buscarPorNome(String nome, Long id){
+		LOGGER.debug("Buscando Unidades Obras pelo nome dentro da empresa");
+		StringBuilder sqlBuilder = new StringBuilder();
+		sqlBuilder.append(" select unidadeObra from UnidadeObra unidadeObra");
+		sqlBuilder.append(" inner join fetch unidadeObra.empresa empresa");
+		sqlBuilder.append(" where unidadeObra.dataExclusao is null and empresa.id = :idEmpresa and unidadeObra.descricao like :nome");
+		sqlBuilder.append(" order by unidadeObra.descricao");
+		TypedQuery<UnidadeObra> query = criarConsultaPorTipo(sqlBuilder.toString());
+		query.setParameter("idEmpresa", id);
+		query.setParameter("nome", nome);
 
 		return query.getResultList();
 	}

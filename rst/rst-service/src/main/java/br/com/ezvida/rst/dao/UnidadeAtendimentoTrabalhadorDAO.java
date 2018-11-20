@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,17 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
         StringBuilder jpql = new StringBuilder();
         jpql.append("select uat from UnidadeAtendimentoTrabalhador uat ");
         jpql.append(" order by uat.razaoSocial ");
+        TypedQuery<UnidadeAtendimentoTrabalhador> query = criarConsultaPorTipo(jpql.toString());
+        return query.getResultList();
+    }
+
+    public List<UnidadeAtendimentoTrabalhador> buscarPorNome(String nome, String dr){
+        StringBuilder jpql = new StringBuilder();
+        jpql.append(" select uat from UnidadeAtendimentoTrabalhador uat ");
+        jpql.append(" left join fetch uat.departamentoRegional dr");
+        jpql.append(" where uat.razaoSocial like :nome and dr.cnpj = :dr");
+        jpql.append(" order by uat.razaoSocial");
+
         TypedQuery<UnidadeAtendimentoTrabalhador> query = criarConsultaPorTipo(jpql.toString());
         return query.getResultList();
     }
@@ -439,4 +451,6 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
         query.setParameter("id", id);
         return query.getResultList();
     }
+
+
 }
