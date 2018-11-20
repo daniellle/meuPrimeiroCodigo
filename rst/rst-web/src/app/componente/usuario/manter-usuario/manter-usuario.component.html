@@ -55,8 +55,8 @@
             <div class="form-group col-md-12">
                 <label for="perfis" class="col-form-label">{{ 'app_rst_usuario_label_perfis' | recurso }}</label>
             </div>
-            <div class="form-group col-md-12">
-                <label class="col col-md-4" *ngFor="let perfil of perfis" for="{{ perfil.nome }}">
+            <div class="form-group col-md-12 lista_perfil">
+                <label class="col col-md-12" *ngFor="let perfil of perfis" for="{{ perfil.nome }}">
                     <fieldset>
                         <md-checkbox [(ngModel)]="perfisSelecionados[perfil.id]" name="rdoLista"
                                      (change)="modificarPerfil(perfil, $event, perfil.id)" class="radio-tabela-pesquisa"
