@@ -23,17 +23,29 @@ export class EmpresaContratoService extends BaseService<EmpresaContrato>{
       super(httpClient, bloqueio);
   }
 
-  pesquisarContratos(filtro: FiltroEmpresaContrato, paginacao: Paginacao): Observable<ListaPaginada<Contrato>>{
-      const params = new HttpParams().append('id', filtro.idEmpresa.toString())
-          .append('pagina', paginacao.pagina.toString())
-          .append('qtdRegistro', paginacao.qtdRegistro.toString());
+
+  getParams(filtro: FiltroEmpresaContrato, paginacao: Paginacao): HttpParams{
+      let params = new HttpParams();
+        params = params.append('pagina', paginacao.pagina.toString())
+                .append('qtdRegistro', paginacao.qtdRegistro.toString())
+                .append('id', filtro.idEmpresa.toString());
       if(filtro.idsDr != null || filtro.idsDr != undefined){
-          params.append('drs', filtro.idsDr.toString());
+          filtro.idsDr.forEach( id => {
+              params = params.append('drs', id.toString());
+          })
       }
       if(filtro.idsUats != null || filtro.idsUats != undefined){
-          params.append('uats', filtro.idsUats.toString());
+          filtro.idsUats.forEach(uat => {
+              params = params.append('uats', uat.toString());
+          })
       }
-      return super.get('/v1/unidades-obras-contratos-uat/contratos/' + filtro.idEmpresa)
+
+      return params;
+  }
+
+  pesquisarContratos(filtro: FiltroEmpresaContrato, paginacao: Paginacao): Observable<ListaPaginada<Contrato>>{
+      const params = this.getParams(filtro, paginacao);
+      return super.get('/v1/unidades-obras-contratos-uat/contratos/' + filtro.idEmpresa, params)
           .map((response: ListaPaginada<Contrato>) => {
               if (!response.list) { response.list = new Array<Contrato>(); }
               return response;

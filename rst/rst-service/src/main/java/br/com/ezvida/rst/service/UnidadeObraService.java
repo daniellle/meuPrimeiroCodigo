@@ -43,6 +43,18 @@ public class UnidadeObraService extends BaseService {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<UnidadeObra> buscarPorEmpresaPorNome(Long id, String nome){
+		LOGGER.debug("Buscar unidade obra por nome na empresa");
+
+		if(id == null){
+			throw new BusinessErrorException("Id de consulta está nulo.");
+		}
+
+		return unidadeObraDAO.buscarPorNome(nome, id);
+
+	}
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<UnidadeObra> listarTodos() {
 		LOGGER.debug("Listando todos os unidade obra");
 		return unidadeObraDAO.pesquisarTodos();

@@ -40,11 +40,13 @@
                     <td class="col-nome col-quebra">&nbsp;{{item.anoVigencia}}</td>
                     <td class="col-nome col-quebra">&nbsp;{{item.tipoPrograma.sigla}}</td>
                     <td class="col-nome col-quebra">&nbsp;{{item.unidadeAtendimentoTrabalhador.nomeFantasia}}</td>
-                    <td class="col-nome col-quebra">
-                        <div class="form-check col-md-2">
+                    <td class="col-nome col-nao-quebra">
+                        <div class="form-check row-md-4">
+                            <img src="../../../../assets/img/block.svg" style="height: 20px">
                             <mat-slide-toggle name="cipa" id="cipa" (change)="mudaStatus($event, item.id) "
                            [checked]="item.flagInativo == undefined || item.flagInativo == 'N' ">
                             </mat-slide-toggle>
+                            <img src="../../../../assets/img/unblock.svg" style="height: 20px">
                         </div>
                     </td>
                 </tr>

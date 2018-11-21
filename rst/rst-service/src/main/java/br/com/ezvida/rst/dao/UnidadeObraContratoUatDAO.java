@@ -129,8 +129,10 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
             jpql.append(" select count(unidadeObraContratoUat) ");
 
             jpql.append(" from UnidadeObraContratoUat unidadeObraContratoUat");
-
             jpql.append(" join unidadeObraContratoUat.unidadeObra unidadeObra");
+            jpql.append("  join unidadeObraContratoUat.tipoPrograma tipoPrograma");
+            jpql.append("  join unidadeObraContratoUat.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador");
+            jpql.append(" join unidadeAtendimentoTrabalhador.departamentoRegional departamentoRegional");
             jpql.append(" join unidadeObra.empresa empresa ");
 
 
@@ -142,13 +144,14 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
             jpql.append(" left join fetch unidadeObraContratoUat.unidadeObra unidadeObra");
             jpql.append(" left join fetch unidadeObraContratoUat.tipoPrograma tipoPrograma");
             jpql.append(" left join fetch unidadeObraContratoUat.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador");
+            jpql.append(" left join fetch unidadeAtendimentoTrabalhador.departamentoRegional departamentoRegional");
             jpql.append(" left join fetch unidadeObra.empresa empresa ");
         }
 
         jpql.append(" where empresa.id = :idEmpresa ");
 
         if(!unidadeObraContratoUatFilter.getDrs().isEmpty()){
-            jpql.append(" and unidadeAtendimentoTrabalhador.departamentoRegional in :drs");
+            jpql.append(" and departamentoRegional.id in :drs");
         }
 
         if(!unidadeObraContratoUatFilter.getUats().isEmpty()){

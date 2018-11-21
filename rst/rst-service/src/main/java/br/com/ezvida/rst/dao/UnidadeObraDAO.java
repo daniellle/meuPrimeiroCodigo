@@ -46,7 +46,7 @@ public class UnidadeObraDAO extends BaseRstDAO<UnidadeObra, Long> {
 		sqlBuilder.append(" order by unidadeObra.descricao");
 		TypedQuery<UnidadeObra> query = criarConsultaPorTipo(sqlBuilder.toString());
 		query.setParameter("idEmpresa", id);
-		query.setParameter("nome", nome);
+		query.setParameter("nome", "%" + nome + "%");
 
 		return query.getResultList();
 	}

@@ -2,6 +2,7 @@ package br.com.ezvida.rst.web.endpoint.v1;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Encoded;
@@ -40,8 +41,8 @@ public class UnidadeObraEndpoint extends SegurancaEndpoint<UnidadeObra> {
 				.header("Content-Version", getApplicationVersion())
 				.entity(serializar(unidadeObraService.listarTodos())).build();
 	}
-	
-	
+
+
 	@GET
 	@Encoded
 	@Path("/{idEmpresa}")
@@ -53,5 +54,17 @@ public class UnidadeObraEndpoint extends SegurancaEndpoint<UnidadeObra> {
 				.header("Content-Version", getApplicationVersion())
 				.entity(serializar(unidadeObraService.buscarPorEmpresa(idEmpresa))).build();
 	}
+
+	@GET
+    @Encoded
+    @Path("/{idEmpresa}/{nome}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response buscarPorNomeNaEmpresa(@Encoded @PathParam("idEmpresa") Long idEmpresa, @Encoded @PathParam("nome") String nome){
+	    LOGGER.debug("Listando as unidades obras por nome");
+	    return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(unidadeObraService.buscarPorEmpresaPorNome(idEmpresa, nome))).build();
+    }
 
 }

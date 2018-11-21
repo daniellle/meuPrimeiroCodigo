@@ -106,9 +106,8 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
                 this.pegaDrsDoUsuario();
             }
             else if(perfil === PerfilEnum.GUS) {
-                this.pegaUatsDoUsuario();
-                this.filtro.idsUats = this.uats;
                 this.isUnidade = true;
+                this.pegaUatsDoUsuario();
             }
         });
     }
@@ -148,8 +147,8 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
         if(this.isUndefined(this.filtroUsuarioEntidade.idEstado)){
             this.filtroUsuarioEntidade.idEstado = '0';
         }
-        this.usuarioEntidadeService.pesquisarPaginado(this.filtroUsuarioEntidade, this.paginacao, 'Unidade Sesi')
-            .subscribe( retorno => {
+        this.usuarioEntidadeService.pesquisarPaginado(this.filtroUsuarioEntidade, this.paginacao, 'Unidade SESI')
+            .switchMap( (retorno: ListaPaginada<UsuarioEntidade>) => {
                 if(this.filtroUsuarioEntidade.idEstado == '0'){
                     this.filtroUsuarioEntidade.idEstado = undefined;
                 }
@@ -159,9 +158,16 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
                         this.uats.push(usuarioEntidade.uat.id);
                     })
                 }
+                this.filtro.idsUats = this.uats;
+                return this.empresaContratoService.pesquisarContratos(this.filtro, new Paginacao(1, 10));
+            })
+            .subscribe((retorno: ListaPaginada<Contrato>) => {
+                this.paginacaoEmpresaContrato = this.getPaginacao(this.paginacao, retorno)
+                this.verificarRetornoEmpresasContrato(retorno);
             }, (error) => {
                 this.mensagemError(error);
-            });
+            })
+
     }
 
     pegaDrsDoUsuario(){
@@ -190,21 +196,6 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
             }, (error) => {
                 this.mensagemError(error);
             })
-
-            /*.subscribe( (retorno: ListaPaginada<UsuarioEntidade>) => {
-                if(this.filtroUsuarioEntidade.idEstado == '0'){
-                    this.filtroUsuarioEntidade.idEstado = undefined;
-                }
-                if(retorno.quantidade > 0){
-                    this.listaUsuarioEntidade = retorno.list;
-                    this.listaUsuarioEntidade.forEach( usuarioEntidade => {
-                        this.drs.push(usuarioEntidade.departamentoRegional.id);
-                    })
-                }
-                this.filtro.idsDr = this.drs;
-            }, (error) => {
-                this.mensagemError(error);
-            });*/
     }
 
     verificarRetornoEmpresasContrato(retorno: ListaPaginada<Contrato>) {
