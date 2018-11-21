@@ -33,7 +33,7 @@ export class UnidadeObraService extends BaseService<UnidadeObra> {
     }
 
     pesquisarPorNome(nome: string, id: number): Observable<UnidadeObra[]> {
-        return super.get('/v1/unidades-obras/' + id + nome)
+        return super.get('/v1/unidades-obras/' + id + '/' + nome)
             .map((response: Response) => {
                 return response;
             }).catch((error: Response) => {

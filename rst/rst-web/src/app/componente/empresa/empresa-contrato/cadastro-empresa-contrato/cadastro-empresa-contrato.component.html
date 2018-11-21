@@ -13,7 +13,7 @@
         </div>
         <div class="row">
             <div class="form-group col-md-12">
-                   <!-- <md-select placeholder="{{'app_rst_labels_unidade_obra' | recurso}}" required name="unidadeObra" formControlName="unidadeObra"
+                <!-- <md-select placeholder="{{'app_rst_labels_unidade_obra' | recurso}}" required name="unidadeObra" formControlName="unidadeObra"
                                id="idUnidadeObra">
                         <md-option>
                             <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
@@ -22,37 +22,35 @@
                             {{unidade.descricao}}
                         </md-option>
                     </md-select>-->
-                    <md-input-container>
-                        <input mdInput placeholder="{{'app_rst_labels_unidade_obra' | recurso}}" [mdAutocomplete]="autocompleteUndObra" required formControlName="unidadeObra" [(ngModel)]="undObraNome" (keyup)="delayerUndObra.next($event.target.value)" class="form-control">
-                    </md-input-container>
+                <md-input-container>
+                    <input mdInput placeholder="{{'app_rst_labels_unidade_obra' | recurso}}" [mdAutocomplete]="autocompleteUndObra" required formControlName="unidadeObra" [(ngModel)]="undObraNome" (keyup)="delayerUndObra.next($event.target.value)" class="form-control">
+                </md-input-container>
+                <md-autocomplete #autocompleteUndObra="mdAutocomplete">
+                    <md-option *ngFor="let unidade of unidadesObras | async" [value]="undObraNome">
+                        <span>{{ unidade.descricao }}</span>
+                    </md-option>
+                </md-autocomplete>
             </div>
         </div>
         <div class="row">
             <div class="form-group col-md-4">
-                <my-date-picker class="prof" id="dataInicioContrato" [options]="datePickerOptions" locale="pt-br"
-                                formControlName="dataContratoInicio" name="dataContratoInicio" required
-                                (keyup)="maskDate($event, this.contratoForm, 'dataContratoInicio')"></my-date-picker>
+                <my-date-picker class="prof" id="dataInicioContrato" [options]="datePickerOptions" locale="pt-br" formControlName="dataContratoInicio" name="dataContratoInicio" required (keyup)="maskDate($event, this.contratoForm, 'dataContratoInicio')"></my-date-picker>
                 <span class="floating-label"> {{ 'app_rst_labels_data_inicio_contrato' | recurso }} </span>
             </div>
             <div class="form-group col-md-4">
-                <my-date-picker class="prof" id="dataFimContrato" [options]="datePickerOptions" locale="pt-br"
-                                formControlName="dataContratoFim" name="dataContratoFim" required
-                                (keyup)="maskDate($event, this.contratoForm, 'dataContratoFim')"></my-date-picker>
+                <my-date-picker class="prof" id="dataFimContrato" [options]="datePickerOptions" locale="pt-br" formControlName="dataContratoFim" name="dataContratoFim" required (keyup)="maskDate($event, this.contratoForm, 'dataContratoFim')"></my-date-picker>
                 <span class="floating-label"> {{ 'app_rst_labels_data_final_contrato' | recurso }} </span>
             </div>
             <div class="form-group col-md-4">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{'app_rst_labels_ano_vigencia_contrato' | recurso}}" maxlength="4"
-                           type="number"  name="anoVigencia" required id="anoVigencia" formControlName="anoVigencia"
-                           class="form-control" appFormularioCamposErro>
+                    <input mdInput placeholder="{{'app_rst_labels_ano_vigencia_contrato' | recurso}}" maxlength="4" type="number" name="anoVigencia" required id="anoVigencia" formControlName="anoVigencia" class="form-control" appFormularioCamposErro>
                 </md-input-container>
             </div>
         </div>
         <div class="row">
             <div class="form-group col-md-6 col-lg-6">
                 <div class="md-container">
-                    <md-select placeholder="{{'app_rst_labels_programa_contrato' | recurso}}" required name="tipoPrograma" formControlName="tipoPrograma"
-                               id="idTipoPrograma">
+                    <md-select placeholder="{{'app_rst_labels_programa_contrato' | recurso}}" required name="tipoPrograma" formControlName="tipoPrograma" id="idTipoPrograma">
                         <md-option>
                             <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
                         </md-option>
@@ -64,8 +62,7 @@
             </div>
             <div class="form-group col-md-6 col-lg-6">
                 <div class="md-container">
-                    <md-select placeholder="{{'app_rst_labels_unidade_sesi_nome' | recurso}}" required name="unidadeSesi" formControlName="unidadeAtendimentoTrabalhador"
-                               id="idUnidadeSesi">
+                    <md-select placeholder="{{'app_rst_labels_unidade_sesi_nome' | recurso}}" required name="unidadeSesi" formControlName="unidadeAtendimentoTrabalhador" id="idUnidadeSesi">
                         <md-option>
                             <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
                         </md-option>
