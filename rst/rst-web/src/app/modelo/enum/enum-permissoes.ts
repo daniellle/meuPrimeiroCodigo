@@ -62,6 +62,10 @@ export enum PermissoesEnum {
     EMPRESA_LOTACAO_CONSULTAR = 'empresa_lotacao_consultar',
     EMPRESA_LOTACAO_DESATIVAR = 'empresa_lotacao_desativar',
 
+    //EMPRESA CONTRATO
+    EMPRESA_CONTRATO = 'empresa_contrato',
+    EMPRESA_CONTRATO_CADASTRAR = 'empresa_contrato_cadastrar',
+
     // TRABALHADOR
     TRABALHADOR = 'trabalhador',
     TRABALHADOR_CADASTRAR = 'trabalhador_cadastrar',

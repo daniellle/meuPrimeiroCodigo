@@ -27,6 +27,12 @@ export class EmpresaContratoService extends BaseService<EmpresaContrato>{
       const params = new HttpParams().append('id', filtro.idEmpresa.toString())
           .append('pagina', paginacao.pagina.toString())
           .append('qtdRegistro', paginacao.qtdRegistro.toString());
+      if(filtro.idsDr != null || filtro.idsDr != undefined){
+          params.append('drs', filtro.idsDr.toString());
+      }
+      if(filtro.idsUats != null || filtro.idsUats != undefined){
+          params.append('uats', filtro.idsUats.toString());
+      }
       return super.get('/v1/unidades-obras-contratos-uat/contratos/' + filtro.idEmpresa)
           .map((response: ListaPaginada<Contrato>) => {
               if (!response.list) { response.list = new Array<Contrato>(); }
@@ -53,5 +59,5 @@ export class EmpresaContratoService extends BaseService<EmpresaContrato>{
  bloquearContrato(obj: Object): Observable<any>{
     return super.put('/v1/unidades-obras-contratos-uat/desativar', obj);
  }
- 
+
 }

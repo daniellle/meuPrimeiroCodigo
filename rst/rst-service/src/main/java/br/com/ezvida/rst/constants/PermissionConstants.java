@@ -55,6 +55,9 @@ public class PermissionConstants {
 	public static final String EMPRESA_CARGO_ALTERAR = "empresa_cargo_alterar";
 	public static final String EMPRESA_CARGO_CONSULTAR = "empresa_cargo_consultar";
 	public static final String EMPRESA_CARGO_DESATIVAR = "empresa_cargo_desativar";
+
+	public static final String EMPRESA_CONTRATO = "empresa_contrato";
+	public static final String EMPRESA_CONTRATO_CADASTRAR = "empresa_contrato_cadastrar";
 	
 	public static final String EMPRESA_FUNCAO = "empresa_funcao";
 	public static final String EMPRESA_FUNCAO_CADASTRAR = "empresa_funcao_cadastrar";

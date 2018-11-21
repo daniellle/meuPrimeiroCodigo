@@ -23,6 +23,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import java.security.Permission;
 
 @RequestScoped
 @Path("/private/v1/unidades-obras-contratos-uat")
@@ -51,7 +52,8 @@ public class UnidadeObraContratoUatEndpoint extends SegurancaEndpoint<UnidadeObr
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Autorizacao(permissoes = @Permissao(value = {
-        PermissionConstants.EMPRESA
+        PermissionConstants.EMPRESA, PermissionConstants.EMPRESA_CONTRATO,
+        PermissionConstants.EMPRESA_CONTRATO_CADASTRAR
     }))
     public Response pesquisarPaginado(@BeanParam UnidadeObraContratoUatFilter unidadeObraContratoUatFilter,
                                       @Context SecurityContext context, @Context HttpServletRequest request, @Encoded @PathParam("empresaId") Long empresaId){

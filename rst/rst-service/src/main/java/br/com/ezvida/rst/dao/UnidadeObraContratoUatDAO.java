@@ -81,6 +81,14 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
 
         query.setParameter("idEmpresa", empresaId);
 
+        if(!unidadeObraContratoUatFilter.getDrs().isEmpty()){
+            query.setParameter("drs", unidadeObraContratoUatFilter.getDrs());
+
+        }
+        if(!unidadeObraContratoUatFilter.getUats().isEmpty()){
+            query.setParameter("uats", unidadeObraContratoUatFilter.getUats());
+        }
+
         listaPaginada.setQuantidade(quantidade);
 
         if (unidadeObraContratoUatFilter != null) {
@@ -101,6 +109,14 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
 
         Query query = criarConsulta(jpql.toString());
         query.setParameter("idEmpresa", empresaId);//unidadeObraContratoUatFilter.getIdEmpresa());
+        if(!unidadeObraContratoUatFilter.getDrs().isEmpty()){
+            query.setParameter("drs", unidadeObraContratoUatFilter.getDrs());
+
+        }
+        if(!unidadeObraContratoUatFilter.getUats().isEmpty()){
+            query.setParameter("uats", unidadeObraContratoUatFilter.getUats());
+        }
+
 
         //DAOUtil.setParameterMap(query, parametros);
 
@@ -117,6 +133,7 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
             jpql.append(" join unidadeObraContratoUat.unidadeObra unidadeObra");
             jpql.append(" join unidadeObra.empresa empresa ");
 
+
         } else {
             jpql.append(" select unidadeObraContratoUat ");
 
@@ -129,6 +146,17 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
         }
 
         jpql.append(" where empresa.id = :idEmpresa ");
+
+        if(!unidadeObraContratoUatFilter.getDrs().isEmpty()){
+            jpql.append(" and unidadeAtendimentoTrabalhador.departamentoRegional in :drs");
+        }
+
+        if(!unidadeObraContratoUatFilter.getUats().isEmpty()){
+            jpql.append(" and unidadeAtendimentoTrabalhador.id in :uats");
+        }
+
+       /* jpql.append(" order by unidadeObraContratoUat.dataContratoInicio desc, unidadeObraContratoUat.flagInativo");
+        jpql.append(" group by unidadeObraContratoUat.dataContratoInicio, unidadeObraContratoUat.flagInativo");*/
 
     }
 

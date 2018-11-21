@@ -17,6 +17,11 @@ import {FormGroup} from "@angular/forms";
 import {Usuario} from "../../../modelo/usuario.model";
 import {Seguranca} from "../../../compartilhado/utilitario/seguranca.model";
 import {PerfilEnum} from "../../../modelo/enum/enum-perfil";
+import {FiltroDepartRegional} from "../../../modelo/filtro-depart-regional.model";
+import {UsuarioEntidade} from "../../../modelo/usuario-entidade.model";
+import {UsuarioEntidadeService} from "../../../servico/usuario-entidade.service";
+import {FiltroUsuarioEntidade} from "../../../modelo/filtro-usuario-entidade.model";
+import {DepartamentoRegional} from "../../../modelo/departamento-regional.model";
 
 export interface IHash {
     [details: number]: boolean;
@@ -35,12 +40,18 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
     public filtroPage: FiltroEmpresaContrato;
     public idEmpresa: number;
     public emFiltro: FiltroEmpresa;
+    public filtroUsuarioEntidade: FiltroUsuarioEntidade;
+    public listaUsuarioEntidade: UsuarioEntidade[];
     public paginacaoEmpresaContrato: Paginacao = new Paginacao(1, 10);
     public checks: IHash = {};
     public contratos: Contrato[];
     public statusForm: FormGroup;
     public usuarioLogado: Usuario;
+    public drs: number[] = [];
+    public uats: number[] = [];
     public flagUsuario: string;
+    public isDr: boolean;
+    public isUnidade: boolean;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -48,6 +59,7 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
                 protected bloqueioService: BloqueioService,
                 protected dialogo: ToastyService,
                 private dialogService: DialogService,
+                private usuarioEntidadeService: UsuarioEntidadeService,
                 private empresaContratoService: EmpresaContratoService) {
         super(bloqueioService, dialogo);
         this.title = MensagemProperties.app_rst_empresa_contrato_title;
@@ -56,7 +68,10 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         this.usuarioLogado = Seguranca.getUsuario();
         this.getIdEmpresa();
-        this.pesquisarContratos();
+        this.filtroPorPerfil();
+        if(!this.isDr && !this.isUnidade) {
+            this.pesquisarContratos();
+        }
     }
 
     getIdEmpresa() {
@@ -64,6 +79,7 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
         if (this.idEmpresa) {
             this.filtro = new FiltroEmpresaContrato();
             this.filtroPage = new FiltroEmpresaContrato();
+            this.filtroUsuarioEntidade = new FiltroUsuarioEntidade();
             this.filtro.idEmpresa = this.idEmpresa;
         }
     }
@@ -76,10 +92,26 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
             else if (perfil === PerfilEnum.SUDR || perfil === PerfilEnum.DIDR || perfil === PerfilEnum.GDRA
                 || perfil === PerfilEnum.GDRM) {
                 this.flagUsuario == "2";
+            }else if (perfil === PerfilEnum.GUS ) {
+                this.flagUsuario == "1";
             }
         });
     }
 
+    filtroPorPerfil(){
+        this.usuarioLogado.papeis.forEach(perfil => {
+            if (perfil === PerfilEnum.SUDR || perfil === PerfilEnum.DIDR || perfil === PerfilEnum.GDRA
+                || perfil === PerfilEnum.GDRM) {
+                this.isDr = true;
+                this.pegaDrsDoUsuario();
+            }
+            else if(perfil === PerfilEnum.GUS) {
+                this.pegaUatsDoUsuario();
+                this.filtro.idsUats = this.uats;
+                this.isUnidade = true;
+            }
+        });
+    }
 
     voltar() {
         if (this.route.snapshot.url[0].path === 'minhaempresa') {
@@ -108,15 +140,78 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
             }, (error) => {
                 this.mensagemError(error);
             });
+
+    }
+
+    pegaUatsDoUsuario(){
+        this.filtroUsuarioEntidade.cpf = this.usuarioLogado.sub;
+        if(this.isUndefined(this.filtroUsuarioEntidade.idEstado)){
+            this.filtroUsuarioEntidade.idEstado = '0';
+        }
+        this.usuarioEntidadeService.pesquisarPaginado(this.filtroUsuarioEntidade, this.paginacao, 'Unidade Sesi')
+            .subscribe( retorno => {
+                if(this.filtroUsuarioEntidade.idEstado == '0'){
+                    this.filtroUsuarioEntidade.idEstado = undefined;
+                }
+                if(retorno.quantidade > 0){
+                    this.listaUsuarioEntidade = retorno.list;
+                    this.listaUsuarioEntidade.forEach( usuarioEntidade => {
+                        this.uats.push(usuarioEntidade.uat.id);
+                    })
+                }
+            }, (error) => {
+                this.mensagemError(error);
+            });
+    }
+
+    pegaDrsDoUsuario(){
+        this.filtroUsuarioEntidade.cpf = this.usuarioLogado.sub;
+        if(this.isUndefined(this.filtroUsuarioEntidade.idEstado)){
+            this.filtroUsuarioEntidade.idEstado = '0';
+        }
+        this.usuarioEntidadeService.pesquisarPaginado(this.filtroUsuarioEntidade, this.paginacao, 'Departamento Regional')
+            .switchMap((retorno: ListaPaginada<UsuarioEntidade>) => {
+                if(this.filtroUsuarioEntidade.idEstado == '0'){
+                    this.filtroUsuarioEntidade.idEstado = undefined;
+                }
+                if(retorno.quantidade > 0){
+                    this.listaUsuarioEntidade = retorno.list;
+                    this.listaUsuarioEntidade.forEach( usuarioEntidade => {
+                        this.drs.push(usuarioEntidade.departamentoRegional.id);
+                    })
+                }
+                this.filtro.idsDr = this.drs;
+
+                return this.empresaContratoService.pesquisarContratos(this.filtro, new Paginacao(1, 10));
+            })
+            .subscribe((retorno: ListaPaginada<Contrato>) => {
+                this.paginacaoEmpresaContrato = this.getPaginacao(this.paginacao, retorno)
+                this.verificarRetornoEmpresasContrato(retorno);
+            }, (error) => {
+                this.mensagemError(error);
+            })
+
+            /*.subscribe( (retorno: ListaPaginada<UsuarioEntidade>) => {
+                if(this.filtroUsuarioEntidade.idEstado == '0'){
+                    this.filtroUsuarioEntidade.idEstado = undefined;
+                }
+                if(retorno.quantidade > 0){
+                    this.listaUsuarioEntidade = retorno.list;
+                    this.listaUsuarioEntidade.forEach( usuarioEntidade => {
+                        this.drs.push(usuarioEntidade.departamentoRegional.id);
+                    })
+                }
+                this.filtro.idsDr = this.drs;
+            }, (error) => {
+                this.mensagemError(error);
+            });*/
     }
 
     verificarRetornoEmpresasContrato(retorno: ListaPaginada<Contrato>) {
         if (retorno && retorno.list) {
             this.contratos = retorno.list;
-            this.contratos.forEach(contrato =>{
-                console.log(contrato.flagInativo)
-            });
-        } else {
+        }
+         else {
             this.contratos = new Array<Contrato>();
         }
     }
@@ -127,14 +222,14 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
             id: contratoId,
             flagInativo: this.flagUsuario
         }
-        if(value.checked == true){
+        if (value.checked == true) {
             this.empresaContratoService.desbloquearContrato(flagContrato).subscribe(
                 () => {
                     this.mensagemSucesso("Contrato desbloqueado com sucesso");
                 }
             )
         }
-        else{
+        else {
             this.empresaContratoService.bloquearContrato(flagContrato).subscribe(
                 () => {
                     this.mensagemSucesso("Contrato bloqueado com sucesso");

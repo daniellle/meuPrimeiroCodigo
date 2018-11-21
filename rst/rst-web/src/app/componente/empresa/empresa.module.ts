@@ -48,6 +48,7 @@ import { EmpresaContratoComponent } from './empresa-contrato/empresa-contrato.co
 import {EmpresaContratoService} from "../../servico/empresa-contrato.service";
 import { CadastroEmpresaContratoComponent } from './empresa-contrato/cadastro-empresa-contrato/cadastro-empresa-contrato.component';
 import {TipoProgramaService} from "../../servico/tipo-programa.service";
+import {UsuarioEntidadeService} from "../../servico/usuario-entidade.service";
 
 const routes: Routes = [
     {
@@ -137,7 +138,7 @@ const routes: Routes = [
         canActivate: [AutorizacaoGuard],
         data: {
             title: 'Contratos da Empresa',
-            permissoes: [PermissoesEnum.EMPRESA]
+            permissoes: [PermissoesEnum.EMPRESA, PermissoesEnum.EMPRESA_CONTRATO, PermissoesEnum.EMPRESA_CONTRATO_CADASTRAR]
         }
     },
 
@@ -146,7 +147,7 @@ const routes: Routes = [
         canActivate: [AutorizacaoGuard],
         data:{
             title: 'Novo Contrato',
-            permissoes: [PermissoesEnum.EMPRESA]
+            permissoes: [PermissoesEnum.EMPRESA, PermissoesEnum.EMPRESA_CONTRATO_CADASTRAR]
         }
     },
 
@@ -513,6 +514,6 @@ const routes: Routes = [
     providers: [EmpresaService, DialogService, PorteEmpresaService, EstadoService, TipoEmpresaService, UatService, UnidadeObraService,
         RamoEmpresaService, EmpresaJornadaService, JornadaService, SindicatoService, EmpresaCboService, CboService, FuncaoService,
         SetorService, EmpresaLotacaoService, EmpresaSindicatoService, EmpresaFuncaoService, EmpresaSetorService, EmpresaTrabalhadorService,
-        TrabalhadorService, EmpresaContratoService, TipoProgramaService],
+        TrabalhadorService, EmpresaContratoService, TipoProgramaService, UsuarioEntidadeService],
 })
 export class EmpresaModule { }
