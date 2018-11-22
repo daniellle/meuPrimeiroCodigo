@@ -143,6 +143,26 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 				.verificarDataEmpresaTrabalhadorLotacaoSuperiorDemissao(empresaTrabalhador));
 	}
 
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<EmpresaTrabalhadorLotacao> validarTrabalhadorPrimeiroAcesso(String cpf){
+		List<EmpresaTrabalhadorLotacao> empresaTrabalhadorLotacaoList = null;
+
+		if( cpf != null){
+			cpf = cpf.replace(".","").replace("-","");
+
+			if(ValidadorUtils.isValidCPF(cpf)){
+				empresaTrabalhadorLotacaoList = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
+				if (empresaTrabalhadorLotacaoList == null || empresaTrabalhadorLotacaoList.size() == 0) {
+
+					throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
+				}
+			}
+
+		}
+		return empresaTrabalhadorLotacaoList;
+	}
+
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<EmpresaTrabalhadorLotacao> validarTrabalhador(String cpf){
 
@@ -152,17 +172,23 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 			cpf = cpf.replace(".","").replace("-","");
 			if (ValidadorUtils.isValidCPF(cpf)) {
 
-				Usuario usuario = usuarioService.buscarPorLogin(cpf);
+				Usuario usuarioVerificar = new Usuario();
 
-				if( usuario != null ) {
+				try{
+					usuarioVerificar = usuarioService.buscarPorLogin(cpf);
+				} catch (Exception e) {
+					usuarioVerificar = null;
+				}
+
+				if( usuarioVerificar != null ) {
 
 					boolean perfilPraValidar = false;
 
-					if(usuario.getLogin() == "65020081515"){
+					if(usuarioVerificar.getLogin() == "65020081515"){
 						perfilPraValidar = false;
 					}
 					else {
-						for (UsuarioPerfilSistema perfilSistema : usuario.getPerfisSistema()) {
+						for (UsuarioPerfilSistema perfilSistema : usuarioVerificar.getPerfisSistema()) {
 
 							if (perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GEEM")
 									|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GEEMM")
