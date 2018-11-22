@@ -41,6 +41,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     usuario: Usuario;
     perfis: Perfil[] = [];
     sistemas: Sistema[];
+    sistemasPossiveis: Sistema[];
     perfisSistemas: UsuarioPerfilSistema[];
     sistemaSelecionado?: Sistema;
     perfisSelecionados: IHash = {};
@@ -242,6 +243,15 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     buscarSistemas(): void {
         this.sistemaService.buscarSistemasPermitidos(Seguranca.getUsuario()).subscribe((retorno: any) => {
             this.sistemas = retorno;
+            this.sistemasPossiveis = retorno.filter((item) => {
+                return item.id != 7;
+              });     
+              this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
+                return item.id != 4;
+              });      
+              this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
+                return item.id != 1;
+              });                                         
         }, (error) => {
             this.mensagemError(error);
         });
@@ -337,15 +347,10 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             const sistemaCadastro = this.sistemas.filter((s) => s.id === 7 || s.id === 4 || s.id === 1 || s.id === 2);
             if (sistemaCadastro){
                 sistemaCadastro.forEach(resposta => {
-                    //console.log(sistemaCadastro)
-                    // listaPerfis.push(resposta.sistemaPerfis.map(value => value.perfil)
-                    // .filter(value => value.codigo != PerfilEnum.TRA));
                     resposta.sistemaPerfis.forEach(r =>{
                         let perfilSistema = this.checkPerfilSistemas(r.perfil);
-                        //console.log(perfilSistema.perfil);
                         if(perfilSistema.perfil.id !== undefined){
                             perfilSistema.sistemas.push(resposta.id);
-                            console.log(perfilSistema);
                         }else{
                             if(r.perfil.codigo !== PerfilEnum.TRA){
                                 let perfilSistema = new PerfilSistema();
@@ -356,8 +361,8 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                         }
                     }); 
                 })
-            }
-            // this.perfis = listaPerfis.map(value => value.perfil);  
+            } 
+            console.log(this.perfilSistemas);
         }
         else{
             const sistema = this.sistemas.filter((s) => s.id === Number(this.idSistemas))[0];

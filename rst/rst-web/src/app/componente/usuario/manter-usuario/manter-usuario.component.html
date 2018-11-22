@@ -44,7 +44,7 @@
                 <div class="md-container">
                     <md-select placeholder="{{ 'app_rst_usuario_label_sistemas' | recurso }}" (change)="selecionarSistema()" name="idSistemas" [(ngModel)]="idSistemas" id="idSistemas" disabled="{{ modoConsulta }}">
                         <md-option value="null">{{ 'app_rst_labels_selecione' | recurso }}</md-option>
-                        <md-option *ngFor="let sistema of sistemas" [value]="sistema.id">
+                        <md-option *ngFor="let sistema of sistemasPossiveis" [value]="sistema.id">
                             {{sistema.nome}}
                         </md-option>
                     </md-select>
