@@ -65,8 +65,8 @@
             </div>
             <div class="form-group col-md-6 col-lg-6">
                 <md-input-container>
-                    <input mdInput placeholder="{{'app_rst_labels_unidade_sesi_nome' | recurso}}" [(ngModel)]="unidadeSesi" [mdAutocomplete]="autocompleteUndSesi" required name="unidadeSesi" formControlName="unidadeAtendimentoTrabalhador" id="idUnidadeSesi" [(ngModel)]="unidadeObra"
-                        (keyup)="delayerUndSesi.next($event.target.value)" class="form-control">
+                    <input mdInput placeholder="{{'app_rst_labels_unidade_sesi_nome' | recurso}}" [(ngModel)]="unidadeSesi" [mdAutocomplete]="autocompleteUndSesi" required name="unidadeSesi" formControlName="unidadeAtendimentoTrabalhador" id="idUnidadeSesi" (keyup)="delayerUndSesi.next($event.target.value)"
+                        class="form-control">
                 </md-input-container>
                 <md-autocomplete #autocompleteUndSesi="mdAutocomplete">
                     <md-option *ngFor="let unidade of unidadesAT | async" [value]="unidade">
