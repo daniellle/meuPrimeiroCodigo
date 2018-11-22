@@ -35,6 +35,7 @@ import {Uat} from "../../../../modelo/uat.model";
 import {DepartamentoRegionalProdutoServicoService} from "../../../../servico/departamento-regional-produto-servico.service";
 import {DepartRegionalService} from "../../../../servico/depart-regional.service";
 import {FiltroDepartRegional} from "../../../../modelo/filtro-depart-regional.model";
+import {MdOptionSelectionChange} from "@angular/material";
 
 @Component({
     selector: 'app-cadastro-empresa-contrato',
@@ -70,6 +71,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     filtroUsuarioEntidade: FiltroUsuarioEntidade;
     listaUsuarioEntidade: UsuarioEntidade[];
     filtroDepartRegional: FiltroDepartRegional;
+    drSelecionado: DepartamentoRegional;
 
 
     constructor(
@@ -182,6 +184,22 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         });
     }
 
+    alteraDr(){
+        console.log("entrou");
+        this.filtroDepartRegional.razaoSocial = this.contratoForm.controls['dr'].value;
+        if(this.filtroDepartRegional.idEstado == undefined){
+            this.filtroDepartRegional.idEstado = '0';
+        }
+        if(this.contratoForm.controls['dr'].value != "" ) {
+            this.drService.pesquisar(this.filtroDepartRegional, new Paginacao(1, 10))
+                .subscribe(response => {
+                    this.drSelecionado = response.list[0];
+                }), (error) => {
+                this.mensagemError(error);
+            }
+        }
+    }
+
     verificarCampos() {
         if (this.contratoForm.controls['unidadeObra'].errors) {
             if (this.contratoForm.controls['unidadeObra'].errors.required) {
@@ -267,7 +285,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
 
     pesquisarUnidadeSesi(text: string): Observable<UnidadeAtendimentoTrabalhador[]> {
         console.log(this.unidadeATService.pesquisarTodos());
-        return this.unidadeATService.pesquisarTodos();
+        return this.unidadeATService.pesquisarPorNome(text, this.drSelecionado.id);
     }
 
 

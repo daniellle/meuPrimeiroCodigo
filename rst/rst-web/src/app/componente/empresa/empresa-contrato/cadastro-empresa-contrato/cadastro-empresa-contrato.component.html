@@ -53,11 +53,11 @@
             </div>
             <div class="form-group col-md-3 col-lg-3">
                 <div class="md-container">
-                    <md-select placeholder="{{'app_rst_labels_departamento_regional' | recurso}}" required name="dr" formControlName="dr" id="idDr">
+                    <md-select placeholder="{{'app_rst_labels_departamento_regional' | recurso}}" required name="dr" formControlName="dr" id="idDr"  >
                         <md-option>
                             <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
                         </md-option>
-                        <md-option *ngFor="let dr of drs" [value]="dr.razaoSocial">
+                        <md-option *ngFor="let dr of drs" [value]="dr.razaoSocial" (click)="alteraDr()">
                             {{dr.razaoSocial}}
                         </md-option>
                     </md-select>
