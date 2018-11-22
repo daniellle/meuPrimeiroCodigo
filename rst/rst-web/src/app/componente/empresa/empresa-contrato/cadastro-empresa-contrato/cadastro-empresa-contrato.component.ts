@@ -56,7 +56,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     mensagemInconsistencia: string;
     contratoForm: FormGroup;
     unidadesObra: Observable<UnidadeObra[]>;
-    unidadeObra: UnidadeObra;
+    unidadeObra: UnidadeObra = new UnidadeObra();
     unidadesAT: Observable<UnidadeAtendimentoTrabalhador[]>;
     unidadeSesi: UnidadeAtendimentoTrabalhador;
     usuarioLogado: Usuario;
@@ -114,6 +114,16 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         this.createForm();
 
     }
+
+    displayFn(unidadeObra?: UnidadeObra): String | undefined {
+
+        return unidadeObra ? unidadeObra.descricao : undefined;
+    }
+
+    displayFnSesi(unidadeSesi?: UnidadeAtendimentoTrabalhador): String | undefined {
+        return unidadeSesi ? unidadeSesi.razaoSocial : undefined;
+    }
+
 
     verificarPerfil(){
         this.filtroUsuarioEntidade.cpf = this.usuarioLogado.sub;
@@ -254,6 +264,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
 
     salvar() {
         if (this.contratoForm.valid) {
+            this.contratoForm.removeControl('dr');
             this.contrato = this.contratoForm.getRawValue() as Contrato
             this.contrato.dataContratoFim = this.contrato.dataContratoFim.formatted;
             this.contrato.dataContratoInicio = this.contrato.dataContratoInicio.formatted;
@@ -284,7 +295,6 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     }
 
     pesquisarUnidadeSesi(text: string): Observable<UnidadeAtendimentoTrabalhador[]> {
-        console.log(this.unidadeATService.pesquisarTodos());
         return this.unidadeATService.pesquisarPorNome(text, this.drSelecionado.id);
     }
 

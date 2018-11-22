@@ -132,7 +132,7 @@ public class TrabalhadorService extends BaseService {
         }
 
         try{
-            empresaTrabalhadorLotacaoService.validarTrabalhador(trabalhador.getCpf());
+            empresaTrabalhadorLotacaoService.validarTrabalhadorPrimeiroAcesso(trabalhador.getCpf());
         }
         catch (Exception e){
             throw new BusinessErrorException(getMensagem("app_rst_primeiro_acesso_erro_vida_inativa"));

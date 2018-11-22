@@ -229,7 +229,7 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		jpql.append(" and (unidadeObraContratoUat.dataContratoFim is not null and unidadeObraContratoUat.dataContratoFim > :dataHoje) ");
 		jpql.append(" and (unidadeObraContratoUat.flagInativo is null or unidadeObraContratoUat.flagInativo = 'N') ");
 		jpql.append(" and empresaTrabalhadorLotacao.dataDesligamento is null ");
-		jpql.append(" and empresaTrabalhadorLotacao.flagInativo = :flagInativo ");
+		jpql.append(" and (empresaTrabalhadorLotacao.flagInativo = :flagInativo or empresaTrabalhadorLotacao.flagInativo is null)");
 
 		TypedQuery<EmpresaTrabalhadorLotacao> query = criarConsultaPorTipo(jpql.toString(), EmpresaTrabalhadorLotacao.class);
 		query.setParameter("cpf", cpf);
