@@ -53,13 +53,15 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     contratoForm: FormGroup;
     unidadesObra: Observable<UnidadeObra[]>;
     unidadeObra: UnidadeObra;
-    unidadesAT: UnidadeAtendimentoTrabalhador[];
+    unidadesAT: Observable<UnidadeAtendimentoTrabalhador[]>;
+    unidadeSesi: UnidadeAtendimentoTrabalhador;
     usuarioLogado: Usuario;
     flagUsuario: string;
     drs: DepartamentoRegional[];
     uats: Uat[];
     tiposPrograma: TipoPrograma[];
     public delayerUndObra = new Subject<string>();
+    public delayerUndSesi = new Subject<UnidadeAtendimentoTrabalhador>();
     isDr: boolean;
     isUnidadeSesi: boolean;
     filtroUsuarioEntidade: FiltroUsuarioEntidade;
@@ -80,6 +82,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     ) {
         super(bloqueioService, dialogo);
         this.delayerUndObra.debounceTime(500).distinctUntilChanged().switchMap((text) => this.unidadesObra = this.pesquisarUnidadeObrasPorNome(text)).subscribe();
+        this.delayerUndObra.debounceTime(500).distinctUntilChanged().switchMap((text)=> this.unidadesAT = this.pesquisarUnidadeSesi(text)).subscribe();
     }
 
     ngOnInit() {
@@ -248,6 +251,10 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
 
     pesquisarUnidadeObrasPorNome(text: string): Observable<UnidadeObra[]> {
         return this.unidadeObraService.pesquisarPorNome(text, this.idEmpresa);
+    }
+
+    pesquisarUnidadeSesi(text: string): Observable<UnidadeAtendimentoTrabalhador[]>{
+        return this.unidadeATService.pesquisarTodos();
     }
 
 
