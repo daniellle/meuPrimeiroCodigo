@@ -259,6 +259,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
             }
         }
         if(!this.isUnidadeSesi) {
+            this.contratoForm.controls['unidadeAtendimentoTrabalhador'].setValidators(Validators.required);
             if (this.contratoForm.controls['unidadeAtendimentoTrabalhador'].errors) {
                 if (this.contratoForm.controls['unidadeAtendimentoTrabalhador'].errors.required) {
                     this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['unidadeAtendimentoTrabalhador'],
@@ -273,6 +274,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
             }
         }
         if(this.isUnidadeSesi){
+            this.contratoForm.controls['unidadeAtendimentoTrabalhadorSelect'].setValidators(Validators.required);
             if (this.contratoForm.controls['unidadeAtendimentoTrabalhadorSelect'].errors) {
                 if (this.contratoForm.controls['unidadeAtendimentoTrabalhadorSelect'].errors.required) {
                     this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['unidadeAtendimentoTrabalhadorSelect'],
@@ -372,13 +374,12 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
                 '',
                 [
                     Validators.maxLength(100),
-                    Validators.required
                 ],
             ],
             unidadeAtendimentoTrabalhadorSelect: [
                 '',
                 [
-                    Validators.required
+
                 ]
             ],
             tipoPrograma: [

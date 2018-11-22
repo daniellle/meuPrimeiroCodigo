@@ -79,7 +79,7 @@
             <div #select *ngIf="isUnidadeSesi && drSelecionado" class="form-group col-md-6 col-lg-6">
                 <div class="md-container">
 
-                    <md-select placeholder="{{'app_rst_labels_unidade_sesi_nome' | recurso}}" required name="unidadeSesi" formControlName="unidadeAtendimentoTrabalhadorSelect" id="idUnidadeSesiSelect">
+                    <md-select placeholder="{{'app_rst_labels_unidade_sesi_nome' | recurso}}" name="unidadeSesi" formControlName="unidadeAtendimentoTrabalhadorSelect" id="idUnidadeSesiSelect">
                         <md-option>
                             <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
                         </md-option>
