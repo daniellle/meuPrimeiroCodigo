@@ -96,11 +96,12 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
 
     ngOnInit() {
         this.drs = new Array<DepartamentoRegional>();
+        this.uats = new Array<Uat>();
         this.filtroUsuarioEntidade = new FiltroUsuarioEntidade();
         this.setEmpresa();
         this.usuarioLogado = Seguranca.getUsuario();
         this.verificarPerfil();
-        if(!this.isDr && !this.uats){
+        if(!this.isDr && !this.isUnidadeSesi){
             this.trazerDrs();
         }
         this.contrato = new Contrato();
@@ -175,6 +176,18 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
                     this.listaUsuarioEntidade = retorno.list;
                     this.listaUsuarioEntidade.forEach( usuarioEntidade => {
                         this.uats.push(usuarioEntidade.uat);
+                        this.unidadeATService.pesquisarPorId(usuarioEntidade.uat.id.toString()).subscribe(response =>{
+                            let uat
+                            uat = response;
+                            if(this.drs == null || this.drs == [] || this.drs == undefined || this.drs.length == 0){
+                                this.drs.push(uat.departamentoRegional);
+                            }
+                            this.drs.forEach( dr =>{
+                                if(dr.id != uat.departamentRegional.id){
+                                    this.drs.push(uat.departamentoRegional);
+                                }
+                            })
+                        })
                     })
                 }
             }), (error) => {
@@ -195,7 +208,6 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     }
 
     alteraDr(){
-        console.log("entrou");
         this.filtroDepartRegional.razaoSocial = this.contratoForm.controls['dr'].value;
         if(this.filtroDepartRegional.idEstado == undefined){
             this.filtroDepartRegional.idEstado = '0';
@@ -235,12 +247,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
                     MensagemProperties.app_rst_labels_tipo_programa);
             }
         }
-        if (this.contratoForm.controls['dr'].errors) {
-            if (this.contratoForm.controls['dr'].errors.required) {
-                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['dr'],
-                    MensagemProperties.app_rst_labels_departamento_regional);
-            }
-        }
+
         if (this.contratoForm.controls['anoVigencia'].errors) {
             if (this.contratoForm.controls['anoVigencia'].errors.required) {
                 this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['anoVigencia'],
@@ -251,20 +258,44 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
                 return;
             }
         }
-        if (this.contratoForm.controls['unidadeAtendimentoTrabalhador'].errors) {
-            if (this.contratoForm.controls['unidadeAtendimentoTrabalhador'].errors.required) {
-                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['unidadeAtendimentoTrabalhador'],
-                    MensagemProperties.app_rst_labels_unidade_sesi);
+        if(!this.isUnidadeSesi) {
+            if (this.contratoForm.controls['unidadeAtendimentoTrabalhador'].errors) {
+                if (this.contratoForm.controls['unidadeAtendimentoTrabalhador'].errors.required) {
+                    this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['unidadeAtendimentoTrabalhador'],
+                        MensagemProperties.app_rst_labels_unidade_sesi);
+                }
+            }
+            if (this.contratoForm.controls['dr'].errors) {
+                if (this.contratoForm.controls['dr'].errors.required) {
+                    this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['dr'],
+                        MensagemProperties.app_rst_labels_departamento_regional);
+                }
             }
         }
-        if(this.contratoForm.errors.intervaloDeDatas){
-            this.mensagemError("A data final deve ser maior que a data de início");
+        if(this.isUnidadeSesi){
+            if (this.contratoForm.controls['unidadeAtendimentoTrabalhadorSelect'].errors) {
+                if (this.contratoForm.controls['unidadeAtendimentoTrabalhadorSelect'].errors.required) {
+                    this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['unidadeAtendimentoTrabalhadorSelect'],
+                        MensagemProperties.app_rst_labels_unidade_sesi);
+                }
+            }
+        }
+        if(this.contratoForm.errors != null) {
+            if (this.contratoForm.errors.intervaloDeDatas) {
+                this.mensagemError("A data final deve ser maior que a data de início");
+            }
         }
     }
 
     salvar() {
         if (this.contratoForm.valid) {
             this.contratoForm.removeControl('dr');
+            if(this.isUnidadeSesi){
+                this.contratoForm.removeControl('unidadeAtendimentoTrabalhador')
+            }
+            else{
+                this.contratoForm.removeControl('unidadeAtendimentoTrabalhadorSelect')
+            }
             this.contrato = this.contratoForm.getRawValue() as Contrato
             this.contrato.dataContratoFim = this.contrato.dataContratoFim.formatted;
             this.contrato.dataContratoInicio = this.contrato.dataContratoInicio.formatted;
@@ -276,7 +307,6 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         }
         else {
             this.contratoForm.updateValueAndValidity()
-            console.log(this.contratoForm.errors);
             this.verificarCampos();
         }
 
@@ -344,6 +374,12 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
                     Validators.maxLength(100),
                     Validators.required
                 ],
+            ],
+            unidadeAtendimentoTrabalhadorSelect: [
+                '',
+                [
+                    Validators.required
+                ]
             ],
             tipoPrograma: [
                 '',
