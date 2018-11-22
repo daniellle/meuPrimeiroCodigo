@@ -139,7 +139,7 @@ const routes: Routes = [
         canActivate: [AutorizacaoGuard],
         data: {
             title: 'Contratos da Empresa',
-            permissoes: [PermissoesEnum.EMPRESA, PermissoesEnum.EMPRESA_CONTRATO, PermissoesEnum.EMPRESA_CONTRATO_CADASTRAR]
+            permissoes: [PermissoesEnum.EMPRESA, PermissoesEnum.EMPRESA_CONTRATO]
         }
     },
 
@@ -148,7 +148,7 @@ const routes: Routes = [
         canActivate: [AutorizacaoGuard],
         data:{
             title: 'Novo Contrato',
-            permissoes: [PermissoesEnum.EMPRESA, PermissoesEnum.EMPRESA_CONTRATO_CADASTRAR]
+            permissoes: [PermissoesEnum.EMPRESA_CONTRATO_CADASTRAR]
         }
     },
 

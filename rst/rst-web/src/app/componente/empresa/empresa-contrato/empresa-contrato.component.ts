@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {BaseComponent} from "../../base.component";
 import {ToastyService} from "ng2-toasty";
 import {EmpresaService} from "../../../servico/empresa.service";
@@ -52,6 +52,8 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
     public flagUsuario: string;
     public isDr: boolean;
     public isUnidade: boolean;
+    public urlFoto: string;
+    public isEmpresa: boolean;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -60,7 +62,8 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
                 protected dialogo: ToastyService,
                 private dialogService: DialogService,
                 private usuarioEntidadeService: UsuarioEntidadeService,
-                private empresaContratoService: EmpresaContratoService) {
+                private empresaContratoService: EmpresaContratoService,
+                private cdRef:ChangeDetectorRef) {
         super(bloqueioService, dialogo);
         this.title = MensagemProperties.app_rst_empresa_contrato_title;
     }
@@ -108,6 +111,9 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
             else if(perfil === PerfilEnum.GUS) {
                 this.isUnidade = true;
                 this.pegaUatsDoUsuario();
+            }
+            else if(perfil === PerfilEnum.GEEM || perfil === PerfilEnum.GEEMM){
+                this.isEmpresa = true;
             }
         });
     }
@@ -213,7 +219,7 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
             id: contratoId,
             flagInativo: this.flagUsuario
         }
-        if (value || value != 'N') {
+        if (value.checked == true) {
             this.empresaContratoService.desbloquearContrato(flagContrato).subscribe(
                 () => {
                     this.mensagemSucesso("Contrato desbloqueado com sucesso");
@@ -228,14 +234,4 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
             )
         }
     }
-
-    imagePlacemente(value){
-        console.log(value);
-        if (value !== undefined || value !== 'N'){
-            return "../../../../assets/img/unblock.svg";
-        }else{
-            return "../../../../assets/img/block.svg";
-        }
-    }
-
 }
