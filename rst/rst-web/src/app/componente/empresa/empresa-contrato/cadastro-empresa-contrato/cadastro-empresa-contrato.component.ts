@@ -273,6 +273,12 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
                     Validators.maxLength(160),
                 ],
             ],
+            dr:[
+                '',
+                [
+                    Validators.required,
+                ]
+            ],
             anoVigencia: [
                 '',
                 [
