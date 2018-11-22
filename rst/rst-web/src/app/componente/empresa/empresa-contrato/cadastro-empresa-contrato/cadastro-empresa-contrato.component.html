@@ -26,7 +26,7 @@
                     <input mdInput placeholder="{{'app_rst_labels_unidade_obra' | recurso}}" [mdAutocomplete]="autocompleteUndObra" required formControlName="unidadeObra" [(ngModel)]="unidadeObra" (keyup)="delayerUndObra.next($event.target.value)" class="form-control">
                 </md-input-container>
                 <md-autocomplete #autocompleteUndObra="mdAutocomplete">
-                    <md-option *ngFor="let unidade of unidadesObra | async" [value]="unidadeObra">
+                    <md-option *ngFor="let unidade of unidadesObra | async" [value]="unidade.descricao">
                         <span>{{ unidade.descricao }}</span>
                     </md-option>
                 </md-autocomplete>
@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-group col-md-6 col-lg-6">
+            <div class="form-group col-md-3 col-lg-3">
                 <div class="md-container">
                     <md-select placeholder="{{'app_rst_labels_programa_contrato' | recurso}}" required name="tipoPrograma" formControlName="tipoPrograma" id="idTipoPrograma">
                         <md-option>
@@ -56,6 +56,18 @@
                         </md-option>
                         <md-option *ngFor="let tipoPrograma of tiposPrograma" [value]="tipoPrograma">
                             {{tipoPrograma.descricao}}
+                        </md-option>
+                    </md-select>
+                </div>
+            </div>
+            <div class="form-group col-md-3 col-lg-3">
+                <div class="md-container">
+                    <md-select placeholder="{{'app_rst_labels_departamento_regional' | recurso}}" required name="dr" formControlName="dr" id="idDr">
+                        <md-option>
+                            <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                        </md-option>
+                        <md-option *ngFor="let dr of drs" [value]="dr.razaoSocial">
+                            {{dr.razaoSocial}}
                         </md-option>
                     </md-select>
                 </div>

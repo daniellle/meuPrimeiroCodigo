@@ -25,6 +25,13 @@ import {TipoPrograma} from "../../../../modelo/tipo-programa.model";
 import { datasContratoValidator } from './datas-contrato.validator';
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
+import {DepartamentoRegional} from "../../../../modelo/departamento-regional.model";
+import {UsuarioEntidadeService} from "../../../../servico/usuario-entidade.service";
+import {FiltroUsuarioEntidade} from "../../../../modelo/filtro-usuario-entidade.model";
+import {PerfilEnum} from "../../../../modelo/enum/enum-perfil";
+import {ListaPaginada} from "../../../../modelo/lista-paginada.model";
+import {UsuarioEntidade} from "../../../../modelo/usuario-entidade.model";
+import {Uat} from "../../../../modelo/uat.model";
 
 @Component({
     selector: 'app-cadastro-empresa-contrato',
@@ -49,8 +56,14 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     unidadesAT: UnidadeAtendimentoTrabalhador[];
     usuarioLogado: Usuario;
     flagUsuario: string;
+    drs: DepartamentoRegional[];
+    uats: Uat[];
     tiposPrograma: TipoPrograma[];
     public delayerUndObra = new Subject<string>();
+    isDr: boolean;
+    isUnidadeSesi: boolean;
+    filtroUsuarioEntidade: FiltroUsuarioEntidade;
+    listaUsuarioEntidade: UsuarioEntidade[];
 
 
     constructor(
@@ -63,6 +76,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         private unidadeObraService: UnidadeObraService,
         private unidadeATService: UatService,
         private tipoProgramaService: TipoProgramaService,
+        private usuarioEntidadeService: UsuarioEntidadeService,
     ) {
         super(bloqueioService, dialogo);
         this.delayerUndObra.debounceTime(500).distinctUntilChanged().switchMap((text) => this.unidadesObra = this.pesquisarUnidadeObrasPorNome(text)).subscribe();
@@ -75,12 +89,70 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         this.empresa = new Empresa();
         this.filtro = new FiltroEmpresaContrato();
         this.model = new Contrato();
+        this.drs = new Array<DepartamentoRegional>();
         this.listaContratos = new Array<Contrato>();
         // this.unidadesObra = new Array<UnidadeObra>();
         this.carregarCombo();
         this.title = MensagemProperties.app_rst_empresa_contrato_cadastrar_title;
         this.createForm();
 
+    }
+
+    verificarPerfil(){
+        this.filtroUsuarioEntidade.cpf = this.usuarioLogado.sub;
+        this.usuarioLogado.papeis.forEach(perfil => {
+            if (perfil === PerfilEnum.SUDR || perfil === PerfilEnum.DIDR || perfil === PerfilEnum.GDRA
+                || perfil === PerfilEnum.GDRM) {
+                this.isDr = true;
+                this.pegaDrsDoUsuario()
+            }
+            else if(perfil === PerfilEnum.GUS) {
+                this.isUnidadeSesi = true;
+                this.pegaUatsDoUsuario()
+            }
+        });
+    }
+
+    pegaDrsDoUsuario(){
+        this.filtroUsuarioEntidade.cpf = this.usuarioLogado.sub;
+        if(this.isUndefined(this.filtroUsuarioEntidade.idEstado)){
+            this.filtroUsuarioEntidade.idEstado = '0';
+        }
+        this.usuarioEntidadeService.pesquisarPaginado(this.filtroUsuarioEntidade, this.paginacao, 'Departamento Regional')
+            .subscribe((retorno: ListaPaginada<UsuarioEntidade>) => {
+                if(this.filtroUsuarioEntidade.idEstado == '0'){
+                    this.filtroUsuarioEntidade.idEstado = undefined;
+                }
+                if(retorno.quantidade > 0){
+                    this.listaUsuarioEntidade = retorno.list;
+                    this.listaUsuarioEntidade.forEach( usuarioEntidade => {
+                        this.drs.push(usuarioEntidade.departamentoRegional);
+                    })
+                }
+        }, (error) => {
+                this.mensagemError(error);
+            })
+    }
+
+    pegaUatsDoUsuario(){
+        this.filtroUsuarioEntidade.cpf = this.usuarioLogado.sub;
+        if(this.isUndefined(this.filtroUsuarioEntidade.idEstado)){
+            this.filtroUsuarioEntidade.idEstado = '0';
+        }
+        this.usuarioEntidadeService.pesquisarPaginado(this.filtroUsuarioEntidade, this.paginacao, 'Unidade SESI')
+            .subscribe( (retorno: ListaPaginada<UsuarioEntidade>) => {
+                if(this.filtroUsuarioEntidade.idEstado == '0'){
+                    this.filtroUsuarioEntidade.idEstado = undefined;
+                }
+                if(retorno.quantidade > 0){
+                    this.listaUsuarioEntidade = retorno.list;
+                    this.listaUsuarioEntidade.forEach( usuarioEntidade => {
+                        this.uats.push(usuarioEntidade.uat);
+                    })
+                }
+            }), (error) => {
+                this.mensagemError(error);
+            }
     }
 
     setEmpresa() {
@@ -110,6 +182,12 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
             if (this.contratoForm.controls['tipoPrograma'].errors.required) {
                 this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['tipoPrograma'],
                     MensagemProperties.app_rst_labels_tipo_programa);
+            }
+        }
+        if (this.contratoForm.controls['dr'].errors) {
+            if (this.contratoForm.controls['dr'].errors.required) {
+                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['dr'],
+                    MensagemProperties.app_rst_labels_departamento_regional);
             }
         }
         if (this.contratoForm.controls['anoVigencia'].errors) {
@@ -164,6 +242,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         }, (error) => {
             this.mensagemError(error);
         });
+
 
     }
 
