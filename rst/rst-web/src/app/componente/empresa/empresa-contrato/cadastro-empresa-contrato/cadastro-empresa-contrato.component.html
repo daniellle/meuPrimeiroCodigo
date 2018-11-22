@@ -14,7 +14,7 @@
         <div class="row">
             <div class="form-group col-md-12">
                 <md-input-container>
-                    <input mdInput placeholder="{{'app_rst_labels_unidade_obra' | recurso}}" [mdAutocomplete]="autocompleteUndObra" required formControlName="unidadeObra" [label]="unidadeObra.descricao" [(ngModel)]="unidadeObra" (keyup)="delayerUndObra.next($event.target.value)"
+                    <input mdInput placeholder="{{'app_rst_labels_unidade_obra' | recurso}}" [mdAutocomplete]="autocompleteUndObra" required formControlName="unidadeObra" [(ngModel)]="unidadeObra" (keyup)="delayerUndObra.next($event.target.value)"
                         class="form-control">
                 </md-input-container>
                 <md-autocomplete [displayWith]="displayFn" #autocompleteUndObra="mdAutocomplete">

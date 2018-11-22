@@ -213,7 +213,7 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
             id: contratoId,
             flagInativo: this.flagUsuario
         }
-        if (value.checked == true) {
+        if (value || value != 'N') {
             this.empresaContratoService.desbloquearContrato(flagContrato).subscribe(
                 () => {
                     this.mensagemSucesso("Contrato desbloqueado com sucesso");
@@ -226,6 +226,15 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
                     this.mensagemSucesso("Contrato bloqueado com sucesso");
                 }
             )
+        }
+    }
+
+    imagePlacemente(value){
+        console.log(value);
+        if (value !== undefined || value !== 'N'){
+            return "../../../../assets/img/unblock.svg";
+        }else{
+            return "../../../../assets/img/block.svg";
         }
     }
 
