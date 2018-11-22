@@ -32,6 +32,9 @@ import {PerfilEnum} from "../../../../modelo/enum/enum-perfil";
 import {ListaPaginada} from "../../../../modelo/lista-paginada.model";
 import {UsuarioEntidade} from "../../../../modelo/usuario-entidade.model";
 import {Uat} from "../../../../modelo/uat.model";
+import {DepartamentoRegionalProdutoServicoService} from "../../../../servico/departamento-regional-produto-servico.service";
+import {DepartRegionalService} from "../../../../servico/depart-regional.service";
+import {FiltroDepartRegional} from "../../../../modelo/filtro-depart-regional.model";
 
 @Component({
     selector: 'app-cadastro-empresa-contrato',
@@ -64,6 +67,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     isUnidadeSesi: boolean;
     filtroUsuarioEntidade: FiltroUsuarioEntidade;
     listaUsuarioEntidade: UsuarioEntidade[];
+    filtroDepartRegional: FiltroDepartRegional;
 
 
     constructor(
@@ -77,21 +81,27 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         private unidadeATService: UatService,
         private tipoProgramaService: TipoProgramaService,
         private usuarioEntidadeService: UsuarioEntidadeService,
+        private drService: DepartRegionalService,
     ) {
         super(bloqueioService, dialogo);
         this.delayerUndObra.debounceTime(500).distinctUntilChanged().switchMap((text) => this.unidadesObra = this.pesquisarUnidadeObrasPorNome(text)).subscribe();
     }
 
     ngOnInit() {
+        this.drs = new Array<DepartamentoRegional>();
+        this.filtroUsuarioEntidade = new FiltroUsuarioEntidade();
         this.setEmpresa();
         this.usuarioLogado = Seguranca.getUsuario();
+        this.verificarPerfil();
+        if(!this.isDr && !this.uats){
+            this.trazerDrs();
+        }
         this.contrato = new Contrato();
         this.empresa = new Empresa();
         this.filtro = new FiltroEmpresaContrato();
+        this.filtroDepartRegional = new FiltroDepartRegional();
         this.model = new Contrato();
-        this.drs = new Array<DepartamentoRegional>();
         this.listaContratos = new Array<Contrato>();
-        // this.unidadesObra = new Array<UnidadeObra>();
         this.carregarCombo();
         this.title = MensagemProperties.app_rst_empresa_contrato_cadastrar_title;
         this.createForm();
@@ -157,6 +167,14 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
 
     setEmpresa() {
         this.idEmpresa = this.activatedRoute.snapshot.params['id'];
+    }
+
+    trazerDrs(){
+        this.drService.listarTodos().subscribe( response => {
+            this.drs = response;
+        },(error) => {
+            this.mensagemError(error);
+        });
     }
 
     verificarCampos() {
