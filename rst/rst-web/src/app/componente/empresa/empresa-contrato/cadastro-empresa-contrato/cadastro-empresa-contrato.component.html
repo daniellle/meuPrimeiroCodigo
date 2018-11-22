@@ -16,8 +16,8 @@
                 <md-input-container>
                     <input mdInput placeholder="{{'app_rst_labels_unidade_obra' | recurso}}" [mdAutocomplete]="autocompleteUndObra" required formControlName="unidadeObra" [(ngModel)]="unidadeObra" (keyup)="delayerUndObra.next($event.target.value)" class="form-control">
                 </md-input-container>
-                <md-autocomplete #autocompleteUndObra="mdAutocomplete">
-                    <md-option *ngFor="let unidade of unidadesObra | async" [value]="unidade.descricao">
+                <md-autocomplete [displayWith]="displayFn" #autocompleteUndObra="mdAutocomplete">
+                    <md-option *ngFor="let unidade of unidadesObra | async" [value]="unidade">
                         <span>{{ unidade.descricao }}</span>
                     </md-option>
                 </md-autocomplete>
@@ -68,8 +68,8 @@
                     <input mdInput placeholder="{{'app_rst_labels_unidade_sesi_nome' | recurso}}" [(ngModel)]="unidadeSesi" [mdAutocomplete]="autocompleteUndSesi" required name="unidadeSesi" formControlName="unidadeAtendimentoTrabalhador" id="idUnidadeSesi" (keyup)="delayerUndSesi.next($event.target.value)"
                         class="form-control">
                 </md-input-container>
-                <md-autocomplete #autocompleteUndSesi="mdAutocomplete">
-                    <md-option *ngFor="let unidade of unidadesAT | async" [value]="unidade.nomeFantasia">
+                <md-autocomplete [displayWith]="displayFnSesi" #autocompleteUndSesi="mdAutocomplete">
+                    <md-option *ngFor="let unidade of unidadesAT | async" [value]="unidade">
                         <span>{{unidade.nomeFantasia}}</span>
                     </md-option>
                 </md-autocomplete>
