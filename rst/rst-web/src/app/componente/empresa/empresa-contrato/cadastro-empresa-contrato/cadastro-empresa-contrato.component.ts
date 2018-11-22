@@ -44,7 +44,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     inconsistencia: boolean;
     mensagemInconsistencia: string;
     contratoForm: FormGroup;
-    unidadesObra: UnidadeObra[];
+    unidadesObra: Observable<UnidadeObra[]>;
     unidadeObra: UnidadeObra;
     unidadesAT: UnidadeAtendimentoTrabalhador[];
     usuarioLogado: Usuario;
@@ -65,8 +65,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         private tipoProgramaService: TipoProgramaService,
     ) {
         super(bloqueioService, dialogo);
-        this.delayerUndObra.debounceTime(500).distinctUntilChanged().switchMap((text) => this.unidadesObra = this.pesquisarUnidadeObrasPorNome(text))
-            .subscribe();
+        this.delayerUndObra.debounceTime(500).distinctUntilChanged().switchMap((text) => this.unidadesObra = this.pesquisarUnidadeObrasPorNome(text)).subscribe();
     }
 
     ngOnInit() {
@@ -77,7 +76,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         this.filtro = new FiltroEmpresaContrato();
         this.model = new Contrato();
         this.listaContratos = new Array<Contrato>();
-        this.unidadesObra = new Array<UnidadeObra>();
+        // this.unidadesObra = new Array<UnidadeObra>();
         this.carregarCombo();
         this.title = MensagemProperties.app_rst_empresa_contrato_cadastrar_title;
         this.createForm();
@@ -168,13 +167,8 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
 
     }
 
-    pesquisarUnidadeObrasPorNome(text: string): UnidadeObra[]{
-        this.unidadeObraService.pesquisarPorNome(text, this.idEmpresa).subscribe( response =>{
-            this.unidadesObra = response;
-        }, (error) => {
-            this.mensagemError(error);
-        });
-        return this.unidadesObra;
+    pesquisarUnidadeObrasPorNome(text: string): Observable<UnidadeObra[]> {
+        return this.unidadeObraService.pesquisarPorNome(text, this.idEmpresa);
     }
 
 

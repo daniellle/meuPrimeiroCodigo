@@ -23,10 +23,10 @@
                         </md-option>
                     </md-select>-->
                 <md-input-container>
-                    <input mdInput placeholder="{{'app_rst_labels_unidade_obra' | recurso}}" [mdAutocomplete]="autocompleteUndObra" required formControlName="unidadeObra" [(ngModel)]="undObraNome" (keyup)="delayerUndObra.next($event.target.value)" class="form-control">
+                    <input mdInput placeholder="{{'app_rst_labels_unidade_obra' | recurso}}" [mdAutocomplete]="autocompleteUndObra" required formControlName="unidadeObra" [(ngModel)]="unidadeObra" (keyup)="delayerUndObra.next($event.target.value)" class="form-control">
                 </md-input-container>
                 <md-autocomplete #autocompleteUndObra="mdAutocomplete">
-                    <md-option *ngFor="let unidade of unidadesObras | async" [value]="undObraNome">
+                    <md-option *ngFor="let unidade of unidadesObra | async" [value]="unidadeObra">
                         <span>{{ unidade.descricao }}</span>
                     </md-option>
                 </md-autocomplete>

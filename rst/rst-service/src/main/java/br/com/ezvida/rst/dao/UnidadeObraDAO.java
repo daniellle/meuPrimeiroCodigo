@@ -42,11 +42,11 @@ public class UnidadeObraDAO extends BaseRstDAO<UnidadeObra, Long> {
 		StringBuilder sqlBuilder = new StringBuilder();
 		sqlBuilder.append(" select unidadeObra from UnidadeObra unidadeObra");
 		sqlBuilder.append(" inner join fetch unidadeObra.empresa empresa");
-		sqlBuilder.append(" where unidadeObra.dataExclusao is null and empresa.id = :idEmpresa and unidadeObra.descricao like :nome");
+		sqlBuilder.append(" where unidadeObra.dataExclusao is null and empresa.id = :idEmpresa and upper (unidadeObra.descricao) like  :nome");
 		sqlBuilder.append(" order by unidadeObra.descricao");
 		TypedQuery<UnidadeObra> query = criarConsultaPorTipo(sqlBuilder.toString());
 		query.setParameter("idEmpresa", id);
-		query.setParameter("nome", "%" + nome + "%");
+		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
 
 		return query.getResultList();
 	}
