@@ -61,7 +61,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     uats: Uat[];
     tiposPrograma: TipoPrograma[];
     public delayerUndObra = new Subject<string>();
-    public delayerUndSesi = new Subject<UnidadeAtendimentoTrabalhador>();
+    public delayerUndSesi = new Subject<string>();
     isDr: boolean;
     isUnidadeSesi: boolean;
     filtroUsuarioEntidade: FiltroUsuarioEntidade;
@@ -81,8 +81,10 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         private usuarioEntidadeService: UsuarioEntidadeService,
     ) {
         super(bloqueioService, dialogo);
-        this.delayerUndObra.debounceTime(500).distinctUntilChanged().switchMap((text) => this.unidadesObra = this.pesquisarUnidadeObrasPorNome(text)).subscribe();
-        this.delayerUndObra.debounceTime(500).distinctUntilChanged().switchMap((text)=> this.unidadesAT = this.pesquisarUnidadeSesi(text)).subscribe();
+        this.delayerUndObra.debounceTime(500).distinctUntilChanged().switchMap(
+            (text) => this.unidadesObra = this.pesquisarUnidadeObrasPorNome(text)).subscribe();
+        this.delayerUndSesi.debounceTime(500).distinctUntilChanged().switchMap(
+            (text) => this.unidadesAT = this.pesquisarUnidadeSesi(text)).subscribe();
     }
 
     ngOnInit() {
@@ -234,26 +236,19 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     }
 
     carregarCombo() {
-        this.unidadeATService.pesquisarTodos().subscribe(response => {
-            this.unidadesAT = response;
-        }, (error) => {
-            this.mensagemError(error);
-        });
-
         this.tipoProgramaService.pesquisarTodos().subscribe(response => {
             this.tiposPrograma = response;
         }, (error) => {
             this.mensagemError(error);
         });
-
-
     }
 
     pesquisarUnidadeObrasPorNome(text: string): Observable<UnidadeObra[]> {
         return this.unidadeObraService.pesquisarPorNome(text, this.idEmpresa);
     }
 
-    pesquisarUnidadeSesi(text: string): Observable<UnidadeAtendimentoTrabalhador[]>{
+    pesquisarUnidadeSesi(text: string): Observable<UnidadeAtendimentoTrabalhador[]> {
+        console.log(this.unidadeATService.pesquisarTodos());
         return this.unidadeATService.pesquisarTodos();
     }
 
