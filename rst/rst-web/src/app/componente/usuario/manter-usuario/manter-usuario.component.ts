@@ -241,6 +241,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     buscarSistemas(): void {
         this.sistemaService.buscarSistemasPermitidos(Seguranca.getUsuario()).subscribe((retorno: any) => {
+            //this.sistemas = retorno; //maneira antiga
             this.sistemas = retorno.forEach(element => {
                 
             });
