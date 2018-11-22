@@ -12,6 +12,7 @@ import {Uat} from 'app/modelo/uat.model';
 import {FiltroUat} from 'app/modelo/filtro-uat.model';
 import {ListaPaginada} from 'app/modelo/lista-paginada.model';
 import {Estado} from 'app/modelo/estado.model';
+import {UnidadeAtendimentoTrabalhador} from "../modelo/unid-atend-trabalhador.model";
 
 @Injectable()
 export class UatService extends BaseService<Uat> {
@@ -52,6 +53,15 @@ export class UatService extends BaseService<Uat> {
                 return Observable.throw(error);
             }).finally(() => {
                 this.bloqueio.evento.emit(true);
+            });
+    }
+
+    pesquisarPorNome(nome: string, id: number): Observable<UnidadeAtendimentoTrabalhador[]>{
+        return super.get('/v1/uats/' + id + '/' + nome)
+            .map((response: Response) => {
+                return response;
+            }).catch((error: Response) => {
+                return Observable.throw(error);
             });
     }
 

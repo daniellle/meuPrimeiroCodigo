@@ -40,14 +40,17 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
         return query.getResultList();
     }
 
-    public List<UnidadeAtendimentoTrabalhador> buscarPorNome(String nome, String dr){
+
+    public List<UnidadeAtendimentoTrabalhador> buscarPorNome(String nome, Long dr){
         StringBuilder jpql = new StringBuilder();
         jpql.append(" select uat from UnidadeAtendimentoTrabalhador uat ");
         jpql.append(" left join fetch uat.departamentoRegional dr");
-        jpql.append(" where uat.razaoSocial like :nome and dr.cnpj = :dr");
-        jpql.append(" order by uat.razaoSocial");
+        jpql.append(" where upper(uat.nomeFantasia) like :nome and dr.id = :dr");
+        jpql.append(" order by uat.nomeFantasia");
 
         TypedQuery<UnidadeAtendimentoTrabalhador> query = criarConsultaPorTipo(jpql.toString());
+        query.setParameter("nome", "%" + nome.toUpperCase() + "%");
+        query.setParameter("dr", dr);
         return query.getResultList();
     }
 

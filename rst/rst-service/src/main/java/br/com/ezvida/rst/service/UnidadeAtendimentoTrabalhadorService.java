@@ -60,6 +60,11 @@ public class UnidadeAtendimentoTrabalhadorService extends BaseService {
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<UnidadeAtendimentoTrabalhador> pesquisarTodosPorNomePorDr(Long idDR, String nome, ClienteAuditoria auditoria){
+        return unidadeAtendimentoTrabalhadorDAO.buscarPorNome(nome, idDR);
+    }
+
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public ListaPaginada<UnidadeAtendimentoTrabalhador> pesquisaPaginada(UnidAtendTrabalhadorFilter unidAtendTrabalhadorFilter,
                                                                          ClienteAuditoria auditoria, DadosFilter dados) {
         if (StringUtils.isNotBlank(unidAtendTrabalhadorFilter.getCnpj())

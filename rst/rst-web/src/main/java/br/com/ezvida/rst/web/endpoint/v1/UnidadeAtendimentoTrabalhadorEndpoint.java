@@ -3,6 +3,7 @@ package br.com.ezvida.rst.web.endpoint.v1;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.BeanParam;
@@ -89,7 +90,7 @@ public class UnidadeAtendimentoTrabalhadorEndpoint extends SegurancaEndpoint<Uni
 			PermissionConstants.CAT_PRODUTOS_SERVICOS, PermissionConstants.CAT_PRODUTOS_SERVICOS_CADASTRAR,
 			PermissionConstants.CAT_PRODUTOS_SERVICOS_ALTERAR, PermissionConstants.CAT_PRODUTOS_SERVICOS_CONSULTAR,
 			PermissionConstants.CAT_PRODUTOS_SERVICOS_DESATIVAR}))
-	public Response pesquisarPaginado(@BeanParam UnidAtendTrabalhadorFilter unidAtendTrabalhadorFilter, 
+	public Response pesquisarPaginado(@BeanParam UnidAtendTrabalhadorFilter unidAtendTrabalhadorFilter,
 			@Context SecurityContext context, @Context HttpServletRequest request) {
 
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
@@ -120,7 +121,7 @@ public class UnidadeAtendimentoTrabalhadorEndpoint extends SegurancaEndpoint<Uni
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.PESQUISA_SESI_CONSULTAR }))
-	public Response pesquisarPorEndereco(@BeanParam EnderecoFilter enderecoFilter, 
+	public Response pesquisarPorEndereco(@BeanParam EnderecoFilter enderecoFilter,
 			@Context SecurityContext context, @Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
 				.header("Content-Version", getApplicationVersion())
@@ -129,5 +130,18 @@ public class UnidadeAtendimentoTrabalhadorEndpoint extends SegurancaEndpoint<Uni
 						ClienteInfos.getDadosFilter(context))))
 				.build();
 	}
+
+	@GET
+    @Encoded
+    @Path("/{dr}/{nome}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response pesquisarPorNome(@Encoded @PathParam("dr") Long id,@Encoded @PathParam("nome") String nome, @Context SecurityContext context, @Context HttpServletRequest request){
+	    return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(unidAtendTrabalhadorService.pesquisarTodosPorNomePorDr(id, nome, ClienteInfos.getClienteInfos(context,
+                request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.CAT))))
+            .build();
+    }
 
 }
