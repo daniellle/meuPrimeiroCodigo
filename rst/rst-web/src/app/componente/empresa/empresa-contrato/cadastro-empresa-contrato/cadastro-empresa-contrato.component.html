@@ -13,15 +13,6 @@
         </div>
         <div class="row">
             <div class="form-group col-md-12">
-                <!-- <md-select placeholder="{{'app_rst_labels_unidade_obra' | recurso}}" required name="unidadeObra" formControlName="unidadeObra"
-                               id="idUnidadeObra">
-                        <md-option>
-                            <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
-                        </md-option>
-                        <md-option *ngFor="let unidade of unidadesObra" [value]="unidade">
-                            {{unidade.descricao}}
-                        </md-option>
-                    </md-select>-->
                 <md-input-container>
                     <input mdInput placeholder="{{'app_rst_labels_unidade_obra' | recurso}}" [mdAutocomplete]="autocompleteUndObra" required formControlName="unidadeObra" [(ngModel)]="unidadeObra" (keyup)="delayerUndObra.next($event.target.value)" class="form-control">
                 </md-input-container>
