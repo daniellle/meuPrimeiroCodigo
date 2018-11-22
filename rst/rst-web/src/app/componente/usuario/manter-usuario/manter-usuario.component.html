@@ -59,7 +59,7 @@
                 <label class="col col-md-4" *ngFor="let perfilSistema of perfilSistemas" for="{{ perfilSistema.perfil.nome }}">
                     <fieldset>
                         <md-checkbox [(ngModel)]="perfisSelecionados[perfilSistema.perfil.id]" name="rdoLista"
-                                     (change)="modificarPerfil(perfilSistema.perfil, $event, perfil.id)" class="radio-tabela-pesquisa"
+                                     (change)="modificarPerfil(perfilSistema.perfil, $event, perfilSistema.perfil.id)" class="radio-tabela-pesquisa"
                                      disabled="{{ modoConsulta }}">
                             {{perfilSistema.perfil.nome}}
                         </md-checkbox>
