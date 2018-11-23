@@ -218,7 +218,7 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
         const flagContrato = {
             id: contratoId,
             flagInativo: this.flagUsuario
-        }
+        };
         if (value.checked == true) {
             this.empresaContratoService.desbloquearContrato(flagContrato).subscribe(
                 () => {
