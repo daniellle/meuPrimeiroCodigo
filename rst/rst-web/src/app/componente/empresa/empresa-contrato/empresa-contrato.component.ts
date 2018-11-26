@@ -65,16 +65,17 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
                 private dialogService: DialogService,
                 private usuarioEntidadeService: UsuarioEntidadeService,
                 private empresaContratoService: EmpresaContratoService,
-                private cdRef:ChangeDetectorRef) {
+                private cdRef: ChangeDetectorRef) {
         super(bloqueioService, dialogo);
         this.title = MensagemProperties.app_rst_empresa_contrato_title;
     }
 
     ngOnInit() {
+        this.verPerfil();
         this.usuarioLogado = Seguranca.getUsuario();
         this.getIdEmpresa();
         this.filtroPorPerfil();
-        if(!this.isDr && !this.isUnidade) {
+        if (!this.isDr && !this.isUnidade) {
             this.pesquisarContratos();
         }
     }
@@ -97,24 +98,24 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
             else if (perfil === PerfilEnum.SUDR || perfil === PerfilEnum.DIDR || perfil === PerfilEnum.GDRA
                 || perfil === PerfilEnum.GDRM) {
                 this.flagUsuario = "2";
-            }else if (perfil === PerfilEnum.GUS ) {
+            } else if (perfil === PerfilEnum.GUS) {
                 this.flagUsuario = "1";
             }
         });
     }
 
-    filtroPorPerfil(){
+    filtroPorPerfil() {
         this.usuarioLogado.papeis.forEach(perfil => {
             if (perfil === PerfilEnum.SUDR || perfil === PerfilEnum.DIDR || perfil === PerfilEnum.GDRA
                 || perfil === PerfilEnum.GDRM) {
                 this.isDr = true;
                 this.pegaDrsDoUsuario();
             }
-            else if(perfil === PerfilEnum.GUS) {
+            else if (perfil === PerfilEnum.GUS) {
                 this.isUnidade = true;
                 this.pegaUatsDoUsuario();
             }
-            else if(perfil === PerfilEnum.GEEM || perfil === PerfilEnum.GEEMM){
+            else if (perfil === PerfilEnum.GEEM || perfil === PerfilEnum.GEEMM) {
                 this.isEmpresa = true;
             }
         });
@@ -150,19 +151,19 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
 
     }
 
-    pegaUatsDoUsuario(){
+    pegaUatsDoUsuario() {
         this.filtroUsuarioEntidade.cpf = this.usuarioLogado.sub;
-        if(this.isUndefined(this.filtroUsuarioEntidade.idEstado)){
+        if (this.isUndefined(this.filtroUsuarioEntidade.idEstado)) {
             this.filtroUsuarioEntidade.idEstado = '0';
         }
         this.usuarioEntidadeService.pesquisarPaginado(this.filtroUsuarioEntidade, this.paginacao, 'Unidade SESI')
-            .switchMap( (retorno: ListaPaginada<UsuarioEntidade>) => {
-                if(this.filtroUsuarioEntidade.idEstado == '0'){
+            .switchMap((retorno: ListaPaginada<UsuarioEntidade>) => {
+                if (this.filtroUsuarioEntidade.idEstado == '0') {
                     this.filtroUsuarioEntidade.idEstado = undefined;
                 }
-                if(retorno.quantidade > 0){
+                if (retorno.quantidade > 0) {
                     this.listaUsuarioEntidade = retorno.list;
-                    this.listaUsuarioEntidade.forEach( usuarioEntidade => {
+                    this.listaUsuarioEntidade.forEach(usuarioEntidade => {
                         this.uats.push(usuarioEntidade.uat.id);
                     })
                 }
@@ -178,19 +179,19 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
 
     }
 
-    pegaDrsDoUsuario(){
+    pegaDrsDoUsuario() {
         this.filtroUsuarioEntidade.cpf = this.usuarioLogado.sub;
-        if(this.isUndefined(this.filtroUsuarioEntidade.idEstado)){
+        if (this.isUndefined(this.filtroUsuarioEntidade.idEstado)) {
             this.filtroUsuarioEntidade.idEstado = '0';
         }
         this.usuarioEntidadeService.pesquisarPaginado(this.filtroUsuarioEntidade, this.paginacao, 'Departamento Regional')
             .switchMap((retorno: ListaPaginada<UsuarioEntidade>) => {
-                if(this.filtroUsuarioEntidade.idEstado == '0'){
+                if (this.filtroUsuarioEntidade.idEstado == '0') {
                     this.filtroUsuarioEntidade.idEstado = undefined;
                 }
-                if(retorno.quantidade > 0){
+                if (retorno.quantidade > 0) {
                     this.listaUsuarioEntidade = retorno.list;
-                    this.listaUsuarioEntidade.forEach( usuarioEntidade => {
+                    this.listaUsuarioEntidade.forEach(usuarioEntidade => {
                         this.drs.push(usuarioEntidade.departamentoRegional.id);
                     })
                 }
@@ -210,30 +211,29 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
         if (retorno && retorno.list) {
             this.contratos = retorno.list;
         }
-         else {
+        else {
             this.contratos = new Array<Contrato>();
         }
     }
 
 
+    mudaTooltip(contrato: Contrato) {
 
-    mudaTooltip(contrato: Contrato){
-
-        if(this.estadoToggle != undefined){
-            if(this.estadoToggle == true){
+        if (this.estadoToggle != undefined) {
+            if (this.estadoToggle == true) {
                 return;
             }
-            else if(this.estadoToggle == false){
-                if(contrato.flagInativo != undefined && contrato.flagInativo != "N"){
-                    if(contrato.flagInativo == "3"){
+            else if (this.estadoToggle == false) {
+                if (contrato.flagInativo != undefined && contrato.flagInativo != "N") {
+                    if (contrato.flagInativo == "3") {
                         this.estadoToggle = undefined;
                         return "Bloqueado por um Administrador/Gestor DN na data: " + contrato.dataInativo;
                     }
-                    else if(contrato.flagInativo == "2"){
+                    else if (contrato.flagInativo == "2") {
                         this.estadoToggle = undefined;
                         return "Bloqueado por um Gestor/Superintendente DR na data: " + contrato.dataInativo;
                     }
-                    else if (contrato.flagInativo == "1"){
+                    else if (contrato.flagInativo == "1") {
                         this.estadoToggle = undefined;
                         return "Bloqueador por um Gestor Unidade na data: " + contrato.dataInativo;
                     }
@@ -241,17 +241,21 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
             }
         }
 
-       if(contrato.flagInativo != undefined && contrato.flagInativo != "N"){
-           if(contrato.flagInativo == "3"){
-               return "Bloqueado por um Administrador/Gestor DN na data: " + contrato.dataInativo;
-           }
-           else if(contrato.flagInativo == "2"){
-               return "Bloqueado por um Gestor/Superintendente DR na data: " + contrato.dataInativo;
-           }
-           else if (contrato.flagInativo == "1"){
-               return "Bloqueador por um Gestor Unidade na data: " + contrato.dataInativo;
-           }
-       }
+        if (contrato.flagInativo != undefined && contrato.flagInativo != "N") {
+            if (contrato.flagInativo == "3") {
+                return "Bloqueado por um Administrador/Gestor DN na data: " + contrato.dataInativo;
+            }
+            else if (contrato.flagInativo == "2") {
+                return "Bloqueado por um Gestor/Superintendente DR na data: " + contrato.dataInativo;
+            }
+            else if (contrato.flagInativo == "1") {
+                return "Bloqueador por um Gestor Unidade na data: " + contrato.dataInativo;
+            }
+        }
+    }
+
+    desativaToggle(flagInativa: string) {
+        return (flagInativa != undefined && parseInt(flagInativa, 10) > parseInt(this.flagUsuario, 10));
     }
 
     mudaStatus(value, contratoId: number, contrato) {
@@ -261,6 +265,10 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
             flagInativo: this.flagUsuario
         };
         if (value.checked == true) {
+            if (this.flagUsuario < contrato.flagInativo) {
+                this.mensagemError("Contrato foi bloqueado por um usuário de perfil superior!");
+                return;
+            }
             this.estadoToggle = true;
             this.empresaContratoService.desbloquearContrato(flagContrato).subscribe(
                 () => {
@@ -268,17 +276,21 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
                     this.mensagemSucesso("Contrato desbloqueado com sucesso");
                 }
             )
+            contrato.flagInativo = undefined;
+            contrato.dataInativo = undefined;
         }
         else {
-            this.estadoToggle = false;
-            this.empresaContratoService.bloquearContrato(flagContrato).subscribe(
-                () => {
-                    this.mensagemSucesso("Contrato bloqueado com sucesso");
-                }
-            )
-            contrato.flagInativo = flagContrato.flagInativo;
-            contrato.dataInativo = moment(new Date()).format("DD/MM/YYYY");
-            this.mudaTooltip(contrato);
+            if (contrato.flagInativo == undefined || contrato.flagInativo == "N") {
+                this.estadoToggle = false;
+                contrato.flagInativo = flagContrato.flagInativo;
+                contrato.dataInativo = moment(new Date()).format("DD/MM/YYYY");
+                this.empresaContratoService.bloquearContrato(flagContrato).subscribe(
+                    () => {
+                        this.mensagemSucesso("Contrato bloqueado com sucesso");
+                    }
+                )
+                this.mudaTooltip(contrato);
+            }
         }
     }
 }
