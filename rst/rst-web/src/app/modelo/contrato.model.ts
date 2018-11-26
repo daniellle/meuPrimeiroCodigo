@@ -11,6 +11,7 @@ export class  Contrato{
     unidadeObra: UnidadeObra;
     anoVigencia: number;
     flagInativo: string;
+    dataInativo: string;
     tipoPrograma: TipoPrograma;
     unidadeAtendimentoTrabalhador: UnidadeAtendimentoTrabalhador | Uat;
     dr: DepartamentoRegional;

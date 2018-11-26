@@ -43,8 +43,9 @@
                         <td class="col-nome col-nao-quebra">
                             <div class="form-check row-md-4" style="display: flex !important; align-items: center !important;">
                                 <img src="assets/img/block.svg" style="height: 15px; margin-right: 7px;">
-                                <mat-slide-toggle name="cipa" id="cipa" (change)="mudaStatus($event, item.id) "
-                                                  [checked]="item.flagInativo == undefined || item.flagInativo == 'N' ">
+                                <mat-slide-toggle #tooltip="mdTooltip" name="cipa" id="cipa" (change)="mudaStatus($event, item.id, item) "
+                                                  [checked]="item.flagInativo == undefined || item.flagInativo == 'N'"
+                                                  [mdTooltip]="mudaTooltip(item)" [mdTooltipPosition]="'below'">
                                 </mat-slide-toggle>
                                 <img src="assets/img/unblock.svg" style="height: 15px">
                             </div>

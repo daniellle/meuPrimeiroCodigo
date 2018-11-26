@@ -22,6 +22,7 @@ import {UsuarioEntidade} from "../../../modelo/usuario-entidade.model";
 import {UsuarioEntidadeService} from "../../../servico/usuario-entidade.service";
 import {FiltroUsuarioEntidade} from "../../../modelo/filtro-usuario-entidade.model";
 import {DepartamentoRegional} from "../../../modelo/departamento-regional.model";
+import * as moment from 'moment';
 
 export interface IHash {
     [details: number]: boolean;
@@ -54,6 +55,7 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
     public isUnidade: boolean;
     public urlFoto: string;
     public isEmpresa: boolean;
+    public estadoToggle: boolean;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -94,9 +96,9 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
             }
             else if (perfil === PerfilEnum.SUDR || perfil === PerfilEnum.DIDR || perfil === PerfilEnum.GDRA
                 || perfil === PerfilEnum.GDRM) {
-                this.flagUsuario == "2";
+                this.flagUsuario = "2";
             }else if (perfil === PerfilEnum.GUS ) {
-                this.flagUsuario == "1";
+                this.flagUsuario = "1";
             }
         });
     }
@@ -213,25 +215,70 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
         }
     }
 
-    mudaStatus(value, contratoId: number) {
+
+
+    mudaTooltip(contrato: Contrato){
+
+        if(this.estadoToggle != undefined){
+            if(this.estadoToggle == true){
+                return;
+            }
+            else if(this.estadoToggle == false){
+                if(contrato.flagInativo != undefined && contrato.flagInativo != "N"){
+                    if(contrato.flagInativo == "3"){
+                        this.estadoToggle = undefined;
+                        return "Bloqueado por um Administrador/Gestor DN na data: " + contrato.dataInativo;
+                    }
+                    else if(contrato.flagInativo == "2"){
+                        this.estadoToggle = undefined;
+                        return "Bloqueado por um Gestor/Superintendente DR na data: " + contrato.dataInativo;
+                    }
+                    else if (contrato.flagInativo == "1"){
+                        this.estadoToggle = undefined;
+                        return "Bloqueador por um Gestor Unidade na data: " + contrato.dataInativo;
+                    }
+                }
+            }
+        }
+
+       if(contrato.flagInativo != undefined && contrato.flagInativo != "N"){
+           if(contrato.flagInativo == "3"){
+               return "Bloqueado por um Administrador/Gestor DN na data: " + contrato.dataInativo;
+           }
+           else if(contrato.flagInativo == "2"){
+               return "Bloqueado por um Gestor/Superintendente DR na data: " + contrato.dataInativo;
+           }
+           else if (contrato.flagInativo == "1"){
+               return "Bloqueador por um Gestor Unidade na data: " + contrato.dataInativo;
+           }
+       }
+    }
+
+    mudaStatus(value, contratoId: number, contrato) {
         this.verPerfil();
         const flagContrato = {
             id: contratoId,
             flagInativo: this.flagUsuario
         };
         if (value.checked == true) {
+            this.estadoToggle = true;
             this.empresaContratoService.desbloquearContrato(flagContrato).subscribe(
                 () => {
+                    this.mudaTooltip(contrato);
                     this.mensagemSucesso("Contrato desbloqueado com sucesso");
                 }
             )
         }
         else {
+            this.estadoToggle = false;
             this.empresaContratoService.bloquearContrato(flagContrato).subscribe(
                 () => {
                     this.mensagemSucesso("Contrato bloqueado com sucesso");
                 }
             )
+            contrato.flagInativo = flagContrato.flagInativo;
+            contrato.dataInativo = moment(new Date()).format("DD/MM/YYYY");
+            this.mudaTooltip(contrato);
         }
     }
 }
