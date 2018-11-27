@@ -403,15 +403,15 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
 
         }
 
-        if(this.trabalhadorForm.controls['nomeSocial'].value){
-            if(this.trabalhadorForm.controls['nomeSocial'].errors.required){
-                this.mensagemErroComParametros('app_rst_campo_obrigatorio',
-                    this.trabalhadorForm.controls['nomeSocial'],
-                    MensagemProperties.app_rst_labels_nome_social);
-                isValido = false;
-            }
+        // if(this.trabalhadorForm.controls['nomeSocial'].value){
+        //     if(this.trabalhadorForm.controls['nomeSocial'].errors.required){
+        //         this.mensagemErroComParametros('app_rst_campo_obrigatorio',
+        //             this.trabalhadorForm.controls['nomeSocial'],
+        //             MensagemProperties.app_rst_labels_nome_social);
+        //         isValido = false;
+        //     }
 
-        }
+        // }
 
         if (this.trabalhadorForm.controls['estadoCivil'].invalid) {
 
