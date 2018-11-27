@@ -179,6 +179,10 @@ public class Trabalhador extends AbstractData {
 	@Column(name="ds_vacinas", length = 300)
 	private String descricaoVacinas;
 
+	@Column(name="nome_social", length = 160)
+	private String nomeSocial;
+
+
 	public Trabalhador() {
 		
 	}
@@ -231,6 +235,10 @@ public class Trabalhador extends AbstractData {
 	public String getCpf() {
 		return cpf;
 	}
+
+	public String getNomeSocial(){return nomeSocial;}
+
+	public void setNomeSocial(String nomeSocial) { this.nomeSocial = nomeSocial;}
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
