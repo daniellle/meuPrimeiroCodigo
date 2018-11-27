@@ -173,6 +173,7 @@ export const MensagemProperties = {
   app_rst_labels_nome_mae: 'Nome da Mãe',
   app_rst_labels_nome_pai: 'Nome do Pai',
   app_rst_labels_nome_completo: 'Nome Completo',
+  app_rst_labels_nome_social: 'Nome Social',
   app_rst_labels_nome_responsavel: 'Nome do Responsável',
   app_rst_labels_nome_federacao: 'Nome da Federação',
   app_rst_labels_localizacao_regional: 'Localização da Regional',
