@@ -47,6 +47,8 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     perfisSelecionados: IHash = {};
     idSistemas: number;
     perfilSistemas: PerfilSistema[] = [];
+    perfilSistemaUsuario =  new Map();
+    perfisUsuario: Perfil[] = [];
 
     constructor(
         private router: Router,
@@ -91,6 +93,19 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                 if (!this.usuario.perfisSistema) {
                     this.usuario.perfisSistema = new Array<UsuarioPerfilSistema>();
                 }
+                else{
+                    this.usuario.perfisSistema.forEach(perfilSistema => {
+                        if(this.perfilSistemaUsuario.has(perfilSistema.perfil.id)){
+                            let sistemas = this.perfilSistemaUsuario.get(perfilSistema.perfil.id);
+                            sistemas.push(perfilSistema.sistema);
+                            this.perfilSistemaUsuario.set(perfilSistema.perfil.id, sistemas);
+                        }else{
+                            this.perfisUsuario.push(perfilSistema.perfil);
+                            this.perfilSistemaUsuario.set(perfilSistema.perfil.id, [perfilSistema.sistema]);
+                        }
+                    });
+                }
+                this.getSistemaPerfilnotAdmin();
                 this.converterModelParaForm();
             }
         }, (error) => {
@@ -296,7 +311,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     }
 
     public getSistemaPerfil(): any {
-
         const sistemas = {};
         this.usuario.perfisSistema.forEach((ps) => {
             const id = ps.sistema.id;
@@ -313,6 +327,30 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         });
     }
 
+    public getSistemaPerfilnotAdmin(): any {
+        const editPerfilSistema = new Map();
+        console.log(this.perfilSistemaUsuario);
+        this.perfilSistemaUsuario.forEach((value, key) => {
+            console.log('entrei primeiro forEach');
+            value.forEach((sistema) => {
+                console.log('entrei no segundo forEach');
+                if (sistema.nome === 'Cadastro' ||
+                    sistema.nome === 'Portal' ||
+                    sistema.nome === 'Indicadores e Análise Dinâmica' ||
+                    sistema.nome === 'Indicadores Igev') {
+                    if (editPerfilSistema.has('Cadastro')) {
+                        const perfisSet: Set<Perfil> = editPerfilSistema.get('Cadastro');
+                        perfisSet.add(this.getPerfil(key));
+                    }else {
+                        const perfilSet = new Set<Perfil>();
+                        perfilSet.add(this.getPerfil(key));
+                    }
+                }
+            });
+        });
+        console.log(editPerfilSistema);
+    }
+
     excluirAssociacaoPerfil(idSistema: number): void {
         const sistemaPerfis: UsuarioPerfilSistema[] = this.usuario.perfisSistema.filter((ps) => ps.sistema.id
             === Number(idSistema));
@@ -325,7 +363,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                 }
             }
         });
-        console.log(sistemaPerfis);
     }
 
     isNotOnlyTrabalhador(perfis: any) {
@@ -362,7 +399,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                     }); 
                 })
             } 
-            console.log(this.perfilSistemas);
         }
         else{
             const sistema = this.sistemas.filter((s) => s.id === Number(this.idSistemas))[0];
@@ -382,13 +418,16 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                 retorno = perfilSistema;
             }
         });
-        //console.log(retorno);
         return retorno;
    }
 
 
     temPermissaoDesativar(): boolean {
         return !this.modoConsulta && Boolean(Seguranca.isPermitido(['usuario_desativar']));
+    }
+
+    getPerfil(id: number): Perfil {
+        return this.perfisUsuario.find(perfil => perfil.id === id);
     }
 
 }
