@@ -517,7 +517,7 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
 
             if (this.trabalhadorForm.controls['genero'].errors.required) {
                 this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.trabalhadorForm.controls['genero'],
-                    MensagemProperties.app_rst_labels_genero);
+                    MensagemProperties.app_rst_labels_sexo);
                 isValido = false;
             }
 

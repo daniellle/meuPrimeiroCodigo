@@ -234,7 +234,7 @@ export class TrabalhadorDependenteComponent extends BaseComponent implements OnI
     if (this.trabalhadorDependenteForm.controls['genero'].invalid) {
       if (this.trabalhadorDependenteForm.controls['genero'].errors.required) {
         this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.trabalhadorDependenteForm.controls['genero'],
-          MensagemProperties.app_rst_labels_genero);
+          MensagemProperties.app_rst_labels_sexo);
         isValido = false;
       }
     }
