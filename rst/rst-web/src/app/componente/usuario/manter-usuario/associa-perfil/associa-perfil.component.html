@@ -1,0 +1,38 @@
+<div class="container-form space-up" *ngIf="!modoConsulta">
+  <div class="container-subtitulo">
+      <p>{{ 'app_rst_usuario_title_associar_perfil' | recurso }}</p>
+  </div>
+  <div class="corpo-card">
+      <div class="row">
+          <div class="form-group col-md-6">
+              <div class="md-container" *ngIf="(sistemas$ | async) as sistemas">
+                  <md-select placeholder="{{ 'app_rst_usuario_label_sistemas' | recurso }}" 
+                  (change)="changeSistema($event.value)"  id="idSistemas">
+                      <md-option value="null">{{ 'app_rst_labels_selecione' | recurso }}</md-option>
+                      <md-option *ngFor="let sistema of sistemas | concatenaPerfisSistemasCadastro" [value]="sistema">
+                          {{ sistema.nome }}
+                      </md-option>
+                  </md-select>
+              </div>
+          </div>
+      </div>
+      <div class="row" *ngIf="!idSistemas">
+          <div class="form-group col-md-12">
+              <label for="perfis" class="col-form-label">{{ 'app_rst_usuario_label_perfis' | recurso }}</label>
+          </div>
+          <div class="form-group col-md-12">
+              <label class="col col-md-4" *ngFor="let perfilDoSistema of perfisDoSistema" for="{{ perfilDoSistema.perfil.nome }}">
+                  <fieldset>
+                      <md-checkbox (change)="atualizaPerfilSistema($event, perfilDoSistema)" class="radio-tabela-pesquisa">
+                          {{ perfilDoSistema.perfil.nome }}
+                      </md-checkbox>
+                  </fieldset>
+              </label>
+          </div>
+          <div class="form-group col-md-12">
+              <button type="button" class="btn-rodape btn btn-sm btn-primary btn-cadastro" *ngIf="!modoConsulta" (click)="associarPerfil()">{{'app_rst_usuario_title_associar_perfil' | recurso}}
+              </button>
+          </div>
+      </div>
+  </div>
+</div>

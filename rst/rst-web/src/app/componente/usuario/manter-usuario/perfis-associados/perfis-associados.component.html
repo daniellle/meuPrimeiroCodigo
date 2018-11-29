@@ -1,0 +1,37 @@
+<div class="container-form">
+  <div class="container-subtitulo">
+      <p>Perfis Associados</p>
+  </div>
+  <div class="grid-perfil-sistema">
+      <table class="table table-responsive table-hover">
+          <thead>
+              <tr>
+                  <th class="label"><span class="label">{{ 'app_rst_usuario_label_sistemas' | recurso }}</span></th>
+                  <th class="label"><span class="label">{{ 'app_rst_usuario_label_perfis' | recurso }}</span></th>
+                  <th class="label"><span class="label"></span></th>
+              </tr>
+          </thead>
+          <tbody>
+              
+          </tbody>
+      </table>
+      <div class="btn-paginacao">
+          <pagination [firstText]="paginacao.textPrimeiro" 
+                      [lastText]="paginacao.textUltimo" 
+                      [nextText]="paginacao.textProximo" 
+                      [previousText]="paginacao.textAnterior" 
+                      [totalItems]="getSistemaPerfil().length" 
+                      [(ngModel)]="paginacao.pagina" 
+                      [itemsPerPage]="paginacao.qtdRegistro"
+                      (numPages)="paginacao.numPages = $event" 
+                      (pageChanged)="pageChanged($event)" 
+                      [maxSize]="paginacao.maxSize" 
+                      class="pagination-sm justify-content-center" 
+                      [align]="true" 
+                      [boundaryLinks]="true" 
+                      [rotate]="false" 
+                      [ngModelOptions]="{standalone: true}">
+            </pagination>
+      </div>
+  </div>
+</div>

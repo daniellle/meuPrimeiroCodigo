@@ -10,9 +10,6 @@ import { Perfil } from './../../../modelo/perfil.model';
 import { SistemaService } from './../../../servico/sistema.service';
 import { PerfilService } from './../../../servico/perfil.service';
 import { DialogService } from 'ng2-bootstrap-modal';
-import { ValidateEmail } from './../../..//compartilhado/validators/email.validator';
-import { ValidateCPF } from './../../..//compartilhado/validators/cpf.validator';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastyService } from 'ng2-toasty';
 import { BloqueioService } from './../../../servico/bloqueio.service';
 import { BaseComponent } from './../../..//componente/base.component';
@@ -21,8 +18,8 @@ import { Usuario } from './../../../modelo/usuario.model';
 import { UsuarioService } from './../../../servico/usuario.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { SistemaEnum } from 'app/modelo/enum/enum-sistema.model';
 import { PerfilSistema } from 'app/modelo/ṕerfil-sistemas';
+import { FormGroup } from '@angular/forms';
 
 export interface IHash {
     [details: number]: boolean;
@@ -35,7 +32,7 @@ export interface IHash {
 })
 export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
-    public usuarioForm: FormGroup;
+    usuarioForm: FormGroup;
 
     id: number;
     usuario: Usuario;
@@ -55,7 +52,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         private usuarioService: UsuarioService,
         private route: ActivatedRoute,
         protected bloqueioService: BloqueioService,
-        protected formBuilder: FormBuilder,
         protected dialogo: ToastyService,
         private dialogService: DialogService,
         private perfilService: PerfilService,
@@ -83,11 +79,11 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         this.modoConsulta = !Seguranca.isPermitido([PermissoesEnum.USUARIO, PermissoesEnum.USUARIO_CADASTRAR,
         PermissoesEnum.USUARIO_ALTERAR, PermissoesEnum.USUARIO_DESATIVAR]);
         this.title = MensagemProperties.app_rst_usuario_title_cadastrar;
-        this.criarForm();
     }
 
     buscarUsuario(): void {
         this.usuarioService.buscarUsuarioById(this.id).subscribe((retorno: Usuario) => {
+            console.log(retorno)
             this.usuario = retorno;
             if (this.usuario) {
                 if (!this.usuario.perfisSistema) {
@@ -206,11 +202,11 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     }
 
     converterModelParaForm(): void {
-        this.usuarioForm.patchValue({
-            nome: this.usuario.nome,
-            login: this.usuario.login,
-            email: this.usuario.email
-        });
+        // this.usuarioForm.patchValue({
+        //     nome: this.usuario.nome,
+        //     login: this.usuario.login,
+        //     email: this.usuario.email
+        // });
     }
 
     converterFormParaModel(): void {
@@ -220,33 +216,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         this.usuario.email = formModel.email.value;
         this.usuario.login = MascaraUtil.removerMascara(formModel.login.value);
         this.usuario.dados = undefined;
-    }
-
-    criarForm(): void {
-        this.usuarioForm = this.formBuilder.group({
-            nome: [
-                { value: null, disabled: this.modoConsulta },
-                Validators.compose([
-                    Validators.required,
-                    Validators.maxLength(160)
-                ])
-            ],
-            login: [
-                { value: null, disabled: this.modoAlterar || this.modoConsulta },
-                Validators.compose([
-                    Validators.required,
-                    ValidateCPF
-                ])
-            ],
-            email: [
-                { value: null, disabled: this.modoConsulta },
-                Validators.compose([
-                    Validators.required,
-                    Validators.maxLength(255),
-                    ValidateEmail
-                ])
-            ]
-        });
     }
 
     voltar(): void {
