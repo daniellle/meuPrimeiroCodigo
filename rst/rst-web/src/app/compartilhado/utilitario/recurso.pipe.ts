@@ -250,6 +250,11 @@ export const MensagemProperties = {
   app_rst_labels_medicamento: 'Medicamentos',
   app_rst_labels_medicamentos_auto_declarados_minha_saude: 'Medicamentos autodeclarados',
   app_rst_labels_nenhum_medicamento_informado: 'Nenhuma medicamento informado.',
+  app_rst_telefone_responsavel: 'Telefone Responsável',
+  app_rst_label_sistema: 'Sistema',
+  app_rst_label_entidade: 'Entidade',
+  app_rst_label_data_criacao: 'Data de criação',
+  app_rst_label_client_id: 'Client id',
 
   // MSG COMPARTILHADAS
   app_rst_msg_nenhum_registro_adicionado: 'Nenhum registro adicionado.',
@@ -615,6 +620,13 @@ export const MensagemProperties = {
   app_rst_questionario_preencha_seu_igev: 'Preencha seu IGEV',
   app_rst_questionario_consulte_seu_historico: 'Consulte seu Histórico',
   app_rst_questionario_igev_periodo: 'Você já preencheu o seu IGEV do período. Aguarde o próximo ciclo.',
+
+  //Sistema Credenciado
+  app_rst_sistema_credenciado_cadastrar: 'Cadastro de Sistema Credenciado',
+  app_rst_sistema_credenciado_pesquisar: 'Pesquisar Sistema Credenciado',
+  app_rst_sistema_credenciado: 'Sistema Credenciado',
+  app_rst_sistema_credenciado_alterar: 'Alterar Sistema Credenciado',
+  app_rst_sistema_credenciado_reset_client_secret: 'Reset client secret',
 
   senha_atual: 'Digite sua Senha Atual',
   nova_senha: 'Digite a sua Nova Senha',

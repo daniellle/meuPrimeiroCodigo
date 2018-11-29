@@ -1,6 +1,12 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v.2.97.0**
+============
+(RELEASE EM 29/11/2018)
+- Tela para gerenciar (incluir, editar, desativar/ativar, pesquisar, resetar client_secret) Sistemas Credenciados para o projeto do barramento Sesi Viva+ ESB
+
+
 **v.2.91.0**
 ============
 (RELEASE EM 16/11/2018)
@@ -12,6 +18,7 @@
 - [CADASTROS] Fazer script para colocar perfil TRABALHADOR para ANDREA FERREIRA LEITE cpf 82099340153 (GLPI 3089)
 - [CADASTROS] Não é possível pesquisar usuários pelo menu CADASTRO DE USUÁRIOS (GLPI 3369)
 - [CADASTROS] Mudança de mensagem para email não encontrado em "Esqueci minha senha" (GLPI 1533)
+
 
 **v2.87.1**
 ===========

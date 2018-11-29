@@ -24,7 +24,7 @@
                     <input mdInput placeholder="{{ 'app_rst_labels_nome_fantasia' | recurso }}" type="text" class="form-control" id="nomeFantasia" name="nomeFantasia" [(ngModel)]="filtroEmpresa.nomeFantasia" maxlength="160" />
                 </md-input-container>
             </div>
-            
+
             <div class="form-group col-md-4">
                 <md-input-container [floatPlaceholder]="true">
                     <input mdInput placeholder="{{ 'app_rst_labels_cnae_' | recurso }}" type="text" class="form-control" id="cnae" name="cnae" [(ngModel)]="filtroEmpresa.cnae" maxlength="10" />
@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">            
+        <div class="row">
             <div class="form-group col-md-4">
                     <div class="md-container">
                         <md-select placeholder="{{ 'app_rst_labels_estado' | recurso }}" name="estado" [(ngModel)]="filtroEmpresa.idEstado" id="estado">
@@ -64,7 +64,7 @@
                         <md-radio-button class="pesquisa-situacao" disableRipple *ngFor="let key of keysSituacao" [value]="key">{{situacoes[key]}}</md-radio-button>
                     </md-radio-group>
                 </div>
-            </div>            
+            </div>
         </div>
     </form>
 </div>

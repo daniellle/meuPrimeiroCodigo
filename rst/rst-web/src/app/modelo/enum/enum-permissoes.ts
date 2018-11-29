@@ -241,4 +241,11 @@ export enum PermissoesEnum {
 	VACINA_AUTODECLARADA_CADASTRAR = 'vacina_autodeclarada_cadastrar',
 	VACINA_AUTODECLARADA_DESATIVAR = 'vacina_autodeclarada_desativar',
 	VACINA_AUTODECLARADA_ALTERAR = 'vacina_autodeclarada_alterar',
+
+    //SISTEMA_CREDENCIADO
+    SISTEMA_CREDENCIADO_CADASTRAR = 'sistema_credenciado_cadastrar',
+    SISTEMA_CREDENCIADO_ALTERAR = 'sistema_credenciado_alterar',
+    SISTEMA_CREDENCIADO_RESETAR_CLIENT_SECRET = 'sistema_credenciado_resetar_client_secret',
+    SISTEMA_CREDENCIADO_PESQUISAR = 'sistema_credenciado_pesquisar',
+    SISTEMA_CREDENCIADO_ATIVAR_DESATIVAR = 'sistema_credenciado_ativar_desativar',
 }

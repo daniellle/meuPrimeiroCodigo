@@ -1,5 +1,6 @@
 	package br.com.ezvida.rst.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -240,6 +241,16 @@ public class EmpresaService extends BaseService {
         }
 
 		return empresa;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<String> findCNPJByIdsDepartamentoRegional(Collection<Long> ids) {
+		return empresaDAO.findCNPJByIdsDepartamentoRegional(ids);
+	}
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<String> findCNPJByIdsUnidadeSesi(Collection<Long> ids) {
+		return empresaDAO.findCNPJByIdsUnidadeSesi(ids);
 	}
 
 }

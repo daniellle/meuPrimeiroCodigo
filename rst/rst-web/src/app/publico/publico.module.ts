@@ -16,57 +16,71 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SolicitarEmailComponent } from './solicitar-email/solicitar-email.component';
 import { ParametroService } from 'app/servico/parametro.service';
+import { SistemaCredenciadoResetClientSecretComponent } from './sistema-credenciado-reset-client-secret/sistema-credenciado-reset-client-secret.component';
+import { SistemaCredenciadoService } from 'app/servico/sistema-credenciado.service';
 
 const routes: Routes = [
-  {
-    path: '',
-    children: [
-      {
-        path: 'primeiroacesso', loadChildren: './primeiro-acesso/primeiro-acesso.module#PrimeiroAcessoModule',
-      },
-      {
-        path: 'acessonegado',
-        component: AcessoNegadoComponent,
-        data: {title: MensagemProperties.app_rst_acesso_negado_titulo},
-      },
-      {
-        path: 'recuperarsenha',
-        component: RecuperarSenhaComponent,
-        data: {title: MensagemProperties.app_rst_recupera_senha_titulo},
-      },
-      {
-        path: 'alterarsenha/:hash',
-        component: AlterarSenhaComponent,
-        data: {title: MensagemProperties.app_rst_alterar_senha_titulo},
-      },
-      {
-        path: 'solicitaremail/:id',
-        component: SolicitarEmailComponent,
-        data: {title: MensagemProperties.app_rst_alterar_senha_titulo},
-      },
-    ],
-  },
+    {
+        path: '',
+        children: [
+            {
+                path: 'primeiroacesso', loadChildren: './primeiro-acesso/primeiro-acesso.module#PrimeiroAcessoModule',
+            },
+            {
+                path: 'acessonegado',
+                component: AcessoNegadoComponent,
+                data: { title: MensagemProperties.app_rst_acesso_negado_titulo },
+            },
+            {
+                path: 'recuperarsenha',
+                component: RecuperarSenhaComponent,
+                data: { title: MensagemProperties.app_rst_recupera_senha_titulo },
+            },
+            {
+                path: 'alterarsenha/:hash',
+                component: AlterarSenhaComponent,
+                data: { title: MensagemProperties.app_rst_alterar_senha_titulo },
+            },
+            {
+                path: 'solicitaremail/:id',
+                component: SolicitarEmailComponent,
+                data: { title: MensagemProperties.app_rst_alterar_senha_titulo },
+            },
+
+            {
+                path: 'resetclientsecret',
+                component: SistemaCredenciadoResetClientSecretComponent,
+                data: { title: MensagemProperties.app_rst_sistema_credenciado_reset_client_secret },
+            },
+        ],
+    },
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule.forChild(routes),
-    TemplateModule,
-    CompartilhadoModule,
-    ToastyModule,
-  ],
-  declarations: [RecuperarSenhaComponent, AcessoNegadoComponent, AlterarSenhaComponent, SolicitarEmailComponent],
-  providers: [
-    BloqueioService,
-    DialogService,
-    ToastyService,
-    AutenticacaoService,
-    TrabalhadorService,
-    SolicitarEmailService,
-    ParametroService,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule.forChild(routes),
+        TemplateModule,
+        CompartilhadoModule,
+        ToastyModule,
+    ],
+    declarations: [
+        RecuperarSenhaComponent,
+        AcessoNegadoComponent,
+        AlterarSenhaComponent,
+        SolicitarEmailComponent,
+        SistemaCredenciadoResetClientSecretComponent],
+    providers: [
+        BloqueioService,
+        DialogService,
+        ToastyService,
+        AutenticacaoService,
+        TrabalhadorService,
+        SolicitarEmailService,
+        ParametroService,
+        SistemaCredenciadoService,
+    ],
 })
 export class PublicoModule { }

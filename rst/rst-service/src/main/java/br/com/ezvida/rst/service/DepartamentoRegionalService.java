@@ -1,5 +1,7 @@
 package br.com.ezvida.rst.service;
 
+import java.math.BigInteger;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -171,4 +173,8 @@ public class DepartamentoRegionalService extends BaseService {
 		return null;
 	}
 
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public BigInteger countByIdsAndCNPJ(Collection<Long> listId, String cnpj) {
+		return departamentoRegionalDAO.countByIdsAndCNPJ(listId, cnpj);
+	}
 }

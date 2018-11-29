@@ -7,7 +7,7 @@
     <parent>
         <artifactId>rst</artifactId>
         <groupId>br.com.ezvida.rst</groupId>
-        <version>2.91.0</version>
+        <version>2.97.0</version>
     </parent>
 
     <artifactId>rst-service</artifactId>
@@ -261,9 +261,16 @@
             <version>1.2.38</version>
         </dependency>
 
+        <!--
+        <dependency>
+            <groupId>br.com.ezvida.girst</groupId>
+                <artifactId>api-client</artifactId>
+        </dependency>-->
+
         <dependency>
             <groupId>br.com.ezvida.girst</groupId>
             <artifactId>api-client</artifactId>
+            <version>1.8.0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
