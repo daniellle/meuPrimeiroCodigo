@@ -235,6 +235,10 @@ public class Trabalhador extends AbstractData {
 		return cpf;
 	}
 
+	public String getNomeSocial(){return nomeSocial;}
+
+	public void setNomeSocial(String nomeSocial) { this.nomeSocial = nomeSocial;}
+
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
@@ -350,10 +354,6 @@ public class Trabalhador extends AbstractData {
 	public void setNomeMae(String nomeMae) {
 		this.nomeMae = nomeMae;
 	}
-
-	public String getNomeSocial(){return nomeSocial;}
-
-	public void setNomeSocial(String nomeSocial) { this.nomeSocial = nomeSocial;}
 
 	public String getNomePai() {
 		return nomePai;
@@ -532,7 +532,6 @@ public class Trabalhador extends AbstractData {
 		result = prime * result + ((rg == null) ? 0 : rg.hashCode());
 		result = prime * result + ((serieCtps == null) ? 0 : serieCtps.hashCode());
 		result = prime * result + ((ufCtps == null) ? 0 : ufCtps.hashCode());
-		result = prime * result + ((nomeSocial == null) ? 0 : nomeSocial.hashCode());
 		return result;
 	}
 

@@ -325,6 +325,7 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
             descricaoAlergias: this.trabalhador.descricaoAlergias,
             descricaoVacinas: this.trabalhador.descricaoVacinas,
             descricaoMedicamentos: this.trabalhador.descricaoMedicamentos,
+            nomeSocial: this.trabalhador.nomeSocial,
         });
 
         this.trabalhadorForm.patchValue({
@@ -401,6 +402,16 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
             }
 
         }
+
+        // if(this.trabalhadorForm.controls['nomeSocial'].value){
+        //     if(this.trabalhadorForm.controls['nomeSocial'].errors.required){
+        //         this.mensagemErroComParametros('app_rst_campo_obrigatorio',
+        //             this.trabalhadorForm.controls['nomeSocial'],
+        //             MensagemProperties.app_rst_labels_nome_social);
+        //         isValido = false;
+        //     }
+
+        // }
 
         if (this.trabalhadorForm.controls['estadoCivil'].invalid) {
 
@@ -599,6 +610,8 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
         this.trabalhador.atividadeFisica = formModel.atividadeFisica.value;
         this.trabalhador.exameRegular = formModel.exameRegular.value;
         this.trabalhador.notificacao = formModel.notificacao.value;
+        this.trabalhador.nomeSocial= formModel.nomeSocial.value;
+
 
         // nacionalidade
         this.trabalhador.nacionalidade = formModel.nacionalidade.value;
@@ -699,8 +712,15 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
             this.prepareSave();
             this.service.salvar(this.trabalhador).subscribe((response: Trabalhador) => {
                 let user = Seguranca.getUsuario();
-                if (this.contemPerfil([PerfilEnum.GDRA, PerfilEnum.SUDR, PerfilEnum.GDRM, PerfilEnum.GEEM,
-                        PerfilEnum.TRA, PerfilEnum.MTSDR, PerfilEnum.GCDR], user) && !this.trabalhador.id) {
+                if (user.papeis.find((element) =>
+                    element === PerfilEnum.ADM
+                    || element === PerfilEnum.GDRA
+                    || element === PerfilEnum.SUDR
+                    || element === PerfilEnum.GDRM
+                    || element === PerfilEnum.GEEM
+                    || element === PerfilEnum.TRA
+                    || element === PerfilEnum.MTSDR
+                    || element === PerfilEnum.GCDR)  && !this.trabalhador.id) {
                     this.trabalhador = response;
                     this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso_trabalhador);
                 } else {
@@ -807,6 +827,10 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
                     Validators.required,
                     Validators.maxLength(160),
                 ]),
+            ],
+            nomeSocial: [
+                {value: undefined, disabled: this.modoConsulta || this.isSomenteTrabalhador()},
+                Validators.compose([]),
             ],
             dataNascimento: [
                 {value: null, disabled: this.modoConsulta || this.isSomenteTrabalhador()},

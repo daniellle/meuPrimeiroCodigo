@@ -46,6 +46,11 @@
                                 <input #nome mdInput formControlName="nome" name="nome" id="nome" appFormularioCamposErro placeholder="{{ 'app_rst_labels_nome_completo' | recurso }}" type="text" maxlength="160" required/>
                             </md-input-container>
                         </div>
+                        <div class="form-group col-md-12">
+                            <md-input-container [ngClass]="{'divDisabled': nomeSocial.disabled}" [floatPlaceholder]="true">
+                                <input #nomeSocial mdInput formControlName="nomeSocial" name="nomeSocial" id="nomeSocial" appFormularioCamposErro placeholder="{{ 'app_rst_labels_nome_social' | recurso }}" type="text" maxlength="160"/>
+                            </md-input-container>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="form-group  col-md-6">

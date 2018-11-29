@@ -22,6 +22,7 @@ import { UsuarioService } from './../../../servico/usuario.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { SistemaEnum } from 'app/modelo/enum/enum-sistema.model';
+import { PerfilSistema } from 'app/modelo/ṕerfil-sistemas';
 
 export interface IHash {
     [details: number]: boolean;
@@ -38,12 +39,14 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     id: number;
     usuario: Usuario;
-    perfis: Perfil[];
+    perfis: Perfil[] = [];
     sistemas: Sistema[];
+    sistemasPossiveis: Sistema[];
     perfisSistemas: UsuarioPerfilSistema[];
     sistemaSelecionado?: Sistema;
     perfisSelecionados: IHash = {};
     idSistemas: number;
+    perfilSistemas: PerfilSistema[] = [];
 
     constructor(
         private router: Router,
@@ -240,6 +243,15 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     buscarSistemas(): void {
         this.sistemaService.buscarSistemasPermitidos(Seguranca.getUsuario()).subscribe((retorno: any) => {
             this.sistemas = retorno;
+            this.sistemasPossiveis = retorno.filter((item) => {
+                return item.id != 7;
+              });     
+              this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
+                return item.id != 4;
+              });      
+              this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
+                return item.id != 1;
+              });                                         
         }, (error) => {
             this.mensagemError(error);
         });
@@ -328,14 +340,51 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     }
 
     filtrarPerfis() {
-        const sistema = this.sistemas.filter((s) => s.id === Number(this.idSistemas))[0];
-        if (sistema) {
-            this.perfis = sistema.sistemaPerfis.map(value => value.perfil)
-                .filter(value => value.codigo != PerfilEnum.TRA);
-        } else {
+        this.perfilSistemas = [];
+        if(this.idSistemas == 2)
+        {
             this.perfis = [];
+            const sistemaCadastro = this.sistemas.filter((s) => s.id === 7 || s.id === 4 || s.id === 1 || s.id === 2);
+            if (sistemaCadastro){
+                sistemaCadastro.forEach(resposta => {
+                    resposta.sistemaPerfis.forEach(r =>{
+                        let perfilSistema = this.checkPerfilSistemas(r.perfil);
+                        if(perfilSistema.perfil.id !== undefined){
+                            perfilSistema.sistemas.push(resposta.id);
+                        }else{
+                            if(r.perfil.codigo !== PerfilEnum.TRA){
+                                let perfilSistema = new PerfilSistema();
+                                perfilSistema.perfil = r.perfil;
+                                perfilSistema.sistemas.push(resposta.id);
+                                this.perfilSistemas.push(perfilSistema);
+                            }
+                        }
+                    }); 
+                })
+            } 
+            console.log(this.perfilSistemas);
+        }
+        else{
+            const sistema = this.sistemas.filter((s) => s.id === Number(this.idSistemas))[0];
+            if (sistema) {
+                this.perfis = sistema.sistemaPerfis.map(value => value.perfil)
+                    .filter(value => value.codigo != PerfilEnum.TRA);
+            } else {
+                this.perfis = [];
+            }
         }
     }
+
+   checkPerfilSistemas(perfil): PerfilSistema{
+       let retorno = new PerfilSistema();
+       this.perfilSistemas.forEach(perfilSistema => {
+            if(perfilSistema.perfil.nome == perfil.nome){
+                retorno = perfilSistema;
+            }
+        });
+        //console.log(retorno);
+        return retorno;
+   }
 
 
     temPermissaoDesativar(): boolean {
