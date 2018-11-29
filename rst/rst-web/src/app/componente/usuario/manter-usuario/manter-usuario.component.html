@@ -44,7 +44,7 @@
                 <div class="md-container">
                     <md-select placeholder="{{ 'app_rst_usuario_label_sistemas' | recurso }}" (change)="selecionarSistema()" name="idSistemas" [(ngModel)]="idSistemas" id="idSistemas" disabled="{{ modoConsulta }}">
                         <md-option value="null">{{ 'app_rst_labels_selecione' | recurso }}</md-option>
-                        <md-option *ngFor="let sistema of sistemasPossiveis" [value]="sistema.id">
+                        <md-option *ngFor="let sistema of sistemas" [value]="sistema.id">
                             {{sistema.nome}}
                         </md-option>
                     </md-select>
@@ -55,23 +55,8 @@
             <div class="form-group col-md-12">
                 <label for="perfis" class="col-form-label">{{ 'app_rst_usuario_label_perfis' | recurso }}</label>
             </div>
-            <div class="form-group col-md-12">
-                <label class="col col-md-4" *ngFor="let perfilSistema of perfilSistemas" for="{{ perfilSistema.perfil.nome }}">
-                    <fieldset>
-                        <md-checkbox [(ngModel)]="perfisSelecionados[perfilSistema.perfil.id]" name="rdoLista"
-                                     (change)="modificarPerfil(perfilSistema.perfil, $event, perfilSistema.perfil.id)" class="radio-tabela-pesquisa"
-                                     disabled="{{ modoConsulta }}">
-                            {{perfilSistema.perfil.nome}}
-                        </md-checkbox>
-                    </fieldset>
-                    <!-- <md-checkbox name="{{ perfil.nome }}" id="{{ perfil.id }}" [(ngModel)]="perfisSelecionados[perfil.id]" (click)="modificarPerfil(perfil, $event, perfil.id)" class="form-check-input" disabled="{{ modoConsulta }}" [ngModelOptions]="{standalone: true}">
-                            {{perfil.nome}}</md-checkbox> -->
-                    <!-- <input type="checkbox" name="{{ perfil.nome }}" id="{{ perfil.id }}" [(ngModel)]="perfisSelecionados[perfil.id]" (click)="modificarPerfil(perfil, $event, perfil.id)" class="form-check-input" disabled="{{ modoConsulta }}" [ngModelOptions]="{standalone: true}">
-                    {{perfil.nome}} -->
-                </label>
-            </div>
-            <div class="form-group col-md-12">
-                <label class="col col-md-4" *ngFor="let perfil of perfis" for="{{ perfil.nome }}">
+            <div class="form-group col-md-12 lista_perfil">
+                <label class="col col-md-12" *ngFor="let perfil of perfis" for="{{ perfil.nome }}">
                     <fieldset>
                         <md-checkbox [(ngModel)]="perfisSelecionados[perfil.id]" name="rdoLista"
                                      (change)="modificarPerfil(perfil, $event, perfil.id)" class="radio-tabela-pesquisa"
