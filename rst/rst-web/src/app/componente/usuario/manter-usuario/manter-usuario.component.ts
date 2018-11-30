@@ -50,6 +50,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     perfilSistemas: PerfilSistema[] = [];
     perfilSistemaUsuario =  new Map();
     perfisUsuario: Perfil[] = [];
+    sistemaEditar: Sistema;
 
     constructor(
         private router: Router,
@@ -87,7 +88,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     }
 
     editarSistemaPerfil(event: any){
-        this.associaPerfilComponent.selecionaSistema(event.sistema);
+        this.associaPerfilComponent.selecionaSistema(event);
         let el = this.elemento.nativeElement.querySelector('app-dados-gerais');
         el.scrollIntoView();
     }

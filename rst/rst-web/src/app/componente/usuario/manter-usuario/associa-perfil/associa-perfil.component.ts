@@ -38,7 +38,10 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
       this.perfisSistemas = this.usuario.perfisSistema;
     }
     this.sistemaService.buscarSistemasPermitidos(Seguranca.getUsuario())
-      .subscribe(sistemas => this.sistemas = sistemas);
+      .subscribe(sistemas => {
+        this.sistemas = sistemas
+        console.log(sistemas)
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
