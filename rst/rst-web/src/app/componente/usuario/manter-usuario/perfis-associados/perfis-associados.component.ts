@@ -4,6 +4,7 @@ import { Usuario } from 'app/modelo/usuario.model';
 import { UsuarioPerfilSistema } from 'app/modelo/usuario-perfil-sistema.model';
 import { PerfilEnum } from 'app/modelo/enum/enum-perfil';
 import { PerfilSistema } from 'app/modelo/ṕerfil-sistemas';
+import {Sistema} from "../../../../modelo/sistema.model";
 
 @Component({
   selector: 'app-perfis-associados',
@@ -12,7 +13,8 @@ import { PerfilSistema } from 'app/modelo/ṕerfil-sistemas';
 export class PerfisAssociadosComponent {
 
   @Input() usuario: Usuario;
-  @Output() sistemaEditar: EventEmitter<PerfilSistema> = new EventEmitter();
+  @Output('click') sistemaEditar: EventEmitter<Sistema> = new EventEmitter();
+
 
   public getSistemaPerfil(): any {
     const sistemas = {};
@@ -62,9 +64,9 @@ excluirAssociacaoPerfil(idSistema): void {
     });
 }
 
-    editarPerfil(perfilSistema: PerfilSistema) {
-        if (perfilSistema) {
-            this.sistemaEditar.emit(perfilSistema);
+    editarPerfil(sistema: Sistema) {
+        if (sistema) {
+            this.sistemaEditar.emit(sistema);
         }
 
     }
@@ -77,12 +79,8 @@ excluirAssociacaoPerfil(idSistema): void {
         return true;
     }
 
-    checkList(){
-        console.log('oi');
-        return this.usuario.perfisSistema === undefined ||
-        this.usuario.perfisSistema === null ||
-        this.usuario.perfisSistema === [] ||
-        !this.usuario.perfisSistema;
+    checkList() {
+        return this.usuario.perfisSistema.length > 0;
     }
 
 

@@ -17,9 +17,11 @@ import { MensagemProperties } from './../../..//compartilhado/utilitario/recurso
 import { Usuario } from './../../../modelo/usuario.model';
 import { UsuarioService } from './../../../servico/usuario.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { PerfilSistema } from 'app/modelo/ṕerfil-sistemas';
 import { FormGroup } from '@angular/forms';
+import { AssociaPerfilComponent } from './associa-perfil/associa-perfil.component';
 
 export interface IHash {
     [details: number]: boolean;
@@ -31,6 +33,8 @@ export interface IHash {
     styleUrls: ['./manter-usuario.component.scss']
 })
 export class ManterUsuarioComponent extends BaseComponent implements OnInit {
+
+    @ViewChild('associaPerfilComponent') associaPerfilComponent: AssociaPerfilComponent;
 
     usuarioForm: FormGroup;
 
@@ -46,6 +50,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     perfilSistemas: PerfilSistema[] = [];
     perfilSistemaUsuario =  new Map();
     perfisUsuario: Perfil[] = [];
+    sistemaEditar: Sistema;
 
     constructor(
         private router: Router,
@@ -55,7 +60,8 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         protected dialogo: ToastyService,
         private dialogService: DialogService,
         private perfilService: PerfilService,
-        private sistemaService: SistemaService
+        private sistemaService: SistemaService,
+        private elemento: ElementRef,
     ) {
         super(bloqueioService, dialogo);
         this.idSistemas = null;
@@ -81,8 +87,10 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         this.title = MensagemProperties.app_rst_usuario_title_cadastrar;
     }
 
-    editarSistemaPerfil(event){
-        console.log(event);
+    editarSistemaPerfil(event: any){
+        this.associaPerfilComponent.selecionaSistema(event);
+        let el = this.elemento.nativeElement.querySelector('app-dados-gerais');
+        el.scrollIntoView();
     }
 
     buscarUsuario(): void {
@@ -231,13 +239,13 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             this.sistemas = retorno;
             this.sistemasPossiveis = retorno.filter((item) => {
                 return item.id != 7;
-              });     
+              });
               this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
                 return item.id != 4;
-              });      
+              });
               this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
                 return item.id != 1;
-              });                                         
+              });
         }, (error) => {
             this.mensagemError(error);
         });

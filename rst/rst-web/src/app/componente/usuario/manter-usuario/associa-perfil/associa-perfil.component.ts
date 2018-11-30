@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { MdSelect } from '@angular/material';
 
 import { Sistema } from 'app/modelo/sistema.model';
 import { UsuarioPerfilSistema } from 'app/modelo/usuario-perfil-sistema.model';
@@ -18,6 +19,8 @@ const COD_SISTEMA_CADASTRO = 'cadastro';
 })
 export class AssociaPerfilComponent implements OnInit, OnChanges {
 
+  @ViewChild('sistemasSelect') sistemasSelect: MdSelect;
+
   @Input() modoConsulta: boolean;
   @Input() usuario: Usuario;
 
@@ -35,7 +38,10 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
       this.perfisSistemas = this.usuario.perfisSistema;
     }
     this.sistemaService.buscarSistemasPermitidos(Seguranca.getUsuario())
-      .subscribe(sistemas => this.sistemas = sistemas);
+      .subscribe(sistemas => {
+        this.sistemas = sistemas
+        console.log(sistemas)
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -53,9 +59,16 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
     }
   }
 
-    private editarUsuario(perfilSistema: PerfilSistema){
-
+  selecionaSistema(sistemaNome: string) {
+    if(sistemaNome) {
+      const sistema = this.sistemas.find(s => s.nome == sistemaNome);
+      console.log(sistema)
+      this.changeSistema(sistema);
+      this.sistemasSelect.writeValue(sistema);
+      this.sistemasSelect.focus();
     }
+  }
+
 
   temPerfilSistema(codigoPerfil: string): boolean {
     if(this.sistemaSelecionado) {
@@ -79,6 +92,8 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
 
   associarPerfil() {
     this.usuario.perfisSistema = this.perfisSistemas;
+    this.changeSistema(undefined);
+    this.sistemasSelect.writeValue('');
   }
 
   private addUsuarioPerfil(perfil: Perfil, sistema: Sistema) {

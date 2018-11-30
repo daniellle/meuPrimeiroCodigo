@@ -7,7 +7,7 @@
           <div class="form-group col-md-6">
               <div class="md-container" *ngIf="sistemas.length">
                   <md-select placeholder="{{ 'app_rst_usuario_label_sistemas' | recurso }}" 
-                  (change)="changeSistema($event.value)"  id="idSistemas">
+                  (change)="changeSistema($event.value)"  id="idSistemas" #sistemasSelect>
                       <md-option value="null">{{ 'app_rst_labels_selecione' | recurso }}</md-option>
                       <md-option *ngFor="let sistema of sistemas | concatenaPerfisSistemasCadastro" [value]="sistema">
                           {{ sistema.nome }}
@@ -17,7 +17,7 @@
           </div>
       </div>
       <div class="row" *ngIf="!idSistemas">
-          <div class="form-group col-md-12">
+          <div class="form-group col-md-12" *ngIf="sistemaSelecionado">
               <label for="perfis" class="col-form-label">{{ 'app_rst_usuario_label_perfis' | recurso }}</label>
           </div>
           <div class="form-group col-md-12">
@@ -31,7 +31,7 @@
                   </fieldset>
               </label>
           </div>
-          <div class="form-group col-md-12">
+          <div class="form-group col-md-12" *ngIf="sistemaSelecionado">
               <button type="button" class="btn-rodape btn btn-sm btn-primary btn-cadastro" *ngIf="!modoConsulta" (click)="associarPerfil()">{{'app_rst_usuario_title_associar_perfil' | recurso}}
               </button>
           </div>
