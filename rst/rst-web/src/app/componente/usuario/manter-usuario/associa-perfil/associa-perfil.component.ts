@@ -56,10 +56,14 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
     }
   }
 
-  selecionaSistema(sistema: Sistema) {
-    this.changeSistema(sistema);
-    this.sistemasSelect.writeValue(sistema);
-    this.sistemasSelect.focus();
+  selecionaSistema(sistemaNome: string) {
+    if(sistemaNome) {
+      const sistema = this.sistemas.find(s => s.nome == sistemaNome);
+      console.log(sistema)
+      this.changeSistema(sistema);
+      this.sistemasSelect.writeValue(sistema);
+      this.sistemasSelect.focus();
+    }
   }
 
 
