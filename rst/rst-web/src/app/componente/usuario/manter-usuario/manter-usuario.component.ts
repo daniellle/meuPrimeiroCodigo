@@ -17,7 +17,7 @@ import { MensagemProperties } from './../../..//compartilhado/utilitario/recurso
 import { Usuario } from './../../../modelo/usuario.model';
 import { UsuarioService } from './../../../servico/usuario.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import { PerfilSistema } from 'app/modelo/ṕerfil-sistemas';
 import { FormGroup } from '@angular/forms';
 
@@ -55,7 +55,8 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         protected dialogo: ToastyService,
         private dialogService: DialogService,
         private perfilService: PerfilService,
-        private sistemaService: SistemaService
+        private sistemaService: SistemaService,
+        private elemento: ElementRef,
     ) {
         super(bloqueioService, dialogo);
         this.idSistemas = null;
@@ -82,7 +83,14 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     }
 
     editarSistemaPerfil(event){
-        console.log(event);
+        if(event.id){
+            let sistemaEditar: Sistema = event;
+            console.log(sistemaEditar);
+            //emitir um evento para o associa-perfil com o perfilSistemaEditar
+            let el = this.elemento.nativeElement.querySelector('app-dados-gerais');
+            el.scrollIntoView();
+            return;
+        }
     }
 
     buscarUsuario(): void {
@@ -231,13 +239,13 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             this.sistemas = retorno;
             this.sistemasPossiveis = retorno.filter((item) => {
                 return item.id != 7;
-              });     
+              });
               this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
                 return item.id != 4;
-              });      
+              });
               this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
                 return item.id != 1;
-              });                                         
+              });
         }, (error) => {
             this.mensagemError(error);
         });
