@@ -3,7 +3,7 @@
         <p>Perfis Associados</p>
     </div>
     <div class="grid-perfil-sistema">
-        <table class="table table-responsive table-hover">
+        <table *ngIf="checkList()" class="table table-responsive table-hover">
             <thead>
                 <tr>
                     <th class="label"><span class="label">{{ 'app_rst_usuario_label_sistemas' | recurso }}</span></th>
@@ -17,20 +17,18 @@
                     <td class="col-nao-quebra">{{item.sistema}}</td>
                     <td class="col-quebra">{{item.perfil}}</td>
                     <td class="text-center">
-                        <button id="editarPerfis" class="btn-link"><span class="fa fa-pencil edit"></span></button>
+                        <button id="editarPerfis" class="btn-link" (click)="editarPerfil(item.sistema)"><span class="fa fa-pencil edit"></span></button>
                     </td>
                     <td class="text-center">
-                        <button id="deletarPerfis" (click)="excluirAssociacaoPerfil(item.id)" class="btn-link"><img
+                        <button *ngIf="isNotOnlyTrabalhador(item.perfil)" id="deletarPerfis" (click)="excluirAssociacaoPerfil(item.id)" class="btn-link"><img
                     class="lixo" src="assets/img/trash.svg" alt="Excluir"></button>
                     </td>
                 </tr>
 
             </tbody>
         </table>
-        <div class="btn-paginacao">
-            <!-- <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="getSistemaPerfil().length" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
-                (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false" [ngModelOptions]="{standalone: true}">
-            </pagination> -->
+        <div *ngIf="!checkList()">
+            Não existem perfis associados.
         </div>
     </div>
 </div>

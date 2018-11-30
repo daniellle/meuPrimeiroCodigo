@@ -1,28 +1,40 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges, OnChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { ValidateCPF } from 'app/compartilhado/validators/cpf.validator';
 import { Usuario } from 'app/modelo/usuario.model';
+import {MascaraUtil} from "../../../../compartilhado/utilitario/mascara.util";
+import {BaseComponent} from "../../../base.component";
 
 @Component({
   selector: 'app-dados-gerais',
   templateUrl: './dados-gerais.component.html'
 })
-export class DadosGeraisComponent implements OnInit {
+export class DadosGeraisComponent implements OnInit, OnChanges {
 
   usuarioForm: FormGroup;
+    mascaraCpf = MascaraUtil.mascaraCpf;
 
-  @Input() modoAlterar: boolean;
+
+    @Input() modoAlterar: boolean;
   @Input() modoConsulta: boolean;
   @Input() usuario: Usuario;
 
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    console.log(this.usuario)
     this.criarForm();
     if(this.usuario) {
       this.preencheForm();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['usuario']) {
+      this.criarForm();
+    if(this.usuario){
+        this.preencheForm();
+      }
     }
   }
 

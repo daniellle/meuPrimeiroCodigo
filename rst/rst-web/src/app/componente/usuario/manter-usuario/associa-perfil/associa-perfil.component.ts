@@ -1,6 +1,5 @@
-import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-
-import { Observable } from 'rxjs';
+import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { MdSelect } from '@angular/material';
 
 import { Sistema } from 'app/modelo/sistema.model';
 import { UsuarioPerfilSistema } from 'app/modelo/usuario-perfil-sistema.model';
@@ -8,6 +7,8 @@ import { SistemaService } from 'app/servico/sistema.service';
 import { Seguranca } from 'app/compartilhado/utilitario/seguranca.model';
 import { SistemaPerfil } from 'app/modelo/sistema-perfil.model';
 import { Usuario } from 'app/modelo/usuario.model';
+import { Perfil } from 'app/modelo/perfil.model';
+import {PerfilSistema} from "../../../../modelo/ṕerfil-sistemas";
 
 const COD_SISTEMAS_RELACIONADOS = ['dw', 'indigev', 'portal'];
 const COD_SISTEMA_CADASTRO = 'cadastro';
@@ -19,14 +20,16 @@ const COD_SISTEMA_CADASTRO = 'cadastro';
 })
 export class AssociaPerfilComponent implements OnInit, OnChanges {
 
+  @ViewChild('sistemasSelect') sistemasSelect: MdSelect;
+
   @Input() modoConsulta: boolean;
   @Input() usuario: Usuario;
-  
+
   @Output() associaPerfilEvent = new EventEmitter<any>();
-  
+
   perfisSistemas: UsuarioPerfilSistema[];
   sistemaSelecionado: Sistema;
-  sistemas$: Observable<Sistema[]>;
+  sistemas: Sistema[] = [];
   perfisDoSistema: SistemaPerfil[] = [];
 
   constructor(private sistemaService: SistemaService) {}
@@ -35,7 +38,8 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
     if(this.usuario) {
       this.perfisSistemas = this.usuario.perfisSistema;
     }
-    this.sistemas$ = this.sistemaService.buscarSistemasPermitidos(Seguranca.getUsuario());
+    this.sistemaService.buscarSistemasPermitidos(Seguranca.getUsuario())
+      .subscribe(sistemas => this.sistemas = sistemas);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -53,10 +57,20 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
     }
   }
 
+  selecionaSistema(sistemaNome: string) {
+    if(sistemaNome) {
+      const sistema = this.sistemas.find(s => s.nome == sistemaNome);
+      this.changeSistema(sistema);
+      this.sistemasSelect.writeValue(sistema);
+      this.sistemasSelect.focus();
+    }
+  }
+
+
   temPerfilSistema(codigoPerfil: string): boolean {
     if(this.sistemaSelecionado) {
       const codigoSistema = this.sistemaSelecionado.codigo;
-      return this.perfisSistemas.some(ps => 
+      return this.perfisSistemas.some(ps =>
         ps.sistema.codigo === codigoSistema && ps.perfil.codigo === codigoPerfil);
     }
     return false;
@@ -64,37 +78,55 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
 
   atualizaPerfilSistema(event: any, sistemaPerfil: any) {
     const sistema = { id: this.sistemaSelecionado.id, nome: this.sistemaSelecionado.nome, codigo:  this.sistemaSelecionado.codigo };
-    const usuarioPerfil: UsuarioPerfilSistema = { perfil: sistemaPerfil.perfil, sistema };
     if(event.checked) {
-      this.addUsuarioPerfil(usuarioPerfil, sistema);
+      this.addUsuarioPerfil(sistemaPerfil.perfil, sistema);
     } else {
-      this.removeUsuarioPerfil(usuarioPerfil, sistema);
+      this.removeUsuarioPerfil(sistemaPerfil.perfil, sistema);
     }
   }
 
   associarPerfil() {
+    this.usuario.perfisSistema = this.perfisSistemas;
+    this.changeSistema(undefined);
+    this.sistemasSelect.writeValue('');
   }
 
-  private addUsuarioPerfil(usuarioPerfil: UsuarioPerfilSistema, sistema: Sistema) {
-    if(this.ehSistemaCadastro(sistema)) {
-      this.perfisSistemas
-        .filter(ps => this.ehSistemaCadastro(ps.sistema))
+  private addUsuarioPerfil(perfil: Perfil, sistema: Sistema) {
+    if(this.ehSistemaCadastroOuRelacionado(sistema)) {
+      this.sistemas.filter(s => this.ehSistemaCadastroOuRelacionado(s))
+        .forEach(s => {
+          if(this.perfilTahAssociadoAoSistema(s, perfil)) {
+            this.perfisSistemas.push({perfil, sistema: s})
+          }
+        });
     } else {
-      this.perfisSistemas.push(usuarioPerfil);
+      this.perfisSistemas.push({perfil, sistema});
     }
   }
 
-  private removeUsuarioPerfil(usuarioPerfil: UsuarioPerfilSistema, sistema: Sistema) {
-    if(this.ehSistemaCadastro(this.sistemaSelecionado)) {
-      this.perfisSistemas.filter(ps => ps.sistema)
+  private removeUsuarioPerfil(perfil: Perfil, sistema: Sistema) {
+    if(this.ehSistemaCadastroOuRelacionado(sistema)) {
+      this.sistemas.filter(s => this.ehSistemaCadastroOuRelacionado(s))
+        .forEach(s => {
+          if(this.perfilTahAssociadoAoSistema(s, perfil)) {
+            const index = this.perfisSistemas
+              .findIndex(ps => ps.perfil.codigo === perfil.codigo && ps.sistema.codigo === s.codigo);
+
+            if(index > -1) this.perfisSistemas.splice(index, 1);
+          }
+        });
     } else {
-      const index = this.perfisSistemas.findIndex(ps => JSON.stringify(ps) === JSON.stringify(usuarioPerfil));
+      const index = this.perfisSistemas.findIndex(ps => ps.perfil.codigo === perfil.codigo && ps.sistema.codigo === sistema.codigo);
       this.perfisSistemas.splice(index, 1);
     }
   }
 
-  private ehSistemaCadastro(sistema: Sistema): boolean {
+  private ehSistemaCadastroOuRelacionado(sistema: Sistema): boolean {
     return sistema.codigo === COD_SISTEMA_CADASTRO || COD_SISTEMAS_RELACIONADOS.includes(sistema.codigo);
+  }
+
+  private perfilTahAssociadoAoSistema(sistema: Sistema, perfil: Perfil): boolean {
+    return sistema.sistemaPerfis.some(sistemaPerfil => sistemaPerfil.perfil.codigo === perfil.codigo);
   }
 
 }

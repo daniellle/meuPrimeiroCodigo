@@ -356,7 +356,7 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
       });
       const formModel = this.profissionaisForm.controls;
    
-      console.log(formModel.conselhoRegional.value);
+      //console.log(formModel.conselhoRegional.value);
       
     }    
     if (this.profissional.listaEnderecoProfissional) {

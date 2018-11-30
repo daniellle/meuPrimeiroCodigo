@@ -17,9 +17,11 @@ import { MensagemProperties } from './../../..//compartilhado/utilitario/recurso
 import { Usuario } from './../../../modelo/usuario.model';
 import { UsuarioService } from './../../../servico/usuario.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { PerfilSistema } from 'app/modelo/ṕerfil-sistemas';
 import { FormGroup } from '@angular/forms';
+import { AssociaPerfilComponent } from './associa-perfil/associa-perfil.component';
 
 export interface IHash {
     [details: number]: boolean;
@@ -31,6 +33,8 @@ export interface IHash {
     styleUrls: ['./manter-usuario.component.scss']
 })
 export class ManterUsuarioComponent extends BaseComponent implements OnInit {
+
+    @ViewChild('associaPerfilComponent') associaPerfilComponent: AssociaPerfilComponent;
 
     usuarioForm: FormGroup;
 
@@ -46,6 +50,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     perfilSistemas: PerfilSistema[] = [];
     perfilSistemaUsuario =  new Map();
     perfisUsuario: Perfil[] = [];
+    sistemaEditar: Sistema;
 
     constructor(
         private router: Router,
@@ -55,7 +60,8 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         protected dialogo: ToastyService,
         private dialogService: DialogService,
         private perfilService: PerfilService,
-        private sistemaService: SistemaService
+        private sistemaService: SistemaService,
+        private elemento: ElementRef,
     ) {
         super(bloqueioService, dialogo);
         this.idSistemas = null;
@@ -81,6 +87,12 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         this.title = MensagemProperties.app_rst_usuario_title_cadastrar;
     }
 
+    editarSistemaPerfil(event: any){
+        this.associaPerfilComponent.selecionaSistema(event);
+        let el = this.elemento.nativeElement.querySelector('app-dados-gerais');
+        el.scrollIntoView();
+    }
+
     buscarUsuario(): void {
         this.usuarioService.buscarUsuarioById(this.id).subscribe((retorno: Usuario) => {
             this.usuario = retorno;
@@ -100,6 +112,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                         }
                     });
                 }
+                this.converterModelParaForm();
             }
         }, (error) => {
             this.mensagemError(error);
@@ -108,61 +121,67 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     validarCampos(): Boolean {
         let isValido: Boolean = true;
+        console.log(this.usuarioForm)
+        return true;
+        // if (this.usuarioForm.controls['nome'].invalid) {
+        //     if (this.usuarioForm.controls['nome'].errors.required) {
+        //         this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.usuarioForm.controls['nome'],
+        //             MensagemProperties.app_rst_labels_nome);
+        //         isValido = false;
+        //     }
+        // }
 
-        if (this.usuarioForm.controls['nome'].invalid) {
-            if (this.usuarioForm.controls['nome'].errors.required) {
-                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.usuarioForm.controls['nome'],
-                    MensagemProperties.app_rst_labels_nome);
-                isValido = false;
-            }
-        }
+        // if (this.usuarioForm.controls['login'].invalid) {
+        //     if (this.usuarioForm.controls['login'].errors.required) {
+        //         this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.usuarioForm.controls['login'],
+        //             MensagemProperties.app_rst_labels_login_cpf);
+        //         isValido = false;
+        //     }
 
-        if (this.usuarioForm.controls['login'].invalid) {
-            if (this.usuarioForm.controls['login'].errors.required) {
-                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.usuarioForm.controls['login'],
-                    MensagemProperties.app_rst_labels_login_cpf);
-                isValido = false;
-            }
+        //     if (!this.usuarioForm.controls['login'].errors.required
+        //         && this.usuarioForm.controls['login'].errors.validCPF) {
+        //         this.mensagemErroComParametros('app_rst_campo_invalido', this.usuarioForm.controls['login'],
+        //             MensagemProperties.app_rst_labels_login_cpf);
+        //         isValido = false;
+        //     }
+        // }
 
-            if (!this.usuarioForm.controls['login'].errors.required
-                && this.usuarioForm.controls['login'].errors.validCPF) {
-                this.mensagemErroComParametros('app_rst_campo_invalido', this.usuarioForm.controls['login'],
-                    MensagemProperties.app_rst_labels_login_cpf);
-                isValido = false;
-            }
-        }
+        // if (this.usuarioForm.controls['email'].invalid) {
+        //     if (this.usuarioForm.controls['email'].errors.required) {
+        //         this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.usuarioForm.controls['email'],
+        //             MensagemProperties.app_rst_labels_email);
+        //         isValido = false;
+        //     }
 
-        if (this.usuarioForm.controls['email'].invalid) {
-            if (this.usuarioForm.controls['email'].errors.required) {
-                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.usuarioForm.controls['email'],
-                    MensagemProperties.app_rst_labels_email);
-                isValido = false;
-            }
+        //     if (!this.usuarioForm.controls['email'].errors.required
+        //         && this.usuarioForm.controls['email'].errors.validEmail) {
+        //         this.mensagemErroComParametros('app_rst_campo_invalido', this.usuarioForm.controls['email'],
+        //             MensagemProperties.app_rst_labels_email);
+        //         isValido = false;
+        //     }
+        // }
 
-            if (!this.usuarioForm.controls['email'].errors.required
-                && this.usuarioForm.controls['email'].errors.validEmail) {
-                this.mensagemErroComParametros('app_rst_campo_invalido', this.usuarioForm.controls['email'],
-                    MensagemProperties.app_rst_labels_email);
-                isValido = false;
-            }
-        }
+        // if (this.isListaVazia()) {
+        //     this.mensagemError(MensagemProperties.app_rst_usuario_validacao_selecione_sistema_perfil);
+        //     isValido = false;
+        // }
 
-        return isValido;
+        // return isValido;
     }
 
     //TODO FAZER VALIDACAO NO BACKEND PARA PERMITIR APENAS PERFIS VINCULADOS AO SISTEMA
 
     salvar(): void {
         if (this.validarCampos()) {
-            this.converterFormParaModel();
-            this.usuarioService.salvarUsuario(this.usuario).subscribe((retorno: Usuario) => {
-                this.usuario = retorno;
-                this.id = this.usuario.id;
-                this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
-                this.voltar();
-            }, (error) => {
-                this.mensagemError(error);
-            });
+            // this.converterFormParaModel();
+            // this.usuarioService.salvarUsuario(this.usuario).subscribe((retorno: Usuario) => {
+            //     this.usuario = retorno;
+            //     this.id = this.usuario.id;
+            //     this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+            //     this.voltar();
+            // }, (error) => {
+            //     this.mensagemError(error);
+            // });
         }
     }
 
@@ -193,6 +212,14 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     }
 
+    converterModelParaForm(): void {
+        // this.usuarioForm.patchValue({
+        //     nome: this.usuario.nome,
+        //     login: this.usuario.login,
+        //     email: this.usuario.email
+        // });
+    }
+
     converterFormParaModel(): void {
         const formModel = this.usuarioForm.controls;
 
@@ -212,13 +239,13 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         this.sistemaService.buscarSistemasPermitidos(Seguranca.getUsuario()).subscribe((retorno: any) => {
             this.sistemas = retorno;
             this.sistemasPossiveis = retorno.filter((item) => {
-                return item.id !== 7;
+                return item.id != 7;
               });
-            this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
-                return item.id !== 4;
+              this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
+                return item.id != 4;
               });
-            this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
-                return item.id !== 1;
+              this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
+                return item.id != 1;
               });
         }, (error) => {
             this.mensagemError(error);
@@ -294,12 +321,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         });
     }
 
-    isNotOnlyTrabalhador(perfis: any) {
-        perfis = perfis.split("; ");
-        return perfis.length > 1;
-    }
-
-
     selecionarSistema(): void {
         this.filtrarPerfis();
         this.selecionarSistemaPerfil(this.idSistemas);
@@ -325,9 +346,9 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                                 this.perfilSistemas.push(perfilSistema);
                             }
                         }
-                    }); 
+                    });
                 })
-            } 
+            }
         }
         else{
             const sistema = this.sistemas.filter((s) => s.id === Number(this.idSistemas))[0];
@@ -350,8 +371,13 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         return retorno;
    }
 
+
     temPermissaoDesativar(): boolean {
         return !this.modoConsulta && Boolean(Seguranca.isPermitido(['usuario_desativar']));
+    }
+
+    getPerfil(id: number): Perfil {
+        return this.perfisUsuario.find(perfil => perfil.id === id);
     }
 
 }
