@@ -121,66 +121,67 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     validarCampos(): Boolean {
         let isValido: Boolean = true;
+        console.log(this.usuarioForm)
+        return true;
+        // if (this.usuarioForm.controls['nome'].invalid) {
+        //     if (this.usuarioForm.controls['nome'].errors.required) {
+        //         this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.usuarioForm.controls['nome'],
+        //             MensagemProperties.app_rst_labels_nome);
+        //         isValido = false;
+        //     }
+        // }
 
-        if (this.usuarioForm.controls['nome'].invalid) {
-            if (this.usuarioForm.controls['nome'].errors.required) {
-                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.usuarioForm.controls['nome'],
-                    MensagemProperties.app_rst_labels_nome);
-                isValido = false;
-            }
-        }
+        // if (this.usuarioForm.controls['login'].invalid) {
+        //     if (this.usuarioForm.controls['login'].errors.required) {
+        //         this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.usuarioForm.controls['login'],
+        //             MensagemProperties.app_rst_labels_login_cpf);
+        //         isValido = false;
+        //     }
 
-        if (this.usuarioForm.controls['login'].invalid) {
-            if (this.usuarioForm.controls['login'].errors.required) {
-                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.usuarioForm.controls['login'],
-                    MensagemProperties.app_rst_labels_login_cpf);
-                isValido = false;
-            }
+        //     if (!this.usuarioForm.controls['login'].errors.required
+        //         && this.usuarioForm.controls['login'].errors.validCPF) {
+        //         this.mensagemErroComParametros('app_rst_campo_invalido', this.usuarioForm.controls['login'],
+        //             MensagemProperties.app_rst_labels_login_cpf);
+        //         isValido = false;
+        //     }
+        // }
 
-            if (!this.usuarioForm.controls['login'].errors.required
-                && this.usuarioForm.controls['login'].errors.validCPF) {
-                this.mensagemErroComParametros('app_rst_campo_invalido', this.usuarioForm.controls['login'],
-                    MensagemProperties.app_rst_labels_login_cpf);
-                isValido = false;
-            }
-        }
+        // if (this.usuarioForm.controls['email'].invalid) {
+        //     if (this.usuarioForm.controls['email'].errors.required) {
+        //         this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.usuarioForm.controls['email'],
+        //             MensagemProperties.app_rst_labels_email);
+        //         isValido = false;
+        //     }
 
-        if (this.usuarioForm.controls['email'].invalid) {
-            if (this.usuarioForm.controls['email'].errors.required) {
-                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.usuarioForm.controls['email'],
-                    MensagemProperties.app_rst_labels_email);
-                isValido = false;
-            }
-
-            if (!this.usuarioForm.controls['email'].errors.required
-                && this.usuarioForm.controls['email'].errors.validEmail) {
-                this.mensagemErroComParametros('app_rst_campo_invalido', this.usuarioForm.controls['email'],
-                    MensagemProperties.app_rst_labels_email);
-                isValido = false;
-            }
-        }
+        //     if (!this.usuarioForm.controls['email'].errors.required
+        //         && this.usuarioForm.controls['email'].errors.validEmail) {
+        //         this.mensagemErroComParametros('app_rst_campo_invalido', this.usuarioForm.controls['email'],
+        //             MensagemProperties.app_rst_labels_email);
+        //         isValido = false;
+        //     }
+        // }
 
         // if (this.isListaVazia()) {
         //     this.mensagemError(MensagemProperties.app_rst_usuario_validacao_selecione_sistema_perfil);
         //     isValido = false;
         // }
 
-        return isValido;
+        // return isValido;
     }
 
     //TODO FAZER VALIDACAO NO BACKEND PARA PERMITIR APENAS PERFIS VINCULADOS AO SISTEMA
 
     salvar(): void {
         if (this.validarCampos()) {
-            this.converterFormParaModel();
-            this.usuarioService.salvarUsuario(this.usuario).subscribe((retorno: Usuario) => {
-                this.usuario = retorno;
-                this.id = this.usuario.id;
-                this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
-                this.voltar();
-            }, (error) => {
-                this.mensagemError(error);
-            });
+            // this.converterFormParaModel();
+            // this.usuarioService.salvarUsuario(this.usuario).subscribe((retorno: Usuario) => {
+            //     this.usuario = retorno;
+            //     this.id = this.usuario.id;
+            //     this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+            //     this.voltar();
+            // }, (error) => {
+            //     this.mensagemError(error);
+            // });
         }
     }
 
