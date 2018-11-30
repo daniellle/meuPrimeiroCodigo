@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { ValidateCPF } from 'app/compartilhado/validators/cpf.validator';
 import { Usuario } from 'app/modelo/usuario.model';
+import {MascaraUtil} from "../../../../compartilhado/utilitario/mascara.util";
+import {BaseComponent} from "../../../base.component";
 
 @Component({
   selector: 'app-dados-gerais',
@@ -11,8 +13,10 @@ import { Usuario } from 'app/modelo/usuario.model';
 export class DadosGeraisComponent implements OnInit, OnChanges {
 
   usuarioForm: FormGroup;
+    mascaraCpf = MascaraUtil.mascaraCpf;
 
-  @Input() modoAlterar: boolean;
+
+    @Input() modoAlterar: boolean;
   @Input() modoConsulta: boolean;
   @Input() usuario: Usuario;
 
