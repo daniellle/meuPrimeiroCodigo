@@ -63,4 +63,9 @@ excluirAssociacaoPerfil(idSistema): void {
 
     }
 
+    isNotOnlyTrabalhador(perfis: any) {
+        perfis = perfis.split("; ");
+        return perfis.length > 1;
+    }
+
 }

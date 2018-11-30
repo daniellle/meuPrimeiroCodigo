@@ -100,6 +100,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                         }
                     });
                 }
+                this.converterModelParaForm();
             }
         }, (error) => {
             this.mensagemError(error);
@@ -147,6 +148,11 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             }
         }
 
+        // if (this.isListaVazia()) {
+        //     this.mensagemError(MensagemProperties.app_rst_usuario_validacao_selecione_sistema_perfil);
+        //     isValido = false;
+        // }
+
         return isValido;
     }
 
@@ -193,6 +199,14 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     }
 
+    converterModelParaForm(): void {
+        // this.usuarioForm.patchValue({
+        //     nome: this.usuario.nome,
+        //     login: this.usuario.login,
+        //     email: this.usuario.email
+        // });
+    }
+
     converterFormParaModel(): void {
         const formModel = this.usuarioForm.controls;
 
@@ -212,14 +226,14 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         this.sistemaService.buscarSistemasPermitidos(Seguranca.getUsuario()).subscribe((retorno: any) => {
             this.sistemas = retorno;
             this.sistemasPossiveis = retorno.filter((item) => {
-                return item.id !== 7;
-              });
-            this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
-                return item.id !== 4;
-              });
-            this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
-                return item.id !== 1;
-              });
+                return item.id != 7;
+              });     
+              this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
+                return item.id != 4;
+              });      
+              this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
+                return item.id != 1;
+              });                                         
         }, (error) => {
             this.mensagemError(error);
         });
@@ -294,12 +308,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         });
     }
 
-    isNotOnlyTrabalhador(perfis: any) {
-        perfis = perfis.split("; ");
-        return perfis.length > 1;
-    }
-
-
     selecionarSistema(): void {
         this.filtrarPerfis();
         this.selecionarSistemaPerfil(this.idSistemas);
@@ -350,8 +358,13 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         return retorno;
    }
 
+
     temPermissaoDesativar(): boolean {
         return !this.modoConsulta && Boolean(Seguranca.isPermitido(['usuario_desativar']));
+    }
+
+    getPerfil(id: number): Perfil {
+        return this.perfisUsuario.find(perfil => perfil.id === id);
     }
 
 }

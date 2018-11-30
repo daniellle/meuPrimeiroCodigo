@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges, OnChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { ValidateCPF } from 'app/compartilhado/validators/cpf.validator';
@@ -8,7 +8,7 @@ import { Usuario } from 'app/modelo/usuario.model';
   selector: 'app-dados-gerais',
   templateUrl: './dados-gerais.component.html'
 })
-export class DadosGeraisComponent implements OnInit {
+export class DadosGeraisComponent implements OnInit, OnChanges {
 
   usuarioForm: FormGroup;
 
@@ -19,10 +19,18 @@ export class DadosGeraisComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    console.log(this.usuario)
     this.criarForm();
     if(this.usuario) {
       this.preencheForm();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['usuario']) {
+      this.criarForm();
+    if(this.usuario){
+        this.preencheForm();
+      }
     }
   }
 
