@@ -7,7 +7,9 @@
 <app-dados-gerais [modoAlterar]="modoAlterar" [modoConsulta]="modoConsulta" [usuario]="usuario">
 </app-dados-gerais>
 
-<app-associa-perfil [modoConsulta]="modoConsulta" [usuario]="usuario"></app-associa-perfil>
+
+<app-associa-perfil #associaPerfilComponent [modoConsulta]="modoConsulta" [usuario]="usuario"></app-associa-perfil>
+
 
 <app-perfis-associados (click)="editarSistemaPerfil($event)" [usuario]="usuario"></app-perfis-associados>
 
