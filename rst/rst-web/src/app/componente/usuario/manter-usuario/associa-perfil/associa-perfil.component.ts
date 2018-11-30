@@ -8,6 +8,7 @@ import { SistemaService } from 'app/servico/sistema.service';
 import { Seguranca } from 'app/compartilhado/utilitario/seguranca.model';
 import { SistemaPerfil } from 'app/modelo/sistema-perfil.model';
 import { Usuario } from 'app/modelo/usuario.model';
+import {PerfilSistema} from "../../../../modelo/ṕerfil-sistemas";
 
 const COD_SISTEMAS_RELACIONADOS = ['dw', 'indigev', 'portal'];
 const COD_SISTEMA_CADASTRO = 'cadastro';
@@ -20,9 +21,9 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
 
   @Input() modoConsulta: boolean;
   @Input() usuario: Usuario;
-  
+
   @Output() associaPerfilEvent = new EventEmitter<any>();
-  
+
   perfisSistemas: UsuarioPerfilSistema[];
   sistemaSelecionado: Sistema;
   sistemas$: Observable<Sistema[]>;
@@ -52,10 +53,14 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
     }
   }
 
+    private editarUsuario(perfilSistema: PerfilSistema){
+
+    }
+
   temPerfilSistema(codigoPerfil: string): boolean {
     if(this.sistemaSelecionado) {
       const codigoSistema = this.sistemaSelecionado.codigo;
-      return this.perfisSistemas.some(ps => 
+      return this.perfisSistemas.some(ps =>
         ps.sistema.codigo === codigoSistema && ps.perfil.codigo === codigoPerfil);
     }
     return false;
@@ -95,5 +100,6 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
   private ehSistemaCadastro(sistema: Sistema): boolean {
     return sistema.codigo === COD_SISTEMA_CADASTRO || COD_SISTEMAS_RELACIONADOS.includes(sistema.codigo);
   }
+
 
 }

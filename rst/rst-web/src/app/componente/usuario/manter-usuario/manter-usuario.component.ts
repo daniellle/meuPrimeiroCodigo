@@ -81,6 +81,10 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         this.title = MensagemProperties.app_rst_usuario_title_cadastrar;
     }
 
+    editarSistemaPerfil(event){
+        console.log(event);
+    }
+
     buscarUsuario(): void {
         this.usuarioService.buscarUsuarioById(this.id).subscribe((retorno: Usuario) => {
             this.usuario = retorno;
@@ -325,9 +329,9 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                                 this.perfilSistemas.push(perfilSistema);
                             }
                         }
-                    }); 
+                    });
                 })
-            } 
+            }
         }
         else{
             const sistema = this.sistemas.filter((s) => s.id === Number(this.idSistemas))[0];
