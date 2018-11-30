@@ -7,9 +7,14 @@
 <app-dados-gerais [modoAlterar]="modoAlterar" [modoConsulta]="modoConsulta" [usuario]="usuario">
 </app-dados-gerais>
 
+<<<<<<< HEAD
+<app-associa-perfil [usuario]="usuario">
+</app-associa-perfil>
+=======
 <app-associa-perfil [modoConsulta]="modoConsulta" [usuario]="usuario"></app-associa-perfil>
 
 <app-perfis-associados [usuario]="usuario"></app-perfis-associados>
+>>>>>>> d56e76b116dea4d33e7ab97e18b8f5dab566e7f0
 
 <div class="btn-rodape-acoes space-up">
     <button type="button " class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!modoConsulta" (click)="salvar()">
