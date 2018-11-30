@@ -40,7 +40,6 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
     this.sistemaService.buscarSistemasPermitidos(Seguranca.getUsuario())
       .subscribe(sistemas => {
         this.sistemas = sistemas
-        console.log(sistemas)
       });
   }
 
@@ -62,7 +61,6 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
   selecionaSistema(sistemaNome: string) {
     if(sistemaNome) {
       const sistema = this.sistemas.find(s => s.nome == sistemaNome);
-      console.log(sistema)
       this.changeSistema(sistema);
       this.sistemasSelect.writeValue(sistema);
       this.sistemasSelect.focus();
@@ -81,13 +79,11 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
 
   atualizaPerfilSistema(event: any, sistemaPerfil: any) {
     const sistema = { id: this.sistemaSelecionado.id, nome: this.sistemaSelecionado.nome, codigo:  this.sistemaSelecionado.codigo };
-    console.log(this.usuario.perfisSistema)
     if(event.checked) {
       this.addUsuarioPerfil(sistemaPerfil.perfil, sistema);
     } else {
       this.removeUsuarioPerfil(sistemaPerfil.perfil, sistema);
     }
-    console.log(this.usuario.perfisSistema)
   }
 
   associarPerfil() {
