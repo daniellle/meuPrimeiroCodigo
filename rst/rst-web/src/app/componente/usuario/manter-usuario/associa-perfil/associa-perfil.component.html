@@ -23,7 +23,9 @@
           <div class="form-group col-md-12">
               <label class="col col-md-4" *ngFor="let perfilDoSistema of perfisDoSistema" for="{{ perfilDoSistema.perfil.nome }}">
                   <fieldset>
-                      <md-checkbox (change)="atualizaPerfilSistema($event, perfilDoSistema)" class="radio-tabela-pesquisa">
+                      <md-checkbox (change)="atualizaPerfilSistema($event, perfilDoSistema)" 
+                        class="radio-tabela-pesquisa" 
+                        [checked]="temPerfilSistema(perfilDoSistema.perfil.codigo)">
                           {{ perfilDoSistema.perfil.nome }}
                       </md-checkbox>
                   </fieldset>

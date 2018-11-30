@@ -5,7 +5,7 @@ export class Sistema {
     id: number;
     nome: string;
     codigo: string;
-    sistemaPerfis: SistemaPerfil[];
+    sistemaPerfis?: SistemaPerfil[];
 
     constructor(id?: number, nome?: string, codigo?: string, sistemaPerfis?: SistemaPerfil[]) {
         this.id = id;
