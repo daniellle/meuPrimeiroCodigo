@@ -1,4 +1,4 @@
-<div class="container-form">
+<div class="container-form space-up">
     <div class="container-subtitulo">
         <p>Perfis Associados</p>
     </div>
@@ -20,7 +20,7 @@
                         <button class="btn-link"><span class="fa fa-pencil edit"></span></button>
                     </td>
                     <td class="text-center">
-                        <button class="btn-link"><img
+                        <button (click)="excluirAssociacaoPerfil(item.sistema)" class="btn-link"><img
                     class="lixo" src="assets/img/trash.svg" alt="Excluir"></button>
                     </td>
                 </tr>
