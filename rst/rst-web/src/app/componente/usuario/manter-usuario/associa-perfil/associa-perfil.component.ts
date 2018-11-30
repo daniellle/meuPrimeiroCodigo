@@ -7,6 +7,7 @@ import { Seguranca } from 'app/compartilhado/utilitario/seguranca.model';
 import { SistemaPerfil } from 'app/modelo/sistema-perfil.model';
 import { Usuario } from 'app/modelo/usuario.model';
 import { Perfil } from 'app/modelo/perfil.model';
+import {PerfilSistema} from "../../../../modelo/ṕerfil-sistemas";
 
 const COD_SISTEMAS_RELACIONADOS = ['dw', 'indigev', 'portal'];
 const COD_SISTEMA_CADASTRO = 'cadastro';
@@ -19,9 +20,9 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
 
   @Input() modoConsulta: boolean;
   @Input() usuario: Usuario;
-  
+
   @Output() associaPerfilEvent = new EventEmitter<any>();
-  
+
   perfisSistemas: UsuarioPerfilSistema[];
   sistemaSelecionado: Sistema;
   sistemas: Sistema[] = [];
@@ -52,10 +53,14 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
     }
   }
 
+    private editarUsuario(perfilSistema: PerfilSistema){
+
+    }
+
   temPerfilSistema(codigoPerfil: string): boolean {
     if(this.sistemaSelecionado) {
       const codigoSistema = this.sistemaSelecionado.codigo;
-      return this.perfisSistemas.some(ps => 
+      return this.perfisSistemas.some(ps =>
         ps.sistema.codigo === codigoSistema && ps.perfil.codigo === codigoPerfil);
     }
     return false;
@@ -96,7 +101,7 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
           if(this.perfilTahAssociadoAoSistema(s, perfil)) {
             const index = this.perfisSistemas
               .findIndex(ps => ps.perfil.codigo === perfil.codigo && ps.sistema.codigo === s.codigo);
-            
+
             if(index > -1) this.perfisSistemas.splice(index, 1);
           }
         });

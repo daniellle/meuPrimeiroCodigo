@@ -17,7 +17,7 @@
                     <td class="col-nao-quebra">{{item.sistema}}</td>
                     <td class="col-quebra">{{item.perfil}}</td>
                     <td class="text-center">
-                        <button id="editarPerfis" class="btn-link"><span class="fa fa-pencil edit"></span></button>
+                        <button id="editarPerfis" class="btn-link"  (click)="editarPerfil(item)"><span class="fa fa-pencil edit"></span></button>
                     </td>
                     <td class="text-center">
                         <button *ngIf="isNotOnlyTrabalhador(item.perfil)" id="deletarPerfis" (click)="excluirAssociacaoPerfil(item.id)" class="btn-link"><img
