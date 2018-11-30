@@ -1,6 +1,8 @@
-import { Component, Input } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 import { Usuario } from 'app/modelo/usuario.model';
+import {Sistema} from "../../../../modelo/sistema.model";
+import {PerfilSistema} from "../../../../modelo/ṕerfil-sistemas";
 import { UsuarioPerfilSistema } from 'app/modelo/usuario-perfil-sistema.model';
 import { PerfilEnum } from 'app/modelo/enum/enum-perfil';
 
@@ -11,6 +13,8 @@ import { PerfilEnum } from 'app/modelo/enum/enum-perfil';
 export class PerfisAssociadosComponent {
 
   @Input() usuario: Usuario;
+  @Output() sistemaEditar: EventEmitter<PerfilSistema> = new EventEmitter();
+
 
   public getSistemaPerfil(): any {
     console.log(this.usuario);
@@ -43,5 +47,14 @@ excluirAssociacaoPerfil(idSistema: number): void {
         }
     });
 }
+
+
+  editarPerfil(perfilSistema: PerfilSistema){
+      if(perfilSistema) {
+          this.sistemaEditar.emit(perfilSistema);
+
+      }
+
+  }
 
 }
