@@ -17,9 +17,10 @@ import { MensagemProperties } from './../../..//compartilhado/utilitario/recurso
 import { Usuario } from './../../../modelo/usuario.model';
 import { UsuarioService } from './../../../servico/usuario.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { PerfilSistema } from 'app/modelo/ṕerfil-sistemas';
 import { FormGroup } from '@angular/forms';
+import { AssociaPerfilComponent } from './associa-perfil/associa-perfil.component';
 
 export interface IHash {
     [details: number]: boolean;
@@ -31,6 +32,8 @@ export interface IHash {
     styleUrls: ['./manter-usuario.component.scss']
 })
 export class ManterUsuarioComponent extends BaseComponent implements OnInit {
+
+    @ViewChild('associaPerfilComponent') associaPerfilComponent: AssociaPerfilComponent;
 
     usuarioForm: FormGroup;
 
@@ -352,6 +355,10 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     temPermissaoDesativar(): boolean {
         return !this.modoConsulta && Boolean(Seguranca.isPermitido(['usuario_desativar']));
+    }
+
+    editarEvent(sistema: Sistema) {
+        this.associaPerfilComponent.selecionaSistema(sistema);
     }
 
 }

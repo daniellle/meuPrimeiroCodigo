@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { MdSelect } from '@angular/material';
 
 import { Sistema } from 'app/modelo/sistema.model';
 import { UsuarioPerfilSistema } from 'app/modelo/usuario-perfil-sistema.model';
@@ -16,6 +17,9 @@ const COD_SISTEMA_CADASTRO = 'cadastro';
   templateUrl: './associa-perfil.component.html'
 })
 export class AssociaPerfilComponent implements OnInit, OnChanges {
+
+  @ViewChild('sistemasSelect') sistemasSelect: MdSelect;
+  @ViewChild('sistemasAssociados') divSistemasAssociados: HTMLElement;
 
   @Input() modoConsulta: boolean;
   @Input() usuario: Usuario;
@@ -52,6 +56,13 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
     }
   }
 
+  selecionaSistema(sistema: Sistema) {
+    this.changeSistema(sistema);
+    this.sistemasSelect.writeValue(sistema);
+    this.sistemasSelect.focus();
+    this.divSistemasAssociados.scroll();
+  }
+
   temPerfilSistema(codigoPerfil: string): boolean {
     if(this.sistemaSelecionado) {
       const codigoSistema = this.sistemaSelecionado.codigo;
@@ -74,6 +85,8 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
 
   associarPerfil() {
     this.usuario.perfisSistema = this.perfisSistemas;
+    this.changeSistema(undefined);
+    this.sistemasSelect.writeValue('');
   }
 
   private addUsuarioPerfil(perfil: Perfil, sistema: Sistema) {
