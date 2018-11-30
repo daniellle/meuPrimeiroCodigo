@@ -5,7 +5,7 @@
   <div class="corpo-card">
       <div class="row">
           <div class="form-group col-md-6">
-              <div class="md-container" *ngIf="(sistemas$ | async) as sistemas">
+              <div class="md-container" *ngIf="sistemas.length">
                   <md-select placeholder="{{ 'app_rst_usuario_label_sistemas' | recurso }}" 
                   (change)="changeSistema($event.value)"  id="idSistemas">
                       <md-option value="null">{{ 'app_rst_labels_selecione' | recurso }}</md-option>

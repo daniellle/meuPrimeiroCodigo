@@ -447,7 +447,7 @@ export class TermoUsoModalComponent extends BaseComponent implements OnInit {
     }
   }
  mostrar() {
-   console.log(this.show)
+   //console.log(this.show)
    if (this.show) {
     this.show = false;
    } else {

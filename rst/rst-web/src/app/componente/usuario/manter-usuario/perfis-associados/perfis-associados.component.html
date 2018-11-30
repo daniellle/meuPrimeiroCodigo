@@ -20,7 +20,7 @@
                         <button id="editarPerfis" class="btn-link"  (click)="editarPerfil(item)"><span class="fa fa-pencil edit"></span></button>
                     </td>
                     <td class="text-center">
-                        <button id="deletarPerfis" (click)="excluirAssociacaoPerfil(item.id)" class="btn-link"><img
+                        <button *ngIf="isNotOnlyTrabalhador(item.perfil)" id="deletarPerfis" (click)="excluirAssociacaoPerfil(item.id)" class="btn-link"><img
                     class="lixo" src="assets/img/trash.svg" alt="Excluir"></button>
                     </td>
                 </tr>
