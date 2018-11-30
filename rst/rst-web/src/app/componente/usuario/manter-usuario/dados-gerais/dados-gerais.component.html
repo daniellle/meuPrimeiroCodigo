@@ -6,7 +6,7 @@
       <div class="row">
           <div class="form-group col-md-4" [ngClass]="{ divDis : modoAlterar || modoConsulta }">
               <md-input-container [floatPlaceholder]="true">
-                  <input mdInput placeholder="{{'app_rst_labels_login_cpf' | recurso}}" type="text" id="login" formControlName="login" class="form-control" required appFormularioCamposErro>
+                  <input mdInput placeholder="{{'app_rst_labels_login_cpf' | recurso}}" [textMask]="{mask: mascaraCpf, guide: false}"  type="text" id="login" formControlName="login" class="form-control" required appFormularioCamposErro>
               </md-input-container>
           </div>
       </div>

@@ -46,9 +46,15 @@ export class PerfisAssociadosComponent {
 }
 
 excluirAssociacaoPerfil(idSistema): void {
-  const sistemaPerfis: UsuarioPerfilSistema[] = this.usuario.perfisSistema.filter((ps) => ps.sistema.id
+    let sistemaPerfis: UsuarioPerfilSistema[] = this.usuario.perfisSistema.filter((ps) => ps.sistema.id
         === Number(idSistema));
-  sistemaPerfis.forEach((element) => {
+    if (idSistema === 1) {
+        sistemaPerfis = this.usuario.perfisSistema.filter((ps) => ps.sistema.codigo === 'portal' ||
+        ps.sistema.codigo === 'cadastro' ||
+        ps.sistema.codigo === 'dw' ||
+        ps.sistema.codigo === 'indigev');
+    }
+    sistemaPerfis.forEach((element) => {
         const i = this.usuario.perfisSistema.indexOf(element, 0);
         if (element.perfil.codigo !== PerfilEnum.TRA) {
             if (i > -1) {
@@ -67,9 +73,15 @@ excluirAssociacaoPerfil(idSistema): void {
 
     isNotOnlyTrabalhador(perfis: any) {
         perfis = perfis.split('; ');
-        if (perfis.length === 1 && perfis[0] === 'Trabalhador') {
+        if (perfis.length === 1 && perfis[0] === 'Trabalhador'){
             return false;
         }
         return true;
     }
+
+    checkList() {
+        return this.usuario.perfisSistema.length > 0;
+    }
+
+
 }
