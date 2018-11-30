@@ -14,7 +14,8 @@ const COD_SISTEMA_CADASTRO = 'cadastro';
 
 @Component({
   selector: 'app-associa-perfil',
-  templateUrl: './associa-perfil.component.html'
+  templateUrl: './associa-perfil.component.html',
+  styleUrls: ['./associa-perfil.component.scss']
 })
 export class AssociaPerfilComponent implements OnInit, OnChanges {
 
