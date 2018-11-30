@@ -83,7 +83,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     buscarUsuario(): void {
         this.usuarioService.buscarUsuarioById(this.id).subscribe((retorno: Usuario) => {
-            console.log(retorno)
             this.usuario = retorno;
             if (this.usuario) {
                 if (!this.usuario.perfisSistema) {
@@ -101,8 +100,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                         }
                     });
                 }
-                this.getSistemaPerfilnotAdmin();
-                this.converterModelParaForm();
             }
         }, (error) => {
             this.mensagemError(error);
@@ -150,11 +147,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             }
         }
 
-        // if (this.isListaVazia()) {
-        //     this.mensagemError(MensagemProperties.app_rst_usuario_validacao_selecione_sistema_perfil);
-        //     isValido = false;
-        // }
-
         return isValido;
     }
 
@@ -201,14 +193,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     }
 
-    converterModelParaForm(): void {
-        // this.usuarioForm.patchValue({
-        //     nome: this.usuario.nome,
-        //     login: this.usuario.login,
-        //     email: this.usuario.email
-        // });
-    }
-
     converterFormParaModel(): void {
         const formModel = this.usuarioForm.controls;
 
@@ -228,14 +212,14 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         this.sistemaService.buscarSistemasPermitidos(Seguranca.getUsuario()).subscribe((retorno: any) => {
             this.sistemas = retorno;
             this.sistemasPossiveis = retorno.filter((item) => {
-                return item.id != 7;
-              });     
-              this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
-                return item.id != 4;
-              });      
-              this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
-                return item.id != 1;
-              });                                         
+                return item.id !== 7;
+              });
+            this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
+                return item.id !== 4;
+              });
+            this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
+                return item.id !== 1;
+              });
         }, (error) => {
             this.mensagemError(error);
         });
@@ -294,30 +278,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             sistemas[key].perfil = sistemas[key].perfil.substr(0, sistemas[key].perfil.length - 2);
             return sistemas[key];
         });
-    }
-
-    public getSistemaPerfilnotAdmin(): any {
-        const editPerfilSistema = new Map();
-        console.log(this.perfilSistemaUsuario);
-        this.perfilSistemaUsuario.forEach((value, key) => {
-            console.log('entrei primeiro forEach');
-            value.forEach((sistema) => {
-                console.log('entrei no segundo forEach');
-                if (sistema.nome === 'Cadastro' ||
-                    sistema.nome === 'Portal' ||
-                    sistema.nome === 'Indicadores e Análise Dinâmica' ||
-                    sistema.nome === 'Indicadores Igev') {
-                    if (editPerfilSistema.has('Cadastro')) {
-                        const perfisSet: Set<Perfil> = editPerfilSistema.get('Cadastro');
-                        perfisSet.add(this.getPerfil(key));
-                    }else {
-                        const perfilSet = new Set<Perfil>();
-                        perfilSet.add(this.getPerfil(key));
-                    }
-                }
-            });
-        });
-        console.log(editPerfilSistema);
     }
 
     excluirAssociacaoPerfil(idSistema: number): void {
@@ -390,13 +350,8 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         return retorno;
    }
 
-
     temPermissaoDesativar(): boolean {
         return !this.modoConsulta && Boolean(Seguranca.isPermitido(['usuario_desativar']));
-    }
-
-    getPerfil(id: number): Perfil {
-        return this.perfisUsuario.find(perfil => perfil.id === id);
     }
 
 }
