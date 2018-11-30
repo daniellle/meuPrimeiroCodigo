@@ -17,10 +17,10 @@
                     <td class="col-nao-quebra">{{item.sistema}}</td>
                     <td class="col-quebra">{{item.perfil}}</td>
                     <td class="text-center">
-                        <button class="btn-link"><span class="fa fa-pencil edit"></span></button>
+                        <button id="editarPerfis" class="btn-link"><span class="fa fa-pencil edit"></span></button>
                     </td>
                     <td class="text-center">
-                        <button (click)="excluirAssociacaoPerfil(item.id)" class="btn-link"><img
+                        <button id="deletarPerfis" (click)="excluirAssociacaoPerfil(item.id)" class="btn-link"><img
                     class="lixo" src="assets/img/trash.svg" alt="Excluir"></button>
                     </td>
                 </tr>
