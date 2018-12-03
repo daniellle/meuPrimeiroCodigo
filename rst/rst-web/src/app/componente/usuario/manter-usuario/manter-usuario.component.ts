@@ -55,7 +55,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             }
         });
         this.modoConsulta = !Seguranca.isPermitido([PermissoesEnum.USUARIO, PermissoesEnum.USUARIO_CADASTRAR,
-        PermissoesEnum.USUARIO_ALTERAR, PermissoesEnum.USUARIO_DESATIVAR]);
+            PermissoesEnum.USUARIO_ALTERAR, PermissoesEnum.USUARIO_DESATIVAR]);
         this.title = MensagemProperties.app_rst_usuario_title_cadastrar;
     }
 

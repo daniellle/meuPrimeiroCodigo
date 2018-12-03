@@ -6,15 +6,20 @@ import { SistemaService } from 'app/servico/sistema.service';
 import { Seguranca } from 'app/compartilhado/utilitario/seguranca.model';
 import { SistemaPerfil } from 'app/modelo/sistema-perfil.model';
 import { PerfilEnum } from 'app/modelo/enum/enum-perfil';
+import { BloqueioService } from 'app/servico/bloqueio.service';
+import { BaseComponent } from 'app/componente/base.component';
+import { ToastyService } from 'ng2-toasty';
+import { DialogService } from 'ng2-bootstrap-modal';
 
 const COD_SISTEMAS_RELACIONADOS = ['dw', 'indigev', 'portal'];
 const COD_SISTEMA_CADASTRO = 'cadastro';
 
 @Component({
   selector: 'app-associa-perfil',
-  templateUrl: './associa-perfil.component.html'
+  templateUrl: './associa-perfil.component.html',
+  styleUrls: ['./associa-perfil.component.scss']
 })
-export class AssociaPerfilComponent implements OnInit, OnChanges {
+export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnChanges{
 
   @ViewChild('sistemasSelect') sistemasSelect: MdSelect;
 
@@ -28,7 +33,12 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
   sistemas: Sistema[] = [];
   perfisDoSistema: SistemaPerfil[] = [];
 
-  constructor(private sistemaService: SistemaService) {}
+  constructor(private sistemaService: SistemaService,
+              protected bloqueioService: BloqueioService,
+              protected dialogo: ToastyService) {
+      super(bloqueioService, dialogo);
+
+  }
 
   ngOnInit() {
     if(this.usuario) {
@@ -81,6 +91,22 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
   }
 
   associarPerfil() {
+      let temCadastro: boolean;
+      let associandoEpidemiologia: boolean;
+      this.usuario.perfisSistema.forEach(sistemaPerfil => {
+          if(sistemaPerfil.sistema.codigo == "2"){
+              temCadastro = true;
+          }
+      });
+      this.perfisSistemas.forEach(sistemaPerfil => {
+          if(sistemaPerfil.sistema.codigo == "3"){
+              associandoEpidemiologia = true;
+      }
+      });
+      if(!temCadastro && associandoEpidemiologia){
+          this.mensagemError("É necessário associar o perfil cadastro primeiro para associar o perfil epidemiologia");
+          return;
+      }
     this.usuario.perfisSistema = this.perfisSistemas;
     this.changeSistema(undefined);
     this.sistemasSelect.writeValue('');
