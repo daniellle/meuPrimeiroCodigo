@@ -1,27 +1,28 @@
-import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
-import { Seguranca } from './../../../compartilhado/utilitario/seguranca.model';
-import { PerfilEnum } from 'app/modelo/enum/enum-perfil';
-import { environment } from './../../../../environments/environment';
-import { MascaraUtil } from './../../..//compartilhado/utilitario/mascara.util';
-import { IHash } from './../../empresa/empresa-funcao/empresa-funcao.component';
-import { UsuarioPerfilSistema } from './../../../modelo/usuario-perfil-sistema.model';
-import { Sistema } from './../../../modelo/sistema.model';
-import { Perfil } from './../../../modelo/perfil.model';
-import { SistemaService } from './../../../servico/sistema.service';
-import { PerfilService } from './../../../servico/perfil.service';
-import { DialogService } from 'ng2-bootstrap-modal';
-import { ToastyService } from 'ng2-toasty';
-import { BloqueioService } from './../../../servico/bloqueio.service';
-import { BaseComponent } from './../../..//componente/base.component';
-import { MensagemProperties } from './../../..//compartilhado/utilitario/recurso.pipe';
-import { Usuario } from './../../../modelo/usuario.model';
-import { UsuarioService } from './../../../servico/usuario.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import {PermissoesEnum} from 'app/modelo/enum/enum-permissoes';
+import {Seguranca} from './../../../compartilhado/utilitario/seguranca.model';
+import {PerfilEnum} from 'app/modelo/enum/enum-perfil';
+import {environment} from './../../../../environments/environment';
+import {MascaraUtil} from './../../..//compartilhado/utilitario/mascara.util';
+import {IHash} from './../../empresa/empresa-funcao/empresa-funcao.component';
+import {UsuarioPerfilSistema} from './../../../modelo/usuario-perfil-sistema.model';
+import {Sistema} from './../../../modelo/sistema.model';
+import {Perfil} from './../../../modelo/perfil.model';
+import {SistemaService} from './../../../servico/sistema.service';
+import {PerfilService} from './../../../servico/perfil.service';
+import {DialogService} from 'ng2-bootstrap-modal';
+import {ToastyService} from 'ng2-toasty';
+import {BloqueioService} from './../../../servico/bloqueio.service';
+import {BaseComponent} from './../../..//componente/base.component';
+import {MensagemProperties} from './../../..//compartilhado/utilitario/recurso.pipe';
+import {Usuario} from './../../../modelo/usuario.model';
+import {UsuarioService} from './../../../servico/usuario.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { PerfilSistema } from 'app/modelo/ṕerfil-sistemas';
-import { FormGroup } from '@angular/forms';
-import { AssociaPerfilComponent } from './associa-perfil/associa-perfil.component';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {PerfilSistema} from 'app/modelo/ṕerfil-sistemas';
+import {FormGroup} from '@angular/forms';
+import {AssociaPerfilComponent} from './associa-perfil/associa-perfil.component';
+import {DadosGeraisComponent} from "./dados-gerais/dados-gerais.component";
 
 export interface IHash {
     [details: number]: boolean;
@@ -36,7 +37,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     @ViewChild('associaPerfilComponent') associaPerfilComponent: AssociaPerfilComponent;
 
-    usuarioForm: FormGroup;
+    @Input() usuarioForm: FormGroup;
 
     id: number;
     usuario: Usuario;
@@ -48,7 +49,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     perfisSelecionados: IHash = {};
     idSistemas: number;
     perfilSistemas: PerfilSistema[] = [];
-    perfilSistemaUsuario =  new Map();
+    perfilSistemaUsuario = new Map();
     perfisUsuario: Perfil[] = [];
     sistemaEditar: Sistema;
 
@@ -83,11 +84,11 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             }
         });
         this.modoConsulta = !Seguranca.isPermitido([PermissoesEnum.USUARIO, PermissoesEnum.USUARIO_CADASTRAR,
-        PermissoesEnum.USUARIO_ALTERAR, PermissoesEnum.USUARIO_DESATIVAR]);
+            PermissoesEnum.USUARIO_ALTERAR, PermissoesEnum.USUARIO_DESATIVAR]);
         this.title = MensagemProperties.app_rst_usuario_title_cadastrar;
     }
 
-    editarSistemaPerfil(event: any){
+    editarSistemaPerfil(event: any) {
         this.associaPerfilComponent.selecionaSistema(event);
         let el = this.elemento.nativeElement.querySelector('app-dados-gerais');
         el.scrollIntoView();
@@ -100,13 +101,13 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                 if (!this.usuario.perfisSistema) {
                     this.usuario.perfisSistema = new Array<UsuarioPerfilSistema>();
                 }
-                else{
+                else {
                     this.usuario.perfisSistema.forEach(perfilSistema => {
-                        if(this.perfilSistemaUsuario.has(perfilSistema.perfil.id)){
+                        if (this.perfilSistemaUsuario.has(perfilSistema.perfil.id)) {
                             let sistemas = this.perfilSistemaUsuario.get(perfilSistema.perfil.id);
                             sistemas.push(perfilSistema.sistema);
                             this.perfilSistemaUsuario.set(perfilSistema.perfil.id, sistemas);
-                        }else{
+                        } else {
                             this.perfisUsuario.push(perfilSistema.perfil);
                             this.perfilSistemaUsuario.set(perfilSistema.perfil.id, [perfilSistema.sistema]);
                         }
@@ -240,13 +241,13 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             this.sistemas = retorno;
             this.sistemasPossiveis = retorno.filter((item) => {
                 return item.id != 7;
-              });
-              this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
+            });
+            this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
                 return item.id != 4;
-              });
-              this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
+            });
+            this.sistemasPossiveis = this.sistemasPossiveis.filter((item) => {
                 return item.id != 1;
-              });
+            });
         }, (error) => {
             this.mensagemError(error);
         });
@@ -275,8 +276,8 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     selecionarSistemaPerfil(id: number): void {
         this.perfisSelecionados = [];
         this.perfisSistemas = [];
-        const target_r: any = { checked: true };
-        const event: any = { checked: target_r };
+        const target_r: any = {checked: true};
+        const event: any = {checked: target_r};
         this.idSistemas = id;
         this.filtrarPerfis();
 
@@ -296,7 +297,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             const id = ps.sistema.id;
 
             if (!sistemas[id]) {
-                sistemas[id] = { id, sistema: ps.sistema.nome, perfil: '' };
+                sistemas[id] = {id, sistema: ps.sistema.nome, perfil: ''};
             }
             sistemas[id].perfil = ps.perfil.nome.toString().concat('; ').concat(sistemas[id].perfil);
         });
@@ -328,18 +329,17 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     filtrarPerfis() {
         this.perfilSistemas = [];
-        if(this.idSistemas == 2)
-        {
+        if (this.idSistemas == 2) {
             this.perfis = [];
             const sistemaCadastro = this.sistemas.filter((s) => s.id === 7 || s.id === 4 || s.id === 1 || s.id === 2);
-            if (sistemaCadastro){
+            if (sistemaCadastro) {
                 sistemaCadastro.forEach(resposta => {
-                    resposta.sistemaPerfis.forEach(r =>{
+                    resposta.sistemaPerfis.forEach(r => {
                         let perfilSistema = this.checkPerfilSistemas(r.perfil);
-                        if(perfilSistema.perfil.id !== undefined){
+                        if (perfilSistema.perfil.id !== undefined) {
                             perfilSistema.sistemas.push(resposta.id);
-                        }else{
-                            if(r.perfil.codigo !== PerfilEnum.TRA){
+                        } else {
+                            if (r.perfil.codigo !== PerfilEnum.TRA) {
                                 let perfilSistema = new PerfilSistema();
                                 perfilSistema.perfil = r.perfil;
                                 perfilSistema.sistemas.push(resposta.id);
@@ -350,7 +350,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                 })
             }
         }
-        else{
+        else {
             const sistema = this.sistemas.filter((s) => s.id === Number(this.idSistemas))[0];
             if (sistema) {
                 this.perfis = sistema.sistemaPerfis.map(value => value.perfil)
@@ -361,15 +361,15 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         }
     }
 
-   checkPerfilSistemas(perfil): PerfilSistema{
-       let retorno = new PerfilSistema();
-       this.perfilSistemas.forEach(perfilSistema => {
-            if(perfilSistema.perfil.nome == perfil.nome){
+    checkPerfilSistemas(perfil): PerfilSistema {
+        let retorno = new PerfilSistema();
+        this.perfilSistemas.forEach(perfilSistema => {
+            if (perfilSistema.perfil.nome == perfil.nome) {
                 retorno = perfilSistema;
             }
         });
         return retorno;
-   }
+    }
 
 
     temPermissaoDesativar(): boolean {
