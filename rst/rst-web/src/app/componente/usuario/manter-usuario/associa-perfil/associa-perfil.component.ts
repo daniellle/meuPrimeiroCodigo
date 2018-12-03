@@ -1,14 +1,11 @@
 import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { MdSelect } from '@angular/material';
 
-import { Sistema } from 'app/modelo/sistema.model';
-import { UsuarioPerfilSistema } from 'app/modelo/usuario-perfil-sistema.model';
+import { Sistema, UsuarioPerfilSistema, Usuario, Perfil } from '../../../../modelo/index';
 import { SistemaService } from 'app/servico/sistema.service';
 import { Seguranca } from 'app/compartilhado/utilitario/seguranca.model';
 import { SistemaPerfil } from 'app/modelo/sistema-perfil.model';
-import { Usuario } from 'app/modelo/usuario.model';
-import { Perfil } from 'app/modelo/perfil.model';
-import {PerfilSistema} from "../../../../modelo/ṕerfil-sistemas";
+import { PerfilEnum } from 'app/modelo/enum/enum-perfil';
 
 const COD_SISTEMAS_RELACIONADOS = ['dw', 'indigev', 'portal'];
 const COD_SISTEMA_CADASTRO = 'cadastro';
@@ -65,8 +62,7 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
     }
   }
 
-
-  temPerfilSistema(codigoPerfil: string): boolean {
+  usuarioTemPerfilSistema(codigoPerfil: string): boolean {
     if(this.sistemaSelecionado) {
       const codigoSistema = this.sistemaSelecionado.codigo;
       return this.perfisSistemas.some(ps =>
@@ -88,6 +84,10 @@ export class AssociaPerfilComponent implements OnInit, OnChanges {
     this.usuario.perfisSistema = this.perfisSistemas;
     this.changeSistema(undefined);
     this.sistemasSelect.writeValue('');
+  }
+
+  isPerfilTrabalhador(perfil: Perfil): boolean {
+    return perfil.codigo == PerfilEnum.TRA;
   }
 
   private addUsuarioPerfil(perfil: Perfil, sistema: Sistema) {

@@ -8,7 +8,7 @@ import { AssociaPerfilComponent } from './associa-perfil/associa-perfil.componen
 import { PerfisAssociadosComponent } from './perfis-associados/perfis-associados.component';
 import { PaginationModule } from 'ngx-bootstrap';
 import { ConcatenaPerfisSistemasCadastroPipe } from './concatena-perfis-sistemas-cadastro.pipe';
-
+import { RecursoPipe } from 'app/compartilhado/utilitario/recurso.pipe';
 
 @NgModule({
   imports: [
@@ -25,6 +25,9 @@ import { ConcatenaPerfisSistemasCadastroPipe } from './concatena-perfis-sistemas
   ],
   exports: [
     ManterUsuarioComponent
+  ],
+  providers: [
+    RecursoPipe
   ]
 })
 export class ManterUsuarioModule {}

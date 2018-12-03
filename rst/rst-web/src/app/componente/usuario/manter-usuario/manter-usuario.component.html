@@ -4,7 +4,10 @@
     {{title}}
 </p>
 
-<app-dados-gerais [usuarioForm]="usuarioForm" [modoAlterar]="modoAlterar" [modoConsulta]="modoConsulta" [usuario]="usuario">
+<app-dados-gerais #dadosGeraisComponent
+    [modoAlterar]="modoAlterar" 
+    [modoConsulta]="modoConsulta" 
+    [usuario]="usuario">
 </app-dados-gerais>
 
 

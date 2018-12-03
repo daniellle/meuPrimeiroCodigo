@@ -16,16 +16,17 @@
               </div>
           </div>
       </div>
-      <div class="row" *ngIf="!idSistemas">
+      <div class="row" *ngIf="sistemas?.length">
           <div class="form-group col-md-12" *ngIf="sistemaSelecionado">
               <label for="perfis" class="col-form-label">{{ 'app_rst_usuario_label_perfis' | recurso }}</label>
           </div>
           <div class="form-group col-md-12">
-              <label class="col col-md-4" *ngFor="let perfilDoSistema of perfisDoSistema" for="{{ perfilDoSistema.perfil.nome }}">
-                  <fieldset>
+              <label class="col col-md-4" *ngFor="let perfilDoSistema of perfisDoSistema" 
+                for="{{ perfilDoSistema.perfil.nome }}" >
+                  <fieldset *ngIf="!isPerfilTrabalhador(perfilDoSistema.perfil)">
                       <md-checkbox (change)="atualizaPerfilSistema($event, perfilDoSistema)" 
                         class="radio-tabela-pesquisa" 
-                        [checked]="temPerfilSistema(perfilDoSistema.perfil.codigo)">
+                        [checked]="usuarioTemPerfilSistema(perfilDoSistema.perfil.codigo)">
                           {{ perfilDoSistema.perfil.nome }}
                       </md-checkbox>
                   </fieldset>
