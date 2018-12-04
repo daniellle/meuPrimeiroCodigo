@@ -5,8 +5,8 @@
 </p>
 
 <app-dados-gerais #dadosGeraisComponent
-    [modoAlterar]="modoAlterar" 
-    [modoConsulta]="modoConsulta" 
+    [modoAlterar]="modoAlterar"
+    [modoConsulta]="modoConsulta"
     [usuario]="usuario">
 </app-dados-gerais>
 
@@ -14,7 +14,7 @@
 <app-associa-perfil #associaPerfilComponent [modoConsulta]="modoConsulta" [usuario]="usuario"></app-associa-perfil>
 
 
-<app-perfis-associados (click)="editarSistemaPerfil($event)" [usuario]="usuario"></app-perfis-associados>
+<app-perfis-associados [usuario]="usuario"></app-perfis-associados>
 
 <div class="btn-rodape-acoes space-up">
     <button type="button " class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!modoConsulta" (click)="salvar()">

@@ -13,6 +13,7 @@ import { UsuarioService } from './../../../servico/usuario.service';
 import { AssociaPerfilComponent } from './associa-perfil/associa-perfil.component';
 import { DadosGeraisComponent } from './dados-gerais/dados-gerais.component';
 import { UsuarioPerfilSistema, Perfil, Usuario } from './../../../modelo/index';
+import {MascaraUtil} from "../../../compartilhado/utilitario/mascara.util";
 
 @Component({
     selector: 'app-manter-usuario',
@@ -41,6 +42,10 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         super(bloqueioService, dialogo);
     }
 
+    editarSistemaPerfil(event){
+
+    }
+
     ngOnInit() {
         this.route.params.subscribe((params) => {
             this.id = params['id'];
@@ -61,7 +66,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     buscarUsuario(): void {
         this.usuarioService.buscarUsuarioById(this.id)
-            .subscribe((retorno: Usuario) =>  this.usuario = retorno, 
+            .subscribe((retorno: Usuario) =>  this.usuario = retorno,
             error => this.mensagemError(error));
     }
 
@@ -74,16 +79,16 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         if(this.dadosGeraisComponent.validarCampos()) {
             const { nome, login, email } = this.dadosGeraisComponent.getFormValue();
             this.usuario.nome = nome;
-            this.usuario.login = login;
+            this.usuario.id = this.id;
+            this.usuario.login = MascaraUtil.removerMascara(login);
             this.usuario.email = email;
             this.usuario.dados = undefined;
-            this.usuario.login = '81402575750'
             this.usuarioService.salvarUsuario(this.usuario).subscribe((retorno: Usuario) => {
                 this.usuario = retorno;
                 this.id = this.usuario.id;
                 this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
                 this.voltar();
-            }, error => 
+            }, error =>
                 this.mensagemError(error)
             );
         }
@@ -99,7 +104,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     }
 
     isListaVazia(): boolean {
-        return !(this.usuario && this.usuario.perfisSistema && 
+        return !(this.usuario && this.usuario.perfisSistema &&
             this.usuario.perfisSistema.length > 0);
     }
 
