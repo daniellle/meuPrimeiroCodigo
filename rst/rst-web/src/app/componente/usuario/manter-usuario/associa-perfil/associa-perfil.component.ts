@@ -42,7 +42,7 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
 
   ngOnInit() {
     if(this.usuario) {
-      this.perfisSistemas = this.usuario.perfisSistema;
+      this.perfisSistemas = [].concat(this.usuario.perfisSistema);
     }
     this.sistemaService.buscarSistemasPermitidos(Seguranca.getUsuario())
       .subscribe(sistemas => this.sistemas = sistemas);
@@ -64,10 +64,8 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
   }
 
   selecionaSistema(sistemaNome: string) {
-    console.log(sistemaNome)
     if(sistemaNome) {
       const sistema = this.sistemas.find(s => s.nome == sistemaNome);
-      console.log(sistema)
       this.changeSistema(sistema);
       this.sistemasSelect.writeValue(sistema);
       this.sistemasSelect.focus();
@@ -109,7 +107,7 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
           this.mensagemError("É necessário associar o perfil cadastro primeiro para associar o perfil epidemiologia");
           return;
       }
-    this.usuario.perfisSistema = this.perfisSistemas;
+    this.usuario.perfisSistema = [].concat(this.perfisSistemas);
     this.changeSistema(undefined);
     this.sistemasSelect.writeValue('');
   }
