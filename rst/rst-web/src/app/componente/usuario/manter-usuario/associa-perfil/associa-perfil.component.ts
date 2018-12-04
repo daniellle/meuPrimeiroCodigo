@@ -66,8 +66,10 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
   }
 
   selecionaSistema(sistemaNome: string) {
+    console.log(sistemaNome)
     if(sistemaNome) {
       const sistema = this.sistemas.find(s => s.nome == sistemaNome);
+      console.log(sistema)
       this.changeSistema(sistema);
       this.sistemasSelect.writeValue(sistema);
       this.sistemasSelect.focus();

@@ -15,7 +15,7 @@ import {AbstractControl} from "@angular/forms";
 export class PerfisAssociadosComponent {
 
   @Input() usuario: Usuario;
-  @Output('click') sistemaEditar: EventEmitter<Sistema> = new EventEmitter();
+  @Output() sistemaEditar: EventEmitter<Sistema> = new EventEmitter();
 
   constructor(@Optional() protected dialogo?: ToastyService){
 

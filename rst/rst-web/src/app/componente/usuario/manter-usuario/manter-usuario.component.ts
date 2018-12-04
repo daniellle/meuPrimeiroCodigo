@@ -12,7 +12,7 @@ import { MensagemProperties } from './../../..//compartilhado/utilitario/recurso
 import { UsuarioService } from './../../../servico/usuario.service';
 import { AssociaPerfilComponent } from './associa-perfil/associa-perfil.component';
 import { DadosGeraisComponent } from './dados-gerais/dados-gerais.component';
-import { UsuarioPerfilSistema, Perfil, Usuario } from './../../../modelo/index';
+import { UsuarioPerfilSistema, Perfil, Usuario, Sistema } from './../../../modelo/index';
 import {MascaraUtil} from "../../../compartilhado/utilitario/mascara.util";
 
 @Component({
@@ -76,7 +76,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             return;
         }
 
-
         if(this.dadosGeraisComponent.validarCampos()) {
             const { nome, login, email } = this.dadosGeraisComponent.getFormValue();
             this.usuario.nome = nome;
@@ -95,7 +94,10 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         }
     }
 
-
+    editarEvent(sistema: string) {
+        if(sistema)
+            this.associaPerfilComponent.selecionaSistema(sistema)
+    }
 
     private _isEmptyListaPerfilSistema() {
         return this.usuario.perfisSistema.length === 0;
