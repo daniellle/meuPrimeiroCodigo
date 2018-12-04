@@ -13,7 +13,7 @@ import {Sistema} from "../../../../modelo/sistema.model";
 export class PerfisAssociadosComponent {
 
   @Input() usuario: Usuario;
-  @Output('click') sistemaEditar: EventEmitter<Sistema> = new EventEmitter();
+  @Output() sistemaEditar: EventEmitter<Sistema> = new EventEmitter();
 
 
   public getSistemaPerfil(): any {

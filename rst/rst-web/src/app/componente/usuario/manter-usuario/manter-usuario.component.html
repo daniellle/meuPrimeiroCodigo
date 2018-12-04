@@ -14,7 +14,7 @@
 <app-associa-perfil #associaPerfilComponent [modoConsulta]="modoConsulta" [usuario]="usuario"></app-associa-perfil>
 
 
-<app-perfis-associados [usuario]="usuario"></app-perfis-associados>
+<app-perfis-associados (sistemaEditar)="editarEvent($event)" [usuario]="usuario"></app-perfis-associados>
 
 <div class="btn-rodape-acoes space-up">
     <button type="button " class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!modoConsulta" (click)="salvar()">

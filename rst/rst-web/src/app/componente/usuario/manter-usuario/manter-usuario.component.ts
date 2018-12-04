@@ -12,7 +12,7 @@ import { MensagemProperties } from './../../..//compartilhado/utilitario/recurso
 import { UsuarioService } from './../../../servico/usuario.service';
 import { AssociaPerfilComponent } from './associa-perfil/associa-perfil.component';
 import { DadosGeraisComponent } from './dados-gerais/dados-gerais.component';
-import { UsuarioPerfilSistema, Perfil, Usuario } from './../../../modelo/index';
+import { UsuarioPerfilSistema, Perfil, Usuario, Sistema } from './../../../modelo/index';
 import {MascaraUtil} from "../../../compartilhado/utilitario/mascara.util";
 
 @Component({
@@ -92,6 +92,11 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                 this.mensagemError(error)
             );
         }
+    }
+
+    editarEvent(sistema: string) {
+        if(sistema)
+            this.associaPerfilComponent.selecionaSistema(sistema)
     }
 
     private _isEmptyListaPerfilSistema() {
