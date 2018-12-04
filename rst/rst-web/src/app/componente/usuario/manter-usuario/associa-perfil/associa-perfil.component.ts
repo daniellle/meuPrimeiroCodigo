@@ -32,6 +32,8 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
   sistemaSelecionado: Sistema;
   sistemas: Sistema[] = [];
   perfisDoSistema: SistemaPerfil[] = [];
+    temCadastro: boolean;
+    associandoEpidemiologia: boolean;
 
   constructor(private sistemaService: SistemaService,
               protected bloqueioService: BloqueioService,
@@ -91,25 +93,29 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
   }
 
   associarPerfil() {
-      let temCadastro: boolean;
-      let associandoEpidemiologia: boolean;
       this.usuario.perfisSistema.forEach(sistemaPerfil => {
-          if(sistemaPerfil.sistema.codigo == "2"){
-              temCadastro = true;
+          if(sistemaPerfil.sistema.codigo == "cadastro"){
+              this.temCadastro = true;
           }
       });
       this.perfisSistemas.forEach(sistemaPerfil => {
-          if(sistemaPerfil.sistema.codigo == "3"){
-              associandoEpidemiologia = true;
-      }
+          if(sistemaPerfil.sistema.codigo == "epidemiologia"){
+              this.associandoEpidemiologia = true;
+         }
       });
-      if(!temCadastro && associandoEpidemiologia){
-          this.mensagemError("É necessário associar o perfil cadastro primeiro para associar o perfil epidemiologia");
+      if(!this.temCadastro && this.associandoEpidemiologia){
+          this.perfisSistemas = [];
+          this.usuario.perfisSistema.pop();
+          this.temCadastro = undefined;
+          this.associandoEpidemiologia = undefined;
+          this.mensagemError("É necessário associar ter uma associação com o sistema Cadastro para criar associação com o sistema Epidemiologia");
           return;
       }
     this.usuario.perfisSistema = this.perfisSistemas;
     this.changeSistema(undefined);
     this.sistemasSelect.writeValue('');
+    this.temCadastro = undefined;
+    this.associandoEpidemiologia = undefined;
   }
 
   isPerfilTrabalhador(perfil: Perfil): boolean {

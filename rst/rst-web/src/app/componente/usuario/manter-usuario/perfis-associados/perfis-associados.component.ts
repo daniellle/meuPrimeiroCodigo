@@ -1,10 +1,12 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {Component, Input, Output, EventEmitter, Optional} from '@angular/core';
 
 import { Usuario } from 'app/modelo/usuario.model';
 import { UsuarioPerfilSistema } from 'app/modelo/usuario-perfil-sistema.model';
 import { PerfilEnum } from 'app/modelo/enum/enum-perfil';
 import { PerfilSistema } from 'app/modelo/ṕerfil-sistemas';
 import {Sistema} from "../../../../modelo/sistema.model";
+import {ToastOptions, ToastyService} from "ng2-toasty";
+import {AbstractControl} from "@angular/forms";
 
 @Component({
   selector: 'app-perfis-associados',
@@ -14,6 +16,10 @@ export class PerfisAssociadosComponent {
 
   @Input() usuario: Usuario;
   @Output('click') sistemaEditar: EventEmitter<Sistema> = new EventEmitter();
+
+  constructor(@Optional() protected dialogo?: ToastyService){
+
+  }
 
 
   public getSistemaPerfil(): any {
@@ -53,7 +59,11 @@ excluirAssociacaoPerfil(idSistema): void {
         ps.sistema.codigo === 'cadastro' ||
         ps.sistema.codigo === 'dw' ||
         ps.sistema.codigo === 'indigev');
+         if(!this.validarEpidemiologia()){
+             return;
+         }
     }
+
     sistemaPerfis.forEach((element) => {
         const i = this.usuario.perfisSistema.indexOf(element, 0);
         if (element.perfil.codigo !== PerfilEnum.TRA) {
@@ -63,6 +73,46 @@ excluirAssociacaoPerfil(idSistema): void {
         }
     });
 }
+
+    private validarEpidemiologia(): boolean {
+        let temEpidemiologia: boolean;
+
+        this.usuario.perfisSistema.forEach(perfilSistema =>{
+            if(perfilSistema.sistema.codigo == "epidemiologia"){
+                temEpidemiologia = true;
+            }
+        })
+
+        if(temEpidemiologia){
+            this.mensagemError("Não é possível apagar a associação com o sistema Cadastro enquanto houver associação com o sistema Epidemiologia");
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+
+    private getMensagem(mensagem: string, controle?: AbstractControl): ToastOptions {
+
+        const configuracoes: ToastOptions = {
+            title: '',
+            timeout: 5000,
+            msg: mensagem,
+            showClose: true,
+            theme: 'bootstrap',
+        };
+
+        return configuracoes;
+
+    }
+
+    protected mensagemError(mensagem: string, controle?: AbstractControl) {
+        if (this.dialogo) {
+            this.dialogo.error(this.getMensagem(mensagem, controle));
+        }
+    }
+
 
     editarPerfil(sistema: Sistema) {
         if (sistema) {

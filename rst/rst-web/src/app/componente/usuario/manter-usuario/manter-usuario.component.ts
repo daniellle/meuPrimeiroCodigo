@@ -76,6 +76,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             return;
         }
 
+
         if(this.dadosGeraisComponent.validarCampos()) {
             const { nome, login, email } = this.dadosGeraisComponent.getFormValue();
             this.usuario.nome = nome;
@@ -93,6 +94,8 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             );
         }
     }
+
+
 
     private _isEmptyListaPerfilSistema() {
         return this.usuario.perfisSistema.length === 0;
