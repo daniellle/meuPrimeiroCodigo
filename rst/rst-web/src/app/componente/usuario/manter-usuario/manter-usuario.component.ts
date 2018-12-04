@@ -77,7 +77,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             this.usuario.login = login;
             this.usuario.email = email;
             this.usuario.dados = undefined;
-            this.usuario.login = '81402575750'
             this.usuarioService.salvarUsuario(this.usuario).subscribe((retorno: Usuario) => {
                 this.usuario = retorno;
                 this.id = this.usuario.id;
