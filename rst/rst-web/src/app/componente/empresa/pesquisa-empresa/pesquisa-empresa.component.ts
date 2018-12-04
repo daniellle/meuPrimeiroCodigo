@@ -130,7 +130,7 @@ export class PesquisaEmpresaComponent extends BaseComponent implements OnInit {
     // }
     if (!this.isVazia(this.filtroEmpresa.cnpj)) {
       if (MascaraUtil.removerMascara(this.filtroEmpresa.cnpj).length < 14) {
-        this.mensagemError(MensagemProperties.app_rst_labels_cnpj_incompleto);
+        this.mensagemError(MensagemProperties.app_rst_labels_cpf_cnpj_incompleto);
         verificador = false;
       }
       this.filtroEmpresa.cnpj = MascaraUtil.removerMascara(this.filtroEmpresa.cnpj);
