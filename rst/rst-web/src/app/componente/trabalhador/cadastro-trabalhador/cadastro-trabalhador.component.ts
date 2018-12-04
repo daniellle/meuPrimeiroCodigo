@@ -184,7 +184,6 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
         this.buscarEstados();
         this.buscarPaises();
         this.buscarProfissoes();
-        this.keysBrpdh = Object.keys(this.brpdh);
         this.keysEscolaridade = Object.keys(this.escolaridade);
         this.keysFaixaSalarial = Object.keys(this.faixaSalarial);
         this.keysRaca = Object.keys(this.raca);
@@ -306,7 +305,6 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
             ctps: this.trabalhador.ctps,
             serieCtps: this.trabalhador.serieCtps,
             ufCtps: this.trabalhador.ufCtps,
-            brPdh: this.trabalhador.brPdh,
             escolaridade: this.trabalhador.escolaridade,
             faixaSalarial: this.trabalhador.faixaSalarial,
             raca: this.trabalhador.raca,
@@ -586,7 +584,6 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
         this.trabalhador.orgaoRg = formModel.orgaoRg.value;
         this.trabalhador.ctps = formModel.ctps.value;
         this.trabalhador.serieCtps = formModel.serieCtps.value;
-        this.trabalhador.brPdh = formModel.brPdh.value;
         this.trabalhador.ufCtps = formModel.ufCtps.value;
         this.trabalhador.escolaridade = formModel.escolaridade.value;
         this.trabalhador.faixaSalarial = formModel.faixaSalarial.value;

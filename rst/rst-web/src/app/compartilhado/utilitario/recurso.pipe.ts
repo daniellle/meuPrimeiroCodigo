@@ -62,6 +62,7 @@ export const MensagemProperties = {
   app_rst_labels_nit_contato: 'NIT Contato',
   app_rst_labels_rg_conselho_regional: 'Registro no Conselho Regional',
   app_rst_labels_cnpj: 'CNPJ',
+  app_rst_labels_cnpj_cpf: 'CNPJ/CPF',
   app_rst_labels_nome_fantasia: 'Nome Fantasia',
   app_rst_labels_horas_semanais: 'Horas Semanais',
   app_rst_labels_situacao: 'Situação',
