@@ -136,6 +136,7 @@ export const MensagemProperties = {
   app_rst_labels_situacao_inativo: 'Inativo',
   app_rst_labels_url: 'URL',
   app_rst_labels_cnpj_incompleto: 'Por favor informar o CNPJ completo',
+  app_rst_labels_cnpj_cpf_incompleto: 'Por favor informar o CNPJ/CPF completo',
   app_rst_labels_cpf_incompleto: 'Por favor informar o CPF completo',
   app_rst_labels_nit_incompleto: 'Por favor informar o NIT completo',
   app_rst_labels_informações_adicionais: 'Informações Adicionais',

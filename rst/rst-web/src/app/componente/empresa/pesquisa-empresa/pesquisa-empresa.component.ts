@@ -73,18 +73,20 @@ export class PesquisaEmpresaComponent extends BaseComponent implements OnInit {
 
   pesquisar() {
     this.empresas = new Array<Empresa>();
-    if (this.validarCampos()) {
-      this.removerMascara();
+    if(this.validarCampos()){
       this.paginacao.pagina = 1;
+      if (this.filtroEmpresa.cnpj) {
+        this.filtroEmpresa.cnpj.padStart(14, '0');
+      }
       this.service.pesquisar(this.filtroEmpresa, this.paginacao).subscribe((retorno: ListaPaginada<Empresa>) => {
-        this.empresas = retorno.list;
-        this.paginacao = this.getPaginacao(this.paginacao, retorno);
-        if (retorno.quantidade === 0) {
-          this.mensagemError(MensagemProperties.app_rst_nenhum_registro_encontrado);
-        }
-      }, (error) => {
-        this.mensagemError(error);
-      });
+          this.empresas = retorno.list;
+          this.paginacao = this.getPaginacao(this.paginacao, retorno);
+          if (retorno.quantidade === 0) {
+            this.mensagemError(MensagemProperties.app_rst_nenhum_registro_encontrado);
+          }
+        }, (error) => {
+          this.mensagemError(error);
+        });
     }
   }
 
@@ -129,7 +131,12 @@ export class PesquisaEmpresaComponent extends BaseComponent implements OnInit {
     //   verificador = false;
     // }
     if (!this.isVazia(this.filtroEmpresa.cnpj)) {
-      if (MascaraUtil.removerMascara(this.filtroEmpresa.cnpj).length < 14) {
+      if (MascaraUtil.removerMascara(this.filtroEmpresa.cnpj).length < 11)  {
+        this.mensagemError(MensagemProperties.app_rst_labels_cnpj_cpf_incompleto);
+        verificador = false;
+      }
+      if (MascaraUtil.removerMascara(this.filtroEmpresa.cnpj).length > 11 &&
+      MascaraUtil.removerMascara(this.filtroEmpresa.cnpj).length < 14)  {
         this.mensagemError(MensagemProperties.app_rst_labels_cnpj_incompleto);
         verificador = false;
       }
