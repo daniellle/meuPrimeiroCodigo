@@ -160,6 +160,7 @@ export class PesquisaEmpresaComponent extends BaseComponent implements OnInit {
         this.mensagemError(error);
     });
  }
+
  buscarEstados() {
     this.estadoService.buscarEstados().subscribe((dados: Estado[]) => {
       this.estados = dados;
