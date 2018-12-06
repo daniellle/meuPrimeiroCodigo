@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum Raca implements CodeableEnum {
 
 	// @formatter:off
-	BRANCA("1", "Branca", "B"), PRETA("2", "Preta", "PR"), AMARELA("3", "Amarela", "A"), PARDA("4", "Parda",
+	BRANCA("1", "Branca", "B"), NEGRA("2", "Negra", "N"), AMARELA("3", "Amarela", "A"), PARDA("4", "Parda",
 			"PA"), INDIGENA("5", "Indígena", "I"), SEM_DECLARACAO("6", "Sem declaração", "SD");
 	// @formatter:on
 

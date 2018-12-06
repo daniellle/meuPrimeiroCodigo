@@ -90,7 +90,7 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
 
   ngOnInit() {
     this.buscarEstados();
-    this.buscarConselhoRegionais();   
+    this.buscarConselhoRegionais();
     this.buscarEspecialidades();
   }
 
@@ -196,7 +196,7 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
         Validators.compose([
           Validators.maxLength(300),
         ]),
-      ],       
+      ],
       regConsRegional: [
         { value: null, disabled: this.modoConsulta },
         Validators.compose([
@@ -235,7 +235,7 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
         Validators.compose([
           Validators.maxLength(300),
         ]),
-      ],    
+      ],
     });
   }
 
@@ -353,11 +353,7 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
     if (this.profissional.conselhoRegional) {
       this.profissionaisForm.patchValue({
         conselhoRegional: this.profissional.conselhoRegional.id,
-      });
-      const formModel = this.profissionaisForm.controls;
-   
-      console.log(formModel.conselhoRegional.value);
-      
+      });         
     }    
     if (this.profissional.listaEnderecoProfissional) {
       this.profissionaisForm.patchValue({
@@ -407,7 +403,7 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
     }, (error) => {
       this.mensagemError(error);
     });
-  }  
+  }
 
   buscarEspecialidades() {
     this.especialidadeService.pesquisarEspecialidades().subscribe((retorno: any[]) => {
@@ -511,7 +507,7 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
     if (this.profissionaisForm.controls['genero'].invalid) {
       if (this.profissionaisForm.controls['genero'].errors.required) {
         this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.profissionaisForm.controls['genero'],
-          MensagemProperties.app_rst_labels_genero);
+          MensagemProperties.app_rst_labels_sexo);
         isValido = false;
       }
 
@@ -581,7 +577,7 @@ export class CadastroProfissionaisComponent extends BaseComponent implements OnI
         MensagemProperties.app_rst_labels_estado);
       isValido = false;
     }
-   
+
     if (this.profissionaisForm.controls['estado'].value && !this.profissionaisForm.controls['municipio'].value) {
       this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.profissionaisForm.controls['municipio'],
         MensagemProperties.app_rst_labels_municipio);

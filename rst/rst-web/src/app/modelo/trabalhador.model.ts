@@ -17,6 +17,7 @@ import { Pais } from 'app/modelo/pais.model';
 export class Trabalhador {
     id: number;
     nome: string;
+    nomeSocial: string;
     nomePai: string;
     nomeMae: string;
     planoSaude: SimNao;

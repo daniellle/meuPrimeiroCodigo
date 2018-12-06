@@ -87,13 +87,13 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
     tratarImunizacao(imunizacao: any) {
         if (imunizacao) {
             imunizacao.forEach(element => {
-                console.log(element);
+                //console.log(element);
                 let imunizar = new Imunizacao();
                 imunizar.nome = element.informacao.value;
                 if (element.data) {
                     imunizar.data = new Date(element.data.value)
                 }
-                console.log(imunizar);
+                //console.log(imunizar);
                 this.imunizacao.push(imunizar);
             });
         }

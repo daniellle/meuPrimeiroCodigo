@@ -28,7 +28,7 @@ export class AutenticacaoService extends BaseService<Credencial> {
 			.map((response: any) => {
 				return Seguranca.salvarUsuario(response);
 			}).catch((erro: any) => {
-				console.log(erro);
+				//console.log(erro);
 				return Observable.of(false);
 			});
 	}

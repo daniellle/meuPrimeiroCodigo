@@ -47,8 +47,15 @@ export class PesquisaDepartRegionalComponent extends BaseComponent implements On
   }
 
     private hasModoConsulta():boolean {
-        return !Seguranca.isPermitido(['departamento_regional_cadastrar', 'departamento_regional_alterar',
-            'departamento_regional_desativar']) || this.usuarioLogado.dados.administrador;
+      if(this.usuarioLogado.permissoes.includes(PermissoesEnum.DEPARTAMENTO_REGIONAL_CONSULTAR) ||  this.usuarioLogado.dados.administrador){
+          return true;
+      }
+      else{
+          return false;
+      }
+
+        /*return !Seguranca.isPermitido(['departamento_regional_cadastrar', 'departamento_regional_alterar',
+            'departamento_regional_desativar']) || this.usuarioLogado.dados.administrador;*/
     }
 
     buscarEstados() {
