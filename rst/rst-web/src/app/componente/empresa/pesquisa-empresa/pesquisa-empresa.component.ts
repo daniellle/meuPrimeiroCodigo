@@ -76,7 +76,7 @@ export class PesquisaEmpresaComponent extends BaseComponent implements OnInit {
     if(this.validarCampos()){
       this.paginacao.pagina = 1;
       if (this.filtroEmpresa.cnpj) {
-        this.filtroEmpresa.cnpj.padStart(14, '0');
+        this.filtroEmpresa.cnpj = this.filtroEmpresa.cnpj.padStart(14, '0');
       }
       this.service.pesquisar(this.filtroEmpresa, this.paginacao).subscribe((retorno: ListaPaginada<Empresa>) => {
           this.empresas = retorno.list;
