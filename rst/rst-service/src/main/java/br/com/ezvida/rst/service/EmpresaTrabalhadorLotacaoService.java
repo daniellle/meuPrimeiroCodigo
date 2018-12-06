@@ -1,12 +1,17 @@
 package br.com.ezvida.rst.service;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import br.com.ezvida.girst.apiclient.model.Usuario;
+import br.com.ezvida.girst.apiclient.model.UsuarioPerfilSistema;
+import br.com.ezvida.rst.anotacoes.Preferencial;
+import br.com.ezvida.rst.utils.ValidadorUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +39,10 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 
 	@Inject
 	private EmpresaTrabalhadorService empresaTrabalhadorService;
+
+	@Inject
+	@Preferencial
+	private UsuarioService usuarioService;
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public ListaPaginada<EmpresaTrabalhadorLotacao> pesquisarPaginado(
@@ -132,5 +141,86 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 	public boolean verificarDataEmpresaTrabalhadorLotacaoSuperiorDemissao(EmpresaTrabalhador empresaTrabalhador) {
 		return CollectionUtils.isNotEmpty(empresaTrabalhadorLotacaoDAO
 				.verificarDataEmpresaTrabalhadorLotacaoSuperiorDemissao(empresaTrabalhador));
+	}
+
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<EmpresaTrabalhadorLotacao> validarTrabalhadorPrimeiroAcesso(String cpf){
+		List<EmpresaTrabalhadorLotacao> empresaTrabalhadorLotacaoList = null;
+
+		if( cpf != null){
+			cpf = cpf.replace(".","").replace("-","");
+
+			if(ValidadorUtils.isValidCPF(cpf)){
+				empresaTrabalhadorLotacaoList = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
+				if (empresaTrabalhadorLotacaoList == null || empresaTrabalhadorLotacaoList.size() == 0) {
+
+					throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
+				}
+			}
+
+		}
+		return empresaTrabalhadorLotacaoList;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<EmpresaTrabalhadorLotacao> validarTrabalhador(String cpf){
+
+		List<EmpresaTrabalhadorLotacao> empresaTrabalhadorLotacaoList = null;
+
+		if( cpf != null ) {
+			cpf = cpf.replace(".","").replace("-","");
+			if (ValidadorUtils.isValidCPF(cpf)) {
+
+				Usuario usuarioVerificar = new Usuario();
+
+				try{
+					usuarioVerificar = usuarioService.buscarPorLogin(cpf);
+				} catch (Exception e) {
+					usuarioVerificar = null;
+				}
+
+				if( usuarioVerificar != null ) {
+
+					boolean perfilPraValidar = false;
+
+					if(usuarioVerificar.getLogin() == "65020081515"){
+						perfilPraValidar = false;
+					}
+					else {
+						for (UsuarioPerfilSistema perfilSistema : usuarioVerificar.getPerfisSistema()) {
+
+							if (perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GEEM")
+									|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GEEMM")
+									|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("PFS")) {
+								perfilPraValidar = true;
+								break;
+							}
+
+						}
+
+
+						if (perfilPraValidar) {
+							empresaTrabalhadorLotacaoList = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
+							if (empresaTrabalhadorLotacaoList == null || empresaTrabalhadorLotacaoList.size() == 0) {
+
+								throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
+							}
+						}
+					}
+
+
+				} else {
+					throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
+				}
+
+			} else {
+				throw new BusinessErrorException(getMensagem("app_rst_empregado_cpf_invalido"));
+			}
+		}else{
+			throw new BusinessErrorException(getMensagem("app_rst_empregado_cpf_invalido"));
+		}
+
+		return empresaTrabalhadorLotacaoList;
 	}
 }

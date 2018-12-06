@@ -56,6 +56,9 @@ public class EmpresaTrabalhadorLotacao extends AbstractData {
 	@Column(name = "dt_desligamento")
 	private Date dataDesligamento;
 
+	@Column(name = "fl_inativo")
+	private Character flagInativo;
+
 	@PrePersist
 	public void prePersist() {
 		setDataCriacao(new Date());
@@ -108,6 +111,14 @@ public class EmpresaTrabalhadorLotacao extends AbstractData {
 		this.dataDesligamento = dataDesligamento;
 	}
 
+	public Character getFlagInativo() {
+		return flagInativo;
+	}
+
+	public void setFlagInativo(Character flagInativo) {
+		this.flagInativo = flagInativo;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -119,6 +130,7 @@ public class EmpresaTrabalhadorLotacao extends AbstractData {
 		result = prime * result + ((getDataExclusao() == null) ? 0 : getDataExclusao().hashCode());
 		result = prime * result + ((empresaLotacao == null) ? 0 : empresaLotacao.hashCode());
 		result = prime * result + ((empresaTrabalhador == null) ? 0 : empresaTrabalhador.hashCode());
+		result = prime * result + ((flagInativo == null) ? 0 : flagInativo.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
@@ -166,6 +178,11 @@ public class EmpresaTrabalhadorLotacao extends AbstractData {
 			if (other.empresaTrabalhador != null)
 				return false;
 		} else if (!empresaTrabalhador.equals(other.empresaTrabalhador))
+			return false;
+		if (flagInativo == null) {
+			if (other.flagInativo != null)
+				return false;
+		} else if (!flagInativo.equals(other.flagInativo))
 			return false;
 		if (id == null) {
 			if (other.id != null)

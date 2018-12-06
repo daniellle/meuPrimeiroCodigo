@@ -1,20 +1,9 @@
 package br.com.ezvida.rst.model;
 
 import java.util.Date;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -41,6 +30,9 @@ public class UnidadeObra extends AbstractData {
 	@JsonIgnore
 	@JoinColumn(name = "id_empresa_fk", referencedColumnName = "ID_EMPRESA", nullable = false)
 	private Empresa empresa;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "unidadeObra")
+	private Set<UnidadeObraContratoUat> unidadeObraContratoUats;
 	
 	@PreUpdate
 	public void preUpdate() {
@@ -84,6 +76,14 @@ public class UnidadeObra extends AbstractData {
 
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	public Set<UnidadeObraContratoUat> getUnidadeObraContratoUats() {
+		return unidadeObraContratoUats;
+	}
+
+	public void setUnidadeObraContratoUats(Set<UnidadeObraContratoUat> unidadeObraContratoUats) {
+		this.unidadeObraContratoUats = unidadeObraContratoUats;
 	}
 
 	@Override

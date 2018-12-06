@@ -46,6 +46,7 @@ export class AutenticacaoService extends BaseService<Credencial> {
 			.map((response: HttpResponse<any>) => {
 				return Seguranca.salvarUsuario(response);
 			}).catch((error: Response) => {
+
 				return Observable.throw(error);
 			}).finally(() => {
 				this.bloqueio.evento.emit(true);
