@@ -48,13 +48,10 @@ public final class ValidadorUtils {
 	}
 
 	public static boolean isValidCNPJ(String cnpj) {
-		if ((cnpj == null) || (cnpj.length() != 14)) {
-			return false;
-		}
-
-		Integer digito1 = calcularDigito(cnpj.substring(0, 12), pesoCNPJ);
+		return (cnpj != null) && (cnpj.length() == 14);
+		/*		Integer digito1 = calcularDigito(cnpj.substring(0, 12), pesoCNPJ);
 		Integer digito2 = calcularDigito(cnpj.substring(0, 12) + digito1, pesoCNPJ);
-		return cnpj.equals(cnpj.substring(0, 12) + digito1.toString() + digito2.toString());
+		return cnpj.equals(cnpj.substring(0, 12) + digito1.toString() + digito2.toString());*/
 	}
 
 	public static boolean isValidCPF(String cpf) {
