@@ -69,7 +69,7 @@ export class EmpresaService extends BaseService<Empresa> {
   }
 
   pesquisarCnaes(filtroCnae: FiltroCnae, paginacao: Paginacao): Observable<ListaPaginada<Cnae>> {
-    console.log('versao ', typeof filtroCnae.versao);
+    //console.log('versao ', typeof filtroCnae.versao);
 
     const params = new HttpParams().append('versao', filtroCnae.versao ? filtroCnae.versao : '')
       .append('descricao', filtroCnae.descricao)

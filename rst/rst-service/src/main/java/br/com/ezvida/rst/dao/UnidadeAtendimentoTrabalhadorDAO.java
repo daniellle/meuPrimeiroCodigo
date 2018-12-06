@@ -20,6 +20,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -40,6 +41,20 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
         jpql.append("select uat from UnidadeAtendimentoTrabalhador uat ");
         jpql.append(" order by uat.razaoSocial ");
         TypedQuery<UnidadeAtendimentoTrabalhador> query = criarConsultaPorTipo(jpql.toString());
+        return query.getResultList();
+    }
+
+
+    public List<UnidadeAtendimentoTrabalhador> buscarPorNome(String nome, Long dr){
+        StringBuilder jpql = new StringBuilder();
+        jpql.append(" select uat from UnidadeAtendimentoTrabalhador uat ");
+        jpql.append(" left join fetch uat.departamentoRegional dr");
+        jpql.append(" where upper(uat.nomeFantasia) like :nome and dr.id = :dr");
+        jpql.append(" order by uat.nomeFantasia");
+
+        TypedQuery<UnidadeAtendimentoTrabalhador> query = criarConsultaPorTipo(jpql.toString());
+        query.setParameter("nome", "%" + nome.toUpperCase() + "%");
+        query.setParameter("dr", dr);
         return query.getResultList();
     }
 

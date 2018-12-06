@@ -62,6 +62,7 @@ export const MensagemProperties = {
   app_rst_labels_nit_contato: 'NIT Contato',
   app_rst_labels_rg_conselho_regional: 'Registro no Conselho Regional',
   app_rst_labels_cnpj: 'CNPJ',
+  app_rst_labels_cnpj_cpf: 'CNPJ/CPF',
   app_rst_labels_nome_fantasia: 'Nome Fantasia',
   app_rst_labels_horas_semanais: 'Horas Semanais',
   app_rst_labels_situacao: 'Situação',
@@ -76,6 +77,11 @@ export const MensagemProperties = {
   app_rst_labels_estado: 'Estado',
   app_rst_labels_conselhoregional: 'ConselhoRegional',
   app_rst_labels_jornada: 'Jornada',
+    app_rst_labels_data_inicio: 'Data Inicio',
+    app_rst_labels_data_fim: 'Data fim',
+    app_rst_labels_ano_vigencia: 'Ano Vigência',
+    app_rst_labels_tipo_programa: 'Tipo Programa',
+    app_rst_labels_unidade_sesi: 'Unidade Sesi',
   app_rst_remover_segmento: 'Remover Segmento',
   app_rst_remover_setor: 'Remover Setor',
   app_rst_remover_cargo: 'Remover Cargo',
@@ -135,6 +141,7 @@ export const MensagemProperties = {
   app_rst_labels_situacao_inativo: 'Inativo',
   app_rst_labels_url: 'URL',
   app_rst_labels_cnpj_incompleto: 'Por favor informar o CNPJ completo',
+  app_rst_labels_cnpj_cpf_incompleto: 'Por favor informar o CNPJ/CPF completo',
   app_rst_labels_cpf_incompleto: 'Por favor informar o CPF completo',
   app_rst_labels_nit_incompleto: 'Por favor informar o NIT completo',
   app_rst_labels_informações_adicionais: 'Informações Adicionais',
@@ -163,6 +170,12 @@ export const MensagemProperties = {
   app_rst_labels_identificacao_regional: 'Identificação da Regional',
   app_rst_labels_sigla_dr: 'Sigla do DR',
   app_rst_labels_sigla: 'Sigla',
+  app_rst_labels_data_inicio_contrato: 'Data de Inicio*',
+  app_rst_labels_data_final_contrato: 'Data de Fim*',
+  app_rst_labels_unidade_sesi_nome: 'Unidade SESI',
+  app_rst_labels_contrato_status: 'Status',
+  app_rst_labels_programa_contrato: 'Tipo de Programa',
+  app_rst_labels_ano_vigencia_contrato: 'Ano Vigência',
   app_rst_labels_cnae_: 'CNAE',
   app_rst_labels_possui_plano_saude: 'Possui Plano de Saúde',
   app_rst_labels_possui_automovel: 'Possui Automóvel',
@@ -173,6 +186,7 @@ export const MensagemProperties = {
   app_rst_labels_nome_mae: 'Nome da Mãe',
   app_rst_labels_nome_pai: 'Nome do Pai',
   app_rst_labels_nome_completo: 'Nome Completo',
+  app_rst_labels_nome_social: 'Nome Social',
   app_rst_labels_nome_responsavel: 'Nome do Responsável',
   app_rst_labels_nome_federacao: 'Nome da Federação',
   app_rst_labels_localizacao_regional: 'Localização da Regional',
@@ -457,6 +471,11 @@ export const MensagemProperties = {
   app_rst_usuario_label_sistemas: 'Sistemas',
   app_rst_usuario_label_perfis: 'Perfis',
 
+    //Empresa Contrato
+    app_rst_empresa_contrato_title: 'Contratos',
+    app_rst_empresa_contrato_cadastrar_title: 'Cadastrar Contrato',
+
+
   // Empresa Função
   app_rst_empresa_funcao_title: 'Função',
   app_rst_empresa_funcao_adicionadas: 'Funções Adicionadas',
@@ -464,6 +483,8 @@ export const MensagemProperties = {
   // Empresa Setor
   app_rst_empresa_setor_title: 'Setor',
   app_rst_empresa_setores_adicionados: 'Setores Adicionados',
+
+
 
   // Empresa Sindicato
   app_rst_sindicato_ja_cadastrado: 'O Sindicato selecionado já foi adicionado',

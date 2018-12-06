@@ -373,7 +373,7 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
             cnpj: [
                 { value: null, disabled: this.modoConsulta || !this.isPermitidoEditar() },
                 Validators.compose([
-                    Validators.required, ValidateCNPJ,
+                    Validators.required,
                 ]),
             ],
             razaoSocial: [
@@ -610,19 +610,38 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
         if (this.verificarCampos()) {
             this.prepareSave();
             this.removerMascaras();
-            this.service.salvar(this.empresa).subscribe((response: Empresa) => {
-                this.empresa = response;
-                this.orderByDescricao(this.empresa.unidadeObra);
-                this.cnaeOrderByDescricao(this.empresa.empresaCnaes);
-                this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
-                this.verificarIncosistencia();
-            }, (error) => {
-                this.mensagemError(error);
-            }, () => {
-                this.inicializarListas();
-                this.voltar();
-            });
+            if(this.verificarCNPJ()) {
+                this.empresa.cnpj = this.empresa.cnpj.padStart(14, '0');
+                console.log(this.empresa.cnpj);
+                this.service.salvar(this.empresa).subscribe((response: Empresa) => {
+                    this.empresa = response;
+                    this.orderByDescricao(this.empresa.unidadeObra);
+                    this.cnaeOrderByDescricao(this.empresa.empresaCnaes);
+                    this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+                    this.verificarIncosistencia();
+                }, (error) => {
+                    this.mensagemError(error);
+                }, () => {
+                    this.inicializarListas();
+                    this.voltar();
+                });
+            }
         }
+    }
+
+    verificarCNPJ(): boolean {
+        let verificador = true;
+        if (this.empresa.cnpj) {
+            if (this.empresa.cnpj.length < 11)  {
+              this.mensagemError(MensagemProperties.app_rst_labels_cnpj_cpf_incompleto);
+              verificador = false;
+            }
+            if (this.empresa.cnpj.length > 11 && this.empresa.cnpj.length < 14)  {
+              this.mensagemError(MensagemProperties.app_rst_labels_cnpj_incompleto);
+              verificador = false;
+            }
+          }
+        return verificador;
     }
 
     mudarMascaraTelContato(event: any) {
@@ -772,12 +791,6 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
 
             if (this.empresaForm.controls['cnpj'].errors.required) {
                 this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.empresaForm.controls['cnpj'],
-                    MensagemProperties.app_rst_labels_cnpj);
-                retorno = false;
-            }
-
-            if (!this.empresaForm.controls['cnpj'].errors.required && this.empresaForm.controls['cnpj'].errors.validCNPJ) {
-                this.mensagemErroComParametros('app_rst_campo_invalido', this.empresaForm.controls['cnpj'],
                     MensagemProperties.app_rst_labels_cnpj);
                 retorno = false;
             }

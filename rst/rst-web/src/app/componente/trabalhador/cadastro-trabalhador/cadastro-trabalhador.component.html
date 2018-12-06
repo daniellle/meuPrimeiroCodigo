@@ -8,15 +8,15 @@
     <form novalidate [formGroup]="trabalhadorForm">
         <div class="container-subtitulo" style="height:50px;">
             <div class="row">
-                    <div class="col-sm-4">{{'app_rst_label_dados_gerais' | recurso}}</div>
-                    <div class="col-sm-8 text-right" *ngIf="temEmpPerfil()">
-                        <div *ngIf="temvidaAtiva">
-                           <span id="vidaAtiva" class="col-quebra-palavra">{{ vidaAtiva }}</span>
-                        </div>
-                        <div *ngIf="!temvidaAtiva">
-                            <span id="semvidaAtiva" class="col-quebra-palavra" style="color:red">{{ vidaAtiva }}</span>
-                         </div>
+                <div class="col-sm-4">{{'app_rst_label_dados_gerais' | recurso}}</div>
+                <div class="col-sm-8 text-right" *ngIf="temEmpPerfil()">
+                    <div *ngIf="temvidaAtiva">
+                        <span id="vidaAtiva" class="col-quebra-palavra">{{ vidaAtiva }}</span>
                     </div>
+                    <div *ngIf="!temvidaAtiva">
+                        <span id="semvidaAtiva" class="col-quebra-palavra" style="color:red">{{ vidaAtiva }}</span>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="corpo-card">
@@ -44,6 +44,11 @@
                         <div class="form-group col-md-12">
                             <md-input-container [ngClass]="{'divDisabled': nome.disabled}" [floatPlaceholder]="true">
                                 <input #nome mdInput formControlName="nome" name="nome" id="nome" appFormularioCamposErro placeholder="{{ 'app_rst_labels_nome_completo' | recurso }}" type="text" maxlength="160" required/>
+                            </md-input-container>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <md-input-container [ngClass]="{'divDisabled': nomeSocial.disabled}" [floatPlaceholder]="true">
+                                <input #nomeSocial mdInput formControlName="nomeSocial" name="nomeSocial" id="nomeSocial" appFormularioCamposErro placeholder="{{ 'app_rst_labels_nome_social' | recurso }}" type="text" maxlength="160" />
                             </md-input-container>
                         </div>
                     </div>
@@ -182,18 +187,6 @@
             <div class="row">
                 <div class="form-group col-md-4">
                     <div class="md-container">
-                        <md-select formControlName="brPdh" id="brPdh" placeholder="{{ 'app_rst_labels_brPdh' | recurso }}" appFormularioCamposErro>
-                            <md-option>
-                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
-                            </md-option>
-                            <md-option *ngFor='let key of keysBrpdh' [value]="key">
-                                {{brpdh[key]}}
-                            </md-option>
-                        </md-select>
-                    </div>
-                </div>
-                <div class="form-group col-md-4">
-                    <div class="md-container">
                         <md-select formControlName="escolaridade" id="escolaridade" placeholder="{{ 'app_rst_labels_escolaridade' | recurso }}" appFormularioCamposErro>
                             <md-option>
                                 <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
@@ -216,10 +209,22 @@
                         </md-select>
                     </div>
                 </div>
+                <div class="form-group col-md-4">
+                    <div class="md-container">
+                        <md-select formControlName="estadoCivil" id="estadoCivil" placeholder="{{ 'app_rst_labels_estadoCivil' | recurso }}" required appFormularioCamposErro>
+                            <md-option>
+                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                            </md-option>
+                            <md-option *ngFor='let key of keysEstadoCivil' [value]="key">
+                                {{estadoCivil[key]}}
+                            </md-option>
+                        </md-select>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="form-group col-md-4">
-                    <label for="genero" class="col-form-label"><span class="asterisco">* </span> {{ 'app_rst_labels_genero' | recurso }}</label>
+                    <label for="genero" class="col-form-label"><span class="asterisco">* </span> {{ 'app_rst_labels_sexo' | recurso }}</label>
                     <div>
                         <md-radio-group formControlName="genero" disableRipple>
                             <md-radio-button disableRipple id="sexoMasculino" name="genero" [value]="genero.M" class="md-primary">{{ 'app_rst_valor_masculino' | recurso }}</md-radio-button>
@@ -253,30 +258,6 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-md-4">
-                    <div class="md-container">
-                        <md-select formControlName="estadoCivil" id="estadoCivil" placeholder="{{ 'app_rst_labels_estadoCivil' | recurso }}" required appFormularioCamposErro>
-                            <md-option>
-                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
-                            </md-option>
-                            <md-option *ngFor='let key of keysEstadoCivil' [value]="key">
-                                {{estadoCivil[key]}}
-                            </md-option>
-                        </md-select>
-                    </div>
-                </div>
-                <div class="form-group col-md-4">
-                    <div class="md-container">
-                        <md-select formControlName="profissao" id="profissao" placeholder="{{ 'app_rst_labels_profissao' | recurso }}" appFormularioCamposErro>
-                            <md-option>
-                                <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
-                            </md-option>
-                            <md-option *ngFor='let profissao of profissoes' [value]="profissao.id">
-                                {{profissao.descricao}}
-                            </md-option>
-                        </md-select>
-                    </div>
-                </div>
                 <div class="form-group col-md-4">
                     <div class="md-container">
                         <md-select formControlName="situacaoTrabalhador" id="situacaoTrabalhador" placeholder="{{ 'app_rst_labels_situacao_trabalhador' | recurso }}" appFormularioCamposErro>

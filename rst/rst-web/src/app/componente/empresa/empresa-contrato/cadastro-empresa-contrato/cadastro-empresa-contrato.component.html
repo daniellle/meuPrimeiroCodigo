@@ -1,0 +1,103 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{ title }}
+</p>
+<div class="container-form" [ngClass]="{ divDis : modoConsulta }">
+    <form [formGroup]="contratoForm">
+        <alert *ngIf="inconsistencia" type="info" dismissible="true">
+            <p>{{mensagemInconsistencia}}</p>
+        </alert>
+        <div class="container-subtitulo">
+            <p>{{'app_rst_label_dados_gerais' | recurso}}</p>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <md-input-container>
+                    <input mdInput placeholder="{{'app_rst_labels_unidade_obra' | recurso}}" [mdAutocomplete]="autocompleteUndObra" required formControlName="unidadeObra" [(ngModel)]="unidadeObra" (keyup)="delayerUndObra.next($event.target.value)" class="form-control">
+                </md-input-container>
+                <md-autocomplete [displayWith]="displayFn" #autocompleteUndObra="mdAutocomplete">
+                    <md-option *ngFor="let unidade of unidadesObra | async" [value]="unidade">
+                        <span>{{ unidade.descricao }}</span>
+                    </md-option>
+                </md-autocomplete>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-4">
+                <my-date-picker class="prof" id="dataInicioContrato" [options]="datePickerOptions" locale="pt-br" formControlName="dataContratoInicio" name="dataContratoInicio" required (keyup)="maskDate($event, this.contratoForm, 'dataContratoInicio')"></my-date-picker>
+                <span class="floating-label"> {{ 'app_rst_labels_data_inicio_contrato' | recurso }} </span>
+            </div>
+            <div class="form-group col-md-4">
+                <my-date-picker class="prof" id="dataFimContrato" [options]="datePickerOptions" locale="pt-br" formControlName="dataContratoFim" name="dataContratoFim" required (keyup)="maskDate($event, this.contratoForm, 'dataContratoFim')"></my-date-picker>
+                <span class="floating-label"> {{ 'app_rst_labels_data_final_contrato' | recurso }} </span>
+            </div>
+            <div class="form-group col-md-4">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{'app_rst_labels_ano_vigencia_contrato' | recurso}}" maxlength="4" type="number" name="anoVigencia" required id="anoVigencia" formControlName="anoVigencia" class="form-control" appFormularioCamposErro>
+                </md-input-container>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-3 col-lg-3">
+                <div class="md-container">
+                    <md-select placeholder="{{'app_rst_labels_programa_contrato' | recurso}}" required name="tipoPrograma" formControlName="tipoPrograma" id="idTipoPrograma">
+                        <md-option>
+                            <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                        </md-option>
+                        <md-option *ngFor="let tipoPrograma of tiposPrograma" [value]="tipoPrograma">
+                            {{tipoPrograma.descricao}}
+                        </md-option>
+                    </md-select>
+                </div>
+            </div>
+            <div class="form-group col-md-3 col-lg-3">
+                <div class="md-container">
+                    <md-select placeholder="{{'app_rst_labels_departamento_regional' | recurso}}" required name="dr" formControlName="dr" id="idDr">
+                        <md-option>
+                            <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                        </md-option>
+                        <md-option *ngFor="let dr of drs" [value]="dr.razaoSocial" (click)="alteraDr()">
+                            {{dr.razaoSocial}}
+                        </md-option>
+                    </md-select>
+                </div>
+            </div>
+            <div *ngIf="!isUnidadeSesi && drSelecionado" else="select" class="form-group col-md-6 col-lg-6">
+                <md-input-container>
+                    <input mdInput placeholder="{{'app_rst_labels_unidade_sesi_nome' | recurso}}" [(ngModel)]="unidadeSesi" [mdAutocomplete]="autocompleteUndSesi" required name="unidadeSesi" formControlName="unidadeAtendimentoTrabalhador" id="idUnidadeSesi" (keyup)="delayerUndSesi.next($event.target.value)"
+                        class="form-control">
+                </md-input-container>
+
+                <md-autocomplete [displayWith]="displayFnSesi" #autocompleteUndSesi="mdAutocomplete">
+                    <md-option *ngFor="let unidade of unidadesAT | async" [value]="unidade">
+                        <span>{{unidade.nomeFantasia}}</span>
+                    </md-option>
+                </md-autocomplete>
+            </div>
+
+            <div #select *ngIf="isUnidadeSesi && drSelecionado" class="form-group col-md-6 col-lg-6">
+                <div class="md-container">
+
+                    <md-select placeholder="{{'app_rst_labels_unidade_sesi_nome' | recurso}}" name="unidadeSesi" formControlName="unidadeAtendimentoTrabalhadorSelect" id="idUnidadeSesiSelect">
+                        <md-option>
+                            <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                        </md-option>
+                        <md-option *ngFor="let unidade of uats" [value]="unidade">
+                            {{unidade.nomeFantasia}}
+                        </md-option>
+                    </md-select>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="btn-rodape-acoes space-up">
+    <button *ngIf="!modoConsulta" type="button" class="btn btn-primary btn-cadastro" (click)="salvar()"> {{
+        'app_rst_btn_salvar' | recurso }}
+    </button>
+    <button type="button" class="btn btn-secondary btn-cadastro" (click)="voltar()"> {{ 'app_rst_btn_voltar' | recurso
+        }}
+    </button>
+</div>

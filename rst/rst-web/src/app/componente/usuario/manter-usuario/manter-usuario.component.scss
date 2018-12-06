@@ -1,0 +1,6 @@
+.lista_perfil {
+    display: grid;
+    grid-template-rows: repeat(4, auto);
+    max-height: 500px;
+    grid-auto-flow: column;
+}

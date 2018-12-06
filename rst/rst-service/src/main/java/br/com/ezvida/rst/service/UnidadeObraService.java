@@ -9,6 +9,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import br.com.ezvida.rst.utils.ValidadorUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,18 @@ public class UnidadeObraService extends BaseService {
 			throw new BusinessErrorException("Id de consulta está nulo.");
 		}
 		return unidadeObraDAO.pesquisarPorId(id);
+	}
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<UnidadeObra> buscarPorEmpresaPorNome(Long id, String nome){
+		LOGGER.debug("Buscar unidade obra por nome na empresa");
+
+		if(id == null){
+			throw new BusinessErrorException("Id de consulta está nulo.");
+		}
+
+		return unidadeObraDAO.buscarPorNome(nome, id);
+
 	}
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -77,7 +90,7 @@ public class UnidadeObraService extends BaseService {
 		validar(unidadeObra);
 		unidadeObraDAO.salvar(unidadeObra);
 	}
-
+	
 	private void validar(UnidadeObra unidadeObra) {
 		LOGGER.debug("Validando Unidade Obra...");
 
