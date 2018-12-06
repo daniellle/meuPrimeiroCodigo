@@ -57,7 +57,15 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
 
   changeSistema(sistema: Sistema) {
     if(sistema) {
-      this.perfisDoSistema = sistema.sistemaPerfis;
+      if(sistema.codigo == "cadastro"){
+        this.perfisDoSistema = sistema.sistemaPerfis.sort((a,b) => {//Organiza baseado no nome dos Perfis se a pesquisa for do sistema Cadastro
+          if(a.perfil.nome < b.perfil.nome){ return -1 };
+          if(a.perfil.nome > b.perfil.nome){ return 1 };
+          return 0;
+        });
+      } else{
+        this.perfisDoSistema = sistema.sistemaPerfis;
+      }
       this.sistemaSelecionado = sistema;
     } else {
       this.perfisDoSistema = [];

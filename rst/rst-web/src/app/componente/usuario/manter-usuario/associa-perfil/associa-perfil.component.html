@@ -20,10 +20,11 @@
           <div class="form-group col-md-12" *ngIf="sistemaSelecionado">
               <label for="perfis" class="col-form-label">{{ 'app_rst_usuario_label_perfis' | recurso }}</label>
           </div>
-          <div class="form-group col-md-12">
-              <label class="col col-md-4" *ngFor="let perfilDoSistema of perfisDoSistema" 
-                for="{{ perfilDoSistema.perfil.nome }}" >
-                  <fieldset *ngIf="!isPerfilTrabalhador(perfilDoSistema.perfil)">
+          <div class="form-group col-md-12 listaperfil" *ngIf="sistemaSelecionado">
+              <label class="col col-md-12" *ngFor="let perfilDoSistema of perfisDoSistema" 
+                for="{{ perfilDoSistema.perfil.nome }}" 
+                [hidden]="isPerfilTrabalhador(perfilDoSistema.perfil)">
+                  <fieldset>
                       <md-checkbox (change)="atualizaPerfilSistema($event, perfilDoSistema)" 
                         class="radio-tabela-pesquisa" 
                         [checked]="usuarioTemPerfilSistema(perfilDoSistema.perfil.codigo)">
