@@ -610,7 +610,9 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
         if (this.verificarCampos()) {
             this.prepareSave();
             this.removerMascaras();
-            if(this.verificarCNPJ()){
+            if(this.verificarCNPJ()) {
+                this.empresa.cnpj = this.empresa.cnpj.padStart(14, '0');
+                console.log(this.empresa.cnpj);
                 this.service.salvar(this.empresa).subscribe((response: Empresa) => {
                     this.empresa = response;
                     this.orderByDescricao(this.empresa.unidadeObra);
@@ -639,9 +641,6 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
               verificador = false;
             }
           }
-        if(verificador){
-            this.empresa.cnpj.padStart(14, '0');
-        }
         return verificador;
     }
 
