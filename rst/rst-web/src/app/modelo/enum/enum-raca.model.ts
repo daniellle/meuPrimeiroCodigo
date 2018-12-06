@@ -3,6 +3,6 @@ export enum Raca {
     B = 'Branca',
     I = 'Indígena',
     PA = 'Parda',
-    PR = 'Preta',
+    N = 'Negra',
     SD = 'Sem Declaração',
 }

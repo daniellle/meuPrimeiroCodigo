@@ -1,0 +1,29 @@
+<form novalidate [formGroup]="usuarioForm">
+  <div class="container-form">
+      <div class="container-subtitulo">
+          <p>{{ 'app_rst_label_dados_gerais' | recurso }}</p>
+      </div>
+      <div class="row">
+          <div class="form-group col-md-4" [ngClass]="{ divDis : modoAlterar || modoConsulta }">
+              <md-input-container [floatPlaceholder]="true">
+                  <input mdInput placeholder="{{'app_rst_labels_login_cpf' | recurso}}" [textMask]="{mask: mascaraCpf, guide: false}"  type="text" id="login" formControlName="login" class="form-control" required appFormularioCamposErro>
+              </md-input-container>
+          </div>
+      </div>
+      <div class="row">
+          <div class="form-group col-md-8" [ngClass]="{ divDis : modoConsulta }">
+              <md-input-container [floatPlaceholder]="true">
+                  <input mdInput placeholder="{{'app_rst_labels_nome' | recurso}}" type="text" name="nome" id="nome" formControlName="nome" class="form-control" maxlength="160" required appFormularioCamposErro>
+              </md-input-container>
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="form-group col-md-8" [ngClass]="{ divDis : modoConsulta }">
+              <md-input-container [floatPlaceholder]="true">
+                  <input mdInput placeholder="{{'app_rst_labels_email' | recurso}}" type="text" name="email" id="email" formControlName="email" class="form-control" maxlength="100" required appFormularioCamposErro>
+              </md-input-container>
+          </div>
+      </div>
+  </div>
+</form>

@@ -35,7 +35,7 @@
                 <span class="floating-label"> {{ 'app_rst_labels_data_nascimento' | recurso }} </span>
             </div>
             <div class="form-group col-md-4">
-                <label for="sexo"><span *ngIf="!modoConsulta"><span class="asterisco">* </span> </span> {{ 'app_rst_labels_genero' | recurso }}</label>
+                <label for="sexo"><span *ngIf="!modoConsulta"><span class="asterisco">* </span> </span> {{ 'app_rst_labels_sexo' | recurso }}</label>
                 <div>
                     <md-radio-group formControlName="genero" disableRipple>
                         <md-radio-button disableRipple id="sexoMasculino" name="genero" [value]="genero.M" class="md-primary">{{ 'app_rst_valor_masculino' | recurso }}</md-radio-button>

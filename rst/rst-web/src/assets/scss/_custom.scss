@@ -962,6 +962,23 @@ th {
     background-image: url("../img/cargo_cor.svg");
 }
 
+
+.img_contrato{
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: -20px;
+    background-size: 144px 144px;
+    background-position-y: -6px;
+}
+.front.img_contrato {
+    background-image: url("../img/contrato.svg");
+}
+
+.back.img_contrato {
+    background-image: url("../img/contrato_verde.svg");
+}
+
+
 .img_funcao {
     height: 120px;
     background-repeat: no-repeat;
@@ -1136,6 +1153,11 @@ th {
 
 .back.img_pergunta {
     background-image: url("../img/pergunta_verde.svg");
+}
+
+.img_contrato_block{
+    background-image: url("../img/block.svg");
+    height: 20px;
 }
 
 .img_resposta {

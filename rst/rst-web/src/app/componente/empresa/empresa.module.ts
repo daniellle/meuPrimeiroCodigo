@@ -44,6 +44,12 @@ import { ModalFuncaoComponentModule } from 'app/modal/modal-funcao-component/mod
 import { EmpresaIntermediarioComponent } from './empresa-intermediario/empresa-intermediario.component';
 import { LotacaoTrabalhadorComponent } from './lotacao-trabalhador/lotacao-trabalhador.component';
 import { AutorizacaoGuard } from '../../seguranca/autorizacao.guard';
+import { EmpresaContratoComponent } from './empresa-contrato/empresa-contrato.component';
+import {EmpresaContratoService} from "../../servico/empresa-contrato.service";
+import { CadastroEmpresaContratoComponent } from './empresa-contrato/cadastro-empresa-contrato/cadastro-empresa-contrato.component';
+import {TipoProgramaService} from "../../servico/tipo-programa.service";
+import {UsuarioEntidadeService} from "../../servico/usuario-entidade.service";
+import {DepartRegionalService} from "../../servico/depart-regional.service";
 
 const routes: Routes = [
     {
@@ -128,6 +134,24 @@ const routes: Routes = [
             permissoes: [PermissoesEnum.EMPRESA, PermissoesEnum.EMPRESA_CADASTRAR],
         },
     },
+    {
+        path: ':id/contrato', component: EmpresaContratoComponent,
+        canActivate: [AutorizacaoGuard],
+        data: {
+            title: 'Contratos da Empresa',
+            permissoes: [PermissoesEnum.EMPRESA, PermissoesEnum.EMPRESA_CONTRATO]
+        }
+    },
+
+    {
+        path: ':id/contrato/cadastrarcontrato', component: CadastroEmpresaContratoComponent,
+        canActivate: [AutorizacaoGuard],
+        data:{
+            title: 'Novo Contrato',
+            permissoes: [PermissoesEnum.EMPRESA_CONTRATO_CADASTRAR]
+        }
+    },
+
     {
         path: 'inicio', component: CadastroEmpresaComponent,
         canActivate: [AutorizacaoGuard],
@@ -487,10 +511,10 @@ const routes: Routes = [
     declarations: [PesquisaEmpresaComponent, CadastroEmpresaComponent, EmpresaJornadaComponent,
         EmpresaSindicatoComponent, EmpresaFuncaoComponent, EmpresaCboComponent, CadastroEmpresaTrabalhadorComponent,
         EmpresaSetorComponent, EmpresaLotacaoComponent, EmpresaIntermediarioComponent,
-        PesquisaEmpresaTrabalhadorComponent, LotacaoTrabalhadorComponent, AssociacaoEmpresaTrabalhadorComponent],
+        PesquisaEmpresaTrabalhadorComponent, LotacaoTrabalhadorComponent, AssociacaoEmpresaTrabalhadorComponent, EmpresaContratoComponent, CadastroEmpresaContratoComponent],
     providers: [EmpresaService, DialogService, PorteEmpresaService, EstadoService, TipoEmpresaService, UatService, UnidadeObraService,
         RamoEmpresaService, EmpresaJornadaService, JornadaService, SindicatoService, EmpresaCboService, CboService, FuncaoService,
         SetorService, EmpresaLotacaoService, EmpresaSindicatoService, EmpresaFuncaoService, EmpresaSetorService, EmpresaTrabalhadorService,
-        TrabalhadorService],
+        TrabalhadorService, EmpresaContratoService, TipoProgramaService, UsuarioEntidadeService, DepartRegionalService],
 })
 export class EmpresaModule { }

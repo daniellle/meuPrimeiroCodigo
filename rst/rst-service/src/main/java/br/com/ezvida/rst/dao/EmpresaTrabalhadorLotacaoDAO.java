@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
@@ -209,6 +210,31 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		if(empresaTrabalhadorLotacao.getDataDesligamento() != null) {
 			query.setParameter("idEmpresaTrabalhadorLotacaodtDes", empresaTrabalhadorLotacao.getDataDesligamento());
 		}
+
+		return query.getResultList();
+	}
+
+	public List<EmpresaTrabalhadorLotacao> validarTrabalhador(String cpf){
+		StringBuilder jpql = new StringBuilder();
+
+		jpql.append(" select empresaTrabalhadorLotacao ");
+		jpql.append(" from EmpresaTrabalhadorLotacao empresaTrabalhadorLotacao ");
+		jpql.append(" left join fetch empresaTrabalhadorLotacao.empresaTrabalhador empresaTrabalhador ");
+		jpql.append(" left join fetch empresaTrabalhador.trabalhador  trabalhador");
+		jpql.append(" left join fetch empresaTrabalhadorLotacao.empresaLotacao empresaLotacao");
+		jpql.append(" left join fetch empresaLotacao.unidadeObra unidadeObra ");
+		jpql.append(" left join fetch unidadeObra.unidadeObraContratoUats unidadeObraContratoUat ");
+		jpql.append(" where trabalhador.cpf = :cpf ");
+		jpql.append(" and (unidadeObraContratoUat.dataContratoInicio is not null and unidadeObraContratoUat.dataContratoInicio <= :dataHoje) ");
+		jpql.append(" and (unidadeObraContratoUat.dataContratoFim is not null and unidadeObraContratoUat.dataContratoFim > :dataHoje) ");
+		jpql.append(" and (unidadeObraContratoUat.flagInativo is null or unidadeObraContratoUat.flagInativo = 'N') ");
+		jpql.append(" and empresaTrabalhadorLotacao.dataDesligamento is null ");
+		jpql.append(" and (empresaTrabalhadorLotacao.flagInativo = :flagInativo or empresaTrabalhadorLotacao.flagInativo is null)");
+
+		TypedQuery<EmpresaTrabalhadorLotacao> query = criarConsultaPorTipo(jpql.toString(), EmpresaTrabalhadorLotacao.class);
+		query.setParameter("cpf", cpf);
+		query.setParameter("dataHoje", new Date(), TemporalType.TIMESTAMP);
+		query.setParameter("flagInativo", "N".charAt(0));
 
 		return query.getResultList();
 	}

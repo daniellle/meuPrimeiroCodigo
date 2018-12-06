@@ -22,6 +22,7 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
     public temPerfilDR = false;
     public temPerfilEmpresa = false;
     public temPerfilSindicato = false;
+    public temPerfilUnidade = false;
 
     constructor(private router: Router,
                 private service: UsuarioService,
@@ -66,6 +67,7 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
             this.temPerfilDR = this.temDRPerfil();
             this.temPerfilSindicato = this.temSindPerfil();
             this.temPerfilEmpresa = this.temEmpPerfil();
+            this.temPerfilUnidade = this.temUnidPerfil();
         }
     }
 
@@ -74,22 +76,22 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
     }
 
     private temEmpPerfil(): boolean {
-        const isPermitido = this.temPapel(PerfilEnum.ADM, PerfilEnum.GDNA, PerfilEnum.MTSDN, PerfilEnum.GDRA, PerfilEnum.GDRM,
-            PerfilEnum.SUDR, PerfilEnum.DIDN, PerfilEnum.DIDR, PerfilEnum.ATD, PerfilEnum.GEEMM, PerfilEnum.MTSDR, PerfilEnum.GCDR, PerfilEnum.GUS);
-        const isPerfil = this.contemPerfil([PerfilEnum.GEEM, PerfilEnum.GEEMM, PerfilEnum.TRA, PerfilEnum.PFS,
+        const isPermitido = this.temPapel(PerfilEnum.ADM, PerfilEnum.ATD, PerfilEnum.GEEMM, PerfilEnum.GEEM, PerfilEnum.PFS, PerfilEnum.GCOI);
+        const isPerfil = this.contemPerfil([PerfilEnum.GEEM, PerfilEnum.GEEMM, PerfilEnum.TRA, PerfilEnum.PFS, PerfilEnum.GCOI,
             PerfilEnum.ST, PerfilEnum.RH], this.usuario);
         return isPerfil && isPermitido;
     }
 
 
     private temDRPerfil(): boolean {
-        return this.temPapel(PerfilEnum.ADM, PerfilEnum.GDNA, PerfilEnum.MTSDN, PerfilEnum.DIDN, PerfilEnum.ATD, PerfilEnum.GDRM, PerfilEnum.SUDR, PerfilEnum.GDRA)
+        return this.temPapel(PerfilEnum.ADM, PerfilEnum.DIDN, PerfilEnum.ATD, PerfilEnum.GDRM, PerfilEnum.SUDR, PerfilEnum.GDRA, PerfilEnum.MTSDR,
+            PerfilEnum.GCDR, PerfilEnum.GUS, PerfilEnum.GCODR)
             && this.contemPerfil([PerfilEnum.DIDR, PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.SUDR,
-                PerfilEnum.MTSDR, PerfilEnum.GCDR, PerfilEnum.GUS], this.usuario);
+                PerfilEnum.MTSDR, PerfilEnum.GCDR, PerfilEnum.GUS, PerfilEnum.GCODR], this.usuario);
     }
 
     private temUnidPerfil(): boolean {
-        return this.temPapel(PerfilEnum.ADM, PerfilEnum.GDNA, PerfilEnum.MTSDN, PerfilEnum.DIDN, PerfilEnum.ATD, PerfilEnum.GDRM, PerfilEnum.GDRA)
+        return this.temPapel(PerfilEnum.ADM, PerfilEnum.DIDN, PerfilEnum.ATD)
             && this.contemPerfil([PerfilEnum.GUS], this.usuario);
     }
 }

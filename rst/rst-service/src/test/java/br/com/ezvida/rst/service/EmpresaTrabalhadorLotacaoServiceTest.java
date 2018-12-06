@@ -47,5 +47,27 @@ public class EmpresaTrabalhadorLotacaoServiceTest extends BaseService{
 		
 		Assert.assertEquals(msg,true);
 	}
+
+	@Test
+	public void validarComCpfNull(){
+		String msg = "";
+		try{
+			service.validarTrabalhador(null);
+		}catch (Exception e){
+			msg = getMensagem("app_rst_empregado_cpf_invalido");
+		}
+		Assert.assertEquals(msg, getMensagem("app_rst_empregado_cpf_invalido"));
+	}
+
+	@Test
+	public void validarComCpfInvalido(){
+		String msg = "";
+		try{
+			service.validarTrabalhador("12345678901");
+		}catch (Exception e){
+			msg = getMensagem("app_rst_empregado_cpf_invalido");
+		}
+		Assert.assertEquals(msg, getMensagem("app_rst_empregado_cpf_invalido"));
+	}
 	
 }

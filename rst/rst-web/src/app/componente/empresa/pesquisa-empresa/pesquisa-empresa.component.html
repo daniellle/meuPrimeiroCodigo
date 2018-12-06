@@ -14,7 +14,7 @@
             </div>
             <div class="form-group col-md-4">
                 <md-input-container [floatPlaceholder]="true">
-                    <input mdInput placeholder="{{ 'app_rst_labels_cnpj' | recurso }}" [textMask]="{mask: mascaraCnpj, guide: false}" type="text" class="form-control" id="cnpj" name="cnpj" [(ngModel)]="filtroEmpresa.cnpj" />
+                    <input mdInput placeholder="{{ 'app_rst_labels_cnpj_cpf' | recurso }}" type="text" class="form-control" id="cnpj" name="cnpj" [(ngModel)]="filtroEmpresa.cnpj" />
                 </md-input-container>
             </div>
         </div>
@@ -32,29 +32,29 @@
             </div>
             <div class="form-group col-md-4">
                 <div class="md-container">
-                        <md-select placeholder="{{ 'app_rst_labels_porte' | recurso }}" name="porteEmpresa" [(ngModel)]="filtroEmpresa.porte" id="porte">
-                                <md-option>
-                                    <option value='0'>{{ 'app_rst_labels_selecione' | recurso }}</option>
-                                </md-option>
-                                <md-option *ngFor='let porte of listaPorteEmpresas' [value]="porte.id">
-                                    {{porte.descricao}}
-                                </md-option>
-                            </md-select>
+                    <md-select placeholder="{{ 'app_rst_labels_porte' | recurso }}" name="porteEmpresa" [(ngModel)]="filtroEmpresa.porte" id="porte">
+                        <md-option>
+                            <option value='0'>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                        </md-option>
+                        <md-option *ngFor='let porte of listaPorteEmpresas' [value]="porte.id">
+                            {{porte.descricao}}
+                        </md-option>
+                    </md-select>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="form-group col-md-4">
-                    <div class="md-container">
-                        <md-select placeholder="{{ 'app_rst_labels_estado' | recurso }}" name="estado" [(ngModel)]="filtroEmpresa.idEstado" id="estado">
-                            <md-option>
-                                <option value='0'>{{ 'app_rst_labels_selecione' | recurso }}</option>
-                            </md-option>
-                            <md-option *ngFor='let estado of estados' [value]="estado.id">
-                                {{estado.descricao}}
-                            </md-option>
-                        </md-select>
-                    </div>
+                <div class="md-container">
+                    <md-select placeholder="{{ 'app_rst_labels_estado' | recurso }}" name="estado" [(ngModel)]="filtroEmpresa.idEstado" id="estado">
+                        <md-option>
+                            <option value='0'>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                        </md-option>
+                        <md-option *ngFor='let estado of estados' [value]="estado.id">
+                            {{estado.descricao}}
+                        </md-option>
+                    </md-select>
+                </div>
             </div>
             <div class="form-group col-md-6 col-lg-4">
                 <label for="situacao" class="col-form-label pesquisa-situacao">{{ 'app_rst_labels_situacao' | recurso }}</label>

@@ -173,5 +173,10 @@ export class EmpresaIntermediarioComponent implements OnInit {
     PermissoesEnum.EMPRESA_TRABALHADOR_LOTACAO_DESATIVAR]);
   }
 
+  hasPermissaoContrato(){
+      return Seguranca.isPermitido([PermissoesEnum.EMPRESA_CONTRATO,
+          PermissoesEnum.EMPRESA_CONTRATO_CADASTRAR]);
+  }
+
 
 }

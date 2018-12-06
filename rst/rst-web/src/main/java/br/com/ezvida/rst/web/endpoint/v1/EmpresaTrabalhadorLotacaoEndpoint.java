@@ -4,14 +4,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.BeanParam;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Encoded;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -104,4 +97,19 @@ public class EmpresaTrabalhadorLotacaoEndpoint extends SegurancaEndpoint<Empresa
 				.type(MediaType.APPLICATION_JSON).build();
 	}
 
+    @GET
+    @Encoded
+    @Path("/validar-trabalhador/{cpf}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Autorizacao(permissoes = @Permissao(value = { PermissionConstants.EMPRESA_TRABALHADOR_LOTACAO,
+        PermissionConstants.EMPRESA_TRABALHADOR_LOTACAO_CADASTRAR, PermissionConstants.EMPRESA_TRABALHADOR_LOTACAO_ALTERAR,
+        PermissionConstants.EMPRESA_TRABALHADOR_LOTACAO_CONSULTAR, PermissionConstants.EMPRESA_TRABALHADOR_LOTACAO_DESATIVAR }))
+    public Response validarEmpregado(@Encoded @PathParam("cpf") String cpf, @Context SecurityContext context
+        , @Context HttpServletRequest request){
+        LOGGER.debug("Validando trabalhador");
+        return Response.status(HttpServletResponse.SC_OK)
+            .entity(serializar(empresaTrabalhadorLotacaoService.validarTrabalhador(cpf)))
+            .type(MediaType.APPLICATION_JSON).build();
+    }
 }

@@ -11,11 +11,9 @@ export class Uat {
     nomeFantasia: string;
     nomeResponsavel: string;
     departamentoRegional: DepartamentoRegional;
-
     endereco: EnderecoUnidAtendTrabalhador[];
     email: EmailUnidAtendTrabalhador[];
     telefone: TelefoneUnidAtendTrabalhador[];
-
     dataAtivacao: Date;
     dataExclusao: Date;
     dataDesativacao: string;

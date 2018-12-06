@@ -9,7 +9,7 @@ export function ValidateCNPJ(control: AbstractControl) {
 
     if (strCNPJ != null) {
         strCNPJ = MascaraUtil.removerMascara(strCNPJ);
-        if (strCNPJ.toString().length === 14 && !numerosIguais(strCNPJ)) {
+        if ((strCNPJ.toString().length === 14 || strCNPJ.toString().length === 11) && !numerosIguais(strCNPJ)) {
             const dig1 = getFirstDigit(strCNPJ.substr(0, 12));
             const dig2 = getSecondDigit(strCNPJ.substr(0, 13));
             const final = strCNPJ.substr(12, 2);

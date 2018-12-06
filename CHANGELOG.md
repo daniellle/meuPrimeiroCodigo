@@ -1,6 +1,22 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v.2.99.0**
+(RELEASE EM 06/12/2018)
+- [CADASTRO] Perfil Médico do Trabalho Empresa não está mais disponível para Cadastro (GLPI 3510)
+- [CADASTRO] Alterado Gênero para Sexo em Cadastro do Trabalhador
+- [CADASTRO] Novo campo "Nome Social" em Cadastro do Trabalhador
+- [CADASTRO] Alterado de Raça Preta para Negra em Cadastro de Trabalhador
+- [CADASTRO] Retirado campo BR/PDH do Cadastro do Trabalhador
+- [CADASTRO] Removido campo profissão do Cadastro do Trabalhador
+- [CADASTRO] Alterado labels em cadastro da empresa de CNPJ para CNPJ/CPF
+- [CADASTRO] Criado sistema Epidemiologia para Cadastro de Usuário
+- [CADASTRO] Alterado visualização dos perfis para ser por ordem alfabética em colunas na seção Associar Perfil em Cadastro de Usuário
+- [CADASTRO] Alterado nome do perfil MÉDICO DO TRABALHO para PROFISSIONAL DE SAÚDE 
+- [CADASTRO] Alterado Sistema Cadastro para abranger sistemas "Indicadores e Análise Dinâmica", "Indicador IGEV" e "Portal" em Cadastro de Usuário
+- [CADASTRO] Adicionado ícones de lápis e lixeira em listagem de usuários para perfis com permissão de criar, editar ou excluir perfil em Associação de Perfil em Cadastro de Usuário
+- [CADASTRO] Perfil Epidemiologia de Sistema Epidemiologia só pode ser salvo se houver um perfil do sistema Cadastro já escolhido em Cadastro de Usuário
+
 **v.2.97.0**
 ============
 (RELEASE EM 29/11/2018)
@@ -18,7 +34,6 @@
 - [CADASTROS] Fazer script para colocar perfil TRABALHADOR para ANDREA FERREIRA LEITE cpf 82099340153 (GLPI 3089)
 - [CADASTROS] Não é possível pesquisar usuários pelo menu CADASTRO DE USUÁRIOS (GLPI 3369)
 - [CADASTROS] Mudança de mensagem para email não encontrado em "Esqueci minha senha" (GLPI 1533)
-
 
 **v2.87.1**
 ===========

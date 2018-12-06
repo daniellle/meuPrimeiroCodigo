@@ -25,19 +25,19 @@ export class UsuarioEntidadeService extends BaseService<UsuarioEntidade> {
 
   getEndpoint(tipo: string): string {
 
-    if (tipo === MensagemProperties.app_rst_menu_empresa) {
+    if (tipo === 'Empresa') {
       return '/v1/usuario-entidade/empresas/paginado';
     }
 
-    if (tipo === MensagemProperties.app_rst_sindicatos_title_menu) {
+    if (tipo === 'Sindicatos') {
       return '/v1/usuario-entidade/sindicato/paginado';
     }
 
-    if (tipo === MensagemProperties.app_rst_labels_departamento_regional) {
+    if (tipo === 'Departamento Regional') {
       return '/v1/usuario-entidade/departamento-regional/paginado';
     }
 
-    if (tipo === MensagemProperties.app_rst_menu_uat) {
+    if (tipo === 'Unidade SESI') {
         return '/v1/usuario-entidade/unidade-sesi/paginado';
     }
   }
