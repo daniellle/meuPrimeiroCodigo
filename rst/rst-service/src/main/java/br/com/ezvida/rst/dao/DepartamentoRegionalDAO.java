@@ -341,6 +341,25 @@ public class DepartamentoRegionalDAO extends BaseDAO<DepartamentoRegional, Long>
         return query.getResultList();
     }
 
+    public List<DepartamentoRegional> pesquisarDNPorSigla(){
+        LOGGER.debug("Pesquisando Departamento Nacional");
+
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("select new DepartamentoRegional( ");
+        jpql.append("  departamentoRegional.cnpj, departamentoRegional.razaoSocial, departamentoRegional.siglaDR, estado.siglaUF) ");
+        jpql.append("  from DepartamentoRegional departamentoRegional ");
+        jpql.append("	left join departamentoRegional.listaEndDepRegional enderecos ");
+        jpql.append("	left join enderecos.endereco endereco ");
+        jpql.append("	left join endereco.municipio municipio ");
+        jpql.append("	left join municipio.estado estado ");
+        jpql.append(" where departamentoRegional.siglaDR = 'S4' or departamentoRegional.siglaDR = 'DN' ");
+
+        TypedQuery<DepartamentoRegional> query = criarConsultaPorTipo(jpql.toString());
+
+        return query.getResultList();
+    }
+
+
     public BigInteger countByIdsAndCNPJ(Collection<Long> listId, String cnpj) {
         StringBuilder sql = new StringBuilder();
         sql.append("select ");
