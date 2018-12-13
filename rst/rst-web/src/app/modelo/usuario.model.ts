@@ -17,6 +17,7 @@ export class Usuario {
   exibirApelido: boolean;
   foto: ByteString;
   nivel: number;
+  origemDados: string;
 
   constructor(
     id?: number,
