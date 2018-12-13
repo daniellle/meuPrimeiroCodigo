@@ -92,11 +92,7 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
       this.usuarioSelecionado = null;
       this.paginacao.pagina = 1;
       this.usuarioService.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<Usuario>) => {
-          retorno.list.forEach(usuario => {
-             if(this.filtro.codigoPerfil.toString() == "SP" && usuario.origemDados != null ){
-                this.usuarios.push(usuario);
-             }
-          });
+            this.usuarios = retorno.list;
         this.paginacao = this.getPaginacao(this.paginacao, retorno);
         if (retorno.quantidade === 0 || this.usuarios.length == 0) {
           this.mensagemError(MensagemProperties.app_rst_nenhum_registro_encontrado);

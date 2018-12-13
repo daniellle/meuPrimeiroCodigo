@@ -97,8 +97,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 		aplicarFiltrosDados(jpql, parametros, dados);
 		applicarFiltroPerfis(count, usuarioFilter, jpql, parametros, dados);
 		jpql.append(" ) usuario ");
-		
-		
+
 		
 		if (!count) {
 			jpql.append(" order by usuario.nome ");
@@ -173,8 +172,13 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 		if (usuarioFilter != null) {
 			setFiltroAplicado(true);
 			if (usuarioFilter.getCodigoPerfil() != null) {
-				jpql.append(" vw_usuario_entidade.codigo_perfil = :codigoPerfil ");
-				parametros.put("codigoPerfil", usuarioFilter.getCodigoPerfil());
+				if(usuarioFilter.getCodigoPerfil().equals("SP")){
+					jpql.append(" vw_usuario_entidade.codigo_perfil is null and vw_usuario_entidade.origemdados is not null");
+				}
+				else {
+					jpql.append(" vw_usuario_entidade.codigo_perfil = :codigoPerfil ");
+					parametros.put("codigoPerfil", usuarioFilter.getCodigoPerfil());
+				}
 			}
 
 			montarFiltroIds(jpql, parametros, usuarioFilter);
