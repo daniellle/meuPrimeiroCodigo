@@ -485,6 +485,13 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
         return false;
     }
 
+   /* @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<Perfil> perfisAbaixo(Usuario usuarioLogado){
+        Integer hierarquia = usuarioLogado.getHierarquia();
+
+    }*/
+
     @Override
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public UsuarioDTO consultarDadosUsuario(String login) {
