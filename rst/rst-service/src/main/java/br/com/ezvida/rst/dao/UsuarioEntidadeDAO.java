@@ -69,7 +69,7 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
 
         jpql.append("select distinct usuarioEntidade from UsuarioEntidade usuarioEntidade ");
         jpql.append("left join fetch usuarioEntidade.empresa empresa ");
-        jpql.append(" where usuarioEntidade.dataExclusao is null ");
+        jpql.append(" where usuarioEntidade.dataExclusao is null and empresa is not null");
 
         if (cpf != null) {
             jpql.append(" and usuarioEntidade.cpf = :cpf");
