@@ -6,8 +6,10 @@ import {UsuarioService} from './../../../servico/usuario.service';
 import {Usuario} from './../../../modelo/usuario.model';
 import {MascaraUtil} from './../../../compartilhado/utilitario/mascara.util';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ElementRef} from '@angular/core';
 import {PerfilEnum} from 'app/modelo/enum/enum-perfil';
+import { UsuarioEntidadeService } from 'app/servico/usuario-entidade.service';
+import { UsuarioEntidade } from 'app/modelo/usuario-entidade.model';
 
 @Component({
     selector: 'app-usuario-intermediario',
@@ -23,12 +25,14 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
     public temPerfilEmpresa = false;
     public temPerfilSindicato = false;
     public temPerfilUnidade = false;
+    public usuariosEntidade: UsuarioEntidade[] = new Array<UsuarioEntidade>();
 
     constructor(private router: Router,
                 private service: UsuarioService,
                 private activatedRoute: ActivatedRoute,
                 protected bloqueioService: BloqueioService,
-                protected dialogo: ToastyService) {
+                protected dialogo: ToastyService,
+                protected usuarioEntidadeService: UsuarioEntidadeService) {
         super(bloqueioService, dialogo);
         this.usuario = new Usuario();
         this.activatedRoute.params.subscribe((params) => {
@@ -53,6 +57,9 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
                 this.usuario = user;
                 this.existeUsuario = true;
                 this.loginFormatado = MascaraUtil.formatarCpf(this.usuario.login);
+                if (this.usuario.origemDados || true) {
+                    this.buscarUsuarioEntidade();
+                }
                 this.setTipoPerfil();
             }
         });
@@ -75,6 +82,27 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
         return false;
     }
 
+    private buscarUsuarioEntidade(){
+        this.usuarioEntidadeService.pesquisaUsuariosEntidade(this.usuario.login).subscribe(response => {
+            this.usuariosEntidade = response;
+            this.checkUsuariosEntidade();
+        });
+    }
+
+    private checkUsuariosEntidade() {
+        this.usuariosEntidade.forEach((element) => {
+            if (element.empresa) {
+                this.temPerfilEmpresa = true;
+            }
+            if (element.departamentoRegional) {
+                this.temPerfilDR = true;
+            }
+            if (element.uat) {
+                this.temPerfilUnidade = true;
+            }
+        });
+    }
+
     private temEmpPerfil(): boolean {
         const isPermitido = this.temPapel(PerfilEnum.ADM, PerfilEnum.ATD, PerfilEnum.GEEMM, PerfilEnum.GEEM, PerfilEnum.PFS, PerfilEnum.GCOI);
         const isPerfil = this.contemPerfil([PerfilEnum.GEEM, PerfilEnum.GEEMM, PerfilEnum.TRA, PerfilEnum.PFS, PerfilEnum.GCOI,
@@ -82,10 +110,17 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
         return isPerfil && isPermitido;
     }
 
-
     private temDRPerfil(): boolean {
-        return this.temPapel(PerfilEnum.ADM, PerfilEnum.DIDN, PerfilEnum.ATD, PerfilEnum.GDRM, PerfilEnum.SUDR, PerfilEnum.GDRA, PerfilEnum.MTSDR,
-            PerfilEnum.GCDR, PerfilEnum.GUS, PerfilEnum.GCODR)
+        return this.temPapel(PerfilEnum.ADM,
+                            PerfilEnum.DIDN,
+                            PerfilEnum.ATD,
+                            PerfilEnum.GDRM,
+                            PerfilEnum.SUDR,
+                            PerfilEnum.GDRA,
+                            PerfilEnum.MTSDR,
+                            PerfilEnum.GCDR,
+                            PerfilEnum.GUS,
+                            PerfilEnum.GCODR)
             && this.contemPerfil([PerfilEnum.DIDR, PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.SUDR,
                 PerfilEnum.MTSDR, PerfilEnum.GCDR, PerfilEnum.GUS, PerfilEnum.GCODR], this.usuario);
     }

@@ -55,6 +55,18 @@ export class UsuarioEntidadeService extends BaseService<UsuarioEntidade> {
       });
   }
 
+  pesquisaUsuariosEntidade(cpf: String): Observable<UsuarioEntidade[]> {
+    return super.get('/v1/usuario-entidade/usuariosEntidade/' + cpf)
+    .map((response: UsuarioEntidade[]) => {
+      if (!response) {
+        response = new Array<UsuarioEntidade>();
+      }
+      return response;
+    }).catch((error) => {
+      return Observable.throw(error);
+    });
+  }
+
   private getParams(filtro: FiltroUsuarioEntidade, paginacao: Paginacao): HttpParams {
     let params = new HttpParams();
 
