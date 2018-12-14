@@ -176,6 +176,18 @@ public class UsuarioEntidadeService extends BaseService {
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<UsuarioEntidade> buscarUsuariosEntidade(String cpf) {
+
+        List<UsuarioEntidade> usuarioEntidade = Lists.newArrayList();
+        usuarioEntidade.addAll(usuarioEntidadeDAO.pesquisarPorCPF(cpf, true));
+
+        return usuarioEntidade;
+
+    }
+
+
+
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Collection<String> buscarUsuarioEntidadedoUsuarioLogado(String cpf, DadosFilter dadosFilter) {
 
         Set<String> cpfs = Sets.newHashSet();
