@@ -30,6 +30,7 @@ import {CadastroUnidadeSESIUsuarioComponent} from "./unidade-sesi-usuario/cadast
 import {UatService} from "../../servico/uat.service";
 import { UsuarioRoutingModule } from './usuario-routing.module';
 import { ManterUsuarioModule } from './manter-usuario/manter-usuario.module';
+import { UsuarioBarramentoComponent } from './usuario-barramento/usuario-barramento.component';
 
 @NgModule({
     imports: [
@@ -52,6 +53,7 @@ import { ManterUsuarioModule } from './manter-usuario/manter-usuario.module';
         CadastroDepartamentoUsuarioComponent,
         PesquisaUnidadeSESIUsuarioComponent,
         CadastroUnidadeSESIUsuarioComponent,
+        UsuarioBarramentoComponent,
     ],
     providers: [
         UsuarioService,

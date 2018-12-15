@@ -5,6 +5,7 @@ import { UsuarioService } from "app/servico/usuario.service";
 import { UsuarioEntidadeService } from "app/servico/usuario-entidade.service";
 import { BloqueioService } from "app/servico/bloqueio.service";
 import { ToastyService } from "ng2-toasty";
+import { UsuarioBarramentoComponent } from "../usuario-barramento.component";
 
 @Component({
     selector: 'app-cnpj-listar-sem-perfil',
@@ -14,6 +15,7 @@ import { ToastyService } from "ng2-toasty";
 
 export class CNPJListarSemPerfilComponent extends BaseComponent implements OnInit {
 
+    usuarioBarramentoComponent: UsuarioBarramentoComponent;
     constructor(
         private router: Router,
         private usuarioService: UsuarioService,
