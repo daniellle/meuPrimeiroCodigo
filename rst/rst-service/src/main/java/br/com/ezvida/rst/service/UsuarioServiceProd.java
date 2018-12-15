@@ -442,7 +442,6 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public br.com.ezvida.girst.apiclient.model.Usuario buscarPorEmail(String email) {
         br.com.ezvida.girst.apiclient.model.Usuario u;
-
         try {
             u = this.usuarioClient.buscarPorEmail(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), email);
         } catch (Exception e) {
@@ -464,6 +463,7 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             LOGGER.error("Erro ao obter o perfil do usuário por login. Login = " + login + ". Erro: " + e.getMessage(), e.getCause());
             throw e;
         }
+
 
         return u;
     }

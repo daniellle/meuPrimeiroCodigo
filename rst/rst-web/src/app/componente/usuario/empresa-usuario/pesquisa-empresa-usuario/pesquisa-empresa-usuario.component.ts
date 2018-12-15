@@ -135,18 +135,20 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
 
     private getPerfis(usuario: Usuario) {
         let map = new Map();
-        usuario.perfisSistema.forEach(value => {
-            map.set(value.perfil.codigo, value.perfil.nome);
-        });
-        this.perfis = new Array<Perfil>();
-        map.forEach((value, key) => {
-            this.perfis.push(new Perfil(null, value, key));
-        });
+        if (usuario.origemDados == null) {
+            usuario.perfisSistema.forEach(value => {
+                map.set(value.perfil.codigo, value.perfil.nome);
+            });
+            this.perfis = new Array<Perfil>();
+            map.forEach((value, key) => {
+                this.perfis.push(new Perfil(null, value, key));
+            });
+        }
     }
 
     private buscarEmpresasUsuario() {
         this.paginacao.pagina = 1;
-        if (this.usuario) {
+        if (this.usuario.origemDados == null) {
             this.filtro.cpf = this.usuario.login;
             this.perfis.forEach(perfil => {
                 this.carregarEmpresasPerfil(PerfilEnum[<string>perfil.codigo], this.paginacao, this.filtro);
