@@ -338,4 +338,15 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
         return this.hasTrabalhador && !this.hasProfissionalSaude && !this.hasSegurancaTrabalho && !this.hasRecursoHumano
             && !this.hasGestorEmpresa && !this.hasGestorEmpresaMaster;
     }
+
+    vemDoBarramento(){
+        if(this.usuario){
+        if(this.usuario.origemDados != null){
+            return true;
+        }
+        else{
+            return false;
+        }
+        }
+    }
 }
