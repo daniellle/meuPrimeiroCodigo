@@ -104,7 +104,8 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
     }
 
     private temEmpPerfil(): boolean {
-        const isPermitido = this.temPapel(PerfilEnum.ADM, PerfilEnum.ATD, PerfilEnum.GEEMM, PerfilEnum.GEEM, PerfilEnum.PFS, PerfilEnum.GCOI);
+        const isPermitido = this.temPapel(PerfilEnum.ADM, PerfilEnum.ATD, PerfilEnum.GEEMM,
+            PerfilEnum.GEEM, PerfilEnum.PFS, PerfilEnum.GCOI);
         const isPerfil = this.contemPerfil([PerfilEnum.GEEM, PerfilEnum.GEEMM, PerfilEnum.TRA, PerfilEnum.PFS, PerfilEnum.GCOI,
             PerfilEnum.ST, PerfilEnum.RH], this.usuario);
         return isPerfil && isPermitido;
