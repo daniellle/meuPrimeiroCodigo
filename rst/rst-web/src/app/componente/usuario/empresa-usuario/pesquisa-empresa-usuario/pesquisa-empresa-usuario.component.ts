@@ -32,7 +32,7 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     idUsuario: number;
     filtro: FiltroUsuarioEntidade;
     usuario: Usuario;
-    perfis: Perfil[];
+    perfis: Perfil[] = new Array<Perfil>();
 
     hasTrabalhador = false;
     hasProfissionalSaude = false;
