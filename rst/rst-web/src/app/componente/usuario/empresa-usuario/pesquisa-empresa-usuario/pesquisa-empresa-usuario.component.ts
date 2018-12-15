@@ -1,3 +1,4 @@
+import { UsuarioBarramentoComponent } from './../../usuario-barramento/usuario-barramento.component';
 import {PermissoesEnum} from 'app/modelo/enum/enum-permissoes';
 import {Seguranca} from './../../../../compartilhado/utilitario/seguranca.model';
 import {EmpresaTrabalhador} from './../../../../modelo/empresa-trabalhador.model';
@@ -25,6 +26,8 @@ import {Perfil} from "../../../../modelo/perfil.model";
     styleUrls: ['./pesquisa-empresa-usuario.component.scss'],
 })
 export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements OnInit {
+
+    usuarioBarramentoComponent: UsuarioBarramentoComponent;
 
     idUsuario: number;
     filtro: FiltroUsuarioEntidade;
@@ -334,5 +337,16 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     isSomenteTrabalhador(): boolean {
         return this.hasTrabalhador && !this.hasProfissionalSaude && !this.hasSegurancaTrabalho && !this.hasRecursoHumano
             && !this.hasGestorEmpresa && !this.hasGestorEmpresaMaster;
+    }
+
+    vemDoBarramento(){
+        if(this.usuario){
+        if(this.usuario.origemDados != null){
+            return true;
+        }
+        else{
+            return false;
+        }
+        }
     }
 }
