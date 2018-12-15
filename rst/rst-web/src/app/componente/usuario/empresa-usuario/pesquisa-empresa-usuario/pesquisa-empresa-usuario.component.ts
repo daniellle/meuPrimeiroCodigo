@@ -32,7 +32,7 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     idUsuario: number;
     filtro: FiltroUsuarioEntidade;
     usuario: Usuario;
-    perfis: Perfil[];
+    perfis: Perfil[] = new Array<Perfil>();
 
     hasTrabalhador = false;
     hasProfissionalSaude = false;
@@ -82,9 +82,11 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     pesquisar(): void {
         this.paginacao.pagina = 1;
         let filtroSelecionado = new FiltroUsuarioEntidade(this.filtro);
-        this.perfis.forEach(p => {
-            this.carregarEmpresasPerfil(PerfilEnum[<string>p.codigo], this.paginacao, filtroSelecionado);
-        });
+        if(this.perfis){
+            this.perfis.forEach(p => {
+                this.carregarEmpresasPerfil(PerfilEnum[<string>p.codigo], this.paginacao, filtroSelecionado);
+            });
+        }
     }
 
     pageChanged(event: any, perfil: string): void {
@@ -126,7 +128,9 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
         this.idUsuario = this.activatedRoute.snapshot.params['id'];
         this.usuarioService.buscarUsuarioById(this.idUsuario).subscribe((retorno: Usuario) => {
             this.usuario = retorno;
-            this.getPerfis(retorno);
+            if (retorno.perfisSistema) {
+                this.getPerfis(retorno);
+            }
             this.buscarEmpresasUsuario();
         }, (error) => {
             this.mensagemError(error);
@@ -150,7 +154,7 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
         this.paginacao.pagina = 1;
         if (this.usuario.origemDados == null) {
             this.filtro.cpf = this.usuario.login;
-            this.perfis.forEach(perfil => {
+            this.perfis.forEach((perfil) => {
                 this.carregarEmpresasPerfil(PerfilEnum[<string>perfil.codigo], this.paginacao, this.filtro);
             });
         }
