@@ -8,7 +8,7 @@ import {environment} from './../../../../../environments/environment';
 import {Usuario} from './../../../../modelo/usuario.model';
 import {UsuarioService} from './../../../../servico/usuario.service';
 import {MensagemProperties} from 'app/compartilhado/utilitario/recurso.pipe';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {Paginacao} from './../../../../modelo/paginacao.model';
 import {UsuarioEntidadeService} from './../../../../servico/usuario-entidade.service';
 import {UsuarioEntidade} from './../../../../modelo/usuario-entidade.model';
@@ -19,6 +19,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FiltroUsuarioEntidade} from './../../../../modelo/filtro-usuario-entidade.model';
 import {BaseComponent} from 'app/componente/base.component';
 import {Perfil} from "../../../../modelo/perfil.model";
+
 
 @Component({
     selector: 'app-pesquisa-empresa-usuario',
@@ -31,7 +32,7 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
 
     idUsuario: number;
     filtro: FiltroUsuarioEntidade;
-    usuario: Usuario;
+    @Output() usuario: Usuario;
     perfis: Perfil[] = new Array<Perfil>();
 
     hasTrabalhador = false;
@@ -53,6 +54,7 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     listaEmpresasRH = new Array<UsuarioEntidade>();
     listaEmpresasST = new Array<UsuarioEntidade>();
     listaEmpresasGEEMMaster = new Array<UsuarioEntidade>();
+    
 
     constructor(
         private router: Router,
@@ -71,6 +73,10 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     ngOnInit() {
         this.filtro = new FiltroUsuarioEntidade();
     }
+
+    onAlertListener(_usuariosEntidade) {
+        console.log(_usuariosEntidade);
+      }
 
     tipoTela() {
         this.modoConsulta = !Seguranca.isPermitido(

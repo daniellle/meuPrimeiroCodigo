@@ -1,12 +1,31 @@
 <ng2-toasty></ng2-toasty>
 <app-bloqueio></app-bloqueio>
 
-<p class="titulo-pagina">
-    {{'app_rst_usuario_title_associar_perfil' | recurso}}
-</p>
-
-<div class="container-form">
-    <div class="row">
-        
+<div class="container-form space-up">
+    <div class="container-subtitulo">
+        <p>{{'app_rst_label_cnpj_sem_perfis' | recurso}}</p>
+    </div>
+    <div class="row grid-pesquisa" *ngIf="usuarioEntidadeEmpresa">
+        <div class="col-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                        <th class="label text-center">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of usuarioEntidadeEmpresa">
+                        <td class="col-quebra">{{item.empresa.nomeFantasia}}</td>
+                        <td class="col-nao-quebra">{{item.empresa.cnpj | cnpjPipe }}</td>
+                        <td class="text-center">
+                            <button (click)="enviarUsuarioEntidade(item)" #tooltip="mdTooltip" color="'grey'" [mdTooltip]="'Associar Perfil'" [mdTooltipPosition]="'below'" class="btn-link"><span class="fa fa-exchange" aria-hidden="true"></span>
+                        </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
