@@ -27,6 +27,7 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
     @Input() usuario: Usuario;
 
     @Output() associaPerfilEvent = new EventEmitter<any>();
+    @Output() usuarioEnviado = new EventEmitter<Usuario>();
 
     perfisSistemas: UsuarioPerfilSistema[];
     sistemaSelecionado: Sistema;
@@ -178,6 +179,7 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
             return;
         }
         this.usuario.perfisSistema = [].concat(this.perfisSistemas);
+        this.usuarioEnviado.emit(this.usuario);
         this.changeSistema(undefined);
         this.sistemasSelect.writeValue('');
         this.temCadastro = undefined;
