@@ -471,6 +471,7 @@ export const MensagemProperties = {
 
   app_rst_usuario_label_sistemas: 'Sistemas',
   app_rst_usuario_label_perfis: 'Perfis',
+    app_rst_usuario_label_cnpj: 'CNPJ',
 
     //Empresa Contrato
     app_rst_empresa_contrato_title: 'Contratos',

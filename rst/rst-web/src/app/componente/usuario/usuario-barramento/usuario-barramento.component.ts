@@ -1,5 +1,5 @@
 import { BaseComponent } from "app/componente/base.component";
-import { Component, OnInit, Output, Input, SimpleChanges } from "@angular/core";
+import { Component, OnInit, Output, Input, SimpleChanges, ViewChild } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { UsuarioService } from "app/servico/usuario.service";
 import { UsuarioEntidadeService } from "app/servico/usuario-entidade.service";
@@ -8,7 +8,8 @@ import { ToastyService } from "ng2-toasty";
 import { CNPJListarSemPerfilComponent } from '../usuario-barramento/cnpj-listar-sem-perfil/cnpj-listar-sem-perfil.component';
 import { CNPJPerfisAssociadosComponent } from "./cnpj-perfis-associados/cnpj-perfis-associados.component";
 import { UsuarioEntidade } from "app/modelo/usuario-entidade.model";
-import { Usuario } from "app/modelo/usuario.model";
+import {AssociaPerfilBarramentoComponent} from "./associa-perfil-barramento/associa-perfil-barramento.component";
+import {Perfil, Usuario, UsuarioPerfilSistema} from "../../../modelo";
 
 @Component({
     selector: 'app-usuario-barramento',
@@ -17,11 +18,18 @@ import { Usuario } from "app/modelo/usuario.model";
 })
 
 export class UsuarioBarramentoComponent extends BaseComponent implements OnInit {
-    cnpjListarSemPerfil: CNPJListarSemPerfilComponent;
-    cnpjPerfisAssociados: CNPJPerfisAssociadosComponent;
     @Output() public usuariosEntidade: UsuarioEntidade[] = new Array<UsuarioEntidade>();
     @Input() usuario: Usuario;
     @Output() @Input() usuarioEntidadeSelecionado: UsuarioEntidade;
+
+    @ViewChild ('associaPerfilBarramentoComponent') associaPerfilBarramentoComponent: AssociaPerfilBarramentoComponent;
+    @ViewChild ('cnpjListarSemPerfilComponent') cnpjListarSemPerfil: CNPJListarSemPerfilComponent;
+    @ViewChild ('cnpjPerfisAssociadosComponent') cnpjPerfisAssociados: CNPJPerfisAssociadosComponent;
+
+    id: number;
+    perfisSistemas: UsuarioPerfilSistema[];
+    perfisUsuario: Perfil[] = [];
+
 
     constructor(
         private router: Router,
@@ -34,8 +42,7 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
         super(bloqueioService, dialogo);
       }
 
-    ngOnInit(){ 
-
+      ngOnInit(): void {
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -58,4 +65,11 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
     onUsuarioSelecionado(usuarioSelecionado: UsuarioEntidade):void {
         this.usuarioEntidadeSelecionado = usuarioSelecionado;
       }
+
+    editarEvent(sistema: string) {
+        if(sistema)
+            this.associaPerfilBarramentoComponent.selecionaSistema(sistema)
+    }
+
+
 }

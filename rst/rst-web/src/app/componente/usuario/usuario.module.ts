@@ -33,6 +33,9 @@ import { ManterUsuarioModule } from './manter-usuario/manter-usuario.module';
 import { UsuarioBarramentoComponent } from './usuario-barramento/usuario-barramento.component';
 import { CNPJListarSemPerfilComponent } from './usuario-barramento/cnpj-listar-sem-perfil/cnpj-listar-sem-perfil.component';
 import { CNPJPerfisAssociadosComponent } from './usuario-barramento/cnpj-perfis-associados/cnpj-perfis-associados.component';
+import {AssociaPerfilComponent} from "./manter-usuario/associa-perfil/associa-perfil.component";
+import {AssociaPerfilBarramentoComponent} from "./usuario-barramento/associa-perfil-barramento/associa-perfil-barramento.component";
+import {ConcatenaPerfisSistemasCadastroBarramentoPipe} from "./usuario-barramento/concatena-perfis-sistemas-cadastro-barramento.pipe";
 
 @NgModule({
     imports: [
@@ -58,7 +61,8 @@ import { CNPJPerfisAssociadosComponent } from './usuario-barramento/cnpj-perfis-
         UsuarioBarramentoComponent,
         CNPJListarSemPerfilComponent,
         CNPJPerfisAssociadosComponent,
-
+    AssociaPerfilBarramentoComponent,
+        ConcatenaPerfisSistemasCadastroBarramentoPipe,
     ],
     providers: [
         UsuarioService,
