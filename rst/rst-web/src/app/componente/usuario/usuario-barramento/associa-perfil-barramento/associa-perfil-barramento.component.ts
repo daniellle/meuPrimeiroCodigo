@@ -33,6 +33,7 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
     perfisDoSistema: SistemaPerfil[] = [];
     temCadastro: boolean;
     associandoEpidemiologia: boolean;
+    tipoCnpj: string = "empresa";
 
     constructor(private sistemaService: SistemaService,
                 protected bloqueioService: BloqueioService,
@@ -42,6 +43,7 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
     }
 
     ngOnInit() {
+
         this.perfisSistemas = [];
         if(this.usuario && this.usuario.perfisSistema != undefined ) {
             this.perfisSistemas = [].concat(this.usuario.perfisSistema);
@@ -68,6 +70,7 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
                     if(a.perfil.nome > b.perfil.nome){ return 1 };
                     return 0;
                 });
+                this.filtrarPerfilPorCnpj(this.perfisDoSistema);
             } else{
                 this.perfisDoSistema = sistema.sistemaPerfis;
             }
@@ -95,6 +98,26 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
                 ps.sistema.codigo === codigoSistema && ps.perfil.codigo === codigoPerfil);
         }
         return false;
+    }
+
+    filtrarPerfilPorCnpj(perfisDoSistema: SistemaPerfil[]){
+        if(this.tipoCnpj == "empresa"){
+            perfisDoSistema.forEach(sp => {
+                if(sp.perfil.codigo.includes("DN") || sp.perfil.codigo.includes("DR")){
+                    let index = perfisDoSistema.indexOf(sp);
+                    perfisDoSistema.splice(index, 0);
+                }
+            })
+        }
+        else if(this.tipoCnpj == "departamentoregional"){
+            perfisDoSistema.forEach( sp => {
+                if(sp.perfil.codigo.includes("EM") || sp.perfil.codigo.includes("DN") || sp.perfil.codigo.includes("PFS")){
+                    let index = perfisDoSistema.indexOf(sp);
+                    perfisDoSistema.splice(index, 1);
+                }
+            })
+        }
+
     }
 
     //VERIFICA SE O CLICK NO CHECKBOX DO PERFIL É PARA ADICIONAR OU REMOVER O PERFIL
@@ -153,6 +176,7 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
         }
     }
 
+    //REMOVE O PERFIL SELECIONADO DO ARRAY DE PERFISISTEMAS
     private removeUsuarioPerfil(perfil: Perfil, sistema: Sistema) {
         if(this.ehSistemaCadastroOuRelacionado(sistema)) {
             this.sistemas.filter(s => this.ehSistemaCadastroOuRelacionado(s))
