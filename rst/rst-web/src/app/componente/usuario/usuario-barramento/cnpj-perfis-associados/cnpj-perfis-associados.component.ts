@@ -28,4 +28,8 @@ export class CNPJPerfisAssociadosComponent extends BaseComponent implements OnIn
       }
 
     ngOnInit(){ }
+
+    checkList(){
+        return false;
+    }
 }
