@@ -21,6 +21,8 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
     @Output() public usuariosEntidade: UsuarioEntidade[] = new Array<UsuarioEntidade>();
     @Input() usuario: Usuario;
     @Output() @Input() usuarioEntidadeSelecionado: UsuarioEntidade;
+    @Output()@Input()    usuarioEnviado: Usuario;
+
 
     @ViewChild ('associaPerfilBarramentoComponent') associaPerfilBarramentoComponent: AssociaPerfilBarramentoComponent;
     @ViewChild ('cnpjListarSemPerfilComponent') cnpjListarSemPerfil: CNPJListarSemPerfilComponent;
@@ -67,6 +69,12 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
     onUsuarioSelecionado(usuarioSelecionado: UsuarioEntidade):void {
         this.usuarioEntidadeSelecionado = usuarioSelecionado;
         this.ngAfterViewChecked();
+      }
+
+      //RECEBE O USUARIO APÓS SUAS ASSOCIAÇÕES COM OS PERFIS SEREM FEITAS
+      usuarioEnviadoAssociacao(usuarioEnviado: Usuario) {
+            this.usuarioEnviado = usuarioEnviado;
+            this.ngAfterViewChecked();
       }
 
     editarEvent(sistema: string) {

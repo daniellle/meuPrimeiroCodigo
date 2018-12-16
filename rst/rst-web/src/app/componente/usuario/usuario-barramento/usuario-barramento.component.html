@@ -8,7 +8,7 @@
     <app-cnpj-listar-sem-perfil (usuarioSelecionado)='onUsuarioSelecionado($event)' [usuariosEntidade]="usuariosEntidade"></app-cnpj-listar-sem-perfil>
 
 
-    <app-associa-perfil-barramento *ngIf="usuarioEntidadeSelecionado" #associaPerfilBarramentoComponent [modoConsulta]="modoConsulta" [usuario]="usuario"> </app-associa-perfil-barramento>
+    <app-associa-perfil-barramento (usuarioEnviado)='usuarioEnviadoAssociacao($event)' [usuarioEnviado] = "usuarioEnviado" *ngIf="usuarioEntidadeSelecionado" #associaPerfilBarramentoComponent [modoConsulta]="modoConsulta" [usuario]="usuario"> </app-associa-perfil-barramento>
 
 
     <app-cnpj-perfis-associados></app-cnpj-perfis-associados>
