@@ -10,6 +10,7 @@ import { BloqueioService } from 'app/servico/bloqueio.service';
 import { BaseComponent } from 'app/componente/base.component';
 import { ToastyService } from 'ng2-toasty';
 import { DialogService } from 'ng2-bootstrap-modal';
+import {ActivatedRoute, Router} from "@angular/router";
 
 const COD_SISTEMAS_RELACIONADOS = ['dw', 'indigev', 'portal'];
 const COD_SISTEMA_CADASTRO = 'cadastro';
@@ -33,16 +34,33 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
     perfisDoSistema: SistemaPerfil[] = [];
     temCadastro: boolean;
     associandoEpidemiologia: boolean;
-    tipoCnpj: string = "empresa";
+    tipoCnpj: string;
+    strEmpresa: string = "empresa";
+    strDR: string = "departamentoregional";
+    strUat: string = "unidadesesi";
 
     constructor(private sistemaService: SistemaService,
                 protected bloqueioService: BloqueioService,
+                private route: ActivatedRoute,
+                private router: Router,
                 protected dialogo: ToastyService) {
         super(bloqueioService, dialogo);
 
     }
 
     ngOnInit() {
+
+        if(this.router.url.includes(this.strEmpresa)){
+            this.tipoCnpj = this.strEmpresa;
+        }
+        else if(this.router.url.includes(this.strDR)){
+            this.tipoCnpj = this.strDR;
+        }
+        else if(this.router.url.includes(this.strUat)){
+            this.tipoCnpj = this.strUat;
+        }
+
+        console.log(this.tipoCnpj);
 
         this.perfisSistemas = [];
         if(this.usuario && this.usuario.perfisSistema != undefined ) {
@@ -70,7 +88,7 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
                     if(a.perfil.nome > b.perfil.nome){ return 1 };
                     return 0;
                 });
-                this.filtrarPerfilPorCnpj(this.perfisDoSistema);
+                this.perfisDoSistema = this.filtrarPerfilPorCnpj(this.perfisDoSistema);
             } else{
                 this.perfisDoSistema = sistema.sistemaPerfis;
             }
@@ -100,24 +118,32 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
         return false;
     }
 
-    filtrarPerfilPorCnpj(perfisDoSistema: SistemaPerfil[]){
-        if(this.tipoCnpj == "empresa"){
+    filtrarPerfilPorCnpj(perfisDoSistema: SistemaPerfil[]): SistemaPerfil[]{
+        let retorno: SistemaPerfil[] = [];
+        if(this.tipoCnpj == "empresa") {
+             perfisDoSistema.forEach(sp => {
+                 if (!sp.perfil.codigo.includes("DN") && !sp.perfil.codigo.includes("DR") && !sp.perfil.codigo.includes("GUS")) {
+                     retorno.push(sp);
+                 }
+             })
+            return retorno;
+         }
+         else if(this.tipoCnpj == "departamentoregional"){
             perfisDoSistema.forEach(sp => {
-                if(sp.perfil.codigo.includes("DN") || sp.perfil.codigo.includes("DR")){
-                    let index = perfisDoSistema.indexOf(sp);
-                    perfisDoSistema.splice(index, 0);
+                if (!sp.perfil.codigo.includes("DN") && !sp.perfil.codigo.includes("EM") && !sp.perfil.codigo.includes("GUS") && !sp.perfil.codigo.includes("PFS")) {
+                    retorno.push(sp);
                 }
             })
-        }
-        else if(this.tipoCnpj == "departamentoregional"){
-            perfisDoSistema.forEach( sp => {
-                if(sp.perfil.codigo.includes("EM") || sp.perfil.codigo.includes("DN") || sp.perfil.codigo.includes("PFS")){
-                    let index = perfisDoSistema.indexOf(sp);
-                    perfisDoSistema.splice(index, 1);
+            return retorno;
+         }
+        else if(this.tipoCnpj == "unidadesesi"){
+            perfisDoSistema.forEach(sp => {
+                if (!sp.perfil.codigo.includes("DN") && !sp.perfil.codigo.includes("EM") && !sp.perfil.codigo.includes("DR") && !sp.perfil.codigo.includes("PFS")) {
+                    retorno.push(sp);
                 }
             })
+            return retorno;
         }
-
     }
 
     //VERIFICA SE O CLICK NO CHECKBOX DO PERFIL É PARA ADICIONAR OU REMOVER O PERFIL
