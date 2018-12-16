@@ -42,8 +42,12 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
     }
 
     ngOnInit() {
-        if(this.usuario) {
+        this.perfisSistemas = [];
+        if(this.usuario && this.usuario.perfisSistema != undefined ) {
             this.perfisSistemas = [].concat(this.usuario.perfisSistema);
+        }
+        else{
+            this.perfisSistemas = [];
         }
         this.sistemaService.buscarSistemasPermitidos(Seguranca.getUsuario())
             .subscribe(sistemas => setTimeout(() => this.sistemas = sistemas));
@@ -55,6 +59,7 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
             this.perfisSistemas = this.usuario.perfisSistema;
     }
 
+   //METODO PARA IDENTIFICAR O SISTEMA SELECIONADO E GERENCIAR A TROCA DO SISTEMA SELECIONADO
     changeSistema(sistema: Sistema) {
         if(sistema) {
             if(sistema.codigo == "cadastro"){
@@ -82,8 +87,9 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
         }
     }
 
+    //METODO PARA VERIFICAR SE O USUARIO POSSUI CADA PERFIL DO SISTEMA SELECIONADO
     usuarioTemPerfilSistema(codigoPerfil: string): boolean {
-        if(this.sistemaSelecionado) {
+        if(this.sistemaSelecionado && this.perfisSistemas != undefined) {
             const codigoSistema = this.sistemaSelecionado.codigo;
             return this.perfisSistemas.some(ps =>
                 ps.sistema.codigo === codigoSistema && ps.perfil.codigo === codigoPerfil);
@@ -91,6 +97,7 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
         return false;
     }
 
+    //VERIFICA SE O CLICK NO CHECKBOX DO PERFIL É PARA ADICIONAR OU REMOVER O PERFIL
     atualizaPerfilSistema(event: any, sistemaPerfil: any) {
         const sistema = { id: this.sistemaSelecionado.id, nome: this.sistemaSelecionado.nome, codigo:  this.sistemaSelecionado.codigo };
         if(event.checked) {
@@ -101,6 +108,7 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
     }
 
     associarPerfil() {
+        if(this.usuario.perfisSistema){
         this.usuario.perfisSistema.forEach(sistemaPerfil => {
             if(sistemaPerfil.sistema.codigo == "cadastro"){
                 this.temCadastro = true;
@@ -111,6 +119,7 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
                 this.associandoEpidemiologia = true;
             }
         });
+        }
         if(!this.temCadastro && this.associandoEpidemiologia){
             this.perfisSistemas = [];
             this.usuario.perfisSistema.pop();
@@ -130,6 +139,7 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
         return perfil.codigo == PerfilEnum.TRA;
     }
 
+    //ADICIONAR O PERFIL SELECIONADO AO ARRAY DE PERSISSISTEMAS
     private addUsuarioPerfil(perfil: Perfil, sistema: Sistema) {
         if(this.ehSistemaCadastroOuRelacionado(sistema)) {
             this.sistemas.filter(s => this.ehSistemaCadastroOuRelacionado(s))
