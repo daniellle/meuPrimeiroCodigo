@@ -6,8 +6,7 @@
         <div class="row">
             <div class="form-group col-md-6">
                 <div class="md-container" *ngIf="sistemas.length">
-                    <md-select placeholder="{{ 'app_rst_usuario_label_sistemas' | recurso }}"
-                               (change)="changeSistema($event.value)"  id="idSistemas" #sistemasSelect>
+                    <md-select placeholder="{{ 'app_rst_usuario_label_sistemas' | recurso }}" (change)="changeSistema($event.value)" id="idSistemas" #sistemasSelect>
                         <md-option value="null">{{ 'app_rst_labels_selecione' | recurso }}</md-option>
                         <md-option *ngFor="let sistema of sistemas | concatenaPerfisSistemasCadastroBarramento" [value]="sistema">
                             {{ sistema.nome }}
@@ -21,9 +20,7 @@
                 <label for="perfis" class="col-form-label">{{ 'app_rst_usuario_label_perfis' | recurso }}</label>
             </div>
             <div class="form-group col-md-12 listaperfil" *ngIf="sistemaSelecionado">
-                <label class="col col-md-12" *ngFor="let perfilDoSistema of perfisDoSistema"
-                       for="{{ perfilDoSistema.perfil.nome }}"
-                       [hidden]="isPerfilTrabalhador(perfilDoSistema.perfil)">
+                <label class="col col-md-12" *ngFor="let perfilDoSistema of perfisDoSistema" for="{{ perfilDoSistema.perfil.nome }}" [hidden]="isPerfilTrabalhador(perfilDoSistema.perfil)">
                     <fieldset>
                         <md-checkbox (change)="atualizaPerfilSistema($event, perfilDoSistema)"
                                      class="radio-tabela-pesquisa"
