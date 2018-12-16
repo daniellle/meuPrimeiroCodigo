@@ -33,7 +33,6 @@ import { ManterUsuarioModule } from './manter-usuario/manter-usuario.module';
 import { UsuarioBarramentoComponent } from './usuario-barramento/usuario-barramento.component';
 import { CNPJListarSemPerfilComponent } from './usuario-barramento/cnpj-listar-sem-perfil/cnpj-listar-sem-perfil.component';
 import { CNPJPerfisAssociadosComponent } from './usuario-barramento/cnpj-perfis-associados/cnpj-perfis-associados.component';
-import {AssociaPerfilComponent} from "./manter-usuario/associa-perfil/associa-perfil.component";
 
 @NgModule({
     imports: [
