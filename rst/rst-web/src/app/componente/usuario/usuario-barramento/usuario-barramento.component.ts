@@ -67,6 +67,7 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
     }
 
     onUsuarioSelecionado(usuarioSelecionado: UsuarioEntidade):void {
+        console.log(usuarioSelecionado);
         this.usuarioEntidadeSelecionado = usuarioSelecionado;
         this.ngAfterViewChecked();
       }
