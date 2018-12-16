@@ -21,7 +21,7 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
     @Output() public usuariosEntidade: UsuarioEntidade[] = new Array<UsuarioEntidade>();
     @Input() usuario: Usuario;
     @Output() @Input() usuarioEntidadeSelecionado: UsuarioEntidade;
-    @Output()@Input()    usuarioEnviado: Usuario;
+    @Output() usuarioEnviado: Usuario;
 
 
     @ViewChild ('associaPerfilBarramentoComponent') associaPerfilBarramentoComponent: AssociaPerfilBarramentoComponent;

@@ -1,11 +1,12 @@
 import { BaseComponent } from "app/componente/base.component";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input, SimpleChanges } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { UsuarioService } from "app/servico/usuario.service";
 import { UsuarioEntidadeService } from "app/servico/usuario-entidade.service";
 import { BloqueioService } from "app/servico/bloqueio.service";
 import { ToastyService } from "ng2-toasty";
 import { UsuarioBarramentoComponent } from "../usuario-barramento.component";
+import { Usuario } from "app/modelo";
 
 @Component({
     selector: 'app-cnpj-perfis-associados',
@@ -16,6 +17,9 @@ import { UsuarioBarramentoComponent } from "../usuario-barramento.component";
 export class CNPJPerfisAssociadosComponent extends BaseComponent implements OnInit {
 
     usuarioBarramentoComponent: UsuarioBarramentoComponent;
+
+    @Input()  usuarioEnviado: Usuario = new Usuario();
+
     constructor(
         private router: Router,
         private usuarioService: UsuarioService,
@@ -31,5 +35,11 @@ export class CNPJPerfisAssociadosComponent extends BaseComponent implements OnIn
 
     checkList(){
         return false;
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['usuarioEnviado']) {
+            console.log(this.usuarioEnviado);
+        }
     }
 }
