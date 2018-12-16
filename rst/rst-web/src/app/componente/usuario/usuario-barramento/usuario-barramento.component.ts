@@ -1,5 +1,5 @@
 import { BaseComponent } from "app/componente/base.component";
-import { Component, OnInit, Output, Input, SimpleChanges, ViewChild } from "@angular/core";
+import { Component, OnInit, Output, Input, SimpleChanges, ViewChild, ChangeDetectorRef } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { UsuarioService } from "app/servico/usuario.service";
 import { UsuarioEntidadeService } from "app/servico/usuario-entidade.service";
@@ -38,12 +38,14 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
         private usuarioEntidadeService: UsuarioEntidadeService,
         protected bloqueioService: BloqueioService,
         protected dialogo: ToastyService,
+        private changeDetector: ChangeDetectorRef
       ) {
         super(bloqueioService, dialogo);
       }
 
       ngOnInit(): void {
     }
+
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['usuario']) {
@@ -64,6 +66,7 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
 
     onUsuarioSelecionado(usuarioSelecionado: UsuarioEntidade):void {
         this.usuarioEntidadeSelecionado = usuarioSelecionado;
+        this.ngAfterViewChecked();
       }
 
     editarEvent(sistema: string) {
@@ -71,5 +74,8 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
             this.associaPerfilBarramentoComponent.selecionaSistema(sistema)
     }
 
+    ngAfterViewChecked(){
+        this.changeDetector.detectChanges();
+      }
 
 }

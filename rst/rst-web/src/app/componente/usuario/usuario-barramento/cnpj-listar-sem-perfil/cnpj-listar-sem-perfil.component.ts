@@ -20,7 +20,7 @@ export class CNPJListarSemPerfilComponent extends BaseComponent implements OnIni
     @Input() usuariosEntidade: UsuarioEntidade[] = new Array<UsuarioEntidade>();
     usuarioEntidadeEmpresa: UsuarioEntidade[] = new Array<UsuarioEntidade>();
     usuarioBarramentoComponent: UsuarioBarramentoComponent;
-    @Output() usuarioSelecionado: EventEmitter<UsuarioEntidade> = new EventEmitter<UsuarioEntidade>();
+    @Output() usuarioSelecionado: EventEmitter<UsuarioEntidade> = new EventEmitter<UsuarioEntidade>(true);
     constructor(
         private router: Router,
         private usuarioService: UsuarioService,
