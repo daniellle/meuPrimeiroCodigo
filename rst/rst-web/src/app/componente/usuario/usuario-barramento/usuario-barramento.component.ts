@@ -1,5 +1,5 @@
 import { BaseComponent } from "app/componente/base.component";
-import {Component, OnInit, ViewChild} from "@angular/core";
+import { Component, OnInit, Output, Input, SimpleChanges, ViewChild } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { UsuarioService } from "app/servico/usuario.service";
 import { UsuarioEntidadeService } from "app/servico/usuario-entidade.service";
@@ -7,6 +7,7 @@ import { BloqueioService } from "app/servico/bloqueio.service";
 import { ToastyService } from "ng2-toasty";
 import { CNPJListarSemPerfilComponent } from '../usuario-barramento/cnpj-listar-sem-perfil/cnpj-listar-sem-perfil.component';
 import { CNPJPerfisAssociadosComponent } from "./cnpj-perfis-associados/cnpj-perfis-associados.component";
+import { UsuarioEntidade } from "app/modelo/usuario-entidade.model";
 import {AssociaPerfilBarramentoComponent} from "./associa-perfil-barramento/associa-perfil-barramento.component";
 import {Perfil, Usuario, UsuarioPerfilSistema} from "../../../modelo";
 
@@ -17,13 +18,15 @@ import {Perfil, Usuario, UsuarioPerfilSistema} from "../../../modelo";
 })
 
 export class UsuarioBarramentoComponent extends BaseComponent implements OnInit {
+    @Output() public usuariosEntidade: UsuarioEntidade[] = new Array<UsuarioEntidade>();
+    @Input() usuario: Usuario;
+    @Output() @Input() usuarioEntidadeSelecionado: UsuarioEntidade;
 
     @ViewChild ('associaPerfilBarramentoComponent') associaPerfilBarramentoComponent: AssociaPerfilBarramentoComponent;
     @ViewChild ('cnpjListarSemPerfilComponent') cnpjListarSemPerfil: CNPJListarSemPerfilComponent;
     @ViewChild ('cnpjPerfisAssociadosComponent') cnpjPerfisAssociados: CNPJPerfisAssociadosComponent;
 
     id: number;
-    usuario: Usuario;
     perfisSistemas: UsuarioPerfilSistema[];
     perfisUsuario: Perfil[] = [];
 
@@ -39,29 +42,29 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
         super(bloqueioService, dialogo);
       }
 
-    ngOnInit(){
-
-        this.activatedRoute.params.subscribe((params) => {
-            this.id = params['id'];
-
-            this.usuario = new Usuario();
-            this.usuario.perfisSistema = new Array<UsuarioPerfilSistema>();
-            this.perfisSistemas = new Array<UsuarioPerfilSistema>();
-
-            if (this.id) {
-                this.modoAlterar = true;
-                this.buscarUsuario();
-            }
-        });
-
+      ngOnInit(): void {
     }
 
-    buscarUsuario(): void {
-        this.usuarioService.buscarUsuarioById(this.id)
-            .subscribe((retorno: Usuario) =>  this.usuario = retorno,
-                error => this.mensagemError(error));
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['usuario']) {
+            this.buscarUsuarioEntidade(this.usuario);
+        }
+        if (changes['usuarioEntidadeSelecionado']) {
+            console.log(this.usuarioEntidadeSelecionado);
+        }
     }
 
+    private buscarUsuarioEntidade(usuario){
+        if(usuario){
+            this.usuarioEntidadeService.pesquisaUsuariosEntidade(usuario.login).subscribe(response => {
+                this.usuariosEntidade = response;
+            });
+        }
+    }
+
+    onUsuarioSelecionado(usuarioSelecionado: UsuarioEntidade):void {
+        this.usuarioEntidadeSelecionado = usuarioSelecionado;
+      }
 
     editarEvent(sistema: string) {
         if(sistema)

@@ -44,6 +44,7 @@ export const MensagemProperties = {
   app_rst_labels_data_futura: 'O campo {0} não pode ser maior que a data atual.',
   app_rst_labels_data_1_maior_que_data_2: 'O campo {0} não pode ser maior que o campo {1}.',
   app_rst_label_dados_gerais: 'Dados Gerais',
+  app_rst_label_cnpj_sem_perfis: 'CNPJ sem Perfis Associados',
   app_rst_label_incluir: 'Incluir',
   app_rst_labels_sexo: 'Sexo',
   app_rst_labels_genero: 'Gênero',
