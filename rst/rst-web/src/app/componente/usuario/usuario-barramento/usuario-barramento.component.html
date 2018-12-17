@@ -12,4 +12,13 @@
 
 
     <app-cnpj-perfis-associados [usuarioEntidadeSelecionado]='usuarioEntidadeSelecionado' [usuarioEnviado]="usuarioEnviado"></app-cnpj-perfis-associados>
+
+
+    <div class="btn-rodape-acoes space-up">
+        <button type="button " class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!modoConsulta" (click)="salvar()">
+            {{'app_rst_btn_salvar' | recurso}}
+        </button>
+    </div>
+
+
 </div>
