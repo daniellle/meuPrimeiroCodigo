@@ -106,9 +106,16 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
           );
            var usuariosEntidadePorCnpj: UsuarioEntidade[] = [];
           this.usuarioEnviado.perfisSistema.forEach(ps => {
-              let usuarioEntidadePorCnpj = this.usuarioEntidadeSelecionado;
-              usuarioEntidadePorCnpj.perfil = ps.perfil.codigo;
-              usuariosEntidadePorCnpj.push(usuarioEntidadePorCnpj);
+              if(usuariosEntidadePorCnpj.length <= 0 ){
+                  this.usuarioEntidadeSelecionado.perfil = ps.perfil.codigo;
+                  usuariosEntidadePorCnpj.push( this.usuarioEntidadeSelecionado);
+              }
+              else {
+                  let usuarioEntidadePorCnpj = this.usuarioEntidadeSelecionado;
+                  usuarioEntidadePorCnpj.perfil = ps.perfil.codigo;
+                  usuarioEntidadePorCnpj.id = undefined;
+                  usuariosEntidadePorCnpj.push(usuarioEntidadePorCnpj);
+              }
           });
           this.usuarioEntidadeService.salvar(usuariosEntidadePorCnpj).subscribe((retorno: UsuarioEntidade) => {
               this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
