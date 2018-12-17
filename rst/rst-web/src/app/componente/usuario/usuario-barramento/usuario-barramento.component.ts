@@ -10,6 +10,7 @@ import { CNPJPerfisAssociadosComponent } from "./cnpj-perfis-associados/cnpj-per
 import { UsuarioEntidade } from "app/modelo/usuario-entidade.model";
 import {AssociaPerfilBarramentoComponent} from "./associa-perfil-barramento/associa-perfil-barramento.component";
 import {Perfil, Usuario, UsuarioPerfilSistema} from "../../../modelo";
+import {MensagemProperties} from "../../../compartilhado/utilitario/recurso.pipe";
 
 @Component({
     selector: 'app-usuario-barramento',
@@ -66,6 +67,11 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
         }
     }
 
+    private _isEmptyListaPerfilSistema() {
+        return this.usuario.perfisSistema.length === 0;
+    }
+
+
     onUsuarioSelecionado(usuarioSelecionado: UsuarioEntidade):void {
         console.log(usuarioSelecionado);
         this.usuarioEntidadeSelecionado = usuarioSelecionado;
@@ -76,6 +82,43 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
       usuarioEnviadoAssociacao(usuarioEnviado: Usuario) {
             this.usuarioEnviado = usuarioEnviado;
             this.ngAfterViewChecked();
+      }
+
+      salvar(){
+          if(this._isEmptyListaPerfilSistema()) {
+              this.mensagemErroComParametros('app_rst_usuario_validacao_selecione_sistema_perfil');
+              return;
+          }
+          let enviaEmail;
+          if(this.usuario.perfisSistema == undefined || this.usuario.perfisSistema == null){
+              enviaEmail = true;
+          }
+          else{
+              enviaEmail = false;
+          }
+          this.usuarioService.salvarUsuario(this.usuarioEnviado).subscribe((retorno: Usuario) => {
+                  this.usuario = retorno;
+                  this.id = this.usuario.id;
+                  //this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+              }, error =>
+                  this.mensagemError(error)
+          );
+           var usuariosEntidadePorCnpj: UsuarioEntidade[] = [];
+          this.usuarioEnviado.perfisSistema.forEach(ps => {
+              let usuarioEntidadePorCnpj = this.usuarioEntidadeSelecionado;
+              usuarioEntidadePorCnpj.perfil = ps.perfil.codigo;
+              usuariosEntidadePorCnpj.push(usuarioEntidadePorCnpj);
+          });
+          this.usuarioEntidadeService.salvar(usuariosEntidadePorCnpj).subscribe((retorno: UsuarioEntidade) => {
+              this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+          }, error =>
+                  this.mensagemError(error)
+          );
+
+          if(enviaEmail){
+              //Chamar serviço do girst de enviar email
+          }
+
       }
 
     editarEvent(sistema: string) {
