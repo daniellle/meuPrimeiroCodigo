@@ -46,6 +46,8 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
       }
 
       ngOnInit(): void {
+          this.usuarioEnviado = this.usuario;
+          console.log(this.usuario);
     }
 
 
@@ -67,7 +69,6 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
     }
 
     onUsuarioSelecionado(usuarioSelecionado: UsuarioEntidade):void {
-        console.log(usuarioSelecionado);
         this.usuarioEntidadeSelecionado = usuarioSelecionado;
         this.ngAfterViewChecked();
       }
