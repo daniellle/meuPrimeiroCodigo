@@ -22,8 +22,9 @@ import {environment} from "../../../../environments/environment";
 export class UsuarioBarramentoComponent extends BaseComponent implements OnInit {
     @Output() public usuariosEntidade: UsuarioEntidade[] = new Array<UsuarioEntidade>();
     @Input() usuario: Usuario;
-    @Output() @Input() usuarioEntidadeSelecionado: UsuarioEntidade;
+    @Output() usuarioEntidadeSelecionado: UsuarioEntidade;
     @Output() usuarioEnviado: Usuario;
+    usuarioTratamento: UsuarioEntidade;
 
 
     @ViewChild ('associaPerfilBarramentoComponent') associaPerfilBarramentoComponent: AssociaPerfilBarramentoComponent;
@@ -48,15 +49,13 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
       }
 
       ngOnInit(): void {
+          this.usuarioEnviado = this.usuario;
     }
 
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['usuario']) {
             this.buscarUsuarioEntidade(this.usuario);
-        }
-        if (changes['usuarioEntidadeSelecionado']) {
-            console.log(this.usuarioEntidadeSelecionado);
         }
     }
 
@@ -74,7 +73,6 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
 
 
     onUsuarioSelecionado(usuarioSelecionado: UsuarioEntidade):void {
-        console.log(usuarioSelecionado);
         this.usuarioEntidadeSelecionado = usuarioSelecionado;
         this.ngAfterViewChecked();
       }
@@ -97,38 +95,35 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
           else{
               enviaEmail = false;
           }
-          this.usuarioService.salvarUsuario(this.usuarioEnviado).subscribe((retorno: Usuario) => {
-                  this.usuario = retorno;
-                  this.id = this.usuario.id;
-                  //this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
-              }, error =>
-                  this.mensagemError(error)
-          );
-           var usuariosEntidadePorCnpj: UsuarioEntidade[] = [];
+          
+        //   this.usuarioService.salvarUsuario(this.usuarioEnviado).subscribe((retorno: Usuario) => {
+        //           this.usuario = retorno;
+        //           this.id = this.usuario.id;
+        //           this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+        //       }, error =>
+        //           this.mensagemError(error)
+        //   );
+        let id = this.usuarioEntidadeSelecionado.id;
+         const usuariosEntidadePorCnpj: UsuarioEntidade[] = [];
           this.usuarioEnviado.perfisSistema.forEach(ps => {
-              if(usuariosEntidadePorCnpj.length <= 0 ){
-                  this.usuarioEntidadeSelecionado.perfil = ps.perfil.codigo;
-                  usuariosEntidadePorCnpj.push( this.usuarioEntidadeSelecionado);
-              }
-              else {
-                  let usuarioEntidadePorCnpj = this.usuarioEntidadeSelecionado;
-                  usuarioEntidadePorCnpj.perfil = ps.perfil.codigo;
-                  usuarioEntidadePorCnpj.id = undefined;
-                  usuariosEntidadePorCnpj.push(usuarioEntidadePorCnpj);
-              }
+            let usuarioEntidadePorCnpj = new UsuarioEntidade();
+            usuarioEntidadePorCnpj.cpf = this.usuarioEntidadeSelecionado.cpf;
+            usuarioEntidadePorCnpj.empresa = this.usuarioEntidadeSelecionado.empresa;
+            usuarioEntidadePorCnpj.email = this.usuarioEntidadeSelecionado.email;
+            usuarioEntidadePorCnpj.nome = this.usuarioEntidadeSelecionado.nome;
+            usuarioEntidadePorCnpj.perfil = ps.perfil.codigo;
+            usuarioEntidadePorCnpj.termo = this.usuarioEntidadeSelecionado.termo;
+            usuariosEntidadePorCnpj.push(usuarioEntidadePorCnpj);
           });
-          this.usuarioEntidadeService.salvar(usuariosEntidadePorCnpj).subscribe((retorno: UsuarioEntidade) => {
-              this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
-          }, error =>
-                  this.mensagemError(error)
-          );
-
-          if(enviaEmail){
-              //Chamar serviço do girst de enviar email
-          }
-
-      }
-
+          usuariosEntidadePorCnpj[0].id = id;
+          console.log(usuariosEntidadePorCnpj);
+            this.usuarioEntidadeService.salvar(usuariosEntidadePorCnpj).subscribe((retorno: UsuarioEntidade) => {
+                    this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+                }, error =>
+                        this.mensagemError(error)
+                );
+                }
+                
     editarEvent(sistema: string) {
         if(sistema)
             this.associaPerfilBarramentoComponent.selecionaSistema(sistema)

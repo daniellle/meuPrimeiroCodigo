@@ -11,7 +11,7 @@
     <app-associa-perfil-barramento (usuarioEnviado)='usuarioEnviadoAssociacao($event)' *ngIf="usuarioEntidadeSelecionado" #associaPerfilBarramentoComponent [modoConsulta]="modoConsulta" [usuario]="usuario"> </app-associa-perfil-barramento>
 
 
-    <app-cnpj-perfis-associados [usuarioEnviado]="usuarioEnviado"></app-cnpj-perfis-associados>
+    <app-cnpj-perfis-associados [usuarioEntidadeSelecionado]='usuarioEntidadeSelecionado' [usuarioEnviado]="usuarioEnviado"></app-cnpj-perfis-associados>
 
 
     <div class="btn-rodape-acoes space-up">
