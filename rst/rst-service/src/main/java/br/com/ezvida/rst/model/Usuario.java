@@ -72,6 +72,10 @@ public class Usuario extends BaseEntity<Long> {
     @Column(name = "origemdados")
     private String origemDados;
 
+    @Column(name = "clientid")
+    private String clientId;
+
+
     @Transient
     private Set<String> papeis;
 
@@ -131,6 +135,15 @@ public class Usuario extends BaseEntity<Long> {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
 
     public String getDn() {
         return dn;

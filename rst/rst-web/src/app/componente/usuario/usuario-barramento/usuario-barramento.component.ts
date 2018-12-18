@@ -11,6 +11,7 @@ import { UsuarioEntidade } from "app/modelo/usuario-entidade.model";
 import {AssociaPerfilBarramentoComponent} from "./associa-perfil-barramento/associa-perfil-barramento.component";
 import {Perfil, Usuario, UsuarioPerfilSistema} from "../../../modelo";
 import {MensagemProperties} from "../../../compartilhado/utilitario/recurso.pipe";
+import {environment} from "../../../../environments/environment";
 
 @Component({
     selector: 'app-usuario-barramento',
@@ -131,6 +132,10 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
     editarEvent(sistema: string) {
         if(sistema)
             this.associaPerfilBarramentoComponent.selecionaSistema(sistema)
+    }
+
+    voltar(): void {
+        this.router.navigate([`${environment.path_raiz_cadastro}/usuario/${this.id}`]);
     }
 
     ngAfterViewChecked(){

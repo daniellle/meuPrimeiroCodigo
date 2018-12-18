@@ -4,7 +4,7 @@
     {{'app_rst_usuario_unidade_sesi_associados_title' | recurso}}
 </p>
 
-<div class="container-form">
+<div class="container-form" *ngIf="!isBarramento">
     <div class="row">
         <div class="form-group col-sm-8">
             <md-input-container [floatPlaceholder]="true">

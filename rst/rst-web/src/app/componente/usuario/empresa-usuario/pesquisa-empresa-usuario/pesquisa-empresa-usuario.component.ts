@@ -8,7 +8,7 @@ import {environment} from './../../../../../environments/environment';
 import {Usuario} from './../../../../modelo/usuario.model';
 import {UsuarioService} from './../../../../servico/usuario.service';
 import {MensagemProperties} from 'app/compartilhado/utilitario/recurso.pipe';
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, SimpleChanges, OnChanges} from '@angular/core';
 import {Paginacao} from './../../../../modelo/paginacao.model';
 import {UsuarioEntidadeService} from './../../../../servico/usuario-entidade.service';
 import {UsuarioEntidade} from './../../../../modelo/usuario-entidade.model';
@@ -26,7 +26,7 @@ import {Perfil} from "../../../../modelo/perfil.model";
     templateUrl: './pesquisa-empresa-usuario.component.html',
     styleUrls: ['./pesquisa-empresa-usuario.component.scss'],
 })
-export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements OnInit {
+export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements OnInit, OnChanges {
 
     usuarioBarramentoComponent: UsuarioBarramentoComponent;
 
@@ -41,6 +41,7 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     hasRecursoHumano = false;
     hasSegurancaTrabalho = false;
     hasGestorEmpresaMaster = false;
+    isBarramento: boolean;
 
     paginacaoPFS = new Paginacao();
     paginacaoGEEM = new Paginacao();
@@ -54,7 +55,7 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     listaEmpresasRH = new Array<UsuarioEntidade>();
     listaEmpresasST = new Array<UsuarioEntidade>();
     listaEmpresasGEEMMaster = new Array<UsuarioEntidade>();
-    
+
 
     constructor(
         private router: Router,
@@ -66,17 +67,24 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
         protected dialogo: ToastyService,
     ) {
         super(bloqueioService, dialogo);
-        this.buscarUsuario();
         this.tipoTela();
     }
 
     ngOnInit() {
         this.filtro = new FiltroUsuarioEntidade();
+        this.buscarUsuario();
     }
 
     onAlertListener(_usuariosEntidade) {
         console.log(_usuariosEntidade);
       }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        console.log('oi');
+        if (changes['usuario']) {
+            console.log(this.usuario);
+        }
+    }
 
     tipoTela() {
         this.modoConsulta = !Seguranca.isPermitido(
@@ -138,6 +146,10 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
                 this.getPerfis(retorno);
             }
             this.buscarEmpresasUsuario();
+            if(this.usuario.origemDados){
+                this.isBarramento = true;
+            }
+            console.log(this.usuario);
         }, (error) => {
             this.mensagemError(error);
         });

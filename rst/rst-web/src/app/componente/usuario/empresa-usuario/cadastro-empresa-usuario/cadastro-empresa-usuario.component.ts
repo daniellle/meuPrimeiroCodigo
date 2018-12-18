@@ -58,15 +58,6 @@ export class CadastroEmpresaUsuarioComponent extends BaseComponent implements On
         this.listaEmpresa = new Array<Empresa>();
     }
 
-    isNotBarramento(){
-        if(this.usuario.origemDados != null){
-            return false;
-        }
-        else{
-            return true;
-        }
-    }
-
     buscarUsuario(): void {
         this.idUsuario = this.activatedRoute.snapshot.params['id'];
         this.usuarioService.buscarUsuarioById(this.idUsuario).subscribe((retorno: Usuario) => {

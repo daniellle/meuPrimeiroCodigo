@@ -4,7 +4,7 @@
     {{'app_rst_usuario_empresa_empresas_associadas_title' | recurso}}
 </p>
 
-<div class="container-form" *ngIf="!isSomenteTrabalhador()">
+<div class="container-form" *ngIf="!isBarramento">
     <div class="row">
         <div class="form-group col-sm-8">
             <md-input-container [floatPlaceholder]="true">
@@ -26,7 +26,7 @@
     </div>
 </div>
 
-<div class="btn-filter-pesquisar space-up" *ngIf="!isSomenteTrabalhador()">
+<div class="btn-filter-pesquisar space-up" *ngIf="!isSomenteTrabalhador() && isBarramento">
     <button class="btn btn-primary" (click)="pesquisar()">{{'app_rst_btn_pesquisar' | recurso}}</button>
     <button class="btn btn-primary" *ngIf="!modoConsulta" (click)="novo()">{{'app_rst_btn_novo' | recurso}}</button>
     <button class="btn btn-secondary" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>

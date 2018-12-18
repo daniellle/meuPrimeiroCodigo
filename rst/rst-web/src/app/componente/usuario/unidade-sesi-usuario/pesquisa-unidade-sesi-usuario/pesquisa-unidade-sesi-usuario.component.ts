@@ -6,7 +6,7 @@ import {UsuarioPerfilSistema} from './../../../../modelo/usuario-perfil-sistema.
 import {Usuario} from './../../../../modelo/usuario.model';
 import {DepartRegionalService} from 'app/servico/depart-regional.service';
 import {MensagemProperties} from './../../../../compartilhado/utilitario/recurso.pipe';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, SimpleChanges} from '@angular/core';
 import {Paginacao} from './../../../../modelo/paginacao.model';
 import {UsuarioEntidadeService} from './../../../../servico/usuario-entidade.service';
 import {UsuarioEntidade} from './../../../../modelo/usuario-entidade.model';
@@ -33,6 +33,7 @@ export class PesquisaUnidadeSESIUsuarioComponent extends BaseComponent implement
   listaUsuarioEntidade: UsuarioEntidade[];
   usuario: Usuario;
   public departamentos: DepartamentoRegional[];
+  isBarramento: boolean;
 
   constructor(
     private router: Router,
@@ -54,6 +55,14 @@ export class PesquisaUnidadeSESIUsuarioComponent extends BaseComponent implement
     this.filtro = new FiltroUsuarioEntidade();
     this.filtroSelecionado = new FiltroUsuarioEntidade();
   }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['usuario']) {
+            if(this.usuario.origemDados != null){
+                this.isBarramento = true;
+            }
+        }
+    }
 
   tipoTela() {
     this.modoConsulta = !Seguranca.isPermitido(
