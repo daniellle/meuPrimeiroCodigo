@@ -41,10 +41,10 @@ export class CNPJPerfisAssociadosComponent extends BaseComponent implements OnIn
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['usuarioEnviado']) {
-            console.log(this.usuarioEnviado);
+
         }
         if (changes['usuarioEntidadeSelecionado']) {
-            console.log(this.usuarioEntidadeSelecionado);
+
         }
     }
 
