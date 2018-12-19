@@ -146,14 +146,9 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
                 this.getPerfis(retorno);
             }
             this.buscarEmpresasUsuario();
-            console.log(this.usuario.clientId);
-            if(this.usuario.clientId){
-                console.log('oi to louca');
-            }
             if (retorno.clientId) {
                 this.isBarramento = true;
             }
-            console.log(this.usuario);
         }, (error) => {
             this.mensagemError(error);
         });
