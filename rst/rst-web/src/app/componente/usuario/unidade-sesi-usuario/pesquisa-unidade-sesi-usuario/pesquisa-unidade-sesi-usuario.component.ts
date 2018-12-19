@@ -75,6 +75,9 @@ export class PesquisaUnidadeSESIUsuarioComponent extends BaseComponent implement
     this.idUsuario = this.activatedRoute.snapshot.params['id'];
     this.usuarioService.buscarUsuarioById(this.idUsuario).subscribe((retorno: Usuario) => {
       this.usuario = retorno;
+        if (retorno.clientId) {
+            this.isBarramento = true;
+        }
       this.carregarTabelaEmppresaUsuario();
       if (this.usuario && !this.usuario.perfisSistema) {
         this.usuario.perfisSistema = new Array<UsuarioPerfilSistema>();

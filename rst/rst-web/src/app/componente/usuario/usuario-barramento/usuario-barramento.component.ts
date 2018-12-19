@@ -95,7 +95,7 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
           else{
               enviaEmail = false;
           }
-          
+
         //   this.usuarioService.salvarUsuario(this.usuarioEnviado).subscribe((retorno: Usuario) => {
         //           this.usuario = retorno;
         //           this.id = this.usuario.id;
@@ -122,15 +122,16 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
                 }, error =>
                         this.mensagemError(error)
                 );
+            this.voltar();
                 }
-                
+
     editarEvent(sistema: string) {
         if(sistema)
             this.associaPerfilBarramentoComponent.selecionaSistema(sistema)
     }
 
     voltar(): void {
-        this.router.navigate([`${environment.path_raiz_cadastro}/usuario/${this.id}`]);
+        this.router.navigate([`${environment.path_raiz_cadastro}/usuario/${this.usuario.id}`]);
     }
 
     ngAfterViewChecked(){

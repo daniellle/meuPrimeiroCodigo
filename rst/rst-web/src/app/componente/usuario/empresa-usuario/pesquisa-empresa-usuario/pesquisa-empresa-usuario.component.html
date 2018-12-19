@@ -27,14 +27,14 @@
         </div>
     </div>
 
-    <div class="btn-filter-pesquisar space-up" *ngIf="!isSomenteTrabalhador() && isBarramento">
+    <div class="btn-filter-pesquisar space-up" *ngIf="!isSomenteTrabalhador() && !isBarramento">
         <button class="btn btn-primary" (click)="pesquisar()">{{'app_rst_btn_pesquisar' | recurso}}</button>
         <button class="btn btn-primary" *ngIf="!modoConsulta" (click)="novo()">{{'app_rst_btn_novo' | recurso}}</button>
         <button class="btn btn-secondary" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
     </div>
 </div>
 
-<div>
+<div *ngIf = "isBarramento">
     <app-usuario-barramento [usuario]="usuario"></app-usuario-barramento>
 </div>
 

@@ -21,6 +21,8 @@ export class CNPJPerfisAssociadosComponent extends BaseComponent implements OnIn
 
     @Input()  usuarioEnviado: Usuario = new Usuario();
     @Input() usuarioEntidadeSelecionado: UsuarioEntidade = new UsuarioEntidade();
+    nome;
+    cnpj: string;
 
     constructor(
         private router: Router,
@@ -58,8 +60,20 @@ export class CNPJPerfisAssociadosComponent extends BaseComponent implements OnIn
                     ps.sistema.codigo === 'dw' ||
                     ps.sistema.codigo === 'indigev') {
                     id = 1;
+                    if(this.usuarioEntidadeSelecionado.departamentoRegional){
+                        this.cnpj  = this.usuarioEntidadeSelecionado.departamentoRegional.cnpj;
+                         this.nome = this.usuarioEntidadeSelecionado.departamentoRegional.nomeFantasia;
+                    }
+                    else if (this.usuarioEntidadeSelecionado.empresa){
+                        this.cnpj = this.usuarioEntidadeSelecionado.empresa.cnpj;
+                         this.nome = this.usuarioEntidadeSelecionado.empresa.nomeFantasia;
+                    }
+                    else if(this.usuarioEntidadeSelecionado.uat){
+                        this.cnpj = this.usuarioEntidadeSelecionado.uat.cnpj;
+                         this.nome = this.usuarioEntidadeSelecionado.uat.nomeFantasia;
+                    }
                     if (!sistemas[id]) {
-                        sistemas[id] = {id, sistema: 'Cadastro', perfil: ''};
+                        sistemas[id] = {id, sistema: 'Cadastro', perfil: '', cnpj: this.cnpj, nomeFantasia: this.nome };
                     }
                     if (sistemas[id].perfil.search(ps.perfil.nome.toString()) === -1) {
                         sistemas[id].perfil = ps.perfil.nome.toString().concat('; ').concat(sistemas[id].perfil);
@@ -71,7 +85,7 @@ export class CNPJPerfisAssociadosComponent extends BaseComponent implements OnIn
                     sistemas[id].perfil = ps.perfil.nome.toString().concat('; ').concat(sistemas[id].perfil);
                 }
             });
-    
+
             return Object.keys(sistemas).map((key) => {
                 sistemas[key].perfil = sistemas[key].perfil.substr(0, sistemas[key].perfil.length - 2);
                 return sistemas[key];

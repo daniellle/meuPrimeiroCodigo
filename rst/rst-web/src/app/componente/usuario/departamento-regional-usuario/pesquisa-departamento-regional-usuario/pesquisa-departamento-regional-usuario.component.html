@@ -4,7 +4,7 @@
     {{'app_rst_usuario_departamento_regional_associados_title' | recurso}}
 </p>
 
-<div class="container-form">
+<div class="container-form" *ngIf="!isBarramento">
     <div class="row">
         <div class="form-group col-sm-8">
             <md-input-container [floatPlaceholder]="true">
@@ -29,11 +29,17 @@
     </div>
 </div>
 
-<div class="btn-filter-pesquisar space-up">
+<div class="btn-filter-pesquisar space-up" *ngIf="!isBarramento">
     <button class="btn btn-primary" (click)="pesquisar()">{{'app_rst_btn_pesquisar' | recurso}}</button>
     <button *ngIf="hasPermissao()" class="btn btn-primary" (click)="novo()">{{'app_rst_btn_novo' | recurso}}</button>
     <button class="btn btn-secondary" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
 </div>
+
+<div *ngIf = "isBarramento">
+    <app-usuario-barramento [usuario]="usuario"></app-usuario-barramento>
+</div>
+
+
 <div class="container-form space-up">
     <div class="container-subtitulo">
         <p>{{'app_rst_usuario_departamento_regional_adicionados' | recurso}}</p>
