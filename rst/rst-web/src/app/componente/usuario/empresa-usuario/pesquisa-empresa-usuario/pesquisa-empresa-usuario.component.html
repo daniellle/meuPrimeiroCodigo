@@ -4,32 +4,34 @@
     {{'app_rst_usuario_empresa_empresas_associadas_title' | recurso}}
 </p>
 
-<div class="container-form" *ngIf="!isBarramento">
-    <div class="row">
-        <div class="form-group col-sm-8">
-            <md-input-container [floatPlaceholder]="true">
-                <input mdInput placeholder="{{ 'app_rst_labels_razao_social' | recurso }}" type="text" name="razaoSocial" [(ngModel)]="filtro.razaoSocial" class="form-control" id="razaoSocial" maxlength="160" #razaoSocialFiltro="ngModel">
-            </md-input-container>
+<div *ngIf="!isBarramento">
+    <div class="container-form">
+        <div class="row">
+            <div class="form-group col-sm-8">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{ 'app_rst_labels_razao_social' | recurso }}" type="text" name="razaoSocial" [(ngModel)]="filtro.razaoSocial" class="form-control" id="razaoSocial" maxlength="160" #razaoSocialFiltro="ngModel">
+                </md-input-container>
+            </div>
+            <div class="form-group col-sm-4">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{ 'app_rst_labels_cnpj' | recurso }}" type="text" [textMask]="{mask: mascaraCnpj, guide: false}" name="cnpj" [(ngModel)]="filtro.cnpj" class="form-control" id="cnpj" #cnpjFiltro="ngModel">
+                </md-input-container>
+            </div>
         </div>
-        <div class="form-group col-sm-4">
-            <md-input-container [floatPlaceholder]="true">
-                <input mdInput placeholder="{{ 'app_rst_labels_cnpj' | recurso }}" type="text" [textMask]="{mask: mascaraCnpj, guide: false}" name="cnpj" [(ngModel)]="filtro.cnpj" class="form-control" id="cnpj" #cnpjFiltro="ngModel">
-            </md-input-container>
+        <div class="row">
+            <div class="form-group col-md-12 col-lg-4">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{ 'app_rst_labels_nome_fantasia' | recurso }}" type="text" name="nomeFantasia" [(ngModel)]="filtro.nomeFantasia" class="form-control" id="nomeFantasia" maxlength="160" #nomeFantasia="ngModel">
+                </md-input-container>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="form-group col-md-12 col-lg-4">
-            <md-input-container [floatPlaceholder]="true">
-                <input mdInput placeholder="{{ 'app_rst_labels_nome_fantasia' | recurso }}" type="text" name="nomeFantasia" [(ngModel)]="filtro.nomeFantasia" class="form-control" id="nomeFantasia" maxlength="160" #nomeFantasia="ngModel">
-            </md-input-container>
-        </div>
-    </div>
-</div>
 
-<div class="btn-filter-pesquisar space-up" *ngIf="!isSomenteTrabalhador() && isBarramento">
-    <button class="btn btn-primary" (click)="pesquisar()">{{'app_rst_btn_pesquisar' | recurso}}</button>
-    <button class="btn btn-primary" *ngIf="!modoConsulta" (click)="novo()">{{'app_rst_btn_novo' | recurso}}</button>
-    <button class="btn btn-secondary" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
+    <div class="btn-filter-pesquisar space-up" *ngIf="!isSomenteTrabalhador() && isBarramento">
+        <button class="btn btn-primary" (click)="pesquisar()">{{'app_rst_btn_pesquisar' | recurso}}</button>
+        <button class="btn btn-primary" *ngIf="!modoConsulta" (click)="novo()">{{'app_rst_btn_novo' | recurso}}</button>
+        <button class="btn btn-secondary" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
+    </div>
 </div>
 
 <div>

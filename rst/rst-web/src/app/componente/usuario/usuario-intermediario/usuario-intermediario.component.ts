@@ -60,6 +60,7 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
                 if (this.usuario.origemDados || true) {
                     this.buscarUsuarioEntidade();
                 }
+                console.log(this.usuario);
                 this.setTipoPerfil();
             }
         });
