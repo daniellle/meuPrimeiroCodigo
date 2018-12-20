@@ -66,8 +66,8 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     buscarUsuario(): void {
         this.usuarioService.buscarUsuarioById(this.id)
-            .subscribe((retorno: Usuario) =>  this.usuario = retorno,
-            error => this.mensagemError(error));
+        .subscribe((retorno: Usuario) =>  this.usuario = retorno,
+        error => this.mensagemError(error));
     }
 
     salvar(): void {
@@ -119,5 +119,12 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     getPerfil(id: number): Perfil {
         return this.perfisUsuario.find(perfil => perfil.id === id);
+    }
+
+    temOrigemDadosOuTemModoConsulta(): boolean {
+        if (this.usuario) {
+            return !this.modoConsulta;
+        }
+        
     }
 }
