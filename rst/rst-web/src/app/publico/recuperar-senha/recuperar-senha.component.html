@@ -35,8 +35,11 @@
                 </div>
 
                 <div class="row">
-                    <div class="form-group col-sm-11 mx-auto">
-                        Parece que seu não foi encontrado. Verifique se os dados fornecidos estão corretos. Caso contrário, entre em contato com a central de relacionamento do Sesi Viva+ através do {{telefone}}.
+                    <div class="form-group col-sm-11 mx-auto" *ngIf="!barramento">
+                        Parece que seu não foi encontrado. Verifique se os dados fornecidos estão corretos. Caso contrário, entre em                    contato com a central de relacionamento do Sesi Viva+ através do {{telefone}}.
+                    </div>
+                    <div class="form-group col-sm-11 mx-auto" *ngIf="barramento">
+                        Cadastro de usuario referente a esse email esta incompleto(sem perfil). caso tenha duvidas,entre em contato com                 a central de atendimento. {{telefone}}.
                     </div>
                 </div>
             </div>
