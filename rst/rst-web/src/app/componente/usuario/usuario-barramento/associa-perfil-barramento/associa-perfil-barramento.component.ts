@@ -123,7 +123,7 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
         let retorno: SistemaPerfil[] = [];
         if(this.tipoCnpj == "empresa") {
              perfisDoSistema.forEach(sp => {
-                 if (!sp.perfil.codigo.includes("DN") && !sp.perfil.codigo.includes("DR") && !sp.perfil.codigo.includes("GUS")) {
+                 if (sp.perfil.codigo.includes("EM") || sp.perfil.codigo.includes("ST") || sp.perfil.codigo.includes("RH") || sp.perfil.codigo.includes("GCOI") || sp.perfil.codigo.includes("PFS")) {
                      retorno.push(sp);
                  }
              })
@@ -131,7 +131,7 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
          }
          else if(this.tipoCnpj == "departamentoregional"){
             perfisDoSistema.forEach(sp => {
-                if (!sp.perfil.codigo.includes("DN") && !sp.perfil.codigo.includes("EM") && !sp.perfil.codigo.includes("GUS") && !sp.perfil.codigo.includes("PFS")) {
+                if (!sp.perfil.codigo.includes("DN") && !sp.perfil.codigo.includes("EM") && !sp.perfil.codigo.includes("GUS") && !sp.perfil.codigo.includes("PFS") && !sp.perfil.codigo.includes("ADM") && !sp.perfil.codigo.includes("EPI") && !sp.perfil.codigo.includes("GCOI") && !sp.perfil.codigo.includes("SUPG") && !sp.perfil.codigo.includes("ATD") && !sp.perfil.codigo.includes("TRA") && !sp.perfil.codigo.includes("SUPS") && !sp.perfil.codigo.includes("CONS") && !sp.perfil.codigo.includes("RH") && !sp.perfil.codigo.includes("ST")) {
                     retorno.push(sp);
                 }
             })
@@ -139,7 +139,8 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
          }
         else if(this.tipoCnpj == "unidadesesi"){
             perfisDoSistema.forEach(sp => {
-                if (!sp.perfil.codigo.includes("DN") && !sp.perfil.codigo.includes("EM") && !sp.perfil.codigo.includes("DR") && !sp.perfil.codigo.includes("PFS")) {
+                if (sp.perfil.codigo.includes("GUS")) {
+                    
                     retorno.push(sp);
                 }
             })

@@ -95,29 +95,31 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
                   this.usuario = retorno;
                   this.id = this.usuario.id;
                   this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
-                  let id = this.usuarioEntidadeSelecionado.id;
-                  const usuariosEntidadePorCnpj: UsuarioEntidade[] = [];
-                  this.usuarioEnviado.perfisSistema.forEach(ps => {
-                      const usuarioEntidadePorCnpj = new UsuarioEntidade();
-                      usuarioEntidadePorCnpj.cpf = this.usuarioEntidadeSelecionado.cpf;
-                      usuarioEntidadePorCnpj.empresa = this.usuarioEntidadeSelecionado.empresa;
-                      usuarioEntidadePorCnpj.uat = this.usuarioEntidadeSelecionado.uat;
-                      usuarioEntidadePorCnpj.departamentoRegional = this.usuarioEntidadeSelecionado.departamentoRegional;
-                      usuarioEntidadePorCnpj.email = this.usuarioEntidadeSelecionado.email;
-                      usuarioEntidadePorCnpj.nome = this.usuarioEntidadeSelecionado.nome;
-                      usuarioEntidadePorCnpj.perfil = ps.perfil.codigo;
-                      usuarioEntidadePorCnpj.termo = this.usuarioEntidadeSelecionado.termo;
-                      usuariosEntidadePorCnpj.push(usuarioEntidadePorCnpj);
-                    });
-                  usuariosEntidadePorCnpj[0].id = id;
-                  this.usuarioEntidadeService.salvar(usuariosEntidadePorCnpj).subscribe(() => {
-                              this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
-                          }, (error) =>
-                            this.mensagemError(error),
-                          );
-                  this.voltar();
-              }, (error) =>
-                  this.mensagemError(error));
+              }, error =>
+                  this.mensagemError(error)
+          );
+        let id = this.usuarioEntidadeSelecionado.id;
+         const usuariosEntidadePorCnpj: UsuarioEntidade[] = [];
+          this.usuarioEnviado.perfisSistema.forEach(ps => {
+            let usuarioEntidadePorCnpj = new UsuarioEntidade();
+            usuarioEntidadePorCnpj.cpf = this.usuarioEntidadeSelecionado.cpf;
+            usuarioEntidadePorCnpj.empresa = this.usuarioEntidadeSelecionado.empresa;
+            usuarioEntidadePorCnpj.uat = this.usuarioEntidadeSelecionado.uat;
+            usuarioEntidadePorCnpj.departamentoRegional = this.usuarioEntidadeSelecionado.departamentoRegional;
+            usuarioEntidadePorCnpj.email = this.usuarioEntidadeSelecionado.email;
+            usuarioEntidadePorCnpj.nome = this.usuarioEntidadeSelecionado.nome;
+            usuarioEntidadePorCnpj.perfil = ps.perfil.codigo;
+            usuarioEntidadePorCnpj.termo = this.usuarioEntidadeSelecionado.termo;
+            usuariosEntidadePorCnpj.push(usuarioEntidadePorCnpj);
+          });
+          usuariosEntidadePorCnpj[0].id = id;
+          console.log(usuariosEntidadePorCnpj);
+            this.usuarioEntidadeService.salvar(usuariosEntidadePorCnpj).subscribe((retorno: UsuarioEntidade) => {
+                    this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+                }, error =>
+                        this.mensagemError(error)
+                );
+            this.voltar();
                 }
 
     editarEvent(sistema: string) {
