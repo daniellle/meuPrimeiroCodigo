@@ -86,7 +86,8 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
           if(a.perfil.nome > b.perfil.nome){ return 1 };
           return 0;
         });
-        this.perfisDoSistema = this.filtrarPerfilPorCnpj(this.perfisDoSistema);
+        if(this.usuarioGestorDNBarramento){this.perfisDoSistema = this.filtrarPerfilPorCnpj(this.perfisDoSistema);}
+        
       } else{
         this.perfisDoSistema = sistema.sistemaPerfis;
       }
@@ -196,7 +197,7 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
     if(this.usuario.login){
       this.usuarioEntidadeService.pesquisaUsuariosEntidade(this.usuario.login).subscribe( (resposta: UsuarioEntidade[]) => {
         resposta.forEach(retorno => {
-          if(retorno.departamentoRegional != undefined && retorno.departamentoRegional.siglaDR == ("S4" || "DN")) && this.usuario.clientId != undefined){
+          if(retorno.departamentoRegional != undefined && retorno.departamentoRegional.siglaDR == ("S4" || "DN") && this.usuario.clientId != undefined){
             this.usuarioEntidade = retorno;
             this.usuarioEhGestorDNBarramento = true;
           }
