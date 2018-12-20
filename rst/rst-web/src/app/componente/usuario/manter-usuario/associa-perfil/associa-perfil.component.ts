@@ -1,3 +1,4 @@
+import { UsuarioEntidade } from './../../../../modelo/usuario-entidade.model';
 import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { MdSelect } from '@angular/material';
 
@@ -9,7 +10,7 @@ import { PerfilEnum } from 'app/modelo/enum/enum-perfil';
 import { BloqueioService } from 'app/servico/bloqueio.service';
 import { BaseComponent } from 'app/componente/base.component';
 import { ToastyService } from 'ng2-toasty';
-import { DialogService } from 'ng2-bootstrap-modal';
+import { UsuarioEntidadeService } from 'app/servico/usuario-entidade.service';
 
 const COD_SISTEMAS_RELACIONADOS = ['dw', 'indigev', 'portal'];
 const COD_SISTEMA_CADASTRO = 'cadastro';
@@ -29,6 +30,7 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
   @Output() associaPerfilEvent = new EventEmitter<any>();
 
   perfisSistemas: UsuarioPerfilSistema[];
+  usuarioEntidade: UsuarioEntidade;
   sistemaSelecionado: Sistema;
   sistemas: Sistema[] = [];
   perfisDoSistema: SistemaPerfil[] = [];
@@ -37,7 +39,8 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
 
   constructor(private sistemaService: SistemaService,
               protected bloqueioService: BloqueioService,
-              protected dialogo: ToastyService) {
+              protected dialogo: ToastyService,
+              private usuarioEntidadeService: UsuarioEntidadeService) {
       super(bloqueioService, dialogo);
 
   }
@@ -51,8 +54,10 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['usuario'])
+    if(changes['usuario'] && this.usuario.perfisSistema){
       this.perfisSistemas = this.usuario.perfisSistema;
+    }
+    this.usuarioGestorDN();
   }
 
   changeSistema(sistema: Sistema) {
@@ -168,4 +173,14 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
     return sistema.sistemaPerfis.some(sistemaPerfil => sistemaPerfil.perfil.codigo === perfil.codigo);
   }
 
+  usuarioGestorDN() {    
+    this.usuarioEntidadeService.pesquisaUsuariosEntidade(this.usuario.login).subscribe( (resposta: UsuarioEntidade[]) => {
+      resposta.forEach(retorno => {
+        if(retorno.departamentoRegional != undefined && retorno.departamentoRegional.siglaDR == ("S4" || "DN") )
+          {  
+            this.usuarioEntidade = retorno;
+          }
+      })
+    });
+    }
 }
