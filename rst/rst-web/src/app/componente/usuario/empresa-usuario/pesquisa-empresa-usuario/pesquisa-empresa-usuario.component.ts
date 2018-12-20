@@ -19,6 +19,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FiltroUsuarioEntidade} from './../../../../modelo/filtro-usuario-entidade.model';
 import {BaseComponent} from 'app/componente/base.component';
 import {Perfil} from "../../../../modelo/perfil.model";
+import { element } from 'protractor';
 
 
 @Component({
@@ -55,6 +56,8 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     listaEmpresasRH = new Array<UsuarioEntidade>();
     listaEmpresasST = new Array<UsuarioEntidade>();
     listaEmpresasGEEMMaster = new Array<UsuarioEntidade>();
+
+    usuariosEntidade = new Array<UsuarioEntidade>();
 
 
     constructor(
@@ -149,8 +152,19 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
             if (retorno.clientId) {
                 this.isBarramento = true;
             }
+            this.getUsuarioEntidade();
         }, (error) => {
             this.mensagemError(error);
+        });
+    }
+
+    public getUsuarioEntidade() {
+        this.usuarioEntidadeService.pesquisaUsuariosEntidade(this.usuario.login).subscribe((response: UsuarioEntidade[]) => {
+            response.forEach((element) => {
+                if (element.empresa) {
+                    this.usuariosEntidade.push(element);
+                }
+            });
         });
     }
 

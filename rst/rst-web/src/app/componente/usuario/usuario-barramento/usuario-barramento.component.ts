@@ -26,7 +26,6 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
     @Output() usuarioEnviado: Usuario;
     usuarioTratamento: UsuarioEntidade;
 
-
     @ViewChild ('associaPerfilBarramentoComponent') associaPerfilBarramentoComponent: AssociaPerfilBarramentoComponent;
     @ViewChild ('cnpjListarSemPerfilComponent') cnpjListarSemPerfil: CNPJListarSemPerfilComponent;
     @ViewChild ('cnpjPerfisAssociadosComponent') cnpjPerfisAssociados: CNPJPerfisAssociadosComponent;
@@ -34,7 +33,6 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
     id: number;
     perfisSistemas: UsuarioPerfilSistema[];
     perfisUsuario: Perfil[] = [];
-
 
     constructor(
         private router: Router,
@@ -52,7 +50,6 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
           this.usuarioEnviado = this.usuario;
     }
 
-
     ngOnChanges(changes: SimpleChanges) {
         if (changes['usuario']) {
             this.buscarUsuarioEntidade(this.usuario);
@@ -63,7 +60,6 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
         if(usuario){
             this.usuarioEntidadeService.pesquisaUsuariosEntidade(usuario.login).subscribe((response: UsuarioEntidade[]) => {
                 this.usuariosEntidade = response;
-                console.log(this.usuariosEntidade);
             });
         }
     }
@@ -71,7 +67,6 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
     private _isEmptyListaPerfilSistema() {
         return this.usuario.perfisSistema.length === 0;
     }
-
 
     onUsuarioSelecionado(usuarioSelecionado: UsuarioEntidade):void {
         this.usuarioEntidadeSelecionado = usuarioSelecionado;
@@ -90,52 +85,50 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
               return;
           }
           let enviaEmail;
-          if(this.usuario.perfisSistema == undefined || this.usuario.perfisSistema == null){
+          if (this.usuario.perfisSistema === undefined || this.usuario.perfisSistema == null) {
               enviaEmail = true;
-          }
-          else{
+          } else {
               enviaEmail = false;
           }
 
-        //   this.usuarioService.salvarUsuario(this.usuarioEnviado).subscribe((retorno: Usuario) => {
-        //           this.usuario = retorno;
-        //           this.id = this.usuario.id;
-        //           this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
-        //       }, error =>
-        //           this.mensagemError(error)
-        //   );
-        let id = this.usuarioEntidadeSelecionado.id;
-         const usuariosEntidadePorCnpj: UsuarioEntidade[] = [];
-          this.usuarioEnviado.perfisSistema.forEach(ps => {
-            let usuarioEntidadePorCnpj = new UsuarioEntidade();
-            usuarioEntidadePorCnpj.cpf = this.usuarioEntidadeSelecionado.cpf;
-            usuarioEntidadePorCnpj.empresa = this.usuarioEntidadeSelecionado.empresa;
-            usuarioEntidadePorCnpj.email = this.usuarioEntidadeSelecionado.email;
-            usuarioEntidadePorCnpj.nome = this.usuarioEntidadeSelecionado.nome;
-            usuarioEntidadePorCnpj.perfil = ps.perfil.codigo;
-            usuarioEntidadePorCnpj.termo = this.usuarioEntidadeSelecionado.termo;
-            usuariosEntidadePorCnpj.push(usuarioEntidadePorCnpj);
-          });
-          usuariosEntidadePorCnpj[0].id = id;
-          console.log(usuariosEntidadePorCnpj);
-            this.usuarioEntidadeService.salvar(usuariosEntidadePorCnpj).subscribe((retorno: UsuarioEntidade) => {
-                    this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
-                }, error =>
-                        this.mensagemError(error)
-                );
-            this.voltar();
+          this.usuarioService.salvarUsuario(this.usuarioEnviado).subscribe((retorno: Usuario) => {
+                  this.usuario = retorno;
+                  this.id = this.usuario.id;
+                  this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+                  let id = this.usuarioEntidadeSelecionado.id;
+                  const usuariosEntidadePorCnpj: UsuarioEntidade[] = [];
+                  this.usuarioEnviado.perfisSistema.forEach(ps => {
+                      const usuarioEntidadePorCnpj = new UsuarioEntidade();
+                      usuarioEntidadePorCnpj.cpf = this.usuarioEntidadeSelecionado.cpf;
+                      usuarioEntidadePorCnpj.empresa = this.usuarioEntidadeSelecionado.empresa;
+                      usuarioEntidadePorCnpj.email = this.usuarioEntidadeSelecionado.email;
+                      usuarioEntidadePorCnpj.nome = this.usuarioEntidadeSelecionado.nome;
+                      usuarioEntidadePorCnpj.perfil = ps.perfil.codigo;
+                      usuarioEntidadePorCnpj.termo = this.usuarioEntidadeSelecionado.termo;
+                      usuariosEntidadePorCnpj.push(usuarioEntidadePorCnpj);
+                    });
+                  usuariosEntidadePorCnpj[0].id = id;
+                  this.usuarioEntidadeService.salvar(usuariosEntidadePorCnpj).subscribe(() => {
+                              this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+                          }, (error) =>
+                            this.mensagemError(error),
+                          );
+                  this.voltar();
+              }, (error) =>
+                  this.mensagemError(error));
                 }
 
     editarEvent(sistema: string) {
-        if(sistema)
-            this.associaPerfilBarramentoComponent.selecionaSistema(sistema)
+        if (sistema) {
+            this.associaPerfilBarramentoComponent.selecionaSistema(sistema);
+        }
     }
 
     voltar(): void {
         this.router.navigate([`${environment.path_raiz_cadastro}/usuario/${this.usuario.id}`]);
     }
 
-    ngAfterViewChecked(){
+    ngAfterViewChecked() {
         this.changeDetector.detectChanges();
       }
 

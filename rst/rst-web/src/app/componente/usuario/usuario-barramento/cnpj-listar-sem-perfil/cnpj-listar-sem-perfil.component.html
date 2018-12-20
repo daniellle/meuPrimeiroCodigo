@@ -41,7 +41,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of listaDepartamento">
+                    <tr *ngFor="let item of usuarioEntidadeDepartamentoRegional">
                         <td class="col-quebra col-nome">{{item.departamentoRegional.razaoSocial}}</td>
                         <td class="col-nao-quebra">{{item.departamentoRegional.cnpj | cnpjPipe}}</td>
                         <td class="col-quebra col-nome">{{item.departamentoRegional.listaEndDepRegional && item.departamentoRegional.listaEndDepRegional[0] ? item.departamentoRegional.listaEndDepRegional[0].endereco.municipio.descricao : ''}}</td>

@@ -38,7 +38,10 @@ export class CNPJPerfisAssociadosComponent extends BaseComponent implements OnIn
     ngOnInit(){ }
 
     checkList(){
-        return this.usuarioEnviado.perfisSistema.length > 0;
+        if(this.usuarioEnviado && this.usuarioEnviado.perfisSistema){
+            return this.usuarioEnviado.perfisSistema.length > 0;
+        }
+        return false;
     }
 
     ngOnChanges(changes: SimpleChanges) {
