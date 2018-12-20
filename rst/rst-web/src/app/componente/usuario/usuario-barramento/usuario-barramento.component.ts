@@ -21,7 +21,7 @@ import {environment} from "../../../../environments/environment";
 
 export class UsuarioBarramentoComponent extends BaseComponent implements OnInit {
     @Output() public usuariosEntidade: UsuarioEntidade[] = new Array<UsuarioEntidade>();
-    @Input() usuario: Usuario;
+    @Input() @Output() usuario: Usuario;
     @Output() usuarioEntidadeSelecionado: UsuarioEntidade;
     @Output() usuarioEnviado: Usuario;
     usuarioTratamento: UsuarioEntidade;
@@ -61,8 +61,9 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
 
     private buscarUsuarioEntidade(usuario){
         if(usuario){
-            this.usuarioEntidadeService.pesquisaUsuariosEntidade(usuario.login).subscribe(response => {
+            this.usuarioEntidadeService.pesquisaUsuariosEntidade(usuario.login).subscribe((response: UsuarioEntidade[]) => {
                 this.usuariosEntidade = response;
+                console.log(this.usuariosEntidade);
             });
         }
     }
