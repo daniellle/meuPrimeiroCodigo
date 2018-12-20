@@ -98,4 +98,10 @@ export class CNPJListarSemPerfilComponent extends BaseComponent implements OnIni
     enviarUsuarioEntidade(usuarioEntidade: UsuarioEntidade) {
         this.usuarioSelecionado.emit(usuarioEntidade);
     }
+
+    checkList(): boolean {
+        return (this.tipoCnpj === this.strEmpresa && this.checkUsuarioEntidade(this.usuarioEntidadeEmpresa)) ||
+                (this.tipoCnpj === this.strUat && this.checkUsuarioEntidade(this.usuarioEntidadeUnidadeSesi)) ||
+                (this.tipoCnpj === this.strDR && this.checkUsuarioEntidade(this.usuarioEntidadeDepartamentoRegional));
+    }
 }
