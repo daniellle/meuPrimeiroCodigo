@@ -174,6 +174,13 @@ public class DepartamentoRegionalService extends BaseService {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<DepartamentoRegional> buscarDNPorSigla(){
+		LOGGER.debug("pesquisando departamento nacional");
+
+		return departamentoRegionalDAO.pesquisarDNPorSigla();
+	}
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public BigInteger countByIdsAndCNPJ(Collection<Long> listId, String cnpj) {
 		return departamentoRegionalDAO.countByIdsAndCNPJ(listId, cnpj);
 	}

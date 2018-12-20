@@ -500,8 +500,14 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             usuario.setTipoImagem(trabalhador.getTipoImagem());
             usuario.setImagem(trabalhador.getImagem());
         } else {
-            usuario.setDepartamentosRegionais(departamentoRegionalService.pesquisarPorIds(usuarioAConsultar.getIdDepartamentos()));
-            usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorIds(usuarioAConsultar.getIdEmpresas()));
+            if(usuarioAConsultar.getPapeis().contains(DadosFilter.DIRETOR_DN) || usuarioAConsultar.getPapeis().contains(DadosFilter.GESTOR_DN)
+            || usuarioAConsultar.getPapeis().contains(DadosFilter.GESTOR_CONTEUDO_DN) || usuarioAConsultar.getPapeis().contains(DadosFilter.MEDICO_TRABALHO_DN)){
+                usuario.setDepartamentosRegionais(departamentoRegionalService.buscarDNPorSigla());
+            }
+            else {
+                usuario.setDepartamentosRegionais(departamentoRegionalService.pesquisarPorIds(usuarioAConsultar.getIdDepartamentos()));
+                usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorIds(usuarioAConsultar.getIdEmpresas()));
+            }
         }
 
         br.com.ezvida.girst.apiclient.model.Usuario usuarioGirst = buscarPorLogin(login);
