@@ -68,9 +68,9 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
       this.perfisSistemas = this.usuario.perfisSistema;
       
     }
-    if(changes['usuarioEntidade'] && this.usuarioEntidade.departamentoRegional != undefined && this.usuario.clientId != null){
-      this.usuarioEhGestorDNBarramento = true;
-    }
+    // if(changes['usuarioEntidade'] && this.usuarioEntidade.departamentoRegional != undefined && this.usuario.clientId != null){
+    //   this.usuarioEhGestorDNBarramento = true;
+    // }
 
     if(this.usuario.login != null){
       this.usuarioGestorDNBarramento();
@@ -86,7 +86,9 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
           if(a.perfil.nome > b.perfil.nome){ return 1 };
           return 0;
         });
-        if(this.usuarioGestorDNBarramento){this.perfisDoSistema = this.filtrarPerfilPorCnpj(this.perfisDoSistema);}
+        if(this.usuarioEhGestorDNBarramento){
+          this.perfisDoSistema = this.filtrarPerfilPorCnpj(this.perfisDoSistema);
+        }
       } else{
         this.perfisDoSistema = sistema.sistemaPerfis;
       }
