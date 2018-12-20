@@ -56,7 +56,7 @@
                         <th class="label"><span class="label">{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
                         <th class="label"><span class="label">{{ 'app_rst_labels_municipio' | recurso }}</span></th>
                         <th class="label"><span class="label">{{ 'app_rst_labels_perfil' | recurso }}</span></th>
-                        <th class="label text-center" *ngIf="!modoConsulta">&nbsp;</th>
+                        <th class="label text-center" *ngIf="!modoConsulta && !isBarramento">&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -66,7 +66,7 @@
                         <td class="col-quebra col-nome">{{item.uat.endereco && item.uat.endereco[0] ? item.uat.endereco[0].endereco.municipio.descricao : ''}}</td>
                         <td class="col-quebra col-nome">{{item.perfil ? item.perfil : 'Sem perfil cadastrado'}}</td>
 
-                        <td class="text-center" *ngIf="!modoConsulta">
+                        <td class="text-center" *ngIf="!modoConsulta && !isBarramento">
                             <button class="btn-link" (click)="removerUnidade(item)"><img class="lixo" src="assets/img/trash.svg" alt="Excluir"></button>
                         </td>
                     </tr>
