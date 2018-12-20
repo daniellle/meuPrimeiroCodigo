@@ -7,15 +7,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.BeanParam;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Encoded;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -71,6 +63,23 @@ public class UsuarioEntidadeEndpoint extends SegurancaEndpoint<UsuarioEntidade> 
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON).header("Content-Version", getApplicationVersion())
 				.entity(serializar(usuarioEntidade)).build();
 	}
+
+    @Encoded
+    @GET
+    @Path("/usuariosEntidade/{cpf}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Autorizacao(permissoes = @Permissao(value = { PermissionConstants.USUARIO,
+        PermissionConstants.USUARIO_ALTERAR, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_DESATIVAR,
+        PermissionConstants.USUARIO_ENTIDADE, PermissionConstants.USUARIO_ENTIDADE_CADASTRAR,
+        PermissionConstants.USUARIO_ENTIDADE_ALTERAR, PermissionConstants.USUARIO_ENTIDADE_CONSULTAR,
+        PermissionConstants.USUARIO_ENTIDADE_DESATIVAR }))
+    public Response getUsuariosEntidade(@PathParam("cpf") String cpf, @Context SecurityContext context, @Context HttpServletRequest request) {
+        ClienteAuditoria auditoria = ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS);
+        List<UsuarioEntidade> usuarioEntidades = usuarioEntidadeService.buscarUsuariosEntidade(cpf);
+        return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON).header("Content-Version", getApplicationVersion())
+            .entity(serializar(usuarioEntidades)).build();
+    }
 
 	@GET
 	@Encoded

@@ -421,6 +421,7 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
         jpql.append(" where usuarioEntidade.dataExclusao is null ");
         jpql.append(" and usuarioEntidade.cpf = :cpf  ");
         jpql.append(" and departamento.id = :idDepartamento  ");
+        jpql.append(" and usuarioEntidade.perfil = :perfil  ");
         return jpql;
     }
 
@@ -430,6 +431,7 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
         jpql.append(" where usuarioEntidade.dataExclusao is null ");
         jpql.append(" and usuarioEntidade.cpf = :cpf  ");
         jpql.append(" and unidade.id = :idUnidade  ");
+        jpql.append(" and usuarioEntidade.perfil = :perfil  ");
         return jpql;
     }
 
@@ -456,6 +458,7 @@ public class UsuarioEntidadeDAO extends BaseDAO<UsuarioEntidade, Long> {
         TypedQuery<Long> query = getEm().createQuery(jpql.toString(), Long.class);
 
         query.setParameter("cpf", usuarioEntidade.getCpf());
+        query.setParameter("perfil", usuarioEntidade.getPerfil());
 
         addFiltroIds(usuarioEntidade, query);
 

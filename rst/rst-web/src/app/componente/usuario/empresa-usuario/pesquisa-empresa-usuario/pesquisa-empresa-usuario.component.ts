@@ -1,3 +1,4 @@
+import { UsuarioBarramentoComponent } from './../../usuario-barramento/usuario-barramento.component';
 import {PermissoesEnum} from 'app/modelo/enum/enum-permissoes';
 import {Seguranca} from './../../../../compartilhado/utilitario/seguranca.model';
 import {EmpresaTrabalhador} from './../../../../modelo/empresa-trabalhador.model';
@@ -7,7 +8,7 @@ import {environment} from './../../../../../environments/environment';
 import {Usuario} from './../../../../modelo/usuario.model';
 import {UsuarioService} from './../../../../servico/usuario.service';
 import {MensagemProperties} from 'app/compartilhado/utilitario/recurso.pipe';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, SimpleChanges, OnChanges} from '@angular/core';
 import {Paginacao} from './../../../../modelo/paginacao.model';
 import {UsuarioEntidadeService} from './../../../../servico/usuario-entidade.service';
 import {UsuarioEntidade} from './../../../../modelo/usuario-entidade.model';
@@ -18,18 +19,22 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FiltroUsuarioEntidade} from './../../../../modelo/filtro-usuario-entidade.model';
 import {BaseComponent} from 'app/componente/base.component';
 import {Perfil} from "../../../../modelo/perfil.model";
+import { element } from 'protractor';
+
 
 @Component({
     selector: 'app-pesquisa-empresa-usuario',
     templateUrl: './pesquisa-empresa-usuario.component.html',
     styleUrls: ['./pesquisa-empresa-usuario.component.scss'],
 })
-export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements OnInit {
+export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements OnInit, OnChanges {
+
+    usuarioBarramentoComponent: UsuarioBarramentoComponent;
 
     idUsuario: number;
     filtro: FiltroUsuarioEntidade;
-    usuario: Usuario;
-    perfis: Perfil[];
+    @Output() usuario: Usuario;
+    perfis: Perfil[] = new Array<Perfil>();
 
     hasTrabalhador = false;
     hasProfissionalSaude = false;
@@ -37,6 +42,7 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     hasRecursoHumano = false;
     hasSegurancaTrabalho = false;
     hasGestorEmpresaMaster = false;
+    isBarramento: boolean;
 
     paginacaoPFS = new Paginacao();
     paginacaoGEEM = new Paginacao();
@@ -51,6 +57,9 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     listaEmpresasST = new Array<UsuarioEntidade>();
     listaEmpresasGEEMMaster = new Array<UsuarioEntidade>();
 
+    usuariosEntidade = new Array<UsuarioEntidade>();
+
+
     constructor(
         private router: Router,
         private activatedRoute: ActivatedRoute,
@@ -61,12 +70,23 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
         protected dialogo: ToastyService,
     ) {
         super(bloqueioService, dialogo);
-        this.buscarUsuario();
         this.tipoTela();
     }
 
     ngOnInit() {
         this.filtro = new FiltroUsuarioEntidade();
+        this.buscarUsuario();
+    }
+
+    onAlertListener(_usuariosEntidade) {
+        console.log(_usuariosEntidade);
+      }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        console.log('oi');
+        if (changes['usuario']) {
+            console.log(this.usuario);
+        }
     }
 
     tipoTela() {
@@ -79,9 +99,11 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     pesquisar(): void {
         this.paginacao.pagina = 1;
         let filtroSelecionado = new FiltroUsuarioEntidade(this.filtro);
-        this.perfis.forEach(p => {
-            this.carregarEmpresasPerfil(PerfilEnum[<string>p.codigo], this.paginacao, filtroSelecionado);
-        });
+        if(this.perfis){
+            this.perfis.forEach(p => {
+                this.carregarEmpresasPerfil(PerfilEnum[<string>p.codigo], this.paginacao, filtroSelecionado);
+            });
+        }
     }
 
     pageChanged(event: any, perfil: string): void {
@@ -123,29 +145,47 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
         this.idUsuario = this.activatedRoute.snapshot.params['id'];
         this.usuarioService.buscarUsuarioById(this.idUsuario).subscribe((retorno: Usuario) => {
             this.usuario = retorno;
-            this.getPerfis(retorno);
+            if (retorno.perfisSistema) {
+                this.getPerfis(retorno);
+            }
             this.buscarEmpresasUsuario();
+            if (retorno.clientId) {
+                this.isBarramento = true;
+            }
+            this.getUsuarioEntidade();
         }, (error) => {
             this.mensagemError(error);
         });
     }
 
+    public getUsuarioEntidade() {
+        this.usuarioEntidadeService.pesquisaUsuariosEntidade(this.usuario.login).subscribe((response: UsuarioEntidade[]) => {
+            response.forEach((element) => {
+                if (element.empresa) {
+                    this.usuariosEntidade.push(element);
+                }
+            });
+        });
+    }
+
     private getPerfis(usuario: Usuario) {
         let map = new Map();
-        usuario.perfisSistema.forEach(value => {
-            map.set(value.perfil.codigo, value.perfil.nome);
-        });
-        this.perfis = new Array<Perfil>();
-        map.forEach((value, key) => {
-            this.perfis.push(new Perfil(null, value, key));
-        });
+        if (usuario.origemDados == null) {
+            usuario.perfisSistema.forEach(value => {
+                map.set(value.perfil.codigo, value.perfil.nome);
+            });
+            this.perfis = new Array<Perfil>();
+            map.forEach((value, key) => {
+                this.perfis.push(new Perfil(null, value, key));
+            });
+        }
     }
 
     private buscarEmpresasUsuario() {
         this.paginacao.pagina = 1;
-        if (this.usuario) {
+        if (this.usuario.origemDados == null) {
             this.filtro.cpf = this.usuario.login;
-            this.perfis.forEach(perfil => {
+            this.perfis.forEach((perfil) => {
                 this.carregarEmpresasPerfil(PerfilEnum[<string>perfil.codigo], this.paginacao, this.filtro);
             });
         }
@@ -334,5 +374,16 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     isSomenteTrabalhador(): boolean {
         return this.hasTrabalhador && !this.hasProfissionalSaude && !this.hasSegurancaTrabalho && !this.hasRecursoHumano
             && !this.hasGestorEmpresa && !this.hasGestorEmpresaMaster;
+    }
+
+    vemDoBarramento(){
+        if(this.usuario){
+        if(this.usuario.origemDados != null){
+            return true;
+        }
+        else{
+            return false;
+        }
+        }
     }
 }

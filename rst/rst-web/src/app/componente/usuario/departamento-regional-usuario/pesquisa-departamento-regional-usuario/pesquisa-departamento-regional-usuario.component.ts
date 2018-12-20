@@ -31,6 +31,7 @@ export class PesquisaDepartamentoUsuarioComponent extends BaseComponent implemen
   listaUsuarioEntidade: UsuarioEntidade[];
   usuario: Usuario;
   public estados: any[];
+  isBarramento: boolean;
 
   constructor(
     private router: Router,
@@ -63,6 +64,9 @@ export class PesquisaDepartamentoUsuarioComponent extends BaseComponent implemen
     this.idUsuario = this.activatedRoute.snapshot.params['id'];
     this.usuarioService.buscarUsuarioById(this.idUsuario).subscribe((retorno: Usuario) => {
       this.usuario = retorno;
+        if (retorno.clientId) {
+            this.isBarramento = true;
+        }
       this.carregarTabelaEmppresaUsuario();
       if (this.usuario && !this.usuario.perfisSistema) {
         this.usuario.perfisSistema = new Array<UsuarioPerfilSistema>();

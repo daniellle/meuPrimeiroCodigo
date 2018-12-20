@@ -7,7 +7,9 @@ export const MensagemProperties = {
   app_rst_operacao_invalida: 'Operação invalida',
   app_rst_operacao_nao_realizada: 'Não foi possível processar a operação',
   app_seguranca_acesso_negado: 'Usuário não possui acesso autorizado.',
-  app_rst_usuario_email_invalido: 'Digite um e-mail válido',
+    app_seguranca_email_nao_cadastrado: 'Email informado não cadastrado',
+    app_rst_usuario_email_invalido: 'Digite um e-mail válido',
+    app_seguranca_usuario_barramento: 'Usuário não possui perfil associado',
   app_rst_usuario_senha_invalido: 'Senha não poder ser branco ou nulo',
   app_rst_usuario_credencias_invalida: 'Não foi possível validar as credências do usuário!',
   app_rst_operacao_sucesso: 'Operação realizada com sucesso!',
@@ -44,6 +46,7 @@ export const MensagemProperties = {
   app_rst_labels_data_futura: 'O campo {0} não pode ser maior que a data atual.',
   app_rst_labels_data_1_maior_que_data_2: 'O campo {0} não pode ser maior que o campo {1}.',
   app_rst_label_dados_gerais: 'Dados Gerais',
+  app_rst_label_cnpj_sem_perfis: 'CNPJ sem Perfis Associados',
   app_rst_label_incluir: 'Incluir',
   app_rst_labels_sexo: 'Sexo',
   app_rst_labels_genero: 'Gênero',
@@ -470,6 +473,7 @@ export const MensagemProperties = {
 
   app_rst_usuario_label_sistemas: 'Sistemas',
   app_rst_usuario_label_perfis: 'Perfis',
+    app_rst_usuario_label_cnpj: 'CNPJ',
 
     //Empresa Contrato
     app_rst_empresa_contrato_title: 'Contratos',

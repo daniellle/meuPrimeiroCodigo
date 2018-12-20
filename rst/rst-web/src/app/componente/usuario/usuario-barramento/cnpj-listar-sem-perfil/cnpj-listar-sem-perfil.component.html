@@ -1,0 +1,84 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+
+<div class="container-form space-up">
+    <div class="container-subtitulo">
+        <p>{{'app_rst_label_cnpj_sem_perfis' | recurso}}</p>
+    </div>
+    <div class="row grid-pesquisa" *ngIf="checkUsuarioEntidade(usuarioEntidadeEmpresa) && (tipoCnpj == strEmpresa)">
+        <div class="col-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                        <th class="label text-center">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of usuarioEntidadeEmpresa">
+                        <td class="col-quebra">{{item.empresa.nomeFantasia}}</td>
+                        <td class="col-nao-quebra">{{item.empresa.cnpj | cnpjPipe }}</td>
+                        <td class="text-center">
+                            <button (click)="enviarUsuarioEntidade(item)" #tooltip="mdTooltip" color="'grey'" [mdTooltip]="'Associar Perfil'" [mdTooltipPosition]="'below'" class="btn-link"><span class="fa fa-exchange" aria-hidden="true"></span>
+                        </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row grid-pesquisa" *ngIf="checkUsuarioEntidade(usuarioEntidadeDepartamentoRegional) && (tipoCnpj == strDR)">
+        <div class="col-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_municipio' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_sigla_dr' | recurso }}</span></th>
+                        <th class="label text-center">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of usuarioEntidadeDepartamentoRegional">
+                        <td class="col-quebra col-nome">{{item.departamentoRegional.razaoSocial}}</td>
+                        <td class="col-nao-quebra">{{item.departamentoRegional.cnpj | cnpjPipe}}</td>
+                        <td class="col-quebra col-nome">{{item.departamentoRegional.listaEndDepRegional && item.departamentoRegional.listaEndDepRegional[0] ? item.departamentoRegional.listaEndDepRegional[0].endereco.municipio.descricao : ''}}</td>
+                        <td class="col-nao-quebra">{{item.departamentoRegional.siglaDR}}</td>
+                        <td class="text-center">
+                            <button (click)="enviarUsuarioEntidade(item)" #tooltip="mdTooltip" color="'grey'" [mdTooltip]="'Associar Perfil'" [mdTooltipPosition]="'below'" class="btn-link"><span class="fa fa-exchange" aria-hidden="true"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row grid-pesquisa">
+        <div class="col-12">
+            <table class="table table-hover" *ngIf="checkUsuarioEntidade(usuarioEntidadeUnidadeSesi) && (tipoCnpj == strUat)">
+                <thead>
+                    <tr>
+                        <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                        <th class="label text-center">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of usuarioEntidadeUnidadeSesi">
+                        <td class="col-quebra col-nome">{{item.uat.razaoSocial}}</td>
+                        <td class="col-nao-quebra">{{item.uat.cnpj | cnpjPipe}}</td>
+                        <td class="text-center">
+                            <button (click)="enviarUsuarioEntidade(item)" #tooltip="mdTooltip" color="'grey'" [mdTooltip]="'Associar Perfil'" [mdTooltipPosition]="'below'" class="btn-link"><span class="fa fa-exchange" aria-hidden="true"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="!checkList()">
+        Não existem CNPJs sem perfis associados.
+    </div>
+</div>
