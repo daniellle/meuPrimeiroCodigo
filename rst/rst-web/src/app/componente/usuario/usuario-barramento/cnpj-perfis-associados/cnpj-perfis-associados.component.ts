@@ -38,7 +38,7 @@ export class CNPJPerfisAssociadosComponent extends BaseComponent implements OnIn
     ngOnInit(){ }
 
     checkList(){
-        return false;
+        return this.usuarioEnviado.perfisSistema.length > 0;
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -49,6 +49,7 @@ export class CNPJPerfisAssociadosComponent extends BaseComponent implements OnIn
 
         }
     }
+
 
     public getSistemaPerfil(): any {
         const sistemas = {};
