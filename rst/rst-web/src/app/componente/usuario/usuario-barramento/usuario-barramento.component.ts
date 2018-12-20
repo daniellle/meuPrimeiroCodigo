@@ -101,6 +101,8 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
                       const usuarioEntidadePorCnpj = new UsuarioEntidade();
                       usuarioEntidadePorCnpj.cpf = this.usuarioEntidadeSelecionado.cpf;
                       usuarioEntidadePorCnpj.empresa = this.usuarioEntidadeSelecionado.empresa;
+                      usuarioEntidadePorCnpj.uat = this.usuarioEntidadeSelecionado.uat;
+                      usuarioEntidadePorCnpj.departamentoRegional = this.usuarioEntidadeSelecionado.departamentoRegional;
                       usuarioEntidadePorCnpj.email = this.usuarioEntidadeSelecionado.email;
                       usuarioEntidadePorCnpj.nome = this.usuarioEntidadeSelecionado.nome;
                       usuarioEntidadePorCnpj.perfil = ps.perfil.codigo;
