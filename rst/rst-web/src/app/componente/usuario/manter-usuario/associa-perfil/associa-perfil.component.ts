@@ -87,7 +87,6 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
           return 0;
         });
         if(this.usuarioGestorDNBarramento){this.perfisDoSistema = this.filtrarPerfilPorCnpj(this.perfisDoSistema);}
-        
       } else{
         this.perfisDoSistema = sistema.sistemaPerfis;
       }
@@ -206,7 +205,6 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
     }
     }
 
-
     filtrarPerfilPorCnpj(perfisDoSistema: SistemaPerfil[]): SistemaPerfil[]{
       let retorno: SistemaPerfil[] = [];
       perfisDoSistema.forEach(sp => {
@@ -220,6 +218,6 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
           }
       })
       return retorno;
-       
   }
+  
 }
