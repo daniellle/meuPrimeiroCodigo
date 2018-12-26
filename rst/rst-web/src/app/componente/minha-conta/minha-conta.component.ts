@@ -72,6 +72,7 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
         this.dadosTrabalhador();
     }
 
+
     dadosTrabalhador(){
         //console.log(this.activatedRoute.snapshot.params);
         this.meusdados = this.activatedRoute.snapshot.params.id === 'meusdados';
@@ -303,9 +304,8 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
 
     voltar(): void {
         if (this.usuarioLogado.permissoes.includes(PermissoesEnum.TRABALHADOR)) {
-            this.router.navigate([`${environment.path_raiz_cadastro}/trabalhador/meusdados`], {
-                queryParams: { "fromMinhaConta": "true" }
-            });
+            this.router.navigate([`${environment.path_raiz_cadastro}/trabalhador/${this.idTrab}`]
+            );
         }
     }
 
