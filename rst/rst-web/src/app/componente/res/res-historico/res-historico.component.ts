@@ -289,7 +289,8 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
     }
 
     atualizarPeriodo(periodo: string) {
-
+        
+        
         this.limparPaginacao();
 
         if (periodo == "Último mês") {
@@ -331,6 +332,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
             this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = new Date(0);
             this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
+
         }
     }
 
