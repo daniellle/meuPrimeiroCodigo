@@ -4,4 +4,5 @@ export enum EstadoCivil {
     SO = 'Solteiro',
     SP = 'Separado',
     VI = 'Viúvo',
+    NI = 'Não Informado',
 }
