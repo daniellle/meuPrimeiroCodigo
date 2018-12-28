@@ -24,7 +24,7 @@ const routes: Routes = [
       ModalDepartamentoComponentModule,
   ],
   declarations: [PerfilUsuarioComponent, PesquisaPerfilUsuarioComponent],
-  providers: [],
+  providers: [UsuarioService],
   exports: [PerfilUsuarioComponent]
 })
 export class PerfilUsuarioModule { }
