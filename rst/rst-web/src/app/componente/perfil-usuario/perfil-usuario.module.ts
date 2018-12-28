@@ -3,18 +3,25 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { PerfilUsuarioComponent } from './perfil-usuario.component';
 import { CompartilhadoModule } from 'app/compartilhado/compartilhado.module';
-import { PesquisaPerfilUsuarioComponent } from '../src/app/componente/perfil-usuario/pesquisa-perfil-usuario/pesquisa-perfil-usuario.component';
+import { PesquisaPerfilUsuarioComponent } from './pesquisa-perfil-usuario/pesquisa-perfil-usuario.component';
+import { PaginationModule } from 'ngx-bootstrap';
+import { ModalEmpresaComponentModule } from 'app/modal/modal-empresa-component/modal-empresa-component.module';
+import { ModalDepartamentoComponentModule } from 'app/modal/modal-departamento-component/modal-departamento-component.module';
+import { UsuarioService } from 'app/servico/usuario.service';
 
 const routes: Routes = [
   {path: '', component: PerfilUsuarioComponent},
 ];
-
 
 @NgModule({
   imports: [
       RouterModule.forChild(routes),
       CompartilhadoModule,
       RouterModule,
+      RouterModule,
+      PaginationModule.forRoot(),
+      ModalEmpresaComponentModule,
+      ModalDepartamentoComponentModule,
   ],
   declarations: [PerfilUsuarioComponent, PesquisaPerfilUsuarioComponent],
   providers: [],
