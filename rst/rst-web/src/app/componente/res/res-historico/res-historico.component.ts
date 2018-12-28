@@ -168,7 +168,7 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
         this.cpf = (Seguranca.getUsuario() as any).sub;
         if (localStorage.getItem('trabalhador_cpf')) {
             this.cpf = localStorage.getItem('trabalhador_cpf');
-            localStorage.removeItem('trabalhador_cpf');
+            // localStorage.removeItem('trabalhador_cpf');
         }
 
         this.carregandoTimeline = true;
@@ -224,18 +224,14 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
         this.cpf = (Seguranca.getUsuario() as any).sub;
         if (localStorage.getItem('trabalhador_cpf')) {
             this.cpf = localStorage.getItem('trabalhador_cpf');
-            localStorage.removeItem('trabalhador_cpf');
+            // localStorage.removeItem('trabalhador_cpf');
         }
         let encontrosMedico: any;
         this.carregandoTimeline = true;
         this.service.buscarHistorico(this.cpf, periodo).subscribe((result) => {
             encontrosMedico = result;
-            if (encontrosMedico) {
-                this.carregarTimeline(encontrosMedico);
-            }
-            else {
-                this.carregandoTimeline = false;
-            }
+            this.carregarTimeline(encontrosMedico);
+            this.carregandoTimeline = false;
             this.bloqueioService.desbloquear();
         }, (error) => {
             this.carregandoTimeline = false;
@@ -292,48 +288,30 @@ export class ResHistoricoComponent extends ResHomeComponent implements OnInit, A
         
         
         this.limparPaginacao();
-
+        this.periodoEscolhido = periodo;
+        if(this.periodoEscolhidoDate) {
+            this.periodoEscolhidoDate = null;
+        }
         if (periodo == "Último mês") {
-            this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(30, 'days');
-            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
-
-
         }
         else if (periodo == "03 meses") {
-            this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(90, 'days');
-            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
-
-
         }
         else if (periodo == "06 meses") {
-            this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(180, 'days');
-            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
-
-
         }
         else if (periodo == "09 meses") {
-            this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(270, 'days');
-            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
-
-
         }
         else if (periodo == "12 meses") {
-            this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = moment(new Date()).subtract(365, 'days');
-            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
-
-
         }
         else if (periodo == "Todos") {
-            this.periodoEscolhido = periodo;
             this.periodoEscolhidoDate = new Date(0);
-            this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
-
         }
+        
+        this.buscaDadosHistoricosComPeriodo(this.periodoEscolhidoDate);
     }
 
     private limparPaginacao() {
