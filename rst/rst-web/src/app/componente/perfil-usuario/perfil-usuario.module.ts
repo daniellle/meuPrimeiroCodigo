@@ -8,6 +8,8 @@ import { PaginationModule } from 'ngx-bootstrap';
 import { ModalEmpresaComponentModule } from 'app/modal/modal-empresa-component/modal-empresa-component.module';
 import { ModalDepartamentoComponentModule } from 'app/modal/modal-departamento-component/modal-departamento-component.module';
 import { UsuarioService } from 'app/servico/usuario.service';
+import { PerfilService } from 'app/servico/perfil.service';
+import { PesquisaSesiService } from 'app/servico/pesquisa-sesi.service';
 
 const routes: Routes = [
   {path: '', component: PerfilUsuarioComponent},
@@ -24,7 +26,7 @@ const routes: Routes = [
       ModalDepartamentoComponentModule,
   ],
   declarations: [PerfilUsuarioComponent, PesquisaPerfilUsuarioComponent],
-  providers: [UsuarioService],
+  providers: [UsuarioService, PerfilService, PesquisaSesiService],
   exports: [PerfilUsuarioComponent]
 })
 export class PerfilUsuarioModule { }

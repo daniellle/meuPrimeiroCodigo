@@ -5,12 +5,12 @@
     <form>
         <form class="float-label">
             <div class="row">
-                <div class="form-group col-md-8">
+                <div class="form-group col-xs-6 col-sm-6 col-md-8">
                     <md-input-container [floatPlaceholder]="true">
                         <input mdInput placeholder="{{ 'app_rst_labels_nome' | recurso }}" type="text" name="nome" maxlength="50" [(ngModel)]="filtro.nome" class="form-control" id="nome">
                     </md-input-container>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-xs-6 col-sm-6 col-md-4">
                     <md-input-container [floatPlaceholder]="true">
                         <input mdInput placeholder="{{ 'app_rst_labels_login_cpf' | recurso }}" [textMask]="{mask: mascaraCpf, guide: false}" type="text" name="cpf" [(ngModel)]="filtro.login" class="form-control" id="cpf">
                     </md-input-container>
@@ -18,7 +18,7 @@
             </div>
             <div class="row">
                 <!--Grid Empresa -->
-                <div class="form-group col-sm-6 col-md-8">
+                <div class="form-group col-md-8">
                     <div class="borda-segmento" style="background-color:white">
                         <div id="modalLupa" #modalLupa class="input-group searchlupa">
                             <md-input-container style="border-color:transparent" [floatPlaceholder]="true">
@@ -29,9 +29,22 @@
                     </div>
                 </div>
                 <!--Fim Grid Empresa -->
+
+                <div class="form-group col-md-4">
+                    <div class="md-container">
+                        <md-select placeholder="{{'app_rst_menu_perfil' | recurso}}" name="perfil" [(ngModel)]="filtro.codigoPerfil" id="selectDepRegional ">
+                            <md-option value=''>{{'app_rst_labels_selecione' | recurso}}</md-option>
+                            <md-option *ngFor='let perfil of perfis' [value]="perfil.codigo">{{perfil.nome}}</md-option>
+                        </md-select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
                 <!--Grid Departamento -->
 
-                <div class="form-group col-sm-6 col-lg-4">
+                <div class="form-group col-md-6">
                     <div class="md-container">
                         <md-select placeholder="{{'app_rst_labels_departamento_regional' | recurso}}" name="depRegional" [(ngModel)]="filtro.departamentoRegional.id" id="selectDepRegional ">
                             <md-option value=''>{{'app_rst_labels_selecione' | recurso}}</md-option>
@@ -42,18 +55,17 @@
 
 
                 <!--Fim Grid Departamento -->
-            </div>
-
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <div class="md-container">
-                        <md-select placeholder="{{'app_rst_menu_perfil' | recurso}}" name="perfil" [(ngModel)]="filtro.codigoPerfil" id="selectDepRegional ">
-                            <md-option value=''>{{'app_rst_labels_selecione' | recurso}}</md-option>
-                            <md-option *ngFor='let perfil of perfis' [value]="perfil.codigo">{{perfil.nome}}</md-option>
-                        </md-select>
-                    </div>
+                <div class="form-group col-md-6">
+                    <ng-select [options]="unidadesSesiOption" [(ngModel)]="filtro.idUnidadeSesi" allowClear=true name="unidadeSesi" id="unidadeSesi" maxlength="160" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}">
+                    </ng-select>
+                    <span class="floating-label">{{'app_rst_labels_uat_up' | recurso}}</span>
                 </div>
             </div>
         </form>
     </form>
+</div>
+
+<div class="btn-filter-pesquisar space-up">
+    <button type="button" class="btn btn-primary" (click)="pesquisar()">{{ 'app_rst_btn_pesquisar' | recurso }}</button>
+    <button type="button" class="btn btn-primary" (click)="limpar()">{{'app_rst_btn_cancelar' | recurso}}</button>
 </div>
