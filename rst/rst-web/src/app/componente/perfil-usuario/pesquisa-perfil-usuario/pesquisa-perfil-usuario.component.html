@@ -56,7 +56,7 @@
 
                 <!--Fim Grid Departamento -->
                 <div *ngIf="!isGEEMM()" class="form-group col-md-6">
-                    <ng-select [options]="unidadesSesiOption" [(ngModel)]="filtro.idUnidadeSesi" allowClear=true name="unidadeSesi" id="unidadeSesi" maxlength="160" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}">
+                    <ng-select [options]="unidadesSesiOption" allowClear=true [(ngModel)]="filtro.idUnidadeSesi" name="unidadeSesi" id="unidadeSesi" maxlength="160" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}">
                     </ng-select>
                     <span class="floating-label">{{'app_rst_labels_uat_up' | recurso}}</span>
                 </div>
@@ -64,8 +64,4 @@
         </form>
     </form>
 </div>
-
-<div class="btn-filter-pesquisar space-up">
-    <button type="button" class="btn btn-primary" (click)="pesquisar()">{{ 'app_rst_btn_pesquisar' | recurso }}</button>
-    <button type="button" class="btn btn-primary" (click)="limpar()">{{'app_rst_btn_cancelar' | recurso}}</button>
-</div>
+<app-paginado-perfil-usuario (limparFiltro)='limpar($event)' [(filtro)]="filtro"></app-paginado-perfil-usuario>
