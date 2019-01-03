@@ -5,10 +5,10 @@
 	<property name="ireport.y" value="0"/>
 	<field name="nome" class="java.lang.String"/>
 	<field name="login" class="java.lang.String"/>
-	<field name="perfil" class="java.lang.String"/>
-	<field name="departamento" class="java.lang.String"/>
-	<field name="unidade" class="java.lang.String"/>
-	<field name="empresa" class="java.lang.String"/>
+	<!--<field name="perfil" class="java.lang.String"/>-->
+	<!--<field name="departamento" class="java.lang.String"/>-->
+	<!--<field name="unidade" class="java.lang.String"/>-->
+	<!--<field name="empresa" class="java.lang.String"/>-->
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -33,22 +33,22 @@
 				<reportElement x="138" y="0" width="77" height="20" uuid="38629b40-f834-465e-9035-0178c9cb5dfb"/>
 				<text><![CDATA[CPF]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="215" y="0" width="81" height="20" uuid="95868475-66d5-4838-8bc8-45f065dbc824"/>
-				<text><![CDATA[Perfil]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="296" y="0" width="110" height="20" uuid="b2227c31-c6ed-48ee-a8c8-befad8bcb740"/>
-				<text><![CDATA[Departamento Regional]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="406" y="0" width="66" height="20" uuid="9809fd97-e884-4caa-98dd-33161124f333"/>
-				<text><![CDATA[Unidade Sesi]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="472" y="0" width="83" height="20" uuid="1666eb40-7a43-44c9-b61c-2765e84f88d0"/>
-				<text><![CDATA[Empresa]]></text>
-			</staticText>
+			<!--<staticText>-->
+				<!--<reportElement x="215" y="0" width="81" height="20" uuid="95868475-66d5-4838-8bc8-45f065dbc824"/>-->
+				<!--<text><![CDATA[Perfil]]></text>-->
+			<!--</staticText>-->
+			<!--<staticText>-->
+				<!--<reportElement x="296" y="0" width="110" height="20" uuid="b2227c31-c6ed-48ee-a8c8-befad8bcb740"/>-->
+				<!--<text><![CDATA[Departamento Regional]]></text>-->
+			<!--</staticText>-->
+			<!--<staticText>-->
+				<!--<reportElement x="406" y="0" width="66" height="20" uuid="9809fd97-e884-4caa-98dd-33161124f333"/>-->
+				<!--<text><![CDATA[Unidade Sesi]]></text>-->
+			<!--</staticText>-->
+			<!--<staticText>-->
+				<!--<reportElement x="472" y="0" width="83" height="20" uuid="1666eb40-7a43-44c9-b61c-2765e84f88d0"/>-->
+				<!--<text><![CDATA[Empresa]]></text>-->
+			<!--</staticText>-->
 		</band>
 	</columnHeader>
 	<detail>
@@ -61,22 +61,22 @@
 				<reportElement x="138" y="0" width="77" height="20" uuid="776b0f50-042b-45c3-81e2-e68b31d68826"/>
 				<textFieldExpression><![CDATA[$F{login}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="215" y="0" width="81" height="20" uuid="b3432494-428d-4fed-a1f7-d040ffc4dff2"/>
-				<textFieldExpression><![CDATA[$F{perfil}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="296" y="0" width="110" height="20" uuid="2187f872-940f-456f-af39-3fee40ecdaba"/>
-				<textFieldExpression><![CDATA[$F{departamento}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="406" y="0" width="66" height="20" uuid="3a5a9250-1753-491e-b75e-afafc85d83fc"/>
-				<textFieldExpression><![CDATA[$F{unidade}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="472" y="0" width="83" height="20" uuid="bf4640fa-5143-473c-89b7-ab12e4ef1ffe"/>
-				<textFieldExpression><![CDATA[$F{empresa}]]></textFieldExpression>
-			</textField>
+			<!--<textField>-->
+				<!--<reportElement x="215" y="0" width="81" height="20" uuid="b3432494-428d-4fed-a1f7-d040ffc4dff2"/>-->
+				<!--<textFieldExpression><![CDATA[$F{perfil}]]></textFieldExpression>-->
+			<!--</textField>-->
+			<!--<textField>-->
+				<!--<reportElement x="296" y="0" width="110" height="20" uuid="2187f872-940f-456f-af39-3fee40ecdaba"/>-->
+				<!--<textFieldExpression><![CDATA[$F{departamento}]]></textFieldExpression>-->
+			<!--</textField>-->
+			<!--<textField>-->
+				<!--<reportElement x="406" y="0" width="66" height="20" uuid="3a5a9250-1753-491e-b75e-afafc85d83fc"/>-->
+				<!--<textFieldExpression><![CDATA[$F{unidade}]]></textFieldExpression>-->
+			<!--</textField>-->
+			<!--<textField>-->
+				<!--<reportElement x="472" y="0" width="83" height="20" uuid="bf4640fa-5143-473c-89b7-ab12e4ef1ffe"/>-->
+				<!--<textFieldExpression><![CDATA[$F{empresa}]]></textFieldExpression>-->
+			<!--</textField>-->
 		</band>
 	</detail>
 </jasperReport>

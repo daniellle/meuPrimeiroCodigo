@@ -2,12 +2,14 @@ package br.com.ezvida.rst.dao;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import br.com.ezvida.rst.model.dto.RelatorioUsuarioDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +55,30 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 		listaPaginada.setList(query.getResultList());
 
 		return listaPaginada;
+	}
+	//Metódo para trazer usuarios girst do banco, através de filtros
+	public List<UsuarioGirstView> pesquisarPDF(UsuarioFilter usuarioFilter, DadosFilter dados) {
+		LOGGER.debug("Pesquisando paginado UsuarioGirstView por filtro patra geração de PDF");
+		ListaPaginada<UsuarioGirstView> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
+
+		StringBuilder sql = new StringBuilder();
+		Map<String, Object> parametros = Maps.newHashMap();
+		getQueryPaginadoNativo(sql, parametros, usuarioFilter, dados, false);
+		Query query = criarConsultaNativa(sql.toString(), UsuarioGirstView.class);
+		DAOUtil.setParameterMap(query, parametros);
+
+		listaPaginada.setQuantidade(getCountQueryPaginado(usuarioFilter, dados).longValue());
+
+		if (usuarioFilter != null && usuarioFilter.getPagina() != null
+				&& usuarioFilter.getQuantidadeRegistro() != null) {
+			query.setFirstResult((usuarioFilter.getPagina() - 1) * usuarioFilter.getQuantidadeRegistro());
+			query.setMaxResults(usuarioFilter.getQuantidadeRegistro());
+		}
+
+		listaPaginada.setList(query.getResultList());
+
+		return listaPaginada.getList();
+
 	}
 
 	public BigInteger getCountQueryPaginado(UsuarioFilter usuarioFilter, DadosFilter dados) {
@@ -104,6 +130,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 			jpql.append(" order by usuario.nome ");
 		}
 	}
+
 
 	private void applicarFiltroPerfis(boolean count, UsuarioFilter usuarioFilter, StringBuilder jpql,
 			Map<String, Object> parametros, DadosFilter dados) {

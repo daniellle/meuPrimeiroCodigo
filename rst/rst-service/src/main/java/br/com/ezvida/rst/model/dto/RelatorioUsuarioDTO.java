@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class RelatorioUsuarioDTO implements Serializable {
 
+
     private String nome;
     private String login;
     private String perfil;
