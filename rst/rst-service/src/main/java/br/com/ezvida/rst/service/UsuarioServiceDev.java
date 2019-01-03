@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 public class UsuarioServiceDev implements UsuarioService {
@@ -87,6 +88,12 @@ public class UsuarioServiceDev implements UsuarioService {
 
     @Override
     public br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> pesquisarPaginadoGirst(UsuarioFilter usuarioFilter, DadosFilter dados, ClienteAuditoria auditoria) {
+        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        return null;
+    }
+
+    @Override
+    public List<UsuarioGirstView> pesquisarPaginadoGirstPDF(UsuarioFilter usuarioFilter, DadosFilter dados, ClienteAuditoria auditoria) {
         logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
         return null;
     }
