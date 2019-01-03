@@ -30,10 +30,11 @@ export class UsuarioService extends BaseService<Usuario> {
     }
     
     pesquisarPaginado(filtro: FiltroUsuario, paginacao: Paginacao): Observable<ListaPaginada<Usuario>> {
-      
+
       const params = this.getParams(filtro, paginacao);
       return super.get('/v1/usuarios/paginado', params)
       .map((response: Response) => {
+        console.log('Response:', response);
         return response;
       }).catch((error: Response) => {
         return Observable.throw(error);
@@ -46,6 +47,26 @@ export class UsuarioService extends BaseService<Usuario> {
       return super.getPDF('/v1/relatorio/pdf', params)
       .map((response: Response) => {
         return response;
+      })
+      .catch((error: Response) => {
+        return Observable.throw(error);
+      });
+    }
+
+    visualizarPdf(filtro: FiltroUsuario, paginacao: Paginacao){
+      const params = this.getParams(filtro, paginacao);
+      return super.getPDF('/v1/relatorio/pdf', params)
+      .map((response: Response) => {
+        // imprime pdf (ctrl + P)
+        const blobUrl = URL.createObjectURL(response);
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = blobUrl;
+        document.body.appendChild(iframe);
+        iframe.contentWindow.print();
+        // visualiza
+        // const fileURL = URL.createObjectURL(response);
+        // window.open(fileURL, '_blank');
       })
       .catch((error: Response) => {
         return Observable.throw(error);
