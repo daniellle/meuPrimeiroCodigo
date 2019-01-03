@@ -10,6 +10,7 @@ import { ModalDepartamentoComponentModule } from 'app/modal/modal-departamento-c
 import { UsuarioService } from 'app/servico/usuario.service';
 import { PerfilService } from 'app/servico/perfil.service';
 import { PesquisaSesiService } from 'app/servico/pesquisa-sesi.service';
+import { PaginadoPerfilUsuarioComponent } from './paginado-perfil-usuario/paginado-perfil-usuario.component';
 
 const routes: Routes = [
   {path: '', component: PerfilUsuarioComponent},
@@ -25,7 +26,7 @@ const routes: Routes = [
       ModalEmpresaComponentModule,
       ModalDepartamentoComponentModule,
   ],
-  declarations: [PerfilUsuarioComponent, PesquisaPerfilUsuarioComponent],
+  declarations: [PerfilUsuarioComponent, PesquisaPerfilUsuarioComponent, PaginadoPerfilUsuarioComponent],
   providers: [UsuarioService, PerfilService, PesquisaSesiService],
   exports: [PerfilUsuarioComponent]
 })

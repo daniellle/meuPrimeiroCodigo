@@ -44,7 +44,7 @@
             <div class="row">
                 <!--Grid Departamento -->
 
-                <div class="form-group col-md-6">
+                <div *ngIf="!isGUS()" class="form-group col-md-6">
                     <div class="md-container">
                         <md-select placeholder="{{'app_rst_labels_departamento_regional' | recurso}}" name="depRegional" [(ngModel)]="filtro.departamentoRegional.id" id="selectDepRegional ">
                             <md-option value=''>{{'app_rst_labels_selecione' | recurso}}</md-option>
@@ -55,7 +55,7 @@
 
 
                 <!--Fim Grid Departamento -->
-                <div class="form-group col-md-6">
+                <div *ngIf="!isGEEMM()" class="form-group col-md-6">
                     <ng-select [options]="unidadesSesiOption" [(ngModel)]="filtro.idUnidadeSesi" allowClear=true name="unidadeSesi" id="unidadeSesi" maxlength="160" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}">
                     </ng-select>
                     <span class="floating-label">{{'app_rst_labels_uat_up' | recurso}}</span>

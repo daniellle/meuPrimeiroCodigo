@@ -18,6 +18,7 @@ import { PerfilUsuarioFilter } from 'app/modelo/filter-perfil-usuario.model';
 import { UsuarioService } from 'app/servico/usuario.service';
 import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
 import { ListaPaginada } from 'app/modelo/lista-paginada.model';
+import { PerfilEnum } from 'app/modelo/enum/enum-perfil';
 
 @Component({
   selector: 'app-pesquisa-perfil-usuario',
@@ -167,6 +168,15 @@ private filtrosEmBranco(): boolean {
 
   public limpar(){
     this.filtro = new PerfilUsuarioFilter();
+  }
+
+  isGUS(): boolean{
+    return this.temPapel(PerfilEnum.GUS);
+  }
+
+  isGEEMM(): boolean{
+    return this.temPapel(PerfilEnum.GEEMM);
+    
   }
 
 }
