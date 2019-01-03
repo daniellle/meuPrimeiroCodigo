@@ -12,6 +12,7 @@ import br.com.ezvida.rst.model.dto.UsuarioDTO;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 public interface UsuarioService extends Serializable {
@@ -29,7 +30,10 @@ public interface UsuarioService extends Serializable {
     br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> pesquisarPaginadoGirst(
             br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
             , ClienteAuditoria auditoria);
-
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    List<UsuarioGirstView> pesquisarPaginadoGirstPDF(
+            br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
+            , ClienteAuditoria auditoria);
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     br.com.ezvida.girst.apiclient.model.Usuario buscarPorId(String id, ClienteAuditoria auditoria);
 

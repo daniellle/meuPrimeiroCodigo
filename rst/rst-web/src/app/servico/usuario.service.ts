@@ -17,32 +17,54 @@ import { ParametroService } from './parametro.service';
 
 @Injectable()
 export class UsuarioService extends BaseService<Usuario> {
-
+  
   tokenClienteRst: string;
-
+  
   constructor(
     protected httpClient: HttpClient,
     protected bloqueioService: BloqueioService,
     protected autenticacaoService: AutenticacaoService,
     protected parametroService: ParametroService
-  ) {
-    super(httpClient, bloqueioService);
-  }
-
-  pesquisarPaginado(filtro: FiltroUsuario, paginacao: Paginacao): Observable<ListaPaginada<Usuario>> {
-
-    const params = this.getParams(filtro, paginacao);
-    return super.get('/v1/usuarios/paginado', params)
+    ) {
+      super(httpClient, bloqueioService);
+    }
+    
+    pesquisarPaginado(filtro: FiltroUsuario, paginacao: Paginacao): Observable<ListaPaginada<Usuario>> {
+      
+      const params = this.getParams(filtro, paginacao);
+      return super.get('/v1/usuarios/paginado', params)
       .map((response: Response) => {
         return response;
       }).catch((error: Response) => {
         return Observable.throw(error);
       });
-
-  }
-
-  buscarUsuarioById(id: number): Observable<Usuario> {
-
+      
+    }
+    
+    pesquisarPdf(filtro: FiltroUsuario, paginacao: Paginacao): any{
+      const params = this.getParams(filtro, paginacao);
+      return super.getPDF('/v1/relatorio/pdf', params)
+      .map((response: Response) => {
+        return response;
+      })
+      .catch((error: Response) => {
+        return Observable.throw(error);
+      });
+    }
+    
+    pesquisarCSV(filtro: FiltroUsuario, paginacao: Paginacao): any {
+      const params = this.getParams(filtro, paginacao);
+      return super.getCSV('/v1/relatorio/csv', params)
+      .map((response: Response) => {
+        return response;
+      })
+      .catch((error: Response) => {
+        return Observable.throw(error);
+      })
+    }
+    
+    buscarUsuarioById(id: number): Observable<Usuario> {
+      
     const params = new HttpParams()
       .append('id', id.toString());
 
