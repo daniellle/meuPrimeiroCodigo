@@ -1,3 +1,4 @@
+import * as FileSaver from 'file-saver';
 import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
 import { DepartRegionalService } from 'app/servico/depart-regional.service';
 import { FiltroDepartRegional } from 'app/modelo/filtro-depart-regional.model';
@@ -82,7 +83,7 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
       this.usuarios = new Array<Usuario>();
       this.usuarioSelecionado = null;
       this.paginacao.pagina = 1;
-      this.usuarioService.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<Usuario>) => {
+      this.usuarioService.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno) => {
         this.usuarios = retorno.list;
         this.paginacao = this.getPaginacao(this.paginacao, retorno);
         if (retorno.quantidade === 0) {
@@ -91,6 +92,22 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
       }, (error) => {
         this.mensagemError(error);
       });
+    }
+  }
+
+  public gerarPDF(){
+    if(this.verificarCampos()){
+      this.usuarioService.pesquisarPdf(this.filtro, this.paginacao)
+        .subscribe((retorno) => FileSaver.saveAs(retorno, 'teste.pdf')
+      );
+      
+    }
+  }
+  public gerarCSV(){
+    if(this.verificarCampos()){
+      this.usuarioService.pesquisarCSV(this.filtro, this.paginacao)
+      .subscribe((retorno) => FileSaver.saveAs(retorno, 'teste.csv')
+      );
     }
   }
 

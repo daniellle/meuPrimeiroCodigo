@@ -63,7 +63,11 @@
 <div class="btn-filter-pesquisar space-up">
     <button type="button" class="btn btn-primary" (click)="pesquisar();">{{'app_rst_btn_pesquisar' | recurso}}</button>
     <button type="button" class="btn btn-primary" (click)="novo()" *ngIf="hasPermissaoInclusao()">{{'app_rst_btn_novo' | recurso}}</button>
+    <button type="button" class="btn btn-primary" (click)="gerarPDF()" >Gerar PDF</button>
+    <button type="button" class="btn btn-primary" (click)="gerarCSV()" >Gerar CSV</button>
 </div>
+
+
 
 <div class="container-form space-up" *ngIf="!isListaVazia()">
     <div class="grid-pesquisa">
