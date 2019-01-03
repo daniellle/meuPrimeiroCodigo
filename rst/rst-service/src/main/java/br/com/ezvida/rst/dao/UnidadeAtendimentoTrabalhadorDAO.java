@@ -10,6 +10,7 @@ import com.google.common.collect.Maps;
 import fw.core.jpa.BaseDAO;
 import fw.core.jpa.DAOUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +18,11 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -455,5 +459,27 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
         return query.getResultList();
     }
 
+    public BigInteger countByListIdAndCNPJEmpresa(Collection<Long> listId, String CNPJ) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("select ");
+        sql.append("	count(1) ");
+        sql.append("from ");
+        sql.append("	und_atd_trabalhador unidade ");
+        sql.append("inner join empresa_uat uat on ");
+        sql.append("	uat.id_und_atd_trabalhador_fk = unidade.id_und_atd_trabalhador ");
+        sql.append("inner join empresa on ");
+        sql.append("	uat.id_empresa_fk = empresa.id_empresa ");
+        sql.append("where ");
+        sql.append("	empresa.no_cnpj = :cnpj ");
+        if (listId != null && !listId.isEmpty()) {
+            sql.append("	and unidade.id_und_atd_trabalhador in (:listId) ");
+        }
 
+        Query query = this.getEm().createNativeQuery(sql.toString());
+        query.setParameter("cnpj", CNPJ);
+        if (listId != null && !listId.isEmpty()) {
+            query.setParameter("listId", listId);
+        }
+        return  DAOUtil.getSingleResult(query);
+    }
 }

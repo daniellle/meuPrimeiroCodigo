@@ -1,3 +1,4 @@
+import { UsuarioEntidade } from './../../../../modelo/usuario-entidade.model';
 import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { MdSelect } from '@angular/material';
 
@@ -9,7 +10,8 @@ import { PerfilEnum } from 'app/modelo/enum/enum-perfil';
 import { BloqueioService } from 'app/servico/bloqueio.service';
 import { BaseComponent } from 'app/componente/base.component';
 import { ToastyService } from 'ng2-toasty';
-import { DialogService } from 'ng2-bootstrap-modal';
+import { UsuarioEntidadeService } from 'app/servico/usuario-entidade.service';
+import { Router } from '@angular/router';
 
 const COD_SISTEMAS_RELACIONADOS = ['dw', 'indigev', 'portal'];
 const COD_SISTEMA_CADASTRO = 'cadastro';
@@ -28,31 +30,52 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
 
   @Output() associaPerfilEvent = new EventEmitter<any>();
 
+  usuarioEhGestorDNBarramento:boolean = false;
   perfisSistemas: UsuarioPerfilSistema[];
+  usuarioEntidade: UsuarioEntidade;
   sistemaSelecionado: Sistema;
   sistemas: Sistema[] = [];
   perfisDoSistema: SistemaPerfil[] = [];
     temCadastro: boolean;
     associandoEpidemiologia: boolean;
+    strUsuario: string = "usuario";
+    tipoCnpj: string;
+
 
   constructor(private sistemaService: SistemaService,
               protected bloqueioService: BloqueioService,
-              protected dialogo: ToastyService) {
+              protected dialogo: ToastyService,
+              private router: Router,
+              private usuarioEntidadeService: UsuarioEntidadeService) {
       super(bloqueioService, dialogo);
 
   }
 
   ngOnInit() {
+    if(this.router.url.includes(this.strUsuario)){
+      this.tipoCnpj = this.strUsuario;
+
     if(this.usuario) {
       this.perfisSistemas = [].concat(this.usuario.perfisSistema);
     }
     this.sistemaService.buscarSistemasPermitidos(Seguranca.getUsuario())
       .subscribe(sistemas => this.sistemas = sistemas);
   }
+}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['usuario'])
+    if(changes['usuario'] && this.usuario.perfisSistema){
       this.perfisSistemas = this.usuario.perfisSistema;
+      
+    }
+    // if(changes['usuarioEntidade'] && this.usuarioEntidade.departamentoRegional != undefined && this.usuario.clientId != null){
+    //   this.usuarioEhGestorDNBarramento = true;
+    // }
+
+    if(this.usuario.login != null){
+      this.usuarioGestorDNBarramento();
+    }
+    
   }
 
   changeSistema(sistema: Sistema) {
@@ -63,6 +86,9 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
           if(a.perfil.nome > b.perfil.nome){ return 1 };
           return 0;
         });
+        if(this.usuarioEhGestorDNBarramento){
+          this.perfisDoSistema = this.filtrarPerfilPorCnpj(this.perfisDoSistema);
+        }
       } else{
         this.perfisDoSistema = sistema.sistemaPerfis;
       }
@@ -168,4 +194,32 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
     return sistema.sistemaPerfis.some(sistemaPerfil => sistemaPerfil.perfil.codigo === perfil.codigo);
   }
 
+  usuarioGestorDNBarramento() {  
+    if(this.usuario.login){
+      this.usuarioEntidadeService.pesquisaUsuariosEntidade(this.usuario.login).subscribe( (resposta: UsuarioEntidade[]) => {
+        resposta.forEach(retorno => {
+          if(retorno.departamentoRegional != undefined && retorno.departamentoRegional.siglaDR == ("S4" || "DN") && this.usuario.clientId != undefined){
+            this.usuarioEntidade = retorno;
+            this.usuarioEhGestorDNBarramento = true;
+          }
+        })
+      });
+    }
+    }
+
+    filtrarPerfilPorCnpj(perfisDoSistema: SistemaPerfil[]): SistemaPerfil[]{
+      let retorno: SistemaPerfil[] = [];
+      perfisDoSistema.forEach(sp => {
+          if (sp.perfil.codigo.includes("DIDN") || 
+          sp.perfil.codigo.includes("GCDN") || 
+          sp.perfil.codigo.includes("GDNA") || 
+          sp.perfil.codigo.includes("GDNP") || 
+          sp.perfil.codigo.includes("GCODN") || 
+          sp.perfil.codigo.includes("MTSDN")) {
+              retorno.push(sp);
+          }
+      })
+      return retorno;
+  }
+  
 }

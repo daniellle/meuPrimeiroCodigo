@@ -40,6 +40,7 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
   public perfis: Perfil[];
   public empresa: Empresa;
   public departamento: DepartamentoRegional;
+  public semPerfilBarramento: Perfil;
 
   constructor(
     private router: Router,
@@ -61,6 +62,8 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
+      this.semPerfilBarramento = new Perfil();
+      this.criandoPerfilVazio();
     this.filtro = new FiltroUsuario();
     this.usuarios = new Array<Usuario>();
     this.title = MensagemProperties.app_rst_usuario_title_pesquisar;
@@ -68,9 +71,15 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
     this.filtro.codigoPerfil = '';
   }
 
+  criandoPerfilVazio(){
+      this.semPerfilBarramento.nome = "Sem Perfil";
+      this.semPerfilBarramento.codigo = 'SP';
+  }
+
   buscarPerfis(): void {
     this.perfilService.buscarTodos().subscribe((retorno: any) => {
       this.perfis = retorno;
+        this.perfis.push(this.semPerfilBarramento);
     }, (error) => {
       this.mensagemError(error);
     }, () => {
@@ -86,7 +95,7 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
       this.usuarioService.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno) => {
         this.usuarios = retorno.list;
         this.paginacao = this.getPaginacao(this.paginacao, retorno);
-        if (retorno.quantidade === 0) {
+        if (retorno.quantidade === 0 || this.usuarios.length == 0) {
           this.mensagemError(MensagemProperties.app_rst_nenhum_registro_encontrado);
         }
       }, (error) => {
@@ -100,7 +109,7 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
       this.usuarioService.pesquisarPdf(this.filtro, this.paginacao)
         .subscribe((retorno) => FileSaver.saveAs(retorno, 'teste.pdf')
       );
-      
+
     }
   }
   public gerarCSV(){

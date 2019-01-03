@@ -22,6 +22,7 @@ export class RecuperarSenhaComponent extends BaseComponent implements OnInit {
   public email: String;
   public telefone = '';
   public central = false;
+  public barramento: boolean = false;
 
   constructor(
     private router: Router,
@@ -49,8 +50,16 @@ export class RecuperarSenhaComponent extends BaseComponent implements OnInit {
         this.mensagemSucesso(MensagemProperties.app_rst_recupera_senha_sucesso);
         this.central = false;
       }, (error) => {
-        this.mensagemError(error);
-        this.central = true;
+          console.log(error);
+          if(error === "Não foi possível processar a operação") {
+              this.mensagemError(MensagemProperties.app_seguranca_usuario_barramento);
+              this.central = true;
+              this.barramento = true;
+          } else if(error.includes("Não foi encontrado usuário com o email")) {
+              this.mensagemError(MensagemProperties.app_seguranca_email_nao_cadastrado);
+              this.central = true;
+              this.barramento = false;
+          }
       });
     }
   }

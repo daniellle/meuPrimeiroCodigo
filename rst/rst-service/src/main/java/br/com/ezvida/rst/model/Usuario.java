@@ -69,6 +69,13 @@ public class Usuario extends BaseEntity<Long> {
     @Column(name = "nivel")
     private Integer hierarquia;
 
+    @Column(name = "origemdados")
+    private String origemDados;
+
+    @Column(name = "clientid")
+    private String clientId;
+
+
     @Transient
     private Set<String> papeis;
 
@@ -129,6 +136,15 @@ public class Usuario extends BaseEntity<Long> {
         this.id = id;
     }
 
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+
     public String getDn() {
         return dn;
     }
@@ -183,6 +199,14 @@ public class Usuario extends BaseEntity<Long> {
 
     public void setFoto(byte[] foto) {
         this.foto = foto;
+    }
+
+    public void setOrigemDados(String origemDados){
+        this.origemDados = origemDados;
+    }
+
+    public String getOrigemDados(){
+        return origemDados;
     }
 
     public String getCargo() {

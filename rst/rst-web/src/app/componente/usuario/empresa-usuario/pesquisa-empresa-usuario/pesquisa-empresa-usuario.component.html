@@ -4,38 +4,67 @@
     {{'app_rst_usuario_empresa_empresas_associadas_title' | recurso}}
 </p>
 
-<div class="container-form" *ngIf="!isSomenteTrabalhador()">
+<div class="container-form" *ngIf="!isBarramento">
     <div class="row">
         <div class="form-group col-sm-8">
             <md-input-container [floatPlaceholder]="true">
-                <input mdInput placeholder="{{ 'app_rst_labels_razao_social' | recurso }}" type="text"
-                       name="razaoSocial" [(ngModel)]="filtro.razaoSocial" class="form-control" id="razaoSocial"
-                       maxlength="160" #razaoSocialFiltro="ngModel">
+                <input mdInput placeholder="{{ 'app_rst_labels_razao_social' | recurso }}" type="text" name="razaoSocial" [(ngModel)]="filtro.razaoSocial" class="form-control" id="razaoSocial" maxlength="160" #razaoSocialFiltro="ngModel">
             </md-input-container>
         </div>
         <div class="form-group col-sm-4">
             <md-input-container [floatPlaceholder]="true">
-                <input mdInput placeholder="{{ 'app_rst_labels_cnpj' | recurso }}" type="text"
-                       [textMask]="{mask: mascaraCnpj, guide: false}" name="cnpj" [(ngModel)]="filtro.cnpj"
-                       class="form-control" id="cnpj" #cnpjFiltro="ngModel">
+                <input mdInput placeholder="{{ 'app_rst_labels_cnpj' | recurso }}" type="text" [textMask]="{mask: mascaraCnpj, guide: false}" name="cnpj" [(ngModel)]="filtro.cnpj" class="form-control" id="cnpj" #cnpjFiltro="ngModel">
             </md-input-container>
         </div>
     </div>
     <div class="row">
         <div class="form-group col-md-12 col-lg-4">
             <md-input-container [floatPlaceholder]="true">
-                <input mdInput placeholder="{{ 'app_rst_labels_nome_fantasia' | recurso }}" type="text"
-                       name="nomeFantasia" [(ngModel)]="filtro.nomeFantasia" class="form-control" id="nomeFantasia"
-                       maxlength="160" #nomeFantasia="ngModel">
+                <input mdInput placeholder="{{ 'app_rst_labels_nome_fantasia' | recurso }}" type="text" name="nomeFantasia" [(ngModel)]="filtro.nomeFantasia" class="form-control" id="nomeFantasia" maxlength="160" #nomeFantasia="ngModel">
             </md-input-container>
         </div>
     </div>
 </div>
 
-<div class="btn-filter-pesquisar space-up" *ngIf="!isSomenteTrabalhador()">
+<div class="btn-filter-pesquisar space-up" *ngIf="!isSomenteTrabalhador() && !isBarramento">
     <button class="btn btn-primary" (click)="pesquisar()">{{'app_rst_btn_pesquisar' | recurso}}</button>
-    <button class="btn btn-primary"  *ngIf="!modoConsulta" (click)="novo()">{{'app_rst_btn_novo' | recurso}}</button>
+    <button class="btn btn-primary" *ngIf="!modoConsulta" (click)="novo()">{{'app_rst_btn_novo' | recurso}}</button>
     <button class="btn btn-secondary" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
+</div>
+
+<div *ngIf="isBarramento">
+    <app-usuario-barramento [usuario]="usuario"></app-usuario-barramento>
+</div>
+
+<div class="container-form space-up">
+    <div class="container-subtitulo">
+        <p>{{'app_rst_usuario_unidade_sesi_associados_title' | recurso}}</p>
+    </div>
+    <div *ngIf="isEmpty(usuariosEntidade)" class="row">
+        <div class="form-group col-md-12">
+            {{ 'app_rst_msg_nenhum_registro_adicionado' | recurso }}
+        </div>
+    </div>
+    <div class="row grid-pesquisa" *ngIf="isNotEmpty(usuariosEntidade)">
+        <div class="col-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="label"><span class="label">{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
+                        <th class="label"><span class="label">{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                        <th class="label"><span class="label">{{ 'app_rst_labels_perfil' | recurso }}</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of usuariosEntidade">
+                        <td class="col-quebra">{{item.empresa.razaoSocial}}</td>
+                        <td class="col-nao-quebra">{{item.empresa.cnpj | cnpjPipe }}</td>
+                        <td class="col-quebra col-nome">{{item.perfil ? item.perfil : 'Sem perfil cadastrado'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <div class="container-form space-up" *ngIf="hasGestorEmpresa">
@@ -51,36 +80,30 @@
         <div class="col-12">
             <table class="table table-hover">
                 <thead>
-                <tr>
-                    <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
-                    <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
-                    <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
-                    <th class="label text-center">&nbsp;</th>
-                </tr>
+                    <tr>
+                        <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                        <th class="label text-center">&nbsp;</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let item of listaEmpresasGEEM">
-                    <td class="col-quebra">{{item.empresa.razaoSocial}}</td>
-                    <td class="col-quebra">{{item.empresa.nomeFantasia}}</td>
-                    <td class="col-nao-quebra">{{item.empresa.cnpj | cnpjPipe }}</td>
-                    <td class="text-center">
-                        <button *ngIf="!modoConsulta" class="btn-link" (click)="removerEmpresa(item)"><img class="lixo"
+                    <tr *ngFor="let item of listaEmpresasGEEM">
+                        <td class="col-quebra">{{item.empresa.razaoSocial}}</td>
+                        <td class="col-quebra">{{item.empresa.nomeFantasia}}</td>
+                        <td class="col-nao-quebra">{{item.empresa.cnpj | cnpjPipe }}</td>
+                        <td class="text-center">
+                            <button *ngIf="!modoConsulta" class="btn-link" (click)="removerEmpresa(item)"><img class="lixo"
                                                                                                            src="assets/img/trash.svg"
                                                                                                            alt="Excluir">
                         </button>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div class="btn-paginacao">
-                <pagination [firstText]="paginacaoGEEM.textPrimeiro" [lastText]="paginacaoGEEM.textUltimo"
-                            [nextText]="paginacaoGEEM.textProximo" [previousText]="paginacaoGEEM.textAnterior"
-                            [totalItems]="paginacaoGEEM.totalItens" [(ngModel)]="paginacaoGEEM.pagina"
-                            [itemsPerPage]="paginacaoGEEM.qtdRegistro"
-                            (numPages)="paginacaoGEEM.numPages = $event" (pageChanged)="pageChanged($event, 'GEEM')"
-                            [maxSize]="paginacaoGEEM.maxSize" class="pagination-sm justify-content-center"
-                            [align]="true"
-                            [boundaryLinks]="true" [rotate]="false"></pagination>
+                <pagination [firstText]="paginacaoGEEM.textPrimeiro" [lastText]="paginacaoGEEM.textUltimo" [nextText]="paginacaoGEEM.textProximo" [previousText]="paginacaoGEEM.textAnterior" [totalItems]="paginacaoGEEM.totalItens" [(ngModel)]="paginacaoGEEM.pagina" [itemsPerPage]="paginacaoGEEM.qtdRegistro"
+                    (numPages)="paginacaoGEEM.numPages = $event" (pageChanged)="pageChanged($event, 'GEEM')" [maxSize]="paginacaoGEEM.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
             </div>
         </div>
     </div>
@@ -99,36 +122,31 @@
         <div class="col-12">
             <table class="table table-hover">
                 <thead>
-                <tr>
-                    <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
-                    <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
-                    <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
-                    <th class="label text-center">&nbsp;</th>
-                </tr>
+                    <tr>
+                        <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                        <th class="label text-center">&nbsp;</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let item of listaEmpresasGEEMMaster">
-                    <td class="col-quebra">{{item.empresa.razaoSocial}}</td>
-                    <td class="col-quebra">{{item.empresa.nomeFantasia}}</td>
-                    <td class="col-nao-quebra">{{item.empresa.cnpj | cnpjPipe }}</td>
-                    <td class="text-center">
-                        <button *ngIf="!modoConsulta" class="btn-link" (click)="removerEmpresa(item)"><img class="lixo"
+                    <tr *ngFor="let item of listaEmpresasGEEMMaster">
+                        <td class="col-quebra">{{item.empresa.razaoSocial}}</td>
+                        <td class="col-quebra">{{item.empresa.nomeFantasia}}</td>
+                        <td class="col-nao-quebra">{{item.empresa.cnpj | cnpjPipe }}</td>
+                        <td class="text-center">
+                            <button *ngIf="!modoConsulta" class="btn-link" (click)="removerEmpresa(item)"><img class="lixo"
                                                                                                            src="assets/img/trash.svg"
                                                                                                            alt="Excluir">
                         </button>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div class="btn-paginacao">
-                <pagination [firstText]="paginacaoGEEMMaster.textPrimeiro" [lastText]="paginacaoGEEMMaster.textUltimo"
-                            [nextText]="paginacaoGEEMMaster.textProximo" [previousText]="paginacaoGEEMMaster.textAnterior"
-                            [totalItems]="paginacaoGEEMMaster.totalItens" [(ngModel)]="paginacaoGEEMMaster.pagina"
-                            [itemsPerPage]="paginacaoGEEMMaster.qtdRegistro"
-                            (numPages)="paginacaoGEEMMaster.numPages = $event" (pageChanged)="pageChanged($event, 'GEEMM')"
-                            [maxSize]="paginacaoGEEMMaster.maxSize" class="pagination-sm justify-content-center"
-                            [align]="true"
-                            [boundaryLinks]="true" [rotate]="false"></pagination>
+                <pagination [firstText]="paginacaoGEEMMaster.textPrimeiro" [lastText]="paginacaoGEEMMaster.textUltimo" [nextText]="paginacaoGEEMMaster.textProximo" [previousText]="paginacaoGEEMMaster.textAnterior" [totalItems]="paginacaoGEEMMaster.totalItens" [(ngModel)]="paginacaoGEEMMaster.pagina"
+                    [itemsPerPage]="paginacaoGEEMMaster.qtdRegistro" (numPages)="paginacaoGEEMMaster.numPages = $event" (pageChanged)="pageChanged($event, 'GEEMM')" [maxSize]="paginacaoGEEMMaster.maxSize" class="pagination-sm justify-content-center" [align]="true"
+                    [boundaryLinks]="true" [rotate]="false"></pagination>
             </div>
         </div>
     </div>
@@ -147,35 +165,30 @@
         <div class="col-12">
             <table class="table table-hover">
                 <thead>
-                <tr>
-                    <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
-                    <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
-                    <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
-                    <th class="label text-center">&nbsp;</th>
-                </tr>
+                    <tr>
+                        <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                        <th class="label text-center">&nbsp;</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let item of listaEmpresasPFS">
-                    <td class="col-quebra">{{item.empresa.razaoSocial}}</td>
-                    <td class="col-quebra">{{item.empresa.nomeFantasia}}</td>
-                    <td class="col-nao-quebra">{{item.empresa.cnpj | cnpjPipe }}</td>
-                    <td class="text-center">
-                        <button *ngIf="!modoConsulta" class="btn-link" (click)="removerEmpresa(item)"><img class="lixo"
+                    <tr *ngFor="let item of listaEmpresasPFS">
+                        <td class="col-quebra">{{item.empresa.razaoSocial}}</td>
+                        <td class="col-quebra">{{item.empresa.nomeFantasia}}</td>
+                        <td class="col-nao-quebra">{{item.empresa.cnpj | cnpjPipe }}</td>
+                        <td class="text-center">
+                            <button *ngIf="!modoConsulta" class="btn-link" (click)="removerEmpresa(item)"><img class="lixo"
                                                                                                            src="assets/img/trash.svg"
                                                                                                            alt="Excluir">
                         </button>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div class="btn-paginacao">
-                <pagination [firstText]="paginacaoPFS.textPrimeiro" [lastText]="paginacaoPFS.textUltimo"
-                            [nextText]="paginacaoPFS.textProximo" [previousText]="paginacaoPFS.textAnterior"
-                            [totalItems]="paginacaoPFS.totalItens" [(ngModel)]="paginacaoPFS.pagina"
-                            [itemsPerPage]="paginacaoPFS.qtdRegistro"
-                            (numPages)="paginacaoPFS.numPages = $event" (pageChanged)="pageChanged($event, 'PFS')"
-                            [maxSize]="paginacaoPFS.maxSize" class="pagination-sm justify-content-center" [align]="true"
-                            [boundaryLinks]="true" [rotate]="false"></pagination>
+                <pagination [firstText]="paginacaoPFS.textPrimeiro" [lastText]="paginacaoPFS.textUltimo" [nextText]="paginacaoPFS.textProximo" [previousText]="paginacaoPFS.textAnterior" [totalItems]="paginacaoPFS.totalItens" [(ngModel)]="paginacaoPFS.pagina" [itemsPerPage]="paginacaoPFS.qtdRegistro"
+                    (numPages)="paginacaoPFS.numPages = $event" (pageChanged)="pageChanged($event, 'PFS')" [maxSize]="paginacaoPFS.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
             </div>
         </div>
     </div>
@@ -195,35 +208,30 @@
         <div class="col-12">
             <table class="table table-hover">
                 <thead>
-                <tr>
-                    <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
-                    <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
-                    <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
-                    <th class="label text-center">&nbsp;</th>
-                </tr>
+                    <tr>
+                        <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                        <th class="label text-center">&nbsp;</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let item of listaEmpresasRH">
-                    <td class="col-quebra" *ngIf="item.empresa.razaoSocial.length">{{item.empresa.razaoSocial}}</td>
-                    <td class="col-quebra" *ngIf="item.empresa.nomeFantasia.length">{{item.empresa.nomeFantasia}}</td>
-                    <td class="col-nao-quebra" *ngIf="item.empresa.cnpj.length">{{item.empresa.cnpj | cnpjPipe }}</td>
-                    <td class="text-center">
-                        <button *ngIf="!modoConsulta" class="btn-link" (click)="removerEmpresa(item)"><img class="lixo"
+                    <tr *ngFor="let item of listaEmpresasRH">
+                        <td class="col-quebra" *ngIf="item.empresa.razaoSocial.length">{{item.empresa.razaoSocial}}</td>
+                        <td class="col-quebra" *ngIf="item.empresa.nomeFantasia.length">{{item.empresa.nomeFantasia}}</td>
+                        <td class="col-nao-quebra" *ngIf="item.empresa.cnpj.length">{{item.empresa.cnpj | cnpjPipe }}</td>
+                        <td class="text-center">
+                            <button *ngIf="!modoConsulta" class="btn-link" (click)="removerEmpresa(item)"><img class="lixo"
                                                                                                            src="assets/img/trash.svg"
                                                                                                            alt="Excluir">
                         </button>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div class="btn-paginacao">
-                <pagination [firstText]="paginacaoRH.textPrimeiro" [lastText]="paginacaoRH.textUltimo"
-                            [nextText]="paginacaoRH.textProximo" [previousText]="paginacaoRH.textAnterior"
-                            [totalItems]="paginacaoRH.totalItens" [(ngModel)]="paginacaoRH.pagina"
-                            [itemsPerPage]="paginacaoRH.qtdRegistro"
-                            (numPages)="paginacaoRH.numPages = $event" (pageChanged)="pageChanged($event, 'RH')"
-                            [maxSize]="paginacaoRH.maxSize" class="pagination-sm justify-content-center" [align]="true"
-                            [boundaryLinks]="true" [rotate]="false"></pagination>
+                <pagination [firstText]="paginacaoRH.textPrimeiro" [lastText]="paginacaoRH.textUltimo" [nextText]="paginacaoRH.textProximo" [previousText]="paginacaoRH.textAnterior" [totalItems]="paginacaoRH.totalItens" [(ngModel)]="paginacaoRH.pagina" [itemsPerPage]="paginacaoRH.qtdRegistro"
+                    (numPages)="paginacaoRH.numPages = $event" (pageChanged)="pageChanged($event, 'RH')" [maxSize]="paginacaoRH.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
             </div>
         </div>
     </div>
@@ -242,35 +250,30 @@
         <div class="col-12">
             <table class="table table-hover">
                 <thead>
-                <tr>
-                    <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
-                    <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
-                    <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
-                    <th class="label text-center">&nbsp;</th>
-                </tr>
+                    <tr>
+                        <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                        <th class="label text-center">&nbsp;</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let item of listaEmpresasST">
-                    <td class="col-quebra">{{item.empresa.razaoSocial}}</td>
-                    <td class="col-quebra">{{item.empresa.nomeFantasia}}</td>
-                    <td class="col-nao-quebra">{{item.empresa.cnpj | cnpjPipe }}</td>
-                    <td class="text-center">
-                        <button *ngIf="!modoConsulta" class="btn-link" (click)="removerEmpresa(item)"><img class="lixo"
+                    <tr *ngFor="let item of listaEmpresasST">
+                        <td class="col-quebra">{{item.empresa.razaoSocial}}</td>
+                        <td class="col-quebra">{{item.empresa.nomeFantasia}}</td>
+                        <td class="col-nao-quebra">{{item.empresa.cnpj | cnpjPipe }}</td>
+                        <td class="text-center">
+                            <button *ngIf="!modoConsulta" class="btn-link" (click)="removerEmpresa(item)"><img class="lixo"
                                                                                                            src="assets/img/trash.svg"
                                                                                                            alt="Excluir">
                         </button>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div class="btn-paginacao">
-                <pagination [firstText]="paginacaoST.textPrimeiro" [lastText]="paginacaoST.textUltimo"
-                            [nextText]="paginacaoST.textProximo" [previousText]="paginacaoST.textAnterior"
-                            [totalItems]="paginacaoST.totalItens" [(ngModel)]="paginacaoST.pagina"
-                            [itemsPerPage]="paginacaoST.qtdRegistro"
-                            (numPages)="paginacaoST.numPages = $event" (pageChanged)="pageChanged($event, 'ST')"
-                            [maxSize]="paginacaoST.maxSize" class="pagination-sm justify-content-center" [align]="true"
-                            [boundaryLinks]="true" [rotate]="false"></pagination>
+                <pagination [firstText]="paginacaoST.textPrimeiro" [lastText]="paginacaoST.textUltimo" [nextText]="paginacaoST.textProximo" [previousText]="paginacaoST.textAnterior" [totalItems]="paginacaoST.totalItens" [(ngModel)]="paginacaoST.pagina" [itemsPerPage]="paginacaoST.qtdRegistro"
+                    (numPages)="paginacaoST.numPages = $event" (pageChanged)="pageChanged($event, 'ST')" [maxSize]="paginacaoST.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
             </div>
         </div>
     </div>
@@ -289,18 +292,18 @@
         <div class="col-12">
             <table class="table table-hover">
                 <thead>
-                <tr>
-                    <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
-                    <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
-                    <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
-                </tr>
+                    <tr>
+                        <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let item of listaEmpresasTRA">
-                    <td class="col-quebra">{{item.empresa.razaoSocial}}</td>
-                    <td class="col-quebra">{{item.empresa.nomeFantasia}}</td>
-                    <td class="col-nao-quebra">{{item.empresa.cnpj | cnpjPipe }}</td>
-                </tr>
+                    <tr *ngFor="let item of listaEmpresasTRA">
+                        <td class="col-quebra">{{item.empresa.razaoSocial}}</td>
+                        <td class="col-quebra">{{item.empresa.nomeFantasia}}</td>
+                        <td class="col-nao-quebra">{{item.empresa.cnpj | cnpjPipe }}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>

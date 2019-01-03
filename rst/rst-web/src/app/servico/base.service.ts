@@ -161,7 +161,7 @@ export abstract class BaseService<T> {
   }
 
   protected getClientCredential<K>(endpoint: string, token: string, criteria: HttpParams = new HttpParams()): Observable<K> {
-   
+
     this.bloqueioService.bloquear();
 
     const options = {
@@ -188,4 +188,22 @@ export abstract class BaseService<T> {
     isNotVazia(valor: any): boolean {
         return !this.isVazia(valor);
     }
+
+    protected putPublic<K>(endpoint: string, criteria?: any, desbloquear?: boolean): Observable<K> {
+
+        this.bloqueioService.bloquear();
+        const options = {
+          headers: new HttpHeaders()
+            .set('Accept', 'application/json')
+            .set('Content-Type', 'application/json'),
+        };
+
+        return this.http.put(environment.api_public + endpoint, criteria ? JSON.stringify(criteria) : null, options)
+          .catch((error: HttpResponse<T>) => {
+            return Observable.throw(this.handlingError(error));
+          }).finally(() => {
+            this.bloqueioService.desbloquear();
+          });
+
+      }
 }

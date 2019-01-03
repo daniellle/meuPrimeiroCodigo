@@ -10,7 +10,8 @@ public enum TipoOperacaoAuditoria {
 	ALTERACAO("2", "Alteração", "A"),
 	DESATIVACAO("3", "Exclusão", "E"),
 	CONSULTA("4", "Consulta", "C"),
-	TODOS("5", "Todos", "TDS");
+	TODOS("5", "Todos", "TDS"),
+	ATIVAR_DESATIVAR("6", "Ativar Desativar", "AD");
 	//@formatter:on
 
 	private final String codigo;

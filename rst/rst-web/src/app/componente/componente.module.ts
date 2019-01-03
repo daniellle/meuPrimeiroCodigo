@@ -329,7 +329,20 @@ const routes: Routes = [
 					PermissoesEnum.TRABALHADOR_CONSULTAR,
 					PermissoesEnum.TRABALHADOR_DESATIVAR,],
 				},
-			},
+            },
+
+            {
+                path: 'sistema-credenciado',
+                loadChildren: './sistema-credenciado/sistema-credenciado.module#SistemaCredenciadoModule',
+                canLoad: [AutorizacaoGuard], data: {
+                    permissoes: [
+                        PermissoesEnum.SISTEMA_CREDENCIADO_CADASTRAR,
+                        PermissoesEnum.SISTEMA_CREDENCIADO_ALTERAR,
+                        PermissoesEnum.SISTEMA_CREDENCIADO_PESQUISAR,
+                        PermissoesEnum.SISTEMA_CREDENCIADO_ATIVAR_DESATIVAR,
+                    ],
+                },
+            },
 
 			// {
 			// 	path: 'teste', component: TesteComponent,

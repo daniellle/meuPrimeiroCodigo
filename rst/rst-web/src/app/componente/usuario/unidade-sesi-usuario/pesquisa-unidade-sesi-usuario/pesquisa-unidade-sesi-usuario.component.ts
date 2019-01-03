@@ -6,7 +6,7 @@ import {UsuarioPerfilSistema} from './../../../../modelo/usuario-perfil-sistema.
 import {Usuario} from './../../../../modelo/usuario.model';
 import {DepartRegionalService} from 'app/servico/depart-regional.service';
 import {MensagemProperties} from './../../../../compartilhado/utilitario/recurso.pipe';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, SimpleChanges} from '@angular/core';
 import {Paginacao} from './../../../../modelo/paginacao.model';
 import {UsuarioEntidadeService} from './../../../../servico/usuario-entidade.service';
 import {UsuarioEntidade} from './../../../../modelo/usuario-entidade.model';
@@ -33,6 +33,7 @@ export class PesquisaUnidadeSESIUsuarioComponent extends BaseComponent implement
   listaUsuarioEntidade: UsuarioEntidade[];
   usuario: Usuario;
   public departamentos: DepartamentoRegional[];
+  isBarramento: boolean;
 
   constructor(
     private router: Router,
@@ -55,6 +56,14 @@ export class PesquisaUnidadeSESIUsuarioComponent extends BaseComponent implement
     this.filtroSelecionado = new FiltroUsuarioEntidade();
   }
 
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['usuario']) {
+            if(this.usuario.origemDados != null){
+                this.isBarramento = true;
+            }
+        }
+    }
+
   tipoTela() {
     this.modoConsulta = !Seguranca.isPermitido(
       [PermissoesEnum.USUARIO_ENTIDADE, PermissoesEnum.USUARIO_ENTIDADE_ALTERAR,
@@ -66,6 +75,9 @@ export class PesquisaUnidadeSESIUsuarioComponent extends BaseComponent implement
     this.idUsuario = this.activatedRoute.snapshot.params['id'];
     this.usuarioService.buscarUsuarioById(this.idUsuario).subscribe((retorno: Usuario) => {
       this.usuario = retorno;
+        if (retorno.clientId) {
+            this.isBarramento = true;
+        }
       this.carregarTabelaEmppresaUsuario();
       if (this.usuario && !this.usuario.perfisSistema) {
         this.usuario.perfisSistema = new Array<UsuarioPerfilSistema>();

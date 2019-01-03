@@ -1,28 +1,23 @@
 package br.com.ezvida.rst.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Maps;
-
 import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.dao.filter.DepartamentoRegionalFilter;
 import br.com.ezvida.rst.dao.filter.ListaPaginada;
 import br.com.ezvida.rst.enums.Situacao;
 import br.com.ezvida.rst.model.DepartamentoRegional;
+import com.google.common.collect.Maps;
 import fw.core.jpa.BaseDAO;
 import fw.core.jpa.DAOUtil;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import java.math.BigInteger;
+import java.util.*;
 
 public class DepartamentoRegionalDAO extends BaseDAO<DepartamentoRegional, Long> {
 
@@ -345,4 +340,49 @@ public class DepartamentoRegionalDAO extends BaseDAO<DepartamentoRegional, Long>
 
         return query.getResultList();
     }
+
+    public List<DepartamentoRegional> pesquisarDNPorSigla(){
+        LOGGER.debug("Pesquisando Departamento Nacional");
+
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("select new DepartamentoRegional( ");
+        jpql.append("  departamentoRegional.cnpj, departamentoRegional.razaoSocial, departamentoRegional.siglaDR, estado.siglaUF) ");
+        jpql.append("  from DepartamentoRegional departamentoRegional ");
+        jpql.append("	left join departamentoRegional.listaEndDepRegional enderecos ");
+        jpql.append("	left join enderecos.endereco endereco ");
+        jpql.append("	left join endereco.municipio municipio ");
+        jpql.append("	left join municipio.estado estado ");
+        jpql.append(" where departamentoRegional.siglaDR = 'S4' or departamentoRegional.siglaDR = 'DN' ");
+
+        TypedQuery<DepartamentoRegional> query = criarConsultaPorTipo(jpql.toString());
+
+        return query.getResultList();
+    }
+
+
+    public BigInteger countByIdsAndCNPJ(Collection<Long> listId, String cnpj) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("select ");
+        sql.append("	count(1) ");
+        sql.append("from ");
+        sql.append("	departamento_regional dr ");
+        sql.append("inner join und_atd_trabalhador unidade on ");
+        sql.append("	dr.id_departamento_regional = unidade.id_departamento_regional_fk ");
+        sql.append("inner join empresa_uat uat on ");
+        sql.append("	unidade.id_und_atd_trabalhador = uat.id_und_atd_trabalhador_fk ");
+        sql.append("inner join empresa empresa on ");
+        sql.append("	uat.id_empresa_fk = empresa.id_empresa ");
+        sql.append("where ");
+        sql.append("	 empresa.no_cnpj = :cnpj ");
+        if (listId != null && !listId.isEmpty()) {
+            sql.append(" and dr.id_departamento_regional in (:listId) ");
+        }
+        Query query = this.getEm().createNativeQuery(sql.toString());
+        query.setParameter("cnpj", cnpj);
+        if (listId != null && !listId.isEmpty()) {
+            query.setParameter("listId", listId);
+        }
+        return DAOUtil.getSingleResult(query);
+    }
+
 }

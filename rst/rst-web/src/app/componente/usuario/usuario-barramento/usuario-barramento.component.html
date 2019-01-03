@@ -1,0 +1,26 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+
+<div>
+    <!-- <div>
+        <h3> Lista CNPJ sem perfil </h3>
+    </div> -->
+    <app-cnpj-listar-sem-perfil [usuario]="usuario" (usuarioSelecionado)='onUsuarioSelecionado($event)'></app-cnpj-listar-sem-perfil>
+
+
+    <app-associa-perfil-barramento (usuarioEnviado)='usuarioEnviadoAssociacao($event)' *ngIf="usuarioEntidadeSelecionado" #associaPerfilBarramentoComponent [modoConsulta]="modoConsulta" [usuario]="usuario"> </app-associa-perfil-barramento>
+
+
+    <app-cnpj-perfis-associados [usuarioEntidadeSelecionado]='usuarioEntidadeSelecionado' *ngIf="usuarioEntidadeSelecionado" [usuarioEnviado]="usuarioEnviado"></app-cnpj-perfis-associados>
+
+
+    <div class="btn-rodape-acoes space-up">
+        <button type="button " class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!modoConsulta" (click)="salvar()">
+            {{'app_rst_btn_salvar' | recurso}}
+        </button>
+
+        <button class="btn btn-secondary btn-cadastro" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
+    </div>
+
+
+</div>

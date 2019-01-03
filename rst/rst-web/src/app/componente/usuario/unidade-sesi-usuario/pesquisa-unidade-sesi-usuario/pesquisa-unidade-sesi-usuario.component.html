@@ -4,7 +4,7 @@
     {{'app_rst_usuario_unidade_sesi_associados_title' | recurso}}
 </p>
 
-<div class="container-form">
+<div class="container-form" *ngIf="!isBarramento">
     <div class="row">
         <div class="form-group col-sm-8">
             <md-input-container [floatPlaceholder]="true">
@@ -29,7 +29,11 @@
     </div>
 </div>
 
-<div class="btn-filter-pesquisar space-up">
+<div *ngIf="isBarramento">
+    <app-usuario-barramento [usuario]="usuario"></app-usuario-barramento>
+</div>
+
+<div class="btn-filter-pesquisar space-up" *ngIf="!isBarramento">
     <button class="btn btn-primary" (click)="pesquisar()">{{'app_rst_btn_pesquisar' | recurso}}</button>
     <button *ngIf="hasPermissao()" class="btn btn-primary" (click)="novo()">{{'app_rst_btn_novo' | recurso}}</button>
     <button class="btn btn-secondary" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
@@ -51,7 +55,8 @@
                         <th class="label"><span class="label">{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
                         <th class="label"><span class="label">{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
                         <th class="label"><span class="label">{{ 'app_rst_labels_municipio' | recurso }}</span></th>
-                        <th class="label text-center" *ngIf="!modoConsulta">&nbsp;</th>
+                        <th class="label"><span class="label">{{ 'app_rst_labels_perfil' | recurso }}</span></th>
+                        <th class="label text-center" *ngIf="!modoConsulta && !isBarramento">&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,7 +64,9 @@
                         <td class="col-quebra col-nome">{{item.uat.razaoSocial}}</td>
                         <td class="col-nao-quebra">{{item.uat.cnpj | cnpjPipe}}</td>
                         <td class="col-quebra col-nome">{{item.uat.endereco && item.uat.endereco[0] ? item.uat.endereco[0].endereco.municipio.descricao : ''}}</td>
-                        <td class="text-center" *ngIf="!modoConsulta">
+                        <td class="col-quebra col-nome">{{item.perfil ? item.perfil : 'Sem perfil cadastrado'}}</td>
+
+                        <td class="text-center" *ngIf="!modoConsulta && !isBarramento">
                             <button class="btn-link" (click)="removerUnidade(item)"><img class="lixo" src="assets/img/trash.svg" alt="Excluir"></button>
                         </td>
                     </tr>

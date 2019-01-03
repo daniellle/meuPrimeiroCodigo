@@ -7,7 +7,9 @@ export const MensagemProperties = {
   app_rst_operacao_invalida: 'Operação invalida',
   app_rst_operacao_nao_realizada: 'Não foi possível processar a operação',
   app_seguranca_acesso_negado: 'Usuário não possui acesso autorizado.',
-  app_rst_usuario_email_invalido: 'Digite um e-mail válido',
+    app_seguranca_email_nao_cadastrado: 'Email informado não cadastrado',
+    app_rst_usuario_email_invalido: 'Digite um e-mail válido',
+    app_seguranca_usuario_barramento: 'Usuário não possui perfil associado',
   app_rst_usuario_senha_invalido: 'Senha não poder ser branco ou nulo',
   app_rst_usuario_credencias_invalida: 'Não foi possível validar as credências do usuário!',
   app_rst_operacao_sucesso: 'Operação realizada com sucesso!',
@@ -44,6 +46,7 @@ export const MensagemProperties = {
   app_rst_labels_data_futura: 'O campo {0} não pode ser maior que a data atual.',
   app_rst_labels_data_1_maior_que_data_2: 'O campo {0} não pode ser maior que o campo {1}.',
   app_rst_label_dados_gerais: 'Dados Gerais',
+  app_rst_label_cnpj_sem_perfis: 'CNPJ sem Perfis Associados',
   app_rst_label_incluir: 'Incluir',
   app_rst_labels_sexo: 'Sexo',
   app_rst_labels_genero: 'Gênero',
@@ -264,6 +267,11 @@ export const MensagemProperties = {
   app_rst_labels_medicamento: 'Medicamentos',
   app_rst_labels_medicamentos_auto_declarados_minha_saude: 'Medicamentos autodeclarados',
   app_rst_labels_nenhum_medicamento_informado: 'Nenhuma medicamento informado.',
+  app_rst_telefone_responsavel: 'Telefone Responsável',
+  app_rst_label_sistema: 'Sistema',
+  app_rst_label_entidade: 'Entidade',
+  app_rst_label_data_criacao: 'Data de criação',
+  app_rst_label_client_id: 'Client id',
 
   // MSG COMPARTILHADAS
   app_rst_msg_nenhum_registro_adicionado: 'Nenhum registro adicionado.',
@@ -465,6 +473,7 @@ export const MensagemProperties = {
 
   app_rst_usuario_label_sistemas: 'Sistemas',
   app_rst_usuario_label_perfis: 'Perfis',
+    app_rst_usuario_label_cnpj: 'CNPJ',
 
     //Empresa Contrato
     app_rst_empresa_contrato_title: 'Contratos',
@@ -636,6 +645,13 @@ export const MensagemProperties = {
   app_rst_questionario_preencha_seu_igev: 'Preencha seu IGEV',
   app_rst_questionario_consulte_seu_historico: 'Consulte seu Histórico',
   app_rst_questionario_igev_periodo: 'Você já preencheu o seu IGEV do período. Aguarde o próximo ciclo.',
+
+  //Sistema Credenciado
+  app_rst_sistema_credenciado_cadastrar: 'Cadastro de Sistema Credenciado',
+  app_rst_sistema_credenciado_pesquisar: 'Pesquisar Sistema Credenciado',
+  app_rst_sistema_credenciado: 'Sistema Credenciado',
+  app_rst_sistema_credenciado_alterar: 'Alterar Sistema Credenciado',
+  app_rst_sistema_credenciado_reset_client_secret: 'Reset client secret',
 
   senha_atual: 'Digite sua Senha Atual',
   nova_senha: 'Digite a sua Nova Senha',

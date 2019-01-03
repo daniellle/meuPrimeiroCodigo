@@ -44,20 +44,38 @@ export class DadosGeraisComponent implements OnInit, OnChanges {
   }
 
   private criarForm(): void {
-    this.usuarioForm = this.formBuilder.group({
-      nome: [
-          { value: '', disabled: this.modoConsulta },
-          [ Validators.required, Validators.maxLength(160)]
-      ],
-      login: [
-          { value: '', disabled: this.modoAlterar || this.modoConsulta },
-          [ Validators.required, ValidateCPF]
-      ],
-      email: [
-          { value: '', disabled: this.modoConsulta },
-          [ Validators.required, Validators.maxLength(255), Validators.email ]
-      ]
-    });
+      if(this.usuario.origemDados){
+        this.usuarioForm = this.formBuilder.group({
+            nome: [
+                { value: '', disabled: this.modoAlterar || this.modoConsulta },
+                [ Validators.required, Validators.maxLength(160)]
+            ],
+            login: [
+                { value: '', disabled: this.modoAlterar || this.modoConsulta },
+                [ Validators.required, ValidateCPF]
+            ],
+            email: [
+                { value: '', disabled: this.modoAlterar || this.modoConsulta },
+                [ Validators.required, Validators.maxLength(255), Validators.email ]
+            ]
+          });
+      } else {
+        this.usuarioForm = this.formBuilder.group({
+            nome: [
+                { value: '', disabled: this.modoConsulta },
+                [ Validators.required, Validators.maxLength(160)]
+            ],
+            login: [
+                { value: '', disabled: this.modoAlterar || this.modoConsulta },
+                [ Validators.required, ValidateCPF]
+            ],
+            email: [
+                { value: '', disabled: this.modoConsulta },
+                [ Validators.required, Validators.maxLength(255), Validators.email ]
+            ]
+          });
+      }
+    
   }
 
   getFormValue() {
@@ -129,6 +147,17 @@ export class DadosGeraisComponent implements OnInit, OnChanges {
     };
 
     return configuracoes;
+  }
+
+  usuarioehBarramento(): boolean{
+      if(this.usuario.origemDados != null){
+          console.log("Origem de dados S4");
+          return true;
+      } else{
+        console.log("Origem de dados nossa");
+          return false;
+      }
+
   }
 
 }

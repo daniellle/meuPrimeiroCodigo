@@ -10,11 +10,13 @@
     [usuario]="usuario">
 </app-dados-gerais>
 
-<app-associa-perfil #associaPerfilComponent [modoConsulta]="modoConsulta" [usuario]="usuario"></app-associa-perfil>
+<div *ngIf="!usuario.clientId">
+<app-associa-perfil  #associaPerfilComponent [modoConsulta]="modoConsulta" [usuario]="usuario" *ngIf="temOrigemDadosOuTemModoConsulta()"></app-associa-perfil>
+</div>
 
-
-<app-perfis-associados (sistemaEditar)="editarEvent($event)" [usuario]="usuario"></app-perfis-associados>
-
+<div *ngIf="!usuario.clientId">
+<app-perfis-associados (sistemaEditar)="editarEvent($event)" [usuario]="usuario" *ngIf="temOrigemDadosOuTemModoConsulta()"></app-perfis-associados>
+</div>
 <div class="btn-rodape-acoes space-up">
     <button type="button " class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!modoConsulta" (click)="salvar()">
         {{'app_rst_btn_salvar' | recurso}}

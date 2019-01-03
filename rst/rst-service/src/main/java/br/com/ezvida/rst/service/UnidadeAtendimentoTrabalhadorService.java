@@ -25,6 +25,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import java.math.BigInteger;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -165,6 +167,11 @@ public class UnidadeAtendimentoTrabalhadorService extends BaseService {
 
     public List<UnidadeAtendimentoTrabalhador> buscarPorEmpresaEAtivas(Long id) {
         return unidadeAtendimentoTrabalhadorDAO.buscarPorEmpresaEAtivas(id);
+    }
+
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public BigInteger countByListIdAndCNPJ(Collection<Long> listId, String CNPJ) {
+        return unidadeAtendimentoTrabalhadorDAO.countByListIdAndCNPJEmpresa(listId, CNPJ);
     }
 
 }

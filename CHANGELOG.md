@@ -1,6 +1,21 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v.2.103.0**
+(RELEASE EM 21/12/2018)
+- [CADASTRO] Cadastro de Usuario agora possui integração para usuarios vindos do Barramento.
+- [CADASTRO] Cards são exibidos de acordo com as associações de Usuário com CNPJ
+- [CADASTRO] Pesquisa de Usuário agora possui campo de perfil "Sem Perfil", para procura de usuarios vindos do Barramento.
+- [CADASTRO] Os cards de "Unidade SESI", "Departamento Regional" e "Empresa" na tela intermediária de Usuário foram adaptados para suportar usuarios do Barramento.
+- [CADASTRO] Cards "Unidade SESI", "Departamento Regional" e "Empresa" mostram somente perfis para associação referentes a eles.
+- [CADASTRO] Card Cadastro Basico mostra para Diretor DN somente as opções de associação de perfil referentes a DN.
+- [CADASTRO] Usuarios sem perfil não podem alterar senha
+- [CADASTRO] Usuarios sem perfil não podem fazer primeiro acesso
+- [CADASTRO] Primeira associação de perfil para usuario do Barramento resulta no envio de um email de confirmação para o usuario associado
+- [CADASTRO] Adicionado bloco novo em cada um dos CARDS de Usuarios em que faz a relação de CNPJ sem perfil,com botão para associar perfil 
+- [CADASTRO] Corrigido problema em que API não retorna vinculo com usuário(GLPI 3867)
+- [CADASTRO] Corrigido problema em que API não retornava CNPJ para usuário DN (GLPI 1551)
+
 **v.2.99.0**
 (RELEASE EM 06/12/2018)
 - [CADASTRO] Perfil Médico do Trabalho Empresa não está mais disponível para Cadastro (GLPI 3510)
@@ -16,6 +31,12 @@
 - [CADASTRO] Alterado Sistema Cadastro para abranger sistemas "Indicadores e Análise Dinâmica", "Indicador IGEV" e "Portal" em Cadastro de Usuário
 - [CADASTRO] Adicionado ícones de lápis e lixeira em listagem de usuários para perfis com permissão de criar, editar ou excluir perfil em Associação de Perfil em Cadastro de Usuário
 - [CADASTRO] Perfil Epidemiologia de Sistema Epidemiologia só pode ser salvo se houver um perfil do sistema Cadastro já escolhido em Cadastro de Usuário
+
+**v.2.97.0**
+============
+(RELEASE EM 29/11/2018)
+- Tela para gerenciar (incluir, editar, desativar/ativar, pesquisar, resetar client_secret) Sistemas Credenciados para o projeto do barramento Sesi Viva+ ESB
+
 
 **v.2.91.0**
 ============

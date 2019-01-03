@@ -455,7 +455,6 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public br.com.ezvida.girst.apiclient.model.Usuario buscarPorEmail(String email) {
         br.com.ezvida.girst.apiclient.model.Usuario u;
-
         try {
             u = this.usuarioClient.buscarPorEmail(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), email);
         } catch (Exception e) {
@@ -477,6 +476,7 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             LOGGER.error("Erro ao obter o perfil do usuário por login. Login = " + login + ". Erro: " + e.getMessage(), e.getCause());
             throw e;
         }
+
 
         return u;
     }
@@ -520,8 +520,14 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             usuario.setTipoImagem(trabalhador.getTipoImagem());
             usuario.setImagem(trabalhador.getImagem());
         } else {
-            usuario.setDepartamentosRegionais(departamentoRegionalService.pesquisarPorIds(usuarioAConsultar.getIdDepartamentos()));
-            usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorIds(usuarioAConsultar.getIdEmpresas()));
+            if(usuarioAConsultar.getPapeis().contains(DadosFilter.DIRETOR_DN) || usuarioAConsultar.getPapeis().contains(DadosFilter.GESTOR_DN)
+            || usuarioAConsultar.getPapeis().contains(DadosFilter.GESTOR_CONTEUDO_DN) || usuarioAConsultar.getPapeis().contains(DadosFilter.MEDICO_TRABALHO_DN)){
+                usuario.setDepartamentosRegionais(departamentoRegionalService.buscarDNPorSigla());
+            }
+            else {
+                usuario.setDepartamentosRegionais(departamentoRegionalService.pesquisarPorIds(usuarioAConsultar.getIdDepartamentos()));
+                usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorIds(usuarioAConsultar.getIdEmpresas()));
+            }
         }
 
         br.com.ezvida.girst.apiclient.model.Usuario usuarioGirst = buscarPorLogin(login);

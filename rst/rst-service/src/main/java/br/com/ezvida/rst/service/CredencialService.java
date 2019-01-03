@@ -183,6 +183,11 @@ public class CredencialService extends BaseService {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String recuperarSenha(String email) {
 		br.com.ezvida.girst.apiclient.model.Usuario usuario = usuarioService.buscarPorEmail(email);
+
+		if(usuario.getPerfisSistema().isEmpty() && !usuario.getClientId().isEmpty()){
+		 LOGGER.error("Usuário sem perfil não pode alterar senha");
+		 throw new UnauthorizedException(getMensagem("app_seguranca_acesso_negado"));
+		 }
 		
 		br.com.ezvida.girst.apiclient.model.Credencial credencial = new br.com.ezvida.girst.apiclient.model.Credencial();
 		credencial.setUsuario(usuario.getLogin());

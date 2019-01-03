@@ -1,0 +1,106 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{ title }}
+</p>
+
+
+<div class="container-pesquisar container-form">
+    <form>
+        <div class="row">
+
+            <div class="form-group col-md-6">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{ 'app_rst_labels_cnpj' | recurso }}" type="text" class="form-control"
+                        id="cnpj" name="cnpj" [(ngModel)]="filtroSistemaCredenciado.cnpj" [textMask]="{mask: mascaraCnpj, guide: false}" />
+                </md-input-container>
+            </div>
+
+            <div class="form-group col-md-6">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{ 'app_rst_labels_nome_responsavel' | recurso }}" type="text" class="form-control"
+                        id="nomeResponsavel" name="nomeResponsavel" [(ngModel)]="filtroSistemaCredenciado.nomeResponsavel"
+                        maxlength="160" />
+                </md-input-container>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="form-group col-md-6">
+                <md-input-container [floatPlaceholder]="true">
+                    <input mdInput placeholder="{{ 'app_rst_label_sistema' | recurso }}" type="text" class="form-control"
+                        id="sistema" name="sistema" [(ngModel)]="filtroSistemaCredenciado.sistema" maxlength="160" />
+                </md-input-container>
+            </div>
+
+            <div class="form-group col-md-6 col-lg-4">
+                <label for="situacao" class="col-form-label pesquisa-situacao">{{ 'app_rst_labels_situacao' | recurso
+                    }}</label>
+                <div>
+                    <md-radio-group class="search" [(ngModel)]="filtroSistemaCredenciado.bloqueado" name="situacao"
+                        disableRipple>
+                        <md-radio-button class="pesquisa-situacao" disableRipple id="todos" name="todos" value="">{{'app_rst_labels_situacao_todos'
+                            | recurso }}</md-radio-button>
+                        <md-radio-button class="pesquisa-situacao" disableRipple id="ativo" name="ativo" value="false">{{'app_rst_labels_situacao_ativo'
+                            | recurso }}</md-radio-button>
+                        <md-radio-button class="pesquisa-situacao" disableRipple id="inativo" name="inativo" value="true">{{'app_rst_labels_situacao_inativo'
+                            | recurso }}</md-radio-button>
+                    </md-radio-group>
+                </div>
+            </div>
+
+        </div>
+
+
+    </form>
+
+</div>
+
+<div class="btn-filter-pesquisar space-up">
+    <button type="button" class="btn btn-primary" (click)="pesquisar();">{{ 'app_rst_btn_pesquisar' | recurso }}</button>
+    <button type="button" *ngIf="hasPermissaoCadastro()" class="btn btn-primary" (click)="incluir()">
+        {{'app_rst_btn_novo' | recurso}}</button>
+</div>
+
+
+<div class="container-form space-up" *ngIf="isNotEmpty(sistemasCredenciados)">
+        <div class="grid-pesquisa">
+            <table class="table table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_nome_responsavel' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_email_responsavel' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_telefone_responsavel' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_label_entidade' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_label_sistema' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_label_data_criacao' | recurso }}</span></th>
+                        <th class="label" *ngIf="hasPermissaoAtivarDesativar()"><span>{{ 'app_rst_labels_status' | recurso }}</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of sistemasCredenciados" (click)="selecionar(item)">
+                        <td class="">&nbsp;{{item.cnpj | cnpjPipe }}</td>
+                        <td class="col-quebra">&nbsp;{{item.nomeResponsavel}}</td>
+                        <td class="col-quebra">&nbsp;{{item.emailResponsavel}}</td>
+                        <td>&nbsp;{{item?.telefoneResponsavel | telefonePipe}}</td>
+                        <td>&nbsp;{{item.entidade | uppercase}}</td>
+                        <td>&nbsp;{{item.sistema}}</td>
+                        <td>&nbsp;{{item?.dataCriacao | date: 'dd/MM/yyyy' }}</td>
+                        <td class="text-center" *ngIf="hasPermissaoAtivarDesativar()">
+                            <button class="btn-link" (click)="$event.stopPropagation(); ativarDesativar(item)" #tooltip="mdTooltip" color="'grey'"
+                                [mdTooltip]="item.dataDesativacao  ? 'Ativar' : 'Desativar' " [mdTooltipPosition]="'below'">
+                                <img class="lixo" [src]="item.dataDesativacao  ? 'assets/img/check_verde.svg' : 'assets/img/trash.svg' ">
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="btn-paginacao">
+                <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                    (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+            </div>
+        </div>
+    </div>
