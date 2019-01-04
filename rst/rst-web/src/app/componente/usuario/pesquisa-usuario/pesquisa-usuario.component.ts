@@ -106,6 +106,7 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
   }
 
   public gerarPDF(){
+    console.log(this.usuarioService)
     if(this.verificarCampos()){
     this.usuarioService.pesquisarPdf(this.filtro, this.paginacao)
     .subscribe((retorno) => FileSaver.saveAs(retorno, 'teste.pdf')
