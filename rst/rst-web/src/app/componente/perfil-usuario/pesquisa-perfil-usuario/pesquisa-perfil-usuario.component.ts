@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { DepartamentoRegional } from 'app/modelo/departamento-regional.model';
 import { Perfil, Usuario } from 'app/modelo';
 import { Empresa } from 'app/modelo/empresa.model';
@@ -26,8 +26,7 @@ import { PerfilEnum } from 'app/modelo/enum/enum-perfil';
   styleUrls: ['./pesquisa-perfil-usuario.component.scss']
 })
 export class PesquisaPerfilUsuarioComponent extends BaseComponent implements OnInit {
-  public filtro: PerfilUsuarioFilter;
-  public usuarios: Usuario[];
+  @Input() @Output() public filtro: PerfilUsuarioFilter;
   public usuarioSelecionado: Usuario;
   public itensCarregados: number;
   public totalItens: number;
@@ -50,7 +49,6 @@ export class PesquisaPerfilUsuarioComponent extends BaseComponent implements OnI
     private departamentoService: DepartRegionalService,
     private perfilService: PerfilService,
     protected pesquisaSesiService: PesquisaSesiService,
-    protected usuarioService: UsuarioService,
   ) {
     super(bloqueioService, dialogo);
     this.empresa = new Empresa();
@@ -64,7 +62,6 @@ export class PesquisaPerfilUsuarioComponent extends BaseComponent implements OnI
     this.semPerfilBarramento = new Perfil();
     this.criandoPerfilVazio();
     this.filtro = new PerfilUsuarioFilter();
-    this.usuarios = new Array<Usuario>();
     this.pesquisaUsuarioForm = this.formBuilder.group({});
     this.filtro.codigoPerfil = '';
   }
@@ -124,50 +121,14 @@ buscarUnidadesSesi() {
   });
 }
 
-public pesquisar() {
-  if (this.verificarCampos()) {
-    this.usuarios = new Array<Usuario>();
-    this.usuarioSelecionado = null;
-    this.paginacao.pagina = 1;
-    this.usuarioService.pesquisarPaginadoRelatorio(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<Usuario>) => {
-      this.usuarios = retorno.list;
-      this.paginacao = this.getPaginacao(this.paginacao, retorno);
-      if (retorno.quantidade === 0 || this.usuarios.length == 0) {
-        this.mensagemError(MensagemProperties.app_rst_nenhum_registro_encontrado);
-      }
-    }, (error) => {
-      this.mensagemError(error);
-    });
-  }
+removerEmpresa() {
+  this.filtro.empresa = new Empresa();
 }
 
-public verificarCampos(): boolean {
-  let verificador = true;
-  if (this.filtrosEmBranco()) {
-    this.mensagemError(MensagemProperties.app_rst_pesquisar_todos_vazios);
-    verificador = false;
-  }
-
-  if (!this.isVazia(this.filtro.login)) {
-    if (this.filtro.login.length < 14) {
-      this.mensagemError(MensagemProperties.app_rst_labels_cpf_incompleto);
-      verificador = false;
-    }
-
-  }
-  return verificador;
+adicionarEmpresa(event) {
+  this.filtro.empresa = event;
 }
 
-private filtrosEmBranco(): boolean {
-  return this.filtro && !this.filtro.login && !this.filtro.nome && this.isVazia(this.filtro.idUnidadeSesi) &&
-    (this.filtro.empresa && !this.filtro.empresa.id) &&
-    (this.filtro.departamentoRegional && !this.filtro.departamentoRegional.id) &&
-    (!this.filtro.codigoPerfil || this.isUndefined(this.filtro.codigoPerfil));
-}
-
-  public limpar(){
-    this.filtro = new PerfilUsuarioFilter();
-  }
 
   isGUS(): boolean{
     return this.temPapel(PerfilEnum.GUS);
@@ -176,6 +137,12 @@ private filtrosEmBranco(): boolean {
   isGEEMM(): boolean{
     return this.temPapel(PerfilEnum.GEEMM);
     
+  }
+
+  limpar(boolean: boolean): void {
+    if(boolean) {
+      this.filtro = new PerfilUsuarioFilter();
+    }
   }
 
 }
