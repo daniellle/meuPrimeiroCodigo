@@ -144,5 +144,4 @@ adicionarEmpresa(event) {
       this.filtro = new PerfilUsuarioFilter();
     }
   }
-
 }

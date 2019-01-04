@@ -8,22 +8,22 @@
 
 <!-- Modal exportar -->
 <ng-template #modalExportar let-close="close" let-fechar="fecharModal" class="modal-content">
-<div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Exportar</h4>
-    <button type="button" class="close" aria-label="Close" (click)="fecharModal()">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Exportar</h4>
+        <button type="button" class="close" aria-label="Close" (click)="fecharModal()">
         <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+      </button>
+    </div>
 
-<div class="modal-body">
-    <div>
-        <p>Em qual formato deseja exportar esse conteúdo?</p>
+    <div class="modal-body">
+        <div>
+            <p>Em qual formato deseja exportar esse conteúdo?</p>
+        </div>
+        <div class="card">
+            <ul class="list-group">
+                <li class="list-group-item"><img class="mr-3" src="assets/img/excel.png" (click)="exportarPlanilha()">Excel</li>
+                <li class="list-group-item"><img class="mr-3" src="assets/img/pdf.png" (click)="exportarPDF()">PDF</li>
+            </ul>
+        </div>
     </div>
-    <div class="card">
-        <ul class="list-group">
-            <li class="list-group-item"><img class="mr-3" src="assets/img/excel.png" (click)="exportarExcel()">Excel</li>
-            <li class="list-group-item"><img class="mr-3" src="assets/img/pdf.png" (click)="exportarPdf()">PDF</li>
-        </ul>
-    </div>
-</div>
 </ng-template>

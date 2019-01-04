@@ -24,13 +24,13 @@ public class RelatorioService extends BaseService implements Serializable {
     UsuarioService service;
     public byte[] gerarRelatorioPDF(UsuarioFilter usuarioFilter, DadosFilter dados
             , ClienteAuditoria auditoria) {
-        InputStream is =  getClass().getResourceAsStream(RelatorioUtils.REPORT_PATH+"report1.jrxml");
+        InputStream is =  getClass().getResourceAsStream(RelatorioUtils.REPORT_PATH+"reportPDF.jrxml");
         return RelatorioUtils.gerarPdf(service.pesquisarPaginadoGirstPDF(usuarioFilter, dados, auditoria), is, new HashMap<>() );
     }
 
     public byte[] gerarRelatorioCSV(UsuarioFilter usuarioFilter, DadosFilter dados
             , ClienteAuditoria auditoria){
-        InputStream is =  getClass().getResourceAsStream(RelatorioUtils.REPORT_PATH+"report1.jrxml");
+        InputStream is =  getClass().getResourceAsStream(RelatorioUtils.REPORT_PATH+"reportCSV.jrxml");
         return RelatorioUtils.gerarCsv(service.pesquisarPaginadoGirstPDF(usuarioFilter, dados, auditoria), is, new HashMap<>() );
     }
 

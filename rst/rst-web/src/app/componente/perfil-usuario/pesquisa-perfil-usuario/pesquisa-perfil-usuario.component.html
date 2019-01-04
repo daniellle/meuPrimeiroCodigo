@@ -65,4 +65,4 @@
     </form>
 </div>
 <app-paginado-perfil-usuario (limparFiltro)='limpar($event)' [(filtro)]="filtro"></app-paginado-perfil-usuario>
-<app-exportar-perfil-usuario [(filtro)]="filtro"></app-exportar-perfil-usuario>
+<app-exportar-perfil-usuario [(filtro)]="filtro" *ngIf="filtro"></app-exportar-perfil-usuario>
