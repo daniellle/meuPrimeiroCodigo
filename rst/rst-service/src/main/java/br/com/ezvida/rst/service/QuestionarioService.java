@@ -208,6 +208,12 @@ public class QuestionarioService extends BaseService {
 		return questionarioDAO.buscarVersoes();
 	}
 
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public Questionario buscarPublicado(){
+		LOGGER.debug("Buscando questionario publicado atual");
+		return questionarioDAO.buscarQuestionarioPublicado();
+	}
+
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Questionario desativar(Questionario questionario, ClienteAuditoria auditoria) {
 		if (questionario != null && questionario.getId() != null) {
