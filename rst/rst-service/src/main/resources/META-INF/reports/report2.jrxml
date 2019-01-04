@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a1e550a6-1f80-46d5-9944-306f618a3355">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="login" class="java.lang.String"/>
+	<field name="perfil" class="java.lang.String"/>
+	<field name="departamento" class="java.lang.String"/>
+	<field name="unidade" class="java.lang.String"/>
+	<field name="empresa" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="231" height="32" uuid="6f513991-09d5-4c17-b9d4-8dde62e2e951"/>
+				<textElement textAlignment="Left">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Relatório de perfis por usuário]]></text>
+			</staticText>
+			<textField pattern="dd MMMMM yyyy">
+				<reportElement x="43" y="22" width="100" height="20" uuid="3818c695-a7e9-4ce2-a5b1-55c3f886ace5"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="22" width="100" height="20" uuid="f68da7e3-92ab-4b89-8646-cd9acd9773ba"/>
+				<text><![CDATA[Emissão]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="90" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="2" y="0" width="179" height="22" backcolor="#DCDCDC" uuid="32de4d7c-81bb-4dc0-886f-baba2032d3d0"/>
+				<textElement>
+					<font isBold="true"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="181" y="0" width="121" height="22" backcolor="#DCDCDC" uuid="ad60ed5d-3b04-4cf6-a5d1-2fbce019efe2"/>
+				<textElement>
+					<font isBold="true"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<text><![CDATA[Login / CPF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="302" y="0" width="80" height="22" backcolor="#DCDCDC" uuid="4506858b-bed9-4957-9efd-f2b17e1fa68d"/>
+				<textElement>
+					<font isBold="true"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<text><![CDATA[Perfil]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="382" y="0" width="120" height="22" backcolor="#DCDCDC" uuid="69ac3121-a696-4c24-ab02-ff1452c71a6a"/>
+				<textElement>
+					<font isBold="true"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<text><![CDATA[Departamento Regional]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="502" y="0" width="130" height="22" backcolor="#DCDCDC" uuid="fd77b47b-9ba3-4b34-bdbd-7c36203e2942"/>
+				<textElement>
+					<font isBold="true"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<text><![CDATA[Unidade Sesi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="632" y="0" width="120" height="22" backcolor="#DCDCDC" uuid="951e5d5f-df89-432c-98ed-c1731db74ffa"/>
+				<textElement>
+					<font isBold="true"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<text><![CDATA[Empresa]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="2" y="22" width="179" height="29" uuid="ca3f26be-fd07-41fc-9b4d-0d6f59983d98"/>
+				<box leftPadding="7" bottomPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="181" y="22" width="121" height="29" uuid="93ac6d51-1562-4f09-adaa-6d1e26fda61c"/>
+				<box leftPadding="3" bottomPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{login}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="302" y="22" width="80" height="29" uuid="0d21e7a1-cc2c-4231-ad1f-5a2c2176f88b"/>
+				<box leftPadding="3" bottomPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{perfil}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="382" y="22" width="120" height="29" uuid="d4631779-f40c-414b-863e-beeb01179e8e"/>
+				<box leftPadding="3" bottomPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{departamento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="502" y="22" width="130" height="29" uuid="a19b9405-87d7-4053-b677-216741fc0a24"/>
+				<box leftPadding="3" bottomPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{unidade}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="632" y="22" width="120" height="29" uuid="9d5565e5-6a61-4bd7-8d23-f134e36ca478"/>
+				<box leftPadding="3" bottomPadding="0">
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{empresa}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="560" y="10" width="100" height="30" uuid="3cc5624f-bf1d-4953-a341-f2ec905d35a2"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="660" y="10" width="100" height="30" uuid="e060a464-5c6c-44bd-a68f-84cfb36469eb"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" /" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
