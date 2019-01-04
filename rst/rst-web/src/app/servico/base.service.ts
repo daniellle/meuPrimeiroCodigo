@@ -54,7 +54,7 @@ export abstract class BaseService<T> {
 
     return this.http.get(baseUrl + endpoint, { headers, params, responseType: 'blob' })
       .map( (res) => {
-          return new Blob([res], { type: 'application/pdf' })
+          return new Blob([res], { type: 'application/pdf' });
       })
       .catch((error: HttpResponse<T>) => {
         return Observable.throw(this.handlingError(error));

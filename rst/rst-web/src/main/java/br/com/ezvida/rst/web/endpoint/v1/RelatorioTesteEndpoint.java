@@ -22,6 +22,12 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Paths;
 
 @RequestScoped
 @Path("/private/v1/relatorio")
@@ -32,6 +38,28 @@ public class RelatorioTesteEndpoint extends SegurancaEndpoint<RelatorioUsuarioDT
     @Inject
     private RelatorioService service;
 
+//    @GET
+//    @Encoded
+//    @Path("/pdf")
+//    @Produces("application/pdf")
+//    @Consumes("application/json")
+//    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CADASTRAR,
+//        PermissionConstants.USUARIO_ALTERAR, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_DESATIVAR,
+//        PermissionConstants.USUARIO_ENTIDADE, PermissionConstants.USUARIO_ENTIDADE_CADASTRAR, PermissionConstants.USUARIO_ENTIDADE_ALTERAR,
+//        PermissionConstants.USUARIO_ENTIDADE_CONSULTAR, PermissionConstants.USUARIO_ENTIDADE_DESATIVAR}))
+//    public Response gerarRelatorioPDF(@BeanParam UsuarioFilter usuarioFilter, @Context SecurityContext context, @Context HttpServletRequest request) {
+//        LOGGER.debug("Gerando PDF por filtro");
+//        byte[] file = service.gerarRelatorioPDF(usuarioFilter
+//            , ClienteInfos.getDadosFilter(context)
+//            , ClienteInfos.getClienteInfos(context, request
+//                , TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS));
+//        return Response.status(HttpServletResponse.SC_OK).type("application/pdf")
+//            .header("Content-Lenght", file.length)
+//            .header("Content-Version", getApplicationVersion())
+//            .header("Content-Disposition",
+//                "filename=usuarios.pdf")
+//            .entity(file).build();
+//    }
 
     @GET
     @Encoded
@@ -52,7 +80,7 @@ public class RelatorioTesteEndpoint extends SegurancaEndpoint<RelatorioUsuarioDT
             .header("Content-Lenght", file.length)
             .header("Content-Version", getApplicationVersion())
             .header("Content-Disposition",
-                "attachment; filename=usuarios.pdf")
+                "filename=usuarios.pdf")
             .entity(file).build();
     }
 

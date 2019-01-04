@@ -1,3 +1,43 @@
-<p>
-  paginado-perfil-usuario works!
-</p>
+<div class="btn-filter-pesquisar space-up">
+    <button type="button" class="btn btn-primary" (click)="pesquisar()">{{ 'app_rst_btn_pesquisar' | recurso }}</button>
+    <button type="button" class="btn btn-primary" (click)="limpar()">{{'app_rst_btn_cancelar' | recurso}}</button>
+</div>
+
+<div class="container-form space-up" *ngIf="!isListaVazia()">
+    <div class="grid-pesquisa">
+        <table class="table table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th class="label">
+                        <span class="label">{{ 'app_rst_labels_nome' | recurso }}</span>
+                    </th>
+                    <th class="label">
+                        <span class="label">{{ 'app_rst_labels_login_cpf' | recurso }}</span>
+                    </th>
+                    <th class="label "><span class="label">{{ 'app_rst_usuario_label_perfis' | recurso }}</span></th>
+                    <th class="label">
+                        <span class="label">{{ 'app_rst_labels_departamento_regional' | recurso }}</span>
+                    </th>
+                    <th class="label">
+                        <span class="label">{{ 'app_rst_labels_unidade_sesi' | recurso }}</span>
+                    </th>
+                    <th class="label">
+                        <span class="label">{{ 'app_rst_menu_empresa' | recurso }}</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of usuarios">
+                    <td class="col-quebra">{{item.nome}}</td>
+                    <td class="col-nao-quebra">{{getCpfFormatado(item.login)}}</td>
+                    <td class="col-quebra">{{item.email}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="btn-paginacao">
+            <pagination [firstText]="paginacao.textPrimeiro" [lastText]="paginacao.textUltimo" [nextText]="paginacao.textProximo" [previousText]="paginacao.textAnterior" [totalItems]="paginacao.totalItens" [(ngModel)]="paginacao.pagina" [itemsPerPage]="paginacao.qtdRegistro"
+                (numPages)="paginacao.numPages = $event" (pageChanged)="pageChanged($event)" [maxSize]="paginacao.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+        </div>
+    </div>
+</div>
+<app-exportar-perfil-usuario *ngIf="!isListaVazia()"></app-exportar-perfil-usuario>

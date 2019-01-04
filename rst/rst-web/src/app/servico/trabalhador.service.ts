@@ -21,7 +21,7 @@ export class TrabalhadorService extends BaseService<Trabalhador> {
     super(httpClient, bloqueio);
   }
 
-  pesquisarPaginado(filtro: FiltroTrabalhador, paginacao: Paginacao): Observable<ListaPaginada<Trabalhador>> {
+    pesquisarPaginado(filtro: FiltroTrabalhador, paginacao: Paginacao): Observable<ListaPaginada<Trabalhador>> {
 
     const params = new HttpParams()
       .append('cpf', filtro.cpf ? MascaraUtil.removerMascara(filtro.cpf) : '')

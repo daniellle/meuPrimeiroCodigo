@@ -1,0 +1,29 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+
+<div class="btn-filter-pesquisar space-up">
+    <button type="button" class="btn btn-primary" (click)="exportar(modalExportar);">Exportar</button>
+    <button type="button" class="btn btn-primary" (click)="imprimir()">imprimir</button>
+</div>
+
+
+<ng-template #modalExportar let-close="close" let-fechar="fecharModal" class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Exportar</h4>
+        <button type="button" class="close" aria-label="Close" (click)="fecharModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+        <div>
+            <p>Em qual formato deseja exportar esse conteúdo?</p>
+        </div>
+        <div class="card">
+            <ul class="list-group">
+                <li class="list-group-item"><img class="mr-3" src="assets/img/excel.png" (click)="exportarPlanilha()">Excel</li>
+                <li class="list-group-item"><img class="mr-3" src="assets/img/pdf.png" (click)="exportarPDF()">PDF</li>
+            </ul>
+        </div>
+    </div>
+</ng-template>
