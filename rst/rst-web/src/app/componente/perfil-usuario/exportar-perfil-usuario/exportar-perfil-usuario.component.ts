@@ -57,7 +57,7 @@ export class ExportarPerfilUsuarioComponent extends BaseComponent implements OnI
 
     exportarPDF(){
         if(this.verificarCampos()){
-            this.usuarioService.pesquisarCSV(this.filtro, this.paginacao)
+            this.usuarioService.pesquisarPdf(this.filtro, this.paginacao)
             .subscribe((retorno) => FileSaver.saveAs(retorno, 'teste.csv')
             );
           }
