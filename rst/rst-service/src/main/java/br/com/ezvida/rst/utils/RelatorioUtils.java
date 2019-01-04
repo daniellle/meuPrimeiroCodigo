@@ -1,7 +1,6 @@
 package br.com.ezvida.rst.utils;
 
 import br.com.ezvida.rst.model.UsuarioGirstView;
-import br.com.ezvida.rst.model.dto.RelatorioUsuarioDTO;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;

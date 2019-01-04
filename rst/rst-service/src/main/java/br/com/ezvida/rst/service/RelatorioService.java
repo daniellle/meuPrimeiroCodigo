@@ -4,7 +4,7 @@ import br.com.ezvida.rst.anotacoes.Preferencial;
 import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.dao.filter.UsuarioFilter;
-import br.com.ezvida.rst.model.dto.RelatorioUsuarioDTO;
+import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
 import br.com.ezvida.rst.utils.RelatorioUtils;
 import fw.core.service.BaseService;
 
@@ -34,16 +34,16 @@ public class RelatorioService extends BaseService implements Serializable {
         return RelatorioUtils.gerarCsv(service.pesquisarPaginadoGirstPDF(usuarioFilter, dados, auditoria), is, new HashMap<>() );
     }
 
-    private List<RelatorioUsuarioDTO> getLista(){
+    private List<PerfilUsuarioDTO> getLista(){
 
-        RelatorioUsuarioDTO dto1 = new RelatorioUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
-        RelatorioUsuarioDTO dto2 = new RelatorioUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
-        RelatorioUsuarioDTO dto3 = new RelatorioUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
-        RelatorioUsuarioDTO dto4 = new RelatorioUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
-        RelatorioUsuarioDTO dto5 = new RelatorioUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
-        RelatorioUsuarioDTO dto6 = new RelatorioUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
+        PerfilUsuarioDTO dto1 = new PerfilUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
+        PerfilUsuarioDTO dto2 = new PerfilUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
+        PerfilUsuarioDTO dto3 = new PerfilUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
+        PerfilUsuarioDTO dto4 = new PerfilUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
+        PerfilUsuarioDTO dto5 = new PerfilUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
+        PerfilUsuarioDTO dto6 = new PerfilUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
 
-        List<RelatorioUsuarioDTO> list = new ArrayList<>();
+        List<PerfilUsuarioDTO> list = new ArrayList<>();
         list.add(dto1);
         list.add(dto2);
         list.add(dto3);

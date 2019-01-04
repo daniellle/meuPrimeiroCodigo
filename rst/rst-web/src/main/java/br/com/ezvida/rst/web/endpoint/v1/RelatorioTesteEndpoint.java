@@ -4,7 +4,7 @@ import br.com.ezvida.rst.constants.PermissionConstants;
 import br.com.ezvida.rst.dao.filter.UsuarioFilter;
 import br.com.ezvida.rst.enums.Funcionalidade;
 import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
-import br.com.ezvida.rst.model.dto.RelatorioUsuarioDTO;
+import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
 import br.com.ezvida.rst.service.RelatorioService;
 import br.com.ezvida.rst.web.auditoria.ClienteInfos;
 import fw.security.binding.Autorizacao;
@@ -19,19 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.Paths;
 
 @RequestScoped
 @Path("/private/v1/relatorio")
-public class RelatorioTesteEndpoint extends SegurancaEndpoint<RelatorioUsuarioDTO> {
+public class RelatorioTesteEndpoint extends SegurancaEndpoint<PerfilUsuarioDTO> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RelatorioTesteEndpoint.class);
 
