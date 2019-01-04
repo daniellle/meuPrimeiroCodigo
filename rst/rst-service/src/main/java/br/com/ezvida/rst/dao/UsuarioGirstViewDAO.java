@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import br.com.ezvida.rst.model.dto.RelatorioUsuarioDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

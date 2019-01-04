@@ -13,7 +13,6 @@ import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.enums.Ambiente;
 import br.com.ezvida.rst.enums.SimNao;
 import br.com.ezvida.rst.model.*;
-import br.com.ezvida.rst.model.dto.RelatorioUsuarioDTO;
 import br.com.ezvida.rst.model.dto.UsuarioDTO;
 import br.com.ezvida.rst.service.excpetions.RegistroNaoEncontradoException;
 import com.fasterxml.jackson.databind.ObjectMapper;
