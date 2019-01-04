@@ -34,23 +34,7 @@ public class RelatorioService extends BaseService implements Serializable {
         return RelatorioUtils.gerarCsv(service.pesquisarPaginadoGirstPDF(usuarioFilter, dados, auditoria), is, new HashMap<>() );
     }
 
-    private List<PerfilUsuarioDTO> getLista(){
-
-        PerfilUsuarioDTO dto1 = new PerfilUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
-        PerfilUsuarioDTO dto2 = new PerfilUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
-        PerfilUsuarioDTO dto3 = new PerfilUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
-        PerfilUsuarioDTO dto4 = new PerfilUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
-        PerfilUsuarioDTO dto5 = new PerfilUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
-        PerfilUsuarioDTO dto6 = new PerfilUsuarioDTO("ABC", "02393802398", "A", "B", "C", "Solutis");
-
-        List<PerfilUsuarioDTO> list = new ArrayList<>();
-        list.add(dto1);
-        list.add(dto2);
-        list.add(dto3);
-        list.add(dto4);
-        list.add(dto5);
-        list.add(dto6);
-
-        return list;
+    public Object pesquisarPaginado(UsuarioFilter usuarioFilter, DadosFilter dadosFilter, ClienteAuditoria clienteInfos) {
+       return null;
     }
 }

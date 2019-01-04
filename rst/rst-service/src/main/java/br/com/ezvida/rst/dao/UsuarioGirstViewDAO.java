@@ -95,33 +95,21 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 		if (count) {
 			jpql.append(" select count( DISTINCT usuario.id) from ");
 		} else {
-			jpql.append(" select DISTINCT usuario.id, usuario.nome, usuario.login, usuario.email from ");
+			jpql.append(" select DISTINCT id, nome, login, email from ");
 		}
 
-		jpql.append(" (select vw_usuario_entidade.id, vw_usuario_entidade.nome, vw_usuario_entidade.login, ");
-		jpql.append(" vw_usuario_entidade.email, vw_usuario_entidade.codigo_perfil  ");
-		jpql.append(" from vw_usuario_entidade vw_usuario_entidade  ");
-		jpql.append(
-				" left join emp_sindicato emp_sindicato  on (vw_usuario_entidade.id_empresa_fk = emp_sindicato.id_empresa_fk) ");
-		jpql.append(" left join trabalhador trabalhador  on (vw_usuario_entidade.login = trabalhador.no_cpf) ");
-		jpql.append(
-				" left join emp_trabalhador emp_trabalhador  on (trabalhador.id_trabalhador = emp_trabalhador.id_trabalhador_fk) ");
-		jpql.append(" left join empresa empresa on (vw_usuario_entidade.id_empresa_fk = empresa.id_empresa ");
-		jpql.append(
-				" or empresa.id_empresa = emp_trabalhador.id_empresa_fk or empresa.id_empresa = emp_sindicato.id_empresa_fk) ");
-		jpql.append(" left join empresa_uat empresa_uat on (empresa.id_empresa = empresa_uat.id_empresa_fk) ");
-		jpql.append(" left join und_atd_trabalhador und_atd_trabalhador  ");
-		jpql.append(" on (empresa_uat.id_und_atd_trabalhador_fk = und_atd_trabalhador.id_und_atd_trabalhador) ");
-		jpql.append(" left join departamento_regional departamento_regional ");
-		jpql.append(
-				" on (und_atd_trabalhador.id_departamento_regional_fk = departamento_regional.id_departamento_regional) ");
-		if (usuarioFilter != null) {
-			jpql.append(" where (");
-		}
+
+		jpql.append(" (select vue.id, vue.nome, vue.login, ");
+		jpql.append(" vue.email, vue.codigo_perfil  ");
+		jpql.append(" from vw_usuario_entidade vue  ");
+        if(!dados.isAdministrador() || !dados.isGestorDn()){
+            aplicarSubselectJoins(jpql, dados, parametros);
+        }
+
 		aplicarFiltros(count, jpql, parametros, usuarioFilter);
-		aplicarFiltrosDados(jpql, parametros, dados);
+		//aplicarFiltrosDados(jpql, parametros, dados);
 		applicarFiltroPerfis(count, usuarioFilter, jpql, parametros, dados);
-		jpql.append(" ) usuario ");
+		jpql.append(" ) as usuario ");
 
 		
 		if (!count) {
@@ -129,6 +117,46 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 		}
 	}
 
+	private void aplicarSubselectJoins(StringBuilder jpql, DadosFilter dados, Map<String, Object> parametros){
+	    if(dados.isGestorDr() || dados.isDiretoriaDr()){
+            jpql.append(" WHERE vue.id_departamento_regional_fk IN (:idsDepRegional) ")
+                    .append(" OR vue.id_und_atd_trab_fk IN (SELECT id_und_atd_trabalhador")
+                    .append(" FROM departamento_regional d")
+                    .append(" JOIN und_atd_trabalhador ON id_departamento_regional = id_departamento_regional_fk")
+                    .append(" WHERE id_departamento_regional IN (vue.id_departamento_regional_fk))");
+            jpql.append(" OR vue.id_empresa_fk IN (SELECT id_empresa")
+                    .append(" FROM departamento_regional d")
+                    .append(" JOIN und_atd_trabalhador u ON id_departamento_regional = id_departamento_regional_fk")
+                    .append(" JOIN und_obra_contrato_uat c ON id_und_atd_trabalhador = c.id_und_atd_trabalhador_fk")
+                    .append(" JOIN und_obra o ON id_und_obra = c.id_und_obra_fk")
+                    .append(" JOIN empresa e ON id_empresa = o.id_empresa_fk")
+                    .append(" WHERE id_departamento_regional IN (vue.id_departamento_regional_fk))");
+            parametros.put("idsDepRegional", dados.getIdsDepartamentoRegional());
+            setFiltroAplicado(true);
+
+        }
+        else if(dados.isGetorUnidadeSESI()){
+            jpql.append(" WHERE vue.id_und_atd_trab_fk IN (:idsUnidadeSESI)");
+            jpql.append(" OR vue.id_empresa_fk IN (SELECT id_empresa")
+                    .append(" FROM und_atd_trabalhador u")
+                    .append(" JOIN und_obra_contrato_uat c ON id_und_atd_trabalhador = c.id_und_atd_trabalhador_fk")
+                    .append(" JOIN und_obra o ON id_und_obra = c.id_und_obra_fk")
+                    .append(" JOIN empresa e ON id_empresa = o.id_empresa_fk")
+                    .append(" WHERE id_departamento_regional IN (vue.id_departamento_regional_fk)) ");
+            parametros.put("idsUnidadeSESI", dados.getIdsUnidadeSESI());
+            setFiltroAplicado(true);
+
+        }
+        else if(dados.isGestorEmpresa()){
+	        jpql.append(" WHERE vue.id_empresa_fk IN (:idsEmpresa)");
+            parametros.put("idsEmpresa", dados.getIdsEmpresa());
+            setFiltroAplicado(true);
+
+        }
+
+        jpql.append(" OR (id_departamento_regional_fk is null AND id_und_atd_trab_fk is null AND id_empresa_fk is null)");
+	    return;
+    }
 
 	private void applicarFiltroPerfis(boolean count, UsuarioFilter usuarioFilter, StringBuilder jpql,
 			Map<String, Object> parametros, DadosFilter dados) {
@@ -137,22 +165,12 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 
 			if( (dados.isGestorDr() || dados.isDiretoriaDr() || dados.isGestorDn())) {
 				if (dados.isGestorDr() || dados.isDiretoriaDr()) {
-					if (isFiltroAplicado()) {
-						jpql.append(" OR (");
-						aplicarFiltros(count, jpql, parametros, usuarioFilter);
-						setFiltroAplicado(true);
-					}
-					jpql.append(
-							"  and (codigo_perfil in ('GEEM', 'GEEMM', 'TRA')  and vw_usuario_entidade.id_empresa_fk IS NULL )) )");
-					jpql.append(" and codigo_perfil not in ('ADM', 'ATD', 'DIDN', 'DIDR', 'GDNA', 'MTSDN', 'GDNP') ");
+					jpql.append(" AND codigo_perfil not in ('ADM', 'ATD', 'DIDN', 'DIDR', 'GDNA', 'MTSDN', 'GDNP') ");
 				}
 
 				if (dados.isGestorDn()) {
-					if (isFiltroAplicado()) {
-						jpql.append(" and ");
-					}
 					jpql.append(
-							"  codigo_perfil not in ('ADM', 'ATD', 'GDNA', 'MTSDN') )");
+							"  AND codigo_perfil not in ('ADM', 'ATD', 'GDNA', 'MTSDN') )");
 				}
 				return;
 			}
@@ -168,8 +186,8 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 			if (dados.temIdsEmpresa()) {
 
 				adicionarAnd(jpql);
-				jpql.append(" (vw_usuario_entidade.id_empresa_fk IN (:idsEmpresa) OR ");
-				jpql.append(" empresa.id_empresa IN (:idsEmpresa)) ");
+				jpql.append(" (vue.id_empresa_fk IN (:idsEmpresa) OR ");
+				jpql.append(" e.id_empresa IN (:idsEmpresa)) ");
 				parametros.put("idsEmpresa", dados.getIdsEmpresa());
 				setFiltroAplicado(true);
 			}
@@ -199,10 +217,10 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 			setFiltroAplicado(true);
 			if (usuarioFilter.getCodigoPerfil() != null) {
 				if(usuarioFilter.getCodigoPerfil().equals("SP")){
-					jpql.append(" vw_usuario_entidade.codigo_perfil is null and vw_usuario_entidade.origemdados is not null");
+					jpql.append(" AND vue.codigo_perfil is null and vue.origemdados is not null");
 				}
 				else {
-					jpql.append(" vw_usuario_entidade.codigo_perfil = :codigoPerfil ");
+					jpql.append(" AND vue.codigo_perfil = :codigoPerfil ");
 					parametros.put("codigoPerfil", usuarioFilter.getCodigoPerfil());
 				}
 			}
@@ -210,20 +228,14 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 			montarFiltroIds(jpql, parametros, usuarioFilter);
 
 			if (usuarioFilter.getNome() != null) {
-				if (usuarioFilter.getCodigoPerfil() != null || usuarioFilter.getIdEmpresa() != null
-						|| usuarioFilter.getIdDepartamentoRegional() != null) {
-					adicionarAnd(jpql);
-				}
-				jpql.append(" set_simple_name(UPPER(vw_usuario_entidade.nome)) like set_simple_name(:nome) escape :sc");
+				jpql.append(" AND set_simple_name(UPPER(vue.nome)) like set_simple_name(:nome) escape :sc");
 				parametros.put("sc", "\\");
 				parametros.put("nome", "%" + usuarioFilter.getNome().replaceAll("%", "\\%").toUpperCase().replace(" ", "%") + "%");
 				setFiltroAplicado(true);
 			}
 
 			montarFiltroLogin(jpql, parametros, usuarioFilter);
-			
-			adicionarAnd(jpql);
-			jpql.append(" vw_usuario_entidade.data_desativacao is null ");
+			jpql.append(" AND vue.data_desativacao is null ");
 
 		}
 
@@ -231,11 +243,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 
 	private void montarFiltroLogin(StringBuilder jpql, Map<String, Object> parametros, UsuarioFilter usuarioFilter) {
 		if (usuarioFilter.getLogin() != null) {
-			if (usuarioFilter.getCodigoPerfil() != null || usuarioFilter.getIdEmpresa() != null
-					|| usuarioFilter.getIdDepartamentoRegional() != null || usuarioFilter.getNome() != null ) {
-				jpql.append("  and ");
-			}
-			jpql.append("  vw_usuario_entidade.login = :login ");
+			jpql.append(" AND vue.login = :login ");
 			parametros.put("login", usuarioFilter.getLogin());
 			setFiltroAplicado(true);
 		}
@@ -243,22 +251,16 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 
 	private void montarFiltroIds(StringBuilder jpql, Map<String, Object> parametros, UsuarioFilter usuarioFilter) {
 		if (usuarioFilter.getIdEmpresa() != null) {
-			if (usuarioFilter.getCodigoPerfil() != null) {
-				adicionarAnd(jpql);
-			}
 
-			jpql.append(" (vw_usuario_entidade.id_empresa_fk = :idEmpresa OR ");
-			jpql.append(" empresa.id_empresa = :idEmpresa) ");
+			jpql.append(" AND (vue.id_empresa_fk = :idEmpresa OR ");
+			jpql.append(" e.id_empresa = :idEmpresa) ");
 			parametros.put("idEmpresa", usuarioFilter.getIdEmpresa());
 		}
 
 		if (usuarioFilter.getIdDepartamentoRegional() != null) {
-			if (usuarioFilter.getCodigoPerfil() != null || usuarioFilter.getIdEmpresa() != null) {
-				adicionarAnd(jpql);
-			}
-			jpql.append(" (vw_usuario_entidade.id_departamento_regional_fk = :idDepartamentoRegional OR ");
-			jpql.append(" departamento_regional.id_departamento_regional = :idDepartamentoRegional) ");
-			jpql.append("             and vw_usuario_entidade.id_departamento_regional_fk is not null");
+			jpql.append(" AND (vue.id_departamento_regional_fk = :idDepartamentoRegional OR ");
+			jpql.append(" d.id_departamento_regional = :idDepartamentoRegional) ");
+			jpql.append("             and vue.id_departamento_regional_fk is not null");
 			parametros.put("idDepartamentoRegional", usuarioFilter.getIdDepartamentoRegional());
 		}
 	}
