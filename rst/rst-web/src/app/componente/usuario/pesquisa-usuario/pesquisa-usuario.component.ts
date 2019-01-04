@@ -22,6 +22,7 @@ import { Usuario } from './../../../modelo/usuario.model';
 import { MensagemProperties } from './../../../compartilhado/utilitario/recurso.pipe';
 import { BloqueioService } from './../../../servico/bloqueio.service';
 import { UsuarioEntidadeService } from 'app/servico/usuario-entidade.service';
+import { PerfilUsuarioFilter } from 'app/modelo/filter-perfil-usuario.model';
 
 @Component({
   selector: 'app-pesquisa-usuario',
@@ -64,7 +65,7 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
   ngOnInit() {
       this.semPerfilBarramento = new Perfil();
       this.criandoPerfilVazio();
-    this.filtro = new FiltroUsuario();
+    this.filtro = new PerfilUsuarioFilter();
     this.usuarios = new Array<Usuario>();
     this.title = MensagemProperties.app_rst_usuario_title_pesquisar;
     this.pesquisaUsuarioForm = this.formBuilder.group({});

@@ -14,6 +14,7 @@ import { Usuario } from './../modelo/usuario.model';
 import { BaseService } from './../../app/servico/base.service';
 import { Injectable } from '@angular/core';
 import { ParametroService } from './parametro.service';
+import { PerfilUsuarioFilter } from 'app/modelo/filter-perfil-usuario.model';
 
 @Injectable()
 export class UsuarioService extends BaseService<Usuario> {
@@ -30,12 +31,10 @@ export class UsuarioService extends BaseService<Usuario> {
     }
     
     pesquisarPaginado(filtro: FiltroUsuario, paginacao: Paginacao): Observable<ListaPaginada<Usuario>> {
-
       
       const params = this.getParams(filtro, paginacao);
       return super.get('/v1/usuarios/paginado', params)
       .map((response: Response) => {
-        console.log('Response:', response);
         return response;
       }).catch((error: Response) => {
         return Observable.throw(error);
@@ -43,6 +42,24 @@ export class UsuarioService extends BaseService<Usuario> {
       
     }
     
+    pesquisarPaginadoRelatorio(filtro: PerfilUsuarioFilter, paginacao: Paginacao):
+    Observable<ListaPaginada<Usuario>> {
+      const params = new HttpParams()
+      .append('cpf', filtro.login ? MascaraUtil.removerMascara(filtro.login) : '')
+      .append('nome', filtro.nome ? filtro.nome : '')
+      .append('idUnidadeSesi', filtro.idUnidadeSesi ? filtro.idUnidadeSesi : '')
+      .append('perfis', filtro.listaIdPerfis ? filtro.listaIdPerfis.toString() : '')
+      .append('departamentoRegional', filtro.departamentoRegional ? filtro.departamentoRegional.toString() : '')
+      .append('empresa', filtro.empresa.razaoSocial ? filtro.empresa.razaoSocial : '');
+      
+      return super.get('/v1/usuarios/paginado', params)
+      .map((response: Response) => {
+        return response;
+      }).catch((error: Response) => {
+        return Observable.throw(error);
+      });
+    }
+
     pesquisarPdf(filtro: FiltroUsuario, paginacao: Paginacao): any{
       const params = this.getParams(filtro, paginacao);
       return super.getPDF('/v1/relatorio/pdf', params)

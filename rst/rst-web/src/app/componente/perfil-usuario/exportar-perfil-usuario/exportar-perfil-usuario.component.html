@@ -3,16 +3,16 @@
 
 <div class="btn-filter-pesquisar space-up">
     <button type="button" class="btn btn-primary" (click)="exportar(modalExportar);">Exportar</button>
-    <button type="button" class="btn btn-primary" (click)="imprimir()" >imprimir</button>
+    <button type="button" class="btn btn-primary" (click)="imprimir()" >Imprimir</button>
 </div>
 
-
+<!-- Modal exportar -->
 <ng-template #modalExportar let-close="close" let-fechar="fecharModal" class="modal-content">
 <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Exportar</h4>
     <button type="button" class="close" aria-label="Close" (click)="fecharModal()">
         <span aria-hidden="true">&times;</span>
-      </button>
+    </button>
 </div>
 
 <div class="modal-body">
