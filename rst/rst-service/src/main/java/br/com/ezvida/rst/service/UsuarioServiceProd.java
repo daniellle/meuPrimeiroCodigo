@@ -228,19 +228,19 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             , ClienteAuditoria auditoria) {
 
         List<PerfilUsuarioDTO> lista = usuarioGirstViewDAO
-                .pesquisarListaPaginadaPDF(usuarioFilter, dados);
+                .pesquisarRelatorioFiltro(usuarioFilter, dados);
         LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
         return lista;
     }
 
     @Override
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<PerfilUsuarioDTO> pesquisarListaPaginadaPerfilUsuario(
+    public br.com.ezvida.rst.dao.filter.ListaPaginada<PerfilUsuarioDTO> pesquisarListaPaginadaPerfilUsuario(
             br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
             , ClienteAuditoria auditoria) {
 
-        List<PerfilUsuarioDTO> lista = usuarioGirstViewDAO
-                .pesquisarListaPaginadaPDF(usuarioFilter, dados);
+        br.com.ezvida.rst.dao.filter.ListaPaginada<PerfilUsuarioDTO> lista = usuarioGirstViewDAO
+                .pesquisarPerfilUsuarioFiltro(usuarioFilter, dados);
         LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
         return lista;
     }

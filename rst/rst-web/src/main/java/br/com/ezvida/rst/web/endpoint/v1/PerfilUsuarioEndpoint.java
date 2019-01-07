@@ -5,7 +5,7 @@ import br.com.ezvida.rst.dao.filter.UsuarioFilter;
 import br.com.ezvida.rst.enums.Funcionalidade;
 import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
-import br.com.ezvida.rst.service.RelatorioService;
+import br.com.ezvida.rst.service.PerfilUsuarioService;
 import br.com.ezvida.rst.web.auditoria.ClienteInfos;
 import fw.security.binding.Autorizacao;
 import fw.security.binding.Permissao;
@@ -29,7 +29,7 @@ public class PerfilUsuarioEndpoint extends SegurancaEndpoint<PerfilUsuarioDTO> {
     private static final Logger LOGGER = LoggerFactory.getLogger(PerfilUsuarioEndpoint.class);
 
     @Inject
-    private RelatorioService service;
+    private PerfilUsuarioService service;
 
     @GET
     @Encoded
@@ -39,8 +39,7 @@ public class PerfilUsuarioEndpoint extends SegurancaEndpoint<PerfilUsuarioDTO> {
     @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CADASTRAR, PermissionConstants.USUARIO_ALTERAR, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_DESATIVAR, PermissionConstants.USUARIO_ENTIDADE, PermissionConstants.USUARIO_ENTIDADE_CADASTRAR, PermissionConstants.USUARIO_ENTIDADE_ALTERAR, PermissionConstants.USUARIO_ENTIDADE_CONSULTAR, PermissionConstants.USUARIO_ENTIDADE_DESATIVAR}))
     public Response buscaPagina(@BeanParam UsuarioFilter usuarioFilter, @Context SecurityContext context, @Context HttpServletRequest request){
         LOGGER.debug("Inicio da busca paginada perfil x usuário");
-//        return Response.status(HttpServletResponse.SC_OK).type("application/json").header("Content-Version", getApplicationVersion()).entity(serializar(service.pesquisarPaginado(usuarioFilter, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS))));
-        return  null;
+        return Response.status(HttpServletResponse.SC_OK).type("application/json").header("Content-Version", getApplicationVersion()).entity(serializar(service.pesquisarPaginado(usuarioFilter, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS)))).build();
     }
 
 

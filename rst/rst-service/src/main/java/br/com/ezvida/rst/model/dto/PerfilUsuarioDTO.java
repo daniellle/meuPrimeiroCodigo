@@ -22,6 +22,8 @@ public class PerfilUsuarioDTO implements Serializable {
         this.empresa = empresa;
     }
 
+    public PerfilUsuarioDTO(){}
+
     public String getNome() {
         return nome;
     }
@@ -68,5 +70,17 @@ public class PerfilUsuarioDTO implements Serializable {
 
     public void setEmpresa(String empresa) {
         this.empresa = empresa;
+    }
+
+    @Override
+    public String toString() {
+        return "PerfilUsuarioDTO{" +
+                "nome='" + nome + '\'' +
+                ", login='" + login + '\'' +
+                ", perfil='" + perfil + '\'' +
+                ", departamento='" + departamento + '\'' +
+                ", unidade='" + unidade + '\'' +
+                ", empresa='" + empresa + '\'' +
+                '}';
     }
 }

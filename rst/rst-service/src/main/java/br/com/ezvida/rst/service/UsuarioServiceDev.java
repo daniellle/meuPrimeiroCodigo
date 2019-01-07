@@ -99,7 +99,7 @@ public class UsuarioServiceDev implements UsuarioService {
         return null;
     }
     @Override
-    public List<PerfilUsuarioDTO> pesquisarListaPaginadaPerfilUsuario(br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados, ClienteAuditoria auditoria) {
+    public br.com.ezvida.rst.dao.filter.ListaPaginada<PerfilUsuarioDTO> pesquisarListaPaginadaPerfilUsuario(UsuarioFilter usuarioFilter, DadosFilter dados, ClienteAuditoria auditoria) {
         return null;
     }
 

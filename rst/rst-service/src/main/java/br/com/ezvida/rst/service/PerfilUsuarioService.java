@@ -3,7 +3,9 @@ package br.com.ezvida.rst.service;
 import br.com.ezvida.rst.anotacoes.Preferencial;
 import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
+import br.com.ezvida.rst.dao.filter.ListaPaginada;
 import br.com.ezvida.rst.dao.filter.UsuarioFilter;
+import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
 import br.com.ezvida.rst.utils.RelatorioUtils;
 import fw.core.service.BaseService;
 
@@ -14,7 +16,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 @Stateless
-public class RelatorioService extends BaseService implements Serializable {
+public class PerfilUsuarioService extends BaseService implements Serializable {
 
     @Inject
     @Preferencial
@@ -31,7 +33,8 @@ public class RelatorioService extends BaseService implements Serializable {
         return RelatorioUtils.gerarCsv(service.pesquisarPaginadoRelatorio(usuarioFilter, dados, auditoria), is, new HashMap<>() );
     }
 
-    public Object pesquisarPaginado(UsuarioFilter usuarioFilter, DadosFilter dadosFilter, ClienteAuditoria clienteInfos) {
-       return null;
+    public ListaPaginada<PerfilUsuarioDTO> pesquisarPaginado(UsuarioFilter usuarioFilter, DadosFilter dadosFilter, ClienteAuditoria auditoria) {
+
+       return service.pesquisarListaPaginadaPerfilUsuario(usuarioFilter, dadosFilter, auditoria);
     }
 }

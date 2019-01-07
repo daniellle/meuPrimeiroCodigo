@@ -6,7 +6,7 @@ import br.com.ezvida.rst.dao.filter.UsuarioFilter;
 import br.com.ezvida.rst.enums.Funcionalidade;
 import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.model.Usuario;
-import br.com.ezvida.rst.service.RelatorioService;
+import br.com.ezvida.rst.service.PerfilUsuarioService;
 import br.com.ezvida.rst.service.UsuarioService;
 import br.com.ezvida.rst.web.auditoria.ClienteInfos;
 import com.google.common.base.Charsets;
@@ -40,7 +40,7 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
     private UsuarioService usuarioService;
 
     @Inject
-    private RelatorioService service;
+    private PerfilUsuarioService service;
 
     //@formatter:off
     @GET

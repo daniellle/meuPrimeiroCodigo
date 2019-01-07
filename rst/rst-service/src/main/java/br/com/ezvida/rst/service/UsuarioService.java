@@ -37,7 +37,7 @@ public interface UsuarioService extends Serializable {
             br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
             , ClienteAuditoria auditoria);
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    List<PerfilUsuarioDTO> pesquisarListaPaginadaPerfilUsuario(
+    br.com.ezvida.rst.dao.filter.ListaPaginada<PerfilUsuarioDTO> pesquisarListaPaginadaPerfilUsuario(
             UsuarioFilter usuarioFilter, DadosFilter dados
             , ClienteAuditoria auditoria);
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
