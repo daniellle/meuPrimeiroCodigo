@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,7 +57,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 		return listaPaginada;
 	}
 	//Metódo para trazer usuarios girst do banco, através de filtros
-	public List<UsuarioGirstView> pesquisarPDF(UsuarioFilter usuarioFilter, DadosFilter dados) {
+	public List<PerfilUsuarioDTO> pesquisarPDF(UsuarioFilter usuarioFilter, DadosFilter dados) {
 		LOGGER.debug("Pesquisando paginado UsuarioGirstView por filtro patra geração de PDF");
 		ListaPaginada<UsuarioGirstView> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
 
@@ -74,11 +75,45 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 			query.setMaxResults(usuarioFilter.getQuantidadeRegistro());
 		}
 
-		listaPaginada.setList(query.getResultList());
+//		listaPaginada.setList(query.getResultList());
 
-		return listaPaginada.getList();
+//		return listaPaginada.getList();
+
+        return new ArrayList<PerfilUsuarioDTO>();
+	}
+
+	public List<PerfilUsuarioDTO> pesquisarListaPaginadaPDF(UsuarioFilter usuarioFilter, DadosFilter dados) {
+		LOGGER.debug("Pesquisando paginado UsuarioGirstView por filtro para geração de PDF com lista paginada");
+		ListaPaginada<UsuarioGirstView> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
+
+		StringBuilder sql = new StringBuilder();
+		Map<String, Object> parametros = Maps.newHashMap();
+		getQueryPaginadoNativoPDF(sql, parametros, usuarioFilter, dados, false);
+		Query query = criarConsultaNativa(sql.toString());
+		DAOUtil.setParameterMap(query, parametros);
+
+		List<Object[]> list = query.getResultList();
+		listaPaginada.setQuantidade(getCountQueryPaginado(usuarioFilter, dados).longValue());
+
+		for(Object[] objeto: list){
+		    for(int i = 0; i < objeto.length; i ++){
+                System.out.println( objeto[i]);
+            }
+        }
+
+//		if (usuarioFilter != null && usuarioFilter.getPagina() != null
+//				&& usuarioFilter.getQuantidadeRegistro() != null) {
+//			query.setFirstResult((usuarioFilter.getPagina() - 1) * usuarioFilter.getQuantidadeRegistro());
+//			query.setMaxResults(usuarioFilter.getQuantidadeRegistro());
+//		}
+//
+//		listaPaginada.setList(query.getResultList());
+
+		return new ArrayList<PerfilUsuarioDTO>();
 
 	}
+
+
 
 	public BigInteger getCountQueryPaginado(UsuarioFilter usuarioFilter, DadosFilter dados) {
 		Map<String, Object> parametros = Maps.newHashMap();
@@ -90,7 +125,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 	}
 
 	private void getQueryPaginadoNativo(StringBuilder jpql, Map<String, Object> parametros, UsuarioFilter usuarioFilter,
-			DadosFilter dados, boolean count) {
+										DadosFilter dados, boolean count) {
 
 		if (count) {
 			jpql.append(" select count( DISTINCT usuario.id) from ");
@@ -102,16 +137,45 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 		jpql.append(" (select vue.id, vue.nome, vue.login, ");
 		jpql.append(" vue.email, vue.codigo_perfil  ");
 		jpql.append(" from vw_usuario_entidade vue  ");
-        if(!dados.isAdministrador() || !dados.isGestorDn()){
-            aplicarSubselectJoins(jpql, dados, parametros);
-        }
+		if(!dados.isAdministrador() || !dados.isGestorDn()){
+			aplicarSubselectJoins(jpql, dados, parametros);
+		}
 
 		aplicarFiltros(count, jpql, parametros, usuarioFilter);
 		//aplicarFiltrosDados(jpql, parametros, dados);
 		applicarFiltroPerfis(count, usuarioFilter, jpql, parametros, dados);
 		jpql.append(" ) as usuario ");
 
-		
+
+		if (!count) {
+			jpql.append(" order by usuario.nome ");
+		}
+	}
+
+	private void getQueryPaginadoNativoPDF(StringBuilder jpql, Map<String, Object> parametros, UsuarioFilter usuarioFilter,
+										DadosFilter dados, boolean count) {
+		jpql.append(" select id, nome, login, email,");
+		jpql.append(" codigo_perfil, e.ds_razao_social,");
+		jpql.append(" dr.ds_razao_social, uat.ds_razao_social");
+		jpql.append(" from (select distinct vue.id, vue.nome,");
+		jpql.append(" vue.login, vue.email, vue.codigo_perfil, vue.id_empresa_fk,");
+		jpql.append(" vue.id_und_atd_trab_fk, vue.id_departamento_regional_fk");
+		jpql.append(" from vw_usuario_entidade vue");
+
+		if(!dados.isAdministrador() && !dados.isGestorDn()){
+			aplicarSubselectJoins(jpql, dados, parametros);
+		}
+
+		aplicarFiltros(count, jpql, parametros, usuarioFilter);
+		applicarFiltroPerfis(count, usuarioFilter, jpql, parametros, dados);
+		jpql.append(" ) as usuario ");
+		jpql.append(" left join empresa e ");
+		jpql.append(" on e.id_empresa = usuario.id_empresa_fk");
+		jpql.append(" left join departamento_regional dr ");
+		jpql.append(" on dr.id_departamento_regional = usuario.id_departamento_regional_fk");
+		jpql.append(" left join und_atd_trabalhador uat ");
+		jpql.append("  	on uat.id_und_atd_trabalhador = usuario.id_und_atd_trab_fk");
+
 		if (!count) {
 			jpql.append(" order by usuario.nome ");
 		}

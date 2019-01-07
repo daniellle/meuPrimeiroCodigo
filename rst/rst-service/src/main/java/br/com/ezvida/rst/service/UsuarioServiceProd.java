@@ -13,6 +13,7 @@ import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.enums.Ambiente;
 import br.com.ezvida.rst.enums.SimNao;
 import br.com.ezvida.rst.model.*;
+import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
 import br.com.ezvida.rst.model.dto.UsuarioDTO;
 import br.com.ezvida.rst.service.excpetions.RegistroNaoEncontradoException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -222,12 +223,24 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<UsuarioGirstView> pesquisarPaginadoGirstPDF(
+    public List<PerfilUsuarioDTO> pesquisarPaginadoRelatorio(
             br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
             , ClienteAuditoria auditoria) {
 
-        List<UsuarioGirstView> lista = usuarioGirstViewDAO
-                .pesquisarPDF(usuarioFilter, dados);
+        List<PerfilUsuarioDTO> lista = usuarioGirstViewDAO
+                .pesquisarListaPaginadaPDF(usuarioFilter, dados);
+        LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
+        return lista;
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<PerfilUsuarioDTO> pesquisarListaPaginadaPerfilUsuario(
+            br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
+            , ClienteAuditoria auditoria) {
+
+        List<PerfilUsuarioDTO> lista = usuarioGirstViewDAO
+                .pesquisarListaPaginadaPDF(usuarioFilter, dados);
         LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
         return lista;
     }

@@ -8,12 +8,12 @@ public class PerfilUsuarioDTO implements Serializable {
 
     private String nome;
     private String login;
-    private List<String> perfil;
+    private String perfil;
     private String departamento;
     private String unidade;
     private String empresa;
 
-    public PerfilUsuarioDTO(String nome, String login, List<String> perfil, String departamento, String unidade, String empresa){
+    public PerfilUsuarioDTO(String nome, String login, String perfil, String departamento, String unidade, String empresa){
         this.nome = nome;
         this.login = login;
         this.perfil = perfil;
@@ -38,11 +38,11 @@ public class PerfilUsuarioDTO implements Serializable {
         this.login = login;
     }
 
-    public List<String> getPerfil() {
+    public String getPerfil() {
         return perfil;
     }
 
-    public void setPerfil(List<String> perfil) {
+    public void setPerfil(String perfil) {
         this.perfil = perfil;
     }
 

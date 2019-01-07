@@ -1,6 +1,7 @@
 package br.com.ezvida.rst.utils;
 
 import br.com.ezvida.rst.model.UsuarioGirstView;
+import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
@@ -16,7 +17,7 @@ public class RelatorioUtils {
 
     public static final String REPORT_PATH = "/META-INF/reports/";
 
-    public static byte[] gerarPdf(List<UsuarioGirstView> list, InputStream is, Map<String, Object> parameters){
+    public static byte[] gerarPdf(List<PerfilUsuarioDTO> list, InputStream is, Map<String, Object> parameters){
         try
         {
 
@@ -38,7 +39,7 @@ public class RelatorioUtils {
         return null;
     }
 
-    public static byte[] gerarCsv(List<UsuarioGirstView> list, InputStream is, Map<String, Object> parameters){
+    public static byte[] gerarCsv(List<PerfilUsuarioDTO> list, InputStream is, Map<String, Object> parameters){
 
         try {
             JasperDesign design = JRXmlLoader.load(is);
