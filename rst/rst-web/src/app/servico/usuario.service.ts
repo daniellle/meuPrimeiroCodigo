@@ -15,6 +15,7 @@ import { BaseService } from './../../app/servico/base.service';
 import { Injectable } from '@angular/core';
 import { ParametroService } from './parametro.service';
 import { PerfilUsuarioFilter } from 'app/modelo/filter-perfil-usuario.model';
+import { UsuarioRelatorio } from 'app/modelo/usuario-relatorio.model';
 
 @Injectable()
 export class UsuarioService extends BaseService<Usuario> {
@@ -43,9 +44,8 @@ export class UsuarioService extends BaseService<Usuario> {
     }
     
     pesquisarPaginadoRelatorio(filtro: PerfilUsuarioFilter, paginacao: Paginacao):
-    Observable<ListaPaginada<Usuario>> {
-      const params = this.getParams(filtro, paginacao);
-      
+    Observable<ListaPaginada<UsuarioRelatorio>> {
+      const params = this.getParamsRelatorio(filtro, paginacao);
       return super.get('/v1/perfil-usuario/paginado', params)
       .map((response: Response) => {
         return response;
@@ -66,7 +66,7 @@ export class UsuarioService extends BaseService<Usuario> {
     }
 
     visualizarPdf(filtro: PerfilUsuarioFilter, paginacao: Paginacao){
-      const params = this.getParams(filtro, paginacao);
+      const params = this.getParamsRelatorio(filtro);
       return super.getPDF('/v1/perfil-usuario/pdf', params)
       .map((response: Response) => {
         // imprime pdf (ctrl + P)
@@ -192,14 +192,14 @@ export class UsuarioService extends BaseService<Usuario> {
       params = params.append('codigoPerfil', filtro.codigoPerfil);
     }
 
-    if (paginacao) {
+    if ($(paginacao)) {
       params = params.append('pagina', paginacao.pagina.toString());
       params = params.append('qtdRegistro', paginacao.qtdRegistro.toString());
     }
     return params;
   }
 
-  private getParamsRelatorio(filtro: PerfilUsuarioFilter): HttpParams {
+  private getParamsRelatorio(filtro: PerfilUsuarioFilter, paginacao?: Paginacao): HttpParams {
     let params = new HttpParams();
 
     if (filtro.nome) {
@@ -222,10 +222,10 @@ export class UsuarioService extends BaseService<Usuario> {
       params = params.append('codigoPerfil', filtro.codigoPerfil);
     }
 
-    if(filtro.idUnidadeSesi){
-      params = params.append('idUnidadeSesi', filtro.idUnidadeSesi);
+    if (paginacao) {
+      params = params.append('pagina', paginacao.pagina.toString());
+      params = params.append('qtdRegistro', paginacao.qtdRegistro.toString());
     }
-    
     return params;
   }
 

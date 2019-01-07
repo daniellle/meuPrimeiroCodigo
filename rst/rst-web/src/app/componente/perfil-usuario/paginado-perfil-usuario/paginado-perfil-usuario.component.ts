@@ -8,6 +8,7 @@ import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
 import { Usuario } from 'app/modelo';
 import { UsuarioService } from 'app/servico/usuario.service';
 import { ListaPaginada } from 'app/modelo/lista-paginada.model';
+import { UsuarioRelatorio } from 'app/modelo/usuario-relatorio.model';
 
 @Component({
   selector: 'app-paginado-perfil-usuario',
@@ -18,7 +19,7 @@ import { ListaPaginada } from 'app/modelo/lista-paginada.model';
 export class PaginadoPerfilUsuarioComponent extends BaseComponent implements OnInit {
 
   @Input() @Output() public filtro: PerfilUsuarioFilter;
-  public usuarios: Usuario[];
+  public usuarios: UsuarioRelatorio[];
   @Output() limparFiltro: EventEmitter<Boolean> = new EventEmitter<Boolean>();
 
   constructor(
@@ -31,15 +32,15 @@ export class PaginadoPerfilUsuarioComponent extends BaseComponent implements OnI
 
    }
   ngOnInit() {
-    this.usuarios = new Array<Usuario>();
+    this.usuarios = new Array<UsuarioRelatorio>();
   }
 
   public pesquisar() {
     if (this.verificarCampos()) {
       console.log(this.filtro)
-      this.usuarios = new Array<Usuario>();
+      this.usuarios = new Array<UsuarioRelatorio>();
       this.paginacao.pagina = 1;
-      this.usuarioService.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<Usuario>) => {
+      this.usuarioService.pesquisarPaginadoRelatorio(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<UsuarioRelatorio>) => {
             this.usuarios = retorno.list;
         this.paginacao = this.getPaginacao(this.paginacao, retorno);
         if (retorno.quantidade === 0 || this.usuarios.length == 0) {

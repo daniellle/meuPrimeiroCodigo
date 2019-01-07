@@ -30,10 +30,10 @@
                 <tr *ngFor="let item of usuarios">
                     <td class="col-quebra">{{item.nome}}</td>
                     <td class="col-nao-quebra">{{getCpfFormatado(item.login)}}</td>
-                    <td class="col-quebra">{{item.email}}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td class="col-quebra">{{item.perfil}}</td>
+                    <td>{{item.departamento}}</td>
+                    <td>{{item.unidade}}</td>
+                    <td>{{item.empresa}}</td>
                 </tr>
             </tbody>
         </table>
