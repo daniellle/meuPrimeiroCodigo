@@ -44,13 +44,7 @@ export class UsuarioService extends BaseService<Usuario> {
     
     pesquisarPaginadoRelatorio(filtro: PerfilUsuarioFilter, paginacao: Paginacao):
     Observable<ListaPaginada<Usuario>> {
-      const params = new HttpParams()
-      .append('cpf', filtro.login ? MascaraUtil.removerMascara(filtro.login) : '')
-      .append('nome', filtro.nome ? filtro.nome : '')
-      .append('idUnidadeSesi', filtro.idUnidadeSesi ? filtro.idUnidadeSesi : '')
-      .append('perfis', filtro.listaIdPerfis ? filtro.listaIdPerfis.toString() : '')
-      .append('departamentoRegional', filtro.departamentoRegional ? filtro.departamentoRegional.toString() : '')
-      .append('empresa', filtro.empresa.razaoSocial ? filtro.empresa.razaoSocial : '');
+      const params = this.getParams(filtro, paginacao);
       
       return super.get('/v1/perfil-usuario/paginado', params)
       .map((response: Response) => {
@@ -61,13 +55,7 @@ export class UsuarioService extends BaseService<Usuario> {
     }
 
     pesquisarPdf(filtro: PerfilUsuarioFilter, paginacao: Paginacao): any{
-      const params = new HttpParams()
-      .append('cpf', filtro.login ? MascaraUtil.removerMascara(filtro.login) : '')
-      .append('nome', filtro.nome ? filtro.nome : '')
-      .append('idUnidadeSesi', filtro.idUnidadeSesi ? filtro.idUnidadeSesi : '')
-      .append('perfis', filtro.listaIdPerfis ? filtro.listaIdPerfis.toString() : '')
-      .append('departamentoRegional', filtro.departamentoRegional.id ? filtro.departamentoRegional.toString() : '')
-      .append('empresa', filtro.empresa.razaoSocial ? filtro.empresa.razaoSocial : '');
+      const params = this.getParamsRelatorio(filtro);
       return super.getPDF('/v1/perfil-usuario/pdf', params)
       .map((response: Response) => {
         return response;
@@ -97,8 +85,8 @@ export class UsuarioService extends BaseService<Usuario> {
       });
     }
     
-    pesquisarCSV(filtro: FiltroUsuario, paginacao: Paginacao): any {
-      const params = this.getParams(filtro, paginacao);
+    pesquisarCSV(filtro: PerfilUsuarioFilter, paginacao: Paginacao): any {
+      const params = this.getParamsRelatorio(filtro);
       return super.getCSV('/v1/perfil-usuario/csv', params)
       .map((response: Response) => {
         return response;
@@ -208,6 +196,36 @@ export class UsuarioService extends BaseService<Usuario> {
       params = params.append('pagina', paginacao.pagina.toString());
       params = params.append('qtdRegistro', paginacao.qtdRegistro.toString());
     }
+    return params;
+  }
+
+  private getParamsRelatorio(filtro: PerfilUsuarioFilter): HttpParams {
+    let params = new HttpParams();
+
+    if (filtro.nome) {
+      params = params.append('nome', filtro.nome);
+    }
+
+    if (filtro.login) {
+      params = params.append('login', MascaraUtil.removerMascara(filtro.login));
+    }
+
+    if (filtro.empresa && filtro.empresa.id) {
+      params = params.append('idEmpresa', filtro.empresa.id.toString());
+    }
+
+    if (filtro.departamentoRegional && filtro.departamentoRegional.id) {
+      params = params.append('idDepartamentoRegional', filtro.departamentoRegional.id.toString());
+    }
+
+    if (filtro.codigoPerfil) {
+      params = params.append('codigoPerfil', filtro.codigoPerfil);
+    }
+
+    if(filtro.idUnidadeSesi){
+      params = params.append('idUnidadeSesi', filtro.idUnidadeSesi);
+    }
+    
     return params;
   }
 

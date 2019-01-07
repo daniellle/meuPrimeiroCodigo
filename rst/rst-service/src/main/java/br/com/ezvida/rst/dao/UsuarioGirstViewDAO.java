@@ -304,6 +304,12 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
             jpql.append(" and vue.id_departamento_regional_fk is not null)");
             parametros.put("idDepartamentoRegional", usuarioFilter.getIdDepartamentoRegional());
         }
+
+        if(usuarioFilter.getIdUnidadeSesi() != null){
+
+            jpql.append(" AND (vue.id_und_atd_trab_fk = :idUnidadeSesi) ");
+            parametros.put("idUnidadeSesi", usuarioFilter.getIdUnidadeSesi());
+        }
     }
 
     private boolean isFiltroAplicado() {

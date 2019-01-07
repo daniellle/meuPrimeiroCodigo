@@ -29,6 +29,9 @@ public class UsuarioFilter extends FilterBase implements Serializable {
 	@QueryParam("codigoPerfil")
 	private String codigoPerfil;
 
+	@QueryParam("idUnidadeSesi")
+	private Long idUnidadeSesi;
+
 	public UsuarioFilter() {
 	}
 
@@ -58,5 +61,7 @@ public class UsuarioFilter extends FilterBase implements Serializable {
 	public String getCodigoPerfil() {
 		return codigoPerfil;
 	}
+
+	public Long getIdUnidadeSesi() { return  idUnidadeSesi;}
 
 }

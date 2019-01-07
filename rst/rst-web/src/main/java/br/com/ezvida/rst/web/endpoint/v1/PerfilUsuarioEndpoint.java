@@ -23,7 +23,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
 @RequestScoped
-@Path("/private/v1")
+@Path("/private/v1/perfil-usuario")
 public class PerfilUsuarioEndpoint extends SegurancaEndpoint<PerfilUsuarioDTO> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PerfilUsuarioEndpoint.class);

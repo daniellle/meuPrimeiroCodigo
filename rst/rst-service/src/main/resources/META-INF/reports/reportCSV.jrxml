@@ -71,9 +71,6 @@
 			</staticText>
 		</band>
 	</pageHeader>
-	<columnHeader>
-		<band splitType="Stretch"/>
-	</columnHeader>
 	<detail>
 		<band height="37" splitType="Stretch">
 			<textField pattern="" isBlankWhenNull="true">
