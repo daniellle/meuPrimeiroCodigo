@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.ws.rs.QueryParam;
 
 import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
 import org.slf4j.Logger;
@@ -114,7 +115,6 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 	}
 
 
-
 	public BigInteger getCountQueryPaginado(UsuarioFilter usuarioFilter, DadosFilter dados) {
 		Map<String, Object> parametros = Maps.newHashMap();
 		StringBuilder jpql = new StringBuilder();
@@ -137,8 +137,11 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 		jpql.append(" (select vue.id, vue.nome, vue.login, ");
 		jpql.append(" vue.email, vue.codigo_perfil  ");
 		jpql.append(" from vw_usuario_entidade vue  ");
-		if(!dados.isAdministrador() || !dados.isGestorDn()){
-			aplicarSubselectJoins(jpql, dados, parametros);
+        if(!dados.isAdministrador() && !dados.isGestorDn()){
+            aplicarSubselectJoins(jpql, dados, parametros);
+        }
+        else{
+			jpql.append(" WHERE vue.id is not null");
 		}
 
 		aplicarFiltros(count, jpql, parametros, usuarioFilter);
@@ -240,7 +243,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 			}
 		}
 
-		jpql.append(")");
+		//jpql.append(")");
 
 
 	}
@@ -316,15 +319,13 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 	private void montarFiltroIds(StringBuilder jpql, Map<String, Object> parametros, UsuarioFilter usuarioFilter) {
 		if (usuarioFilter.getIdEmpresa() != null) {
 
-			jpql.append(" AND (vue.id_empresa_fk = :idEmpresa OR ");
-			jpql.append(" e.id_empresa = :idEmpresa) ");
+			jpql.append(" AND (vue.id_empresa_fk = :idEmpresa) ");
 			parametros.put("idEmpresa", usuarioFilter.getIdEmpresa());
 		}
 
 		if (usuarioFilter.getIdDepartamentoRegional() != null) {
-			jpql.append(" AND (vue.id_departamento_regional_fk = :idDepartamentoRegional OR ");
-			jpql.append(" d.id_departamento_regional = :idDepartamentoRegional) ");
-			jpql.append("             and vue.id_departamento_regional_fk is not null");
+			jpql.append(" AND (vue.id_departamento_regional_fk = :idDepartamentoRegional ");
+			jpql.append(" and vue.id_departamento_regional_fk is not null)");
 			parametros.put("idDepartamentoRegional", usuarioFilter.getIdDepartamentoRegional());
 		}
 	}
