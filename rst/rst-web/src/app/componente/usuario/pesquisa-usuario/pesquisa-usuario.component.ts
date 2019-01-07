@@ -105,23 +105,8 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
     }
   }
 
-  public gerarPDF(){
-    console.log(this.usuarioService)
-    if(this.verificarCampos()){
-    this.usuarioService.pesquisarPdf(this.filtro, this.paginacao)
-    .subscribe((retorno) => FileSaver.saveAs(retorno, 'teste.pdf')
-    );  
-    }
-  }
 
 
-  public gerarCSV(){
-    if(this.verificarCampos()){
-      this.usuarioService.pesquisarCSV(this.filtro, this.paginacao)
-      .subscribe((retorno) => FileSaver.saveAs(retorno, 'teste.csv')
-      );
-    }
-  }
 
   buscarDepartamentos() {
     this.departamentoService.listarTodos(new FiltroDepartRegional()).subscribe((dados: any) => {
