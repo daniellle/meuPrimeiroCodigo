@@ -49,7 +49,7 @@ export class ExportarPerfilUsuarioComponent extends BaseComponent implements OnI
     exportarPlanilha(){
         if(this.verificarCampos()){
             this.usuarioService.pesquisarCSV(this.filtro, this.paginacao)
-            .subscribe((retorno) => FileSaver.saveAs(retorno, 'teste.csv')
+            .subscribe((retorno) => FileSaver.saveAs(retorno, 'relatorio-perfil-usuario.csv')
             );
           }
         this.fecharModal();
@@ -58,7 +58,7 @@ export class ExportarPerfilUsuarioComponent extends BaseComponent implements OnI
     exportarPDF(){
         if(this.verificarCampos()){
             this.usuarioService.pesquisarPdf(this.filtro, this.paginacao)
-            .subscribe((retorno) => FileSaver.saveAs(retorno, 'teste.pdf')
+            .subscribe((retorno) => FileSaver.saveAs(retorno, 'relatorio-perfil-usuario.pdf')
             );
           }
         this.fecharModal();
