@@ -77,6 +77,7 @@ export class PaginadoPerfilUsuarioComponent extends BaseComponent implements OnI
   }
   
     public limpar(){
+      this.usuarios = new Array<UsuarioRelatorio>();
       this.limparFiltro.emit(true);
     }
 

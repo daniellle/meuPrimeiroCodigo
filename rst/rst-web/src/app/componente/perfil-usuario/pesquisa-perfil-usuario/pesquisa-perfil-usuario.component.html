@@ -21,7 +21,7 @@
                 <div class="form-group col-md-8">
                     <div class="borda-segmento" style="background-color:white">
                         <div id="modalLupa" #modalLupa class="input-group searchlupa">
-                            <md-input-container style="border-color:transparent" [floatPlaceholder]="true">
+                            <md-input-container class="pesquisa-perfil" style="border-color:transparent" [floatPlaceholder]="true">
                                 <input mdInput placeholder="{{'app_rst_empresa_subtitulo' | recurso}}" disabled type="text" name="empresa" id="modalLupa" [value]="filtro.empresa.razaoSocial ? filtro.empresa.razaoSocial : ''" appFormularioCamposErro>
                             </md-input-container>
                             <app-empresa-modal [isSelecionado]="filtro.empresa.id" (onRemover)="removerEmpresa()" (onAdicionar)="adicionarEmpresa($event)"></app-empresa-modal>

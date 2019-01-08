@@ -3,7 +3,7 @@
 
 <div class="btn-filter-pesquisar space-up">
     <button type="button" class="btn btn-primary" (click)="exportar(modalExportar);">Exportar</button>
-    <button type="button" class="btn btn-primary" (click)="imprimir()" >Imprimir</button>
+    <button type="button" class="btn btn-primary" (click)="imprimir()">Imprimir</button>
 </div>
 
 <!-- Modal exportar -->
@@ -21,8 +21,8 @@
         </div>
         <div class="card">
             <ul class="list-group">
-                <li class="list-group-item"><img class="mr-3" src="assets/img/excel.png" (click)="exportarPlanilha()">Excel</li>
-                <li class="list-group-item"><img class="mr-3" src="assets/img/pdf.png" (click)="exportarPDF()">PDF</li>
+                <li (click)="exportarPlanilha()" class="exportar list-group-item"><img class="mr-3" src="assets/img/excel.png">Excel</li>
+                <li (click)="exportarPDF()" class="exportar list-group-item"><img class="mr-3" src="assets/img/pdf.png">PDF</li>
             </ul>
         </div>
     </div>
