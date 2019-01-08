@@ -84,4 +84,13 @@ export class PaginadoPerfilUsuarioComponent extends BaseComponent implements OnI
       return !(this.usuarios && this.usuarios.length > 0);
     }
 
+    public pageChanged(event: any): void {
+      this.paginacao.pagina = event.page;
+      this.usuarioService.pesquisarPaginadoRelatorio(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<UsuarioRelatorio>) => {
+        this.usuarios = retorno.list;
+      }, (error) => {
+        this.mensagemError(error);
+      });
+    }
+
 }
