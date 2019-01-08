@@ -14,35 +14,90 @@ import { Usuario } from './../modelo/usuario.model';
 import { BaseService } from './../../app/servico/base.service';
 import { Injectable } from '@angular/core';
 import { ParametroService } from './parametro.service';
+import { PerfilUsuarioFilter } from 'app/modelo/filter-perfil-usuario.model';
+import { UsuarioRelatorio } from 'app/modelo/usuario-relatorio.model';
 
 @Injectable()
 export class UsuarioService extends BaseService<Usuario> {
-
+  
   tokenClienteRst: string;
-
+  
   constructor(
     protected httpClient: HttpClient,
     protected bloqueioService: BloqueioService,
     protected autenticacaoService: AutenticacaoService,
     protected parametroService: ParametroService
-  ) {
-    super(httpClient, bloqueioService);
-  }
-
-  pesquisarPaginado(filtro: FiltroUsuario, paginacao: Paginacao): Observable<ListaPaginada<Usuario>> {
-
-    const params = this.getParams(filtro, paginacao);
-    return super.get('/v1/usuarios/paginado', params)
+    ) {
+      super(httpClient, bloqueioService);
+    }
+    
+    pesquisarPaginado(filtro: FiltroUsuario, paginacao: Paginacao): Observable<ListaPaginada<Usuario>> {
+      
+      const params = this.getParams(filtro, paginacao);
+      return super.get('/v1/usuarios/paginado', params)
       .map((response: Response) => {
         return response;
       }).catch((error: Response) => {
         return Observable.throw(error);
       });
+      
+    }
+    
+    pesquisarPaginadoRelatorio(filtro: PerfilUsuarioFilter, paginacao: Paginacao):
+    Observable<ListaPaginada<UsuarioRelatorio>> {
+      const params = this.getParamsRelatorio(filtro, paginacao);
+      return super.get('/v1/perfil-usuario/paginado', params)
+      .map((response: Response) => {
+        return response;
+      }).catch((error: Response) => {
+        return Observable.throw(error);
+      });
+    }
 
-  }
+    pesquisarPdf(filtro: PerfilUsuarioFilter, paginacao: Paginacao): any{
+      const params = this.getParamsRelatorio(filtro);
+      return super.getPDF('/v1/perfil-usuario/pdf', params)
+      .map((response: Response) => {
+        return response;
+      })
+      .catch((error: Response) => {
+        return Observable.throw(error);
+      });
+    }
 
-  buscarUsuarioById(id: number): Observable<Usuario> {
-
+    visualizarPdf(filtro: PerfilUsuarioFilter, paginacao: Paginacao){
+      const params = this.getParamsRelatorio(filtro);
+      return super.getPDF('/v1/perfil-usuario/pdf', params)
+      .map((response: Response) => {
+        // imprime pdf (ctrl + P)
+        const blobUrl = URL.createObjectURL(response);
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = blobUrl;
+        document.body.appendChild(iframe);
+        iframe.contentWindow.print();
+        // visualiza
+        // const fileURL = URL.createObjectURL(response);
+        // window.open(fileURL, '_blank');
+      })
+      .catch((error: Response) => {
+        return Observable.throw(error);
+      });
+    }
+    
+    pesquisarCSV(filtro: PerfilUsuarioFilter, paginacao: Paginacao): any {
+      const params = this.getParamsRelatorio(filtro);
+      return super.getCSV('/v1/perfil-usuario/csv', params)
+      .map((response: Response) => {
+        return response;
+      })
+      .catch((error: Response) => {
+        return Observable.throw(error);
+      })
+    }
+    
+    buscarUsuarioById(id: number): Observable<Usuario> {
+      
     const params = new HttpParams()
       .append('id', id.toString());
 
@@ -135,6 +190,40 @@ export class UsuarioService extends BaseService<Usuario> {
 
     if (filtro.codigoPerfil) {
       params = params.append('codigoPerfil', filtro.codigoPerfil);
+    }
+
+    if (paginacao) {
+      params = params.append('pagina', paginacao.pagina.toString());
+      params = params.append('qtdRegistro', paginacao.qtdRegistro.toString());
+    }
+    return params;
+  }
+
+  private getParamsRelatorio(filtro: PerfilUsuarioFilter, paginacao?: Paginacao): HttpParams {
+    let params = new HttpParams();
+
+    if (filtro.nome) {
+      params = params.append('nome', filtro.nome);
+    }
+
+    if (filtro.login) {
+      params = params.append('login', MascaraUtil.removerMascara(filtro.login));
+    }
+
+    if (filtro.empresa && filtro.empresa.id) {
+      params = params.append('idEmpresa', filtro.empresa.id.toString());
+    }
+
+    if (filtro.departamentoRegional && filtro.departamentoRegional.id) {
+      params = params.append('idDepartamentoRegional', filtro.departamentoRegional.id.toString());
+    }
+
+    if (filtro.codigoPerfil) {
+      params = params.append('codigoPerfil', filtro.codigoPerfil);
+    }
+
+    if(filtro.idUnidadeSesi) {
+      params = params.append('idUnidadeSesi' , filtro.idUnidadeSesi);
     }
 
     if (paginacao) {

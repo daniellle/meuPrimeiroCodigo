@@ -12,5 +12,6 @@ export const ROTAS: IMenu[] = [
   {path: 'uat', title: 'Pesquisar UAT', icon: 'unarchive', class: ''},
   {path: 'empresa', title: 'Pesquisar Empresa', icon: 'unarchive', class: ''},
   {path: 'trabalhador', title: 'Pesquisa Trabalhador', icon: 'unarchive', class: ''},
+  {path: 'perfil-usuario', title: 'Relatório de Perfis por Usuários', icon: 'unarchive', class: ''},
   {path: 'departamentoregional', title: 'Pesquisar Departamento Regional', icon: 'unarchive', class: ''},
 ];

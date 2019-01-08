@@ -65,6 +65,8 @@
     <button type="button" class="btn btn-primary" (click)="novo()" *ngIf="hasPermissaoInclusao()">{{'app_rst_btn_novo' | recurso}}</button>
 </div>
 
+
+
 <div class="container-form space-up" *ngIf="!isListaVazia()">
     <div class="grid-pesquisa">
         <table class="table table-responsive table-hover">
@@ -91,7 +93,7 @@
                     <td class="col-quebra">{{item.email}}</td>
                     <td class="text-center" *ngIf="temPermissaoDesativar()">
                         <button class="btn-link" (click)="$event.stopPropagation(); desativarUsuario(item)">
-                                <img class="lixo" src="assets/img/trash.svg" alt="Excluir">
+                            <img class="lixo" src="assets/img/trash.svg" alt="Excluir">
                         </button>
                     </td>
                 </tr>

@@ -144,6 +144,13 @@ const routes: Routes = [
 				},
 			},
 			{
+				path: 'perfil-usuario',
+				loadChildren: './perfil-usuario/perfil-usuario.module#PerfilUsuarioModule',
+				canLoad: [AutorizacaoGuard], data: {
+					permissoes: [PermissoesEnum.PERFIL_USUARIO],
+				},
+			},
+			{
 				path: 'parceirocredenciado',
 				loadChildren: './parceiro-credenciado/parceiro-credenciado.module#ParceiroCredenciadoModule',
 				canLoad: [AutorizacaoGuard], data: {

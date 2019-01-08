@@ -653,6 +653,9 @@ export const MensagemProperties = {
   app_rst_sistema_credenciado_alterar: 'Alterar Sistema Credenciado',
   app_rst_sistema_credenciado_reset_client_secret: 'Reset client secret',
 
+  //Relatório de Perfis por Usuários
+  app_rst_relatorio_perfil_usuario: 'Relatórios de Perfis por Usuários',
+
   senha_atual: 'Digite sua Senha Atual',
   nova_senha: 'Digite a sua Nova Senha',
   confirme_sua_nova_senha: 'Confirme a sua Nova Senha',
