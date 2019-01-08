@@ -334,9 +334,15 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 
         for (Object[] objeto : list) {
             PerfilUsuarioDTO pu = new PerfilUsuarioDTO();
-            pu.setNome(objeto[1].toString());
-            pu.setLogin(objeto[2].toString());
-            pu.setPerfil(objeto[4].toString());
+            if(objeto[1] != null) {
+                pu.setNome(objeto[1].toString());
+            }
+            if(objeto[2] != null) {
+                pu.setLogin(objeto[2].toString());
+            }
+            if(objeto[4] != null){
+                pu.setPerfil(objeto[4].toString());
+            }
             if (objeto[5] != null) {
                 pu.setEmpresa(objeto[5].toString());
             }
