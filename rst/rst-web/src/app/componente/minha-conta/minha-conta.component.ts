@@ -72,6 +72,7 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
         this.dadosTrabalhador();
     }
 
+
     dadosTrabalhador(){
         //console.log(this.activatedRoute.snapshot.params);
         this.meusdados = this.activatedRoute.snapshot.params.id === 'meusdados';

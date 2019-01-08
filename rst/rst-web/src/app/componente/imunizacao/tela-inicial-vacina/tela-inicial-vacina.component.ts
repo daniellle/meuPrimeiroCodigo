@@ -46,9 +46,11 @@ export class TelaInicialVacinaComponent extends BaseComponent implements OnInit 
         this.dataAtual =  new Date();
       this.dataAtualCard = moment(this.dataAtual).locale("pt-br").format("MMMM YYYY");
         this.carregarTela();
-        this.proximasDosesNoCalendario();
-        this.doses = new Array<ProximaDoseDTO>();
         this.carregarProximasDoses();
+        if(!this.carregarProximasDoses){
+            this.proximasDosesNoCalendario();
+        }
+        this.doses = new Array<ProximaDoseDTO>();
         this.myDatePickerOptions.inline = true;
         this.myDatePickerOptions.selectorWidth = "100%";
         this.myDatePickerOptions.showTodayBtn = false;
@@ -66,11 +68,12 @@ export class TelaInicialVacinaComponent extends BaseComponent implements OnInit 
 
     carregarProximasDoses() {
         this.service.ultimasProximasDoses().subscribe((retorno: ProximaDoseDTO[]) => {
-            if(retorno == null){
-            }
             this.doses = retorno;
             if (retorno === null) {
                 this.mensagemError("Não há nenhuma próxima dose cadastrada");
+                return false;
+            }else{
+                return true;
             }
         }, (error) => {
             this.mensagemError(error);
@@ -91,22 +94,24 @@ export class TelaInicialVacinaComponent extends BaseComponent implements OnInit 
         let mesAtual = this.dataAtual.getMonth() + 1;
         let anoAtual = this.dataAtual.getFullYear();
         this.service.proximasDosesDoMes(mesAtual, anoAtual).subscribe((retorno: ProximaDoseDTO[]) => {
-            this.dosesDoMes = retorno;
-            let date = Array<IMyDate>();
-            let lista = [];
-            let color = '#5d0046';
-            retorno.forEach(element => {
-                let myDate = {
-                    year: moment(element.dataVacinacao).year(),
-                    month: moment(element.dataVacinacao).month()+1,
-                    day: moment(element.dataVacinacao).date()
-                }
-                lista.push(myDate);
-            });
-            let copy : IMyOptions = this.getCopyOfOptions(this.myDatePickerOptions);
-            copy.markDates = [{dates: lista, color: color}];
-            this.myDatePickerOptions = copy;
-            if (retorno === null) {
+            if(retorno != null && !retorno){
+                this.dosesDoMes = retorno;
+                let date = Array<IMyDate>();
+                let lista = [];
+                let color = '#5d0046';
+                
+                retorno.forEach(element => {
+                    let myDate = {
+                        year: moment(element.dataVacinacao).year(),
+                        month: moment(element.dataVacinacao).month()+1,
+                        day: moment(element.dataVacinacao).date()
+                    }
+                    lista.push(myDate);
+                });
+                let copy : IMyOptions = this.getCopyOfOptions(this.myDatePickerOptions);
+                copy.markDates = [{dates: lista, color: color}];
+                this.myDatePickerOptions = copy;
+            }else {
                 this.mensagemError("Não há nenhuma próxima dose cadastrada neste mês");
             }
         }, (error) => {

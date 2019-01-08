@@ -46,6 +46,7 @@ export class HistoricoVacinaComponent extends BaseComponent implements OnInit {
     protected dialogo: ToastyService,
     private dialogService: DialogService) {
     super(bloqueioService, dialogo);
+    this.carregarTela();
   }
   ngOnInit() {
     this.vacinas = this.vacinas = new Array<Vacina>();
