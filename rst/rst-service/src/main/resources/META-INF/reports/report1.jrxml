@@ -53,27 +53,27 @@
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="138" height="20" uuid="0575100f-e70f-4e2e-87fb-b7bb5db911f2"/>
 				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="138" y="0" width="77" height="20" uuid="776b0f50-042b-45c3-81e2-e68b31d68826"/>
 				<textFieldExpression><![CDATA[$F{login}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="215" y="0" width="81" height="20" uuid="b3432494-428d-4fed-a1f7-d040ffc4dff2"/>
 				<textFieldExpression><![CDATA[$F{perfil}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="296" y="0" width="110" height="20" uuid="2187f872-940f-456f-af39-3fee40ecdaba"/>
 				<textFieldExpression><![CDATA[$F{departamento}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="406" y="0" width="66" height="20" uuid="3a5a9250-1753-491e-b75e-afafc85d83fc"/>
 				<textFieldExpression><![CDATA[$F{unidade}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="472" y="0" width="83" height="20" uuid="bf4640fa-5143-473c-89b7-ab12e4ef1ffe"/>
 				<textFieldExpression><![CDATA[$F{empresa}]]></textFieldExpression>
 			</textField>
