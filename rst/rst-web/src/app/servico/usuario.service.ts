@@ -222,6 +222,10 @@ export class UsuarioService extends BaseService<Usuario> {
       params = params.append('codigoPerfil', filtro.codigoPerfil);
     }
 
+    if(filtro.idUnidadeSesi) {
+      params = params.append('idUnidadeSesi' , filtro.idUnidadeSesi);
+    }
+
     if (paginacao) {
       params = params.append('pagina', paginacao.pagina.toString());
       params = params.append('qtdRegistro', paginacao.qtdRegistro.toString());
