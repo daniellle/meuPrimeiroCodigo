@@ -192,7 +192,7 @@ export class UsuarioService extends BaseService<Usuario> {
       params = params.append('codigoPerfil', filtro.codigoPerfil);
     }
 
-    if ($(paginacao)) {
+    if (paginacao) {
       params = params.append('pagina', paginacao.pagina.toString());
       params = params.append('qtdRegistro', paginacao.qtdRegistro.toString());
     }

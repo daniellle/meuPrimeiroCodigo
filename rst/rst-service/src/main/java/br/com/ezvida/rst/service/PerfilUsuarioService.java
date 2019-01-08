@@ -29,7 +29,7 @@ public class PerfilUsuarioService extends BaseService implements Serializable {
 
     public byte[] gerarRelatorioCSV(UsuarioFilter usuarioFilter, DadosFilter dados
             , ClienteAuditoria auditoria){
-        InputStream is =  getClass().getResourceAsStream(RelatorioUtils.REPORT_PATH+"reportCSV.jrxml");
+        InputStream is =  getClass().getResourceAsStream(RelatorioUtils.REPORT_PATH+"report1.jrxml");
         return RelatorioUtils.gerarCsv(service.pesquisarPaginadoRelatorio(usuarioFilter, dados, auditoria), is, new HashMap<>() );
     }
 

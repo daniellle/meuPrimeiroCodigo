@@ -44,7 +44,7 @@
 				<text><![CDATA[Nome]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="156" y="63" width="121" height="22" backcolor="#DCDCDC" uuid="ad60ed5d-3b04-4cf6-a5d1-2fbce019efe2"/>
+				<reportElement mode="Opaque" x="179" y="63" width="121" height="22" backcolor="#DCDCDC" uuid="ad60ed5d-3b04-4cf6-a5d1-2fbce019efe2"/>
 				<textElement>
 					<font isBold="true"/>
 					<paragraph leftIndent="3"/>
@@ -52,7 +52,7 @@
 				<text><![CDATA[Login / CPF]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="277" y="63" width="103" height="22" backcolor="#DCDCDC" uuid="4506858b-bed9-4957-9efd-f2b17e1fa68d"/>
+				<reportElement mode="Opaque" x="300" y="63" width="80" height="22" backcolor="#DCDCDC" uuid="4506858b-bed9-4957-9efd-f2b17e1fa68d"/>
 				<textElement>
 					<font isBold="true"/>
 					<paragraph leftIndent="3"/>
@@ -60,7 +60,7 @@
 				<text><![CDATA[Perfil]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="382" y="63" width="118" height="22" backcolor="#DCDCDC" uuid="69ac3121-a696-4c24-ab02-ff1452c71a6a"/>
+				<reportElement mode="Opaque" x="380" y="63" width="120" height="22" backcolor="#DCDCDC" uuid="69ac3121-a696-4c24-ab02-ff1452c71a6a"/>
 				<textElement>
 					<font isBold="true"/>
 					<paragraph leftIndent="3"/>
@@ -83,6 +83,10 @@
 				</textElement>
 				<text><![CDATA[Empresa]]></text>
 			</staticText>
+			<image>
+				<reportElement x="626" y="0" width="124" height="50" uuid="0ca5a34f-591b-4e04-8179-21c1a11d9cd6"/>
+				<imageExpression><![CDATA["META-INF/reports/logo.jpg"]]></imageExpression>
+			</image>
 		</band>
 	</pageHeader>
 	<detail>
@@ -99,7 +103,7 @@
 				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="158" y="0" width="121" height="37" uuid="93ac6d51-1562-4f09-adaa-6d1e26fda61c"/>
+				<reportElement x="181" y="0" width="121" height="37" uuid="93ac6d51-1562-4f09-adaa-6d1e26fda61c"/>
 				<box leftPadding="3" bottomPadding="0">
 					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
@@ -110,7 +114,7 @@
 				<textFieldExpression><![CDATA[$F{login}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="279" y="0" width="103" height="37" uuid="0d21e7a1-cc2c-4231-ad1f-5a2c2176f88b"/>
+				<reportElement x="302" y="0" width="80" height="37" uuid="0d21e7a1-cc2c-4231-ad1f-5a2c2176f88b"/>
 				<box leftPadding="3" bottomPadding="0">
 					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
@@ -121,7 +125,7 @@
 				<textFieldExpression><![CDATA[$F{perfil}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="384" y="0" width="118" height="37" uuid="d4631779-f40c-414b-863e-beeb01179e8e"/>
+				<reportElement x="382" y="0" width="120" height="37" uuid="d4631779-f40c-414b-863e-beeb01179e8e"/>
 				<box leftPadding="3" bottomPadding="0">
 					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#DCDCDC"/>
