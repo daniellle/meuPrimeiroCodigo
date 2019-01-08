@@ -89,6 +89,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 
         List<Object[]> list = query.getResultList();
 
+
         return preencherLista(list);
     }
 
@@ -347,21 +348,25 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
             }
             perfis.add(pu);
         }
-        return perfis;
+        return tratarPerfisDuplicados(perfis);
     }
 
     private List<PerfilUsuarioDTO> tratarPerfisDuplicados(List<PerfilUsuarioDTO> lista) {
-
-        for (int i = 0; i < lista.size(); i++) {
-            for (int j = 0; j < lista.size(); j++) {
-                if (lista.get(i).getLogin().equals(lista.get(j).getLogin())) {
-                    lista.get(i).setPerfil(lista.get(j).getPerfil() + ", " + lista.get(i).getPerfil());
-                    lista.remove(j);
-
+        List<PerfilUsuarioDTO> novaList = new ArrayList<>();
+        int i = 0;
+        for (PerfilUsuarioDTO item : lista) {
+            for (i = 0; i < novaList.size(); i++) {
+                if(item.getLogin().equals(novaList.get(i).getLogin())){
+                    break;
                 }
             }
+            if(i >= novaList.size()){
+                novaList.add(item);
+            }else{
+                novaList.get(i).setPerfil( novaList.get(i).getPerfil() + "; " + item.getPerfil());
+            }
         }
-        return lista;
+        return novaList;
     }
 
 }
