@@ -27,7 +27,7 @@ public class PerfilUsuarioService extends BaseService implements Serializable {
         return RelatorioUtils.gerarPdf(service.pesquisarPaginadoRelatorio(usuarioFilter, dados, auditoria), is, new HashMap<>() );
     }
 
-    public byte[] gerarRelatorioCSV(UsuarioFilter usuarioFilter, DadosFilter dados
+    public byte[] gerarRelatorioXLS(UsuarioFilter usuarioFilter, DadosFilter dados
             , ClienteAuditoria auditoria){
         InputStream is =  getClass().getResourceAsStream(RelatorioUtils.REPORT_PATH+"report1.jrxml");
         return RelatorioUtils.gerarCsv(service.pesquisarPaginadoRelatorio(usuarioFilter, dados, auditoria), is, new HashMap<>() );

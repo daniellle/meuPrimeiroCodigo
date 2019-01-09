@@ -68,8 +68,8 @@ public class PerfilUsuarioEndpoint extends SegurancaEndpoint<PerfilUsuarioDTO> {
 
     @GET
     @Encoded
-    @Path("/csv")
-    @Produces("text/csv")
+    @Path("/xls")
+    @Produces("application/vnd.ms-excel")
     @Consumes("application/json")
     @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CADASTRAR,
         PermissionConstants.USUARIO_ALTERAR, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_DESATIVAR,
@@ -79,15 +79,15 @@ public class PerfilUsuarioEndpoint extends SegurancaEndpoint<PerfilUsuarioDTO> {
 
         LOGGER.debug("iniciando a geração do csv");
 
-        byte[] file = service.gerarRelatorioCSV(usuarioFilter
+        byte[] file = service.gerarRelatorioXLS(usuarioFilter
             , ClienteInfos.getDadosFilter(context)
             , ClienteInfos.getClienteInfos(context, request
                 , TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS));
-        return Response.status(HttpServletResponse.SC_OK).type("text/csv")
+        return Response.status(HttpServletResponse.SC_OK).type("application/vnd.ms-excel")
             .header("Content-Lenght", file.length)
             .header("Content-Version", getApplicationVersion())
             .header("Content-Disposition",
-                "attachment; filename=usuarios.csv")
+                "attachment; filename=usuarios.xls")
             .entity(file).build();
     }
 }

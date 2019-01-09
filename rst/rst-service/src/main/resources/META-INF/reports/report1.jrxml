@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5d1d80e5-25ea-4049-bd6b-101760870898">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="189"/>
 	<property name="ireport.y" value="0"/>
 	<field name="nome" class="java.lang.String"/>
 	<field name="login" class="java.lang.String"/>
@@ -15,7 +15,7 @@
 	<title>
 		<band height="32" splitType="Stretch">
 			<staticText>
-				<reportElement x="197" y="0" width="170" height="32" uuid="fa13d10b-8682-4ed2-925b-cfbc936b7169"/>
+				<reportElement x="197" y="-13" width="170" height="23" uuid="fa13d10b-8682-4ed2-925b-cfbc936b7169"/>
 				<textElement>
 					<font size="16"/>
 				</textElement>
@@ -26,27 +26,33 @@
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="138" height="20" uuid="3abdad45-7f62-4339-9a28-119f5ca83887"/>
+				<reportElement x="-8" y="-10" width="138" height="30" uuid="3abdad45-7f62-4339-9a28-119f5ca83887"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
 				<text><![CDATA[Nome]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="138" y="0" width="77" height="20" uuid="38629b40-f834-465e-9035-0178c9cb5dfb"/>
+				<reportElement x="130" y="-10" width="77" height="30" uuid="38629b40-f834-465e-9035-0178c9cb5dfb"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
 				<text><![CDATA[CPF]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="215" y="0" width="81" height="20" uuid="95868475-66d5-4838-8bc8-45f065dbc824"/>
+				<reportElement x="207" y="-10" width="99" height="30" uuid="95868475-66d5-4838-8bc8-45f065dbc824"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
 				<text><![CDATA[Perfil]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="296" y="0" width="110" height="20" uuid="b2227c31-c6ed-48ee-a8c8-befad8bcb740"/>
+				<reportElement x="306" y="-10" width="110" height="30" uuid="b2227c31-c6ed-48ee-a8c8-befad8bcb740"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
 				<text><![CDATA[Departamento Regional]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="406" y="0" width="66" height="20" uuid="9809fd97-e884-4caa-98dd-33161124f333"/>
+				<reportElement x="416" y="-10" width="62" height="30" uuid="9809fd97-e884-4caa-98dd-33161124f333"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
 				<text><![CDATA[Unidade Sesi]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="472" y="0" width="83" height="20" uuid="1666eb40-7a43-44c9-b61c-2765e84f88d0"/>
+				<reportElement stretchType="RelativeToBandHeight" x="478" y="-10" width="83" height="30" uuid="1666eb40-7a43-44c9-b61c-2765e84f88d0"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
 				<text><![CDATA[Empresa]]></text>
 			</staticText>
 		</band>
@@ -54,27 +60,33 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="138" height="20" uuid="0575100f-e70f-4e2e-87fb-b7bb5db911f2"/>
+				<reportElement x="-8" y="0" width="138" height="20" uuid="0575100f-e70f-4e2e-87fb-b7bb5db911f2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="138" y="0" width="77" height="20" uuid="776b0f50-042b-45c3-81e2-e68b31d68826"/>
+				<reportElement x="130" y="0" width="77" height="20" uuid="776b0f50-042b-45c3-81e2-e68b31d68826"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{login}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="215" y="0" width="81" height="20" uuid="b3432494-428d-4fed-a1f7-d040ffc4dff2"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="207" y="0" width="99" height="20" uuid="b3432494-428d-4fed-a1f7-d040ffc4dff2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{perfil}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="296" y="0" width="110" height="20" uuid="2187f872-940f-456f-af39-3fee40ecdaba"/>
+				<reportElement x="306" y="0" width="110" height="20" uuid="2187f872-940f-456f-af39-3fee40ecdaba"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{departamento}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="406" y="0" width="66" height="20" uuid="3a5a9250-1753-491e-b75e-afafc85d83fc"/>
+				<reportElement x="416" y="0" width="62" height="20" uuid="3a5a9250-1753-491e-b75e-afafc85d83fc"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{unidade}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="472" y="0" width="83" height="20" uuid="bf4640fa-5143-473c-89b7-ab12e4ef1ffe"/>
+				<reportElement x="478" y="0" width="83" height="20" uuid="bf4640fa-5143-473c-89b7-ab12e4ef1ffe"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{empresa}]]></textFieldExpression>
 			</textField>
 		</band>

@@ -48,8 +48,8 @@ export class ExportarPerfilUsuarioComponent extends BaseComponent implements OnI
 
     exportarPlanilha(){
         if(this.verificarCampos()){
-            this.usuarioService.pesquisarCSV(this.filtro, this.paginacao)
-            .subscribe((retorno) => FileSaver.saveAs(retorno, 'relatorio-perfil-usuario.csv')
+            this.usuarioService.pesquisarXLS(this.filtro, this.paginacao)
+            .subscribe((retorno) => FileSaver.saveAs(retorno, 'relatorio-perfil-usuario.xls')
             );
           }
         this.fecharModal();

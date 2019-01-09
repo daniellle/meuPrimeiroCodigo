@@ -21,19 +21,19 @@ export abstract class BaseService<T> {
   protected getPDF<K>(endpoint: string, criteria: HttpParams = new HttpParams()): Observable<K> {
     return this.getApiPDF(environment.api_private, endpoint, criteria);
   }
-  protected getCSV<K>(endpoint: string, criteria: HttpParams = new HttpParams()): Observable<K> {
-    return this.getApiCSV(environment.api_private, endpoint, criteria);
+  protected getXLS<K>(endpoint: string, criteria: HttpParams = new HttpParams()): Observable<K> {
+    return this.getApiXLS(environment.api_private, endpoint, criteria);
   }
-  getApiCSV(baseUrl: string, endpoint: string, criteria: HttpParams): Observable<any> {
+  getApiXLS(baseUrl: string, endpoint: string, criteria: HttpParams): Observable<any> {
     this.bloqueioService.bloquear();
     const headers = new HttpHeaders()
-      .set('Accept', 'text/csv')
+      .set('Accept', 'application/vnd.ms-excel')
       .set('Content-Type', 'application/json');
     const params = criteria;
 
     return this.http.get(baseUrl + endpoint, { headers, params, responseType: 'blob' })
     .map( (res) => {
-      return new Blob([res], { type: 'text/csv' })
+      return new Blob([res], { type: 'application/vnd.ms-excel' })
     })
     .catch((error: HttpResponse<T>) => {
       return Observable.throw(this.handlingError(error));

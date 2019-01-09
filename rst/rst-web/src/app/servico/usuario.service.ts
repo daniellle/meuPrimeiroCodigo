@@ -85,9 +85,9 @@ export class UsuarioService extends BaseService<Usuario> {
       });
     }
     
-    pesquisarCSV(filtro: PerfilUsuarioFilter, paginacao: Paginacao): any {
+    pesquisarXLS(filtro: PerfilUsuarioFilter, paginacao: Paginacao): any {
       const params = this.getParamsRelatorio(filtro);
-      return super.getCSV('/v1/perfil-usuario/csv', params)
+      return super.getXLS('/v1/perfil-usuario/xls', params)
       .map((response: Response) => {
         return response;
       })

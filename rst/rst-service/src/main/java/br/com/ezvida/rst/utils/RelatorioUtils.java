@@ -6,6 +6,7 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 import java.io.ByteArrayOutputStream;
@@ -48,10 +49,12 @@ public class RelatorioUtils {
 
             ByteArrayOutputStream baos =new ByteArrayOutputStream();
 
-            JRCsvExporter exporter = new JRCsvExporter();
+            JRXlsExporter exporter = new JRXlsExporter();
             exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
             exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, baos);
             exporter.exportReport();
+
+//            JRCsvExporter exporter = new JRCsvExporter();
 
             return baos.toByteArray();
         }catch (Exception e){
