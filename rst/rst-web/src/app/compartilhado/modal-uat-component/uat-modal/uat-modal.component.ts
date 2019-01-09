@@ -75,7 +75,7 @@ export class UatModalComponent extends BaseComponent {
           this.mensagemError(MensagemProperties.app_rst_nenhum_registro_encontrado);
         }
       }, (error: Response) => {
-        console.error(error.text);
+       //console.error(error.text);
         this.mensagemError(error.statusText);
       });
     }

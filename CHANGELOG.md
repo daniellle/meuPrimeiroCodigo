@@ -1,6 +1,18 @@
 # rst-cadastros
 -Aplicações para manutenção dos cadastros RST
 
+**v.2.105.0**
+(RELEASE EM 09/01/2019)
+- [CADASTROS] Usuário perfil DR Aplicações não consegue buscar usuário perfil Gestor Empresa Master e Gestor Empresa - GLPI 3837.
+- [CADASTROS] Ajustes no campo de foto - já solicitado no chamado 1899 (GLPI 3017)
+- [CADASTROS] Card Vacinas Autodeclaradas não está acessível (GLPI 3020)
+- [CADASTROS] Minha Saúde - Erro filtro histórico de FCO (GLPI 2951)
+- [CADASTROS] Minha Saúde - Mensagem "Registro não encontrado" (GLPI 2951)
+- [CADASTROS] Lista de Usuários x Perfil (GLPI 2678)
+- [CADASTROS] IGEV - Habilitar a possibilidade de preencher formulário a qualquer tempo (GLPI 3309)
+- [CADASTROS] Campo Estado civil: colocar conforme e-social (Interno)
+- [CADASTROS] Perfil gestor comercial não visualiza indicadores de saúde (GLPI 3837)
+
 **v.2.103.0**
 (RELEASE EM 21/12/2018)
 - [CADASTRO] Cadastro de Usuario agora possui integração para usuarios vindos do Barramento.

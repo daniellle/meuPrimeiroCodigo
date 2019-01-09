@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { environment } from '../../environments/environment';
 import { BloqueioService } from './bloqueio.service';
 import { Observable } from 'rxjs/Observable';
+import { ResponseContentType } from '@angular/http';
 
 export abstract class BaseService<T> {
 
@@ -16,6 +17,51 @@ export abstract class BaseService<T> {
 
   protected getPublic<K>(endpoint: string, criteria: HttpParams = new HttpParams()): Observable<K> {
     return this.getApi(environment.api_public, endpoint, criteria);
+  }
+  protected getPDF<K>(endpoint: string, criteria: HttpParams = new HttpParams()): Observable<K> {
+    return this.getApiPDF(environment.api_private, endpoint, criteria);
+  }
+  protected getXLS<K>(endpoint: string, criteria: HttpParams = new HttpParams()): Observable<K> {
+    return this.getApiXLS(environment.api_private, endpoint, criteria);
+  }
+  getApiXLS(baseUrl: string, endpoint: string, criteria: HttpParams): Observable<any> {
+    this.bloqueioService.bloquear();
+    const headers = new HttpHeaders()
+      .set('Accept', 'application/vnd.ms-excel')
+      .set('Content-Type', 'application/json');
+    const params = criteria;
+
+    return this.http.get(baseUrl + endpoint, { headers, params, responseType: 'blob' })
+    .map( (res) => {
+      return new Blob([res], { type: 'application/vnd.ms-excel' })
+    })
+    .catch((error: HttpResponse<T>) => {
+      return Observable.throw(this.handlingError(error));
+    }).finally(() => {
+      this.bloqueioService.desbloquear();
+    });
+  }
+  
+
+  protected getApiPDF<K>(baseUrl: string, endpoint: string, criteria: HttpParams = new HttpParams()): Observable<any> {
+
+    this.bloqueioService.bloquear();
+
+    const headers = new HttpHeaders()
+        .set('Accept', 'application/pdf')
+        .set('Content-Type', 'application/json');
+    const params = criteria;
+
+    return this.http.get(baseUrl + endpoint, { headers, params, responseType: 'blob' })
+      .map( (res) => {
+          return new Blob([res], { type: 'application/pdf' });
+      })
+      .catch((error: HttpResponse<T>) => {
+        return Observable.throw(this.handlingError(error));
+      }).finally(() => {
+        this.bloqueioService.desbloquear();
+      });
+
   }
 
   protected getApi<K>(baseUrl: string, endpoint: string, criteria: HttpParams = new HttpParams()): Observable<K> {

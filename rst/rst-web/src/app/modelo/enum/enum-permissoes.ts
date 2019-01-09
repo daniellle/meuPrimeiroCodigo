@@ -252,4 +252,7 @@ export enum PermissoesEnum {
     SISTEMA_CREDENCIADO_RESETAR_CLIENT_SECRET = 'sistema_credenciado_resetar_client_secret',
     SISTEMA_CREDENCIADO_PESQUISAR = 'sistema_credenciado_pesquisar',
     SISTEMA_CREDENCIADO_ATIVAR_DESATIVAR = 'sistema_credenciado_ativar_desativar',
+
+    //PERFIL USUARIO PESQUISA
+    PERFIL_USUARIO = 'relatorio_perfis_por_usuario',
 }

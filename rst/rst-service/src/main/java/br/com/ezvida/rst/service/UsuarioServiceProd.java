@@ -13,6 +13,7 @@ import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.enums.Ambiente;
 import br.com.ezvida.rst.enums.SimNao;
 import br.com.ezvida.rst.model.*;
+import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
 import br.com.ezvida.rst.model.dto.UsuarioDTO;
 import br.com.ezvida.rst.service.excpetions.RegistroNaoEncontradoException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -214,10 +215,34 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
             , ClienteAuditoria auditoria) {
 
-        br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> listaPagianda = usuarioGirstViewDAO
+        br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> listaPaginada = usuarioGirstViewDAO
                 .pesquisarPorFiltro(usuarioFilter, dados);
         LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
-        return listaPagianda;
+        return listaPaginada;
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<PerfilUsuarioDTO> pesquisarPaginadoRelatorio(
+            br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
+            , ClienteAuditoria auditoria) {
+
+        List<PerfilUsuarioDTO> lista = usuarioGirstViewDAO
+                .pesquisarRelatorioFiltro(usuarioFilter, dados);
+        LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
+        return lista;
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public br.com.ezvida.rst.dao.filter.ListaPaginada<PerfilUsuarioDTO> pesquisarListaPaginadaPerfilUsuario(
+            br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
+            , ClienteAuditoria auditoria) {
+
+        br.com.ezvida.rst.dao.filter.ListaPaginada<PerfilUsuarioDTO> lista = usuarioGirstViewDAO
+                .pesquisarPerfilUsuarioFiltro(usuarioFilter, dados);
+        LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
+        return lista;
     }
 
     @Override
@@ -484,6 +509,13 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
         return false;
     }
+
+   /* @Override
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<Perfil> perfisAbaixo(Usuario usuarioLogado){
+        Integer hierarquia = usuarioLogado.getHierarquia();
+
+    }*/
 
     @Override
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)

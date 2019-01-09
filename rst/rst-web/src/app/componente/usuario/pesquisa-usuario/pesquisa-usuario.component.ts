@@ -1,3 +1,4 @@
+import * as FileSaver from 'file-saver';
 import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
 import { DepartRegionalService } from 'app/servico/depart-regional.service';
 import { FiltroDepartRegional } from 'app/modelo/filtro-depart-regional.model';
@@ -21,6 +22,7 @@ import { Usuario } from './../../../modelo/usuario.model';
 import { MensagemProperties } from './../../../compartilhado/utilitario/recurso.pipe';
 import { BloqueioService } from './../../../servico/bloqueio.service';
 import { UsuarioEntidadeService } from 'app/servico/usuario-entidade.service';
+import { PerfilUsuarioFilter } from 'app/modelo/filter-perfil-usuario.model';
 
 @Component({
   selector: 'app-pesquisa-usuario',
@@ -63,7 +65,7 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
   ngOnInit() {
       this.semPerfilBarramento = new Perfil();
       this.criandoPerfilVazio();
-    this.filtro = new FiltroUsuario();
+    this.filtro = new PerfilUsuarioFilter();
     this.usuarios = new Array<Usuario>();
     this.title = MensagemProperties.app_rst_usuario_title_pesquisar;
     this.pesquisaUsuarioForm = this.formBuilder.group({});
@@ -91,8 +93,8 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
       this.usuarios = new Array<Usuario>();
       this.usuarioSelecionado = null;
       this.paginacao.pagina = 1;
-      this.usuarioService.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<Usuario>) => {
-            this.usuarios = retorno.list;
+      this.usuarioService.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno) => {
+        this.usuarios = retorno.list;
         this.paginacao = this.getPaginacao(this.paginacao, retorno);
         if (retorno.quantidade === 0 || this.usuarios.length == 0) {
           this.mensagemError(MensagemProperties.app_rst_nenhum_registro_encontrado);
@@ -102,6 +104,9 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
       });
     }
   }
+
+
+
 
   buscarDepartamentos() {
     this.departamentoService.listarTodos(new FiltroDepartRegional()).subscribe((dados: any) => {

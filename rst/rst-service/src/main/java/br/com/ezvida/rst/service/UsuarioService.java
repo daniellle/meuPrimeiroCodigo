@@ -3,15 +3,18 @@ package br.com.ezvida.rst.service;
 import br.com.ezvida.girst.apiclient.model.ListaPaginada;
 import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
+import br.com.ezvida.rst.dao.filter.UsuarioFilter;
 import br.com.ezvida.rst.enums.Ambiente;
 import br.com.ezvida.rst.model.Trabalhador;
 import br.com.ezvida.rst.model.Usuario;
 import br.com.ezvida.rst.model.UsuarioGirstView;
+import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
 import br.com.ezvida.rst.model.dto.UsuarioDTO;
 
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 public interface UsuarioService extends Serializable {
@@ -29,7 +32,14 @@ public interface UsuarioService extends Serializable {
     br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> pesquisarPaginadoGirst(
             br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
             , ClienteAuditoria auditoria);
-
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    List<PerfilUsuarioDTO> pesquisarPaginadoRelatorio(
+            br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
+            , ClienteAuditoria auditoria);
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    br.com.ezvida.rst.dao.filter.ListaPaginada<PerfilUsuarioDTO> pesquisarListaPaginadaPerfilUsuario(
+            UsuarioFilter usuarioFilter, DadosFilter dados
+            , ClienteAuditoria auditoria);
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     br.com.ezvida.girst.apiclient.model.Usuario buscarPorId(String id, ClienteAuditoria auditoria);
 
