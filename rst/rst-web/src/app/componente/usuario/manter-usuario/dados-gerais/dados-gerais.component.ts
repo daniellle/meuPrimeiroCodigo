@@ -151,10 +151,10 @@ export class DadosGeraisComponent implements OnInit, OnChanges {
 
   usuarioehBarramento(): boolean{
       if(this.usuario.origemDados != null){
-          console.log("Origem de dados S4");
+         //console.log("Origem de dados S4");
           return true;
       } else{
-        console.log("Origem de dados nossa");
+       //console.log("Origem de dados nossa");
           return false;
       }
 

@@ -113,7 +113,7 @@ export class UsuarioBarramentoComponent extends BaseComponent implements OnInit 
             usuariosEntidadePorCnpj.push(usuarioEntidadePorCnpj);
           });
           usuariosEntidadePorCnpj[0].id = id;
-          console.log(usuariosEntidadePorCnpj);
+         //console.log(usuariosEntidadePorCnpj);
             this.usuarioEntidadeService.salvar(usuariosEntidadePorCnpj).subscribe((retorno: UsuarioEntidade) => {
                     this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
                 }, error =>

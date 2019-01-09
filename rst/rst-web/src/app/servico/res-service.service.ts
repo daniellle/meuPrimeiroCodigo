@@ -117,7 +117,7 @@ export class ResService extends BaseService<any> {
 
                 return null;
             }).catch((erro) => {
-                console.error(erro);
+               //console.error(erro);
                 return null;
             });
     }

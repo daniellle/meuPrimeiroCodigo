@@ -612,7 +612,7 @@ export class CadastroEmpresaComponent extends BaseComponent implements OnInit {
             this.removerMascaras();
             if(this.verificarCNPJ()) {
                 this.empresa.cnpj = this.empresa.cnpj.padStart(14, '0');
-                console.log(this.empresa.cnpj);
+               //console.log(this.empresa.cnpj);
                 this.service.salvar(this.empresa).subscribe((response: Empresa) => {
                     this.empresa = response;
                     this.orderByDescricao(this.empresa.unidadeObra);
