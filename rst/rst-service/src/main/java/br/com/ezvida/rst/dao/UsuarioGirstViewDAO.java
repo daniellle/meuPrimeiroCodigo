@@ -166,7 +166,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 
     private void aplicarSubselectJoins(StringBuilder jpql, DadosFilter dados, Map<String, Object> parametros) {
         if (dados.isGestorDr() || dados.isDiretoriaDr()) {
-            jpql.append(" WHERE vue.id_departamento_regional_fk IN (:idsDepRegional) ")
+            jpql.append(" WHERE (vue.id_departamento_regional_fk IN (:idsDepRegional) ")
                     .append(" OR vue.id_und_atd_trab_fk IN (SELECT id_und_atd_trabalhador")
                     .append(" FROM departamento_regional d")
                     .append(" JOIN und_atd_trabalhador ON id_departamento_regional = id_departamento_regional_fk")
@@ -182,7 +182,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
             setFiltroAplicado(true);
 
         } else if (dados.isGetorUnidadeSESI()) {
-            jpql.append(" WHERE vue.id_und_atd_trab_fk IN (:idsUnidadeSESI)");
+            jpql.append(" WHERE (vue.id_und_atd_trab_fk IN (:idsUnidadeSESI)");
             jpql.append(" OR vue.id_empresa_fk IN (SELECT id_empresa")
                     .append(" FROM und_atd_trabalhador u")
                     .append(" JOIN und_obra_contrato_uat c ON id_und_atd_trabalhador = c.id_und_atd_trabalhador_fk")
@@ -193,13 +193,13 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
             setFiltroAplicado(true);
 
         } else if (dados.isGestorEmpresa()) {
-            jpql.append(" WHERE vue.id_empresa_fk IN (:idsEmpresa)");
+            jpql.append(" WHERE (vue.id_empresa_fk IN (:idsEmpresa)");
             parametros.put("idsEmpresa", dados.getIdsEmpresa());
             setFiltroAplicado(true);
 
         }
 
-        jpql.append(" OR (id_departamento_regional_fk is null AND id_und_atd_trab_fk is null AND id_empresa_fk is null)");
+        jpql.append(" OR (id_departamento_regional_fk is null AND id_und_atd_trab_fk is null AND id_empresa_fk is null))");
         return;
     }
 
@@ -215,7 +215,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 
                 if (dados.isGestorDn()) {
                     jpql.append(
-                            "  AND codigo_perfil not in ('ADM', 'ATD', 'GDNA', 'MTSDN') )");
+                            "  AND codigo_perfil not in ('ADM', 'ATD', 'GDNA', 'MTSDN') ");
                 }
                 return;
             }
