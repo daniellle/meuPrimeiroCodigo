@@ -69,13 +69,19 @@ public class QuestionarioTrabalhadorService extends BaseService {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Boolean getUltimoRegistro(Long idTrabalhador) {
         QuestionarioTrabalhador questionarioTrabalhador = questionarioTrabalhadorDAO.getUltimoRegisto(idTrabalhador);
+        Questionario questionarioAtual = questionarioDAO.buscarQuestionarioPublicado();
         if (questionarioTrabalhador != null) {
-            Days dias = Days.daysBetween(new DateTime(questionarioTrabalhador.getDataQuestionarioTrabalhador()),
-                    new DateTime());
-            if (questionarioTrabalhador.getQuestionario().getPeriodicidade().getQuantidadeDias() == null || dias.getDays() > questionarioTrabalhador.getQuestionario().getPeriodicidade().getQuantidadeDias()) {
+            if(questionarioAtual.getPeriodicidade().getQuantidadeDias() == null){
                 return true;
-            } else {
-                return false;
+            }
+            else{
+                Days dias = Days.daysBetween(new DateTime(questionarioTrabalhador.getDataQuestionarioTrabalhador()),
+                        new DateTime());
+                if (dias.getDays() > questionarioAtual.getPeriodicidade().getQuantidadeDias()) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
         return true;

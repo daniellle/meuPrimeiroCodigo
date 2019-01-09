@@ -8,12 +8,14 @@ import br.com.ezvida.rst.enums.Ambiente;
 import br.com.ezvida.rst.model.Trabalhador;
 import br.com.ezvida.rst.model.Usuario;
 import br.com.ezvida.rst.model.UsuarioGirstView;
+import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
 import br.com.ezvida.rst.model.dto.UsuarioDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 public class UsuarioServiceDev implements UsuarioService {
@@ -88,6 +90,16 @@ public class UsuarioServiceDev implements UsuarioService {
     @Override
     public br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> pesquisarPaginadoGirst(UsuarioFilter usuarioFilter, DadosFilter dados, ClienteAuditoria auditoria) {
         logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        return null;
+    }
+
+    @Override
+    public List<PerfilUsuarioDTO> pesquisarPaginadoRelatorio(UsuarioFilter usuarioFilter, DadosFilter dados, ClienteAuditoria auditoria) {
+        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        return null;
+    }
+    @Override
+    public br.com.ezvida.rst.dao.filter.ListaPaginada<PerfilUsuarioDTO> pesquisarListaPaginadaPerfilUsuario(UsuarioFilter usuarioFilter, DadosFilter dados, ClienteAuditoria auditoria) {
         return null;
     }
 

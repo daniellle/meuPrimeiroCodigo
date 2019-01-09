@@ -1,0 +1,67 @@
+<ng2-toasty></ng2-toasty>
+<app-bloqueio></app-bloqueio>
+
+<div class="container-pesquisar container-form">
+    <form>
+        <form class="float-label">
+            <div class="row">
+                <div class="form-group col-xs-6 col-sm-6 col-md-8">
+                    <md-input-container [floatPlaceholder]="true">
+                        <input mdInput placeholder="{{ 'app_rst_labels_nome' | recurso }}" type="text" name="nome" maxlength="50" [(ngModel)]="filtro.nome" class="form-control" id="nome">
+                    </md-input-container>
+                </div>
+                <div class="form-group col-xs-6 col-sm-6 col-md-4">
+                    <md-input-container [floatPlaceholder]="true">
+                        <input mdInput placeholder="{{ 'app_rst_labels_login_cpf' | recurso }}" [textMask]="{mask: mascaraCpf, guide: false}" type="text" name="cpf" [(ngModel)]="filtro.login" class="form-control" id="cpf">
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="row">
+                <!--Grid Empresa -->
+                <div class="form-group col-md-8">
+                    <div class="borda-segmento" style="background-color:white">
+                        <div id="modalLupa" #modalLupa class="input-group searchlupa">
+                            <md-input-container class="pesquisa-perfil" style="border-color:transparent" [floatPlaceholder]="true">
+                                <input mdInput placeholder="{{'app_rst_empresa_subtitulo' | recurso}}" disabled type="text" name="empresa" id="modalLupa" [value]="filtro.empresa.razaoSocial ? filtro.empresa.razaoSocial : ''" appFormularioCamposErro>
+                            </md-input-container>
+                            <app-empresa-modal [isSelecionado]="filtro.empresa.id" (onRemover)="removerEmpresa()" (onAdicionar)="adicionarEmpresa($event)"></app-empresa-modal>
+                        </div>
+                    </div>
+                </div>
+                <!--Fim Grid Empresa -->
+
+                <div class="form-group col-md-4">
+                    <div class="md-container">
+                        <md-select placeholder="{{'app_rst_menu_perfil' | recurso}}" name="perfil" [(ngModel)]="filtro.codigoPerfil" id="selectDepRegional ">
+                            <md-option value=''>{{'app_rst_labels_selecione' | recurso}}</md-option>
+                            <md-option *ngFor='let perfil of perfis' [value]="perfil.codigo">{{perfil.nome}}</md-option>
+                        </md-select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <!--Grid Departamento -->
+
+                <div *ngIf="!isGUS()" class="form-group col-md-6">
+                    <div class="md-container">
+                        <md-select placeholder="{{'app_rst_labels_departamento_regional' | recurso}}" name="depRegional" [(ngModel)]="filtro.departamentoRegional.id" id="selectDepRegional ">
+                            <md-option value=''>{{'app_rst_labels_selecione' | recurso}}</md-option>
+                            <md-option *ngFor='let depart of departamentos' [value]="depart.id">{{depart.razaoSocial}}</md-option>
+                        </md-select>
+                    </div>
+                </div>
+
+
+                <!--Fim Grid Departamento -->
+                <div *ngIf="!isGEEMM()" class="form-group col-md-6">
+                    <ng-select [options]="unidadesSesiOption" allowClear=true [(ngModel)]="filtro.idUnidadeSesi" name="unidadeSesi" id="unidadeSesi" maxlength="160" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}">
+                    </ng-select>
+                    <span class="floating-label">{{'app_rst_labels_uat_up' | recurso}}</span>
+                </div>
+            </div>
+        </form>
+    </form>
+</div>
+<app-paginado-perfil-usuario (limparFiltro)='limpar($event)' [(filtro)]="filtro"></app-paginado-perfil-usuario>

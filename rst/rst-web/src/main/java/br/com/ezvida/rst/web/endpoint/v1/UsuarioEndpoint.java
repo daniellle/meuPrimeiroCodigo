@@ -6,6 +6,7 @@ import br.com.ezvida.rst.dao.filter.UsuarioFilter;
 import br.com.ezvida.rst.enums.Funcionalidade;
 import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.model.Usuario;
+import br.com.ezvida.rst.service.PerfilUsuarioService;
 import br.com.ezvida.rst.service.UsuarioService;
 import br.com.ezvida.rst.web.auditoria.ClienteInfos;
 import com.google.common.base.Charsets;
@@ -20,6 +21,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -36,6 +38,9 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
     @Inject
     @Preferencial
     private UsuarioService usuarioService;
+
+    @Inject
+    private PerfilUsuarioService service;
 
     //@formatter:off
     @GET
@@ -62,8 +67,8 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
     @GET
     @Encoded
     @Path("/paginado")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces("application/json")
+    @Consumes("application/json")
     @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CADASTRAR,
         PermissionConstants.USUARIO_ALTERAR, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_DESATIVAR,
         PermissionConstants.USUARIO_ENTIDADE, PermissionConstants.USUARIO_ENTIDADE_CADASTRAR, PermissionConstants.USUARIO_ENTIDADE_ALTERAR,

@@ -7,12 +7,10 @@ public enum EstadoCivil {
 
 	//@formatter:off 
 	CASADO("CA", "Casado"),
-	DESQUITADO("DQ", "Desquitado"),
 	DIVORCIADO("DV", "Divorciado"),
-	OUTRO("OU", "Outro"),
+	NAOINFORMADO("NI", "Nao Informado"),
 	SOLTEIRO("SO", "Solteiro"),
 	SEPARADO("SP", "Separado"),
-	UNIAO_ESTAVEL("UE", "União Estável"),
 	VIUVO("VI", "Viúvo");
 	//@formatter:on
 

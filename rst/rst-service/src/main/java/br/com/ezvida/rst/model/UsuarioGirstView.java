@@ -22,6 +22,23 @@ public class UsuarioGirstView extends BaseEntity<Long> {
 	@Column(name = "login")
 	private String login;
 
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	@Column(name = "nome")
 	private String nome;
 

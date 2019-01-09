@@ -68,7 +68,7 @@ public class DadosFilter implements Serializable {
 
     private boolean temIdsUnidadeSESI;
 
-    private Set<String> papeis;
+    private Set<String> papeis = new HashSet<>();
 
     private Set<Long> idsDepartamentoRegional;
 

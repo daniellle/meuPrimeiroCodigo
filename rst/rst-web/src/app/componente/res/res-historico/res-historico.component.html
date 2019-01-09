@@ -149,7 +149,7 @@
                         <small style="margin-top: 5px;">Referência: {{ referenciaAbdominal() }}</small>
                         <small style="margin-top: 5px;">Fonte: Associação Brasileira para Estudo da Obesidade e da Síndrome Metabólica</small>
                     </div>
-                    <div class='row row-chart ' *ngIf='this.semDadosPesoSuficiente '>
+                    <div class='row row-chart ' *ngIf='this.semDadosCircunferenciaAbdominalSuficiente '>
                         <div class='col-12 '>
                             Registro não encontrado.
                         </div>
@@ -307,7 +307,8 @@
     <div class="row center row-top-16 row-periodo">
         <div class="col-12">
             <div class="periodos btn-group">
-                <label *ngFor="let periodo of periodos" class="btn btn-success"   (click)="$event.stopPropagation();atualizarPeriodo(periodo);"  uncheckable>{{periodo}}</label>
+                <label *ngFor="let periodo of periodos" class="btn btn-success" [ngClass]="{'active': periodo == periodoEscolhido}"
+                  (click)="$event.stopPropagation();atualizarPeriodo(periodo);"  uncheckable>{{periodo}}</label>
             </div>
         </div>
     </div>
