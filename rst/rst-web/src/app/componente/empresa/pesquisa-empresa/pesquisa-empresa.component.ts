@@ -1,20 +1,16 @@
 import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
 import { Seguranca } from './../../../compartilhado/utilitario/seguranca.model';
-import { UnidadeObraService } from './../../../servico/unidade-obra.service';
 import { Component, OnInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BloqueioService } from 'app/servico/bloqueio.service';
 import { ToastyService } from 'ng2-toasty';
-import { DialogService } from 'ng2-bootstrap-modal';
 import { BaseComponent } from 'app/componente/base.component';
-import { FormBuilder } from '@angular/forms';
 import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
 import { MascaraUtil } from '../../../compartilhado/utilitario/mascara.util';
 import { ListaPaginada } from 'app/modelo/lista-paginada.model';
 import { Empresa } from 'app/modelo/empresa.model';
 import { EmpresaService } from 'app/servico/empresa.service';
 import { FiltroEmpresa } from 'app/modelo/filtro-empresa.model';
-import { UnidadeObra } from 'app/modelo/unidade-obra.model';
 import { Situacao } from 'app/modelo/enum/enum-situacao.model';
 import { PorteEmpresaService } from './../../../servico/porte-empresa.service';
 import { PorteEmpresa } from 'app/modelo/porte-empresa.model';
@@ -33,8 +29,6 @@ export class PesquisaEmpresaComponent extends BaseComponent implements OnInit {
   public itensCarregados: number;
   public totalItens: number;
   public mascaraCnpj = MascaraUtil.mascaraCnpj;
-  public unidadesObras = Array<UnidadeObra>();
-
   public situacoes = Situacao;
   public keysSituacao: string[];
   public listaPorteEmpresas: PorteEmpresa[];
@@ -44,15 +38,11 @@ export class PesquisaEmpresaComponent extends BaseComponent implements OnInit {
   constructor(
     private router: Router, private activatedRoute: ActivatedRoute,
     private service: EmpresaService,
-    private fb: FormBuilder,
     protected bloqueioService: BloqueioService, protected dialogo: ToastyService,
-    private dialogService: DialogService,
-    private unidadeObraService: UnidadeObraService,
     private porteEmpresaService: PorteEmpresaService,
     protected estadoService: EstadoService) {
     super(bloqueioService, dialogo, estadoService);
     this.keysSituacao = Object.keys(this.situacoes);
-    this.buscarUnidadesObras();
     this.buscarEstados();
   }
 
@@ -61,14 +51,6 @@ export class PesquisaEmpresaComponent extends BaseComponent implements OnInit {
     this.filtroEmpresa.unidadeObra = undefined;
     this.title = MensagemProperties.app_rst_empresa_title_pesquisar;
     this.carregarPorteEmpresa();
-  }
-
-  buscarUnidadesObras() {
-    this.unidadeObraService.pesquisarTodos().subscribe((dados: any) => {
-      this.unidadesObras = dados;
-    }, (error) => {
-      this.mensagemError(error);
-    });
   }
 
   pesquisar() {
@@ -118,18 +100,6 @@ export class PesquisaEmpresaComponent extends BaseComponent implements OnInit {
 
   validarCampos(): Boolean {
     let verificador: Boolean = true;
-
-    // if (this.isVazia(this.filtroEmpresa.cnpj)
-    //   && this.isVazia(this.filtroEmpresa.nomeFantasia)
-    //   && this.isVazia(this.filtroEmpresa.razaoSocial)
-    //   && this.isVazia(this.filtroEmpresa.porte)
-    //   && this.isVazia(this.filtroEmpresa.idEstado)
-    //   && this.isVazia(this.filtroEmpresa.cnae))
-    //       //&& (!this.filtroEmpresa.porte || this.filtroEmpresa.porte. toString() === 'undefined'))
-    //   {
-    //   this.mensagemError(MensagemProperties.app_rst_pesquisar_todos_vazios);
-    //   verificador = false;
-    // }
     if (!this.isVazia(this.filtroEmpresa.cnpj)) {
       if (MascaraUtil.removerMascara(this.filtroEmpresa.cnpj).length < 11)  {
         this.mensagemError(MensagemProperties.app_rst_labels_cnpj_cpf_incompleto);
