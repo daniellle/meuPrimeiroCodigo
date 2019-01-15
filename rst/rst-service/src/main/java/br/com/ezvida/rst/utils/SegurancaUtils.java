@@ -26,6 +26,7 @@ public class SegurancaUtils {
             //return "08194790980"; // trabalhador
            //return "28928105900";
             // return "80782078168";
+//           return "08528045390";
             return "86010158168"; // adm do grupo
              // "65020081515"; // administrador
             //return "37139762520"; // adm
