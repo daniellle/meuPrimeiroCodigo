@@ -11,6 +11,10 @@ import javax.inject.Inject;
 import br.com.ezvida.girst.apiclient.model.Usuario;
 import br.com.ezvida.girst.apiclient.model.UsuarioPerfilSistema;
 import br.com.ezvida.rst.anotacoes.Preferencial;
+import br.com.ezvida.rst.dao.TrabalhadorDAO;
+import br.com.ezvida.rst.dao.UsuarioEntidadeDAO;
+import br.com.ezvida.rst.model.Trabalhador;
+import br.com.ezvida.rst.model.UsuarioEntidade;
 import br.com.ezvida.rst.utils.ValidadorUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -39,6 +43,12 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 
 	@Inject
 	private EmpresaTrabalhadorService empresaTrabalhadorService;
+
+	@Inject
+	private TrabalhadorDAO trabalhadorDAO;
+
+	@Inject
+	private UsuarioEntidadeDAO usuarioEntidadeDAO;
 
 	@Inject
 	@Preferencial
@@ -167,6 +177,7 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 	public List<EmpresaTrabalhadorLotacao> validarTrabalhador(String cpf){
 
 		List<EmpresaTrabalhadorLotacao> empresaTrabalhadorLotacaoList = null;
+		List<UsuarioEntidade> usuarioEntidadeList;
 
 		if( cpf != null ) {
 			cpf = cpf.replace(".","").replace("-","");
@@ -184,10 +195,6 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 
 					boolean perfilPraValidar = false;
 
-					if(usuarioVerificar.getLogin() == "65020081515"){
-						perfilPraValidar = false;
-					}
-					else {
 						for (UsuarioPerfilSistema perfilSistema : usuarioVerificar.getPerfisSistema()) {
 
 							if (perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GEEM")
@@ -201,15 +208,23 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 
 
 						if (perfilPraValidar) {
+							Trabalhador trabalhador = trabalhadorDAO.pesquisarPorCpf(cpf);
+							List<UsuarioEntidade> usuarioEntidade = usuarioEntidadeDAO.pesquisarPorCPF(cpf, true);
+							if(trabalhador == null && usuarioEntidade != null){
+								usuarioEntidadeList = empresaTrabalhadorLotacaoDAO.validarGestor(cpf);
+
+								if(usuarioEntidadeList == null || usuarioEntidadeList.size() == 0){
+									throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
+								}
+							}
+							else{
 							empresaTrabalhadorLotacaoList = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
 							if (empresaTrabalhadorLotacaoList == null || empresaTrabalhadorLotacaoList.size() == 0) {
 
 								throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
 							}
+							}
 						}
-					}
-
-
 				} else {
 					throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
 				}
