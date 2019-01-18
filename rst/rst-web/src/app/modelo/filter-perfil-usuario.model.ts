@@ -10,4 +10,5 @@ export class PerfilUsuarioFilter {
     empresa = new Empresa();
     departamentoRegional = new DepartamentoRegional();
     idUnidadeSesi: string;
+    usuarioLogadoHierarquia: number;
 }

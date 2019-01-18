@@ -65,12 +65,24 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
   ngOnInit() {
       this.semPerfilBarramento = new Perfil();
       this.criandoPerfilVazio();
-    this.filtro = new PerfilUsuarioFilter();
+      this.filtro = new PerfilUsuarioFilter();
+      this.hierarquiaUsuarioLogado();
     this.usuarios = new Array<Usuario>();
     this.title = MensagemProperties.app_rst_usuario_title_pesquisar;
     this.pesquisaUsuarioForm = this.formBuilder.group({});
     this.filtro.codigoPerfil = '';
   }
+
+  hierarquiaUsuarioLogado(){
+    let menor = 100;
+    this.usuarioLogado.perfisSistema.forEach( (perfilSistema) => {
+      if (perfilSistema.perfil.hierarquia < menor) {
+        menor = perfilSistema.perfil.hierarquia;
+      }
+    });
+    this.filtro.usuarioLogadoHierarquia = menor;
+  }
+
   criandoPerfilVazio(){
       this.semPerfilBarramento.nome = "Sem Perfil";
       this.semPerfilBarramento.codigo = 'SP';

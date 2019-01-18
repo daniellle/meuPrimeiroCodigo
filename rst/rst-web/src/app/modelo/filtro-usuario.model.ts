@@ -8,4 +8,5 @@ export class FiltroUsuario {
     codigoPerfil: '';
     empresa = new Empresa();
     departamentoRegional = new DepartamentoRegional();
+    usuarioLogadoHierarquia: number;
 }

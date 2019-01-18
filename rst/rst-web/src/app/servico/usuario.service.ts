@@ -192,6 +192,10 @@ export class UsuarioService extends BaseService<Usuario> {
       params = params.append('codigoPerfil', filtro.codigoPerfil);
     }
 
+    if (filtro.usuarioLogadoHierarquia) {
+      params = params.append('usuarioLogadoHierarquia', filtro.usuarioLogadoHierarquia.toString());
+    }
+
     if (paginacao) {
       params = params.append('pagina', paginacao.pagina.toString());
       params = params.append('qtdRegistro', paginacao.qtdRegistro.toString());
@@ -230,6 +234,11 @@ export class UsuarioService extends BaseService<Usuario> {
       params = params.append('pagina', paginacao.pagina.toString());
       params = params.append('qtdRegistro', paginacao.qtdRegistro.toString());
     }
+
+    if (filtro.usuarioLogadoHierarquia) {
+      params = params.append('usuarioLogadoHierarquia', filtro.usuarioLogadoHierarquia.toString());
+    }
+
     return params;
   }
 
