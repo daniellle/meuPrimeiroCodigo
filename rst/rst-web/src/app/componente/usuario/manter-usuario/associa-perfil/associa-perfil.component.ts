@@ -156,6 +156,11 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
     return perfil.codigo == PerfilEnum.TRA;
   }
 
+
+  isPerfilGestorDRPortal(perfil: Perfil): boolean {
+    return this.usuarioLogado.papeis.includes(PerfilEnum.GDNA) && perfil.codigo == PerfilEnum.GDRP;
+  }
+
   private addUsuarioPerfil(perfil: Perfil, sistema: Sistema) {
     if(this.ehSistemaCadastroOuRelacionado(sistema)) {
       this.sistemas.filter(s => this.ehSistemaCadastroOuRelacionado(s))
@@ -197,15 +202,17 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
   usuarioGestorDNBarramento() {  
     if(this.usuario.login){
       this.usuarioEntidadeService.pesquisaUsuariosEntidade(this.usuario.login).subscribe( (resposta: UsuarioEntidade[]) => {
-        resposta.forEach(retorno => {
-          if(retorno.departamentoRegional != undefined && retorno.departamentoRegional.siglaDR == ("S4" || "DN") && this.usuario.clientId != undefined){
-            this.usuarioEntidade = retorno;
-            this.usuarioEhGestorDNBarramento = true;
-          }
-        })
+        if(resposta){
+          resposta.forEach(retorno => {
+            if(retorno.departamentoRegional != undefined && retorno.departamentoRegional.siglaDR == ("S4" || "DN") && this.usuario.clientId != undefined){
+              this.usuarioEntidade = retorno;
+              this.usuarioEhGestorDNBarramento = true;
+            }
+          })
+        }
       });
     }
-    }
+  }
 
     filtrarPerfilPorCnpj(perfisDoSistema: SistemaPerfil[]): SistemaPerfil[]{
       let retorno: SistemaPerfil[] = [];
@@ -220,6 +227,6 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
           }
       })
       return retorno;
-  }
+    }
   
 }
