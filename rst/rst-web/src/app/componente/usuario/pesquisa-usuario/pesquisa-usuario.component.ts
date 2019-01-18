@@ -71,7 +71,6 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
     this.pesquisaUsuarioForm = this.formBuilder.group({});
     this.filtro.codigoPerfil = '';
   }
-
   criandoPerfilVazio(){
       this.semPerfilBarramento.nome = "Sem Perfil";
       this.semPerfilBarramento.codigo = 'SP';

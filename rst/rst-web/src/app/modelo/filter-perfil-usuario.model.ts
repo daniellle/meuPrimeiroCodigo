@@ -1,5 +1,6 @@
 import { Empresa } from "./empresa.model";
 import { DepartamentoRegional } from "./departamento-regional.model";
+import {Usuario} from "./usuario.model";
 
 export class PerfilUsuarioFilter {
     login: string;

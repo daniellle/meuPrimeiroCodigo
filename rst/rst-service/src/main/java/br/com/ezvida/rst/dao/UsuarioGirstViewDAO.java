@@ -106,6 +106,8 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
     private void getQueryPaginadoNativo(StringBuilder jpql, Map<String, Object> parametros, UsuarioFilter usuarioFilter,
                                         DadosFilter dados, boolean count) {
 
+
+
         if (count) {
             jpql.append(" select count( DISTINCT usuario.id) from ");
         } else {
@@ -208,7 +210,43 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 
         if (dados != null && !dados.isAdministrador()) {
 
-            if ((dados.isGestorDr() || dados.isDiretoriaDr() || dados.isGestorDn())) {
+            if(dados.isGestorDn() || dados.isDiretoriaDn()){
+                jpql.append(" AND vue.codigo_perfil not in ('ADM', 'ATD', 'GDNA', 'MTSDN') ");
+                return;
+            }
+            else if (dados.getPapeis().contains("SUDR")){
+                jpql.append(" AND vue.codigo_perfil not in ('ADM', 'DIDN', 'GDNA', 'GDNP', 'MTSDN', 'GCDN', 'GCODN', 'ATD') ");
+                jpql.append(" AND vue.codigo_perfil is not null ");
+                return;
+            }
+            else if (dados.getPapeis().contains("GDRM")){
+                jpql.append(" AND vue.codigo_perfil not in ('ADM', 'DIDN', 'GDNA', 'GDNP', 'MTSDN', 'GCDN', 'GCODN', 'ATD', 'SUDR') ");
+                jpql.append(" AND vue.codigo_perfil is not null ");
+                return;
+            }
+            else if (dados.getPapeis().contains("GDRA")){
+                jpql.append(" AND vue.codigo_perfil not in ('ADM', 'DIDN', 'GDNA', 'GDNP', 'MTSDN', 'GCDN', 'GCODN', 'ATD', 'SUDR', 'GDRM')");
+                jpql.append(" AND vue.codigo_perfil is not null ");
+                return;
+            }
+            else if(dados.getPapeis().contains("GUS")){
+                jpql.append(" AND vue.codigo_perfil not in ('ADM', 'DIDN', 'GDNA', 'GDNP', 'MTSDN', 'GCDN', 'GCODN', 'ATD', 'SUDR', 'GDRM', 'GDRA')");
+                jpql.append(" AND vue.codigo_perfil is not null ");
+                return;
+            }
+            else if(dados.getPapeis().contains("GEEMM")){
+                jpql.append(" AND vue.codigo_perfil not in ('ADM', 'DIDN', 'GDNA', 'GDNP', 'MTSDN', 'GCDN', 'GCODN', 'ATD', 'SUDR', 'GDRM', 'GDRA', 'MTSDR', 'GUS')");
+                jpql.append(" AND vue.codigo_perfil is not null ");
+                return;
+            }
+            else if(dados.getPapeis().contains("GEEM")){
+                jpql.append(" AND vue.codigo_perfil not in ('ADM', 'DIDN', 'GDNA', 'GDNP', 'MTSDN', 'GCDN', 'GCODN', 'ATD', 'SUDR', 'GDRM', 'GDRA', 'MTSDR', 'GUS', 'GEEMM')");
+                jpql.append(" AND vue.codigo_perfil is not null ");
+                return;
+            }
+
+
+           /* if ((dados.isGestorDr() || dados.isDiretoriaDr() || dados.isGestorDn())) {
                 if (dados.isGestorDr() || dados.isDiretoriaDr()) {
                     jpql.append(" AND codigo_perfil not in ('ADM', 'ATD', 'DIDN', 'DIDR', 'GDNA', 'MTSDN', 'GDNP') ");
                 }
@@ -218,13 +256,11 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
                             "  AND codigo_perfil not in ('ADM', 'ATD', 'GDNA', 'MTSDN') ");
                 }
                 return;
-            }
+            }*/
         }
-
-        //jpql.append(")");
-
-
     }
+
+
 
     private void aplicarFiltrosDados(StringBuilder jpql, Map<String, Object> parametros, DadosFilter dados) {
         if (dados != null && !dados.isSuperUsuario()) {
