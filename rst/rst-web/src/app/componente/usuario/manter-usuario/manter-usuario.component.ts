@@ -75,6 +75,8 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     buscarUsuario(): void {
         this.usuarioService.buscarUsuarioById(this.id)
         .subscribe((retorno: Usuario) =>  {this.usuario = retorno;
+            console.log(retorno);
+            
         this.contemPortalApenas = this.ehPortalApenas(this.usuario);},
         error => this.mensagemError(error));
        ;
@@ -106,33 +108,38 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     }
 
     adicionarGestorDRPortal(usuario: Usuario, contemPortalApenas){
-        console.log(contemPortalApenas);
-        if(this.usuarioLogado.papeis.includes(PerfilEnum.GDNA) &&
-        !this.contemPerfil([PerfilEnum.GDRP], usuario) && this.contemPerfil([PerfilEnum.GDRM, PerfilEnum.GDRA], usuario)){
+        if((this.ehGCDN() || this.ehGDNA() || this.ehGDNP() || this.ehSUDR()) && !this.contemPerfil([PerfilEnum.GDRP], usuario) && this.contemPerfil([PerfilEnum.GDRM, PerfilEnum.GDRA], usuario)){
             let sistemaEnums = ['', SistemaEnum.PORTAL, SistemaEnum.CADASTRO];
             let sistemaNomes = ['', 'Portal', 'Cadastro'];
            this.cadastrarPerfisSistemasGDRPortal(sistemaNomes, sistemaEnums, usuario);
                 
         }
-        if(!contemPortalApenas && this.contemPerfil([PerfilEnum.GDRP], usuario) && !this.contemPerfil([PerfilEnum.GDRM, PerfilEnum.GDRA], usuario)){
-            usuario.perfisSistema.forEach((perfilSistema: UsuarioPerfilSistema) => {
-                if(perfilSistema.perfil.codigo == PerfilEnum.GDRP){
-                    const index = usuario.perfisSistema.indexOf(perfilSistema, 0);
-                    if (index > -1) {
-                        usuario.perfisSistema.splice(index, 1);
+        if(!contemPortalApenas && this.contemPerfil([PerfilEnum.GDRP], usuario) && (!this.contemPerfil([PerfilEnum.GDRM], usuario)&& !this.contemPerfil([PerfilEnum.GDRA], usuario))){
+            
+            for(let i =0; i<2; i++){
+                usuario.perfisSistema.forEach((perfilSistema: UsuarioPerfilSistema) => {     
+                    if(perfilSistema.perfil.codigo == PerfilEnum.GDRP){
+                        console.log(perfilSistema);
+                        console.log(usuario.perfisSistema);
+                        const index = usuario.perfisSistema.indexOf(perfilSistema, 0);
+                        if (index > -1) {
+                            usuario.perfisSistema.splice(index, 1);
+                        }
                     }
-                }
-            });
+                
+                });
+            }   
         }
     }
 
     ehPortalApenas(usuario: Usuario){
+        if(usuario.perfisSistema){
         if(this.contemPerfil([PerfilEnum.GDRP], usuario) && !this.contemPerfil([PerfilEnum.GDRM, PerfilEnum.GDRA], usuario)){
-            console.log("Entrei"); 
             return true;
-        }else{
+        }else{  
          return false;
         }       
+    }
     }
 
     editarEvent(sistema: string) {
@@ -180,10 +187,24 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                 sistema.codigo = sistemaEnums[i];
                 sistema.nome = sistemaNomes[i];
                 let perfilSistema = new UsuarioPerfilSistema(perfil, sistema);
-                
                 usuario.perfisSistema.push(perfilSistema);
-                console.log(perfilSistema);
             }
     }
-}
 
+    ehGDNA(){
+        return this.usuarioLogado.papeis.includes(PerfilEnum.GDNA);
+    }
+    ehGDNP(){
+        return this.usuarioLogado.papeis.includes(PerfilEnum.GDNP);
+    }
+    ehGCDN(){
+        return this.usuarioLogado.papeis.includes(PerfilEnum.GCDN);
+    }
+    // ehGCODN(){
+    //     return this.usuarioLogado.papeis.includes(PerfilEnum.GCODN);
+    // }
+    ehSUDR(){
+        return this.usuarioLogado.papeis.includes(PerfilEnum.SUDR);
+        
+    }
+}

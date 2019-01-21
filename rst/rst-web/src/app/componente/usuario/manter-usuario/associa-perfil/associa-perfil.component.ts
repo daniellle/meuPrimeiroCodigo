@@ -12,6 +12,7 @@ import { BaseComponent } from 'app/componente/base.component';
 import { ToastyService } from 'ng2-toasty';
 import { UsuarioEntidadeService } from 'app/servico/usuario-entidade.service';
 import { Router } from '@angular/router';
+import { ManterUsuarioComponent } from '../manter-usuario.component';
 
 const COD_SISTEMAS_RELACIONADOS = ['dw', 'indigev', 'portal'];
 const COD_SISTEMA_CADASTRO = 'cadastro';
@@ -40,6 +41,7 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
     associandoEpidemiologia: boolean;
     strUsuario: string = "usuario";
     tipoCnpj: string;
+  manterUsuario : ManterUsuarioComponent;
 
 
   constructor(private sistemaService: SistemaService,
@@ -158,7 +160,7 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
 
 
   isPerfilGestorDRPortal(perfil: Perfil): boolean {
-    return this.usuarioLogado.papeis.includes(PerfilEnum.GDNA) && perfil.codigo == PerfilEnum.GDRP;
+    return (this.ehGCDN() || this.ehGDNA() || this.ehGDNP() || this.ehSUDR()) && perfil.codigo == PerfilEnum.GDRP;
   }
 
   private addUsuarioPerfil(perfil: Perfil, sistema: Sistema) {
@@ -227,6 +229,23 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
           }
       })
       return retorno;
+    }
+    
+    ehGDNA(){
+      return this.usuarioLogado.papeis.includes(PerfilEnum.GDNA);
+    }
+    ehGDNP(){
+        return this.usuarioLogado.papeis.includes(PerfilEnum.GDNP);
+    }
+    ehGCDN(){
+        return this.usuarioLogado.papeis.includes(PerfilEnum.GCDN);
+    }
+    // ehGCODN(){
+    //     return this.usuarioLogado.papeis.includes(PerfilEnum.GCODN);
+    // }
+    ehSUDR(){
+        return this.usuarioLogado.papeis.includes(PerfilEnum.SUDR);
+        
     }
   
 }
