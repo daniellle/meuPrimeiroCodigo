@@ -75,8 +75,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     buscarUsuario(): void {
         this.usuarioService.buscarUsuarioById(this.id)
         .subscribe((retorno: Usuario) =>  {this.usuario = retorno;
-            console.log(retorno);
-            
         this.contemPortalApenas = this.ehPortalApenas(this.usuario);},
         error => this.mensagemError(error));
        ;
@@ -119,8 +117,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             for(let i =0; i<2; i++){
                 usuario.perfisSistema.forEach((perfilSistema: UsuarioPerfilSistema) => {     
                     if(perfilSistema.perfil.codigo == PerfilEnum.GDRP){
-                        console.log(perfilSistema);
-                        console.log(usuario.perfisSistema);
                         const index = usuario.perfisSistema.indexOf(perfilSistema, 0);
                         if (index > -1) {
                             usuario.perfisSistema.splice(index, 1);
