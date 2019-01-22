@@ -145,15 +145,15 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public List<EmpresaTrabalhadorLotacao> validarTrabalhadorPrimeiroAcesso(String cpf){
-		List<EmpresaTrabalhadorLotacao> empresaTrabalhadorLotacaoList = null;
+	public boolean validarTrabalhadorPrimeiroAcesso(String cpf){
+		boolean empresaTrabalhadorLotacaoList = false;
 
 		if( cpf != null){
 			cpf = cpf.replace(".","").replace("-","");
 
 			if(ValidadorUtils.isValidCPF(cpf)){
 				empresaTrabalhadorLotacaoList = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
-				if (empresaTrabalhadorLotacaoList == null || empresaTrabalhadorLotacaoList.size() == 0) {
+				if (empresaTrabalhadorLotacaoList) {
 
 					throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
 				}
@@ -164,9 +164,9 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public List<EmpresaTrabalhadorLotacao> validarTrabalhador(String cpf){
+	public boolean validarTrabalhador(String cpf){
 
-		List<EmpresaTrabalhadorLotacao> empresaTrabalhadorLotacaoList = null;
+		boolean empresaTrabalhadorLotacaoList = false;
 
 		if( cpf != null ) {
 			cpf = cpf.replace(".","").replace("-","");
@@ -184,10 +184,6 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 
 					boolean perfilPraValidar = false;
 
-					if(usuarioVerificar.getLogin() == "65020081515"){
-						perfilPraValidar = false;
-					}
-					else {
 						for (UsuarioPerfilSistema perfilSistema : usuarioVerificar.getPerfisSistema()) {
 
 							if (perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GEEM")
@@ -199,15 +195,14 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 
 						}
 
-
 						if (perfilPraValidar) {
 							empresaTrabalhadorLotacaoList = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
-							if (empresaTrabalhadorLotacaoList == null || empresaTrabalhadorLotacaoList.size() == 0) {
+							if (empresaTrabalhadorLotacaoList) {
 
 								throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
 							}
 						}
-					}
+
 
 
 				} else {
