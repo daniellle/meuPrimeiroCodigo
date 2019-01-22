@@ -78,6 +78,16 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
         return DAOUtil.getSingleResult(query);
     }
 
+    public UnidadeAtendimentoTrabalhador pesquisarPorId(Long id){
+        LOGGER.debug("Pesquisando todos Unidade de Atendimento ao Trabalhador por Id");
+        StringBuilder jpql = new StringBuilder();
+        jpql.append(" select uat from UnidadeAtendimentoTrabalhador uat ");
+        jpql.append(" where uat.id = :id ");
+        TypedQuery<UnidadeAtendimentoTrabalhador> query = criarConsultaPorTipo(jpql.toString());
+        query.setParameter("id", id);
+        return DAOUtil.getSingleResult(query);
+    }
+
     private void montarFiltroPesquisarPorId(Long id, DadosFilter segurancaFilter, StringBuilder jpql,
                                             Map<String, Object> parametros) {
         if (segurancaFilter.temIdsEmpresa()) {
@@ -375,7 +385,9 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
 
         }
 
-        addFiltroDepRegEmpPesquisarPorEndereco(segurancaFilter, jpql, parametros, idEstado, idMunicipio, bairro);
+        if("0".equals(enderecoFilter.getFiltrarDepRegEmp())){
+            addFiltroDepRegEmpPesquisarPorEndereco(segurancaFilter, jpql, parametros, idEstado, idMunicipio, bairro);
+        }
 
         TypedQuery<UnidadeAtendimentoTrabalhador> query = criarConsultaPorTipo(jpql.toString());
         DAOUtil.setParameterMap(query, parametros);

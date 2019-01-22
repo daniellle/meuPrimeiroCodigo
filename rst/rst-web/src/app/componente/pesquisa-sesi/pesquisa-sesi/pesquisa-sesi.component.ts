@@ -159,7 +159,11 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
     filtroEndereco.idEstado = this.filtroPesquisaSesi.idEstado;
     filtroEndereco.idMunicipio = this.filtroPesquisaSesi.idMunicipio;
     filtroEndereco.bairro = this.filtroPesquisaSesi.bairro;
+    filtroEndereco.filtrarDepRegEmp = '1';
+
     this.uatService.pesquisarPorEndereco(filtroEndereco).subscribe((retorno: Uat[]) => {
+      console.log('Uats aqui');
+      console.log(retorno);
       // buscar linhas e produtos atraves das uats
       const uats = retorno;
       this.buscarLinhasPorIdUat(uats);

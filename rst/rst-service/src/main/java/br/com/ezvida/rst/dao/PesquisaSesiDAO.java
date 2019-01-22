@@ -90,6 +90,26 @@ public class PesquisaSesiDAO extends BaseDAO<UnidadeAtendimentoTrabalhador, Long
 		DAOUtil.setParameterMap(query, parametros);
 		return query.getResultList();
 	}
+
+	public List<UnidadeAtendimentoTrabalhador> listarUnidadesSesi(){
+		LOGGER.debug("Buscando Unidades Sesi");
+
+		StringBuilder jpql = new StringBuilder();
+
+		jpql.append("select DISTINCT uat from UnidadeAtendimentoTrabalhador uat ");
+		jpql.append("left join fetch uat.endereco endUat ");
+		jpql.append("left join uat.empresaUats empresaUat ");
+		jpql.append("left join uat.departamentoRegional departamentoRegionalUat ");
+		jpql.append("left join fetch endUat.endereco endereco ");
+		jpql.append("left join fetch endereco.municipio municipio ");
+		jpql.append(" where ");
+		jpql.append(" uat.dataDesativacao ").append(Situacao.ATIVO.getQuery());
+		jpql.append(" order by uat.razaoSocial ");
+
+		TypedQuery<UnidadeAtendimentoTrabalhador> query = criarConsultaPorTipo(jpql.toString());
+
+		return query.getResultList();
+	}
 	
 	public ListaPaginada<UnidadeAtendimentoTrabalhador> pesquisarPaginado(PesquisaSesiFilter pesquisaSesiFilter, DadosFilter segurancaFilter) {
 		LOGGER.debug("Pesquisando paginado Unidades Sesi Produto Serviço por filtro");

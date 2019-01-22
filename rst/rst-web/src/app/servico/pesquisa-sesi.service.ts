@@ -20,7 +20,7 @@ export class PesquisaSesiService extends BaseService<Uat> {
   }
 
   buscarUnidadesSesi() {
-    return super.get('/v1/pesquisa-sesi/unidades-sesi')
+    return super.get('/v1/pesquisa-sesi/unidades-sesi/listar')
       .map((response: Response) => {
         return response;
       }).catch((error: Response) => {
@@ -29,7 +29,7 @@ export class PesquisaSesiService extends BaseService<Uat> {
   }
 
   buscarEnderecoUnidadeSesi(id: string): Observable<Uat> {
-    return super.get('/v1/pesquisa-sesi/unidades-sesi/endereco/' + id)
+    return super.get('/v1/pesquisa-sesi/2/unidades-sesi/endereco/' + id)
       .map((response: Uat) => {
         return response;
       }).catch((error: Response) => {

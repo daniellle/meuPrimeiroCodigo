@@ -57,6 +57,12 @@ public class PesquisaSesiService extends BaseService {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public List<UnidadeAtendimentoTrabalhador> listarUnidadesSesi(ClienteAuditoria auditoria) {
+		LOGGER.debug("Buscando Unidades Sesi");
+		return pesquisaSesiDAO.listarUnidadesSesi();
+	}
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public UnidadeAtendimentoTrabalhador buscarEnderecoUnidadeSesi(Long id, ClienteAuditoria auditoria,
 			DadosFilter dados) {
 
@@ -68,6 +74,17 @@ public class PesquisaSesiService extends BaseService {
 
 		return uat;
 	}
+
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public UnidadeAtendimentoTrabalhador buscarEnderecoUnidadeSesiId(Long id,  ClienteAuditoria auditoria){
+        if (id == null) {
+            throw new BusinessErrorException(getMensagem("app_rst_id_consulta_nulo"));
+        }
+        UnidadeAtendimentoTrabalhador uat = unidadeAtendimentoTrabalhadorService.pesquisarPorId(id, auditoria);
+
+        return uat;
+    }
+
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public ListaPaginada<PesquisaSesiDTO> pesquisarPaginado(PesquisaSesiFilter clienteFilter,
