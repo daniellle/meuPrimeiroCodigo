@@ -169,8 +169,10 @@ public class PesquisaSesiDAO extends BaseDAO<UnidadeAtendimentoTrabalhador, Long
 					linha, produto);
 		}
 
+		/*
 		montarFiltroSegurancaFilterPaginado(jpql, parametros, segurancaFilter, unidadeSesi, estado, municipio, bairro,
 				linha, produto);
+		*/
 
 		if (!count) {
 			jpql.append(" order by uat.razaoSocial ");
