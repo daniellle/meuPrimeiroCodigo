@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.rmi.CORBA.Util;
 
 import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
 import org.slf4j.Logger;
@@ -33,18 +34,18 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
     }
 
     @SuppressWarnings("unchecked")
-    public ListaPaginada<UsuarioGirstView> pesquisarPorFiltro(UsuarioFilter usuarioFilter, DadosFilter dados) {
+    public ListaPaginada<UsuarioGirstView> pesquisarPorFiltro(UsuarioFilter usuarioFilter, DadosFilter dados, List<String> listaDeLogins) {
         LOGGER.debug("Pesquisando paginado UsuarioGirstView por filtro");
 
         ListaPaginada<UsuarioGirstView> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
 
         StringBuilder sql = new StringBuilder();
         Map<String, Object> parametros = Maps.newHashMap();
-        getQueryPaginadoNativo(sql, parametros, usuarioFilter, dados, false);
+        getQueryPaginadoNativo(sql, parametros, usuarioFilter, dados, false, listaDeLogins);
         Query query = criarConsultaNativa(sql.toString(), UsuarioGirstView.class);
         DAOUtil.setParameterMap(query, parametros);
 
-        listaPaginada.setQuantidade(getCountQueryPaginado(usuarioFilter, dados).longValue());
+        listaPaginada.setQuantidade(getCountQueryPaginado(usuarioFilter, dados, listaDeLogins).longValue());
 
         if (usuarioFilter != null && usuarioFilter.getPagina() != null
                 && usuarioFilter.getQuantidadeRegistro() != null) {
@@ -57,16 +58,16 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
         return listaPaginada;
     }
 
-    public ListaPaginada<PerfilUsuarioDTO> pesquisarPerfilUsuarioFiltro(UsuarioFilter usuarioFilter, DadosFilter dados) {
+    public ListaPaginada<PerfilUsuarioDTO> pesquisarPerfilUsuarioFiltro(UsuarioFilter usuarioFilter, DadosFilter dados, List<String> listaDeLogins) {
         LOGGER.debug("Pesquisando PerfilUsuarioDTO por filtro para geração de lista paginada");
         ListaPaginada<PerfilUsuarioDTO> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
 
         StringBuilder sql = new StringBuilder();
         Map<String, Object> parametros = Maps.newHashMap();
-        getQueryPaginadoNativoPerfilUsuario(sql, parametros, usuarioFilter, dados, false);
+        getQueryPaginadoNativoPerfilUsuario(sql, parametros, usuarioFilter, dados, false, listaDeLogins);
         Query query = criarConsultaNativa(sql.toString());
         DAOUtil.setParameterMap(query, parametros);
-        listaPaginada.setQuantidade(getCountQueryPaginado(usuarioFilter, dados).longValue());
+        listaPaginada.setQuantidade(getCountQueryPaginado(usuarioFilter, dados,listaDeLogins).longValue());
 
         if (usuarioFilter != null && usuarioFilter.getPagina() != null
                 && usuarioFilter.getQuantidadeRegistro() != null) {
@@ -78,12 +79,12 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
         return listaPaginada;
     }
 
-    public List<PerfilUsuarioDTO> pesquisarRelatorioFiltro(UsuarioFilter usuarioFilter, DadosFilter dados) {
+    public List<PerfilUsuarioDTO> pesquisarRelatorioFiltro(UsuarioFilter usuarioFilter, DadosFilter dados, List<String> listaDeLogin) {
         LOGGER.debug("Pesquisando PerfilUsuario por filtro para geração de PDF");
 
         StringBuilder sql = new StringBuilder();
         Map<String, Object> parametros = Maps.newHashMap();
-        getQueryPaginadoNativoPerfilUsuario(sql, parametros, usuarioFilter, dados, false);
+        getQueryPaginadoNativoPerfilUsuario(sql, parametros, usuarioFilter, dados, false, listaDeLogin);
         Query query = criarConsultaNativa(sql.toString());
         DAOUtil.setParameterMap(query, parametros);
 
@@ -94,17 +95,17 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
     }
 
 
-    public BigInteger getCountQueryPaginado(UsuarioFilter usuarioFilter, DadosFilter dados) {
+    public BigInteger getCountQueryPaginado(UsuarioFilter usuarioFilter, DadosFilter dados, List<String> listaDeLogins) {
         Map<String, Object> parametros = Maps.newHashMap();
         StringBuilder jpql = new StringBuilder();
-        getQueryPaginadoNativo(jpql, parametros, usuarioFilter, dados, true);
+        getQueryPaginadoNativo(jpql, parametros, usuarioFilter, dados, true, listaDeLogins);
         Query query = criarConsultaNativa(jpql.toString());
         DAOUtil.setParameterMap(query, parametros);
         return DAOUtil.getSingleResult(query);
     }
 
     private void getQueryPaginadoNativo(StringBuilder jpql, Map<String, Object> parametros, UsuarioFilter usuarioFilter,
-                                        DadosFilter dados, boolean count) {
+                                        DadosFilter dados, boolean count, List<String> listaDeLogin) {
 
 
 
@@ -121,7 +122,11 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
         if (!dados.isAdministrador() && !dados.isGestorDn()) {
             aplicarSubselectJoins(jpql, dados, parametros);
         } else {
-            jpql.append(" WHERE vue.id is not null");
+            jpql.append(" WHERE vue.id is not null ");
+        }
+        if(!listaDeLogin.isEmpty()){
+            jpql.append(" AND vue.login NOT IN (:listaLogin) ");
+            parametros.put("listaLogin", listaDeLogin);
         }
 
         aplicarFiltros(count, jpql, parametros, usuarioFilter);
@@ -129,14 +134,13 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
         applicarFiltroPerfis(count, usuarioFilter, jpql, parametros, dados);
         jpql.append(" ) as usuario ");
 
-
         if (!count) {
             jpql.append(" order by usuario.nome ");
         }
     }
 
     private void getQueryPaginadoNativoPerfilUsuario(StringBuilder jpql, Map<String, Object> parametros, UsuarioFilter usuarioFilter,
-                                                     DadosFilter dados, boolean count) {
+                                                     DadosFilter dados, boolean count, List<String> listaDeLogins) {
         jpql.append(" select id, nome, login, email,");
         jpql.append(" nome_perfil, e.nm_fantasia,");
         jpql.append(" dr.ds_nome_fantasia, uat.ds_razao_social");
@@ -149,6 +153,11 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
             aplicarSubselectJoins(jpql, dados, parametros);
         } else {
             jpql.append(" WHERE vue.id is not null");
+        }
+
+        if(!listaDeLogins.isEmpty()){
+            jpql.append(" AND vue.login NOT IN (:listaDeLogins) ");
+            parametros.put("listaDeLogins", listaDeLogins);
         }
 
         aplicarFiltros(count, jpql, parametros, usuarioFilter);

@@ -32,6 +32,9 @@ public class UsuarioFilter extends FilterBase implements Serializable {
 	@QueryParam("idUnidadeSesi")
 	private Long idUnidadeSesi;
 
+	@QueryParam("usuarioLogadoHierarquia")
+	private Integer usuarioLogadoHierarquia;
+
 	public UsuarioFilter() {
 	}
 
@@ -64,4 +67,7 @@ public class UsuarioFilter extends FilterBase implements Serializable {
 
 	public Long getIdUnidadeSesi() { return  idUnidadeSesi;}
 
+	public Integer getUsuarioLogadoHierarquia() {
+		return usuarioLogadoHierarquia;
+	}
 }
