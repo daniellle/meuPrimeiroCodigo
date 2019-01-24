@@ -249,7 +249,7 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
     }
 
     ehGDRM(){
-      return this.usuarioLogado.papeis.includes(PerfilEnum.GDRM);
+      return this.usuarioLogado.papeis.includes(PerfilEnum.GDRM)
     }
   
 }
