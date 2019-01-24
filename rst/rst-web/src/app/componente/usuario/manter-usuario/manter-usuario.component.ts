@@ -196,9 +196,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     ehGCDN(){
         return this.usuarioLogado.papeis.includes(PerfilEnum.GCDN);
     }
-    // ehGCODN(){
-    //     return this.usuarioLogado.papeis.includes(PerfilEnum.GCODN);
-    // }
     ehSUDR(){
         return this.usuarioLogado.papeis.includes(PerfilEnum.SUDR);
         
@@ -206,4 +203,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     ehGDRM(){
         return this.usuarioLogado.papeis.includes(PerfilEnum.GDRM);
     }
+                        // ehGCODN(){
+                        //     return this.usuarioLogado.papeis.includes(PerfilEnum.GCODN);
+                        // }
 }
