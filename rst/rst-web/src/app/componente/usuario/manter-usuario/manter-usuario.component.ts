@@ -106,7 +106,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     }
 
     adicionarGestorDRPortal(usuario: Usuario, contemPortalApenas){
-        if((this.ehGCDN() || this.ehGDNA() || this.ehGDNP() || this.ehSUDR()) && !this.contemPerfil([PerfilEnum.GDRP], usuario) && this.contemPerfil([PerfilEnum.GDRM, PerfilEnum.GDRA], usuario)){
+        if((this.ehGCDN() || this.ehGDNA() || this.ehGDNP() || this.ehSUDR()) || this.ehGDRM() && !this.contemPerfil([PerfilEnum.GDRP], usuario) && this.contemPerfil([PerfilEnum.GDRM, PerfilEnum.GDRA], usuario)){
             let sistemaEnums = ['', SistemaEnum.PORTAL, SistemaEnum.CADASTRO];
             let sistemaNomes = ['', 'Portal', 'Cadastro'];
            this.cadastrarPerfisSistemasGDRPortal(sistemaNomes, sistemaEnums, usuario);
@@ -202,5 +202,8 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     ehSUDR(){
         return this.usuarioLogado.papeis.includes(PerfilEnum.SUDR);
         
+    }
+    ehGDRM(){
+        return this.usuarioLogado.papeis.includes(PerfilEnum.GDRM);
     }
 }

@@ -160,7 +160,7 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
 
 
   isPerfilGestorDRPortal(perfil: Perfil): boolean {
-    return (this.ehGCDN() || this.ehGDNA() || this.ehGDNP() || this.ehSUDR()) && perfil.codigo == PerfilEnum.GDRP;
+    return (this.ehGCDN() || this.ehGDNA() || this.ehGDNP() || this.ehSUDR() || this.ehGDRM()) && perfil.codigo == PerfilEnum.GDRP;
   }
 
   private addUsuarioPerfil(perfil: Perfil, sistema: Sistema) {
@@ -246,6 +246,10 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
     ehSUDR(){
         return this.usuarioLogado.papeis.includes(PerfilEnum.SUDR);
         
+    }
+
+    ehGDRM(){
+      return this.usuarioLogado.papeis.includes(PerfilEnum.GDRM);
     }
   
 }
