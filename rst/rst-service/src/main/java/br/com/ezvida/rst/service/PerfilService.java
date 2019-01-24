@@ -23,8 +23,8 @@ public class PerfilService extends BaseService {
     private PerfilClient perfilClient;
     
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public List<Perfil> buscarPerfis() {
-        return perfilClient.buscar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token());
+    public List<Perfil> buscarPerfis(String nivel) {
+        return perfilClient.buscar(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), nivel);
     }
 
 }

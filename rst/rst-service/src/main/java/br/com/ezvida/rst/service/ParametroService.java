@@ -137,8 +137,8 @@ public class ParametroService extends BaseService {
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public String getUrlApiGirst() {
-        return "http://localhost:8080/girst/api/v1/";
-//        return carregarPorNome(URL_API_GIRST);
+//        return "http://localhost:8080/girst/api/v1/";
+        return carregarPorNome(URL_API_GIRST);
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -158,8 +158,8 @@ public class ParametroService extends BaseService {
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public String getAccessToken() {
-        return "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJjYWRhc3RybyIsImtpZCI6Im1haW4iLCJpc3MiOiJnaXJzdCIsInBhcGVpcyI6WyJSRURFU1lTIl0sInRva2VuVHlwZSI6IkFDQ0VTU19UT0tFTiJ9.QGBu9ZdN59RSmY8lFHTWVVIPoBGpKbMG6KhvUU1FksONQqbGljaa75DlRC-k27n7VUPba_cg_eHhi7HGvryNddL6_Z-WBsGFd2fD1c98gDtwULUJfxRNiOz94Qf3keI7LH4AlHm9i2E0BDfd5Fa2DkiyGJ76EggkMu88NLfRoiOxXicfPKPzTTMR2moFSE-91BbyQNPNW7mDoqi88ABDY0-ch2aT6-Pamgvr6VlBO3SZAjkUbL4fMMRF60FTMNeQWUZEV4ymPkf57wPVCevXyv-FQjDRn-ubalex8mSCvxM_y5CsboJ5ikvRtt_Lho1qG5KDMLOXLFiAtNjYCdZlmQ";
-//        return carregarPorNome(ACCESS_TOKEN);
+//        return "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJjYWRhc3RybyIsImtpZCI6Im1haW4iLCJpc3MiOiJnaXJzdCIsInBhcGVpcyI6WyJSRURFU1lTIl0sInRva2VuVHlwZSI6IkFDQ0VTU19UT0tFTiJ9.QGBu9ZdN59RSmY8lFHTWVVIPoBGpKbMG6KhvUU1FksONQqbGljaa75DlRC-k27n7VUPba_cg_eHhi7HGvryNddL6_Z-WBsGFd2fD1c98gDtwULUJfxRNiOz94Qf3keI7LH4AlHm9i2E0BDfd5Fa2DkiyGJ76EggkMu88NLfRoiOxXicfPKPzTTMR2moFSE-91BbyQNPNW7mDoqi88ABDY0-ch2aT6-Pamgvr6VlBO3SZAjkUbL4fMMRF60FTMNeQWUZEV4ymPkf57wPVCevXyv-FQjDRn-ubalex8mSCvxM_y5CsboJ5ikvRtt_Lho1qG5KDMLOXLFiAtNjYCdZlmQ";
+        return carregarPorNome(ACCESS_TOKEN);
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
