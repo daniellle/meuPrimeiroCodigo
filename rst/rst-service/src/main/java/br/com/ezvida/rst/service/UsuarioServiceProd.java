@@ -222,14 +222,11 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
     }
 
     public List<String> pesquisarLoginsPerfisHierarquiaSuperior( br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter) {
-        if(usuarioFilter.getUsuarioLogadoHierarquia() == 0 || usuarioFilter.getUsuarioLogadoHierarquia() == null ){
-            return new ArrayList<String>();
-        }
         try {
             return  this.usuarioClient.getPerfisHierarquiaAcima(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), usuarioFilter.getUsuarioLogadoHierarquia());
         } catch (Exception e) {
             LOGGER.error("Erro ao buscar hierarquia superior do Usuario de nível " + usuarioFilter.getUsuarioLogadoHierarquia() + ". Erro: " + e.getMessage(), e.getCause());
-            throw  e;
+            throw e;
         }
     }
 
