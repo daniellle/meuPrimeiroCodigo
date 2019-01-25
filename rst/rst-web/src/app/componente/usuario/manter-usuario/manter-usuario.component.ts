@@ -1,3 +1,4 @@
+import { PerfilSistema } from 'app/modelo/ṕerfil-sistemas';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,6 +15,11 @@ import { AssociaPerfilComponent } from './associa-perfil/associa-perfil.componen
 import { DadosGeraisComponent } from './dados-gerais/dados-gerais.component';
 import { UsuarioPerfilSistema, Perfil, Usuario, Sistema } from './../../../modelo/index';
 import {MascaraUtil} from "../../../compartilhado/utilitario/mascara.util";
+import { PerfilEnum } from 'app/modelo/enum/enum-perfil';
+import { SistemaEnum } from 'app/modelo/enum/enum-sistema.model';
+import { element } from 'protractor';
+import { ignoreElements } from 'rxjs/operator/ignoreElements';
+import { log } from 'util';
 
 @Component({
     selector: 'app-manter-usuario',
@@ -31,6 +37,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     usuario: Usuario;
     perfisSistemas: UsuarioPerfilSistema[];
     perfisUsuario: Perfil[] = [];
+    contemPortalApenas: boolean;
 
     constructor(
         private router: Router,
@@ -50,6 +57,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         this.route.params.subscribe((params) => {
             this.id = params['id'];
 
+            console.log(this.usuarioLogado);
             this.usuario = new Usuario();
             this.usuario.perfisSistema = new Array<UsuarioPerfilSistema>();
             this.perfisSistemas = new Array<UsuarioPerfilSistema>();
@@ -62,12 +70,15 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         this.modoConsulta = !Seguranca.isPermitido([PermissoesEnum.USUARIO, PermissoesEnum.USUARIO_CADASTRAR,
             PermissoesEnum.USUARIO_ALTERAR, PermissoesEnum.USUARIO_DESATIVAR]);
         this.title = MensagemProperties.app_rst_usuario_title_cadastrar;
+        
     }
 
-    buscarUsuario(): void {
+    buscarUsuario(): void {       
         this.usuarioService.buscarUsuarioById(this.id)
-        .subscribe((retorno: Usuario) =>  this.usuario = retorno,
+        .subscribe((retorno: Usuario) =>  {this.usuario = retorno;
+        this.contemPortalApenas = this.ehPortalApenas(this.usuario);},
         error => this.mensagemError(error));
+       ;
     }
 
     salvar(): void {
@@ -82,7 +93,8 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             this.usuario.id = this.id;
             this.usuario.login = MascaraUtil.removerMascara(login);
             this.usuario.email = email;
-            this.usuario.dados = undefined;
+            this.usuario.dados = undefined; 
+            this.adicionarGestorDRPortal(this.usuario, this.contemPortalApenas);
             this.usuarioService.salvarUsuario(this.usuario).subscribe((retorno: Usuario) => {
                 this.usuario = retorno;
                 this.id = this.usuario.id;
@@ -91,7 +103,40 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             }, error =>
                 this.mensagemError(error)
             );
+        }     
+    }
+
+    adicionarGestorDRPortal(usuario: Usuario, contemPortalApenas){
+        if((this.ehGCDN() || this.ehGDNA() || this.ehGDNP() || this.ehSUDR()) || this.ehGDRM() && !this.contemPerfil([PerfilEnum.GDRP], usuario) && this.contemPerfil([PerfilEnum.GDRM, PerfilEnum.GDRA], usuario)){
+            let sistemaEnums = ['', SistemaEnum.PORTAL, SistemaEnum.CADASTRO];
+            let sistemaNomes = ['', 'Portal', 'Cadastro'];
+           this.cadastrarPerfisSistemasGDRPortal(sistemaNomes, sistemaEnums, usuario);
+                
         }
+        if(!contemPortalApenas && this.contemPerfil([PerfilEnum.GDRP], usuario) && (!this.contemPerfil([PerfilEnum.GDRM], usuario)&& !this.contemPerfil([PerfilEnum.GDRA], usuario))){
+            
+            for(let i =0; i<2; i++){
+                usuario.perfisSistema.forEach((perfilSistema: UsuarioPerfilSistema) => {     
+                    if(perfilSistema.perfil.codigo == PerfilEnum.GDRP){
+                        const index = usuario.perfisSistema.indexOf(perfilSistema, 0);
+                        if (index > -1) {
+                            usuario.perfisSistema.splice(index, 1);
+                        }
+                    }
+             
+                });
+            }   
+        }
+    }
+    
+    ehPortalApenas(usuario: Usuario){
+        if(usuario.perfisSistema){
+        if(this.contemPerfil([PerfilEnum.GDRP], usuario) && !this.contemPerfil([PerfilEnum.GDRM, PerfilEnum.GDRA], usuario)){
+            return true;
+        }else{  
+         return false;
+        }       
+    }
     }
 
     editarEvent(sistema: string) {
@@ -126,5 +171,40 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             return !this.modoConsulta;
         }
         
+    }
+    cadastrarPerfisSistemasGDRPortal(sistemaNomes, sistemaEnums, usuario){
+        for(let i =1 ;i <=2;i++){
+            let perfil = new Perfil();
+            let sistema = new Sistema(); 
+            perfil.codigo = PerfilEnum.GDRP;
+            perfil.nome = 'Gestor DR Portal';
+            perfil.hierarquia = 7;
+                perfil.id=8;
+                sistema.id = i;
+                sistema.codigo = sistemaEnums[i];
+                sistema.nome = sistemaNomes[i];
+                let perfilSistema = new UsuarioPerfilSistema(perfil, sistema);
+                usuario.perfisSistema.push(perfilSistema);
+            }
+    }
+
+    ehGDNA(){
+        return this.usuarioLogado.papeis.includes(PerfilEnum.GDNA);
+    }
+    ehGDNP(){
+        return this.usuarioLogado.papeis.includes(PerfilEnum.GDNP);
+    }
+    ehGCDN(){
+        return this.usuarioLogado.papeis.includes(PerfilEnum.GCDN);
+    }
+    // ehGCODN(){
+    //     return this.usuarioLogado.papeis.includes(PerfilEnum.GCODN);
+    // }
+    ehSUDR(){
+        return this.usuarioLogado.papeis.includes(PerfilEnum.SUDR);
+        
+    }
+    ehGDRM(){
+        return this.usuarioLogado.papeis.includes(PerfilEnum.GDRM);
     }
 }
