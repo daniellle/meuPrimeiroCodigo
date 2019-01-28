@@ -1,3 +1,4 @@
+import { Perfil } from './../../../../modelo/perfil.model';
 import {environment} from './../../../../../environments/environment';
 import {SimNao} from 'app/modelo/enum/enum-simnao.model';
 import {EnumValues} from 'enum-values';
@@ -36,6 +37,7 @@ export class CadastroUnidadeSESIUsuarioComponent extends BaseComponent implement
     paginacao: Paginacao = new Paginacao(1, 10);
     public checks: IHash = {};
     public estados: any[];
+    perfis: Perfil[];
 
     constructor(
         private router: Router,

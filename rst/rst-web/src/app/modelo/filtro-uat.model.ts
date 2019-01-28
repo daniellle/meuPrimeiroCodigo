@@ -4,4 +4,5 @@ export class FiltroUat {
     cnpj: string;
     razaoSocial: string;
     cpfUsuarioAssociado: string;
+    perfil: string;
 }

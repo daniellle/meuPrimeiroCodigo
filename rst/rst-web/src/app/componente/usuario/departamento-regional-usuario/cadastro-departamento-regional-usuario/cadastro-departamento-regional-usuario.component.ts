@@ -1,3 +1,5 @@
+import { PerfilEnum } from 'app/modelo/enum/enum-perfil';
+import { Perfil } from './../../../../modelo/perfil.model';
 import { environment } from './../../../../../environments/environment';
 import { DepartRegionalService } from './../../../../servico/depart-regional.service';
 import { FiltroDepartRegional } from 'app/modelo/filtro-depart-regional.model';
@@ -36,6 +38,7 @@ export class CadastroDepartamentoUsuarioComponent extends BaseComponent implemen
   listaSelecionados: DepartamentoRegional[];
   paginacao: Paginacao = new Paginacao(1, 10);
   public checks: IHash = {};
+  perfis: Perfil[];
   public estados: any[];
 
   constructor(
@@ -72,12 +75,45 @@ export class CadastroDepartamentoUsuarioComponent extends BaseComponent implemen
   buscarUsuario(): void {
     this.usuarioService.buscarUsuarioById(this.idUsuario).subscribe((retorno: Usuario) => {
       this.usuario = retorno;
+            this.perfis = getPerfis.call(this, retorno);
+      this.usuario = retorno;
       if (this.usuario && !this.usuario.perfisSistema) {
         this.usuario.perfisSistema = new Array<UsuarioPerfilSistema>();
       }
     }, (error) => {
       this.mensagemError(error);
     });
+
+    function getPerfis(retorno: Usuario): Perfil[] {
+      let map = new Map();
+      retorno.perfisSistema.forEach(value => {
+          map.set(value.perfil.codigo, value.perfil.nome);
+      });
+      let p = new Array<Perfil>();
+      map.forEach((value, key) => {
+          switch (PerfilEnum[<string>key]) {
+              case PerfilEnum.GCDR:
+                  p.push(new Perfil(null, value, key));
+                  break;
+              case PerfilEnum.SUDR:
+                  p.push(new Perfil(null, value, key));
+                  break;
+              case PerfilEnum.GDRM:
+                  p.push(new Perfil(null, value, key));
+                  break;
+              case PerfilEnum.GDRA:
+                  p.push(new Perfil(null, value, key));
+                  break;
+              case PerfilEnum.GDRP:
+                  p.push(new Perfil(null, value, key));
+                  break;
+              case PerfilEnum.GCODR:
+                  p.push(new Perfil(null, value, key));
+                  break;
+          }
+      });
+      return p;
+  }
   }
 
   pesquisar(): void {
@@ -128,6 +164,7 @@ export class CadastroDepartamentoUsuarioComponent extends BaseComponent implemen
       usuarioEntidade.email = this.usuario.email;
       usuarioEntidade.termo = EnumValues.getNameFromValue(SimNao, SimNao.true);
       usuarioEntidade.departamentoRegional = item;
+      usuarioEntidade.perfil = this.filtro.perfil;
       lista.push(usuarioEntidade);
     });
     return lista;
