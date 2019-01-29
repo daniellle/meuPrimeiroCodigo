@@ -1,3 +1,4 @@
+import { forEach } from '@angular/router/src/utils/collection';
 import * as FileSaver from 'file-saver';
 import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
 import { DepartRegionalService } from 'app/servico/depart-regional.service';
@@ -23,6 +24,7 @@ import { MensagemProperties } from './../../../compartilhado/utilitario/recurso.
 import { BloqueioService } from './../../../servico/bloqueio.service';
 import { UsuarioEntidadeService } from 'app/servico/usuario-entidade.service';
 import { PerfilUsuarioFilter } from 'app/modelo/filter-perfil-usuario.model';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-pesquisa-usuario',
@@ -33,6 +35,7 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
 
   public filtro: FiltroUsuario;
   public usuarios: Usuario[];
+  public usuarioLogado: Usuario;
   public usuarioSelecionado: Usuario;
   public itensCarregados: number;
   public totalItens: number;
@@ -63,8 +66,9 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.semPerfilBarramento = new Perfil();
-      this.criandoPerfilVazio();
+    this.usuarioLogado = Seguranca.getUsuario();
+    this.semPerfilBarramento = new Perfil();
+    this.criandoPerfilVazio();
     this.filtro = new PerfilUsuarioFilter();
     this.usuarios = new Array<Usuario>();
     this.title = MensagemProperties.app_rst_usuario_title_pesquisar;
@@ -80,7 +84,8 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
   buscarPerfis(): void {
     this.perfilService.buscarTodos().subscribe((retorno: any) => {
       this.perfis = retorno;
-        this.perfis.push(this.semPerfilBarramento);
+      this.perfis = this.filterByHierarquia(this.perfis);
+      this.perfis.push(this.semPerfilBarramento);
     }, (error) => {
       this.mensagemError(error);
     }, () => {
@@ -209,5 +214,24 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
         return 0;
       });
     }
+  }
+
+  filterByHierarquia(list: Perfil[]){
+   let retorno: Perfil[];
+    if (!this.listaUndefinedOuVazia(list)) {
+      console.log(this.usuarioLogado.nivel);
+      if(this.usuarioLogado.nivel <= 2){
+        retorno = list.filter(element => (element.hierarquia >= this.usuarioLogado.nivel) || element.codigo == "TRA");
+      } else {
+        if(this.usuarioLogado.papeis.some((element) => element == "GEEMM")){
+          retorno = list.filter(element => (element.hierarquia >  this.usuarioLogado.nivel) || element.codigo == "TRA");
+          retorno = retorno.filter((element) => element.codigo != "EPI");
+        }else{
+        retorno = list.filter(element => (element.hierarquia >  this.usuarioLogado.nivel) || element.codigo == "TRA");
+        }
+        //retorno = list.filter((element) => element.codigo != "EPI");
+      }
+      return retorno;
+      }
   }
 }

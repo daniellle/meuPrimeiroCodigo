@@ -214,9 +214,9 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		return query.getResultList();
 	}
 
-	public List<EmpresaTrabalhadorLotacao> validarTrabalhador(String cpf){
+	public boolean validarTrabalhador(String cpf){
 		StringBuilder jpql = new StringBuilder();
-
+		boolean retorno;
 		jpql.append(" select empresaTrabalhadorLotacao ");
 		jpql.append(" from EmpresaTrabalhadorLotacao empresaTrabalhadorLotacao ");
 		jpql.append(" left join fetch empresaTrabalhadorLotacao.empresaTrabalhador empresaTrabalhador ");
@@ -236,7 +236,12 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		query.setParameter("dataHoje", new Date(), TemporalType.TIMESTAMP);
 		query.setParameter("flagInativo", "N".charAt(0));
 
-		return query.getResultList();
+		if(query.getResultList() == null) {
+			retorno = true;
+		} else {
+			retorno = false;
+		}
+		return retorno;
 	}
 
 }
