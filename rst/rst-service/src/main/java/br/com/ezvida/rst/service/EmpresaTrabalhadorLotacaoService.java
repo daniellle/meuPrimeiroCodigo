@@ -210,19 +210,27 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 						if (perfilPraValidar) {
 							Trabalhador trabalhador = trabalhadorDAO.pesquisarPorCpf(cpf);
 							List<UsuarioEntidade> usuarioEntidade = usuarioEntidadeDAO.pesquisarPorCPF(cpf, true);
+							Boolean response = false;
 							if(trabalhador == null && usuarioEntidade != null){
 								usuarioEntidadeList = empresaTrabalhadorLotacaoDAO.validarGestor(cpf);
-
 								if(usuarioEntidadeList == null || usuarioEntidadeList.size() == 0){
-									throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
+									response = false;
+								}else{
+									response = true;
 								}
 							}
 							else{
 							empresaTrabalhadorLotacaoList = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
 							if (empresaTrabalhadorLotacaoList == null || empresaTrabalhadorLotacaoList.size() == 0) {
 
-								throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
+								response = false;
 							}
+							else{
+								response = true;
+							}
+							}
+							if(!response){
+								throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
 							}
 						}
 				} else {

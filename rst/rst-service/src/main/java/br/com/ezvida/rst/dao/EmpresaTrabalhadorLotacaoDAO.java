@@ -246,7 +246,7 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		sql.append(" select usuarioEntidade ");
 		sql.append(" from UsuarioEntidade usuarioEntidade ");
 		sql.append(" left join fetch usuarioEntidade.empresa empresa ");
-		sql.append(" left join fetch empresaLotacao.unidadeObra unidadeObra ");
+		sql.append(" left join fetch empresa.unidadeObra unidadeObra ");
 		sql.append(" left join fetch unidadeObra.unidadeObraContratoUats unidadeObraContratoUat ");
 		sql.append(" where usuarioEntidade.cpf = :cpf ");
 		sql.append(" and (unidadeObraContratoUat.dataContratoInicio is not null and unidadeObraContratoUat.dataContratoInicio <= :dataHoje) ");
@@ -255,7 +255,6 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		TypedQuery<UsuarioEntidade> query = criarConsultaPorTipo(sql.toString(), UsuarioEntidade.class);
 		query.setParameter("cpf", cpf);
 		query.setParameter("dataHoje", new Date(), TemporalType.TIMESTAMP);
-		query.setParameter("flagInativo", "N".charAt(0));
 
 		return query.getResultList();
 	}
