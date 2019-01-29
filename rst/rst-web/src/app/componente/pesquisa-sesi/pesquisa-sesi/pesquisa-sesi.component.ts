@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { PesquisaSesiDTO } from './../../../modelo/pesquisa-sesi-dto.model';
 import { FiltroEndereco } from './../../../modelo/filtro-endereco.model';
 import { UatService } from 'app/servico/uat.service';
@@ -19,6 +20,7 @@ import { BaseComponent } from 'app/componente/base.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BloqueioService } from 'app/servico/bloqueio.service';
 import { Component, OnInit } from '@angular/core';
+import { Item } from '@ezvida/adl-core';
 
 @Component({
   selector: 'app-pesquisa-sesi',
@@ -190,6 +192,7 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
       this.mensagemError(error);
     });
   }
+ 
 
   buscarLinhasPorIdUat(uats: Uat[]) {
     const ids = [];
@@ -274,6 +277,9 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
     } else {
       this.filtroPesquisaSesi.idEstado = '';
       this.habilitaMunicipio = false;
+      this.habilitaBairro = false;
+      this.filtroPesquisaSesi.bairro = '';
+      this.buscarLinhas();
     }
   }
 
