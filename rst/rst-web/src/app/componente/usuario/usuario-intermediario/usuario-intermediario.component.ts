@@ -91,17 +91,19 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
     }
 
     private checkUsuariosEntidade() {
-        this.usuariosEntidade.forEach((element) => {
-            if (element.empresa) {
-                this.temPerfilEmpresa = true;
-            }
-            if (element.departamentoRegional) {
-                this.temPerfilDR = true;
-            }
-            if (element.uat) {
-                this.temPerfilUnidade = true;
-            }
-        });
+        if(this.usuariosEntidade){
+            this.usuariosEntidade.forEach((element) => {
+                if (element.empresa) {
+                    this.temPerfilEmpresa = true;
+                }
+                if (element.departamentoRegional) {
+                    this.temPerfilDR = true;
+                }
+                if (element.uat) {
+                    this.temPerfilUnidade = true;
+                }
+            });
+        }
     }
 
     private temEmpPerfil(): boolean {

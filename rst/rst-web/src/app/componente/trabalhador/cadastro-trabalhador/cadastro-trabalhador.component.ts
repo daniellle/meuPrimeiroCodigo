@@ -127,8 +127,9 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
 
     }
 
-    getVidaAtiva(id: string) {
-        this.service.buscarVidaAtivaTrabalhador(id).subscribe((dados: string) => {
+    getVidaAtiva(id: string, cpf: string) {
+        console.log(cpf);
+        this.service.buscarVidaAtivaTrabalhador(cpf).subscribe((dados) => {
             if (dados) {
                 this.vidaAtiva = dados + " Vida Ativa";
                 this.temvidaAtiva = true;
@@ -668,7 +669,7 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
                 this.trabalhador = trabalhador;
                 this.converterModelParaForm();
                 if (this.temEmpPerfil()) {
-                    this.getVidaAtiva(this.id);
+                    this.getVidaAtiva(this.id, this.trabalhador.cpf);
                 }
 
             }

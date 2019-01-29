@@ -23,7 +23,7 @@
           <div class="form-group col-md-12 listaperfil" *ngIf="sistemaSelecionado">
               <label class="col col-md-12" *ngFor="let perfilDoSistema of perfisDoSistema" 
                 for="{{ perfilDoSistema.perfil.nome }}" 
-                [hidden]="isPerfilTrabalhador(perfilDoSistema.perfil)">
+                [hidden]="isPerfilTrabalhador(perfilDoSistema.perfil) || isPerfilGestorDRPortal(perfilDoSistema.perfil)">
                   <fieldset>
                       <md-checkbox (change)="atualizaPerfilSistema($event, perfilDoSistema)" 
                         class="radio-tabela-pesquisa" 

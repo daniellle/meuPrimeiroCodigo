@@ -215,7 +215,6 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 		}else{
 			throw new BusinessErrorException(getMensagem("app_rst_empregado_cpf_invalido"));
 		}
-
 		return empresaTrabalhadorLotacaoList;
 	}
 }
