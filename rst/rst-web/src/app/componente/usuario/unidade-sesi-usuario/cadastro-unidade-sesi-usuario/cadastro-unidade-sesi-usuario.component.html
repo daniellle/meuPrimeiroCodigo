@@ -61,7 +61,7 @@
     <div class="col-3">
         <div class="md-container md-custom">
             <md-select placeholder="{{'app_rst_menu_perfil' | recurso}}" name="perfil-select"
-                       [(ngModel)]="filtro.perfil" id="selectDepRegional ">
+                       [(ngModel)]="filtroUat.perfil" id="selectDepRegional ">
                 <md-option value=''>{{'app_rst_labels_selecione' | recurso}}</md-option>
                 <md-option *ngFor='let perfil of perfis' [value]="perfil.codigo">{{perfil.nome}}</md-option>
             </md-select>
