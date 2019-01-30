@@ -219,8 +219,7 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 								}
 							}
 							else{
-							empresaTrabalhadorLotacaoList = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
-							if (empresaTrabalhadorLotacaoList == null || empresaTrabalhadorLotacaoList.size() == 0) {
+							if (!empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf)) {
 
 								response = false;
 							}
