@@ -37,7 +37,7 @@ export class PaginadoPerfilUsuarioComponent extends BaseComponent implements OnI
 
   public pesquisar() {
     if (this.verificarCampos()) {
-      console.log(this.filtro)
+      this.filtro.usuarioLogadoHierarquia = this.usuarioLogado.nivel;
       this.usuarios = new Array<UsuarioRelatorio>();
       this.paginacao.pagina = 1;
       this.usuarioService.pesquisarPaginadoRelatorio(this.filtro, this.paginacao).subscribe((retorno: ListaPaginada<UsuarioRelatorio>) => {

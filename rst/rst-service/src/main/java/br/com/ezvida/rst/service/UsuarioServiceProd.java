@@ -216,9 +216,18 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             , ClienteAuditoria auditoria) {
 
         br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> listaPaginada = usuarioGirstViewDAO
-                .pesquisarPorFiltro(usuarioFilter, dados);
+                .pesquisarPorFiltro(usuarioFilter, dados,  pesquisarLoginsPerfisHierarquiaSuperior(usuarioFilter));
         LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
         return listaPaginada;
+    }
+
+    public List<String> pesquisarLoginsPerfisHierarquiaSuperior( br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter) {
+        try {
+            return  this.usuarioClient.getPerfisHierarquiaAcima(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), usuarioFilter.getUsuarioLogadoHierarquia());
+        } catch (Exception e) {
+            LOGGER.error("Erro ao buscar hierarquia superior do Usuario de nível " + usuarioFilter.getUsuarioLogadoHierarquia() + ". Erro: " + e.getMessage(), e.getCause());
+            throw e;
+        }
     }
 
     @Override
@@ -228,7 +237,7 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             , ClienteAuditoria auditoria) {
 
         List<PerfilUsuarioDTO> lista = usuarioGirstViewDAO
-                .pesquisarRelatorioFiltro(usuarioFilter, dados);
+                .pesquisarRelatorioFiltro(usuarioFilter, dados, pesquisarLoginsPerfisHierarquiaSuperior(usuarioFilter));
         LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
         return lista;
     }
@@ -240,7 +249,7 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             , ClienteAuditoria auditoria) {
 
         br.com.ezvida.rst.dao.filter.ListaPaginada<PerfilUsuarioDTO> lista = usuarioGirstViewDAO
-                .pesquisarPerfilUsuarioFiltro(usuarioFilter, dados);
+                .pesquisarPerfilUsuarioFiltro(usuarioFilter, dados, pesquisarLoginsPerfisHierarquiaSuperior(usuarioFilter));
         LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
         return lista;
     }

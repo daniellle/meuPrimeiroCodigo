@@ -66,14 +66,19 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.usuarioLogado = Seguranca.getUsuario();
-    this.semPerfilBarramento = new Perfil();
-    this.criandoPerfilVazio();
-    this.filtro = new PerfilUsuarioFilter();
+      this.usuarioLogado = Seguranca.getUsuario();
+      this.semPerfilBarramento = new Perfil();
+      this.criandoPerfilVazio();
+      this.filtro = new PerfilUsuarioFilter();
+      this.hierarquiaUsuarioLogado();
     this.usuarios = new Array<Usuario>();
     this.title = MensagemProperties.app_rst_usuario_title_pesquisar;
     this.pesquisaUsuarioForm = this.formBuilder.group({});
     this.filtro.codigoPerfil = '';
+  }
+
+  hierarquiaUsuarioLogado() {
+    this.filtro.usuarioLogadoHierarquia = this.usuarioLogado.nivel;
   }
 
   criandoPerfilVazio(){
@@ -82,7 +87,7 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
   }
 
   buscarPerfis(): void {
-    this.perfilService.buscarTodos().subscribe((retorno: any) => {
+    this.perfilService.buscarTodos(this.usuarioLogado.nivel).subscribe((retorno: any) => {
       this.perfis = retorno;
       this.perfis = this.filterByHierarquia(this.perfis);
       this.perfis.push(this.semPerfilBarramento);
@@ -98,6 +103,9 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
       this.usuarios = new Array<Usuario>();
       this.usuarioSelecionado = null;
       this.paginacao.pagina = 1;
+      console.log(this.filtro);
+      this.filtro.usuarioLogadoHierarquia = this.usuarioLogado.nivel;
+      console.log(this.filtro);
       this.usuarioService.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno) => {
         this.usuarios = retorno.list;
         this.paginacao = this.getPaginacao(this.paginacao, retorno);

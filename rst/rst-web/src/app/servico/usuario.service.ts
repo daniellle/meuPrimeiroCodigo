@@ -16,6 +16,7 @@ import { Injectable } from '@angular/core';
 import { ParametroService } from './parametro.service';
 import { PerfilUsuarioFilter } from 'app/modelo/filter-perfil-usuario.model';
 import { UsuarioRelatorio } from 'app/modelo/usuario-relatorio.model';
+import { isNumber } from 'util';
 
 @Injectable()
 export class UsuarioService extends BaseService<Usuario> {
@@ -34,6 +35,7 @@ export class UsuarioService extends BaseService<Usuario> {
     pesquisarPaginado(filtro: FiltroUsuario, paginacao: Paginacao): Observable<ListaPaginada<Usuario>> {
       
       const params = this.getParams(filtro, paginacao);
+      console.log(params);
       return super.get('/v1/usuarios/paginado', params)
       .map((response: Response) => {
         return response;
@@ -192,6 +194,10 @@ export class UsuarioService extends BaseService<Usuario> {
       params = params.append('codigoPerfil', filtro.codigoPerfil);
     }
 
+    if (isNumber(filtro.usuarioLogadoHierarquia)) {
+      params = params.append('usuarioLogadoHierarquia', filtro.usuarioLogadoHierarquia.toString());
+    }
+
     if (paginacao) {
       params = params.append('pagina', paginacao.pagina.toString());
       params = params.append('qtdRegistro', paginacao.qtdRegistro.toString());
@@ -230,6 +236,11 @@ export class UsuarioService extends BaseService<Usuario> {
       params = params.append('pagina', paginacao.pagina.toString());
       params = params.append('qtdRegistro', paginacao.qtdRegistro.toString());
     }
+
+    if (isNumber(filtro.usuarioLogadoHierarquia)) {
+      params = params.append('usuarioLogadoHierarquia', filtro.usuarioLogadoHierarquia.toString());
+    }
+
     return params;
   }
 
