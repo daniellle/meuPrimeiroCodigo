@@ -69,18 +69,18 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
         this.createForm();
         this.title = MensagemProperties.app_rst_usuario_title_minha_conta;
         this.buscarUsuario();
-        this.dadosTrabalhador();
+        // this.dadosTrabalhador();
     }
 
 
-    dadosTrabalhador(){
-        //console.log(this.activatedRoute.snapshot.params);
-        this.meusdados = this.activatedRoute.snapshot.params.id === 'meusdados';
-        this.trabalhadorService.buscarMeusDados().subscribe((trabalhador) => {
-                this.trabalhador = trabalhador;
-                this.idTrab = this.trabalhador.id;
-            });
-    }
+    // dadosTrabalhador(){
+    //     //console.log(this.activatedRoute.snapshot.params);
+    //     this.meusdados = this.activatedRoute.snapshot.params.id === 'meusdados';
+    //     this.trabalhadorService.buscarMeusDados().subscribe((trabalhador) => {
+    //             this.trabalhador = trabalhador;
+    //             this.idTrab = this.trabalhador.id;
+    //         });
+    // }
 
     inicializarImagem() {
         this.cropperSettings = new CropperSettings();

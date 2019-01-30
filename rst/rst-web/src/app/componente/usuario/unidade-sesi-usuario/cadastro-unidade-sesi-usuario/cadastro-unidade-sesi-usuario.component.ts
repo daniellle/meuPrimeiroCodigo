@@ -1,3 +1,5 @@
+import { PerfilEnum } from './../../../../modelo/enum/enum-perfil';
+import { Perfil } from './../../../../modelo/perfil.model';
 import {environment} from './../../../../../environments/environment';
 import {SimNao} from 'app/modelo/enum/enum-simnao.model';
 import {EnumValues} from 'enum-values';
@@ -36,6 +38,7 @@ export class CadastroUnidadeSESIUsuarioComponent extends BaseComponent implement
     paginacao: Paginacao = new Paginacao(1, 10);
     public checks: IHash = {};
     public estados: any[];
+    perfis: Perfil[];
 
     constructor(
         private router: Router,
@@ -61,6 +64,9 @@ export class CadastroUnidadeSESIUsuarioComponent extends BaseComponent implement
     buscarUsuario(): void {
         this.usuarioService.buscarUsuarioById(this.idUsuario).subscribe((retorno: Usuario) => {
             this.usuario = retorno;
+            this.perfis = getPerfis.call(this, retorno);
+            console.log(this.perfis);
+            
             if (this.usuario && !this.usuario.perfisSistema) {
                 this.usuario.perfisSistema = new Array<UsuarioPerfilSistema>();
             }
@@ -68,6 +74,21 @@ export class CadastroUnidadeSESIUsuarioComponent extends BaseComponent implement
         }, (error) => {
             this.mensagemError(error);
         });
+        function getPerfis(retorno: Usuario): Perfil[] {
+            let map = new Map();
+            retorno.perfisSistema.forEach(value => {
+                map.set(value.perfil.codigo, value.perfil.nome);
+            });
+            let p = new Array<Perfil>();
+            map.forEach((value, key) => {
+                switch (PerfilEnum[<string>key]) {
+                    case PerfilEnum.GUS:
+                        p.push(new Perfil(null, value, key));
+                        break;
+                }
+            });
+            return p;
+        }
     }
 
     pesquisar(): void {
@@ -118,6 +139,7 @@ export class CadastroUnidadeSESIUsuarioComponent extends BaseComponent implement
             usuarioEntidade.email = this.usuario.email;
             usuarioEntidade.termo = EnumValues.getNameFromValue(SimNao, SimNao.true);
             usuarioEntidade.uat = item;
+            usuarioEntidade.perfil = this.filtroUat.perfil;
             lista.push(usuarioEntidade);
         });
         return lista;

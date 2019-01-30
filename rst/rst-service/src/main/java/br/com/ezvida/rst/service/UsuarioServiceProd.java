@@ -209,16 +209,28 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
     }
 
-    @Override
+
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> pesquisarPaginadoGirst(
             br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
             , ClienteAuditoria auditoria) {
 
         br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> listaPaginada = usuarioGirstViewDAO
-                .pesquisarPorFiltro(usuarioFilter, dados);
+                .pesquisarPorFiltro(usuarioFilter, dados,  pesquisarLoginsPerfisHierarquiaSuperior(usuarioFilter));
         LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
         return listaPaginada;
+    }
+
+    public List<String> pesquisarLoginsPerfisHierarquiaSuperior( br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter) {
+        if(usuarioFilter.getUsuarioLogadoHierarquia() == 0 || usuarioFilter.getUsuarioLogadoHierarquia() == null ){
+            return new ArrayList<String>();
+        }
+        try {
+            return  this.usuarioClient.getPerfisHierarquiaAcima(apiClientService.getURL(), apiClientService.getOAuthToken().getAccess_token(), usuarioFilter.getUsuarioLogadoHierarquia());
+        } catch (Exception e) {
+            LOGGER.error("Erro ao buscar hierarquia superior do Usuario de nível " + usuarioFilter.getUsuarioLogadoHierarquia() + ". Erro: " + e.getMessage(), e.getCause());
+            throw  e;
+        }
     }
 
     @Override
@@ -228,7 +240,7 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             , ClienteAuditoria auditoria) {
 
         List<PerfilUsuarioDTO> lista = usuarioGirstViewDAO
-                .pesquisarRelatorioFiltro(usuarioFilter, dados);
+                .pesquisarRelatorioFiltro(usuarioFilter, dados, pesquisarLoginsPerfisHierarquiaSuperior(usuarioFilter));
         LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
         return lista;
     }
@@ -240,7 +252,7 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             , ClienteAuditoria auditoria) {
 
         br.com.ezvida.rst.dao.filter.ListaPaginada<PerfilUsuarioDTO> lista = usuarioGirstViewDAO
-                .pesquisarPerfilUsuarioFiltro(usuarioFilter, dados);
+                .pesquisarPerfilUsuarioFiltro(usuarioFilter, dados, pesquisarLoginsPerfisHierarquiaSuperior(usuarioFilter));
         LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
         return lista;
     }
@@ -533,7 +545,7 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             usuario.setImagem(trabalhador.getImagem());
         } else {
             if(usuarioAConsultar.getPapeis().contains(DadosFilter.DIRETOR_DN) || usuarioAConsultar.getPapeis().contains(DadosFilter.GESTOR_DN)
-            || usuarioAConsultar.getPapeis().contains(DadosFilter.GESTOR_CONTEUDO_DN) || usuarioAConsultar.getPapeis().contains(DadosFilter.MEDICO_TRABALHO_DN)){
+                    || usuarioAConsultar.getPapeis().contains(DadosFilter.GESTOR_CONTEUDO_DN) || usuarioAConsultar.getPapeis().contains(DadosFilter.MEDICO_TRABALHO_DN)){
                 usuario.setDepartamentosRegionais(departamentoRegionalService.buscarDNPorSigla());
             }
             else {

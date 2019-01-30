@@ -75,7 +75,7 @@ export class PesquisaPerfilUsuarioComponent extends BaseComponent implements OnI
   }
 
   buscarPerfis(): void {
-    this.perfilService.buscarTodos().subscribe((retorno: any) => {
+    this.perfilService.buscarTodos(this.usuarioLogado.nivel).subscribe((retorno: any) => {
       this.perfis = retorno;
         this.perfis.push(this.semPerfilBarramento);
     }, (error) => {

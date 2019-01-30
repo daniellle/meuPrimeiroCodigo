@@ -1,18 +1,18 @@
-import {FiltroEndereco} from './../modelo/filtro-endereco.model';
-import {Municipio} from 'app/modelo/municipio.model';
-import {Injectable} from '@angular/core';
-import {BaseService} from 'app/servico/base.service';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Response} from '@angular/http';
-import {BloqueioService} from 'app/servico/bloqueio.service';
-import {Observable} from 'rxjs/Observable';
-import {AutenticacaoService} from 'app/servico/autenticacao.service';
-import {Paginacao} from 'app/modelo/paginacao.model';
-import {Uat} from 'app/modelo/uat.model';
-import {FiltroUat} from 'app/modelo/filtro-uat.model';
-import {ListaPaginada} from 'app/modelo/lista-paginada.model';
-import {Estado} from 'app/modelo/estado.model';
-import {UnidadeAtendimentoTrabalhador} from "../modelo/unid-atend-trabalhador.model";
+import { FiltroEndereco } from './../modelo/filtro-endereco.model';
+import { Municipio } from 'app/modelo/municipio.model';
+import { Injectable } from '@angular/core';
+import { BaseService } from 'app/servico/base.service';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Response } from '@angular/http';
+import { BloqueioService } from 'app/servico/bloqueio.service';
+import { Observable } from 'rxjs/Observable';
+import { AutenticacaoService } from 'app/servico/autenticacao.service';
+import { Paginacao } from 'app/modelo/paginacao.model';
+import { Uat } from 'app/modelo/uat.model';
+import { FiltroUat } from 'app/modelo/filtro-uat.model';
+import { ListaPaginada } from 'app/modelo/lista-paginada.model';
+import { Estado } from 'app/modelo/estado.model';
+import { UnidadeAtendimentoTrabalhador } from "../modelo/unid-atend-trabalhador.model";
 
 @Injectable()
 export class UatService extends BaseService<Uat> {
@@ -56,7 +56,7 @@ export class UatService extends BaseService<Uat> {
             });
     }
 
-    pesquisarPorNome(nome: string, id: number): Observable<UnidadeAtendimentoTrabalhador[]>{
+    pesquisarPorNome(nome: string, id: number): Observable<UnidadeAtendimentoTrabalhador[]> {
         return super.get('/v1/uats/' + id + '/' + nome)
             .map((response: Response) => {
                 return response;
@@ -65,23 +65,24 @@ export class UatService extends BaseService<Uat> {
             });
     }
 
-
-
     pesquisarPorEndereco(filtroEndereco: FiltroEndereco): Observable<Uat[]> {
         const params = new HttpParams().append('idEstado', filtroEndereco.idEstado ? filtroEndereco.idEstado : '0')
             .append('idMunicipio', filtroEndereco.idMunicipio ? filtroEndereco.idMunicipio : '0')
-            .append('bairro', filtroEndereco.bairro ? filtroEndereco.bairro : '');
+            .append('bairro', filtroEndereco.bairro ? filtroEndereco.bairro : '')
+            .append('filtrarDepRegEmp', filtroEndereco.filtrarDepRegEmp);
         return super.get('/v1/uats/endereco', params)
-            .map((response: ListaPaginada<Uat>) => {
-                return this.parseResponsePaginado(response);
+            .map((response: Uat[]) => {
+                return response;
             }).catch((error: Response) => {
                 return Observable.throw(error);
             });
     }
 
     private parseResponsePaginado(response: ListaPaginada<Uat>): ListaPaginada<Uat> {
-        if (!response.list) {
-            response.list = new Array<Uat>();
+        if (response) {
+            if (!response.list) {
+                response.list = new Array<Uat>();
+            }
         }
         return response;
     }

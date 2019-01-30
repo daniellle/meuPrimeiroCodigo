@@ -17,8 +17,8 @@ export class PerfilService extends BaseService<Perfil> {
     super(httpClient, bloqueioService);
   }
 
-  buscarTodos(): Observable<Perfil[]> {
-    return super.get('/v1/perfis')
+  buscarTodos(nivelHierarquivo): Observable<Perfil[]> {
+    return super.get('/v1/perfis/' + nivelHierarquivo)
     .map((response: Response) => {
       return response;
     }).catch((error: Response) => {

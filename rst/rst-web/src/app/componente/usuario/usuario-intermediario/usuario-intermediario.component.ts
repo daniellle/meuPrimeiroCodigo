@@ -10,6 +10,7 @@ import {Component, OnInit, ElementRef} from '@angular/core';
 import {PerfilEnum} from 'app/modelo/enum/enum-perfil';
 import { UsuarioEntidadeService } from 'app/servico/usuario-entidade.service';
 import { UsuarioEntidade } from 'app/modelo/usuario-entidade.model';
+import { log } from 'util';
 
 @Component({
     selector: 'app-usuario-intermediario',
@@ -79,6 +80,7 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
         }
     }
 
+
     private temSindPerfil() {
         return false;
     }
@@ -91,44 +93,76 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
     }
 
     private checkUsuariosEntidade() {
-        this.usuariosEntidade.forEach((element) => {
-            if (element.empresa) {
-                this.temPerfilEmpresa = true;
-            }
-            if (element.departamentoRegional) {
-                this.temPerfilDR = true;
-            }
-            if (element.uat) {
-                this.temPerfilUnidade = true;
-            }
-        });
+        if(this.usuariosEntidade){
+            this.usuariosEntidade.forEach((element) => {
+                if (element.empresa) {
+                    this.temPerfilEmpresa = true;
+                }
+                if (element.departamentoRegional) {
+                    this.temPerfilDR = true;
+                }
+                if (element.uat) {
+                    this.temPerfilUnidade = true;
+                }
+            });
+        }
     }
 
     private temEmpPerfil(): boolean {
-        const isPermitido = this.temPapel(PerfilEnum.ADM, PerfilEnum.ATD, PerfilEnum.GEEMM,
-            PerfilEnum.GEEM, PerfilEnum.PFS, PerfilEnum.GCOI);
+        const isPermitido = this.temPapel(
+            PerfilEnum.ADM,
+            PerfilEnum.DIDN,
+            PerfilEnum.GDNP,
+            PerfilEnum.GDNA,
+            PerfilEnum.GCDN,
+            PerfilEnum.SUDR,
+            PerfilEnum.DIDR,
+            PerfilEnum.GDRM,
+            PerfilEnum.GDRA,
+            PerfilEnum.GDRP,
+            PerfilEnum.GCDR,
+            PerfilEnum.GCODR,
+            PerfilEnum.GUS,
+            PerfilEnum.GEEMM,
+            PerfilEnum.GEEM, PerfilEnum.PFS, PerfilEnum.GCOI,
+            PerfilEnum.ATD
+             );
         const isPerfil = this.contemPerfil([PerfilEnum.GEEM, PerfilEnum.GEEMM, PerfilEnum.TRA, PerfilEnum.PFS, PerfilEnum.GCOI,
             PerfilEnum.ST, PerfilEnum.RH], this.usuario);
         return isPerfil && isPermitido;
     }
 
     private temDRPerfil(): boolean {
-        return this.temPapel(PerfilEnum.ADM,
-                            PerfilEnum.DIDN,
-                            PerfilEnum.ATD,
-                            PerfilEnum.GDRM,
-                            PerfilEnum.SUDR,
-                            PerfilEnum.GDRA,
-                            PerfilEnum.MTSDR,
-                            PerfilEnum.GCDR,
-                            PerfilEnum.GUS,
-                            PerfilEnum.GCODR)
+        return this.temPapel(
+            PerfilEnum.ADM,
+            PerfilEnum.DIDN,
+            PerfilEnum.GDNP,
+            PerfilEnum.GDNA,
+            PerfilEnum.GCDN,
+            PerfilEnum.SUDR,
+            PerfilEnum.GDRM,
+            PerfilEnum.GDRA,
+            PerfilEnum.MTSDR,
+            PerfilEnum.GCDR,
+            PerfilEnum.GCODR,
+            PerfilEnum.ATD)
             && this.contemPerfil([PerfilEnum.DIDR, PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.SUDR,
                 PerfilEnum.MTSDR, PerfilEnum.GCDR, PerfilEnum.GUS, PerfilEnum.GCODR], this.usuario);
     }
 
     private temUnidPerfil(): boolean {
-        return this.temPapel(PerfilEnum.ADM, PerfilEnum.DIDN, PerfilEnum.ATD)
+        return this.temPapel( PerfilEnum.ADM,
+            PerfilEnum.DIDN,
+            PerfilEnum.GDNP,
+            PerfilEnum.GDNA,
+            PerfilEnum.GCDN,
+            PerfilEnum.SUDR,
+            PerfilEnum.GDRM,
+            PerfilEnum.GDRA,
+            PerfilEnum.MTSDR,
+            PerfilEnum.GCDR,
+            PerfilEnum.GCODR,
+            PerfilEnum.ATD)
             && this.contemPerfil([PerfilEnum.GUS], this.usuario);
     }
 }

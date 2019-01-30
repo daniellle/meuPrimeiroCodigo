@@ -56,6 +56,22 @@ public class PesquisaSesiEndpoint extends SegurancaEndpoint<UnidadeAtendimentoTr
 				.build();
 	}
 
+
+    @GET
+    @Encoded
+    @Path("/unidades-sesi/listar")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Autorizacao(permissoes = @Permissao(value = { PermissionConstants.PESQUISA_SESI_CONSULTAR }))
+    public Response listarUnidadesSesi(@Context SecurityContext context, @Context HttpServletRequest request){
+        return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(pesquisaSesiService.listarUnidadesSesi(ClienteInfos.getClienteInfos(context, request,
+                TipoOperacaoAuditoria.CONSULTA, Funcionalidade.PESQUISA_SESI))))
+            .build();
+	}
+
+
 	@GET
 	@Path("/unidades-sesi/endereco/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -71,6 +87,21 @@ public class PesquisaSesiEndpoint extends SegurancaEndpoint<UnidadeAtendimentoTr
 						ClienteInfos.getDadosFilter(context))))
 				.build();
 	}
+
+    @GET
+    @Path("/2/unidades-sesi/endereco/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.PESQUISA_SESI_CONSULTAR}))
+    public Response buscarEnderecoUnidadeSesiId(@PathParam("id") String id, @Context SecurityContext context,
+                                                @Context HttpServletRequest request) {
+        return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(pesquisaSesiService.buscarEnderecoUnidadeSesiId(
+                Long.parseLong(id), ClienteInfos.getClienteInfos(context, request,
+                    TipoOperacaoAuditoria.CONSULTA, Funcionalidade.PESQUISA_SESI))))
+            .build();
+    }
 
 	@GET
 	@Encoded
