@@ -117,7 +117,36 @@ public class UnidadeAtendimentoTrabalhadorService extends BaseService {
         return uat;
     }
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public UnidadeAtendimentoTrabalhador pesquisarPorId(Long id, ClienteAuditoria auditoria) {
+
+        if (id == null) {
+            throw new BusinessErrorException(getMensagem("app_rst_id_consulta_nulo"));
+        }
+
+        UnidadeAtendimentoTrabalhador uat = unidadeAtendimentoTrabalhadorDAO.pesquisarPorId(id);
+
+        if (uat == null) {
+            throw new RegistroNaoEncontradoException(getMensagem("app_rst_nenhum_registro_encontrado"));
+        }
+
+        if (uat != null) {
+            uat.setTelefone(
+                    Sets.newHashSet(telefoneUnidadeAtendimentoTrabalhadorService.pesquisarPorIdUat(uat.getId())));
+            uat.setEmail(Sets.newHashSet(emailUnidadeAtendimentoTrabalhadorService.pesquisarPorIdUat(uat.getId())));
+            uat.setEndereco(
+                    Sets.newHashSet(enderecoUnidadeAtendimentoTrabalhadorService.pesquisarPorIdUat(uat.getId())));
+        }
+
+
+        if (auditoria != null) {
+            LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de Unidade de Atendimento ao Trabalhador por id: " + id);
+        }
+        return uat;
+    }
+
+        @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public UnidadeAtendimentoTrabalhador salvar(UnidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador,
                                                 ClienteAuditoria auditoria, DadosFilter dados) {
 

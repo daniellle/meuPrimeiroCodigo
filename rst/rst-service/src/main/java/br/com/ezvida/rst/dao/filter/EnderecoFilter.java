@@ -13,6 +13,9 @@ public class EnderecoFilter extends FilterBase {
 	@QueryParam("bairro")
 	private String bairro;
 
+	@QueryParam("filtrarDepRegEmp")
+	private String filtrarDepRegEmp;
+
 	public String getBairro() {
 		return bairro;
 	}
@@ -25,4 +28,11 @@ public class EnderecoFilter extends FilterBase {
 		return idMunicipio;
 	}
 
+	public String getFiltrarDepRegEmp() {
+		return filtrarDepRegEmp;
+	}
+
+	public void setFiltrarDepRegEmp(String filtrarDepRegEmp) {
+		this.filtrarDepRegEmp = filtrarDepRegEmp;
+	}
 }
