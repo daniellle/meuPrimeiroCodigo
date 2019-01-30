@@ -11,6 +11,10 @@ import javax.inject.Inject;
 import br.com.ezvida.girst.apiclient.model.Usuario;
 import br.com.ezvida.girst.apiclient.model.UsuarioPerfilSistema;
 import br.com.ezvida.rst.anotacoes.Preferencial;
+import br.com.ezvida.rst.dao.TrabalhadorDAO;
+import br.com.ezvida.rst.dao.UsuarioEntidadeDAO;
+import br.com.ezvida.rst.model.Trabalhador;
+import br.com.ezvida.rst.model.UsuarioEntidade;
 import br.com.ezvida.rst.utils.ValidadorUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -39,6 +43,12 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 
 	@Inject
 	private EmpresaTrabalhadorService empresaTrabalhadorService;
+
+	@Inject
+	private TrabalhadorDAO trabalhadorDAO;
+
+	@Inject
+	private UsuarioEntidadeDAO usuarioEntidadeDAO;
 
 	@Inject
 	@Preferencial
@@ -164,9 +174,10 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public boolean validarTrabalhador(String cpf){
+	public List<EmpresaTrabalhadorLotacao> validarTrabalhador(String cpf){
 
-		boolean empresaTrabalhadorLotacaoList = false;
+		List<EmpresaTrabalhadorLotacao> empresaTrabalhadorLotacaoList = null;
+		List<UsuarioEntidade> usuarioEntidadeList;
 
 		if( cpf != null ) {
 			cpf = cpf.replace(".","").replace("-","");
@@ -196,15 +207,31 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 						}
 
 						if (perfilPraValidar) {
+							Trabalhador trabalhador = trabalhadorDAO.pesquisarPorCpf(cpf);
+							List<UsuarioEntidade> usuarioEntidade = usuarioEntidadeDAO.pesquisarPorCPF(cpf, true);
+							Boolean response = false;
+							if(trabalhador == null && usuarioEntidade != null){
+								usuarioEntidadeList = empresaTrabalhadorLotacaoDAO.validarGestor(cpf);
+								if(usuarioEntidadeList == null || usuarioEntidadeList.size() == 0){
+									response = false;
+								}else{
+									response = true;
+								}
+							}
+							else{
 							empresaTrabalhadorLotacaoList = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
-							if (empresaTrabalhadorLotacaoList) {
+							if (empresaTrabalhadorLotacaoList == null || empresaTrabalhadorLotacaoList.size() == 0) {
 
+								response = false;
+							}
+							else{
+								response = true;
+							}
+							}
+							if(!response){
 								throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
 							}
 						}
-
-
-
 				} else {
 					throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
 				}
@@ -215,6 +242,7 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 		}else{
 			throw new BusinessErrorException(getMensagem("app_rst_empregado_cpf_invalido"));
 		}
+
 		return empresaTrabalhadorLotacaoList;
 	}
 }

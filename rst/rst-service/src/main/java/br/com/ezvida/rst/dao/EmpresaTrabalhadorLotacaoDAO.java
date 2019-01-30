@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 
+import br.com.ezvida.rst.model.UsuarioEntidade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -242,6 +243,25 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 			retorno = false;
 		}
 		return retorno;
+	}
+
+	public List<UsuarioEntidade> validarGestor (String cpf){
+		StringBuilder sql = new StringBuilder();
+
+		sql.append(" select usuarioEntidade ");
+		sql.append(" from UsuarioEntidade usuarioEntidade ");
+		sql.append(" left join fetch usuarioEntidade.empresa empresa ");
+		sql.append(" left join fetch empresa.unidadeObra unidadeObra ");
+		sql.append(" left join fetch unidadeObra.unidadeObraContratoUats unidadeObraContratoUat ");
+		sql.append(" where usuarioEntidade.cpf = :cpf ");
+		sql.append(" and (unidadeObraContratoUat.dataContratoInicio is not null and unidadeObraContratoUat.dataContratoInicio <= :dataHoje) ");
+		sql.append(" and (unidadeObraContratoUat.dataContratoFim is not null and unidadeObraContratoUat.dataContratoFim > :dataHoje) ");
+		sql.append(" and (unidadeObraContratoUat.flagInativo is null or unidadeObraContratoUat.flagInativo = 'N') ");
+		TypedQuery<UsuarioEntidade> query = criarConsultaPorTipo(sql.toString(), UsuarioEntidade.class);
+		query.setParameter("cpf", cpf);
+		query.setParameter("dataHoje", new Date(), TemporalType.TIMESTAMP);
+
+		return query.getResultList();
 	}
 
 }
