@@ -67,7 +67,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
         getQueryPaginadoNativoPerfilUsuario(sql, parametros, usuarioFilter, dados, false, listaDeLogins);
         Query query = criarConsultaNativa(sql.toString());
         DAOUtil.setParameterMap(query, parametros);
-        listaPaginada.setQuantidade(getCountQueryPaginado(usuarioFilter, dados,listaDeLogins).longValue());
+        listaPaginada.setQuantidade(getCountQueryPaginado(usuarioFilter, dados, listaDeLogins).longValue());
 
         if (usuarioFilter != null && usuarioFilter.getPagina() != null
                 && usuarioFilter.getQuantidadeRegistro() != null) {
@@ -108,7 +108,6 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
                                         DadosFilter dados, boolean count, List<String> listaDeLogin) {
 
 
-
         if (count) {
             jpql.append(" select count( DISTINCT usuario.id) from ");
         } else {
@@ -124,7 +123,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
         } else {
             jpql.append(" WHERE vue.id is not null ");
         }
-        if(!listaDeLogin.isEmpty()){
+        if (!listaDeLogin.isEmpty()) {
             jpql.append(" AND vue.login NOT IN (:listaLogin) ");
             parametros.put("listaLogin", listaDeLogin);
         }
@@ -155,7 +154,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
             jpql.append(" WHERE vue.id is not null");
         }
 
-        if(!listaDeLogins.isEmpty()){
+        if (!listaDeLogins.isEmpty()) {
             jpql.append(" AND vue.login NOT IN (:listaDeLogins) ");
             parametros.put("listaDeLogins", listaDeLogins);
         }
@@ -219,36 +218,30 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 
         if (dados != null && !dados.isAdministrador()) {
 
-            if(dados.isGestorDn() || dados.isDiretoriaDn()){
+            if (dados.isGestorDn() || dados.isDiretoriaDn()) {
                 jpql.append(" AND vue.codigo_perfil not in ('ADM', 'ATD', 'GDNA', 'MTSDN') ");
                 return;
-            }
-            else if (dados.getPapeis().contains("SUDR")){
+            } else if (dados.getPapeis().contains("SUDR")) {
                 jpql.append(" AND vue.codigo_perfil not in ('ADM', 'DIDN', 'GDNA', 'GDNP', 'MTSDN', 'GCDN', 'GCODN', 'ATD') ");
                 jpql.append(" AND vue.codigo_perfil is not null ");
                 return;
-            }
-            else if (dados.getPapeis().contains("GDRM")){
+            } else if (dados.getPapeis().contains("GDRM")) {
                 jpql.append(" AND vue.codigo_perfil not in ('ADM', 'DIDN', 'GDNA', 'GDNP', 'MTSDN', 'GCDN', 'GCODN', 'ATD', 'SUDR') ");
                 jpql.append(" AND vue.codigo_perfil is not null ");
                 return;
-            }
-            else if (dados.getPapeis().contains("GDRA")){
+            } else if (dados.getPapeis().contains("GDRA")) {
                 jpql.append(" AND vue.codigo_perfil not in ('ADM', 'DIDN', 'GDNA', 'GDNP', 'MTSDN', 'GCDN', 'GCODN', 'ATD', 'SUDR', 'GDRM')");
                 jpql.append(" AND vue.codigo_perfil is not null ");
                 return;
-            }
-            else if(dados.getPapeis().contains("GUS")){
+            } else if (dados.getPapeis().contains("GUS")) {
                 jpql.append(" AND vue.codigo_perfil not in ('ADM', 'DIDN', 'GDNA', 'GDNP', 'MTSDN', 'GCDN', 'GCODN', 'ATD', 'SUDR', 'GDRM', 'GDRA')");
                 jpql.append(" AND vue.codigo_perfil is not null ");
                 return;
-            }
-            else if(dados.getPapeis().contains("GEEMM")){
+            } else if (dados.getPapeis().contains("GEEMM")) {
                 jpql.append(" AND vue.codigo_perfil not in ('ADM', 'DIDN', 'GDNA', 'GDNP', 'MTSDN', 'GCDN', 'GCODN', 'ATD', 'SUDR', 'GDRM', 'GDRA', 'MTSDR', 'GUS')");
                 jpql.append(" AND vue.codigo_perfil is not null ");
                 return;
-            }
-            else if(dados.getPapeis().contains("GEEM")){
+            } else if (dados.getPapeis().contains("GEEM")) {
                 jpql.append(" AND vue.codigo_perfil not in ('ADM', 'DIDN', 'GDNA', 'GDNP', 'MTSDN', 'GCDN', 'GCODN', 'ATD', 'SUDR', 'GDRM', 'GDRA', 'MTSDR', 'GUS', 'GEEMM')");
                 jpql.append(" AND vue.codigo_perfil is not null ");
                 return;
@@ -268,7 +261,6 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
             }*/
         }
     }
-
 
 
     private void aplicarFiltrosDados(StringBuilder jpql, Map<String, Object> parametros, DadosFilter dados) {
@@ -351,7 +343,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
             parametros.put("idDepartamentoRegional", usuarioFilter.getIdDepartamentoRegional());
         }
 
-        if(usuarioFilter.getIdUnidadeSesi() != null){
+        if (usuarioFilter.getIdUnidadeSesi() != null) {
 
             jpql.append(" AND (vue.id_und_atd_trab_fk = :idUnidadeSesi) ");
             parametros.put("idUnidadeSesi", usuarioFilter.getIdUnidadeSesi());
@@ -379,13 +371,13 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 
         for (Object[] objeto : list) {
             PerfilUsuarioDTO pu = new PerfilUsuarioDTO();
-            if(objeto[1] != null) {
+            if (objeto[1] != null) {
                 pu.setNome(objeto[1].toString());
             }
-            if(objeto[2] != null) {
+            if (objeto[2] != null) {
                 pu.setLogin(objeto[2].toString());
             }
-            if(objeto[4] != null){
+            if (objeto[4] != null) {
                 pu.setPerfil(objeto[4].toString());
             }
             if (objeto[5] != null) {
@@ -404,17 +396,36 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 
     private List<PerfilUsuarioDTO> tratarPerfisDuplicados(List<PerfilUsuarioDTO> lista) {
         List<PerfilUsuarioDTO> novaList = new ArrayList<>();
+        String departamento;
+        String empresa;
+        String unidade;
         int i = 0;
         for (PerfilUsuarioDTO item : lista) {
             for (i = 0; i < novaList.size(); i++) {
-                if(item.getLogin().equals(novaList.get(i).getLogin())){
+                if (item.getLogin().equals(novaList.get(i).getLogin())) {
                     break;
                 }
             }
-            if(i >= novaList.size()){
+            if (i >= novaList.size()) {
                 novaList.add(item);
-            }else{
-                novaList.get(i).setPerfil( novaList.get(i).getPerfil() + "; " + item.getPerfil());
+            } else {
+                novaList.get(i).setPerfil(novaList.get(i).getPerfil() + "; " + item.getPerfil());
+                if (novaList.get(i).getDepartamento() == null) { novaList.get(i).setDepartamento(""); }
+                if (item.getDepartamento() == null) { item.setDepartamento(""); }
+
+                departamento = novaList.get(i).getDepartamento() + item.getDepartamento();
+                novaList.get(i).setDepartamento(departamento);
+
+                if (novaList.get(i).getEmpresa() == null) { novaList.get(i).setEmpresa("");}
+                if (item.getEmpresa() == null) { item.setEmpresa(""); }
+
+                empresa = novaList.get(i).getEmpresa() + item.getEmpresa();
+                novaList.get(i).setEmpresa(empresa);
+
+                if (novaList.get(i).getUnidade() == null) { novaList.get(i).setUnidade("");}
+                if (item.getUnidade() == null) { item.setUnidade("");}
+                unidade = novaList.get(i).getUnidade() + item.getUnidade();
+                novaList.get(i).setUnidade(unidade);
             }
         }
         return novaList;

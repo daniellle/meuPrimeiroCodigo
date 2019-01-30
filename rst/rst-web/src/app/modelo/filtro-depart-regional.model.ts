@@ -4,6 +4,7 @@ export class FiltroDepartRegional {
     idEstado: string;
     situacao = '';
     aplicarDadosFilter = true;
+    perfil: string
 
     constructor() {
         this.idEstado = undefined;
