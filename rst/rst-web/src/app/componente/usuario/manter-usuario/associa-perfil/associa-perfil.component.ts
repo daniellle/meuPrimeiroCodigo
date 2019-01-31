@@ -129,29 +129,34 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
   }
 
   associarPerfil() {
-      this.usuario.perfisSistema.forEach(sistemaPerfil => {
-          if(sistemaPerfil.sistema.codigo == "cadastro"){
-              this.temCadastro = true;
+  
+    if(this.usuario.perfisSistema){
+      
+        this.usuario.perfisSistema.forEach(sistemaPerfil => {
+            if(sistemaPerfil.sistema.codigo == "cadastro"){
+                this.temCadastro = true;
+            }
+        });
+        this.perfisSistemas.forEach(sistemaPerfil => {
+            if(sistemaPerfil.sistema.codigo == "epidemiologia"){
+                this.associandoEpidemiologia = true;
           }
-      });
-      this.perfisSistemas.forEach(sistemaPerfil => {
-          if(sistemaPerfil.sistema.codigo == "epidemiologia"){
-              this.associandoEpidemiologia = true;
-         }
-      });
-      if(!this.temCadastro && this.associandoEpidemiologia){
-          this.perfisSistemas = [];
-          this.usuario.perfisSistema.pop();
-          this.temCadastro = undefined;
-          this.associandoEpidemiologia = undefined;
-          this.mensagemError("É necessário associar ter uma associação com o sistema Cadastro para criar associação com o sistema Epidemiologia");
-          return;
+        });
       }
-    this.usuario.perfisSistema = [].concat(this.perfisSistemas);
-    this.changeSistema(undefined);
-    this.sistemasSelect.writeValue('');
-    this.temCadastro = undefined;
-    this.associandoEpidemiologia = undefined;
+        if(!this.temCadastro && this.associandoEpidemiologia){
+            this.perfisSistemas = [];
+            this.usuario.perfisSistema.pop();
+            this.temCadastro = undefined;
+            this.associandoEpidemiologia = undefined;
+            this.mensagemError("É necessário associar ter uma associação com o sistema Cadastro para criar associação com o sistema Epidemiologia");
+            return;
+        }
+      this.usuario.perfisSistema = [].concat(this.perfisSistemas);
+      this.changeSistema(undefined);
+      this.sistemasSelect.writeValue('');
+      this.temCadastro = undefined;
+      this.associandoEpidemiologia = undefined;
+    
   }
 
   isPerfilTrabalhador(perfil: Perfil): boolean {

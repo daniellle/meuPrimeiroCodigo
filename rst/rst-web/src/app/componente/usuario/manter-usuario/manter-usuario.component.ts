@@ -1,8 +1,10 @@
+import { UsuarioEntidade } from 'app/modelo/usuario-entidade.model';
 import { PerfilSistema } from 'app/modelo/ṕerfil-sistemas';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { UsuarioEntidadeService } from './../../../servico/usuario-entidade.service';
 import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
 import { Seguranca } from './../../../compartilhado/utilitario/seguranca.model';
 import { environment } from './../../../../environments/environment';
@@ -20,6 +22,7 @@ import { SistemaEnum } from 'app/modelo/enum/enum-sistema.model';
 import { element } from 'protractor';
 import { ignoreElements } from 'rxjs/operator/ignoreElements';
 import { log } from 'util';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
     selector: 'app-manter-usuario',
@@ -45,6 +48,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         private route: ActivatedRoute,
         protected bloqueioService: BloqueioService,
         protected dialogo: ToastyService,
+        private usuarioEntidadeService: UsuarioEntidadeService
     ) {
         super(bloqueioService, dialogo);
     }
@@ -73,8 +77,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     buscarUsuario(): void {
         this.usuarioService.buscarUsuarioById(this.id)
-        .subscribe((retorno: Usuario) =>  {this.usuario = retorno;
-        this.contemPortalApenas = this.ehPortalApenas(this.usuario);},
+        .subscribe((retorno: Usuario) =>  this.usuario = retorno,
         error => this.mensagemError(error));
        ;
     }
@@ -92,26 +95,28 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             this.usuario.login = MascaraUtil.removerMascara(login);
             this.usuario.email = email;
             this.usuario.dados = undefined;
-            this.adicionarGestorDRPortal(this.usuario, this.contemPortalApenas);
+            this.adicionarGestorDRPortal(this.usuario);
+
             this.usuarioService.salvarUsuario(this.usuario).subscribe((retorno: Usuario) => {
                 this.usuario = retorno;
                 this.id = this.usuario.id;
+                this.excluirDRsAssociadas(this.usuario);
                 this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
                 this.voltar();
             }, error =>
-                this.mensagemError(error)
+            this.mensagemError(error)
             );
         }
     }
 
-    adicionarGestorDRPortal(usuario: Usuario, contemPortalApenas){
+    adicionarGestorDRPortal(usuario: Usuario){
         if((this.ehGCDN() || this.ehGDNA() || this.ehGDNP() || this.ehSUDR()) || this.ehGDRM() && !this.contemPerfil([PerfilEnum.GDRP], usuario) && this.contemPerfil([PerfilEnum.GDRM, PerfilEnum.GDRA], usuario)){
             let sistemaEnums = ['', SistemaEnum.PORTAL, SistemaEnum.CADASTRO];
             let sistemaNomes = ['', 'Portal', 'Cadastro'];
            this.cadastrarPerfisSistemasGDRPortal(sistemaNomes, sistemaEnums, usuario);
 
         }
-        if(!contemPortalApenas && this.contemPerfil([PerfilEnum.GDRP], usuario) && (!this.contemPerfil([PerfilEnum.GDRM], usuario)&& !this.contemPerfil([PerfilEnum.GDRA], usuario))){
+        if(this.contemPerfil([PerfilEnum.GDRP], usuario) && (!this.contemPerfil([PerfilEnum.GDRM], usuario)&& !this.contemPerfil([PerfilEnum.GDRA], usuario))){
 
             for(let i =0; i<2; i++){
                 usuario.perfisSistema.forEach((perfilSistema: UsuarioPerfilSistema) => {
@@ -125,16 +130,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                 });
             }
         }
-    }
-
-    ehPortalApenas(usuario: Usuario){
-        if(usuario.perfisSistema){
-        if(this.contemPerfil([PerfilEnum.GDRP], usuario) && !this.contemPerfil([PerfilEnum.GDRM, PerfilEnum.GDRA], usuario)){
-            return true;
-        }else{
-         return false;
-        }
-    }
     }
 
     editarEvent(sistema: string) {
@@ -184,6 +179,20 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                 let perfilSistema = new UsuarioPerfilSistema(perfil, sistema);
                 usuario.perfisSistema.push(perfilSistema);
             }
+    }
+    excluirDRsAssociadas(usuario: Usuario){
+        
+        if(!this.contemPerfil([PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.GDRP], usuario)){
+            this.usuarioEntidadeService.pesquisaUsuariosEntidade(usuario.login).subscribe((usuariosEntidade: UsuarioEntidade[]) => {
+                
+                usuariosEntidade.forEach(usuarioEntidade => {
+                    if(usuarioEntidade.departamentoRegional){
+                        this.usuarioEntidadeService.desativar(usuarioEntidade)
+                            .subscribe()
+                    }
+                })
+            }, err => this.mensagemError(err))
+        }
     }
 
     ehGDNA(){
