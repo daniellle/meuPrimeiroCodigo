@@ -188,7 +188,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                 usuariosEntidade.forEach(usuarioEntidade => {
                     if(usuarioEntidade.departamentoRegional){
                         this.usuarioEntidadeService.desativar(usuarioEntidade)
-                            .subscribe(console.log)
+                            .subscribe()
                     }
                 })
             }, err => this.mensagemError(err))
