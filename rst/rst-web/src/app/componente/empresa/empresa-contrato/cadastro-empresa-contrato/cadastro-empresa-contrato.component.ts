@@ -88,10 +88,10 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         private drService: DepartRegionalService,
     ) {
         super(bloqueioService, dialogo);
-        this.delayerUndObra.debounceTime(500).distinctUntilChanged().switchMap(
-            (text) => this.unidadesObra = this.pesquisarUnidadeObrasPorNome(text)).subscribe();
-        this.delayerUndSesi.debounceTime(500).distinctUntilChanged().switchMap(
-            (text) => this.unidadesAT = this.pesquisarUnidadeSesi(text)).subscribe();
+        this.delayerUndObra.debounceTime(500).distinctUntilChanged().subscribe(text => {this.unidadesObra = this.pesquisarUnidadeObrasPorNome(text)});
+        this.delayerUndSesi.debounceTime(500).distinctUntilChanged().subscribe(
+            (text) => {this.unidadesAT = this.pesquisarUnidadeSesi(text);}
+        );
     }
 
     ngOnInit() {
@@ -327,7 +327,9 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     }
 
     pesquisarUnidadeSesi(text: string): Observable<UnidadeAtendimentoTrabalhador[]> {
-        return this.unidadeATService.pesquisarPorNome(text, this.drSelecionado.id);
+        if(text.trim() !== ""){
+            return this.unidadeATService.pesquisarPorNome(text, this.drSelecionado.id);
+        }
     }
 
 
