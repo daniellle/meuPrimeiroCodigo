@@ -73,8 +73,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
 
     buscarUsuario(): void {
         this.usuarioService.buscarUsuarioById(this.id)
-        .subscribe((retorno: Usuario) =>  {this.usuario = retorno;
-        this.contemPortalApenas = this.ehPortalApenas(this.usuario);},
+        .subscribe((retorno: Usuario) =>  this.usuario = retorno,
         error => this.mensagemError(error));
        ;
     }
@@ -92,7 +91,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             this.usuario.login = MascaraUtil.removerMascara(login);
             this.usuario.email = email;
             this.usuario.dados = undefined;
-            this.adicionarGestorDRPortal(this.usuario, this.contemPortalApenas);
+            this.adicionarGestorDRPortal(this.usuario);
             this.usuarioService.salvarUsuario(this.usuario).subscribe((retorno: Usuario) => {
                 this.usuario = retorno;
                 this.id = this.usuario.id;
@@ -104,14 +103,14 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         }
     }
 
-    adicionarGestorDRPortal(usuario: Usuario, contemPortalApenas){
+    adicionarGestorDRPortal(usuario: Usuario){
         if((this.ehGCDN() || this.ehGDNA() || this.ehGDNP() || this.ehSUDR()) || this.ehGDRM() && !this.contemPerfil([PerfilEnum.GDRP], usuario) && this.contemPerfil([PerfilEnum.GDRM, PerfilEnum.GDRA], usuario)){
             let sistemaEnums = ['', SistemaEnum.PORTAL, SistemaEnum.CADASTRO];
             let sistemaNomes = ['', 'Portal', 'Cadastro'];
            this.cadastrarPerfisSistemasGDRPortal(sistemaNomes, sistemaEnums, usuario);
 
         }
-        if(!contemPortalApenas && this.contemPerfil([PerfilEnum.GDRP], usuario) && (!this.contemPerfil([PerfilEnum.GDRM], usuario)&& !this.contemPerfil([PerfilEnum.GDRA], usuario))){
+        if(this.contemPerfil([PerfilEnum.GDRP], usuario) && (!this.contemPerfil([PerfilEnum.GDRM], usuario)&& !this.contemPerfil([PerfilEnum.GDRA], usuario))){
 
             for(let i =0; i<2; i++){
                 usuario.perfisSistema.forEach((perfilSistema: UsuarioPerfilSistema) => {
@@ -125,16 +124,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                 });
             }
         }
-    }
-
-    ehPortalApenas(usuario: Usuario){
-        if(usuario.perfisSistema){
-        if(this.contemPerfil([PerfilEnum.GDRP], usuario) && !this.contemPerfil([PerfilEnum.GDRM, PerfilEnum.GDRA], usuario)){
-            return true;
-        }else{
-         return false;
-        }
-    }
     }
 
     editarEvent(sistema: string) {
