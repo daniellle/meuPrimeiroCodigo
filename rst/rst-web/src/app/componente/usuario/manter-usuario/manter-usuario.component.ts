@@ -98,7 +98,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             this.adicionarGestorDRPortal(this.usuario);
 
             this.usuarioService.salvarUsuario(this.usuario).subscribe((retorno: Usuario) => {
-                this.usuario = retorno;
+                this.usuario.id = retorno.id;
                 this.id = this.usuario.id;
                 this.excluirDRsAssociadas(this.usuario);
                 this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
@@ -184,13 +184,14 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         
         if(!this.contemPerfil([PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.GDRP], usuario)){
             this.usuarioEntidadeService.pesquisaUsuariosEntidade(usuario.login).subscribe((usuariosEntidade: UsuarioEntidade[]) => {
-                
-                usuariosEntidade.forEach(usuarioEntidade => {
-                    if(usuarioEntidade.departamentoRegional){
-                        this.usuarioEntidadeService.desativar(usuarioEntidade)
-                            .subscribe()
-                    }
-                })
+                if(usuariosEntidade){
+                    usuariosEntidade.forEach(usuarioEntidade => {
+                        if(usuarioEntidade.departamentoRegional){
+                            this.usuarioEntidadeService.desativar(usuarioEntidade)
+                                .subscribe()
+                        }
+                    });
+                }
             }, err => this.mensagemError(err))
         }
     }
