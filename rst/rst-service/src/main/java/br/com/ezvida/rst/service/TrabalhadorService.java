@@ -243,7 +243,11 @@ public class TrabalhadorService extends BaseService {
     }
 
     private Usuario buscarTrabalhadorJaCadastrado(String login) {
-        return usuarioService.buscarPorLogin(login);
+        try {
+            return usuarioService.buscarPorLogin(login);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
