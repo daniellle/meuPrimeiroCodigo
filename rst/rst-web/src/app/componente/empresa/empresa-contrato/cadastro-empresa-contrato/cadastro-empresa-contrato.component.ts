@@ -89,9 +89,12 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     ) {
         super(bloqueioService, dialogo);
         this.delayerUndObra.debounceTime(500).distinctUntilChanged().subscribe(text => {this.unidadesObra = this.pesquisarUnidadeObrasPorNome(text)});
-        this.delayerUndSesi.debounceTime(500).distinctUntilChanged().subscribe(
-            (text) => {this.unidadesAT = this.pesquisarUnidadeSesi(text);}
-        );
+        this.delayerUndSesi
+            .debounceTime(500)
+            .subscribe(
+            (text) => {
+                this.unidadesAT = this.pesquisarUnidadeSesi(text);
+            });
     }
 
     ngOnInit() {
@@ -208,17 +211,24 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     }
 
     alteraDr(){
+        this.filtroDepartRegional.idEstado = '0'
         this.filtroDepartRegional.razaoSocial = this.contratoForm.controls['dr'].value;
-        if(this.filtroDepartRegional.idEstado == undefined){
-            this.filtroDepartRegional.idEstado = '0';
-        }
-        if(this.contratoForm.controls['dr'].value != "" ) {
+
+        this.unidadesAT = Observable.of([]);
+        this.unidadeSesi = undefined;
+        this.drSelecionado = undefined;
+
+        if(this.contratoForm.controls['dr'].value != "" && this.contratoForm.controls['dr'].value != undefined) {
             this.drService.pesquisar(this.filtroDepartRegional, new Paginacao(1, 10))
                 .subscribe(response => {
                     this.drSelecionado = response.list[0];
                 }), (error) => {
                 this.mensagemError(error);
             }
+        } else {
+            this.unidadesAT = Observable.of([]);
+            this.unidadeSesi = undefined;
+            this.drSelecionado = undefined;
         }
     }
 
