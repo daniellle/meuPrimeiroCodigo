@@ -7,6 +7,7 @@ import br.com.ezvida.girst.apiclient.model.UsuarioPerfilSistema;
 import br.com.ezvida.rst.anotacoes.Preferencial;
 import br.com.ezvida.rst.auditoria.logger.LogAuditoria;
 import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
+import br.com.ezvida.rst.dao.EmpresaTrabalhadorLotacaoDAO;
 import br.com.ezvida.rst.dao.TrabalhadorDAO;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.dao.filter.ListaPaginada;
@@ -48,6 +49,9 @@ public class TrabalhadorService extends BaseService {
 
     @Inject
     private TrabalhadorDAO trabalhadorDAO;
+
+    @Inject
+    private EmpresaTrabalhadorLotacaoDAO empresaTrabalhadorLotacaoDAO;
 
     @Inject
     private TelefoneTrabalhadorService telefoneTrabalhadorService;
@@ -104,8 +108,8 @@ public class TrabalhadorService extends BaseService {
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public Long buscarTrabalhadorVidaAtiva(String id) {
-        return trabalhadorDAO.buscarVidaAtiva(id);
+    public boolean buscarTrabalhadorVidaAtiva(String cpf) {
+        return empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -239,14 +243,11 @@ public class TrabalhadorService extends BaseService {
     }
 
     private Usuario buscarTrabalhadorJaCadastrado(String login) {
-        UsuarioFilter usuarioFilter = new UsuarioFilter(login, null, 1, 10);
-        br.com.ezvida.girst.apiclient.model.ListaPaginada<br.com.ezvida.girst.apiclient.model.Usuario> lista = usuarioService
-                .pesquisarPaginado(usuarioFilter);
-        if (lista.getQuantidade() > 0) {
+        try {
             return usuarioService.buscarPorLogin(login);
+        } catch (Exception e) {
+            return null;
         }
-
-        return null;
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -260,7 +261,7 @@ public class TrabalhadorService extends BaseService {
             }
             String id = trab.getId().toString();
 
-            if(buscarTrabalhadorVidaAtiva(id) == null){
+            if(buscarTrabalhadorVidaAtiva(trab.getCpf())){
                 throw new BusinessErrorException(getMensagem("app_rst_primeiro_acesso_erro_vida_inativa"));
             }
 
