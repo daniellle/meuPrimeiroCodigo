@@ -243,14 +243,7 @@ public class TrabalhadorService extends BaseService {
     }
 
     private Usuario buscarTrabalhadorJaCadastrado(String login) {
-        UsuarioFilter usuarioFilter = new UsuarioFilter(login, null, 1, 10);
-        br.com.ezvida.girst.apiclient.model.ListaPaginada<br.com.ezvida.girst.apiclient.model.Usuario> lista = usuarioService
-                .pesquisarPaginado(usuarioFilter);
-        if (lista.getQuantidade() > 0) {
-            return usuarioService.buscarPorLogin(login);
-        }
-
-        return null;
+        return usuarioService.buscarPorLogin(login);
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
