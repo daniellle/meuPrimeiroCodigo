@@ -32,6 +32,7 @@ import { Component, OnInit, ViewChild, Input, Output } from '@angular/core';
 export class TermoUsoModalComponent extends BaseComponent implements OnInit {
 
   public termoUso = '';
+  public sucesso = false;
 
   @Input()
   adicionar: any;
@@ -219,7 +220,8 @@ export class TermoUsoModalComponent extends BaseComponent implements OnInit {
       this.prepareSave(false);
       this.trabalhadorService.salvarPrimeiroAcesso(this.primeiroAcesso).subscribe((response: PrimeiroAcesso) => {
         this.primeiroAcesso = response;
-        window.location.href = environment.url_portal;
+        this.mensagemSucesso("Trabalhador fez o primeiro acesso com sucesso.");
+        this.sucesso = true;
       }, (error) => {
         this.mensagemError(error);
       });

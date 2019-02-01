@@ -1383,9 +1383,9 @@ th {
 
 //Telas Externas //
 .tela-externa {
-    height: 100vh;
+    min-height: 100vh !important;
+    overflow: auto;
     background: url("../img/bg.svg");
-    background-repeat: no-repeat;
     background-attachment: fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -1393,6 +1393,7 @@ th {
     background-size: cover;
     background-position: center;
     background-color: #8d226d;
+    background-repeat: repeat;
 }
 
 @media only screen and (max-width: 1390px) {
@@ -1401,7 +1402,8 @@ th {
          to improve page load speed on mobile internet connections */
         background-image: url("../img/login_tablet.svg");
         background-attachment: fixed;
-        height: 100vh;
+        min-height: 100vh !important;
+        overflow: auto;
     }
 }
 
@@ -1411,7 +1413,8 @@ th {
          to improve page load speed on mobile internet connections */
         background-image: url("../img/login_mobile.svg");
         background-attachment: fixed;
-        height: 100vh;
+        min-height: 100vh !important;
+        overflow: auto;
     }
 }
 
