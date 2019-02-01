@@ -220,6 +220,7 @@ export class TermoUsoModalComponent extends BaseComponent implements OnInit {
       this.prepareSave(false);
       this.trabalhadorService.salvarPrimeiroAcesso(this.primeiroAcesso).subscribe((response: PrimeiroAcesso) => {
         this.primeiroAcesso = response;
+        this.formularioSenha.controls['email'].disable();
         this.mensagemSucesso("Trabalhador fez o primeiro acesso com sucesso.");
         this.sucesso = true;
       }, (error) => {

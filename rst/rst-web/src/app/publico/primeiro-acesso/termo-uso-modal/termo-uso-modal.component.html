@@ -44,9 +44,9 @@
     <form class="float-label" [formGroup]="formularioSenha">
         <p class="text-center">{{ 'app_rst_primeiro_acesso_confirme_email' | recurso }}</p>
         <div class="row">
-            <div class="form-group col-md-11 mx-auto">
+            <div class="form-group col-md-11 mx-auto" [ngClass]="{ divDis : sucesso }">
                 <md-input-container [floatPlaceholder]="true">
-                    <input [disabled]="sucesso" required mdInput placeholder="{{'app_rst_primeiro_acesso_digite_aqui_email' | recurso}}" type="text" maxlength="50" class="form-control" id="email" name="email" formControlName="email" />
+                    <input required mdInput placeholder="{{'app_rst_primeiro_acesso_digite_aqui_email' | recurso}}" type="text" maxlength="50" class="form-control" id="email" name="email" formControlName="email" />
                 </md-input-container>
             </div>
         </div>
