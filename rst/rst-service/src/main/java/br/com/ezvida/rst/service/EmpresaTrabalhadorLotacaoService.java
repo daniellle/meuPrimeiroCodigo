@@ -219,13 +219,7 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 								}
 							}
 							else{
-							if (!empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf)) {
-
-								response = false;
-							}
-							else{
-								response = true;
-							}
+							 response = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
 							}
 							if(!response){
 								throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
