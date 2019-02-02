@@ -238,4 +238,25 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 
 		return empresaTrabalhadorLotacaoList;
 	}
+
+
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+	public boolean validarTrabalhadorVidaAtiva(String cpf) {
+		Boolean validarTrabalhadorComVidaAtiva = false;
+
+			if(validarCpf(cpf)) {
+				validarTrabalhadorComVidaAtiva = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
+			}
+		return validarTrabalhadorComVidaAtiva;
+	}
+
+	public boolean validarCpf(String cpf){
+		if( !cpf.isEmpty() ) {
+			cpf = cpf.replace(".","").replace("-","");
+		}else{
+			throw new BusinessErrorException(getMensagem("app_rst_empregado_cpf_invalido"));
+		}
+		return (ValidadorUtils.isValidCPF(cpf));
+	}
+
 }

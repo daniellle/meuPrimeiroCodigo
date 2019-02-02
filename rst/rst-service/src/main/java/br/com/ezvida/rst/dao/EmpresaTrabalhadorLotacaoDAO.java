@@ -245,6 +245,8 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		return retorno;
 	}
 
+
+
 	public List<UsuarioEntidade> validarGestor (String cpf){
 		StringBuilder sql = new StringBuilder();
 
