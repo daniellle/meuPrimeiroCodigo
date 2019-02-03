@@ -177,9 +177,9 @@ export class CadastroDepartamentoUsuarioComponent extends BaseComponent implemen
       this.usuarioEntidadeService.salvar(lista).subscribe((response: UsuarioEntidade) => {
         this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
         this.limpar();
-      }, (error) => {
-        this.mensagemError(error);
-      });
+      }, error => 
+        this.mensagemError(error)
+      );
     }
   }
 
