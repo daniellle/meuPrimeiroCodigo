@@ -104,20 +104,32 @@ public class UsuarioEntidadeService extends BaseService {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<UsuarioEntidade> salvar(List<UsuarioEntidade> list, ClienteAuditoria auditoria) {
         boolean sucess = false;
-        if (CollectionUtils.isNotEmpty(list)) {
+        List<UsuarioEntidade> lista = list;
+        try {
             for (UsuarioEntidade usuarioEntidade : list) {
                 if (usuarioEntidadeDAO.verificandoExistenciaUsuarioEntidade(usuarioEntidade) == null) {
                     salvar(usuarioEntidade, auditoria);
-                    sucess = true;
+                 return  lista = CollectionUtils.isNotEmpty(list) ? list : Lists.newArrayList();
                 }
             }
-
-        }
-        if (!sucess) {
+        } catch(Exception e){
             throw new BusinessErrorException(getMensagem("app_rst_generic_itens_not_add"));
-        } else {
-            return CollectionUtils.isNotEmpty(list) ? list : Lists.newArrayList();
         }
+        return lista;
+//        if (CollectionUtils.isNotEmpty(list)) {
+//            for (UsuarioEntidade usuarioEntidade : list) {
+//                if (usuarioEntidadeDAO.verificandoExistenciaUsuarioEntidade(usuarioEntidade) == null) {
+//                    salvar(usuarioEntidade, auditoria);
+//                    sucess = true;
+//                }
+//            }
+//
+//        }
+//        if (sucess) {
+//            return CollectionUtils.isNotEmpty(list) ? list : Lists.newArrayList();
+//        } else {
+//            throw new BusinessErrorException(getMensagem("app_rst_generic_itens_not_add"));
+//        }
 
     }
 
