@@ -111,24 +111,6 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 				}
 			 }
 		 }
-			 
-		
-		//
-		// }
-		// if (CollectionUtils.isNotEmpty(
-		// empresaTrabalhadorLotacaoDAO.buscarEmpresaTrabalhadorLotacaoAtivo(empresaTrabalhadorLotacao)))
-		// {
-		// throw new
-		// BusinessErrorException(getMensagem("app_rst_emp_tra_lot_ja_cadastrado_no_periodo"));
-		// }
-		//
-		// if (CollectionUtils.isNotEmpty(
-		// empresaTrabalhadorLotacaoDAO.buscarEmpresaTrabalhadorLotacaoNoPeriodo(empresaTrabalhadorLotacao)))
-		// {
-		// throw new
-		// BusinessErrorException(getMensagem("app_rst_emp_tra_lot_ja_cadastrado_no_periodo"));
-		// }
-
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -156,87 +138,69 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public boolean validarTrabalhadorPrimeiroAcesso(String cpf){
-		boolean empresaTrabalhadorLotacaoList = false;
+		boolean validarPrimeiroAcesso;
 
-		if( cpf != null){
-			cpf = cpf.replace(".","").replace("-","");
-
-			if(ValidadorUtils.isValidCPF(cpf)){
-				empresaTrabalhadorLotacaoList = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
-				if (empresaTrabalhadorLotacaoList) {
-
+				validarPrimeiroAcesso = validarTrabalhadorVidaAtiva(cpf);
+				if (!validarPrimeiroAcesso){
 					throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
 				}
-			}
 
-		}
-		return empresaTrabalhadorLotacaoList;
+		return validarPrimeiroAcesso;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public List<EmpresaTrabalhadorLotacao> validarTrabalhador(String cpf){
-
-		List<EmpresaTrabalhadorLotacao> empresaTrabalhadorLotacaoList = null;
-		List<UsuarioEntidade> usuarioEntidadeList;
-
-		if( cpf != null ) {
-			cpf = cpf.replace(".","").replace("-","");
-			if (ValidadorUtils.isValidCPF(cpf)) {
-
-				Usuario usuarioVerificar = new Usuario();
-
-				try{
-					usuarioVerificar = usuarioService.buscarPorLogin(cpf);
-				} catch (Exception e) {
-					usuarioVerificar = null;
+	public boolean validarTrabalhador(String cpf){
+		LOGGER.debug("Validando login de usuário");
+		if (validarCpf(cpf)){
+			Usuario usuario = buscarUsuarioGirst(cpf);
+			if(usuarioSotemPerfisDeEmpresa(usuario)){
+				LOGGER.debug("Verificando se o usuário possui vida ativa");
+				Trabalhador trabalhador = trabalhadorDAO.pesquisarPorCpf(cpf);
+				List<UsuarioEntidade> usuarioEntidade = usuarioEntidadeDAO.pesquisarPorCPF(cpf, true);
+				Boolean validarGestorOuTrabalhador = false;
+				if(trabalhador == null && usuarioEntidade != null){
+					LOGGER.debug("Validando Gestor vida ativa");
+					validarGestorOuTrabalhador = empresaTrabalhadorLotacaoDAO.validarGestor(cpf);
+				}else{
+					LOGGER.debug("Validando Trabalhador vida ativa");
+					validarGestorOuTrabalhador = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
 				}
-
-				if( usuarioVerificar != null ) {
-
-					boolean perfilPraValidar = false;
-
-						for (UsuarioPerfilSistema perfilSistema : usuarioVerificar.getPerfisSistema()) {
-
-							if (perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GEEM")
-									|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GEEMM")
-									|| perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("PFS")) {
-								perfilPraValidar = true;
-								break;
-							}
-
-						}
-
-						if (perfilPraValidar) {
-							boolean response = true;
-//							Trabalhador trabalhador = trabalhadorDAO.pesquisarPorCpf(cpf);
-//							List<UsuarioEntidade> usuarioEntidade = usuarioEntidadeDAO.pesquisarPorCPF(cpf, true);
-//
-//							if(trabalhador == null && usuarioEntidade != null){
-//								usuarioEntidadeList = empresaTrabalhadorLotacaoDAO.validarGestor(cpf);
-//								if(usuarioEntidadeList == null || usuarioEntidadeList.size() == 0){
-//									response = false;
-//								}else{
-//									response = true;
-//								}
-//							} else {
-//								response = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
-//							}
-							if (!response) {
-								throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
-							}
-						}
-				} else {
+				if(!validarGestorOuTrabalhador){
 					throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
 				}
-
-			} else {
-				throw new BusinessErrorException(getMensagem("app_rst_empregado_cpf_invalido"));
 			}
-		}else{
+		} else{
 			throw new BusinessErrorException(getMensagem("app_rst_empregado_cpf_invalido"));
 		}
+		return true;
+	}
 
-		return empresaTrabalhadorLotacaoList;
+	public Usuario buscarUsuarioGirst(String cpf){
+		LOGGER.debug("Pesquisando Usuario no GIRST");
+		Usuario usuario = new Usuario();
+		try{
+			usuario = usuarioService.buscarPorLogin(cpf);
+		} catch (Exception e) {
+			throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
+		}
+		return usuario;
+	}
+
+	public boolean usuarioSotemPerfisDeEmpresa(Usuario usuario){
+		boolean validar = true;
+		for (UsuarioPerfilSistema perfilSistema : usuario.getPerfisSistema()) {
+			if (!perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GEEM")
+					&& !perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GEEMM")
+					&& !perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("PFS")
+					&& !perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("TRA")
+					&& !perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("GCOI")
+					&& !perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("RH")
+					&& !perfilSistema.getPerfil().getCodigo().trim().toUpperCase().equals("ST")) {
+				validar = false;
+				break;
+			}
+		}
+		return validar;
 	}
 
 
@@ -245,7 +209,7 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 		Boolean validarTrabalhadorComVidaAtiva = false;
 
 			if(validarCpf(cpf)) {
-				validarTrabalhadorComVidaAtiva = !empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
+				validarTrabalhadorComVidaAtiva = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
 			}
 		return validarTrabalhadorComVidaAtiva;
 	}

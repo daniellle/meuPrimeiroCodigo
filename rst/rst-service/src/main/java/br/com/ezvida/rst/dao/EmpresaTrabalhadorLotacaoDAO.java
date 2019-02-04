@@ -217,7 +217,7 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 
 	public boolean validarTrabalhador(String cpf){
 		StringBuilder jpql = new StringBuilder();
-		boolean retorno;
+
 		jpql.append(" select empresaTrabalhadorLotacao ");
 		jpql.append(" from EmpresaTrabalhadorLotacao empresaTrabalhadorLotacao ");
 		jpql.append(" left join fetch empresaTrabalhadorLotacao.empresaTrabalhador empresaTrabalhador ");
@@ -237,17 +237,12 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		query.setParameter("dataHoje", new Date(), TemporalType.TIMESTAMP);
 		query.setParameter("flagInativo", "N".charAt(0));
 
-		if(query.getResultList() == null) {
-			retorno = true;
-		} else {
-			retorno = false;
-		}
-		return retorno;
+		return (query.getResultList() != null);
 	}
 
 
 
-	public List<UsuarioEntidade> validarGestor (String cpf){
+	public Boolean validarGestor (String cpf){
 		StringBuilder sql = new StringBuilder();
 
 		sql.append(" select usuarioEntidade ");
@@ -263,7 +258,7 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		query.setParameter("cpf", cpf);
 		query.setParameter("dataHoje", new Date(), TemporalType.TIMESTAMP);
 
-		return query.getResultList();
+		return (query.getResultList() != null);
 	}
 
 }

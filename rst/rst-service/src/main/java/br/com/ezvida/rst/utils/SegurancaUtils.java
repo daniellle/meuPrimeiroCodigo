@@ -26,7 +26,7 @@ public class SegurancaUtils {
             //return "08194790980"; // trabalhador
            //return "28928105900";
             // return "80782078168";
-            return "86010158168"; // adm do grupo
+//            return "86010158168"; // adm do grupo
              // "65020081515"; // administrador
             //return "37139762520"; // adm
              //return "65020081515"; // administrador
@@ -37,9 +37,9 @@ public class SegurancaUtils {
              //return "74055251564"; // gestor dr aplicacoes
             //return "99573911434";
             //return "84755789850";
-//             return "71141598973"; // gestor empresa master
+             return "71141598973"; // gestor empresa master
             // return "92883645361"; // gestor empresa
-            // return "46335766744"; // trabalhador
+//             return "46335766744"; // trabalhador
             // return "37139762520"; // carol adm
             // return "64432620005"; //profissonal saude
             // return "19743559698"; //recursos humanos
