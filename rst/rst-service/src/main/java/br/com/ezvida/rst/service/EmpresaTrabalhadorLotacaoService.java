@@ -150,19 +150,16 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public boolean validarTrabalhador(String cpf){
-		LOGGER.debug("Validando login de usuário");
+		LOGGER.debug("Validando usuário");
 		if (validarCpf(cpf)){
 			Usuario usuario = buscarUsuarioGirst(cpf);
 			if(usuarioSotemPerfisDeEmpresa(usuario)){
-				LOGGER.debug("Verificando se o usuário possui vida ativa");
 				Trabalhador trabalhador = trabalhadorDAO.pesquisarPorCpf(cpf);
 				List<UsuarioEntidade> usuarioEntidade = usuarioEntidadeDAO.pesquisarPorCPF(cpf, true);
 				Boolean validarGestorOuTrabalhador = false;
 				if(trabalhador == null && usuarioEntidade != null){
-					LOGGER.debug("Validando Gestor vida ativa");
 					validarGestorOuTrabalhador = empresaTrabalhadorLotacaoDAO.validarGestor(cpf);
 				}else{
-					LOGGER.debug("Validando Trabalhador vida ativa");
 					validarGestorOuTrabalhador = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
 				}
 				if(!validarGestorOuTrabalhador){
