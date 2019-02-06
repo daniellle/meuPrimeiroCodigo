@@ -147,7 +147,7 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
             PerfilEnum.GCODR,
             PerfilEnum.ATD)
             && this.contemPerfil([PerfilEnum.DIDR, PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.SUDR,
-                PerfilEnum.MTSDR, PerfilEnum.GCDR, PerfilEnum.GUS, PerfilEnum.GCODR], this.usuario);
+                PerfilEnum.MTSDR, PerfilEnum.GCDR, PerfilEnum.GCODR], this.usuario);
     }
 
     private temUnidPerfil(): boolean {
