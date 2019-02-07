@@ -391,7 +391,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
             }
             perfis.add(pu);
         }
-        return tratarPerfisDuplicados(perfis);
+        return perfis;
     }
 
     private List<PerfilUsuarioDTO> tratarPerfisDuplicados(List<PerfilUsuarioDTO> lista) {
