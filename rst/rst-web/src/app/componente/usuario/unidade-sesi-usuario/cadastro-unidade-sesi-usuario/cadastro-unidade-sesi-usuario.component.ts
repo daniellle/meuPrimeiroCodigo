@@ -21,6 +21,7 @@ import {ToastyService} from 'ng2-toasty';
 import {Uat} from "../../../../modelo/uat.model";
 import {UatService} from "../../../../servico/uat.service";
 import {FiltroUat} from "../../../../modelo/filtro-uat.model";
+import { element } from 'protractor';
 
 @Component({
     selector: 'app-cadastro-unidade-sesi-usuario',
@@ -146,19 +147,30 @@ export class CadastroUnidadeSESIUsuarioComponent extends BaseComponent implement
     }
 
     private salvar(lista: any): void {
-        if (this.validarSelecao()) {
-            this.usuarioEntidadeService.salvar(lista).subscribe((response: UsuarioEntidade) => {
-                this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
-                this.limpar();
-            }, (error) => {
-                this.mensagemError(error);
-            });
+        if (this.validarSelecao(lista)) {
+            console.log(lista);
+            // this.usuarioEntidadeService.salvar(lista).subscribe((response: UsuarioEntidade) => {
+            //     this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+            //     this.limpar();
+            // }, (error) => {
+            //     this.mensagemError(error);
+            // });
         }
     }
 
-    validarSelecao() {
+    validarSelecao(lista) {
         if (this.listaUndefinedOuVazia(this.listaSelecionados)) {
             this.mensagemError(MensagemProperties.app_rst_selecione_um_item);
+            return false;
+        }
+        let vazio = false;
+        lista.forEach((element:UsuarioEntidade) => {
+            if(element.perfil == undefined){
+                vazio = true;
+            }
+        });
+        if(vazio){
+            this.mensagemError("É necessário selecionar pelo menos um perfil");
             return false;
         }
         return true;
