@@ -36,37 +36,6 @@
     <app-usuario-barramento [usuario]="usuario"></app-usuario-barramento>
 </div>
 
-<div class="container-form space-up">
-    <div class="container-subtitulo">
-        <p>{{'app_rst_usuario_unidade_sesi_associados_title' | recurso}}</p>
-    </div>
-    <div *ngIf="isEmpty(usuariosEntidade)" class="row">
-        <div class="form-group col-md-12">
-            {{ 'app_rst_msg_nenhum_registro_adicionado' | recurso }}
-        </div>
-    </div>
-    <div class="row grid-pesquisa" *ngIf="isNotEmpty(usuariosEntidade)">
-        <div class="col-12">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th class="label"><span class="label">{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
-                        <th class="label"><span class="label">{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
-                        <th class="label"><span class="label">{{ 'app_rst_labels_perfil' | recurso }}</span></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of usuariosEntidade">
-                        <td class="col-quebra">{{item.empresa.razaoSocial}}</td>
-                        <td class="col-nao-quebra">{{item.empresa.cnpj | cnpjPipe }}</td>
-                        <td class="col-quebra col-nome">{{item.perfil ? item.perfil : 'Sem perfil cadastrado'}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
 <div class="container-form space-up" *ngIf="hasGestorEmpresa">
     <div class="container-subtitulo">
         <p>{{'app_rst_usuario_empresa_empresas_adicionados' | recurso}}</p>
