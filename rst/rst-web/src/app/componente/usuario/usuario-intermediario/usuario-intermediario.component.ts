@@ -109,7 +109,8 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
     }
 
     private temEmpPerfil(): boolean {
-        const isPermitido = this.temPapel(
+        console.log(this.usuario.perfisSistema);
+        return this.temPapel(
             PerfilEnum.ADM,
             PerfilEnum.DIDN,
             PerfilEnum.GDNP,
@@ -126,10 +127,8 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
             PerfilEnum.GEEMM,
             PerfilEnum.GEEM, PerfilEnum.PFS, PerfilEnum.GCOI,
             PerfilEnum.ATD
-             );
-        const isPerfil = this.contemPerfil([PerfilEnum.GEEM, PerfilEnum.GEEMM, PerfilEnum.TRA, PerfilEnum.PFS, PerfilEnum.GCOI,
+             ) && this.contemPerfil([PerfilEnum.GEEM, PerfilEnum.GEEMM, PerfilEnum.PFS, PerfilEnum.GCOI,
             PerfilEnum.ST, PerfilEnum.RH], this.usuario);
-        return isPerfil && isPermitido;
     }
 
     private temDRPerfil(): boolean {
@@ -164,5 +163,7 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
             PerfilEnum.GCODR,
             PerfilEnum.ATD)
             && this.contemPerfil([PerfilEnum.GUS], this.usuario);
+           
+            
     }
 }
