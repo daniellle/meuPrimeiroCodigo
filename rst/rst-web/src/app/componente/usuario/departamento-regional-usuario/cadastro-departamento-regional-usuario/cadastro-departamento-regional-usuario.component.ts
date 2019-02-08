@@ -170,7 +170,7 @@ export class CadastroDepartamentoUsuarioComponent extends BaseComponent implemen
   }
 
   private salvar(lista: any): void {
-    if (this.validarSelecao()) {
+    if (this.validarSelecao(lista)) {
       this.usuarioEntidadeService.salvar(lista).subscribe((response: UsuarioEntidade) => {
         this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
         this.limpar();
@@ -180,10 +180,20 @@ export class CadastroDepartamentoUsuarioComponent extends BaseComponent implemen
     }
   }
 
-  validarSelecao() {
+  validarSelecao(lista) {
     if (this.listaUndefinedOuVazia(this.listaSelecionados)) {
       this.mensagemError(MensagemProperties.app_rst_selecione_um_item);
       return false;
+    }
+    let vazio = false;
+    lista.forEach((element:UsuarioEntidade) => {
+        if(element.perfil == undefined){
+            vazio = true;
+        }
+    });
+    if(vazio){
+        this.mensagemError("É necessário selecionar pelo menos um perfil");
+        return false;
     }
     return true;
   }
