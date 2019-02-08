@@ -211,7 +211,7 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
         if (segurancaFilter != null && !segurancaFilter.isAdministrador()) {
             if (cnpj || razaoSocial || depRegional || status
                     && segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.temIdsUnidadeSESI()) {
-                jpql.append(" and ");
+                //jpql.append(" and ");
                 montarFiltroIdsPaginado(jpql, parametros, segurancaFilter);
             }
         }
@@ -221,6 +221,7 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
                                          DadosFilter segurancaFilter) {
         if (segurancaFilter.temIdsEmpresa()) {
             //testar se " empresaUat.empresa.id IN (:idsEmpresa) " funciona
+            jpql.append(" and ");
             jpql.append(" empresa.id IN (:idsEmpresa) ");
             parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
         }
