@@ -148,13 +148,12 @@ export class CadastroUnidadeSESIUsuarioComponent extends BaseComponent implement
 
     private salvar(lista: any): void {
         if (this.validarSelecao(lista)) {
-            console.log(lista);
-            // this.usuarioEntidadeService.salvar(lista).subscribe((response: UsuarioEntidade) => {
-            //     this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
-            //     this.limpar();
-            // }, (error) => {
-            //     this.mensagemError(error);
-            // });
+            this.usuarioEntidadeService.salvar(lista).subscribe((response: UsuarioEntidade) => {
+                this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+                this.limpar();
+            }, (error) => {
+                this.mensagemError(error);
+            });
         }
     }
 
