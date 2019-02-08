@@ -31,7 +31,7 @@ public class SegurancaUtils {
             //return "37139762520"; // adm
              //return "65020081515"; // administrador
             //return "37139762520"; // adm
-             return "09934689421"; // dna
+//             return "09934689421"; // dna
 //             return "48552219026"; // gestor dn aplicacoes
 //             return "56866951135"; // gestor dr master
              //return "74055251564"; // gestor dr aplicacoes
@@ -50,6 +50,7 @@ public class SegurancaUtils {
              //return "95901290801"; //GUS
 //            return "04265927947"; // Superintendente DR
 //            return "01178192474";
+            return "83704786209";
         }
         LOGGER.debug("SessionLogin {}", request.getAttribute(SHIB_SESSION_LOGIN));
         if (request.getAttribute(SHIB_SESSION_ID) == null || request.getAttribute(SHIB_SESSION_LOGIN) == null) {
