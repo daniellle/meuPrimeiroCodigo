@@ -100,7 +100,9 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             this.usuarioService.salvarUsuario(this.usuario).subscribe((retorno: Usuario) => {
                 this.usuario.id = retorno.id;
                 this.id = this.usuario.id;
-                this.excluirDRsAssociadas(this.usuario);
+                this.excluirCardsPerfisDesassociadas(this.usuario, [PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.GDRP,], 'departamentoRegional');
+                this.excluirCardsPerfisDesassociadas(this.usuario, [PerfilEnum.GEEM, PerfilEnum.GEEMM], 'empresa');
+                this.excluirCardsPerfisDesassociadas(this.usuario, [PerfilEnum.GUS], 'unidadesesi');
                 this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
                 this.voltar();
             }, error =>
@@ -180,19 +182,36 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                 usuario.perfisSistema.push(perfilSistema);
             }
     }
-    excluirDRsAssociadas(usuario: Usuario){
+    excluirCardsPerfisDesassociadas(usuario: Usuario, perfisDesassociados: PerfilEnum[], tipoPerfil: string){
         
-        if(!this.contemPerfil([PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.GDRP], usuario)){
+        if(!this.contemPerfil(perfisDesassociados, usuario)){
             this.usuarioEntidadeService.pesquisaUsuariosEntidade(usuario.login).subscribe((usuariosEntidade: UsuarioEntidade[]) => {
                 if(usuariosEntidade){
                     usuariosEntidade.forEach(usuarioEntidade => {
-                        if(usuarioEntidade.departamentoRegional){
-                            this.usuarioEntidadeService.desativar(usuarioEntidade)
-                                .subscribe()
-                        }
+                       this.checarTipoPerfilPassado(usuarioEntidade, tipoPerfil);
                     });
                 }
             }, err => this.mensagemError(err))
+        }
+    }
+    private checarTipoPerfilPassado(usuarioEntidade: UsuarioEntidade, tipoPerfil: string){
+        if(tipoPerfil.toLowerCase().includes('empresa')){
+            if(usuarioEntidade.empresa){
+                this.usuarioEntidadeService.desativar(usuarioEntidade)
+                    .subscribe()
+            }
+        }
+        else if(tipoPerfil.toLowerCase().includes('departamentoRegional')){
+            if(usuarioEntidade.departamentoRegional){
+                this.usuarioEntidadeService.desativar(usuarioEntidade)
+                    .subscribe()
+            }
+        }
+        else if(tipoPerfil.toLowerCase().includes('unidadesesi')){
+            if(usuarioEntidade.uat){
+                this.usuarioEntidadeService.desativar(usuarioEntidade)
+                    .subscribe()
+            }
         }
     }
 
