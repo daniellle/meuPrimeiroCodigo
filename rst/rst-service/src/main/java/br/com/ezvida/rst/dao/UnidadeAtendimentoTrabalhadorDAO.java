@@ -286,8 +286,7 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
             }
             //jpql.append(" UPPER(uat.razaoSocial) like :razaoSocial escape :sc");
             //tem q ver com Dan pq isso não está funcionando...
-            jpql.append(" set_simple_name(UPPER(uat.razaoSocial)) like set_simple_name(:razaoSocial) escape :sc");
-            parametros.put("sc", "\\");
+            jpql.append(" set_simple_name(UPPER(uat.razaoSocial)) like set_simple_name(:razaoSocial) ");
             parametros.put("razaoSocial", "%" + unidAtendTrabalhadorFilter.getRazaoSocial().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
         }
 
@@ -399,7 +398,6 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
         if (segurancaFilter != null) {
             if ((idEstado || idMunicipio || bairro)
                     && (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa())) {
-                jpql.append(" and ");
 
                 montarFiltroIdsPaginado(jpql, parametros, segurancaFilter);
             }
