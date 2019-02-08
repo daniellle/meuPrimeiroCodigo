@@ -66,7 +66,6 @@ export class CadastroUnidadeSESIUsuarioComponent extends BaseComponent implement
         this.usuarioService.buscarUsuarioById(this.idUsuario).subscribe((retorno: Usuario) => {
             this.usuario = retorno;
             this.perfis = getPerfis.call(this, retorno);
-            console.log(this.perfis);
             
             if (this.usuario && !this.usuario.perfisSistema) {
                 this.usuario.perfisSistema = new Array<UsuarioPerfilSistema>();

@@ -35,7 +35,7 @@ export class UsuarioService extends BaseService<Usuario> {
     pesquisarPaginado(filtro: FiltroUsuario, paginacao: Paginacao): Observable<ListaPaginada<Usuario>> {
       
       const params = this.getParams(filtro, paginacao);
-      console.log(params);
+
       return super.get('/v1/usuarios/paginado', params)
       .map((response: Response) => {
         return response;

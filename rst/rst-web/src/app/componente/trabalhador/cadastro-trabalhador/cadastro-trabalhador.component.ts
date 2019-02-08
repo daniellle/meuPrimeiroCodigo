@@ -128,7 +128,7 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
     }
 
     getVidaAtiva(id: string, cpf: string) {
-        console.log(cpf);
+
         this.service.buscarVidaAtivaTrabalhador(cpf).subscribe((dados) => {
             if (dados) {
                 this.vidaAtiva = "Vida Ativa";
