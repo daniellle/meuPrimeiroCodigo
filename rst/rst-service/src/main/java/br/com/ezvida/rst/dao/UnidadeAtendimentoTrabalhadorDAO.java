@@ -226,11 +226,8 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
             parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
         }
 
-        if (segurancaFilter.temIdsEmpresa() && segurancaFilter.temIdsDepRegional()) {
-            jpql.append(" and ");
-        }
-
         if (segurancaFilter.temIdsDepRegional()) {
+            jpql.append(" and ");
             jpql.append(" uat.departamentoRegional.id IN (:idsDepRegional) ");
             parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
         }
