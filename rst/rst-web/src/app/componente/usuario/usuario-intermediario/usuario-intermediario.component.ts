@@ -109,7 +109,6 @@ export class UsuarioIntermediarioComponent extends BaseComponent implements OnIn
     }
 
     private temEmpPerfil(): boolean {
-        console.log(this.usuario.perfisSistema);
         return this.temPapel(
             PerfilEnum.ADM,
             PerfilEnum.DIDN,
