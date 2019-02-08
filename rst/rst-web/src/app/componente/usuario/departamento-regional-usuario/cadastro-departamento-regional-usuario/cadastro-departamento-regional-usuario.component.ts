@@ -104,9 +104,6 @@ export class CadastroDepartamentoUsuarioComponent extends BaseComponent implemen
               case PerfilEnum.GDRA:
                   p.push(new Perfil(null, value, key));
                   break;
-              case PerfilEnum.GDRP:
-                  p.push(new Perfil(null, value, key));
-                  break;
               case PerfilEnum.GCODR:
                   p.push(new Perfil(null, value, key));
               case PerfilEnum.DIDR:
@@ -173,7 +170,7 @@ export class CadastroDepartamentoUsuarioComponent extends BaseComponent implemen
   }
 
   private salvar(lista: any): void {
-    if (this.validarSelecao(lista)) {
+    if (this.validarSelecao()) {
       this.usuarioEntidadeService.salvar(lista).subscribe((response: UsuarioEntidade) => {
         this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
         this.limpar();
@@ -183,20 +180,10 @@ export class CadastroDepartamentoUsuarioComponent extends BaseComponent implemen
     }
   }
 
-  validarSelecao(lista) {
+  validarSelecao() {
     if (this.listaUndefinedOuVazia(this.listaSelecionados)) {
       this.mensagemError(MensagemProperties.app_rst_selecione_um_item);
       return false;
-    }
-    let vazio = false;
-    lista.forEach((element:UsuarioEntidade) => {
-        if(element.perfil == undefined){
-            vazio = true;
-        }
-    });
-    if(vazio){
-        this.mensagemError("É necessário selecionar pelo menos um perfil");
-        return false;
     }
     return true;
   }
