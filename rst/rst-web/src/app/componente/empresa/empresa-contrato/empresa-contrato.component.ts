@@ -151,6 +151,17 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
 
     }
 
+    pageChanged(event: any): void {
+        this.paginacao.pagina = event.page;
+        this.empresaContratoService.pesquisarContratos(this.filtro, this.paginacao)
+            .subscribe((retorno: ListaPaginada<Contrato>) => {
+                this.paginacaoEmpresaContrato = this.getPaginacao(this.paginacao, retorno)
+                this.verificarRetornoEmpresasContrato(retorno);
+            }, (error) => {
+                this.mensagemError(error);
+            });
+      }
+
     pegaUatsDoUsuario() {
         this.filtroUsuarioEntidade.cpf = this.usuarioLogado.sub;
         if (this.isUndefined(this.filtroUsuarioEntidade.idEstado)) {
