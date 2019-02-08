@@ -208,8 +208,8 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
             setFiltroAplicado(true);
 
         }
-
-        jpql.append(" OR (id_departamento_regional_fk is null AND id_und_atd_trab_fk is null AND id_empresa_fk is null))");
+        jpql.append(" ) ");
+//        jpql.append(" OR (id_departamento_regional_fk is null AND id_und_atd_trab_fk is null AND id_empresa_fk is null))");
         return;
     }
 

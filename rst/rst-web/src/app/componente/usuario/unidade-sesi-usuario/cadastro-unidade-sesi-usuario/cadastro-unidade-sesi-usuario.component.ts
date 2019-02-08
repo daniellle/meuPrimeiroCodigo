@@ -197,6 +197,7 @@ export class CadastroUnidadeSESIUsuarioComponent extends BaseComponent implement
     }
 
     private pesquisarUnidadePaginado(): void {
+        
         this.filtroUat.cpfUsuarioAssociado = this.usuario.login;
         this.uatService.pesquisar(this.filtroUat, this.paginacao).subscribe((retorno: ListaPaginada<Uat>) => {
             if (retorno.list && retorno.list.length > 0) {
