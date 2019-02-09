@@ -1,10 +1,7 @@
 package br.com.ezvida.rst.web.endpoint.v1;
 
-import br.com.ezvida.rst.constants.PermissionConstants;
 import br.com.ezvida.rst.model.EmpresaTrabalhadorLotacao;
 import br.com.ezvida.rst.service.EmpresaTrabalhadorLotacaoService;
-import fw.security.binding.Autorizacao;
-import fw.security.binding.Permissao;
 import fw.web.endpoint.SegurancaEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
