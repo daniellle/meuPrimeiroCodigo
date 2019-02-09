@@ -34,8 +34,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
     }
 
     @SuppressWarnings("unchecked")
-    public ListaPaginada<UsuarioGirstView> pesquisarPorFiltro(UsuarioFilter usuarioFilter, DadosFilter dados, List<String> listaDeLogins) {
-        LOGGER.debug("Pesquisando paginado UsuarioGirstView por filtro");
+    public ListaPaginada<UsuarioGirstView> pesquisarPorFiltro(UsuarioFilter usuarioFilter, DadosFilter dados, List<String> listaDeLogins) { LOGGER.debug("Pesquisando paginado UsuarioGirstView por filtro");
 
         ListaPaginada<UsuarioGirstView> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
 
