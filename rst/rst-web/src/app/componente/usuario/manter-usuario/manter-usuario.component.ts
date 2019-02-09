@@ -201,7 +201,7 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
                     .subscribe()
             }
         }
-        else if(tipoPerfil.toLowerCase().includes('departamentoRegional')){
+        else if(tipoPerfil.toLowerCase().includes('departamentoregional')){
             if(usuarioEntidade.departamentoRegional){
                 this.usuarioEntidadeService.desativar(usuarioEntidade)
                     .subscribe()
