@@ -60,7 +60,7 @@ public class UnidadeObraContratoUatService extends BaseService {
 
         validarContrato(unidadeObraContratoUat);
 
-        unidadeObraContratoUat.setFlagInativo("N".charAt(0));
+        unidadeObraContratoUat.setFlagInativo('N');
 
         unidadeObraContratoUatDAO.salvar(unidadeObraContratoUat);
 
@@ -86,7 +86,7 @@ public class UnidadeObraContratoUatService extends BaseService {
                     getMensagem("app_rst_label_unidade_obra")));
         }
 
-        unidadeObraContratoUat.setFlagInativo(flag);
+        unidadeObraContratoUat.setFlagInativo('N');
         unidadeObraContratoUat.setDataInativo(new Date());
 
         unidadeObraContratoUatDAO.salvar(unidadeObraContratoUat);
