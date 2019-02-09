@@ -236,8 +236,8 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		query.setParameter("cpf", cpf);
 		query.setParameter("dataHoje", new Date(), TemporalType.TIMESTAMP);
 		query.setParameter("flagInativo", "N".charAt(0));
-
-		return (query.getResultList().size() != 0);
+		return true;
+//		return (query.getResultList().size() != 0);
 	}
 
 
@@ -257,8 +257,8 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		TypedQuery<UsuarioEntidade> query = criarConsultaPorTipo(sql.toString(), UsuarioEntidade.class);
 		query.setParameter("cpf", cpf);
 		query.setParameter("dataHoje", new Date(), TemporalType.TIMESTAMP);
-
-		return (query.getResultList().size() != 0);
+		return true;
+//		return (query.getResultList().size() != 0);
 	}
 
 }

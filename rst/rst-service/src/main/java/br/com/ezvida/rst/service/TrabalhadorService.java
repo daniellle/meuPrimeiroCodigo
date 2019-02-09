@@ -261,7 +261,7 @@ public class TrabalhadorService extends BaseService {
             }
             String id = trab.getId().toString();
 
-            if (buscarTrabalhadorVidaAtiva(trab.getCpf())) {
+            if(buscarTrabalhadorVidaAtiva(trab.getCpf())){
                 throw new BusinessErrorException(getMensagem("app_rst_primeiro_acesso_erro_vida_inativa"));
             }
 

@@ -151,29 +151,24 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public boolean validarTrabalhador(String cpf) {
 		LOGGER.debug("Validando usuário");
-
 		if (validarCpf(cpf)) {
 			Usuario usuario = buscarUsuarioGirst(cpf);
-
-			if (usuarioSotemPerfisDeEmpresa(usuario)) {
+			if(usuarioSotemPerfisDeEmpresa(usuario)) {
 				Trabalhador trabalhador = trabalhadorDAO.pesquisarPorCpf(cpf);
 				List<UsuarioEntidade> usuarioEntidade = usuarioEntidadeDAO.pesquisarPorCPF(cpf, true);
 				Boolean validarGestorOuTrabalhador = false;
-
-				if (trabalhador == null && usuarioEntidade != null) {
+				if(trabalhador == null && usuarioEntidade != null){
 					validarGestorOuTrabalhador = empresaTrabalhadorLotacaoDAO.validarGestor(cpf);
-				} else {
+				}else{
 					validarGestorOuTrabalhador = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
 				}
-
-				if (!validarGestorOuTrabalhador) {
+				if(!validarGestorOuTrabalhador){
 					throw new BusinessErrorException(getMensagem("app_rst_empregado_invalido"));
 				}
 			}
-		} else {
+		} else{
 			throw new BusinessErrorException(getMensagem("app_rst_empregado_cpf_invalido"));
 		}
-
 		return true;
 	}
 
