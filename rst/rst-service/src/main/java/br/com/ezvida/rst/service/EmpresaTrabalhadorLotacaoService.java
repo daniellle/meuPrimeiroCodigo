@@ -205,9 +205,10 @@ public class EmpresaTrabalhadorLotacaoService extends BaseService {
 	public boolean validarTrabalhadorVidaAtiva(String cpf) {
 		Boolean validarTrabalhadorComVidaAtiva = false;
 
-			if(validarCpf(cpf)) {
-				validarTrabalhadorComVidaAtiva = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
-			}
+		if (validarCpf(cpf)) {
+			validarTrabalhadorComVidaAtiva = empresaTrabalhadorLotacaoDAO.validarTrabalhador(cpf);
+		}
+
 		return validarTrabalhadorComVidaAtiva;
 	}
 

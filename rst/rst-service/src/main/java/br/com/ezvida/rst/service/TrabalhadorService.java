@@ -12,7 +12,6 @@ import br.com.ezvida.rst.dao.TrabalhadorDAO;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.dao.filter.ListaPaginada;
 import br.com.ezvida.rst.dao.filter.TrabalhadorFilter;
-import br.com.ezvida.rst.dao.filter.UsuarioFilter;
 import br.com.ezvida.rst.enums.*;
 import br.com.ezvida.rst.model.*;
 import br.com.ezvida.rst.service.excpetions.RegistroNaoEncontradoException;
@@ -27,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.enterprise.inject.New;
 import javax.inject.Inject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -155,11 +153,9 @@ public class TrabalhadorService extends BaseService {
             }
         }
 
-        if(trabalhador.getId() != null && u != null){
+        if (trabalhador.getId() != null && u != null) {
             throw new BusinessErrorException(getMensagem("app_rst_autenticacao_ja_possui_usuario"));
         }
-
-
 
         return trabalhador;
     }
@@ -252,7 +248,6 @@ public class TrabalhadorService extends BaseService {
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public PrimeiroAcesso salvarPrimeiroAcesso(PrimeiroAcesso primeiroAcesso) {
-
         Trabalhador trab = trabalhadorDAO.pesquisarPorId(primeiroAcesso.getTrabalhador().getId());
 
         if (trab != null) {
@@ -261,7 +256,7 @@ public class TrabalhadorService extends BaseService {
             }
             String id = trab.getId().toString();
 
-            if(buscarTrabalhadorVidaAtiva(trab.getCpf())){
+            if (!buscarTrabalhadorVidaAtiva(trab.getCpf())) {
                 throw new BusinessErrorException(getMensagem("app_rst_primeiro_acesso_erro_vida_inativa"));
             }
 
@@ -274,7 +269,6 @@ public class TrabalhadorService extends BaseService {
                 if (usuario == null) {
                     throw new BusinessErrorException(getMensagem("app_validacao_error"));
                 }
-
             } else {
                 if (!verificarPerfilSistemaPrimeiroAcesso(usuario)) {
                     usuario.getPerfisSistema().add(primeiroAcesso.getUsuario().getPerfisSistema().iterator().next());
