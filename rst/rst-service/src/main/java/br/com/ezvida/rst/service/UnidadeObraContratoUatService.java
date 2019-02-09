@@ -67,12 +67,11 @@ public class UnidadeObraContratoUatService extends BaseService {
         return unidadeObraContratoUat;
     }
 
-    public UnidadeObraContratoUat desativar( UnidadeObraContratoUat unidadeObraContratoUat){
-
-        if( unidadeObraContratoUat.getId() == null ){
+    public UnidadeObraContratoUat desativar( UnidadeObraContratoUat unidadeObraContratoUat) {
+        if ( unidadeObraContratoUat.getId() == null ) {
             throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_id_invalido",
                     getMensagem("app_rst_unidade_obra_contrato_id_invalido") ) );
-        }else if( unidadeObraContratoUat.getFlagInativo() == null){
+        } else if ( unidadeObraContratoUat.getFlagInativo() == null) {
             throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_flag_inativo_invalido",
                     getMensagem("app_rst_unidade_obra_contrato_flag_inativo_invalido") ) );
         }
@@ -81,12 +80,12 @@ public class UnidadeObraContratoUatService extends BaseService {
 
         unidadeObraContratoUat = unidadeObraContratoUatDAO.pesquisarPorId(unidadeObraContratoUat.getId());
 
-        if( unidadeObraContratoUat == null ){
+        if (unidadeObraContratoUat == null) {
             throw new BusinessErrorException(getMensagem("app_rst_unidade_invalida",
                     getMensagem("app_rst_label_unidade_obra")));
         }
 
-        unidadeObraContratoUat.setFlagInativo('N');
+        unidadeObraContratoUat.setFlagInativo(flag);
         unidadeObraContratoUat.setDataInativo(new Date());
 
         unidadeObraContratoUatDAO.salvar(unidadeObraContratoUat);
@@ -95,34 +94,33 @@ public class UnidadeObraContratoUatService extends BaseService {
     }
 
     public UnidadeObraContratoUat ativar( UnidadeObraContratoUat unidadeObraContratoUat){
-
-        if( unidadeObraContratoUat.getId() == null ){
+        if (unidadeObraContratoUat.getId() == null) {
             throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_id_invalido",
                     getMensagem("app_rst_unidade_obra_contrato_id_invalido") ) );
-        }else if( unidadeObraContratoUat.getFlagInativo() == null){
+        } else if (unidadeObraContratoUat.getFlagInativo() == null) {
             throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_flag_inativo_invalido",
                     getMensagem("app_rst_unidade_obra_contrato_flag_inativo_invalido") ) );
         }
 
-        Integer flag = Integer.parseInt( unidadeObraContratoUat.getFlagInativo().toString() );
+        Integer flag = Integer.parseInt(unidadeObraContratoUat.getFlagInativo().toString());
 
-        if( flag < 1 || flag > 3){
+        if (flag < 1 || flag > 3) {
             throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_flag_inativo_perfil_invalido",
                     getMensagem("app_rst_unidade_obra_contrato_flag_inativo_perfil_invalido") ) );
         }
 
         unidadeObraContratoUat = unidadeObraContratoUatDAO.pesquisarPorId(unidadeObraContratoUat.getId());
 
-        if( unidadeObraContratoUat.getFlagInativo() == null ){
+        if (unidadeObraContratoUat.getFlagInativo() == null) {
             throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_unidade_ativada",
                     getMensagem("app_rst_unidade_obra_contrato_unidade_ativada") ) );
         }
-        Integer flagAtual = Integer.parseInt( unidadeObraContratoUat.getFlagInativo().toString() );
+        Integer flagAtual = Integer.parseInt(unidadeObraContratoUat.getFlagInativo().toString());
 
-        if( unidadeObraContratoUat == null ){
+        if (unidadeObraContratoUat == null) {
             throw new BusinessErrorException(getMensagem("app_rst_unidade_invalida",
                     getMensagem("app_rst_label_unidade_obra")));
-        }else if( flag < flagAtual){
+        } else if (flag < flagAtual) {
             throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_perfil_invalido",
                     getMensagem("app_rst_unidade_obra_contrato_perfil_invalido")));
         }

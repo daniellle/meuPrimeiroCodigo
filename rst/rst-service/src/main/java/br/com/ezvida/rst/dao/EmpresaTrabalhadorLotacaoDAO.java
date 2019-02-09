@@ -228,7 +228,7 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		jpql.append(" where trabalhador.cpf = :cpf ");
 		jpql.append(" and (unidadeObraContratoUat.dataContratoInicio is not null and unidadeObraContratoUat.dataContratoInicio <= :dataHoje) ");
 		jpql.append(" and (unidadeObraContratoUat.dataContratoFim is not null and unidadeObraContratoUat.dataContratoFim > :dataHoje) ");
-		jpql.append(" and (unidadeObraContratoUat.flagInativo is null or unidadeObraContratoUat.flagInativo = 'N') ");
+		jpql.append(" and (unidadeObraContratoUat.dataInativo is null) ");
 		jpql.append(" and (empresaTrabalhadorLotacao.dataDesligamento is null) ");
 		jpql.append(" and (empresaTrabalhadorLotacao.flagInativo = :flagInativo or empresaTrabalhadorLotacao.flagInativo is null)");
 
@@ -253,7 +253,7 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		sql.append(" where usuarioEntidade.cpf = :cpf ");
 		sql.append(" and (unidadeObraContratoUat.dataContratoInicio is not null and unidadeObraContratoUat.dataContratoInicio <= :dataHoje) ");
 		sql.append(" and (unidadeObraContratoUat.dataContratoFim is not null and unidadeObraContratoUat.dataContratoFim > :dataHoje) ");
-		sql.append(" and (unidadeObraContratoUat.flagInativo is null or unidadeObraContratoUat.flagInativo = 'N') ");
+		sql.append(" and (unidadeObraContratoUat.dataInativo is null) ");
 		TypedQuery<UsuarioEntidade> query = criarConsultaPorTipo(sql.toString(), UsuarioEntidade.class);
 		query.setParameter("cpf", cpf);
 		query.setParameter("dataHoje", new Date(), TemporalType.TIMESTAMP);
