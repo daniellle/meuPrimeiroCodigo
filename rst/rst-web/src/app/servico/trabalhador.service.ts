@@ -139,9 +139,9 @@ export class TrabalhadorService extends BaseService<Trabalhador> {
     }
 
   buscarVidaAtivaTrabalhador(cpf:string): Observable<string> {
-    return super.get('/v1/empresa-trabalhador-lotacoes/validar-trabalhador/' + cpf)
+    return super.get('/v1/empresa-trabalhador-lotacoes/validar-vida-ativa/' + cpf)
         .map((response: Response) => {
-          console.log(response);
+
           
             return response;
         }).catch((error: Response) => {

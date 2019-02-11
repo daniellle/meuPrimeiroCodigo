@@ -58,7 +58,7 @@ export class ResHomeComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log('teste')
+
         this.resolve();
     }
 

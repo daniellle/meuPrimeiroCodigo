@@ -103,9 +103,7 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
       this.usuarios = new Array<Usuario>();
       this.usuarioSelecionado = null;
       this.paginacao.pagina = 1;
-      console.log(this.filtro);
       this.filtro.usuarioLogadoHierarquia = this.usuarioLogado.nivel;
-      console.log(this.filtro);
       this.usuarioService.pesquisarPaginado(this.filtro, this.paginacao).subscribe((retorno) => {
         this.usuarios = retorno.list;
         this.paginacao = this.getPaginacao(this.paginacao, retorno);
@@ -227,7 +225,6 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
   filterByHierarquia(list: Perfil[]){
    let retorno: Perfil[];
     if (!this.listaUndefinedOuVazia(list)) {
-      console.log(this.usuarioLogado.nivel);
       if(this.usuarioLogado.nivel <= 2){
         retorno = list.filter(element => (element.hierarquia >= this.usuarioLogado.nivel) || element.codigo == "TRA");
       } else {

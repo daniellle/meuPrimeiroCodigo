@@ -299,7 +299,6 @@ export class MinhaContaComponent extends BaseComponent implements OnInit {
     }
 
     podeVoltar(){
-        console.log(this.usuarioLogado.dados.trabalhador);
        return this.usuarioLogado.dados.trabalhador;
     }
 

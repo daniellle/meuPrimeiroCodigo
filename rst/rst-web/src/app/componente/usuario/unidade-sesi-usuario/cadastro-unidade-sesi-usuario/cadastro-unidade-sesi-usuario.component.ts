@@ -21,6 +21,7 @@ import {ToastyService} from 'ng2-toasty';
 import {Uat} from "../../../../modelo/uat.model";
 import {UatService} from "../../../../servico/uat.service";
 import {FiltroUat} from "../../../../modelo/filtro-uat.model";
+import { element } from 'protractor';
 
 @Component({
     selector: 'app-cadastro-unidade-sesi-usuario',
@@ -65,7 +66,6 @@ export class CadastroUnidadeSESIUsuarioComponent extends BaseComponent implement
         this.usuarioService.buscarUsuarioById(this.idUsuario).subscribe((retorno: Usuario) => {
             this.usuario = retorno;
             this.perfis = getPerfis.call(this, retorno);
-            console.log(this.perfis);
             
             if (this.usuario && !this.usuario.perfisSistema) {
                 this.usuario.perfisSistema = new Array<UsuarioPerfilSistema>();
@@ -146,7 +146,7 @@ export class CadastroUnidadeSESIUsuarioComponent extends BaseComponent implement
     }
 
     private salvar(lista: any): void {
-        if (this.validarSelecao()) {
+        if (this.validarSelecao(lista)) {
             this.usuarioEntidadeService.salvar(lista).subscribe((response: UsuarioEntidade) => {
                 this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
                 this.limpar();
@@ -156,9 +156,19 @@ export class CadastroUnidadeSESIUsuarioComponent extends BaseComponent implement
         }
     }
 
-    validarSelecao() {
+    validarSelecao(lista) {
         if (this.listaUndefinedOuVazia(this.listaSelecionados)) {
             this.mensagemError(MensagemProperties.app_rst_selecione_um_item);
+            return false;
+        }
+        let vazio = false;
+        lista.forEach((element:UsuarioEntidade) => {
+            if(element.perfil == undefined){
+                vazio = true;
+            }
+        });
+        if(vazio){
+            this.mensagemError("É necessário selecionar pelo menos um perfil");
             return false;
         }
         return true;
@@ -187,6 +197,7 @@ export class CadastroUnidadeSESIUsuarioComponent extends BaseComponent implement
     }
 
     private pesquisarUnidadePaginado(): void {
+        
         this.filtroUat.cpfUsuarioAssociado = this.usuario.login;
         this.uatService.pesquisar(this.filtroUat, this.paginacao).subscribe((retorno: ListaPaginada<Uat>) => {
             if (retorno.list && retorno.list.length > 0) {

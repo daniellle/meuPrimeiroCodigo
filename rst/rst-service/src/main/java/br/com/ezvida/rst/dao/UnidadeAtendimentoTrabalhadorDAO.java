@@ -211,7 +211,7 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
         if (segurancaFilter != null && !segurancaFilter.isAdministrador()) {
             if (cnpj || razaoSocial || depRegional || status
                     && segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.temIdsUnidadeSESI()) {
-                jpql.append(" and ");
+                //jpql.append(" and ");
                 montarFiltroIdsPaginado(jpql, parametros, segurancaFilter);
             }
         }
@@ -221,15 +221,13 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
                                          DadosFilter segurancaFilter) {
         if (segurancaFilter.temIdsEmpresa()) {
             //testar se " empresaUat.empresa.id IN (:idsEmpresa) " funciona
+            jpql.append(" and ");
             jpql.append(" empresa.id IN (:idsEmpresa) ");
             parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
         }
 
-        if (segurancaFilter.temIdsEmpresa() && segurancaFilter.temIdsDepRegional()) {
-            jpql.append(" and ");
-        }
-
         if (segurancaFilter.temIdsDepRegional()) {
+            jpql.append(" and ");
             jpql.append(" uat.departamentoRegional.id IN (:idsDepRegional) ");
             parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
         }
@@ -286,8 +284,7 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
             }
             //jpql.append(" UPPER(uat.razaoSocial) like :razaoSocial escape :sc");
             //tem q ver com Dan pq isso não está funcionando...
-            jpql.append(" set_simple_name(UPPER(uat.razaoSocial)) like set_simple_name(:razaoSocial) escape :sc");
-            parametros.put("sc", "\\");
+            jpql.append(" set_simple_name(UPPER(uat.razaoSocial)) like set_simple_name(:razaoSocial) ");
             parametros.put("razaoSocial", "%" + unidAtendTrabalhadorFilter.getRazaoSocial().replace("%", "\\%").toUpperCase().replace(" ", "%") + "%");
         }
 
@@ -399,7 +396,6 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
         if (segurancaFilter != null) {
             if ((idEstado || idMunicipio || bairro)
                     && (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa())) {
-                jpql.append(" and ");
 
                 montarFiltroIdsPaginado(jpql, parametros, segurancaFilter);
             }

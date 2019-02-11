@@ -394,7 +394,8 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
         LOGGER.debug("Pesquisando Vida Ativa do trabalhador por id.");
         //Query query = criarConsulta("select count(t.id) from EmpresaTrabalhador t where t.trabalhador.id = :id and t.dataFimContrato >= current_date ");
         StringBuilder jqpl = new StringBuilder();
-        jqpl.append("select count(t.id_trabalhador) from UnidadeObraContratoUat uocu inner join uocu.unidadeObra o on uocu.id_und_obra_fk = o.id_und_obra ")
+        jqpl.append("select count(t.id_trabalhador) from UnidadeObraContratoUat uocu ")
+                .append(" inner join uocu.unidadeObra unidadeObra  ")
              .append(" inner join EmpresaLotacao l on o.id_und_obra = l.id_und_obra_fk ")
              .append(" inner join EmpresaTrabalhadorLotacao l2 on l.id_empresa_lotacao = l2.id_emp_lotacao_fk ")
              .append(" inner join EmpresaTrabalhador et on l2.id_empr_trabalhador_fk = et.id_emp_trabalhador ")

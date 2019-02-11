@@ -34,8 +34,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
     }
 
     @SuppressWarnings("unchecked")
-    public ListaPaginada<UsuarioGirstView> pesquisarPorFiltro(UsuarioFilter usuarioFilter, DadosFilter dados, List<String> listaDeLogins) {
-        LOGGER.debug("Pesquisando paginado UsuarioGirstView por filtro");
+    public ListaPaginada<UsuarioGirstView> pesquisarPorFiltro(UsuarioFilter usuarioFilter, DadosFilter dados, List<String> listaDeLogins) { LOGGER.debug("Pesquisando paginado UsuarioGirstView por filtro");
 
         ListaPaginada<UsuarioGirstView> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
 
@@ -208,8 +207,8 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
             setFiltroAplicado(true);
 
         }
-
-        jpql.append(" OR (id_departamento_regional_fk is null AND id_und_atd_trab_fk is null AND id_empresa_fk is null))");
+        jpql.append(" ) ");
+//        jpql.append(" OR (id_departamento_regional_fk is null AND id_und_atd_trab_fk is null AND id_empresa_fk is null))");
         return;
     }
 
@@ -391,7 +390,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
             }
             perfis.add(pu);
         }
-        return tratarPerfisDuplicados(perfis);
+        return perfis;
     }
 
     private List<PerfilUsuarioDTO> tratarPerfisDuplicados(List<PerfilUsuarioDTO> lista) {

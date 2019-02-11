@@ -152,7 +152,7 @@ export class CadastroEmpresaUsuarioComponent extends BaseComponent implements On
     }
 
     private salvar(lista: UsuarioEntidade[]): void {
-        if (this.validarSelecao()) {
+        if (this.validarSelecao(lista)) {
             this.usuarioEntidadeService.salvar(lista).subscribe((response: UsuarioEntidade) => {
                 this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
                 this.limpar();
@@ -162,19 +162,23 @@ export class CadastroEmpresaUsuarioComponent extends BaseComponent implements On
         }
     }
 
-    validarSelecao() {
-        let verificador = true;
-
-        if (this.isVazia(this.filtro.perfil)) {
-            this.mensagemErroComParametrosModel('app_rst_msg_pesquisar_perfil_vazio');
-            verificador = false;
-        }
+    validarSelecao(lista) {
         if (this.listaUndefinedOuVazia(this.listaSelecionados)) {
-            this.mensagemError(MensagemProperties.app_rst_selecione_um_item);
-            verificador = false;
+          this.mensagemError(MensagemProperties.app_rst_selecione_um_item);
+          return false;
         }
-        return verificador;
-    }
+        let vazio = false;
+        lista.forEach((element:UsuarioEntidade) => {
+            if(element.perfil == undefined){
+                vazio = true;
+            }
+        });
+        if(vazio){
+            this.mensagemError("É necessário selecionar pelo menos um perfil");
+            return false;
+        }
+        return true;
+      }
 
     private validarPesquisa(): boolean {
         let verificador = true;

@@ -1,9 +1,16 @@
 .calendario {
     padding-bottom: 300px;
 }
-.btn-blue-border{
+
+.btn-blue-border {
     border-color: #6dcdf5;
+    background: #5f194b;
 }
-.float-right{
+
+.float-right {
     float: right;
+}
+
+.btn-primary:hover {
+    background: #6dcdf5;
 }

@@ -96,7 +96,7 @@ export class UsuarioEntidadeService extends BaseService<UsuarioEntidade> {
   salvar(usuarioEntidade: UsuarioEntidade[]): Observable<UsuarioEntidade> {
     this.bloqueioService.evento.emit(false);
     return super.post('/v1/usuario-entidade/cadastrar', usuarioEntidade)
-      .map((response: Response) => {
+      .map((response: UsuarioEntidade) => {
         return response;
       }).catch((error: HttpResponse<MensagemErro>) => {
         return Observable.throw(error);

@@ -39,7 +39,7 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
     private static final long serialVersionUID = -4839541588378608503L;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CredencialService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioServiceProd.class);
 
     private static final String CODIGO_PERFIL_GESTOR_EMPRESA = "GEEM";
     private static final String CODIGO_PERFIL_GESTOR_EMPRESA_MASTER = "GEEMM";

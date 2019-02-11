@@ -164,8 +164,6 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
     filtroEndereco.filtrarDepRegEmp = '1';
 
     this.uatService.pesquisarPorEndereco(filtroEndereco).subscribe((retorno: Uat[]) => {
-      console.log('Uats aqui');
-      console.log(retorno);
       // buscar linhas e produtos atraves das uats
       const uats = retorno;
       this.buscarLinhasPorIdUat(uats);

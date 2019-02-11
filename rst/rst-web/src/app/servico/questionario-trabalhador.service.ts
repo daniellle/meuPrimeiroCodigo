@@ -41,13 +41,13 @@ export class QuestionarioTrabalhadorService extends BaseService<QuestionarioTrab
   }
 
   consultarPeriodicidade(id: number): Observable<Boolean> {
-    console.log('conultar periodicidade')
+
     return super.get(`/v1/questionario-trabalhador/${id}/periodo`)
       .map((response: Boolean) => {
-        console.log('Response:', response);
+
         return response;
       }).catch((error) => {
-        console.log('Error:', error)
+
         return Observable.throw(error);
       });
   }
