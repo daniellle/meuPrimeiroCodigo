@@ -19,15 +19,14 @@ import { ToastyService } from 'ng2-toasty';
 import { BaseComponent } from 'app/componente/base.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BloqueioService } from 'app/servico/bloqueio.service';
-import { Component, OnInit } from '@angular/core';
-import { Item } from '@ezvida/adl-core';
+import {Component, OnInit, ChangeDetectorRef, AfterViewChecked} from '@angular/core';
 
 @Component({
   selector: 'app-pesquisa-sesi',
   templateUrl: './pesquisa-sesi.component.html',
   styleUrls: ['./pesquisa-sesi.component.scss'],
 })
-export class PesquisaSesiComponent extends BaseComponent implements OnInit {
+export class PesquisaSesiComponent extends BaseComponent implements OnInit, AfterViewChecked {
 
   public filtroPesquisaSesi: FiltroPesquisaSesi;
   public unidadesSesiOption = Array<IOption>();
@@ -53,7 +52,8 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
     private router: Router, private activatedRoute: ActivatedRoute, protected uatService: UatService,
     protected bloqueioService: BloqueioService, protected dialogo: ToastyService,
     protected estadoService: EstadoService, protected pesquisaSesiService: PesquisaSesiService,
-    protected linhaService: LinhaService, protected produtoServicoService: ProdutoServicoService) {
+    protected linhaService: LinhaService, protected produtoServicoService: ProdutoServicoService,
+    private cdr: ChangeDetectorRef) {
     super(bloqueioService, dialogo, estadoService);
     this.buscarUnidadesSesi();
     this.buscarLinhas();
@@ -72,6 +72,10 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
     this.habilitaProduto = true;
 
     this.listaPesquisaSesiProdutoServico = new Array<PesquisaSesiProdutoServico>();
+  }
+
+  ngAfterViewChecked() {
+    this.cdr.detectChanges();
   }
 
   formatarCep(value): string {
@@ -165,7 +169,7 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
 
     this.uatService.pesquisarPorEndereco(filtroEndereco).subscribe((retorno: Uat[]) => {
       // buscar linhas e produtos atraves das uats
-      const uats = retorno;
+      const uats = retorno || [];
       this.buscarLinhasPorIdUat(uats);
       this.buscarProdutoServicoPorIdUat(uats);
     }, (error) => {
@@ -190,28 +194,32 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
       this.mensagemError(error);
     });
   }
- 
+
 
   buscarLinhasPorIdUat(uats: Uat[]) {
     const ids = [];
     uats.forEach((element) => {
       ids.push(element.id);
     });
-    this.linhaService.buscarLinhasPorIdUat(ids).subscribe((dados: any) => {
-      let listaOption: IOption[];
-      listaOption = [];
-      if (dados) {
-        dados.forEach((element) => {
-          const item = new Option();
-          item.value = element.id;
-          item.label = element.descricao;
-          listaOption.push(item);
+    if(ids.length > 0) {
+        this.linhaService.buscarLinhasPorIdUat(ids).subscribe((dados: any) => {
+          let listaOption: IOption[];
+          listaOption = [];
+          if (dados) {
+            dados.forEach((element) => {
+              const item = new Option();
+              item.value = element.id;
+              item.label = element.descricao;
+              listaOption.push(item);
+            });
+          }
+          this.linhasOption = listaOption;
+        }, (error) => {
+          this.mensagemError(error);
         });
-      }
-      this.linhasOption = listaOption;
-    }, (error) => {
-      this.mensagemError(error);
-    });
+    } else {
+        this.linhasOption = [];
+    }
   }
 
   buscarProdutoServicoPorIdUat(uats: Uat[]) {
@@ -219,21 +227,25 @@ export class PesquisaSesiComponent extends BaseComponent implements OnInit {
     uats.forEach((element) => {
       ids.push(element.id);
     });
-    this.produtoServicoService.buscarProdutoServicoPorIdUat(ids).subscribe((dados: any) => {
-      let listaOption: IOption[];
-      listaOption = [];
-      if (dados) {
-        dados.forEach((element) => {
-          const item = new Option();
-          item.value = element.id;
-          item.label = element.nome;
-          listaOption.push(item);
+    if(ids.length > 0) {
+        this.produtoServicoService.buscarProdutoServicoPorIdUat(ids).subscribe((dados: any) => {
+          let listaOption: IOption[];
+          listaOption = [];
+          if (dados) {
+            dados.forEach((element) => {
+              const item = new Option();
+              item.value = element.id;
+              item.label = element.nome;
+              listaOption.push(item);
+            });
+          }
+          this.produtosOption = listaOption;
+        }, (error) => {
+          this.mensagemError(error);
         });
-      }
-      this.produtosOption = listaOption;
-    }, (error) => {
-      this.mensagemError(error);
-    });
+    } else {
+        this.produtosOption = [];
+    }
   }
 
   buscarProdutos() {
