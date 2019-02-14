@@ -141,7 +141,7 @@ public class TrabalhadorService extends BaseService {
         }
 
         try{
-           u = usuarioService.buscarPorLogin(trabalhador.getCpf());
+            u = usuarioService.buscarPorLogin(trabalhador.getCpf());
         }
         catch (Exception e){
             if (trabalhador != null) {
@@ -478,4 +478,33 @@ public class TrabalhadorService extends BaseService {
         return trabalhadorDAO.buscarTrabalhadoresByEmpresasDoUsuario(empresas, str, cpf, page);
     }
 
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Usuario incluirPerfilTrabalhadorUsuario(Usuario usuario) {
+
+        Trabalhador trabalhador = trabalhadorDAO.pesquisarPorCpf(usuario.getLogin());
+        usuario = usuarioService.buscarPorLogin(trabalhador.getCpf());
+
+        if (trabalhador.getId() != null && usuario != null) {
+
+            Perfil perfil = new Perfil();
+            perfil.setCodigo(DadosFilter.TRABALHADOR);
+
+            Sistema sistemaMobile = new Sistema();
+            sistemaMobile.setCodigo(CODIGO_SISTEMA_SESI_VIVA_MAIS_MOBILE);
+
+            UsuarioPerfilSistema usuarioPerfilSistema = new UsuarioPerfilSistema();
+            usuarioPerfilSistema.setPerfil(perfil);
+
+            usuario.setPerfisSistema(new HashSet<UsuarioPerfilSistema>());
+            usuario.getPerfisSistema().add(usuarioPerfilSistema);
+
+            UsuarioPerfilSistema usuarioPerfilSistemaMobile = new UsuarioPerfilSistema();
+            usuarioPerfilSistemaMobile.setPerfil(perfil);
+            usuarioPerfilSistemaMobile.setSistema(sistemaMobile);
+            usuario.getPerfisSistema().add(usuarioPerfilSistemaMobile);
+
+            return usuario;
+        }
+        return null;
+    }
 }
