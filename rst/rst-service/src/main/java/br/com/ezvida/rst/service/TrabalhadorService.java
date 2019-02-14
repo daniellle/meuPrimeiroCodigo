@@ -481,30 +481,36 @@ public class TrabalhadorService extends BaseService {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Usuario incluirPerfilTrabalhadorUsuario(Usuario usuario) {
 
-        Trabalhador trabalhador = trabalhadorDAO.pesquisarPorCpf(usuario.getLogin());
-        usuario = usuarioService.buscarPorLogin(trabalhador.getCpf());
+        if(usuario != null){
+            Trabalhador trabalhador = trabalhadorDAO.pesquisarPorCpf(usuario.getLogin());
 
-        if (trabalhador.getId() != null && usuario != null) {
+            if (trabalhador != null && trabalhador.getId() != null) {
 
-            Perfil perfil = new Perfil();
-            perfil.setCodigo(DadosFilter.TRABALHADOR);
+                Perfil perfil = new Perfil();
+                perfil.setCodigo(DadosFilter.TRABALHADOR);
 
-            Sistema sistemaMobile = new Sistema();
-            sistemaMobile.setCodigo(CODIGO_SISTEMA_SESI_VIVA_MAIS_MOBILE);
+                Sistema cadastro = new Sistema();
+                cadastro.setCodigo(CODIGO_SISTEMA_CADASTRO);
 
-            UsuarioPerfilSistema usuarioPerfilSistema = new UsuarioPerfilSistema();
-            usuarioPerfilSistema.setPerfil(perfil);
+                Sistema sistemaMobile = new Sistema();
+                sistemaMobile.setCodigo(CODIGO_SISTEMA_SESI_VIVA_MAIS_MOBILE);
 
-            usuario.setPerfisSistema(new HashSet<UsuarioPerfilSistema>());
-            usuario.getPerfisSistema().add(usuarioPerfilSistema);
+                UsuarioPerfilSistema usuarioPerfilSistema = new UsuarioPerfilSistema();
+                usuarioPerfilSistema.setPerfil(perfil);
+                usuarioPerfilSistema.setSistema(cadastro);
 
-            UsuarioPerfilSistema usuarioPerfilSistemaMobile = new UsuarioPerfilSistema();
-            usuarioPerfilSistemaMobile.setPerfil(perfil);
-            usuarioPerfilSistemaMobile.setSistema(sistemaMobile);
-            usuario.getPerfisSistema().add(usuarioPerfilSistemaMobile);
+                usuario.setPerfisSistema(new HashSet<UsuarioPerfilSistema>());
+                usuario.getPerfisSistema().add(usuarioPerfilSistema);
 
-            return usuario;
+                UsuarioPerfilSistema usuarioPerfilSistemaMobile = new UsuarioPerfilSistema();
+                usuarioPerfilSistemaMobile.setPerfil(perfil);
+                usuarioPerfilSistemaMobile.setSistema(sistemaMobile);
+                usuario.getPerfisSistema().add(usuarioPerfilSistemaMobile);
+
+                return usuario;
+            }
         }
+
         return null;
     }
 }
