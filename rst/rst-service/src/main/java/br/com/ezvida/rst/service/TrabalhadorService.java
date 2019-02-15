@@ -499,8 +499,15 @@ public class TrabalhadorService extends BaseService {
                 usuarioPerfilSistema.setPerfil(perfil);
                 usuarioPerfilSistema.setSistema(cadastro);
 
-                usuario.setPerfisSistema(new HashSet<UsuarioPerfilSistema>());
-                usuario.getPerfisSistema().add(usuarioPerfilSistema);
+//                usuario.setPerfisSistema(new HashSet<UsuarioPerfilSistema>());
+//                usuario.getPerfisSistema().add(usuarioPerfilSistema);
+
+                if(usuario.getPerfisSistema() != null){
+                    usuario.getPerfisSistema().add(usuarioPerfilSistema);
+                } else {
+                    usuario.setPerfisSistema(new HashSet<UsuarioPerfilSistema>());
+                    usuario.getPerfisSistema().add(usuarioPerfilSistema);
+                }
 
                 UsuarioPerfilSistema usuarioPerfilSistemaMobile = new UsuarioPerfilSistema();
                 usuarioPerfilSistemaMobile.setPerfil(perfil);
