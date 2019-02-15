@@ -273,11 +273,8 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
     }
 
     removeOpcaoDiretores(){
-      //console.table(this.perfisDoSistema);
       this.removeOpcaoDiretorDN();
-      //console.table(this.perfisDoSistema);
       this.removeOpcaoDiretorDR();
-      console.table(this.perfisDoSistema);
     }
 
     removeOpcaoDiretorDR(){

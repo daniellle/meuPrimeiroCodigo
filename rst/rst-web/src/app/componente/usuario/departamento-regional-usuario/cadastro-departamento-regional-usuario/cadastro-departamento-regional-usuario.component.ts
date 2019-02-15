@@ -106,9 +106,9 @@ export class CadastroDepartamentoUsuarioComponent extends BaseComponent implemen
                   break;
               case PerfilEnum.GCODR:
                   p.push(new Perfil(null, value, key));
-              case PerfilEnum.DIDR:
-                  p.push(new Perfil(null, value, key));
-                  break;
+              // case PerfilEnum.DIDR:
+              //     p.push(new Perfil(null, value, key));
+              //     break;
           }
       });
       return p;
