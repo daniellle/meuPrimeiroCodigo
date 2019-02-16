@@ -77,6 +77,7 @@ export class PesquisaPerfilUsuarioComponent extends BaseComponent implements OnI
   buscarPerfis(): void {
     this.perfilService.buscarTodos(this.usuarioLogado.nivel).subscribe((retorno: any) => {
       this.perfis = retorno;
+      this.removeOpcaoDiretores();
         this.perfis.push(this.semPerfilBarramento);
     }, (error) => {
       this.mensagemError(error);
@@ -143,5 +144,32 @@ adicionarEmpresa(event) {
     if(boolean) {
       this.filtro = new PerfilUsuarioFilter();
     }
+  }
+
+  removeOpcaoDiretores(){
+    this.removeOpcaoDiretorDN();
+    this.removeOpcaoDiretorDR();
+  }
+
+  removeOpcaoDiretorDR(){
+    let index:number;
+    this.perfis.some((lista,indice) => {
+      if(lista.codigo == 'DIDR'){
+        index = indice;
+        return true;
+      };
+    });
+    this.perfis.splice(index,1);
+  }
+
+  removeOpcaoDiretorDN(){
+    let index:number;
+    this.perfis.some((lista,indice) => {
+      if(lista.codigo == 'DIDN'){
+        index = indice;
+        return true;
+      };
+    });
+    this.perfis.splice(index,1);
   }
 }
