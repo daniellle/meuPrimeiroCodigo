@@ -41,11 +41,19 @@ O RST Cadastro depende de outras bibliotecas e aplicações. Certifique-se de qu
     ```
     2.3 Abra o terminal de comando do seu sistema, acesse a pasta certificados, criada anteriormente, e execute os comandos abaixo, um por vez e na sequência descrita:
     
-    - ```openssl genrsa -aes256 -out rsa.pem 2048``` _(Será solicitada uma senha, pode ser utilizado sua senha de acesso a rede.)_
-    
-    - ```openssl pkcs8 -topk8 -inform PEM -outform PEM -in rsa.pem -out rsa-private.pem -nocrypt``` _(Será solicitada uma senha, informe  a mesma senha que foi utilizada no comando anterior.)_
-    
-    - ```openssl rsa -in rsa-private.pem -pubout -outform PEM -out rsa-public.pem```
+     ```shell
+    $ openssl genrsa -aes256 -out rsa.pem 2048
+    ```
+    _Será solicitada uma senha, pode ser utilizado sua senha de acesso a rede._
+
+    ```shell
+    $ openssl pkcs8 -topk8 -inform PEM -outform PEM -in rsa.pem -out rsa-private.pem -nocrypt
+    ```
+    _Será solicitada uma senha, informe  a mesma senha que foi utilizada no comando anterior._
+
+    ```shell
+    $ openssl rsa -in rsa-private.pem -pubout -outform PEM -out rsa-public.pem
+    ```
 
 ## Execução
 
