@@ -91,6 +91,7 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
         if(this.usuarioEhGestorDNBarramento){
           this.perfisDoSistema = this.filtrarPerfilPorCnpj(this.perfisDoSistema);
         }
+        this.removeOpcaoDiretores();
       } else{
         this.perfisDoSistema = sistema.sistemaPerfis;
       }
@@ -224,6 +225,7 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
     filtrarPerfilPorCnpj(perfisDoSistema: SistemaPerfil[]): SistemaPerfil[]{
       let retorno: SistemaPerfil[] = [];
       perfisDoSistema.forEach(sp => {
+        if(this.ehADM()){
           if (sp.perfil.codigo.includes("DIDN") || 
           sp.perfil.codigo.includes("GCDN") || 
           sp.perfil.codigo.includes("GDNA") || 
@@ -232,6 +234,15 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
           sp.perfil.codigo.includes("MTSDN")) {
               retorno.push(sp);
           }
+        }else{
+          if (sp.perfil.codigo.includes("GCDN") || 
+          sp.perfil.codigo.includes("GDNA") || 
+          sp.perfil.codigo.includes("GDNP") || 
+          sp.perfil.codigo.includes("GCODN") || 
+          sp.perfil.codigo.includes("MTSDN")) {
+              retorno.push(sp);
+          }
+        }
       })
       return retorno;
     }
@@ -254,7 +265,38 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
     }
 
     ehGDRM(){
-      return this.usuarioLogado.papeis.includes(PerfilEnum.GDRM)
+      return this.usuarioLogado.papeis.includes(PerfilEnum.GDRM);
+    }
+
+    ehADM(){
+      return this.usuarioLogado.papeis.includes(PerfilEnum.ADM);
+    }
+
+    removeOpcaoDiretores(){
+      this.removeOpcaoDiretorDN();
+      this.removeOpcaoDiretorDR();
+    }
+
+    removeOpcaoDiretorDR(){
+      let index:number;
+      this.perfisDoSistema.some((lista,indice) => {
+        if(lista.perfil.codigo == 'DIDR'){
+          index = indice;
+          return true;
+        };
+      });
+      this.perfisDoSistema.splice(index,1);
+    }
+
+    removeOpcaoDiretorDN(){
+      let index:number;
+      this.perfisDoSistema.some((lista,indice) => {
+        if(lista.perfil.codigo == 'DIDN'){
+          index = indice;
+          return true;
+        };
+      });
+      this.perfisDoSistema.splice(index,1);
     }
   
 }

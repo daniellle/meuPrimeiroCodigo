@@ -7,6 +7,7 @@ import br.com.ezvida.rst.enums.Funcionalidade;
 import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.model.Usuario;
 import br.com.ezvida.rst.service.PerfilUsuarioService;
+import br.com.ezvida.rst.service.TrabalhadorService;
 import br.com.ezvida.rst.service.UsuarioService;
 import br.com.ezvida.rst.web.auditoria.ClienteInfos;
 import com.google.common.base.Charsets;
@@ -41,6 +42,9 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
 
     @Inject
     private PerfilUsuarioService service;
+
+    @Inject
+    private TrabalhadorService trabalhadorService;
 
     //@formatter:off
     @GET
@@ -109,6 +113,7 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
     public Response criar(@Encoded br.com.ezvida.girst.apiclient.model.Usuario usuario, @Context SecurityContext context,
                           @Context HttpServletRequest request) {
         Usuario usuarioLogado = ClienteInfos.getUsuario(context);
+        trabalhadorService.incluirPerfilTrabalhadorUsuario(usuario);
         LOGGER.debug("Criando usuário {}", usuarioLogado.getLogin());
         return Response.status(HttpServletResponse.SC_CREATED).type(MediaType.APPLICATION_JSON)
             .header("Content-Version", getApplicationVersion())

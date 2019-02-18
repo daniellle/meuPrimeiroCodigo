@@ -50,13 +50,15 @@
         </div>
         <div class="row">
             <div class="form-group col-md-6" [ngClass]="{ divDis : !habilitaLinha }">
-                <ng-select imput=false [disabled]=!habilitaLinha placeholder="{{'app_rst_labels_situacao_todos' | recurso}}" [options]="linhasOption" allowClear=true [(ngModel)]="linhas" name="linha" maxlength="160" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}"
+                <ng-select imput=false [disabled]=!habilitaLinha placeholder="{{'app_rst_labels_situacao_todos' | recurso}}"
+                    [options]="linhasOption" allowClear=true [(ngModel)]="linhas" name="linha" maxlength="160" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}"
                     multiple=true>
                 </ng-select>
                 <span class="floating-label">{{'app_rst_labels_linha' | recurso}}</span>
             </div>
             <div class="form-group col-md-6" [ngClass]="{ divDis : !habilitaProduto }">
-                <ng-select imput=false [disabled]=!habilitaProduto placeholder="{{'app_rst_labels_situacao_todos' | recurso}}" [options]="produtosOption" allowClear=true [(ngModel)]="produtos" name="produto" maxlength="160" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}"
+                <ng-select imput=false [disabled]=!habilitaProduto placeholder="{{'app_rst_labels_situacao_todos' | recurso}}" [options]="produtosOption" allowClear=true
+                    [(ngModel)]="produtos" name="produto" maxlength="160" notFoundMsg="{{ 'app_rst_nenhum_registro_encontrado' | recurso }}"
                     multiple=true>
                 </ng-select>
                 <span class="floating-label">{{'app_rst_labels_produto' | recurso}}</span>

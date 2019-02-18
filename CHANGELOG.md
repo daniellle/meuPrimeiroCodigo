@@ -1,6 +1,17 @@
 # rst-cadastros
 
 -Aplicações para manutenção dos cadastros RST
+**v.2.121.0**
+(RELEASE EM 15/02/2019)
+- [CADASTROS] Ocultar os Perfis de Diretor DR e Diretor DN
+- [CADASTROS] Mensagem de e-mail já existente ao se criar novo usuário não é exibida (GLPI 4461)
+- [CADASTROS] Trabalhador sem perfil Trabalhador (GLPI 4308)
+- [CADASTROS] Erro ao pesquisar unidade sesi (INTERNO)
+- [CADASTROS] Usuário perfil DR Aplicações não consegue buscar usuário perfil Gestor Empresa Master e Gestor Empresa (GLPI 3837)
+- [CADASTROS] ERRO NA PESQUISA DE NOVOS PROFISSIONAIS DE SAÚDE EMPRESA CADASTRADOS (GLPI 4476)
+- [CADASTROS] Erro ao pesquisar usuário (GLPI 4260)
+- [CADASTROS] Lista de Usuários x Perfil, Resultado de pesquisa não está retornando todos os dados (GLPI 2678)
+
 
 **v.2.113.2**
 (RELEASE EM 11/02/2019)
