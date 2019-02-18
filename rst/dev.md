@@ -16,7 +16,7 @@ O RST Cadastro depende de outras bibliotecas e aplicações. Certifique-se de qu
 
 *Atenção*
 
-> Neste momento a sua IDE já deve estar configurada com o JDK8 e o servidor WidFly, conforme instruções da sessão pré requisitos.
+> Neste momento a sua IDE já deve estar configurada com o JDK8 e o servidor WidFly, conforme instruções da sessão pré requisitos. Recomendamos a utilização do Eclipse ou IntelliJ IDEA Ultimate.
 
 1. Edite o arquivo .bashrc que fica na pasta do seu usuário local e adicione a seguinte variável de ambiente:
 
