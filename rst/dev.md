@@ -10,7 +10,7 @@ Manual de montagem de ambiente de desenvolvimento.
 
 ## Pré requisitos
 
-o RST Cadastro depende de outras bibliotecas e aplicações. Certifique-se de que todas as dependências estão instaladas. Para mais informações consulte o arquivo [README.md](../README.md) deste projeto.
+O RST Cadastro depende de outras bibliotecas e aplicações. Certifique-se de que todas as dependências estão instaladas. Para mais informações consulte o arquivo [README.md](../README.md) deste projeto.
 
 ## Instalação
 
