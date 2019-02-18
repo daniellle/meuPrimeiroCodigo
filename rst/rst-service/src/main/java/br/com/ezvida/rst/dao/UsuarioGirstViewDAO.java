@@ -40,7 +40,7 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 
         StringBuilder sql = new StringBuilder();
         Map<String, Object> parametros = Maps.newHashMap();
-        getQueryPaginadoNativo(sql, parametros, usuarioFilter, dados, false, listaDeLogins);
+        getQueryPaginadoNativo(sql, parametros, usuarioFilter, dados, false, listaDeLogins, false);
         Query query = criarConsultaNativa(sql.toString(), UsuarioGirstView.class);
         DAOUtil.setParameterMap(query, parametros);
 
@@ -97,18 +97,19 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
     public BigInteger getCountQueryPaginado(UsuarioFilter usuarioFilter, DadosFilter dados, List<String> listaDeLogins) {
         Map<String, Object> parametros = Maps.newHashMap();
         StringBuilder jpql = new StringBuilder();
-        getQueryPaginadoNativo(jpql, parametros, usuarioFilter, dados, true, listaDeLogins);
+        getQueryPaginadoNativoPerfilUsuario(jpql, parametros, usuarioFilter, dados, true, listaDeLogins);
         Query query = criarConsultaNativa(jpql.toString());
         DAOUtil.setParameterMap(query, parametros);
         return DAOUtil.getSingleResult(query);
     }
 
     private void getQueryPaginadoNativo(StringBuilder jpql, Map<String, Object> parametros, UsuarioFilter usuarioFilter,
-                                        DadosFilter dados, boolean count, List<String> listaDeLogin) {
+                                        DadosFilter dados, boolean count, List<String> listaDeLogin, boolean isRelatorio) {
 
 
         if (count) {
             jpql.append(" select count( DISTINCT usuario.id) from ");
+
         } else {
             jpql.append(" select DISTINCT id, nome, login, email from ");
         }
@@ -137,11 +138,16 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
         }
     }
 
-    private void getQueryPaginadoNativoPerfilUsuario(StringBuilder jpql, Map<String, Object> parametros, UsuarioFilter usuarioFilter,
-                                                     DadosFilter dados, boolean count, List<String> listaDeLogins) {
-        jpql.append(" select id, nome, login, email,");
-        jpql.append(" nome_perfil, e.nm_fantasia,");
-        jpql.append(" dr.ds_nome_fantasia, uat.ds_razao_social");
+    private void getQueryPaginadoNativoPerfilUsuario(StringBuilder jpql, Map<String, Object> parametros, UsuarioFilter usuarioFilter, DadosFilter dados, boolean count, List<String> listaDeLogins) {
+
+        if (count) {
+            jpql.append( "select count (id) ");
+        }else {
+
+            jpql.append(" select id, nome, login, email,");
+            jpql.append(" nome_perfil, e.nm_fantasia,");
+            jpql.append(" dr.ds_nome_fantasia, uat.ds_razao_social");
+        }
         jpql.append(" from (select distinct vue.id, vue.nome,");
         jpql.append(" vue.login, vue.email, vue.nome_perfil, vue.id_empresa_fk,");
         jpql.append(" vue.id_und_atd_trab_fk, vue.id_departamento_regional_fk");
@@ -186,7 +192,8 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
                     .append(" JOIN und_obra_contrato_uat c ON id_und_atd_trabalhador = c.id_und_atd_trabalhador_fk")
                     .append(" JOIN und_obra o ON id_und_obra = c.id_und_obra_fk")
                     .append(" JOIN empresa e ON id_empresa = o.id_empresa_fk")
-                    .append(" WHERE id_departamento_regional IN (vue.id_departamento_regional_fk))");
+                    .append(" WHERE id_departamento_regional IN (vue.id_departamento_regional_fk))")
+                    .append(" OR id_departamento_regional_fk is null ");
             parametros.put("idsDepRegional", dados.getIdsDepartamentoRegional());
             setFiltroAplicado(true);
 
