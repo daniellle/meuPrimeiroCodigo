@@ -31,7 +31,7 @@ O RST Cadastro depende de outras bibliotecas e aplicações. Certifique-se de qu
     br > com > ezvida > rst > load > main > certificados
     ```
     2.2 Dentro da pasta main crie o arquivo _module.xml_ com o conteúdo abaixo:
-    ```
+    ```xml
     <?xml version="1.0" encoding="UTF-8"?>
     <module xmlns="urn:jboss:module:1.1" name="br.com.ezvida.rst.load">
     <resources>
