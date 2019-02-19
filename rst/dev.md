@@ -23,6 +23,8 @@ Manual de montagem de ambiente de desenvolvimento.
 - [WidFly](http://wildfly.org/downloads/) (_10.x_)
 - [Node.js](https://nodejs.org/en/) (_8.x ou superior_)
 - [NPM](https://www.npmjs.com/) (_5.x ou superior_). 
+- IDE para codificação do backend Java (Recomendamos o [Eclipse](https://www.eclipse.org/downloads/))
+- IDE para codificação da parte web (Recomendamos o [Visutal Studio Code](https://code.visualstudio.com/download))
 
 O RST Cadastro depende de algumas bibliotecas proprietárias, certifique-se de que essas bibliotecas estão disponíveis no repositório Nexus. 
 
