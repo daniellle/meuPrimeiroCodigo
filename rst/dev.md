@@ -75,6 +75,24 @@ O projeto rst-cadastro é subdividido em módulos. Ao clonar o projeto você enc
 http://localhost:8080/rst/api/health
 ```
 
+5. Através do terminal de comando, acesse a pasta _rst-web_ que está na pasta raiz do projeto
+
+6. Execute o comando abaixo para instalar as dependências deste módulo:
+
+```shell
+$ npm install
+```
+
+7. Após instalação das dependências acima, execute o comando 
+```shell
+$ npm start
+```
+
+8. Você pode confirmar que sua aplicação está online acessando a URL abaixo:
+
+```
+http://localhost:4200/cadastro
+```
 
 
 ## Testes
