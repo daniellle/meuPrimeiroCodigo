@@ -71,7 +71,7 @@ O projeto rst-cadastro é subdividido em módulos. Ao clonar o projeto você enc
 
 4. Você pode confirmar que o backend está online e pronto para receber requisiões acessando a URL abaixo. você deve receber uma resposta de status Ok.
 
-``` http
+```
 http://localhost:8080/rst/api/health
 ```
 
@@ -90,7 +90,7 @@ $ npm start
 
 8. Você pode confirmar que sua aplicação está online acessando a URL abaixo:
 
-``` http
+```
 http://localhost:4200/cadastro
 ```
 
