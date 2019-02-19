@@ -6,7 +6,8 @@ Manual de montagem de ambiente de desenvolvimento.
 
 - [Pré requisitos](#pré-requisitos)
 - [Configuração](#configuração)
-
+- [Execução](#execução)
+- [Problemas comuns](#problemas-comuns)
 
 ## Pré requisitos
 
@@ -97,3 +98,18 @@ O projeto possui testes no backend em Java que são utilizado pelo Jeckins. Em d
 
 protractor
 ```
+
+## Problemas comuns
+
+- **Erro ao baixar dependências?**
+
+    _Algumas dependências estão disponíveis somente no repositório Nexus, por esse motivo é obrigatório que suas credências de rede estejam configuradas no arquivo settings.xml (Maven) e .npmrc (NPM). Para obter informações de como configurar acesse o [README.md](../README.md) deste projeto._
+
+
+- **Serviço backend não inicializa?**
+    
+    _Verifique se o servidor WidFly está conectado com o banco de dados da aplicação. Através do painel administrativo do WidFly é possível testar a conexão. Durante a inicializaçao dos serviços do backend a aplicação precisa se conectar com o banco de dados._
+
+- **Quando acesso a url da aplicação web não é exibido a tela do sistema?**
+
+    _Ao chamar a URL da aplicação (localhost:4200/cadastro) é verificado em qual ambiente a aplicação está (Desenvolvimento, Homologação, Produção, etc) para que sejam aplicadas as regras de segurança. Certifique-se de ter inicializado a aplicação pelo comando `npm start` e de ter adicionado a variável de ambiente SOLUTIS_DEV_ENV em seu sistema, a partir dessas informações a aplicação identificará que ela está sendo executada em um ambiente de desenvolvimento._
