@@ -15,7 +15,7 @@ Manual de montagem de ambiente de desenvolvimento.
 
 ## Pré requisitos
 
-O RST Cadastro depende de outras bibliotecas e aplicações. Certifique-se de que todas as dependências estão instaladas. É necessário também que você tenha instalado em sua máquina a JDK8 e o servidor de aplicação Jboss WidFly 10.x. Para mais informações consulte o arquivo [README.md](../README.md) deste projeto.
+O RST Cadastro depende de outras bibliotecas e aplicações, certifique-se de que todas as dependências estão instaladas. É necessário também que você tenha instalado em sua máquina a [JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html), o servidor de aplicação Jboss [WidFly](http://wildfly.org/downloads/) (_10.x_), [Node.js](https://nodejs.org/en/) (_8.x ou superior_) e o [NPM](https://www.npmjs.com/) (_5x ou superior_). Para mais informações de como instalar e configura-las consulte o arquivo [README.md](../README.md) deste projeto.
 
 ## Configuração
 
