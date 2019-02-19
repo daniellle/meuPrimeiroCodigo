@@ -121,6 +121,6 @@ http://localhost:4200/cadastro
 
     - _Quando é feito uma requisição para a URL (localhost:4200/cadastro), a aplicação verifica em qual ambiente ela está sendo executada (Desenvolvimento, Homologação, Produção, etc) para que sejam aplicadas as regras de segurança adequadamente. Certifique-se de ter inicializado a aplicação (web) com o comando `npm start` e de ter adicionado a variável de ambiente SOLUTIS_DEV_ENV em seu sistema operacional, a partir dessas informações a aplicação identificará se ela está sendo executada em um ambiente de desenvolvimento ou não._
 
-    _No seu navegador abra a ferramentas de desenvolvedor (F12) e verifique se é exibido algum erro no console ao tentar acessar a url da aplicação._
+    - _No seu navegador abra a ferramentas de desenvolvedor (F12) e verifique se é exibido algum erro no console ao tentar acessar a url da aplicação._
 
-    _Abra o console da sua IDE onde o backend foi inicializado para verificar se o serviço está sendo chamado e se está sendo apresentado algum erro quando é feito uma requisição a URL aplicação web._
+    - _Abra o console da sua IDE onde o backend foi inicializado para verificar se o serviço está sendo chamado e se está sendo apresentado algum erro quando é feito uma requisição a URL aplicação web._
