@@ -115,6 +115,12 @@ http://localhost:4200/cadastro
     
     _Verifique se o servidor WidFly está conectado com o banco de dados da aplicação. Através do painel administrativo do WidFly é possível testar a conexão. Durante a inicializaçao dos serviços do backend a aplicação precisa se conectar com o banco de dados._
 
+    _Verifique também o console da sua IDE para identificar possíveis erros de inicialização do serviço._
+
 - **Quando acessa a url da aplicação web não é exibido a tela do sistema?**
 
     _Ao chamar a URL da aplicação (localhost:4200/cadastro) é verificado em qual ambiente a aplicação está (Desenvolvimento, Homologação, Produção, etc) para que sejam aplicadas as regras de segurança. Certifique-se de ter inicializado a aplicação pelo comando `npm start` e de ter adicionado a variável de ambiente SOLUTIS_DEV_ENV em seu sistema, a partir dessas informações a aplicação identificará que ela está sendo executada em um ambiente de desenvolvimento._
+
+    _No seu navegador abra a ferramentas de desenvolvedor (F12) e verifique se é exibido algum erro no console ao tentar acessar a url da aplicação._
+
+    _Abra o console da sua IDE onde o backend foi inicializado para verificar se o serviço está sendo chamado e se está sendo apresentado algum erro quando é feito uma requisição a URL aplicação web._
