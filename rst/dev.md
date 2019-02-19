@@ -45,7 +45,7 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
     </resources>
     </module>
     ```
-    2.3 Ainda dentro da pasta main, crie uma pasta com o nome _certificados_, abra o terminal de comando do seu sistema, acesse esta pasta e execute os comandos abaixo, um por vez e na sequência exposta:
+    2.3 Ainda dentro da pasta main, crie uma pasta com o nome certificados, abra o terminal de comando do seu sistema, acesse esta pasta e execute os comandos abaixo, um por vez e na sequência exposta:
     
      ```shell
     $ openssl genrsa -aes256 -out rsa.pem 2048
