@@ -64,7 +64,7 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 ## Execução
 
 
-O projeto rst-cadastro é subdividido em módulos. Ao clonar o projeto você encontrará os modulos rst-app, rst-service e rst-web. O módulo rst-app é o core do projeto, rst-service é responsável pelos serviços (backend) e o módulo rst-web é responsável pela de interface (frontend).
+O projeto rst-cadastro é subdividido em módulos. Ao clonar o projeto você encontrará os modulos rst-app, rst-service e rst-web. O módulo rst-app é o core do projeto, rst-service é responsável pelos serviços de regra de negócio e o módulo rst-web é responsável pela interface da aplicação.
 
 **Atenção**
 
