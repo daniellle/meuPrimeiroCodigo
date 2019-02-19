@@ -85,7 +85,7 @@ O projeto rst-cadastro é subdividido em módulos. Ao clonar o projeto você enc
 
 3. Adicione o artefato rst-app no servidor WidFly e start o servidor.
 
-4. Você pode confirmar que o serviço de backend está online e pronto para receber requisiões acessando a URL abaixo. Se tudo tiver corrido bem até aqui, você deve receber uma resposta de status Ok.
+4. Você pode confirmar que o serviço de backend está online e pronto para receber requisições acessando a URL abaixo. Se tudo tiver corrido bem até aqui, você deve receber uma resposta de status Ok.
 ```
 http://localhost:8080/rst/api/health
 ```
