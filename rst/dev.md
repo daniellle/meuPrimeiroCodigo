@@ -14,21 +14,17 @@ O RST Cadastro depende de outras bibliotecas e aplicações. Certifique-se de qu
 
 ## Configuração
 
-*Atenção*
-
-> Neste momento a sua IDE já deve estar configurada com o JDK8 e o servidor WidFly, conforme instruções da sessão pré requisitos. Recomendamos a utilização da IDE Eclipse ou IntelliJ IDEA Ultimate.
-
 1. Edite o arquivo .bashrc que fica na pasta do seu usuário local e adicione a seguinte variável de ambiente:
 
     ```
     export SOLUTIS_DEV_ENV = "true"
     ```
 
-2. Configurando o certificado de acesso no WildFly
+2. Configure o certificado de acesso no WildFly:
 
     2.1 Acesse a pasta de instalação do WidFly, em seguida, Modules e crie a estrutura de pastas abaixo:
     ```
-    br > com > ezvida > rst > load > main > certificados
+    br > com > ezvida > rst > load > main
     ```
     2.2 Dentro da pasta main crie o arquivo _module.xml_ com o conteúdo abaixo:
     ```xml
@@ -39,7 +35,7 @@ O RST Cadastro depende de outras bibliotecas e aplicações. Certifique-se de qu
     </resources>
     </module>
     ```
-    2.3 Abra o terminal de comando do seu sistema, acesse a pasta certificados, criada anteriormente, e execute os comandos abaixo, um por vez e na sequência descrita:
+    2.3 Ainda dentro da pasta main, crie uma pasta com o nome certificados, abra o terminal de comando do seu sistema, acesse esta pasta e execute os comandos abaixo, um por vez e na sequência descrita:
     
      ```shell
     $ openssl genrsa -aes256 -out rsa.pem 2048
@@ -57,17 +53,48 @@ O RST Cadastro depende de outras bibliotecas e aplicações. Certifique-se de qu
 
 ## Execução
 
-Abra o rst-service no eclipse e inicie o Wildfly. 
 
-Para o frontend
+O projeto rst-cadastro é subdividido em módulos. Ao clonar o projeto você encontrará os modulos rst-app, rst-service e rst-web. O módulo rst-app é o core do projeto, rst-service é responsável pelos serviços (backend) e o módulo rst-web é responsável pela de interface (frontend).
 
+*Atenção*
+
+> Neste momento a sua IDE já deve estar configurada com o JDK8 e o servidor de aplicações WidFly. É necessário também que seu WidFly já esteja configurado com os dados de conexão ao banco de dados da aplicação. Para mais informações consulte o arquivo [README.md](../README.md) deste projeto.
+
+### Backend
+
+1. Clone o projeto para sua maquina local
+
+2. Importe o projeto para sua IDE como um projeto Maven
+
+3. Adicione o artefato rst-app no seu WidFly e start o servidor.
+
+4. Você pode confirmar que o backend está online e pronto para receber requisiões acessando a URL abaixo. você deve receber uma resposta de status Ok.
+
+``` http
+http://localhost:8080/rst/api/health
 ```
-## cd rst-web
 
-npm start
+### Frontend
+
+1. Acesse o módulo rst-web, que se encontra dentro da pasta raiz do projeto 
+
+2. Abra o terminal de comando do seu sistema e instale as dependências deste módulo através do comando abaixo:
+
+``` shell
+$ npm install
 ```
 
-Feito isso, será aberto o navegador padrão com: http://localhost:4200/cadastro/
+3. Após instalação das dependências acima, execute o comando 
+```shell
+$ npm start
+```
+
+4. Você pode confirmar que sua aplicação está online acessando a URL abaixo:
+
+``` http
+http://localhost:4200/cadastro
+```
+
 
 ## Testes
 
