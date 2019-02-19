@@ -13,6 +13,7 @@ Manual de montagem de ambiente de desenvolvimento.
 **Atenção**
 > Todos os passos desta documentação são obrigatórios e é imprescidível que você obtenha sucesso na realização de cada passo.
 
+
 > Nesta documentação consideramos que você está utilizando uma distribuição Linux (Ubuntu, OpenSuse, Mint, etc), caso esteja utilizando outro sistema operacional faça as devidas adaptações.
 
 ## Pré requisitos
