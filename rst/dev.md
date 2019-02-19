@@ -7,13 +7,15 @@ Manual de montagem de ambiente de desenvolvimento.
 - [Pré requisitos](#pré-requisitos)
 - [Configuração](#configuração)
 - [Execução](#execução)
-- [Problemas comuns](#problemas-comuns)
+- [FAQ](#faq)
+
+
+**Atenção**
+> Todos os passos desta documentação são obrigatórios e é imprescidível que você obtenha sucesso na realização de cada passo.
 
 ## Pré requisitos
 
 O RST Cadastro depende de outras bibliotecas e aplicações. Certifique-se de que todas as dependências estão instaladas. Para mais informações consulte o arquivo [README.md](../README.md) deste projeto.
-
-Todos os passos desta documentação são obrigatórios e é imprescidível que você obtenha sucesso na realização de cada passo.
 
 ## Configuração
 
@@ -99,7 +101,7 @@ O projeto possui testes no backend em Java que são utilizado pelo Jeckins. Em d
 protractor
 ```
 
-## Problemas comuns
+## FAQ
 
 - **Erro ao baixar dependências?**
 
