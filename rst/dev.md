@@ -15,7 +15,7 @@ Manual de montagem de ambiente de desenvolvimento.
 
 ## Pré requisitos
 
-O RST Cadastro depende de outras bibliotecas e aplicações, certifique-se de que todas as dependências estão instaladas. 
+O RST Cadastro depende de outras bibliotecas e aplicações, certifique-se de que todas as dependências estejam disponíveis no repositório Nexus. 
 
 É necessário também que você tenha instalado em sua máquina a [JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html), o servidor de aplicação [WidFly](http://wildfly.org/downloads/) (_10.x_), [Node.js](https://nodejs.org/en/) (_8.x ou superior_) e o [NPM](https://www.npmjs.com/) (_5.x ou superior_). 
 
