@@ -63,11 +63,11 @@ O projeto rst-cadastro é subdividido em módulos. Ao clonar o projeto você enc
 
 > Neste momento a sua IDE já deve estar configurada com o JDK8 e o servidor de aplicações WidFly. É necessário também que seu WidFly já esteja configurado com os dados de conexão ao banco de dados da aplicação. Para mais informações consulte o arquivo [README.md](../README.md) deste projeto.
 
-1. Clone o projeto para sua maquina local
+1. Clone o projeto
 
-2. Importe o projeto para sua IDE como um projeto Maven
+2. Importe-o para sua IDE como um projeto Maven
 
-3. Adicione o artefato rst-app no seu WidFly e start o servidor.
+3. Adicione o artefato rst-app no servidor WidFly e start o servidor.
 
 4. Você pode confirmar que o backend está online e pronto para receber requisiões acessando a URL abaixo. você deve receber uma resposta de status Ok.
 
@@ -79,7 +79,7 @@ http://localhost:8080/rst/api/health
 
 6. Execute o comando abaixo para instalar as dependências deste módulo:
 
-``` shell
+```shell
 $ npm install
 ```
 
