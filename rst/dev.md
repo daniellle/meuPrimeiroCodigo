@@ -95,23 +95,13 @@ http://localhost:8080/rst/api/health
 ```shell
 $ npm install
 ```
-7. Após instalação das dependências acima, start a aplicação frontend executando o comando:
+7. Após instalação das dependências acima, start a aplicação (parte web) executando o comando:
 ```shell
 $ npm start
 ```
 8. Você pode confirmar que sua aplicação está online acessando a URL abaixo:
 ```
 http://localhost:4200/cadastro
-```
-
-## Testes
-
-O projeto possui testes no backend em Java que são utilizado pelo Jeckins. Em desenvolvimento possui testes E2E (End to End). 
-
-```
-## Para os testes e2e.
-
-protractor
 ```
 
 ## FAQ
