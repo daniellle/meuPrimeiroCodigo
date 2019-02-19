@@ -108,7 +108,7 @@ http://localhost:4200/cadastro
 
 - **Erro ao baixar dependências?**
 
-    _Algumas dependências estão disponíveis somente no repositório Nexus, por esse motivo é obrigatório que suas credências de rede estejam configuradas no arquivo settings.xml (Maven) e .npmrc (NPM). Para obter informações de como configurar acesse o [README.md](../README.md) deste projeto._
+    _Algumas dependências estão disponíveis somente no repositório Nexus, por esse motivo é obrigatório que suas credências de rede estejam configuradas no arquivo settings.xml (Maven) e .npmrc (NPM). Para obter informações de como configurar esses arquivos acesse o [README.md](../README.md) deste projeto._
 
 
 - **Serviço backend não inicializa?**
