@@ -24,7 +24,7 @@ Manual de montagem de ambiente de desenvolvimento.
 - [Node.js](https://nodejs.org/en/) (_8.x ou superior_)
 - [NPM](https://www.npmjs.com/) (_5.x ou superior_). 
 
-O RST Cadastro depende de algumas bibliotecas proprietárias, certifique-se de que essas bibliotecas estejam disponíveis no repositório Nexus. 
+O RST Cadastro depende de algumas bibliotecas proprietárias, certifique-se de que essas bibliotecas estão disponíveis no repositório Nexus. 
 
 Para mais informações de como instalar e configurar essas bibliotecas e ferramentas, consulte o arquivo [README.md](../README.md) deste projeto.
 
