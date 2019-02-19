@@ -108,18 +108,18 @@ http://localhost:4200/cadastro
 
 - **Erro ao baixar dependências?**
 
-    _Algumas dependências estão disponíveis somente no repositório Nexus, por esse motivo é obrigatório que suas credências de rede estejam configuradas no arquivo settings.xml (Maven) e .npmrc (NPM). Para obter informações de como configurar esses arquivos acesse o [README.md](../README.md) deste projeto._
+    - _Algumas dependências estão disponíveis somente no repositório Nexus, por esse motivo é obrigatório que suas credências de rede estejam configuradas no arquivo settings.xml (Maven) e .npmrc (NPM). Para obter informações de como configurar esses arquivos acesse o [README.md](../README.md) deste projeto._
 
 
 - **Serviço backend não inicializa?**
     
-    _Verifique se o servidor WidFly está conectado com o banco de dados da aplicação. Através do painel administrativo do WidFly é possível testar a conexão. Durante a inicializaçao dos serviços do backend a aplicação precisa se conectar com o banco de dados._
+    - _Verifique se o servidor WidFly está conectado com o banco de dados da aplicação. Através do painel administrativo do WidFly é possível testar a conexão. Durante a inicializaçao dos serviços do backend a aplicação precisa se conectar com o banco de dados._
 
-    _Verifique também o console da sua IDE para identificar possíveis erros de inicialização do serviço._
+    - _Abra o console da sua IDE para acompanhar o start da aplicação e identificar possíveis erros na inicialização dos serviços._
 
 - **Quando acessa a url da aplicação web não é exibido a tela do sistema?**
 
-    _Ao chamar a URL da aplicação (localhost:4200/cadastro) é verificado em qual ambiente a aplicação está (Desenvolvimento, Homologação, Produção, etc) para que sejam aplicadas as regras de segurança. Certifique-se de ter inicializado a aplicação pelo comando `npm start` e de ter adicionado a variável de ambiente SOLUTIS_DEV_ENV em seu sistema, a partir dessas informações a aplicação identificará que ela está sendo executada em um ambiente de desenvolvimento._
+    - _Quando é feito uma requisição para a URL (localhost:4200/cadastro), a aplicação verifica em qual ambiente ela está sendo executada (Desenvolvimento, Homologação, Produção, etc) para que sejam aplicadas as regras de segurança adequadamente. Certifique-se de ter inicializado a aplicação (web) com o comando `npm start` e de ter adicionado a variável de ambiente SOLUTIS_DEV_ENV em seu sistema operacional, a partir dessas informações a aplicação identificará se ela está sendo executada em um ambiente de desenvolvimento ou não._
 
     _No seu navegador abra a ferramentas de desenvolvedor (F12) e verifique se é exibido algum erro no console ao tentar acessar a url da aplicação._
 
