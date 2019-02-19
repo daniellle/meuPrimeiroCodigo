@@ -12,6 +12,8 @@ Manual de montagem de ambiente de desenvolvimento.
 
 O RST Cadastro depende de outras bibliotecas e aplicações. Certifique-se de que todas as dependências estão instaladas. Para mais informações consulte o arquivo [README.md](../README.md) deste projeto.
 
+Todos os passos desta documentação são obrigatórios e é imprescidível que você obtenha sucesso na realização de cada passo.
+
 ## Configuração
 
 1. Edite o arquivo .bashrc que fica na pasta do seu usuário local e adicione a seguinte variável de ambiente:
@@ -19,6 +21,7 @@ O RST Cadastro depende de outras bibliotecas e aplicações. Certifique-se de qu
     ```
     export SOLUTIS_DEV_ENV = "true"
     ```
+> Após o adicionar a variável acima, acesse o terminal e execute o comando `source ~/.bashrc` para que essas informações sejam refletidas em seu ambiente ou reinicie seu sistema.
 
 2. Configure o certificado de acesso no WildFly:
 
@@ -35,7 +38,7 @@ O RST Cadastro depende de outras bibliotecas e aplicações. Certifique-se de qu
     </resources>
     </module>
     ```
-    2.3 Ainda dentro da pasta main, crie uma pasta com o nome certificados, abra o terminal de comando do seu sistema, acesse esta pasta e execute os comandos abaixo, um por vez e na sequência descrita:
+    2.3 Ainda dentro da pasta main, crie uma pasta com o nome _certificados_, abra o terminal de comando do seu sistema, acesse esta pasta e execute os comandos abaixo, um por vez e na sequência exposta:
     
      ```shell
     $ openssl genrsa -aes256 -out rsa.pem 2048
@@ -56,11 +59,9 @@ O RST Cadastro depende de outras bibliotecas e aplicações. Certifique-se de qu
 
 O projeto rst-cadastro é subdividido em módulos. Ao clonar o projeto você encontrará os modulos rst-app, rst-service e rst-web. O módulo rst-app é o core do projeto, rst-service é responsável pelos serviços (backend) e o módulo rst-web é responsável pela de interface (frontend).
 
-*Atenção*
+**Atenção**
 
 > Neste momento a sua IDE já deve estar configurada com o JDK8 e o servidor de aplicações WidFly. É necessário também que seu WidFly já esteja configurado com os dados de conexão ao banco de dados da aplicação. Para mais informações consulte o arquivo [README.md](../README.md) deste projeto.
-
-### Backend
 
 1. Clone o projeto para sua maquina local
 
@@ -74,22 +75,20 @@ O projeto rst-cadastro é subdividido em módulos. Ao clonar o projeto você enc
 http://localhost:8080/rst/api/health
 ```
 
-### Frontend
+5. Através do terminal de comando, acesse a pasta _rst-web_ que está na pasta raiz do projeto
 
-1. Acesse o módulo rst-web, que se encontra dentro da pasta raiz do projeto 
-
-2. Abra o terminal de comando do seu sistema e instale as dependências deste módulo através do comando abaixo:
+6. Execute o comando abaixo para instalar as dependências deste módulo:
 
 ``` shell
 $ npm install
 ```
 
-3. Após instalação das dependências acima, execute o comando 
+7. Após instalação das dependências acima, execute o comando 
 ```shell
 $ npm start
 ```
 
-4. Você pode confirmar que sua aplicação está online acessando a URL abaixo:
+8. Você pode confirmar que sua aplicação está online acessando a URL abaixo:
 
 ``` http
 http://localhost:4200/cadastro
