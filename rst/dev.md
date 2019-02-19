@@ -24,7 +24,7 @@ O RST Cadastro depende de outras bibliotecas e aplicações. Certifique-se de qu
     ```
     export SOLUTIS_DEV_ENV = "true"
     ```
-> Após o adicionar a variável acima, acesse o terminal e execute o comando `source ~/.bashrc` para que essas informações sejam refletidas em seu ambiente ou reinicie seu sistema.
+> Para que a informação acima reflita em seu ambiente, acesse o terminal e execute o comando `source ~/.bashrc` ou reinicie seu sistema.
 
 2. Configure o certificado de acesso no WildFly:
 
@@ -72,17 +72,17 @@ O projeto rst-cadastro é subdividido em módulos. Ao clonar o projeto você enc
 
 3. Adicione o artefato rst-app no servidor WidFly e start o servidor.
 
-4. Você pode confirmar que o backend está online e pronto para receber requisiões acessando a URL abaixo. você deve receber uma resposta de status Ok.
+4. Você pode confirmar que o backend está online e pronto para receber requisiões acessando a URL abaixo. Se tudo tiver corrido bem até aqui,você deve receber uma resposta de status Ok.
 ```
 http://localhost:8080/rst/api/health
 ```
-5. Através do terminal de comando, acesse a pasta _rst-web_ que está na pasta raiz do projeto
+5. Abra seu terminal de comando e acesse a pasta _rst-web_ que está na pasta raiz do projeto
 
 6. Execute o comando abaixo para instalar as dependências deste módulo:
 ```shell
 $ npm install
 ```
-7. Após instalação das dependências acima, execute o comando:
+7. Após instalação das dependências acima, inicialize o projeto executando o comando:
 ```shell
 $ npm start
 ```
