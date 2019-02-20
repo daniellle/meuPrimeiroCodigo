@@ -57,7 +57,7 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
 1. Configuração do certificado:
 
-    1.1 Acesse a pasta de instalação do WidFly, em seguida, Modules e crie a estrutura de pastas abaixo:
+    1.1 Acesse $PASTA_INSTALACAO_WIDFLY/modules e crie a estrutura de pastas abaixo:
     ```
     br > com > ezvida > rst > load > main
     ```
