@@ -142,6 +142,15 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
       }
 
     }
+
+    if (!this.isVazia(this.filtro.nome)) {
+      if (this.filtro.nome.length < 2) {
+          this.mensagemError('Digite pelo menos 2 caracteres para o campo nome');
+          verificador = false;
+      }
+
+    }
+
     return verificador;
   }
 
