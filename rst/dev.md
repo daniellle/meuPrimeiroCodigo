@@ -67,12 +67,12 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
      ```shell
     $ openssl genrsa -aes256 -out rsa.pem 2048
     ```
-    _Será solicitada uma senha, pode ser utilizado sua senha de acesso a rede._
+    _Será solicitada que crie uma senha e digite sua confirmação, você pode utilizar sua senha de acesso a rede._
 
     ```shell
     $ openssl pkcs8 -topk8 -inform PEM -outform PEM -in rsa.pem -out rsa-private.pem -nocrypt
     ```
-    _Será solicitada uma senha, informe  a mesma senha que foi utilizada no comando anterior._
+    _Será solicitada uma senha, informe a mesma senha que foi utilizada no comando anterior._
 
     ```shell
     $ openssl rsa -in rsa-private.pem -pubout -outform PEM -out rsa-public.pem
