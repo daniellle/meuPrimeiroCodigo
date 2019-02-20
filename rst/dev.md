@@ -152,7 +152,99 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
 ### Maven
 
+> Para que as dependências do maven sejam baixadas do repositório Nexus é necessário que o arquivo _settings.xml_ do maven seja configurado com as credências do usuário e os dados de conexão ao servidor Nexus.
+
+1. Crie o arquivo _settings.xml_ dentro da pasta $HOME/.m2 do usuário, o arquivo deve ter a seguinte estrutra:
+
+```xml
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                        https://maven.apache.org/xsd/settings-1.0.0.xsd">
+    
+    <!-- Configuração de acesso ao Servidor Nexus -->
+	<servers>
+		<server>
+			<id>solutis-nexus</id>
+			<username>USUARIO_DE_REDE</username>
+			<password>SENHA_DE_REDE</password>
+		</server>
+	</servers>
+
+    <!-- Url do repositório nexus -->
+	<mirrors>
+		<mirror>
+			<id>solutis-nexus</id>
+			<mirrorOf>*</mirrorOf>
+			<url>http://nexus.solutis.net.br/content/groups/public</url>
+		</mirror>
+	</mirrors>
+
+    <!-- Configurações de Perfis -->
+	<profiles>
+		<profile>
+
+			<id>solutis-nexus</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<repositories>
+				<repository>
+					<id>central</id>
+					<url>http://central</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>central</id>
+					<url>http://central</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+	</profiles>
+ 
+	<activeProfiles>
+		<activeProfile>solutis-nexus</activeProfile>
+	</activeProfiles>
+ 
+	<interactiveMode>true</interactiveMode>
+	<usePluginRegistry>false</usePluginRegistry>
+	<offline>false</offline>
+</settings>
+```
+**Atenção**
+
+> Este é um arquivo exemplo e contém os dados de conexão com o repositório Nexus da Solutis.  
+
+> Os dados USUARIO_DE_REDE e SENHA_DE_REDE devem ser substituidos pelas credências de acesso a rede.
+
 ### NPM
+
+> Para que as dependências npm sejam baixadas do repositório Nexus é necessário que o arquivo _.npmrc_ do npm seja configurado com as credências do usuário e os dados de conexão ao servidor Nexus.
+
+1. Crie o arquivo .npmrc_ dentro da pasta $HOME do usuário, o arquivo deve ter a seguinte estrutra:
+
+```
+registry=http://nexus.solutis.net.br/content/groups/npmjsolutis/
+email=EMAIL_CORPORATIVO
+always-auth=true
+_auth=TOKEN_DE_AUTENTICAÇÃO
+```
+
+> EMAIL_CORPORATIVO = Deve ser substituido por seu email corporativo.  
+
+> TOKEN_DE_AUTENTICAÇÃO = Este token é um hash gerado em base64 do seu **usuário e senha de rede**. Para gerar esse token, abra o terminal/console e execute o comando `echo -n 'USUARIO:SENHA' | openssl base64`
 
 ## Execução
 
