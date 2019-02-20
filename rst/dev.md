@@ -29,7 +29,7 @@ Manual de montagem de ambiente de desenvolvimento.
 - [NPM](https://www.npmjs.com/) (_5.x ou superior_).  
  _Para verificar sua versão, execute `npm --version` em uma janela do terminal/console._
 
-- [WidFly](http://wildfly.org/downloads/) (_10.x_)  
+- [JBoss WidFly](http://wildfly.org/downloads/) (_10.x_)  
 
 - IDE para codificação do backend Java (Recomendamos o [Eclipse](https://www.eclipse.org/downloads/) ou [IntelliJ IDEA Ultimate](https://www.jetbrains.com/idea/download))
 - IDE para codificação da parte web (Recomendamos o [Visutal Studio Code](https://code.visualstudio.com/download))
@@ -40,6 +40,8 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
 ## Configuração
 
+### Sistema operacional
+
 1. Edite o arquivo _.bashrc_ que fica na sua $HOME e adicione a seguinte variável de ambiente:
 
     ```
@@ -47,13 +49,15 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
     ```
 > Para que a informação acima reflita em seu ambiente, acesse o terminal e execute o comando `source ~/.bashrc` ou reinicie seu sistema.
 
-2. Configure o certificado de acesso no WildFly:
+### Servidor de aplicação JBoss WidFly
 
-    2.1 Acesse a pasta de instalação do WidFly, em seguida, Modules e crie a estrutura de pastas abaixo:
+1. Configuração do certificado:
+
+    1.1 Acesse a pasta de instalação do WidFly, em seguida, Modules e crie a estrutura de pastas abaixo:
     ```
     br > com > ezvida > rst > load > main
     ```
-    2.2 Dentro da pasta main crie o arquivo _module.xml_ com o conteúdo abaixo:
+    1.2 Dentro da pasta main crie o arquivo _module.xml_ com o conteúdo abaixo:
     ```xml
     <?xml version="1.0" encoding="UTF-8"?>
     <module xmlns="urn:jboss:module:1.1" name="br.com.ezvida.rst.load">
@@ -62,7 +66,7 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
     </resources>
     </module>
     ```
-    2.3 Ainda dentro da pasta main, crie uma pasta com o nome certificados, abra o terminal de comando do seu sistema, acesse esta pasta e execute os comandos abaixo, um por vez e na sequência exposta:
+    1.3 Ainda dentro da pasta main, crie uma pasta com o nome certificados, abra o terminal de comando do seu sistema, acesse esta pasta e execute os comandos abaixo, um por vez e na sequência exposta:
     
      ```shell
     $ openssl genrsa -aes256 -out rsa.pem 2048
@@ -77,6 +81,38 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
     ```shell
     $ openssl rsa -in rsa-private.pem -pubout -outform PEM -out rsa-public.pem
     ```
+2. Configuração do datasource:
+
+    > Caso esta seja sua primeira instalação e configuração do Jboss WidFly, recomendamos a leitura desse [Getting Started Guide](https://docs.jboss.org/author/display/WFLY10/Getting+Started+Guide). Para os próximos passos será necessário que seu servidor esteja iniciado e configurado com o usuário de acesso ao console administrativo.
+
+    2.1 Acesse o console administrativo do WidFly:  
+    ```
+    http://localhost:9990/console
+    ```
+
+    2.2 Clique na aba **Configuration**
+
+    2.3 No menu esquerdo, clique em **Subsystems** → **Datasources** → **Non-XA** → **Add**
+
+    2.4 Na janela que foi aberta, selecione a opção **PostgreSQL Datasource** e clique em **Next**
+
+    2.5 Entre com os valores **RstDS** e **java:jboss/datasources/rst** para os campos nome e JNDI name respectvamente, em seguida clique em **Next**
+
+    2.6 Clique na aba **Detected Driver**, selecione a opção **postgres** e, em seguida, clique em **Next**
+
+    > Caso não apareça a opção **postgres**, [clique aqui]() para ver como adicionar o driver do PostgreSQL em seu WidFly.
+
+    2.7 Edite o campo Connection URL informando o host do banco de dados, a porta e o nome do banco. Não altere o começo da url. No fnal, o resultado deve estar nesse formato:
+
+    ```
+    jdbc:postgresql://HOST_DO_BANCO:PORTA_DO_BANCO/NOME_DO_BANCO
+    ```
+    2.8 Os campos **Username** e **Password** devem ser preenchidos com os dados do usuário com acesso ao banco da aplicação, em seguida, clique em **Next**
+
+    2.9 Revise os dados apresentados e clique em **Finish**
+
+    > Para testar a conexão, selecione o datasource criado, clique em **View**, em seguida, clique na aba **Connection** e, em seguida clique no botão **Test Connection**.
+
 
 ## Execução
 
