@@ -21,7 +21,7 @@ Manual de montagem de ambiente de desenvolvimento.
 É necessário que você tenha instalado em sua máquina:  
 
 - [JDK](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) (_1.8.x_)  
-    _Para verificar sua versão, execute `java -version` em uma janela do terminal/console._
+    _Para verificar sua versão, execute `javac -version` em uma janela do terminal/console._
 
 - [Node.js](https://nodejs.org/en/) (_8.x ou superior_)  
  _Para verificar sua versão, execute `node --version` em uma janela do terminal/console._
