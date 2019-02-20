@@ -21,6 +21,8 @@ public class SegurancaUtils {
     private Ambiente ambiente;
 
     public String validarAutenticacao(HttpServletRequest request) {
+    	
+    	System.getenv();
         if (ambiente == Ambiente.DESENVOLVIMENTO) {
             LOGGER.warn(" UTILIZANDO SEGURANÇA DO AMBIENTE DE DESENVOLVIMENTO");
             //return "08194790980"; // trabalhador

@@ -6,6 +6,8 @@ Manual de montagem de ambiente de desenvolvimento.
 
 - [Pré requisitos](#pré-requisitos)
 - [Configuração](#configuração)
+    - [Sistema operacional](#sistema-operacional)
+    - [Jboss WidFly](#jboss-widfly)
 - [Execução](#execução)
 - [FAQ](#faq)
 
@@ -42,14 +44,14 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
 ### Sistema operacional
 
-1. Edite o arquivo _.bashrc_ que fica na sua $HOME e adicione a seguinte variável de ambiente:
+1. Edite o arquivo _.profile que fica na sua $HOME e adicione a seguinte variável de ambiente:
 
     ```
     export SOLUTIS_DEV_ENV="true"
     ```
-> Para que a informação acima reflita em seu ambiente, acesse o terminal e execute o comando `source ~/.bashrc` ou reinicie seu sistema.
+> Para que a informação acima reflita em seu ambiente, reinicie seu sistema.
 
-### Servidor de aplicação JBoss WidFly
+### JBoss WidFly
 
 1. Configuração do certificado:
 
@@ -71,7 +73,7 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
      ```shell
     $ openssl genrsa -aes256 -out rsa.pem 2048
     ```
-    _Será solicitada que crie uma senha e digite sua confirmação, você pode utilizar sua senha de acesso a rede._
+    _Será solicitada que crie uma senha e digite sua confirmação, você deve utilizar sua senha de acesso a rede._
 
     ```shell
     $ openssl pkcs8 -topk8 -inform PEM -outform PEM -in rsa.pem -out rsa-private.pem -nocrypt
@@ -81,6 +83,8 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
     ```shell
     $ openssl rsa -in rsa-private.pem -pubout -outform PEM -out rsa-public.pem
     ```
+
+    > Verifique a pasta certificados e confirme que foram gerados os 3 arquivos do certificado.
 2. Configuração do datasource:
 
     > Caso esta seja sua primeira instalação e configuração do Jboss WidFly, recomendamos a leitura desse [Getting Started Guide](https://docs.jboss.org/author/display/WFLY10/Getting+Started+Guide). Para os próximos passos será necessário que seu servidor esteja iniciado e configurado com o usuário de acesso ao console administrativo.
@@ -113,6 +117,7 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
     > Para testar a conexão, selecione o datasource criado, clique em **View**, em seguida, clique na aba **Connection** e, em seguida clique no botão **Test Connection**.
 
+### NPM
 
 ## Execução
 
@@ -121,11 +126,11 @@ O projeto rst-cadastro é subdividido em módulos. Ao clonar o projeto você enc
 
 **Atenção**
 
-> Neste momento a sua IDE já deve estar configurada com o JDK8 e o servidor de aplicações WidFly. É necessário também que seu WidFly já esteja configurado com os dados de conexão ao banco de dados da aplicação. Para mais informações consulte o arquivo [README.md](../README.md) deste projeto.
+> Neste momento a sua IDE já deve estar configurada com o JDK8 e o servidor de aplicações Jboss WidFly. É necessário também que seu WidFly já esteja configurado com os dados de conexão ao banco de dados da aplicação. 
 
 1. Clone o projeto
 
-2. Importe-o para sua IDE como um projeto Maven
+2. Importe-o para sua IDE como um projeto Maven e aguarde o download das dependências
 
 3. Adicione o artefato rst-app no servidor WidFly e start o servidor.
 
@@ -133,7 +138,7 @@ O projeto rst-cadastro é subdividido em módulos. Ao clonar o projeto você enc
 ```
 http://localhost:8080/rst/api/health
 ```
-5. Abra seu terminal de comando e acesse a pasta _rst-web_ que está na pasta raiz do projeto
+5. Abra seu terminal de comando e acesse a pasta _rst-web_ que está na pasta raiz do projeto > rst
 
     5.1 Execute o comando abaixo para instalar as dependências deste módulo:
     ```shell
@@ -164,6 +169,8 @@ http://localhost:4200/cadastro
 - **Quando acessa a url da aplicação web não é exibido a tela do sistema?**
 
     - _Quando é feito uma requisição para a URL (localhost:4200/cadastro), a aplicação verifica em qual ambiente ela está sendo executada (Desenvolvimento, Homologação, Produção, etc) para que sejam aplicadas as regras de segurança adequadamente. Certifique-se de ter inicializado a aplicação (web) com o comando `npm start` e de ter adicionado a variável de ambiente SOLUTIS_DEV_ENV em seu sistema operacional, a partir dessas informações a aplicação identificará se ela está sendo executada em um ambiente de desenvolvimento ou não._
+
+    - Verifique se os certificados foram configurados no WidFly corretamente, reveja o passo [JBoss WidFly](#jboss-widfly).
 
     - _No seu navegador abra a ferramentas de desenvolvedor (F12) e verifique se é exibido algum erro no console ao tentar acessar a url da aplicação._
 
