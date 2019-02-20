@@ -255,27 +255,29 @@ O projeto rst-cadastro é subdividido em módulos. Ao clonar o projeto você enc
 
 > Neste momento a sua IDE já deve estar configurada com o JDK8 e o servidor de aplicações Jboss WidFly. É necessário também que seu WidFly já esteja configurado com os dados de conexão ao banco de dados da aplicação. 
 
-1. Clone o projeto
+1. Clone o projeto para sua máquina local.
 
-2. Importe-o para sua IDE como um projeto Maven e aguarde o download das dependências
+2. Importe-o para sua IDE como um projeto Maven e aguarde o download das dependências.
 
-3. Adicione o artefato rst-app no servidor WidFly e start o servidor.
+3. Adicione o artefato rst-app no servidor WidFly e start-o.
 
-4. Você pode confirmar que o serviço de backend está online e pronto para receber requisições acessando a URL abaixo. Se tudo tiver corrido bem até aqui, você deve receber uma resposta de status Ok.
+4. Acompanhe no console da sua IDE se o start do servidor e deploy da aplicação vão ser bem sucedidos.  
+
+5. Você pode confirmar que o serviço de backend está online e pronto para receber requisições acessando a URL abaixo. Se tudo tiver corrido bem até aqui, você deve receber uma resposta de status Ok.
 ```
 http://localhost:8080/rst/api/health
 ```
-5. Abra seu terminal de comando e acesse a pasta _rst-web_ que está na pasta raiz do projeto > rst
+6. Abra seu terminal de comando e acesse a pasta `rst-cadastro/rst/rst-web`
 
-    5.1 Execute o comando abaixo para instalar as dependências deste módulo:
+    6.1 Execute o comando abaixo para instalar as dependências deste módulo:
     ```shell
     $ npm install
     ```
-    5.2 Após instalação das dependências acima, start a aplicação (parte web) executando o comando:
+    6.2 Após instalação das dependências acima, start a aplicação (interface web) executando o comando:
     ```shell
     $ npm start
     ```
-6. Você pode confirmar que sua aplicação está online acessando a URL abaixo:
+7. Você pode confirmar que sua aplicação está online acessando a URL abaixo:
 ```
 http://localhost:4200/cadastro
 ```
