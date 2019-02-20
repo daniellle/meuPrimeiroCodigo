@@ -19,10 +19,17 @@ Manual de montagem de ambiente de desenvolvimento.
 ## Pré requisitos
 
 É necessário que você tenha instalado em sua máquina: 
-- [JDK](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) (_1.8.x_)
-- [WidFly](http://wildfly.org/downloads/) (_10.x_)
-- [Node.js](https://nodejs.org/en/) (_8.x ou superior_)
-- [NPM](https://www.npmjs.com/) (_5.x ou superior_). 
+- [JDK](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) (_1.8.x_)  
+    _Para verificar sua versão, execute `java -version` em uma janela do terminal/console._
+
+- [Node.js](https://nodejs.org/en/) (_8.x ou superior_)  
+ _Para verificar sua versão, execute `node --version` em uma janela do terminal/console._
+
+- [NPM](https://www.npmjs.com/) (_5.x ou superior_).  
+ _Para verificar sua versão, execute `npm --version` em uma janela do terminal/console._
+
+- [WidFly](http://wildfly.org/downloads/) (_10.x_)  
+
 - IDE para codificação do backend Java (Recomendamos o [Eclipse](https://www.eclipse.org/downloads/) ou [IntelliJ IDEA Ultimate](https://www.jetbrains.com/idea/download))
 - IDE para codificação da parte web (Recomendamos o [Visutal Studio Code](https://code.visualstudio.com/download))
 
