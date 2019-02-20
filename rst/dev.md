@@ -106,12 +106,12 @@ http://localhost:4200/cadastro
 
 ## FAQ
 
-- **Erro ao baixar dependências?**
+- **Erro no download das dependências?**
 
     - _Algumas dependências estão disponíveis somente no repositório Nexus, por esse motivo é obrigatório que suas credências de rede estejam configuradas no arquivo settings.xml (Maven) e .npmrc (NPM). Para obter informações de como configurar esses arquivos acesse o [README.md](../README.md) deste projeto._
 
 
-- **Serviço backend não inicializa?**
+- **O serviço backend não inicializa?**
     
     - _Verifique se o servidor WidFly está conectado com o banco de dados da aplicação. Através do painel administrativo do WidFly é possível testar a conexão. Durante a inicializaçao dos serviços do backend a aplicação precisa se conectar com o banco de dados._
 
