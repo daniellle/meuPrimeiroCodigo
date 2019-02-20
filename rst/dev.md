@@ -123,4 +123,4 @@ http://localhost:4200/cadastro
 
     - _No seu navegador abra a ferramentas de desenvolvedor (F12) e verifique se é exibido algum erro no console ao tentar acessar a url da aplicação._
 
-    - _Abra o console da sua IDE onde o backend foi inicializado para verificar se o serviço está sendo chamado e se é exibido algum erro quando é feito uma requisição a URL aplicação web._
+    - _Abra o console da sua IDE onde o backend foi inicializado para verificar se o serviço está sendo chamado e se é exibido algum erro quando é feito uma requisição à URL aplicação web._
