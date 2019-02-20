@@ -18,7 +18,8 @@ Manual de montagem de ambiente de desenvolvimento.
 
 ## Pré requisitos
 
-É necessário que você tenha instalado em sua máquina: 
+É necessário que você tenha instalado em sua máquina:  
+
 - [JDK](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) (_1.8.x_)  
     _Para verificar sua versão, execute `java -version` em uma janela do terminal/console._
 
