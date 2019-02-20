@@ -43,7 +43,7 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 1. Edite o arquivo _.bashrc_ que fica na pasta do seu usuário local e adicione a seguinte variável de ambiente:
 
     ```
-    export SOLUTIS_DEV_ENV = "true"
+    export SOLUTIS_DEV_ENV="true"
     ```
 > Para que a informação acima reflita em seu ambiente, acesse o terminal e execute o comando `source ~/.bashrc` ou reinicie seu sistema.
 
