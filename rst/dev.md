@@ -91,15 +91,15 @@ http://localhost:8080/rst/api/health
 ```
 5. Abra seu terminal de comando e acesse a pasta _rst-web_ que está na pasta raiz do projeto
 
-6. Execute o comando abaixo para instalar as dependências deste módulo:
-```shell
-$ npm install
-```
-7. Após instalação das dependências acima, start a aplicação (parte web) executando o comando:
-```shell
-$ npm start
-```
-8. Você pode confirmar que sua aplicação está online acessando a URL abaixo:
+    5.1 Execute o comando abaixo para instalar as dependências deste módulo:
+    ```shell
+    $ npm install
+    ```
+    5.2 Após instalação das dependências acima, start a aplicação (parte web) executando o comando:
+    ```shell
+    $ npm start
+    ```
+6. Você pode confirmar que sua aplicação está online acessando a URL abaixo:
 ```
 http://localhost:4200/cadastro
 ```
