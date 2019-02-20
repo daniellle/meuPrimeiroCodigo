@@ -51,7 +51,7 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
     ```
     export SOLUTIS_DEV_ENV="true"
     ```
-> Para que a informação acima reflita em seu ambiente, reinicie seu sistema.
+> Reinicie seu computador para que as informações acima reflita em seu ambiente.
 
 ### JBoss WidFly
 
@@ -87,7 +87,38 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
     ```
 
     > Verifique a pasta certificados e confirme que foram gerados os 3 arquivos do certificado.
-2. Configuração do datasource:
+
+2. Instalando o driver do PostgreSQL:
+
+    2.1 Faça o download do PostgreSQL JDBC Driver mais recente [neste site](https://jdbc.postgresql.org/download.html)
+
+    2.2 Mova o arquivo do JDBC driver **.jar** baixado para: 
+    ```
+    PASTA_DE_INSTALACAO_DO_WIDFLY/bin
+    ```
+
+    2.3 Ainda na pasta bin execute o arquivo _jboss-cli.sh_ através do terminal, para acessarmos ao jboss-cli (Command Line Interface).
+
+    2.4 Após executar o jboss-cli, ele irá pedir para que você se conecte ao servidor, para isso, basta digitar: connect
+
+    2.5 Depois de conectado, adicione o módulo chamado org.postgres apontando para o driver do postgres, comando:
+
+    ```shell
+    module add --name=org.postgres --resources=NOME_DO_ARQUIVO_DO_DRIVER.jar --dependencies=javax.api,javax.transaction.api
+    ```
+    > Substitua **NOME_DO_ARQUIVO_DO_DRIVER** no comando acima pelo nome exato do arquivo do driver JDBC que foi copiado para a pasta bin.
+
+    2.6 Instale o driver JDBC, comando:
+
+    ```shell
+    /subsystem=datasources/jdbc-driver=postgres:add(driver-name="postgres",driver-module-name="org.postgres",driver-class-name=org.postgresql.Driver)
+    ```
+
+    2.7 Reinicie o WidFly caso esteja sendo executado.
+
+    2.8 Após efetuar essas etapas, podemos iniciar a configuração do Datasource via console administrativo do Wildfly.
+
+3. Configuração do datasource:
 
     > Caso esta seja sua primeira instalação e configuração do Jboss WidFly, recomendamos a leitura desse [Getting Started Guide](https://docs.jboss.org/author/display/WFLY10/Getting+Started+Guide). Para os próximos passos será necessário que seu servidor esteja iniciado e configurado com o usuário de acesso ao console administrativo.
 
@@ -106,13 +137,13 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
     2.6 Clique na aba **Detected Driver**, selecione a opção **postgres** e, em seguida, clique em **Next**
 
-    > Caso não apareça a opção **postgres**, [clique aqui]() para ver como adicionar o driver do PostgreSQL em seu WidFly.
-
     2.7 Edite o campo Connection URL informando o host do banco de dados, a porta e o nome do banco. Não altere o começo da url. No fnal, o resultado deve estar nesse formato:
 
     ```
     jdbc:postgresql://HOST_DO_BANCO:PORTA_DO_BANCO/NOME_DO_BANCO
     ```
+    > Substitua os campos **HOST_DO_BANCO**, **PORTA_DO_BANCO** e **NOME_DO_BANCO** pelos dados de conexão com o banco de dados da aplicação.
+
     2.8 Os campos **Username** e **Password** devem ser preenchidos com os dados do usuário com acesso ao banco da aplicação, em seguida, clique em **Next**
 
     2.9 Revise os dados apresentados e clique em **Finish**
