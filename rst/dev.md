@@ -154,7 +154,7 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
 > Para que as dependências do maven sejam baixadas do repositório Nexus é necessário que o arquivo _settings.xml_ do maven seja configurado com as credências do usuário e os dados de conexão ao servidor Nexus.
 
-1. Crie o arquivo _settings.xml_ dentro da pasta $HOME/.m2 do usuário, o arquivo deve ter a seguinte estrutra:
+1. Crie o arquivo _settings.xml_ dentro da pasta $HOME/.m2, o arquivo deve ter a seguinte estrutra:
 
 ```xml
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
@@ -233,7 +233,7 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
 > Para que as dependências npm sejam baixadas do repositório Nexus é necessário que o arquivo _.npmrc_ do npm seja configurado com as credências do usuário e os dados de conexão ao servidor Nexus.
 
-1. Crie o arquivo .npmrc_ dentro da pasta $HOME do usuário, o arquivo deve ter a seguinte estrutra:
+1. Crie o arquivo _.npmrc_ dentro da pasta $HOME, o arquivo deve ter a seguinte estrutra:
 
 ```
 registry=http://nexus.solutis.net.br/content/groups/npmjsolutis/
