@@ -6,8 +6,10 @@ Manual de montagem de ambiente de desenvolvimento.
 
 - [Pré requisitos](#pré-requisitos)
 - [Configuração](#configuração)
-    - [Sistema operacional](#sistema-operacional)
+    - [Ambiente](#ambiente)
     - [Jboss WidFly](#jboss-widfly)
+    - [Maven](#maven)
+    - [NPM](#npm)
 - [Execução](#execução)
 - [FAQ](#faq)
 
@@ -116,6 +118,8 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
     2.9 Revise os dados apresentados e clique em **Finish**
 
     > Para testar a conexão, selecione o datasource criado, clique em **View**, em seguida, clique na aba **Connection** e, em seguida clique no botão **Test Connection**.
+
+### Maven
 
 ### NPM
 
