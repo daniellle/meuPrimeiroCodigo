@@ -48,12 +48,13 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
 
 1. Edite o arquivo _.profile_ que fica na sua $HOME e adicione no final do arquivo a variável de ambiente abaixo:
+
     ```
     export SOLUTIS_DEV_ENV="true"
     ```
+    
 **Atenção**
-
-> Reinicie seu computador para que as informações acima reflita em seu ambiente.  
+> Reinicie seu computador para que as informações acima reflita em seu ambiente.
 
 > Essa variável de ambiente é utilizada pela classe  _SegurancaUtils_. A partir do valor dessa variável a aplicação identifica em qual ambiente ela está sendo iniciada.
 > Para simular o acesso com diferentes perfis, altere o CPF retornado no metódo **validarAutenticacao** que fica na classe _SegurancaUtils_ dentro do módulo rst-service.
