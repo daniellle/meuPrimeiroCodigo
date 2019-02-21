@@ -103,9 +103,9 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
     2.6 Depois de conectado, execute o comando abaixo para adicionarmos o módulo chamado _org.postgres_ apontando para o driver do postgres:
 
     ```shell
-    module add --name=org.postgres --resources=NOME_DO_ARQUIVO_DO_DRIVER.jar --dependencies=javax.api,javax.transaction.api
+    module add --name=org.postgres --resources=NOME_DO_ARQUIVO.jar --dependencies=javax.api,javax.transaction.api
     ```
-    > Substitua **NOME_DO_ARQUIVO_DO_DRIVER** no comando acima pelo nome exato do arquivo do driver JDBC que foi copiado para a pasta bin.
+    > Substitua **NOME_DO_ARQUIVO** no comando acima pelo nome exato do arquivo do driver JDBC que foi copiado para a pasta bin.
 
     2.7 Instale o driver JDBC:
 
