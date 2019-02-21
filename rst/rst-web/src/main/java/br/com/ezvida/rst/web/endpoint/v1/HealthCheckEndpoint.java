@@ -12,10 +12,15 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.ezvida.rst.web.util.Status;
+import fw.web.endpoint.BaseEndpoint;
+
 @RequestScoped
 @Path("/health")
-public class HealthCheckEndpoint {
+public class HealthCheckEndpoint extends BaseEndpoint<Status> {
 
+	private static final long serialVersionUID = 2201569915753832992L;
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(HealthCheckEndpoint.class);
 
 	@GET
@@ -23,22 +28,6 @@ public class HealthCheckEndpoint {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response check() {
 		LOGGER.info("Checking status of application...");
-		return Response.status(HttpServletResponse.SC_OK).entity(new Status("Ok!")).build();
-	}
-
-	protected class Status {
-		private String status;
-
-		public Status(String status) {
-			this.setStatus(status);
-		}
-
-		public String getStatus() {
-			return status;
-		}
-
-		public void setStatus(String status) {
-			this.status = status;
-		}
+		return Response.status(HttpServletResponse.SC_OK).entity(new Status("Ok!", getApplicationVersion())).build();
 	}
 }
