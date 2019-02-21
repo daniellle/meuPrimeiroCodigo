@@ -86,7 +86,7 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
     $ openssl rsa -in rsa-private.pem -pubout -outform PEM -out rsa-public.pem
     ```
 
-    > Verifique a pasta certificados e confirme que foram gerados os 3 arquivos do certificado.
+    > Confirme se na pasta certificados foram gerados os 3 arquivos do certificado.
 
 2. Instalando o driver do PostgreSQL:
 
