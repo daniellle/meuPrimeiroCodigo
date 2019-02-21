@@ -98,7 +98,7 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
     2.4 Em uma outra janela do terminal execute o comando `./jboss-cli.sh` ainda na pasta bin, para acessarmos ao jboss-cli (Command Line Interface).
 
-    2.5 Após executar o jboss-cli, ele irá pedir para que você se conecte ao servidor, para isso, basta digitar _connect_
+    2.5 Após executar o jboss-cli, ele irá pedir para que você se conecte ao servidor, para isso, digite _connect_ e tecle **enter**
 
     2.6 Depois de conectado, execute o comando abaixo para adicionarmos o módulo chamado _org.postgres_ apontando para o driver do postgres:
 
