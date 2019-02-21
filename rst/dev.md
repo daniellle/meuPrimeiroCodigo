@@ -265,7 +265,7 @@ O projeto rst-cadastro é subdividido em módulos. Ao clonar o projeto você enc
 
 4. Acompanhe no console da sua IDE se o start do servidor e deploy da aplicação vão ser bem sucedidos.  
 
-> Você pode confirmar que o serviço de backend está online acessando a URL `http://localhost:8080/rst/api/health`. Se tudo tiver corrido bem até aqui, você deve receber uma resposta de status Ok.
+    > Você pode confirmar que o serviço de backend está online acessando a URL `http://localhost:8080/rst/api/health`. Se tudo tiver corrido bem até aqui, você deve receber uma resposta de status Ok.
 
 5. Abra uma janela do terminal/console e acesse a pasta `rst-cadastro/rst/rst-web`
 
