@@ -121,39 +121,39 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
     > Caso esta seja sua primeira instalação e configuração do Jboss WidFly, recomendamos a leitura desse [Getting Started Guide](https://docs.jboss.org/author/display/WFLY10/Getting+Started+Guide). Para os próximos passos será necessário que seu servidor esteja iniciado e configurado com o usuário de acesso ao console administrativo.
 
-    2.1 Acesse o console administrativo do WidFly:  
+    3.1 Acesse o console administrativo do WidFly:  
     ```
     http://localhost:9990/console
     ```
 
-    2.2 Clique na aba **Configuration**
+    3.2 Clique na aba **Configuration**
 
-    2.3 No menu esquerdo, clique em **Subsystems** → **Datasources** → **Non-XA** → **Add**
+    3.3 No menu esquerdo, clique em **Subsystems** → **Datasources** → **Non-XA** → **Add**
 
-    2.4 Na janela que foi aberta, selecione a opção **PostgreSQL Datasource** e clique em **Next**
+    3.4 Na janela que foi aberta, selecione a opção **PostgreSQL Datasource** e clique em **Next**
 
-    2.5 Entre com os valores **RstDS** e **java:jboss/datasources/rst** para os campos nome e JNDI name respectvamente, em seguida clique em **Next**
+    3.5 Entre com os valores **RstDS** e **java:jboss/datasources/rst** para os campos nome e JNDI name respectvamente, em seguida clique em **Next**
 
-    2.6 Clique na aba **Detected Driver**, selecione a opção **postgres** e, em seguida, clique em **Next**
+    3.6 Clique na aba **Detected Driver**, selecione a opção **postgres** e, em seguida, clique em **Next**
 
-    2.7 Edite o campo Connection URL informando o host do banco de dados, a porta e o nome do banco. Não altere o começo da url. No fnal, o resultado deve estar nesse formato:
+    3.7 Edite o campo Connection URL informando o host do banco de dados, a porta e o nome do banco. Não altere o começo da url. No fnal, o resultado deve estar nesse formato:
 
     ```
     jdbc:postgresql://HOST_DO_BANCO:PORTA_DO_BANCO/NOME_DO_BANCO
     ```
     > Substitua os campos **HOST_DO_BANCO**, **PORTA_DO_BANCO** e **NOME_DO_BANCO** pelos dados de conexão com o banco de dados da aplicação.
 
-    2.8 Os campos **Username** e **Password** devem ser preenchidos com os dados do usuário com acesso ao banco da aplicação, em seguida, clique em **Next**
+    3.8 Os campos **Username** e **Password** devem ser preenchidos com os dados do usuário com acesso ao banco da aplicação, em seguida, clique em **Next**
 
-    2.9 Revise os dados apresentados e clique em **Finish**
+    3.9 Revise os dados apresentados e clique em **Finish**
 
     > Para testar a conexão, selecione o datasource criado, clique em **View**, em seguida, clique na aba **Connection** e, em seguida clique no botão **Test Connection**.
 
 ### Maven
 
-> Para que as dependências do maven sejam baixadas do repositório Nexus é necessário que o arquivo _settings.xml_ do maven seja configurado com as credências do usuário e os dados de conexão ao servidor Nexus.
+> Para que as dependências do maven sejam baixadas do repositório Nexus é necessário que o arquivo do maven, _settings.xml_, seja configurado com as credências do usuário e os dados de conexão ao servidor Nexus.
 
-1. Crie o arquivo _settings.xml_ dentro da pasta $HOME/.m2, o arquivo deve ter a seguinte estrutra:
+1. Caso não exista, crie um arquivo com o nome _settings.xml_ dentro da pasta $HOME/.m2, o arquivo deve ter a seguinte estrutra:
 
 ```xml
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
@@ -230,9 +230,9 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
 ### NPM
 
-> Para que as dependências npm sejam baixadas do repositório Nexus é necessário que o arquivo _.npmrc_ do npm seja configurado com as credências do usuário e os dados de conexão ao servidor Nexus.
+> Para que as dependências npm sejam baixadas do repositório Nexus é necessário que o arquivo do npm, _.npmrc_, seja configurado com as credências do usuário e os dados de conexão ao servidor Nexus.
 
-1. Crie o arquivo _.npmrc_ dentro da pasta $HOME, o arquivo deve ter a seguinte estrutra:
+1. Caso não exista, crie um arquivo com o nome _.npmrc_ dentro da pasta $HOME, o arquivo deve ter a seguinte estrutra:
 
 ```
 registry=http://nexus.solutis.net.br/content/groups/npmjsolutis/
@@ -243,7 +243,7 @@ _auth=TOKEN_DE_AUTENTICAÇÃO
 
 > EMAIL_CORPORATIVO = Deve ser substituido por seu email corporativo.  
 
-> TOKEN_DE_AUTENTICAÇÃO = Este token é um hash gerado em base64 do seu **usuário e senha de rede**. Para gerar esse token, abra o terminal/console e execute o comando `echo -n 'USUARIO:SENHA' | openssl base64`
+> TOKEN_DE_AUTENTICAÇÃO = Este token é um hash gerado em base64 do seu **usuário e senha de rede**. Para gerar esse token, abra uma janela do terminal/console e execute o comando `echo -n 'USUARIO:SENHA' | openssl base64`. O retorno desse comando é o token que deve ser utilizado.
 
 ## Execução
 
