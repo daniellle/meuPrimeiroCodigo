@@ -265,24 +265,19 @@ O projeto rst-cadastro é subdividido em módulos. Ao clonar o projeto você enc
 
 4. Acompanhe no console da sua IDE se o start do servidor e deploy da aplicação vão ser bem sucedidos.  
 
-5. Você pode confirmar que o serviço de backend está online e pronto para receber requisições acessando a URL abaixo. Se tudo tiver corrido bem até aqui, você deve receber uma resposta de status Ok.
-```
-http://localhost:8080/rst/api/health
-```
-6. Abra seu terminal de comando e acesse a pasta `rst-cadastro/rst/rst-web`
+> Você pode confirmar que o serviço de backend está online acessando a URL `http://localhost:8080/rst/api/health`. Se tudo tiver corrido bem até aqui, você deve receber uma resposta de status Ok.
 
-    6.1 Execute o comando abaixo para instalar as dependências deste módulo:
+5. Abra uma janela do terminal/console e acesse a pasta `rst-cadastro/rst/rst-web`
+
+    5.1 Execute o comando abaixo para instalar as dependências deste módulo:
     ```shell
     $ npm install
     ```
-    6.2 Após instalação das dependências acima, start a aplicação (interface web) executando o comando:
+    5.2 Após instalação das dependências acima, start a aplicação (interface web) executando o comando:
     ```shell
     $ npm start
     ```
-7. Você pode confirmar que sua aplicação está online acessando a URL abaixo:
-```
-http://localhost:4200/cadastro
-```
+> Para acessa a aplicação (interface web), acesse a URL `http://localhost:4200/cadastro`.
 
 ## FAQ
 
