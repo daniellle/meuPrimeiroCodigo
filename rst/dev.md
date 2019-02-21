@@ -46,7 +46,7 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
 ### Ambiente
 
-1. Edite o arquivo _.profile_ que fica na sua $HOME e adicione a seguinte variável de ambiente abaixo no final do arquivo:
+1. Edite o arquivo _.profile_ que fica na sua $HOME e adicione no final do arquivo a variável de ambiente abaixo:
 
     ```
     export SOLUTIS_DEV_ENV="true"
