@@ -46,8 +46,8 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
 ### Ambiente
 
-1. Edite o arquivo _.profile_ que fica na sua $HOME e adicione a variável de ambiente abaixo no final do arquivo:
 
+1. Edite o arquivo _.profile_ que fica na sua $HOME e adicione no final do arquivo a variável de ambiente abaixo:
     ```
     export SOLUTIS_DEV_ENV="true"
     ```
@@ -62,9 +62,9 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
 1. Configuração do certificado:
 
-    1.1 Acesse $PASTA_INSTALACAO_WIDFLY/modules e crie a estrutura de pastas abaixo:
+    1.1 Acesse a pasta de instalação do seu Jboss WidFly, em seguida, modules e crie a estrutura de pastas abaixo:
     ```
-    br > com > ezvida > rst > load > main
+    br > com > ezvida > rst > load > main > certificados
     ```
     1.2 Dentro da pasta main crie o arquivo _module.xml_ com o conteúdo abaixo:
     ```xml
@@ -75,7 +75,7 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
     </resources>
     </module>
     ```
-    1.3 Ainda dentro da pasta main, crie uma pasta com o nome certificados, abra o terminal de comando do seu sistema, acesse esta pasta e execute os comandos abaixo, um por vez e na sequência exposta:
+    1.3 Abra o terminal/console do seu sistema, navegue até a pasta certificados, criada anteriormente, e execute os comandos abaixo:
     
      ```shell
     $ openssl genrsa -aes256 -out rsa.pem 2048
@@ -91,75 +91,74 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
     $ openssl rsa -in rsa-private.pem -pubout -outform PEM -out rsa-public.pem
     ```
 
-    > Verifique a pasta certificados e confirme que foram gerados os 3 arquivos do certificado.
+    > Confirme se na pasta certificados foram gerados os 3 arquivos do certificado.
 
 2. Instalando o driver do PostgreSQL:
 
-    2.1 Faça o download do PostgreSQL JDBC Driver mais recente [neste site](https://jdbc.postgresql.org/download.html)
+    2.1 Faça o download do PostgreSQL JDBC Driver mais recente [neste site](https://jdbc.postgresql.org/download.html).
 
-    2.2 Mova o arquivo do JDBC driver **.jar** baixado para: 
-    ```
-    PASTA_DE_INSTALACAO_DO_WIDFLY/bin
-    ```
+    2.2 Mova o arquivo **.jar** baixado para a pasta bin que fica dentro da pasata de instalação do WidFly.
+    
+    2.3 Abra uma janela do terminal/console acesse esta pasta bin e execute o comando `./standalone.sh`, para que o servidor WidFly seja iniciado.
 
-    2.3 Ainda na pasta bin execute o arquivo _jboss-cli.sh_ através do terminal, para acessarmos ao jboss-cli (Command Line Interface).
+    2.4 Em uma outra janela do terminal execute o comando `./jboss-cli.sh` ainda na pasta bin, para acessarmos ao jboss-cli (Command Line Interface).
 
-    2.4 Após executar o jboss-cli, ele irá pedir para que você se conecte ao servidor, para isso, basta digitar: connect
+    2.5 Após executar o jboss-cli, ele irá pedir para que você se conecte ao servidor, para isso, digite _connect_ e tecle **enter**
 
-    2.5 Depois de conectado, adicione o módulo chamado org.postgres apontando para o driver do postgres, comando:
+    2.6 Depois de conectado, execute o comando abaixo para adicionarmos o módulo chamado _org.postgres_ apontando para o driver do postgres:
 
     ```shell
-    module add --name=org.postgres --resources=NOME_DO_ARQUIVO_DO_DRIVER.jar --dependencies=javax.api,javax.transaction.api
+    module add --name=org.postgres --resources=NOME_DO_ARQUIVO.jar --dependencies=javax.api,javax.transaction.api
     ```
-    > Substitua **NOME_DO_ARQUIVO_DO_DRIVER** no comando acima pelo nome exato do arquivo do driver JDBC que foi copiado para a pasta bin.
+    > Substitua **NOME_DO_ARQUIVO** no comando acima pelo nome exato do arquivo do driver JDBC que foi copiado para a pasta bin.
 
-    2.6 Instale o driver JDBC, comando:
+    2.7 Instale o driver JDBC:
 
     ```shell
     /subsystem=datasources/jdbc-driver=postgres:add(driver-name="postgres",driver-module-name="org.postgres",driver-class-name=org.postgresql.Driver)
     ```
 
-    2.7 Reinicie o WidFly caso esteja sendo executado.
+    2.8 Reinicie o WidFly.
 
-    2.8 Após efetuar essas etapas, podemos iniciar a configuração do Datasource via console administrativo do Wildfly.
+    2.9 Após efetuar essas etapas, o PostgresSQL JDBC Driver já pode ser utilizado na criação do Datasource.
 
 3. Configuração do datasource:
 
     > Caso esta seja sua primeira instalação e configuração do Jboss WidFly, recomendamos a leitura desse [Getting Started Guide](https://docs.jboss.org/author/display/WFLY10/Getting+Started+Guide). Para os próximos passos será necessário que seu servidor esteja iniciado e configurado com o usuário de acesso ao console administrativo.
 
-    2.1 Acesse o console administrativo do WidFly:  
+    3.1 Acesse o console administrativo do WidFly:  
     ```
     http://localhost:9990/console
     ```
 
-    2.2 Clique na aba **Configuration**
+    3.2 Clique na aba **Configuration**
 
-    2.3 No menu esquerdo, clique em **Subsystems** → **Datasources** → **Non-XA** → **Add**
+    3.3 No menu esquerdo, clique em **Subsystems** → **Datasources** → **Non-XA** → **Add**
 
-    2.4 Na janela que foi aberta, selecione a opção **PostgreSQL Datasource** e clique em **Next**
+    3.4 Na janela que foi aberta, selecione a opção **PostgreSQL Datasource** e clique em **Next**
 
-    2.5 Entre com os valores **RstDS** e **java:jboss/datasources/rst** para os campos nome e JNDI name respectvamente, em seguida clique em **Next**
+    3.5 Entre com os valores **RstDS** e **java:jboss/datasources/rst** para os campos nome e JNDI name respectvamente, em seguida clique em **Next**
 
-    2.6 Clique na aba **Detected Driver**, selecione a opção **postgres** e, em seguida, clique em **Next**
+    3.6 Clique na aba **Detected Driver**, selecione a opção **postgres** e, em seguida, clique em **Next**
 
-    2.7 Edite o campo Connection URL informando o host do banco de dados, a porta e o nome do banco. Não altere o começo da url. No fnal, o resultado deve estar nesse formato:
+    3.7 Edite o campo Connection URL informando o host do banco de dados, a porta e o nome do banco. Não altere o começo da url. No fnal, o resultado deve estar nesse formato:
 
     ```
     jdbc:postgresql://HOST_DO_BANCO:PORTA_DO_BANCO/NOME_DO_BANCO
     ```
     > Substitua os campos **HOST_DO_BANCO**, **PORTA_DO_BANCO** e **NOME_DO_BANCO** pelos dados de conexão com o banco de dados da aplicação.
 
-    2.8 Os campos **Username** e **Password** devem ser preenchidos com os dados do usuário com acesso ao banco da aplicação, em seguida, clique em **Next**
+    3.8 Os campos **Username** e **Password** devem ser preenchidos com os dados do usuário com acesso ao banco da aplicação, em seguida, clique em **Next**
 
-    2.9 Revise os dados apresentados e clique em **Finish**
+    3.9 Revise os dados apresentados e clique em **Finish**
 
     > Para testar a conexão, selecione o datasource criado, clique em **View**, em seguida, clique na aba **Connection** e, em seguida clique no botão **Test Connection**.
 
 ### Maven
 
-> Para que as dependências do maven sejam baixadas do repositório Nexus é necessário que o arquivo _settings.xml_ do maven seja configurado com as credências do usuário e os dados de conexão ao servidor Nexus.
+> Para que as dependências do maven sejam baixadas do repositório Nexus é necessário que o arquivo do maven, _settings.xml_, seja configurado com as credências do usuário e os dados de conexão ao servidor Nexus.
 
-1. Crie o arquivo _settings.xml_ dentro da pasta $HOME/.m2, o arquivo deve ter a seguinte estrutra:
+1. Caso não exista, crie um arquivo com o nome _settings.xml_ dentro da pasta $HOME/.m2, o arquivo deve ter a seguinte estrutra:
 
 ```xml
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
@@ -236,9 +235,9 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
 ### NPM
 
-> Para que as dependências npm sejam baixadas do repositório Nexus é necessário que o arquivo _.npmrc_ do npm seja configurado com as credências do usuário e os dados de conexão ao servidor Nexus.
+> Para que as dependências npm sejam baixadas do repositório Nexus é necessário que o arquivo do npm, _.npmrc_, seja configurado com as credências do usuário e os dados de conexão ao servidor Nexus.
 
-1. Crie o arquivo _.npmrc_ dentro da pasta $HOME, o arquivo deve ter a seguinte estrutra:
+1. Caso não exista, crie um arquivo com o nome _.npmrc_ dentro da pasta $HOME, o arquivo deve ter a seguinte estrutra:
 
 ```
 registry=http://nexus.solutis.net.br/content/groups/npmjsolutis/
@@ -246,10 +245,13 @@ email=EMAIL_CORPORATIVO
 always-auth=true
 _auth=TOKEN_DE_AUTENTICAÇÃO
 ```
+**Atenção**
+
+> Este é um arquivo exemplo e contém os dados de conexão com o repositório Nexus da Solutis.  
 
 > EMAIL_CORPORATIVO = Deve ser substituido por seu email corporativo.  
 
-> TOKEN_DE_AUTENTICAÇÃO = Este token é um hash gerado em base64 do seu **usuário e senha de rede**. Para gerar esse token, abra o terminal/console e execute o comando `echo -n 'USUARIO:SENHA' | openssl base64`
+> TOKEN_DE_AUTENTICAÇÃO = Este token é um hash gerado em base64 do seu **usuário e senha de rede**. Para gerar esse token, abra uma janela do terminal/console e execute o comando `echo -n 'USUARIO:SENHA' | openssl base64`. O retorno desse comando é o token que deve ser utilizado.
 
 ## Execução
 
@@ -260,30 +262,27 @@ O projeto rst-cadastro é subdividido em módulos. Ao clonar o projeto você enc
 
 > Neste momento a sua IDE já deve estar configurada com o JDK8 e o servidor de aplicações Jboss WidFly. É necessário também que seu WidFly já esteja configurado com os dados de conexão ao banco de dados da aplicação. 
 
-1. Clone o projeto
+1. Clone o projeto para sua máquina local.
 
-2. Importe-o para sua IDE como um projeto Maven e aguarde o download das dependências
+2. Importe-o para sua IDE como um projeto Maven e aguarde o download das dependências.
 
-3. Adicione o artefato rst-app no servidor WidFly e start o servidor.
+3. Adicione o artefato rst-app no servidor WidFly e start-o.
 
-4. Você pode confirmar que o serviço de backend está online e pronto para receber requisições acessando a URL abaixo. Se tudo tiver corrido bem até aqui, você deve receber uma resposta de status Ok.
-```
-http://localhost:8080/rst/api/health
-```
-5. Abra seu terminal de comando e acesse a pasta _rst-web_ que está na pasta raiz do projeto > rst
+4. Acompanhe no console da sua IDE se o start do servidor e deploy da aplicação vão ser bem sucedidos.  
+
+    > Você pode confirmar que o serviço de backend está online acessando a URL `http://localhost:8080/rst/api/health`. Se tudo tiver corrido bem até aqui, você deve receber uma resposta de status Ok.
+
+5. Abra uma janela do terminal/console e acesse a pasta `rst-cadastro/rst/rst-web`
 
     5.1 Execute o comando abaixo para instalar as dependências deste módulo:
     ```shell
     $ npm install
     ```
-    5.2 Após instalação das dependências acima, start a aplicação (parte web) executando o comando:
+    5.2 Após instalação das dependências acima, start a aplicação (interface web) executando o comando:
     ```shell
     $ npm start
     ```
-6. Você pode confirmar que sua aplicação está online acessando a URL abaixo:
-```
-http://localhost:4200/cadastro
-```
+> Para acessa a aplicação (interface web), acesse a URL `http://localhost:4200/cadastro`.
 
 ## FAQ
 
@@ -307,3 +306,5 @@ http://localhost:4200/cadastro
     - _No seu navegador abra a ferramentas de desenvolvedor (F12) e verifique se é exibido algum erro no console ao tentar acessar a url da aplicação._
 
     - _Abra o console da sua IDE onde o backend foi inicializado para verificar se o serviço está sendo chamado e se é exibido algum erro quando é feito uma requisição à URL aplicação web._
+    
+    - _Limpe o cache e arquivos temporários do seu navegador e tente também o acesso por outros navegador._
