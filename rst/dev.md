@@ -57,9 +57,9 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
 1. Configuração do certificado:
 
-    1.1 Acesse $PASTA_INSTALACAO_WIDFLY/modules e crie a estrutura de pastas abaixo:
+    1.1 Acesse a pasta de instalação do seu Jboss WidFly, em seguida, modules e crie a estrutura de pastas abaixo:
     ```
-    br > com > ezvida > rst > load > main
+    br > com > ezvida > rst > load > main > certificados
     ```
     1.2 Dentro da pasta main crie o arquivo _module.xml_ com o conteúdo abaixo:
     ```xml
@@ -70,7 +70,7 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
     </resources>
     </module>
     ```
-    1.3 Ainda dentro da pasta main, crie uma pasta com o nome certificados, abra o terminal de comando do seu sistema, acesse esta pasta e execute os comandos abaixo, um por vez e na sequência exposta:
+    1.3 Abra o terminal/console do seu sistema, navegue até a pasta certificados, criada anteriormente, e execute os comandos abaixo:
     
      ```shell
     $ openssl genrsa -aes256 -out rsa.pem 2048
@@ -90,33 +90,32 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
 2. Instalando o driver do PostgreSQL:
 
-    2.1 Faça o download do PostgreSQL JDBC Driver mais recente [neste site](https://jdbc.postgresql.org/download.html)
+    2.1 Faça o download do PostgreSQL JDBC Driver mais recente [neste site](https://jdbc.postgresql.org/download.html).
 
-    2.2 Mova o arquivo do JDBC driver **.jar** baixado para: 
-    ```
-    PASTA_DE_INSTALACAO_DO_WIDFLY/bin
-    ```
+    2.2 Mova o arquivo **.jar** baixado para a pasta bin que fica dentro da pasata de instalação do WidFly.
+    
+    2.3 Abra uma janela do terminal/console acesse esta pasta bin e execute o comando `./standalone.sh`, para que o servidor WidFly seja iniciado.
 
-    2.3 Ainda na pasta bin execute o arquivo _jboss-cli.sh_ através do terminal, para acessarmos ao jboss-cli (Command Line Interface).
+    2.4 Em uma outra janela do terminal execute o comando `./jboss-cli.sh` ainda na pasta bin, para acessarmos ao jboss-cli (Command Line Interface).
 
-    2.4 Após executar o jboss-cli, ele irá pedir para que você se conecte ao servidor, para isso, basta digitar: connect
+    2.5 Após executar o jboss-cli, ele irá pedir para que você se conecte ao servidor, para isso, basta digitar _connect_
 
-    2.5 Depois de conectado, adicione o módulo chamado org.postgres apontando para o driver do postgres, comando:
+    2.6 Depois de conectado, execute o comando abaixo para adicionarmos o módulo chamado _org.postgres_ apontando para o driver do postgres:
 
     ```shell
     module add --name=org.postgres --resources=NOME_DO_ARQUIVO_DO_DRIVER.jar --dependencies=javax.api,javax.transaction.api
     ```
     > Substitua **NOME_DO_ARQUIVO_DO_DRIVER** no comando acima pelo nome exato do arquivo do driver JDBC que foi copiado para a pasta bin.
 
-    2.6 Instale o driver JDBC, comando:
+    2.7 Instale o driver JDBC:
 
     ```shell
     /subsystem=datasources/jdbc-driver=postgres:add(driver-name="postgres",driver-module-name="org.postgres",driver-class-name=org.postgresql.Driver)
     ```
 
-    2.7 Reinicie o WidFly caso esteja sendo executado.
+    2.8 Reinicie o WidFly.
 
-    2.8 Após efetuar essas etapas, podemos iniciar a configuração do Datasource via console administrativo do Wildfly.
+    2.9 Após efetuar essas etapas, o PostgresSQL JDBC Driver já pode ser utilizado na criação do Datasource.
 
 3. Configuração do datasource:
 
