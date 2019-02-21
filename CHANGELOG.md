@@ -1,6 +1,11 @@
 # rst-cadastros
 
 -Aplicações para manutenção dos cadastros RST
+
+**v.2.121.1**
+(RELEASE EM 21/02/2019)
+- [CADASTROS] Otimização da API/Endpoint empresaFornecedor
+
 **v.2.121.0**
 (RELEASE EM 15/02/2019)
 - [CADASTROS] Ocultar os Perfis de Diretor DR e Diretor DN
