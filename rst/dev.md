@@ -240,6 +240,9 @@ email=EMAIL_CORPORATIVO
 always-auth=true
 _auth=TOKEN_DE_AUTENTICAÇÃO
 ```
+** Atenção **
+
+> Este é um arquivo exemplo e contém os dados de conexão com o repositório Nexus da Solutis.  
 
 > EMAIL_CORPORATIVO = Deve ser substituido por seu email corporativo.  
 
