@@ -275,11 +275,15 @@ O projeto rst-cadastro é subdividido em módulos. Ao clonar o projeto você enc
 
 5. Abra uma janela do terminal/console e acesse a pasta `rst-cadastro/rst/rst-web`
 
-    5.1 Execute o comando abaixo para instalar as dependências deste módulo:
+    5.1 Instale a ultima versão do Node Sass, comando:
+    ```shell
+    $ npm install node-sass@latest
+    ```
+    5.2 Execute o comando abaixo para instalar as dependências deste módulo:
     ```shell
     $ npm install
     ```
-    5.2 Após instalação das dependências acima, start a aplicação (interface web) executando o comando:
+    5.3 Após instalação das dependências acima, start a aplicação (interface web) executando o comando:
     ```shell
     $ npm start
     ```
