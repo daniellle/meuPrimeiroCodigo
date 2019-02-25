@@ -4,7 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "uat_veiculo")
+@Table(name = "uat_veiculo", uniqueConstraints = @UniqueConstraint(name = "pk_uat_veiculo", columnNames = {
+        "id_uat_veiculo"}))
 public class UatVeiculo extends AbstractData {
 
     private static final long serialVersionUID = 8672002241253994157L;

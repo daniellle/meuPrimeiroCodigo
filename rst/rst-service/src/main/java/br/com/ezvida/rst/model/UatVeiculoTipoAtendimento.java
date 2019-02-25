@@ -1,13 +1,15 @@
 package br.com.ezvida.rst.model;
 
+import fw.core.model.BaseEntity;
 import fw.core.model.BaseModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "uat_veiculo_tipo_atendimento")
-public class UatVeiculoTipoAtendimento implements BaseModel<Long> {
+@Table(name = "uat_veiculo_tipo_atendimento", uniqueConstraints = @UniqueConstraint(name = "pk_uat_veiculo_tipo_atendimento", columnNames = {
+        "id_uat_veiculo_tipo_atendimento"}))
+public class UatVeiculoTipoAtendimento extends BaseEntity<Long> {
 
     private static final long serialVersionUID = 6511311756196719447L;
 
@@ -48,20 +50,5 @@ public class UatVeiculoTipoAtendimento implements BaseModel<Long> {
     @Override
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UatVeiculoTipoAtendimento that = (UatVeiculoTipoAtendimento) o;
-
-        return id.equals(that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
     }
 }
