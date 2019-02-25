@@ -1,17 +1,20 @@
 package br.com.ezvida.rst.model;
 
-import java.sql.Timestamp;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="UAT_QUADRO_PESSOAL")
+@Table(name = "UAT_QUADRO_PESSOAL", uniqueConstraints = @UniqueConstraint(name = "PK_UAT_INSTALACAO_FISICA_CATEGORIA", columnNames = {
+		"ID_UAT_QUADRO_PESSOAL" }))
 public class UatQuadroPessoal extends AbstractData {
 	
 	private static final long serialVersionUID = 1L;
@@ -22,17 +25,13 @@ public class UatQuadroPessoal extends AbstractData {
 	@SequenceGenerator(name = "SEQUENCE_UAT_QUADRO_PESSOAL", sequenceName = "SEQ_UAT_QUADRO_PESSOAL", allocationSize = 1)
 	private Long id;
 
-	@Column(name="DT_ALTERACAO")
-	private Timestamp dtAlteracao;
-
-	@Column(name="DT_CRIACAO")
-	private Timestamp dtCriacao;
-
-	@Column(name="DT_EXCLUSAO")
-	private Timestamp dtExclusao;
-
-	@Column(name="ID_UND_ATD_TRABALHADOR")
-	private Integer idUndAtdTrabalhador;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_UAT_QUADRO_PESSOAL_TIPO_PROFISSIONAL_FK", referencedColumnName = "ID_UAT_QUADRO_PESSOAL_TIPO_PROFISSIONAL")
+	private UatQuadroPessoalTipoProfissional uatQuadroPessoalTipoProfissional;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_UND_ATD_TRABALHADOR_FK", referencedColumnName = "ID_UND_ATD_TRABALHADOR")
+	private UnidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador;
 
 	private Integer quantidade;
 
@@ -44,36 +43,20 @@ public class UatQuadroPessoal extends AbstractData {
 		this.id = id;
 	}
 
-	public Timestamp getDtAlteracao() {
-		return dtAlteracao;
+	public UatQuadroPessoalTipoProfissional getUatQuadroPessoalTipoProfissional() {
+		return uatQuadroPessoalTipoProfissional;
 	}
 
-	public void setDtAlteracao(Timestamp dtAlteracao) {
-		this.dtAlteracao = dtAlteracao;
+	public void setUatQuadroPessoalTipoProfissional(UatQuadroPessoalTipoProfissional uatQuadroPessoalTipoProfissional) {
+		this.uatQuadroPessoalTipoProfissional = uatQuadroPessoalTipoProfissional;
 	}
 
-	public Timestamp getDtCriacao() {
-		return dtCriacao;
+	public UnidadeAtendimentoTrabalhador getUnidadeAtendimentoTrabalhador() {
+		return unidadeAtendimentoTrabalhador;
 	}
 
-	public void setDtCriacao(Timestamp dtCriacao) {
-		this.dtCriacao = dtCriacao;
-	}
-
-	public Timestamp getDtExclusao() {
-		return dtExclusao;
-	}
-
-	public void setDtExclusao(Timestamp dtExclusao) {
-		this.dtExclusao = dtExclusao;
-	}
-
-	public Integer getIdUndAtdTrabalhador() {
-		return idUndAtdTrabalhador;
-	}
-
-	public void setIdUndAtdTrabalhador(Integer idUndAtdTrabalhador) {
-		this.idUndAtdTrabalhador = idUndAtdTrabalhador;
+	public void setUnidadeAtendimentoTrabalhador(UnidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador) {
+		this.unidadeAtendimentoTrabalhador = unidadeAtendimentoTrabalhador;
 	}
 
 	public Integer getQuantidade() {

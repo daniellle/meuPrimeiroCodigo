@@ -2,7 +2,10 @@ package br.com.ezvida.rst.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,6 +19,10 @@ public class UatQuadroPessoalTipoServico extends AbstractData {
 	private Long id;
 
 	private String descricao;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_UAT_QUADRO_PESSOAL_AREA_FK", referencedColumnName = "ID_UAT_QUADRO_PESSOAL_AREA")
+	private UatQuadroPessoalArea uatQuadroPessoalArea;
 
 	public Long getId() {
 		return id;
@@ -33,4 +40,11 @@ public class UatQuadroPessoalTipoServico extends AbstractData {
 		this.descricao = descricao;
 	}
 
+	public UatQuadroPessoalArea getUatQuadroPessoalArea() {
+		return uatQuadroPessoalArea;
+	}
+
+	public void setUatQuadroPessoalArea(UatQuadroPessoalArea uatQuadroPessoalArea) {
+		this.uatQuadroPessoalArea = uatQuadroPessoalArea;
+	}
 }
