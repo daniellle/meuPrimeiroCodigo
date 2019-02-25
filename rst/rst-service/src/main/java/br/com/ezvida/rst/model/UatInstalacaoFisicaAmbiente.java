@@ -9,10 +9,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import fw.core.model.BaseEntity;
+
 @Entity
 @Table(name = "UAT_INSTALACAO_FISICA_AMBIENTE", uniqueConstraints = @UniqueConstraint(name = "PK_UAT_INSTALACAO_FISICA_AMBIENTE", columnNames = {
 "ID_UAT_INSTALACAO_FISICA_AMBIENTE" }))
-public class UatInstalacaoFisicaAmbiente extends AbstractData  {
+public class UatInstalacaoFisicaAmbiente extends BaseEntity<Long>  {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -20,10 +22,11 @@ public class UatInstalacaoFisicaAmbiente extends AbstractData  {
 	@Column(name = "ID_UAT_INSTALACAO_FISICA_AMBIENTE")
 	private Long id;
 
+	@Column(name = "DESCRICAO", nullable = false)
 	private String descricao;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_UAT_INSTALACAO_FISICA_CATEGORIA_FK", referencedColumnName = "ID_UAT_INSTALACAO_FISICA_CATEGORIA")
+	@JoinColumn(name = "ID_UAT_INSTALACAO_FISICA_CATEGORIA_FK", referencedColumnName = "ID_UAT_INSTALACAO_FISICA_CATEGORIA", nullable = false)
 	private UatInstalacaoFisicaCategoria instalacaoFisicaCategoria;
 
 	public Long getId() {

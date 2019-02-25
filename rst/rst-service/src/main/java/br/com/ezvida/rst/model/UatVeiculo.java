@@ -1,34 +1,39 @@
 package br.com.ezvida.rst.model;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "uat_veiculo")
+@Table(name = "UAT_VEICULO")
 public class UatVeiculo extends AbstractData {
 
     private static final long serialVersionUID = 8672002241253994157L;
 
     @Id
-    @Column(name = "id_uat_veiculo")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_uat_veiculo")
-    @SequenceGenerator(name = "sequence_uat_veiculo", sequenceName = "seq_uat_veiculo", allocationSize = 1)
+    @Column(name = "ID_UAT_VEICULO")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQUENCE_UAT_VEICULO")
+    @SequenceGenerator(name = "SEQUENCE_UAT_VEICULO", sequenceName = "SEQ_UAT_VEICULO", allocationSize = 1)
     private Long id;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_und_atd_trabalhador_fk", referencedColumnName = "id_und_atd_trabalhador")
-    @NotNull
+    @JoinColumn(name = "ID_UND_ATD_TRABALHADOR_FK", referencedColumnName = "ID_UND_ATD_TRABALHADOR", nullable = false)
     private UnidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_uat_veiculo_tipo_atendimento_fk", referencedColumnName = "id_uat_veiculo_tipo_atendimento")
-    @NotNull
+    @JoinColumn(name = "ID_UAT_VEICULO_TIPO_ATENDIMENTO_FK", referencedColumnName = "ID_UAT_VEICULO_TIPO_ATENDIMENTO", nullable = false)
     private UatVeiculoTipoAtendimento unidadeVeiculoTipoAtendimento;
 
-    @Column(name = "quantidade")
-    @NotNull
+    @Column(name = "QUANTIDADE", nullable = false)
     private Integer quantidade;
 
     public Long getId() {

@@ -26,13 +26,14 @@ public class UatQuadroPessoal extends AbstractData {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_UAT_QUADRO_PESSOAL_TIPO_PROFISSIONAL_FK", referencedColumnName = "ID_UAT_QUADRO_PESSOAL_TIPO_PROFISSIONAL")
+	@JoinColumn(name = "ID_UAT_QUADRO_PESSOAL_TIPO_PROFISSIONAL_FK", referencedColumnName = "ID_UAT_QUADRO_PESSOAL_TIPO_PROFISSIONAL", nullable = false)
 	private UatQuadroPessoalTipoProfissional uatQuadroPessoalTipoProfissional;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_UND_ATD_TRABALHADOR_FK", referencedColumnName = "ID_UND_ATD_TRABALHADOR")
+	@JoinColumn(name = "ID_UND_ATD_TRABALHADOR_FK", referencedColumnName = "ID_UND_ATD_TRABALHADOR", nullable = false)
 	private UnidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador;
 
+	@Column(name = "QUANTIDADE", nullable = false)
 	private Integer quantidade;
 
 	public Long getId() {

@@ -8,9 +8,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import fw.core.model.BaseEntity;
+
 @Entity
 @Table(name="UAT_QUADRO_PESSOAL_TIPO_SERVICO")
-public class UatQuadroPessoalTipoServico extends AbstractData {
+public class UatQuadroPessoalTipoServico extends BaseEntity<Long> {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -18,10 +20,11 @@ public class UatQuadroPessoalTipoServico extends AbstractData {
 	@Column(name = "ID_UAT_QUADRO_PESSOAL_TIPO_SERVICO")
 	private Long id;
 
+	@Column(name = "DESCRICAO", nullable = false)
 	private String descricao;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_UAT_QUADRO_PESSOAL_AREA_FK", referencedColumnName = "ID_UAT_QUADRO_PESSOAL_AREA")
+	@JoinColumn(name = "ID_UAT_QUADRO_PESSOAL_AREA_FK", referencedColumnName = "ID_UAT_QUADRO_PESSOAL_AREA", nullable = false)
 	private UatQuadroPessoalArea uatQuadroPessoalArea;
 
 	public Long getId() {

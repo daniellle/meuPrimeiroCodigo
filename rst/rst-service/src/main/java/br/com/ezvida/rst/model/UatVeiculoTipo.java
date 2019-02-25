@@ -1,24 +1,21 @@
 package br.com.ezvida.rst.model;
 
-import fw.core.model.BaseModel;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 @Entity
-@Table(name = "uat_veiculo_tipo")
-public class UatVeiculoTipo implements BaseModel<Long> {
+@Table(name = "UAT_VEICULO_TIPO")
+public class UatVeiculoTipo extends AbstractData {
 
     private static final long serialVersionUID = -9074566396669587122L;
 
     @Id
-    @Column(name = "id_uat_veiculo_tipo")
+    @Column(name = "ID_UAT_VEICULO_TIPO")
     private Long id;
 
-    @Column(name = "descricao")
+    @Column(name = "DESCRICAO", nullable = false)
     private String descricao;
 
     public Long getId() {
@@ -37,18 +34,4 @@ public class UatVeiculoTipo implements BaseModel<Long> {
         this.descricao = descricao;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UatVeiculoTipo that = (UatVeiculoTipo) o;
-
-        return id.equals(that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
 }

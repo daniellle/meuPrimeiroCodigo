@@ -27,16 +27,18 @@ public class UatInstalacaoFisica extends AbstractData {
 	@SequenceGenerator(name = "SEQUENCE_UAT_INSTALACAO_FISICA", sequenceName = "SEQ_UAT_INSTALACAO_FISICA", allocationSize = 1)
 	private Long id;
 	
+	@Column(name = "AREA", nullable = false)
 	private BigDecimal area;
 
+	@Column(name = "QUANTIDADE", nullable = false)
 	private Integer quantidade;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_UAT_INSTALACAO_FISICA_AMBIENTE_FK", referencedColumnName = "ID_UAT_INSTALACAO_FISICA_AMBIENTE")
+	@JoinColumn(name = "ID_UAT_INSTALACAO_FISICA_AMBIENTE_FK", referencedColumnName = "ID_UAT_INSTALACAO_FISICA_AMBIENTE", nullable = false)
 	private UatInstalacaoFisicaAmbiente uatInstalacaoFisicaAmbiente;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_UND_ATD_TRABALHADOR_FK", referencedColumnName = "ID_UND_ATD_TRABALHADOR")
+	@JoinColumn(name = "ID_UND_ATD_TRABALHADOR_FK", referencedColumnName = "ID_UND_ATD_TRABALHADOR", nullable = false)
 	private UnidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador;
 
 	public Long getId() {
