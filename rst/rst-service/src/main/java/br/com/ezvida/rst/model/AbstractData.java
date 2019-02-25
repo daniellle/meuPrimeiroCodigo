@@ -15,15 +15,15 @@ public abstract class AbstractData extends BaseEntity<Long> {
 	private static final long serialVersionUID = -5452922449813641394L;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "dt_criacao", nullable = false, updatable = false)
+	@Column(name = "DT_CRIACAO", nullable = false, updatable = false)
 	private Date dataCriacao;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "dt_alteracao", nullable = true)
+	@Column(name = "DT_ALTERACAO", nullable = true)
 	private Date dataAlteracao;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "dt_exclusao", nullable = true)
+	@Column(name = "DT_EXCLUSAO", nullable = true)
 	private Date dataExclusao;
 
 	public Date getDataCriacao() {

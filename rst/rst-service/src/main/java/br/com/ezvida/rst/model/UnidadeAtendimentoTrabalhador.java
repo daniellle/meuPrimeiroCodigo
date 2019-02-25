@@ -42,7 +42,7 @@ public class UnidadeAtendimentoTrabalhador extends AbstractData {
 	@JsonDeserialize(using = DateJsonDeserializer.class)
 	@JsonSerialize(using = DateJsonSerializer.class)
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "dt_desativacao", nullable = true)
+	@Column(name = "DT_DESATIVACAO", nullable = true)
 	private Date dataDesativacao;
 	
 	@Column(name = "DS_RAZAO_SOCIAL", nullable = false)
