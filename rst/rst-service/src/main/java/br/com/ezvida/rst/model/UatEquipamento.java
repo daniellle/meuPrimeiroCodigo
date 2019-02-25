@@ -14,10 +14,10 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "UAT_EQUIPAMENTO", uniqueConstraints = @UniqueConstraint(name = "PK_UAT_EQUIPAMENTO", columnNames = {
-"ID_UND_ATD_TRABALHADOR" }))
+"ID_UAT_EQUIPAMENTO" }))
 public class UatEquipamento extends AbstractData {
-	
-	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = 5047994581651427365L;
 
 	@Id
 	@Column(name = "ID_UAT_EQUIPAMENTO")
