@@ -1,54 +1,40 @@
 package br.com.ezvida.rst.model;
 
-import fw.core.model.BaseModel;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import fw.core.model.BaseEntity;
+
 @Entity
-@Table(name = "uat_equipamento_area")
-public class UatEquipamentoArea implements BaseModel<Long> {
+@Table(name = "UAT_EQUIPAMENTO_AREA", uniqueConstraints = @UniqueConstraint(name = "PK_UAT_EQUIPAMENTO_AREA", columnNames = {
+"ID_UAT_EQUIPAMENTO_AREA" }))
+public class UatEquipamentoArea extends BaseEntity<Long> {
+	
+	private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 7756440197166224569L;
+	@Id
+	@Column(name = "ID_UAT_EQUIPAMENTO_AREA")
+    private Long id; 
+	
+	@Column(name = "DESCRICAO", nullable = false)
+	private String descricao;
 
-    @Id
-    @Column(name = "id_uat_equipamento_area")
-    private Long id;
+	public Long getId() {
+		return id;
+	}
 
-    @Column(name = "descricao")
-    private String descricao;
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public String getDescricao() {
+		return descricao;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UatEquipamentoArea that = (UatEquipamentoArea) o;
-
-        return id.equals(that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
 }

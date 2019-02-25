@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "UAT_EQUIPAMENTO", uniqueConstraints = @UniqueConstraint(name = "PK_CENTRO_ATEND_TRAB", columnNames = {
+@Table(name = "UAT_EQUIPAMENTO", uniqueConstraints = @UniqueConstraint(name = "PK_UAT_EQUIPAMENTO", columnNames = {
 "ID_UND_ATD_TRABALHADOR" }))
 public class UatEquipamento extends AbstractData {
 	
@@ -25,14 +25,15 @@ public class UatEquipamento extends AbstractData {
 	@SequenceGenerator(name = "SEQUENCE_UAT_EQUIPAMENTO", sequenceName = "SEQ_UAT_EQUIPAMENTO", allocationSize = 1)
 	private Long id;
 
+	@Column(name = "QUANTIDADE", nullable = false)
 	private Integer quantidade;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_UAT_EQUIPAMENTO_TIPO_FK", referencedColumnName = "ID_UAT_EQUIPAMENTO_TIPO")
+	@JoinColumn(name = "ID_UAT_EQUIPAMENTO_TIPO_FK", referencedColumnName = "ID_UAT_EQUIPAMENTO_TIPO", nullable = false)
 	private UatEquipamentoTipo uatEquipamentoTipo;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_UND_ATD_TRABALHADOR_FK", referencedColumnName = "ID_UND_ATD_TRABALHADOR")
+	@JoinColumn(name = "ID_UND_ATD_TRABALHADOR_FK", referencedColumnName = "ID_UND_ATD_TRABALHADOR", nullable = false)
 	private UnidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador;
 
 	public Long getId() {

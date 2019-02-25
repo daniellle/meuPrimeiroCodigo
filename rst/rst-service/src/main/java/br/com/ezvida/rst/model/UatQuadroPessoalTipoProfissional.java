@@ -9,10 +9,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import fw.core.model.BaseEntity;
+
 @Entity
 @Table(name = "UAT_QUADRO_PESSOAL_TIPO_PROFISSIONAL", uniqueConstraints = @UniqueConstraint(name = "PK_UAT_QUADRO_PESSOAL_TIPO_PROFISSIONAL", columnNames = {
 "ID_UAT_QUADRO_PESSOAL_TIPO_PROFISSIONAL" }))
-public class UatQuadroPessoalTipoProfissional extends AbstractData  {
+public class UatQuadroPessoalTipoProfissional extends BaseEntity<Long>  {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -21,9 +23,10 @@ public class UatQuadroPessoalTipoProfissional extends AbstractData  {
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_UAT_QUADRO_PESSOAL_TIPO_SERVICO_FK", referencedColumnName = "ID_UAT_QUADRO_PESSOAL_TIPO_SERVICO")
+	@JoinColumn(name = "ID_UAT_QUADRO_PESSOAL_TIPO_SERVICO_FK", referencedColumnName = "ID_UAT_QUADRO_PESSOAL_TIPO_SERVICO", nullable = false)
 	private UatQuadroPessoalTipoServico uatQuadroPessoalTipoServico;
 	
+	@Column(name = "DESCRICAO", nullable = false)
 	private String descricao;
 
 	public Long getId() {

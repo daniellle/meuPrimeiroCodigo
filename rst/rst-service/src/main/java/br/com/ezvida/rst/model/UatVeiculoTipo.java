@@ -1,23 +1,21 @@
 package br.com.ezvida.rst.model;
 
 import fw.core.model.BaseEntity;
-import fw.core.model.BaseModel;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
-@Table(name = "uat_veiculo_tipo", uniqueConstraints = @UniqueConstraint(name = "pk_uat_veiculo_tipo", columnNames = {
-        "id_uat_veiculo_tipo"}))
+@Table(name = "UAT_VEICULO_TIPO", uniqueConstraints = @UniqueConstraint(name = "PK_UAT_VEICULO_TIPO", columnNames = {
+        "ID_UAT_VEICULO_TIPO"}))
 public class UatVeiculoTipo extends BaseEntity<Long> {
 
     private static final long serialVersionUID = -9074566396669587122L;
 
     @Id
-    @Column(name = "id_uat_veiculo_tipo")
+    @Column(name = "ID_UAT_VEICULO_TIPO")
     private Long id;
 
-    @Column(name = "descricao")
+    @Column(name = "DESCRICAO", nullable = false)
     private String descricao;
 
     public Long getId() {
@@ -35,4 +33,5 @@ public class UatVeiculoTipo extends BaseEntity<Long> {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
 }
