@@ -2,11 +2,16 @@ package br.com.ezvida.rst.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="UAT_QUADRO_PESSOAL_TIPO_PROFISSIONAL")
+@Table(name = "UAT_QUADRO_PESSOAL_TIPO_PROFISSIONAL", uniqueConstraints = @UniqueConstraint(name = "PK_UAT_QUADRO_PESSOAL_TIPO_PROFISSIONAL", columnNames = {
+"ID_UAT_QUADRO_PESSOAL_TIPO_PROFISSIONAL" }))
 public class UatQuadroPessoalTipoProfissional extends AbstractData  {
 	
 	private static final long serialVersionUID = 1L;
@@ -14,6 +19,10 @@ public class UatQuadroPessoalTipoProfissional extends AbstractData  {
 	@Id
 	@Column(name = "ID_UAT_QUADRO_PESSOAL_TIPO_PROFISSIONAL")
 	private Long id;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_UAT_QUADRO_PESSOAL_TIPO_SERVICO_FK", referencedColumnName = "ID_UAT_QUADRO_PESSOAL_TIPO_SERVICO")
+	private UatQuadroPessoalTipoServico uatQuadroPessoalTipoServico;
 	
 	private String descricao;
 
@@ -23,6 +32,14 @@ public class UatQuadroPessoalTipoProfissional extends AbstractData  {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public UatQuadroPessoalTipoServico getUatQuadroPessoalTipoServico() {
+		return uatQuadroPessoalTipoServico;
+	}
+
+	public void setUatQuadroPessoalTipoServico(UatQuadroPessoalTipoServico uatQuadroPessoalTipoServico) {
+		this.uatQuadroPessoalTipoServico = uatQuadroPessoalTipoServico;
 	}
 
 	public String getDescricao() {

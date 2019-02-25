@@ -7,16 +7,16 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="UAT_QUADRO_PESSOAL_AREA", uniqueConstraints = @UniqueConstraint(
-    name = "IDX_PK_UAT_QUADRO_PESSOAL_AREA", columnNames = { "ID_UAT_QUADRO_PESSOAL_AREA"}))
-public class UatQuadroPessoalArea  extends AbstractData {
-	
+@Table(name = "UAT_QUADRO_PESSOAL_AREA", uniqueConstraints = @UniqueConstraint(name = "PK_UAT_QUADRO_PESSOAL_AREA", columnNames = {
+		"ID_UAT_QUADRO_PESSOAL_AREA" }))
+public class UatQuadroPessoalArea extends AbstractData {
+
 	private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "ID_UAT_QUADRO_PESSOAL_AREA")
-    private Long id;
-	
+	@Id
+	@Column(name = "ID_UAT_QUADRO_PESSOAL_AREA")
+	private Long id;
+
 	private String descricao;
 
 	public Long getId() {
