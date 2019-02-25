@@ -37,5 +37,4 @@ public class UatEquipamentoArea extends BaseEntity<Long> {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	
 }
