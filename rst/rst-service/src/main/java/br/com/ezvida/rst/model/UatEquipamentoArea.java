@@ -4,15 +4,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="UAT_EQUIPAMENTO_AREA")
+@Table(name = "UAT_EQUIPAMENTO_AREA", uniqueConstraints = @UniqueConstraint(name = "PK_UAT_EQUIPAMENTO_AREA", columnNames = {
+"ID_UAT_EQUIPAMENTO_AREA" }))
 public class UatEquipamentoArea extends AbstractData {
 	
 	private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "ID_UAT_EQUIPAMENTO_AREA")
+	@Id
+	@Column(name = "ID_UAT_EQUIPAMENTO_AREA")
     private Long id; 
 	
 	private String descricao;
@@ -32,5 +34,5 @@ public class UatEquipamentoArea extends AbstractData {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
+	
 }
