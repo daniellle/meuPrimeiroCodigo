@@ -1,35 +1,67 @@
 package br.com.ezvida.rst.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import fw.core.model.BaseModel;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="UAT_VEICULO_TIPO_ATENDIMENTO")
-public class UatVeiculoTipoAtendimento extends AbstractData {
-	
-	private static final long serialVersionUID = 1L;
-	   
+@Table(name = "uat_veiculo_tipo_atendimento")
+public class UatVeiculoTipoAtendimento implements BaseModel<Long> {
+
+    private static final long serialVersionUID = 6511311756196719447L;
+
     @Id
-    @Column(name = "ID_UAT_VEICULO_TIPO_ATENDIMENTO")
+    @Column(name = "id_uat_veiculo_tipo_atendimento")
     private Long id;
 
-	private String descricao;
+    @Column(name = "descricao", nullable = false)
+    private String descricao;
 
-	public Long getId() {
-		return id;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_uat_veiculo_tipo_fk", referencedColumnName = "id_uat_veiculo_tipo")
+    @NotNull
+    private UatVeiculoTipo uatVeiculoTipo;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
-	public String getDescricao() {
-		return descricao;
-	}
+    public String getDescricao() {
+        return descricao;
+    }
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public UatVeiculoTipo getUatVeiculoTipo() {
+        return uatVeiculoTipo;
+    }
+
+    public void setUatVeiculoTipo(UatVeiculoTipo uatVeiculoTipo) {
+        this.uatVeiculoTipo = uatVeiculoTipo;
+    }
+
+    @Override
+    public Long getId() {
+        return this.id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UatVeiculoTipoAtendimento that = (UatVeiculoTipoAtendimento) o;
+
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }
