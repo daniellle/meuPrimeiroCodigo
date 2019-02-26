@@ -38,7 +38,7 @@ public class UatInstalacaoFisicaCategoriaEndpoint extends SegurancaEndpoint<UatI
             .header("Content-Version", getApplicationVersion())
             .entity(serializar(uatInstalacaoFisicaCategoriaService.listarTodos(
                 ClienteInfos.getClienteInfos(context, request,
-                    TipoOperacaoAuditoria.CONSULTA, Funcionalidade.CAT),
+                    TipoOperacaoAuditoria.CONSULTA, Funcionalidade.GESTAO_UNIDADE_SESI),
                 ClienteInfos.getDadosFilter(context)))).build();
     }
 

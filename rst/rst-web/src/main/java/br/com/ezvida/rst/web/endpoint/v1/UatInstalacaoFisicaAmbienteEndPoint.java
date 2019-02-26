@@ -38,8 +38,7 @@ public class UatInstalacaoFisicaAmbienteEndPoint extends SegurancaEndpoint<UatIn
             .header("Content-Version", getApplicationVersion())
             .entity(serializar(uatInstalacaoFisicaAmbienteService.findByCategoria(idCategoria,
                 ClienteInfos.getClienteInfos(context, request,
-                    TipoOperacaoAuditoria.CONSULTA, Funcionalidade.CAT),
+                    TipoOperacaoAuditoria.CONSULTA, Funcionalidade.GESTAO_UNIDADE_SESI),
                 ClienteInfos.getDadosFilter(context)))).build();
     }
-
 }
