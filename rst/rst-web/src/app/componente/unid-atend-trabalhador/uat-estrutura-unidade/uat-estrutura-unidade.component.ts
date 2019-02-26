@@ -44,6 +44,9 @@ export class UatEstruturaUnidadeComponent extends BaseComponent implements OnIni
     this.title = this.activatedRoute.snapshot.data.title;
   }
 
+  voltar(): void {
+    this.router.navigate([`${environment.path_raiz_cadastro}/uat/${this.idUat}`]);
+  }
 
   private carregarTela() {
     this.activatedRoute.params.subscribe((params) => {
@@ -54,14 +57,10 @@ export class UatEstruturaUnidadeComponent extends BaseComponent implements OnIni
     });
   }
 
-  bucarUatPorId(id: any) {
+  private bucarUatPorId(id: any) {
     this.uatService.pesquisarPorId(id).subscribe((retorno) => { this.uat = retorno; }, (error) => {
       this.mensagemError(error);
     });
-  }
-
-  voltar(): void {
-    this.router.navigate([`${environment.path_raiz_cadastro}/uat/${this.idUat}`]);
   }
 
 }
