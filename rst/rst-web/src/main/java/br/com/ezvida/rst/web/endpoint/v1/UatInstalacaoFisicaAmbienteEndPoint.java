@@ -31,7 +31,6 @@ public class UatInstalacaoFisicaAmbienteEndPoint extends SegurancaEndpoint<UatIn
     @Path("/categoria/{idCategoria}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    //TODO: ADICIONAR PERMISSOES
     public Response findByCategoria(@PathParam("idCategoria") Long idCategoria, @Context SecurityContext context
         , @Context HttpServletRequest request) {
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)

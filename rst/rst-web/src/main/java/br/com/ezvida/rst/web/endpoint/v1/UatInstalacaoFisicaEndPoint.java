@@ -1,11 +1,14 @@
 package br.com.ezvida.rst.web.endpoint.v1;
 
+import br.com.ezvida.rst.constants.PermissionConstants;
 import br.com.ezvida.rst.enums.Funcionalidade;
 import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.model.UatInstalacaoFisica;
 import br.com.ezvida.rst.service.UatInstalacaoFisicaService;
 import br.com.ezvida.rst.web.auditoria.ClienteInfos;
 import fw.core.exception.BusinessException;
+import fw.security.binding.Autorizacao;
+import fw.security.binding.Permissao;
 import fw.web.endpoint.SegurancaEndpoint;
 
 import javax.enterprise.context.RequestScoped;
@@ -33,6 +36,7 @@ public class UatInstalacaoFisicaEndPoint extends SegurancaEndpoint<UatInstalacao
     @Encoded
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Autorizacao(permissoes = @Permissao(value = { PermissionConstants.GESTAO_UNIDADE_SESI_CADASTRAR}))
     public Response salvar(@Encoded List<UatInstalacaoFisica> listaInstalacoesFisicas, @Context SecurityContext context
         , @Context HttpServletRequest request) {
         getResponse().setCharacterEncoding(StandardCharsets.UTF_8.displayName());
@@ -46,6 +50,7 @@ public class UatInstalacaoFisicaEndPoint extends SegurancaEndpoint<UatInstalacao
     @GET
     @Path("/uatinstalacaofisica/{idUnidade}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Autorizacao(permissoes = @Permissao(value = { PermissionConstants.GESTAO_UNIDADE_SESI_CONSULTAR}))
     public Response findByUnidade(@PathParam("idUnidade") Long idUnidade, @Context SecurityContext context
         , @Context HttpServletRequest request) {
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
@@ -61,6 +66,7 @@ public class UatInstalacaoFisicaEndPoint extends SegurancaEndpoint<UatInstalacao
     @Encoded
     @Path("/desativar/{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Autorizacao(permissoes = @Permissao(value = { PermissionConstants.GESTAO_UNIDADE_SESI_DESATIVAR}))
     public Response desativar(@PathParam("id") Long id, @Context SecurityContext context
         , @Context HttpServletRequest request) {
         try {
