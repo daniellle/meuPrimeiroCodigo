@@ -24,7 +24,7 @@ public class UatInstalacaoFisicaCategoriaService extends BaseService {
     @Inject
     private UatInstalacaoFisicaCategoriaDAO uatInstalacaoFisicaCategoriaDAO;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TrabalhadorDAO.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UatInstalacaoFisicaCategoriaService.class);
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<UatInstalacaoFisicaCategoria> listarTodos(ClienteAuditoria auditoria, DadosFilter dados) {
