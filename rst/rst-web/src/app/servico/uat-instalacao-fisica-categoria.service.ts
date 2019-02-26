@@ -11,9 +11,9 @@ export class UatInstalacaoFisicaCategoriaService extends BaseService<UatInstalac
         super(httpClient, bloqueio);
     }
 
-    findAll(): Observable<UatInstalacaoFisicaCategoria> {
+    findAll(): Observable<UatInstalacaoFisicaCategoria[]> {
         return super.get('/v1/uatinstalacaofisicacategoria')
-            .map((response: Response) => {
+            .map((response: UatInstalacaoFisicaCategoria[]) => {
                 return response;
             }).catch((error) => {
                 return Observable.throw(error);
