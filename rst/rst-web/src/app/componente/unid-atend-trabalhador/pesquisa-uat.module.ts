@@ -19,6 +19,10 @@ import { UatService } from 'app/servico/uat.service';
 import { EstadoService } from 'app/servico/estado.service';
 import { AutorizacaoGuard } from '../../seguranca/autorizacao.guard';
 import { UatEstruturaUnidadeComponent } from './uat-estrutura-unidade/uat-estrutura-unidade.component';
+import { UatInstalacoesFisicasComponent } from './uat-instalacoes-fisicas/uat-instalacoes-fisicas.component';
+import { UatInstalacaoFisicaCategoriaService } from 'app/servico/uat-instalacao-fisica-categoria.service';
+import { UatInstalacaoFisicaCategoriaAmbienteService } from 'app/servico/uat-instalacao-fisica-ambiente.service';
+import { UatInstalacaoFisicaService } from 'app/servico/uat-instalacao-fisica.service';
 
 const routes: Routes = [
     {
@@ -105,8 +109,8 @@ const routes: Routes = [
     ],
     entryComponents: [TypeaheadContainerComponent],
     exports: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent],
-    declarations: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent, UatEstruturaUnidadeComponent],
+    declarations: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent, UatEstruturaUnidadeComponent, UatInstalacoesFisicasComponent],
     providers: [UatService, DialogService, CadastroUatComponent, EstadoService, DepartRegionalService,
-        ProdutoServicoService, UatProdutoServicoService, LinhaService],
+        ProdutoServicoService, UatProdutoServicoService, LinhaService, UatInstalacaoFisicaCategoriaService, UatInstalacaoFisicaCategoriaAmbienteService, UatInstalacaoFisicaService],
 })
 export class PesquisaUatModule { }
