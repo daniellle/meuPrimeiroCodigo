@@ -15,12 +15,12 @@ Manual de montagem de ambiente de desenvolvimento.
 
 
 **Atenção**
-> Todos os passos desta documentação são obrigatórios e é imprescindível que você obtenha sucesso na realização de cada passo.  
+> Todos os passos desta documentação são obrigatórios, sendo imprescindível que você obtenha sucesso na realização de cada passo.  
 
 
-> Nesta documentação consideramos que você está utilizando uma distribuição Linux (Ubuntu, OpenSuse, Mint, etc), caso esteja utilizando outro sistema operacional faça as devidas adaptações.
+> Nesta documentação consideramos que você está utilizando uma distribuição Linux (Ubuntu, OpenSuse, Mint, etc), caso esteja utilizando outro sistema operacional, faça as devidas adaptações.
 
-## Pré requisitos
+## Pré-requisitos
 
 É necessário que você tenha instalado em sua máquina:  
 
@@ -38,7 +38,7 @@ Manual de montagem de ambiente de desenvolvimento.
 - IDE para codificação do backend Java (Recomendamos o [Eclipse](https://www.eclipse.org/downloads/) ou [IntelliJ IDEA Ultimate](https://www.jetbrains.com/idea/download))
 - IDE para codificação da parte web (Recomendamos o [Visutal Studio Code](https://code.visualstudio.com/download))
 
-O RST Cadastro depende de algumas bibliotecas proprietárias, certifique-se de que essas bibliotecas estão disponíveis no repositório Nexus. 
+O RST Cadastro depende de algumas bibliotecas proprietárias. Certifique-se de que essas bibliotecas estão disponíveis no repositório Nexus. 
 
 Para mais informações de como instalar e configurar essas bibliotecas e ferramentas, consulte o arquivo [README.md](../README.md) deste projeto.
 
@@ -54,7 +54,7 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
     ```
     
 **Atenção**
-> Reinicie seu computador para que as informações acima reflita em seu ambiente.
+> Reinicie seu computador para que as informações acima reflitam em seu ambiente.
 
 > Essa variável de ambiente é utilizada pela classe  _SegurancaUtils_. A partir do valor dessa variável a aplicação identifica em qual ambiente ela está sendo iniciada.
 > Para simular o acesso com diferentes perfis em ambiente local, altere o CPF retornado no metódo **validarAutenticacao** que fica na classe _SegurancaUtils_ dentro do módulo rst-service.
@@ -154,6 +154,76 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
     3.9 Revise os dados apresentados e clique em **Finish**
 
     > Para testar a conexão, selecione o datasource criado, clique em **View**, em seguida, clique na aba **Connection** e, em seguida clique no botão **Test Connection**.
+    
+4. Configuração do Logstash:
+
+    4.1. Editar o arquivo <caminho_do_servidor>/standalone/configuration/logging.properties
+    
+    4.1.1. Adicionar o logger da aplicação
+        
+         logger.br.com.ezvida.rst.service.level=INFO
+         logger.br.com.ezvida.rst.service.useParentHandlers=true
+         logger.br.com.ezvida.rst.service.handlers=logstash-handler
+         
+    4.1.2. Adicionar um novo handler de controle  com o seguinte conteúdo
+        
+         handler.CONSOLE.enabled=true
+         handler.logstash-handler=org.jboss.logmanager.ext.handlers.SocketHandler
+         handler.logstash-handler.module=org.jboss.logmanager.ext
+         handler.logstash-handler.level=ALL
+         handler.logstash-handler.formatter=logstash
+         handler.logstash-handler.properties=enabled,hostname,port
+         handler.logstash-handler.enabled=true
+         handler.logstash-handler.hostname=${host_de_acesso_ao_logstash}
+         handler.logstash-handler.port=${porta_de_acesso_ao_logstash}
+         
+    4.1.3. Adicionar um formatter para o Logstash
+    
+         formatter.logstash=org.jboss.logmanager.ext.formatters.LogstashFormatter
+         formatter.logstash.module=org.jboss.logmanager.ext
+         
+    4.1.4. Alterar a linha handler.FILE.filename conforme a seguir
+    
+         handler.FILE.fileName=/${caminho_do_servidor}/standalone/log/server.log
+         
+    4.1.5. Adicionar o pattern do novo log
+    
+         formatter.COLOR-PATTERN=org.jboss.logmanager.formatters.PatternFormatter
+         formatter.COLOR-PATTERN.properties=pattern
+         formatter.COLOR-PATTERN.pattern=%K{level}%d{HH\:mm\:ss,SSS} %-5p [%c] (%t) %s%e%n
+        
+    4.2 Editar o arquivo <caminho_do_servidor>/standalone/configuration/standalone.xml
+    
+    4.2.1 Adicionar o custom-handler dentro de <subsystem xmlns="urn:jboss:domain:logging:3.0">
+    
+        <custom-handler name="logstash-handler"
+            class="org.jboss.logmanager.ext.handlers.SocketHandler" module="org.jboss.logmanager.ext">
+            <formatter>
+                <named-formatter name="logstash"/>
+            </formatter>
+            <properties>
+                <property name="hostname" value="${host_de_acesso_ao_logstash}"/>
+                <property name="port" value="${porta_de_acesso_ao_logstash}"/>
+            </properties>
+        </custom-handler>
+        
+    4.2.2. Adicionar um novo logger-category
+    
+        <logger category="br.com.ezvida.rst.service">
+            <level name="INFO"/>
+            <handlers>
+                <handler name="logstash-handler"/>
+            </handlers>
+        </logger>
+        
+    4.2.3. Adicionar um formatter
+    
+        <formatter name="logstash">
+            <custom-formatter module="org.jboss.logmanager.ext"
+            class="org.jboss.logmanager.ext.formatters.LogstashFormatter"/>
+        </formatter>
+    
+        
 
 ### Maven
 
