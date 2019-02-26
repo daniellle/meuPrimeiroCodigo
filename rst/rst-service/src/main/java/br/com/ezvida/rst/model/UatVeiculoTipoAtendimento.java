@@ -1,10 +1,15 @@
 package br.com.ezvida.rst.model;
 
-import fw.core.model.BaseEntity;
-import fw.core.model.BaseModel;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import fw.core.model.BaseEntity;
 
 @Entity
 @Table(name = "uat_veiculo_tipo_atendimento", uniqueConstraints = @UniqueConstraint(name = "pk_uat_veiculo_tipo_atendimento", columnNames = {
@@ -21,8 +26,7 @@ public class UatVeiculoTipoAtendimento extends BaseEntity<Long> {
     private String descricao;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_uat_veiculo_tipo_fk", referencedColumnName = "id_uat_veiculo_tipo")
-    @NotNull
+    @JoinColumn(name = "id_uat_veiculo_tipo_fk", referencedColumnName = "id_uat_veiculo_tipo", nullable = false)
     private UatVeiculoTipo uatVeiculoTipo;
 
 
