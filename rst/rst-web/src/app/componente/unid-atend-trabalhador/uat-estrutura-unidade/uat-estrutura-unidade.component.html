@@ -5,27 +5,48 @@
     {{title}}
 </p>
 
-<div class="col-md-12 space-up">
-        <mat-accordion>
-            <mat-expansion-panel hideToggle="true" #panel>
-                <mat-expansion-panel-header>
-                <mat-panel-title>
-                    Instalações Físicas
-                    <div class="seta"> </div>
-                </mat-panel-title>
-                </mat-expansion-panel-header>
-                <p>Body</p>
-            </mat-expansion-panel>
+<div class="col-md-12 container-panel">
+    <mat-accordion>
+        <mat-expansion-panel hideToggle="true" class="custom-panel">
+            <mat-expansion-panel-header>
+            <mat-panel-title>
+                Instalações Físicas
+                <div class="seta"> </div>
+            </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>Body</p>
+        </mat-expansion-panel>
 
-            <mat-expansion-panel (opened)="panelOpenState = true"
-                                    (closed)="panelOpenState = false">
-                <mat-expansion-panel-header>
-                <mat-panel-title>
-                    Veículos a disposição
-                </mat-panel-title>
-                </mat-expansion-panel-header>
-                <p>I'm visible because I am open</p>
-            </mat-expansion-panel>
+        <mat-expansion-panel hideToggle="true" class="custom-panel">
+            <mat-expansion-panel-header>
+            <mat-panel-title>
+                Veículos a diposição
+                <div class="seta"> </div>
+            </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>Body</p>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel hideToggle="true" class="custom-panel">
+            <mat-expansion-panel-header>
+            <mat-panel-title>
+                Quadro de pessoal
+                <div class="seta"> </div>
+            </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>Body</p>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel hideToggle="true" class="custom-panel">
+            <mat-expansion-panel-header>
+            <mat-panel-title>
+                Dimensionamento dos equipamentos
+                <div class="seta"> </div>
+            </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>Body</p>
+        </mat-expansion-panel>
+
     </mat-accordion>
 </div>
 
