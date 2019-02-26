@@ -18,6 +18,7 @@ import { TextMaskModule } from 'angular2-text-mask/dist/angular2TextMask';
 import { UatService } from 'app/servico/uat.service';
 import { EstadoService } from 'app/servico/estado.service';
 import { AutorizacaoGuard } from '../../seguranca/autorizacao.guard';
+import { UatEstruturaUnidadeComponent } from './uat-estrutura-unidade/uat-estrutura-unidade.component';
 
 const routes: Routes = [
     {
@@ -84,6 +85,13 @@ const routes: Routes = [
             PermissoesEnum.CAT_PRODUTO_SERVICO_DESATIVAR],
         },
     },
+    {
+        path: ':id/estruturadaunidade', component: UatEstruturaUnidadeComponent,
+        canActivate: [AutorizacaoGuard],
+        data: {
+            title: MensagemProperties.app_rst_estrutura_da_unidade_title_menu,
+        },
+    },
 ];
 
 @NgModule({
@@ -97,7 +105,7 @@ const routes: Routes = [
     ],
     entryComponents: [TypeaheadContainerComponent],
     exports: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent],
-    declarations: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent],
+    declarations: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent, UatEstruturaUnidadeComponent],
     providers: [UatService, DialogService, CadastroUatComponent, EstadoService, DepartRegionalService,
         ProdutoServicoService, UatProdutoServicoService, LinhaService],
 })
