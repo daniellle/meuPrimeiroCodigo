@@ -1,13 +1,21 @@
 package br.com.ezvida.rst.web.endpoint.v1;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.*;
+import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Encoded;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -31,6 +39,8 @@ import fw.web.endpoint.SegurancaEndpoint;
 @RequestScoped
 @Path("/private/v1/usuario-entidade")
 public class UsuarioEntidadeEndpoint extends SegurancaEndpoint<UsuarioEntidade> {
+
+	private static final String CONTENT_VERSION = "Content-Version";
 
 	private static final long serialVersionUID = 4346824422675010465L;
 
@@ -60,7 +70,7 @@ public class UsuarioEntidadeEndpoint extends SegurancaEndpoint<UsuarioEntidade> 
 		}
 
 		List<UsuarioEntidade> usuarioEntidade = usuarioEntidadeService.validarAcessoAoUsuario(cpf, ClienteInfos.getDadosFilter(context), auditoria);
-		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON).header("Content-Version", getApplicationVersion())
+		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON).header(CONTENT_VERSION, getApplicationVersion())
 				.entity(serializar(usuarioEntidade)).build();
 	}
 
@@ -75,9 +85,8 @@ public class UsuarioEntidadeEndpoint extends SegurancaEndpoint<UsuarioEntidade> 
         PermissionConstants.USUARIO_ENTIDADE_ALTERAR, PermissionConstants.USUARIO_ENTIDADE_CONSULTAR,
         PermissionConstants.USUARIO_ENTIDADE_DESATIVAR }))
     public Response getUsuariosEntidade(@PathParam("cpf") String cpf, @Context SecurityContext context, @Context HttpServletRequest request) {
-        ClienteAuditoria auditoria = ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS);
         List<UsuarioEntidade> usuarioEntidades = usuarioEntidadeService.buscarUsuariosEntidade(cpf);
-        return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON).header("Content-Version", getApplicationVersion())
+        return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON).header(CONTENT_VERSION, getApplicationVersion())
             .entity(serializar(usuarioEntidades)).build();
     }
 
@@ -92,7 +101,7 @@ public class UsuarioEntidadeEndpoint extends SegurancaEndpoint<UsuarioEntidade> 
 	public Response pesquisarEmpresas(@BeanParam UsuarioEntidadeFilter filtro, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-				.header("Content-Version",
+				.header(CONTENT_VERSION,
 						getApplicationVersion())
 				.entity(serializar(usuarioEntidadeService.pesquisarEmpresa(filtro, ClienteInfos.getClienteInfos(context,
 						request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS))))
@@ -110,7 +119,7 @@ public class UsuarioEntidadeEndpoint extends SegurancaEndpoint<UsuarioEntidade> 
 	public Response pesquisarSindicatos(@BeanParam UsuarioEntidadeFilter filtro, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-				.header("Content-Version", getApplicationVersion())
+				.header(CONTENT_VERSION, getApplicationVersion())
 				.entity(serializar(usuarioEntidadeService.pesquisarSindicato(filtro, ClienteInfos
 						.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS))))
 				.build();
@@ -127,7 +136,7 @@ public class UsuarioEntidadeEndpoint extends SegurancaEndpoint<UsuarioEntidade> 
 	public Response pesquisarDepartamentoRegional(@BeanParam UsuarioEntidadeFilter filtro,
 			@Context SecurityContext context, @Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-				.header("Content-Version", getApplicationVersion())
+				.header(CONTENT_VERSION, getApplicationVersion())
 				.entity(serializar(usuarioEntidadeService.pesquisarDepartamentoRegional(filtro, ClienteInfos
 						.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS))))
 				.build();
@@ -144,7 +153,7 @@ public class UsuarioEntidadeEndpoint extends SegurancaEndpoint<UsuarioEntidade> 
     public Response pesquisarUnidadeSESI(@BeanParam UsuarioEntidadeFilter filtro,
                                                   @Context SecurityContext context, @Context HttpServletRequest request) {
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-            .header("Content-Version", getApplicationVersion())
+            .header(CONTENT_VERSION, getApplicationVersion())
             .entity(serializar(usuarioEntidadeService.pesquisarUnidadeSESI(filtro, ClienteInfos
                 .getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS))))
             .build();
@@ -160,7 +169,7 @@ public class UsuarioEntidadeEndpoint extends SegurancaEndpoint<UsuarioEntidade> 
 	public Response salvar(@Encoded List<UsuarioEntidade> usuarioEntidade, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_CREATED).type(MediaType.APPLICATION_JSON)
-				.header("Content-Version",
+				.header(CONTENT_VERSION,
 						getApplicationVersion())
 				.entity(serializar(usuarioEntidadeService.salvar(usuarioEntidade, ClienteInfos.getClienteInfos(context,
 						request, TipoOperacaoAuditoria.INCLUSAO, Funcionalidade.USUARIOS))))
@@ -174,12 +183,12 @@ public class UsuarioEntidadeEndpoint extends SegurancaEndpoint<UsuarioEntidade> 
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.USUARIO_ENTIDADE,
 			PermissionConstants.USUARIO_ENTIDADE_DESATIVAR }))
-	public Response desativar(@Encoded UsuarioEntidade UsuarioEntidade, @Context SecurityContext context,
+	public Response desativar(@Encoded UsuarioEntidade usuarioEntidade, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
 		return Response
 				.status(HttpServletResponse.SC_OK).entity(
 						serializar(
-								usuarioEntidadeService.desativarUsuarioEntidade(UsuarioEntidade,
+								usuarioEntidadeService.desativarUsuarioEntidade(usuarioEntidade,
 										ClienteInfos.getClienteInfos(context, request,
 												TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.USUARIOS))))
 				.type(MediaType.APPLICATION_JSON).build();

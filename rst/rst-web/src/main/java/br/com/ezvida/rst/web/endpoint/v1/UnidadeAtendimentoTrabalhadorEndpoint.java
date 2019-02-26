@@ -3,7 +3,6 @@ package br.com.ezvida.rst.web.endpoint.v1;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.BeanParam;
@@ -36,8 +35,9 @@ import fw.web.endpoint.SegurancaEndpoint;
 @Path("/private/v1/uats")
 public class UnidadeAtendimentoTrabalhadorEndpoint extends SegurancaEndpoint<UnidadeAtendimentoTrabalhador> {
 
-	private static final long serialVersionUID = 2801098260977143337L;
+	private static final String CONTENT_VERSION = "Content-Version";
 
+	private static final long serialVersionUID = 2801098260977143337L;
 
 	@Inject
 	private UnidadeAtendimentoTrabalhadorService unidAtendTrabalhadorService;
@@ -48,7 +48,7 @@ public class UnidadeAtendimentoTrabalhadorEndpoint extends SegurancaEndpoint<Uni
 	public Response buscar(@PathParam("id") String id, @Context SecurityContext context
 			, @Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-				.header("Content-Version", getApplicationVersion())
+				.header(CONTENT_VERSION, getApplicationVersion())
 				.entity(serializar(unidAtendTrabalhadorService.pesquisarPorId(Long.parseLong(id),
 						ClienteInfos.getClienteInfos(context, request,
 								TipoOperacaoAuditoria.CONSULTA,Funcionalidade.CAT),
@@ -75,7 +75,7 @@ public class UnidadeAtendimentoTrabalhadorEndpoint extends SegurancaEndpoint<Uni
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response listarTodos(@Context SecurityContext context, @Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-				.header("Content-Version", getApplicationVersion()).entity(serializar(unidAtendTrabalhadorService
+				.header(CONTENT_VERSION, getApplicationVersion()).entity(serializar(unidAtendTrabalhadorService
 						.pesquisarTodos(ClienteInfos.getClienteInfos(context, request,
 								TipoOperacaoAuditoria.CONSULTA,Funcionalidade.CAT)))).build();
 	}
@@ -94,7 +94,7 @@ public class UnidadeAtendimentoTrabalhadorEndpoint extends SegurancaEndpoint<Uni
 			@Context SecurityContext context, @Context HttpServletRequest request) {
 
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-				.header("Content-Version", getApplicationVersion())
+				.header(CONTENT_VERSION, getApplicationVersion())
 				.entity(serializar(unidAtendTrabalhadorService.pesquisaPaginada(unidAtendTrabalhadorFilter,
 						ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.CAT),
 						ClienteInfos.getDadosFilter(context))))
@@ -124,7 +124,7 @@ public class UnidadeAtendimentoTrabalhadorEndpoint extends SegurancaEndpoint<Uni
 	public Response pesquisarPorEndereco(@BeanParam EnderecoFilter enderecoFilter,
 			@Context SecurityContext context, @Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-				.header("Content-Version", getApplicationVersion())
+				.header(CONTENT_VERSION, getApplicationVersion())
 				.entity(serializar(unidAtendTrabalhadorService.pesquisarPorEndereco(enderecoFilter,
 						ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.CAT),
 						ClienteInfos.getDadosFilter(context))))
@@ -138,7 +138,7 @@ public class UnidadeAtendimentoTrabalhadorEndpoint extends SegurancaEndpoint<Uni
     @Consumes(MediaType.APPLICATION_JSON)
     public Response pesquisarPorNome(@Encoded @PathParam("dr") Long id,@Encoded @PathParam("nome") String nome, @Context SecurityContext context, @Context HttpServletRequest request){
 	    return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-            .header("Content-Version", getApplicationVersion())
+            .header(CONTENT_VERSION, getApplicationVersion())
             .entity(serializar(unidAtendTrabalhadorService.pesquisarTodosPorNomePorDr(id, nome, ClienteInfos.getClienteInfos(context,
                 request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.CAT))))
             .build();

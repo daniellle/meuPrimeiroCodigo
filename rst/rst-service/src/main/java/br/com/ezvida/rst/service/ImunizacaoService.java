@@ -5,12 +5,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.security.cert.CertificateException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.ResolverStyle;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -21,13 +18,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import javax.ws.rs.PathParam;
 
-import br.com.ezvida.rst.model.dto.DoseDTO;
-import br.com.ezvida.rst.model.dto.ProximaDoseDTO;
-import br.com.ezvida.rst.model.pagination.Sort;
-import br.com.ezvida.rst.utils.MapBuilder;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +26,7 @@ import br.com.ezvida.rst.dao.filter.ImunizacaoFilter;
 import br.com.ezvida.rst.dao.filter.ListaPaginada;
 import br.com.ezvida.rst.enums.Periodicidade;
 import br.com.ezvida.rst.model.Usuario;
-import br.com.ezvida.rst.model.dto.ProximaDoseDTO;
+import br.com.ezvida.rst.model.dto.DoseDTO;
 import br.com.ezvida.rst.model.dto.VacinaAutodeclaradaDTO;
 import br.com.ezvida.rst.model.pagination.Page;
 import fw.core.service.BaseService;
@@ -56,19 +47,12 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-import static java.time.ZoneOffset.UTC;
-
 @Stateless
 public class ImunizacaoService extends BaseService {
 
     private static final long serialVersionUID = -8961797164029557197L;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImunizacaoService.class);
-
-    // private static final String ImunizacaoBaseURL = "http://localhost:8567/";
-	private static final String ImunizacaoBaseURL = "http://localhost:8081/";
-
-	private String token;
 
     @Inject
     private ParametroService parametroService;
@@ -146,14 +130,12 @@ public class ImunizacaoService extends BaseService {
 				LOGGER.debug("Não foi possível obter as vacinas", response == null ? null : response.errorBody().toString());
 			}
 
-            List<DoseDTO> body = response.body();
-
 			/*if (body == null) {
 				resultado.put("proximas", new ArrayList<>());
 				resultado.put("vacinas", new ArrayList<>());
 			}*/
 
-			return body;
+			return response.body();
 
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage());
@@ -352,8 +334,6 @@ public class ImunizacaoService extends BaseService {
         String token = "Bearer " + accessToken;
         return token;
     }
-
-
 
 
     private interface ImunizacaoAPI {

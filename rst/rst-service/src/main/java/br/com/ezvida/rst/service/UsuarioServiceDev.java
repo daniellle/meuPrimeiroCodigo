@@ -20,11 +20,15 @@ import java.util.Map;
 
 public class UsuarioServiceDev implements UsuarioService {
 
-    private Logger logger = LoggerFactory.getLogger(UsuarioServiceDev.class);
+	private static final String UTILIZANDO_METODO_DO_AMBIENTE_DE_DESENVOLVIMENTO = "UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO";
+
+	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioServiceDev.class);
 
     @Override
     public Usuario getUsuario(String login) {
-        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        LOGGER.warn(UTILIZANDO_METODO_DO_AMBIENTE_DE_DESENVOLVIMENTO);
         Usuario u = new Usuario("", login, "Super", "Homem", "ADM", "super@homem.com", 0);
         u.setPermissoes(new HashSet<>(Arrays.asList("funcao",
                 "setor",
@@ -77,25 +81,25 @@ public class UsuarioServiceDev implements UsuarioService {
 
     @Override
     public Map<String, String> getConfiguracao(Ambiente ambiente) {
-        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        LOGGER.warn(UTILIZANDO_METODO_DO_AMBIENTE_DE_DESENVOLVIMENTO);
         return null;
     }
 
     @Override
     public ListaPaginada<br.com.ezvida.girst.apiclient.model.Usuario> pesquisarPaginado(UsuarioFilter usuarioFilter) {
-        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        LOGGER.warn(UTILIZANDO_METODO_DO_AMBIENTE_DE_DESENVOLVIMENTO);
         return null;
     }
 
     @Override
     public br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> pesquisarPaginadoGirst(UsuarioFilter usuarioFilter, DadosFilter dados, ClienteAuditoria auditoria) {
-        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        LOGGER.warn(UTILIZANDO_METODO_DO_AMBIENTE_DE_DESENVOLVIMENTO);
         return null;
     }
 
     @Override
     public List<PerfilUsuarioDTO> pesquisarPaginadoRelatorio(UsuarioFilter usuarioFilter, DadosFilter dados, ClienteAuditoria auditoria) {
-        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        LOGGER.warn(UTILIZANDO_METODO_DO_AMBIENTE_DE_DESENVOLVIMENTO);
         return null;
     }
     @Override
@@ -105,61 +109,61 @@ public class UsuarioServiceDev implements UsuarioService {
 
     @Override
     public br.com.ezvida.girst.apiclient.model.Usuario buscarPorId(String id, ClienteAuditoria auditoria) {
-        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        LOGGER.warn(UTILIZANDO_METODO_DO_AMBIENTE_DE_DESENVOLVIMENTO);
         return null;
     }
 
     @Override
     public br.com.ezvida.girst.apiclient.model.Usuario cadastrarUsuario(br.com.ezvida.girst.apiclient.model.Usuario usuario, Usuario usuarioLogado, ClienteAuditoria auditoria) {
-        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        LOGGER.warn(UTILIZANDO_METODO_DO_AMBIENTE_DE_DESENVOLVIMENTO);
         return null;
     }
 
     @Override
     public br.com.ezvida.girst.apiclient.model.Usuario alterarUsuario(br.com.ezvida.girst.apiclient.model.Usuario usuario, Usuario usuarioLogado, ClienteAuditoria auditoria) {
-        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        LOGGER.warn(UTILIZANDO_METODO_DO_AMBIENTE_DE_DESENVOLVIMENTO);
         return null;
     }
 
     @Override
     public br.com.ezvida.girst.apiclient.model.Usuario sicronizarTrabalhadorUsuario(Trabalhador trabalhador, ClienteAuditoria auditoria) {
-        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        LOGGER.warn(UTILIZANDO_METODO_DO_AMBIENTE_DE_DESENVOLVIMENTO);
         return null;
     }
 
     @Override
     public br.com.ezvida.girst.apiclient.model.Usuario alterarPerfilSenha(br.com.ezvida.girst.apiclient.model.UsuarioCredencial usuarioCredencial, ClienteAuditoria auditoria) {
-        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        LOGGER.warn(UTILIZANDO_METODO_DO_AMBIENTE_DE_DESENVOLVIMENTO);
         return null;
     }
 
     @Override
     public br.com.ezvida.girst.apiclient.model.Usuario desativarUsuario(String id, Usuario usuarioLogado, ClienteAuditoria auditoria) {
-        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        LOGGER.warn(UTILIZANDO_METODO_DO_AMBIENTE_DE_DESENVOLVIMENTO);
         return null;
     }
 
     @Override
     public br.com.ezvida.girst.apiclient.model.Usuario buscarPorEmail(String email) {
-        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        LOGGER.warn(UTILIZANDO_METODO_DO_AMBIENTE_DE_DESENVOLVIMENTO);
         return null;
     }
 
     @Override
     public br.com.ezvida.girst.apiclient.model.Usuario buscarPorLogin(String login) {
-        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        LOGGER.warn(UTILIZANDO_METODO_DO_AMBIENTE_DE_DESENVOLVIMENTO);
         return null;
     }
 
     @Override
     public boolean isAdm(String cpf) {
-        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        LOGGER.warn(UTILIZANDO_METODO_DO_AMBIENTE_DE_DESENVOLVIMENTO);
         return false;
     }
 
     @Override
     public UsuarioDTO consultarDadosUsuario(String login) {
-        logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
+        LOGGER.warn(UTILIZANDO_METODO_DO_AMBIENTE_DE_DESENVOLVIMENTO);
         return null;
     }
 

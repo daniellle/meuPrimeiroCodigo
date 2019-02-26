@@ -1,30 +1,30 @@
 package br.com.ezvida.rst.dao;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Maps;
+
 import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.dao.filter.EnderecoFilter;
 import br.com.ezvida.rst.dao.filter.ListaPaginada;
 import br.com.ezvida.rst.dao.filter.UnidAtendTrabalhadorFilter;
 import br.com.ezvida.rst.enums.Situacao;
 import br.com.ezvida.rst.model.UnidadeAtendimentoTrabalhador;
-import com.google.common.collect.Maps;
 import fw.core.jpa.BaseDAO;
 import fw.core.jpa.DAOUtil;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimentoTrabalhador, Long> {
 
@@ -380,10 +380,9 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
 
             montarFiltroPesquisarPorEndereco(enderecoFilter, jpql, parametros, idEstado, idMunicipio, bairro);
 
-        }
-
-        if("0".equals(enderecoFilter.getFiltrarDepRegEmp())){
-            addFiltroDepRegEmpPesquisarPorEndereco(segurancaFilter, jpql, parametros, idEstado, idMunicipio, bairro);
+            if("0".equals(enderecoFilter.getFiltrarDepRegEmp())){
+                addFiltroDepRegEmpPesquisarPorEndereco(segurancaFilter, jpql, parametros, idEstado, idMunicipio, bairro);
+            }
         }
 
         TypedQuery<UnidadeAtendimentoTrabalhador> query = criarConsultaPorTipo(jpql.toString());

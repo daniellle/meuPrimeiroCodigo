@@ -1,25 +1,22 @@
 package br.com.ezvida.rst.dao;
 
-import br.com.ezvida.rst.dao.filter.ListaPaginada;
-import br.com.ezvida.rst.dao.filter.UnidadeObraContratoUatFilter;
-import br.com.ezvida.rst.model.UnidadeObra;
-import br.com.ezvida.rst.model.UnidadeObraContratoUat;
-import com.google.common.collect.Maps;
-import fw.core.jpa.DAOUtil;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import br.com.ezvida.rst.dao.filter.ListaPaginada;
+import br.com.ezvida.rst.dao.filter.UnidadeObraContratoUatFilter;
+import br.com.ezvida.rst.model.UnidadeObraContratoUat;
+import fw.core.jpa.DAOUtil;
 
 public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat, Long> {
 
@@ -67,7 +64,8 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
         return typedQuery.getResultList();
     }
 
-    public ListaPaginada<UnidadeObraContratoUat> pesquisarPaginado(UnidadeObraContratoUatFilter unidadeObraContratoUatFilter, Long empresaId) {
+    @SuppressWarnings("unchecked")
+	public ListaPaginada<UnidadeObraContratoUat> pesquisarPaginado(UnidadeObraContratoUatFilter unidadeObraContratoUatFilter, Long empresaId) {
 
         Long quantidade = getCountQueryPaginado(unidadeObraContratoUatFilter, empresaId);
 

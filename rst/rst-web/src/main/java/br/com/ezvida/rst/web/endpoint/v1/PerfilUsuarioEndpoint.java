@@ -26,7 +26,11 @@ import javax.ws.rs.core.SecurityContext;
 @Path("/private/v1/perfil-usuario")
 public class PerfilUsuarioEndpoint extends SegurancaEndpoint<PerfilUsuarioDTO> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PerfilUsuarioEndpoint.class);
+	private static final String CONTENT_VERSION = "Content-Version";
+
+	private static final long serialVersionUID = 1L;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(PerfilUsuarioEndpoint.class);
 
     @Inject
     private PerfilUsuarioService service;
@@ -39,7 +43,7 @@ public class PerfilUsuarioEndpoint extends SegurancaEndpoint<PerfilUsuarioDTO> {
     @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CADASTRAR, PermissionConstants.USUARIO_ALTERAR, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_DESATIVAR, PermissionConstants.USUARIO_ENTIDADE, PermissionConstants.USUARIO_ENTIDADE_CADASTRAR, PermissionConstants.USUARIO_ENTIDADE_ALTERAR, PermissionConstants.USUARIO_ENTIDADE_CONSULTAR, PermissionConstants.USUARIO_ENTIDADE_DESATIVAR}))
     public Response buscaPagina(@BeanParam UsuarioFilter usuarioFilter, @Context SecurityContext context, @Context HttpServletRequest request){
         LOGGER.debug("Inicio da busca paginada perfil x usuário");
-        return Response.status(HttpServletResponse.SC_OK).type("application/json").header("Content-Version", getApplicationVersion()).entity(serializar(service.pesquisarPaginado(usuarioFilter, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS)))).build();
+        return Response.status(HttpServletResponse.SC_OK).type("application/json").header(CONTENT_VERSION, getApplicationVersion()).entity(serializar(service.pesquisarPaginado(usuarioFilter, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS)))).build();
     }
 
 
@@ -60,7 +64,7 @@ public class PerfilUsuarioEndpoint extends SegurancaEndpoint<PerfilUsuarioDTO> {
                 , TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS));
         return Response.status(HttpServletResponse.SC_OK).type("application/pdf")
             .header("Content-Lenght", file.length)
-            .header("Content-Version", getApplicationVersion())
+            .header(CONTENT_VERSION, getApplicationVersion())
             .header("Content-Disposition",
                 "filename=usuarios.pdf")
             .entity(file).build();
@@ -85,7 +89,7 @@ public class PerfilUsuarioEndpoint extends SegurancaEndpoint<PerfilUsuarioDTO> {
                 , TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS));
         return Response.status(HttpServletResponse.SC_OK).type("application/vnd.ms-excel")
             .header("Content-Lenght", file.length)
-            .header("Content-Version", getApplicationVersion())
+            .header(CONTENT_VERSION, getApplicationVersion())
             .header("Content-Disposition",
                 "attachment; filename=usuarios.xls")
             .entity(file).build();

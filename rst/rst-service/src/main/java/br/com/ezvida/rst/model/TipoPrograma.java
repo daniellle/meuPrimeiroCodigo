@@ -9,7 +9,9 @@ import javax.persistence.*;
         "id_tipo_programa" }))
 public class TipoPrograma extends BaseEntity<Long> {
 
-    @Id
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "id_tipo_programa")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_tipo_programa_id_tipo_prog")
     @SequenceGenerator(name = "seq_tipo_programa_id_tipo_prog", sequenceName = "seq_tipo_programa_id_tipo_prog", allocationSize = 1)

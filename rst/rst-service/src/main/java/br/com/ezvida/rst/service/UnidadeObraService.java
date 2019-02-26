@@ -9,7 +9,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
-import br.com.ezvida.rst.utils.ValidadorUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +71,7 @@ public class UnidadeObraService extends BaseService {
 				salvar(unidadeObra);
 			}
 
-			ids = unidadeObras.stream().map(d -> d.getId()).collect(Collectors.toList());
+			ids = unidadeObras.stream().map(UnidadeObra::getId).collect(Collectors.toList());
 		}
 
 		desativarUnidadeObra(empresa.getId(), ids);

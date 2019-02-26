@@ -1,27 +1,30 @@
 package br.com.ezvida.rst.service;
 
-import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
-import br.com.ezvida.rst.dao.UnidadeObraContratoUatDAO;
-import br.com.ezvida.rst.dao.filter.ListaPaginada;
-import br.com.ezvida.rst.dao.filter.UnidadeObraContratoUatFilter;
-import br.com.ezvida.rst.model.UnidadeObra;
-import br.com.ezvida.rst.model.UnidadeObraContratoUat;
-import br.com.ezvida.rst.utils.ValidadorUtils;
-import fw.core.exception.BusinessErrorException;
-import fw.core.service.BaseService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.ejb.Stateless;
-import javax.inject.Inject;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
+import br.com.ezvida.rst.dao.UnidadeObraContratoUatDAO;
+import br.com.ezvida.rst.dao.filter.ListaPaginada;
+import br.com.ezvida.rst.dao.filter.UnidadeObraContratoUatFilter;
+import br.com.ezvida.rst.model.UnidadeObraContratoUat;
+import br.com.ezvida.rst.utils.ValidadorUtils;
+import fw.core.exception.BusinessErrorException;
+import fw.core.service.BaseService;
+
 @Stateless
 public class UnidadeObraContratoUatService extends BaseService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UnidadeObraContratoUatService.class);
+	private static final long serialVersionUID = 1L;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(UnidadeObraContratoUatService.class);
 
     @Inject
     private UnidadeObraContratoUatDAO unidadeObraContratoUatDAO;
@@ -111,16 +114,18 @@ public class UnidadeObraContratoUatService extends BaseService {
 
         unidadeObraContratoUat = unidadeObraContratoUatDAO.pesquisarPorId(unidadeObraContratoUat.getId());
 
+        if (unidadeObraContratoUat == null) {
+            throw new BusinessErrorException(getMensagem("app_rst_unidade_invalida",
+                    getMensagem("app_rst_label_unidade_obra")));
+        }
+        
         if (unidadeObraContratoUat.getFlagInativo() == null) {
             throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_unidade_ativada",
                     getMensagem("app_rst_unidade_obra_contrato_unidade_ativada") ) );
         }
         Integer flagAtual = Integer.parseInt(unidadeObraContratoUat.getFlagInativo().toString());
 
-        if (unidadeObraContratoUat == null) {
-            throw new BusinessErrorException(getMensagem("app_rst_unidade_invalida",
-                    getMensagem("app_rst_label_unidade_obra")));
-        } else if (flag < flagAtual) {
+         if (flag < flagAtual) {
             throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_perfil_invalido",
                     getMensagem("app_rst_unidade_obra_contrato_perfil_invalido")));
         }

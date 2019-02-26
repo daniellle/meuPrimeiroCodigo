@@ -2,7 +2,6 @@ package br.com.ezvida.rst.web.endpoint.v1;
 
 
 import java.util.List;
-import java.util.Map;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -27,7 +26,6 @@ import br.com.ezvida.rst.dao.filter.ImunizacaoFilter;
 import br.com.ezvida.rst.dao.filter.ListaPaginada;
 import br.com.ezvida.rst.model.Usuario;
 import br.com.ezvida.rst.model.dto.DoseDTO;
-import br.com.ezvida.rst.model.dto.ProximaDoseDTO;
 import br.com.ezvida.rst.model.dto.VacinaAutodeclaradaDTO;
 import br.com.ezvida.rst.service.ImunizacaoService;
 import br.com.ezvida.rst.web.auditoria.ClienteInfos;

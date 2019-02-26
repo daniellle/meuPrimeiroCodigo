@@ -1,5 +1,29 @@
 package br.com.ezvida.rst.web.endpoint.v1;
 
+import java.nio.charset.StandardCharsets;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Encoded;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Charsets;
+
 import br.com.ezvida.rst.constants.PermissionConstants;
 import br.com.ezvida.rst.enums.Funcionalidade;
 import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
@@ -9,27 +33,19 @@ import br.com.ezvida.rst.service.PerguntaQuestionarioService;
 import br.com.ezvida.rst.service.QuestionarioTrabalhadorService;
 import br.com.ezvida.rst.service.RespostaQuestionarioTrabalhadorService;
 import br.com.ezvida.rst.web.auditoria.ClienteInfos;
-import com.google.common.base.Charsets;
 import fw.security.binding.Autorizacao;
 import fw.security.binding.Permissao;
 import fw.web.endpoint.SegurancaEndpoint;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
 
 @RequestScoped
 @Path("/public/v1/questionario")
 public class QuestionarioPublicoEndpoint extends SegurancaEndpoint<Questionario> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(QuestionarioPublicoEndpoint.class);
+
+	private static final String CONTENT_VERSION = "Content-Version";
+
+	private static final long serialVersionUID = 1L;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(QuestionarioPublicoEndpoint.class);
 
     @Inject
     private PerguntaQuestionarioService perguntaQuestionarioService;
@@ -49,9 +65,9 @@ public class QuestionarioPublicoEndpoint extends SegurancaEndpoint<Questionario>
     public Response montarQuestionario(@PathParam("login") String login, @Context SecurityContext context,
                                        @Context HttpServletRequest request) {
         LOGGER.debug("Aplicando questionario no trabalhador");
-        getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
+        getResponse().setCharacterEncoding(StandardCharsets.UTF_8.displayName());
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-            .header("Content-Version", getApplicationVersion())
+            .header(CONTENT_VERSION, getApplicationVersion())
             .entity(serializar(perguntaQuestionarioService.gerarQuestionario(login, ClienteInfos.getClienteInfos(context,
                 request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.QUESTIONARIOS))))
             .build();
@@ -68,7 +84,7 @@ public class QuestionarioPublicoEndpoint extends SegurancaEndpoint<Questionario>
     public Response salvarRespostas(@Encoded QuestionarioTrabalhador questionarioTrabalhador, @Context SecurityContext context,
                                     @Context HttpServletRequest request) {
         LOGGER.debug("Salvando questionario no trabalhador");
-        getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
+        getResponse().setCharacterEncoding(StandardCharsets.UTF_8.displayName());
         return Response.status(HttpServletResponse.SC_CREATED)
             .entity(serializar(questionarioTrabalhadorService.salvar(questionarioTrabalhador, ClienteInfos.getClienteInfos(context, request,
                 TipoOperacaoAuditoria.INCLUSAO, Funcionalidade.QUESTIONARIOS))))
@@ -85,9 +101,9 @@ public class QuestionarioPublicoEndpoint extends SegurancaEndpoint<Questionario>
     public Response buscarResultadoQuestionario(@QueryParam("cpf") String cpf, @Context SecurityContext context,
                                                 @Context HttpServletRequest request) {
         LOGGER.debug("Buscando resultado do questionario");
-        getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
+        getResponse().setCharacterEncoding(StandardCharsets.UTF_8.displayName());
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-            .header("Content-Version",
+            .header(CONTENT_VERSION,
                 getApplicationVersion())
             .entity(serializar(respostaQuestionarioTrabalhadorService.getResultadoQuestionario(cpf,
                 ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA,
@@ -106,7 +122,7 @@ public class QuestionarioPublicoEndpoint extends SegurancaEndpoint<Questionario>
                                        @Context SecurityContext context, @Context HttpServletRequest request) {
         getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-            .header("Content-Version",
+            .header(CONTENT_VERSION,
                 getApplicationVersion())
             .entity(serializar(questionarioTrabalhadorService.pesquisaPaginada(cpf, pagina, qtdRegistro,
                 ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA,
@@ -124,7 +140,7 @@ public class QuestionarioPublicoEndpoint extends SegurancaEndpoint<Questionario>
     public Response hasUltimoRegistro(@QueryParam("cpf") String cpf, @Context SecurityContext context, @Context HttpServletRequest request) {
         getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-            .header("Content-Version",
+            .header(CONTENT_VERSION,
                 getApplicationVersion())
             .entity(serializar(questionarioTrabalhadorService.getUltimoRegistro(cpf)))
             .build();

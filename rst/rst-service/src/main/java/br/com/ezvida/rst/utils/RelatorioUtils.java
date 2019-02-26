@@ -1,20 +1,27 @@
 package br.com.ezvida.rst.utils;
 
-import br.com.ezvida.rst.model.UsuarioGirstView;
-import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.export.JRCsvExporter;
-import net.sf.jasperreports.engine.export.JRXlsExporter;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
-
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
+import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+
 public class RelatorioUtils {
+	
+	private RelatorioUtils() {
+	    throw new IllegalStateException("Utility class");
+	  }
 
     public static final String REPORT_PATH = "/META-INF/reports/";
 

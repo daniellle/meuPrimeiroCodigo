@@ -1,12 +1,11 @@
 package br.com.ezvida.rst.model.dto;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class PerfilUsuarioDTO implements Serializable {
 
-
-    private String nome;
+	private static final long serialVersionUID = 1L;
+	private String nome;
     private String login;
     private String perfil;
     private String departamento;

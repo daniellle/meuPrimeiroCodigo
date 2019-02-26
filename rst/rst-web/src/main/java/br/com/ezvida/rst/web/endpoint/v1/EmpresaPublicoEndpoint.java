@@ -1,11 +1,5 @@
 package br.com.ezvida.rst.web.endpoint.v1;
 
-import br.com.ezvida.rst.model.Empresa;
-import br.com.ezvida.rst.service.EmpresaService;
-import fw.web.endpoint.SegurancaEndpoint;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +12,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.io.Serializable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import br.com.ezvida.rst.model.Empresa;
+import br.com.ezvida.rst.service.EmpresaService;
+import fw.web.endpoint.SegurancaEndpoint;
 
 
 @RequestScoped

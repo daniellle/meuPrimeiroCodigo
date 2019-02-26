@@ -1,15 +1,11 @@
 package br.com.ezvida.rst.dao;
 
-import br.com.ezvida.rst.model.TipoPrograma;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-public class TipoProgramaDAO extends BaseRstDAO<TipoPrograma, Long> {
+import br.com.ezvida.rst.model.TipoPrograma;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TipoPrograma.class);
+public class TipoProgramaDAO extends BaseRstDAO<TipoPrograma, Long> {
 
     @Inject
     public TipoProgramaDAO(EntityManager em) {

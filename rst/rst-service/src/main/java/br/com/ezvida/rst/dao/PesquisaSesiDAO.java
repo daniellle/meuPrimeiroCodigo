@@ -213,53 +213,6 @@ public class PesquisaSesiDAO extends BaseDAO<UnidadeAtendimentoTrabalhador, Long
 		}
 	}
 
-	private void montarFiltroSegurancaFilterPaginado(StringBuilder jpql, Map<String, Object> parametros,
-			DadosFilter segurancaFilter, boolean unidadeSesi, boolean estado, boolean municipio, boolean bairro,
-			boolean linha, boolean produto) {
-		if (segurancaFilter != null) {
-			if ((unidadeSesi || estado || municipio || bairro || linha || produto)
-					&& (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()) && !segurancaFilter.isAdministrador()) {
-				jpql.append(" and ");
-				montarFiltroSegurancaFilterIds(jpql, parametros, segurancaFilter);
-			}
-		}
-	}
-
-	private void montarFiltroSegurancaFilterIds(StringBuilder jpql, Map<String, Object> parametros,
-			DadosFilter segurancaFilter) {
-		if (segurancaFilter.temIdsEmpresa()) {
-			jpql.append(" empresa.id IN (:idsEmpresa) ");
-			parametros.put("idsEmpresa", segurancaFilter.getIdsEmpresa());
-		}
-
-		if (segurancaFilter.temIdsEmpresa() && segurancaFilter.temIdsDepRegional()) {
-			jpql.append(" and ");
-		}
-
-		if (segurancaFilter.temIdsDepRegional()) {
-			jpql.append(" uat.departamentoRegional.id IN (:idsDepRegional) ");
-			parametros.put("idsDepRegional", segurancaFilter.getIdsDepartamentoRegional());
-		}
-
-		if (segurancaFilter.isGetorUnidadeSESI()) {
-			if(segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa()){
-				jpql.append(" and ");
-			}
-			jpql.append(" uat.id IN (:idsUnidadeSESI) ");
-			parametros.put("idsUnidadeSESI", segurancaFilter.getIdsUnidadeSESI());
-		}
-
-		if (segurancaFilter.temIdsTrabalhador()) {
-
-			if (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsEmpresa() || segurancaFilter.temIdsUnidadeSESI()) {
-				jpql.append(" and ");
-			}
-
-			jpql.append(" trabalhador.id IN (:idsTrabalhador) ");
-			parametros.put("idsTrabalhador", segurancaFilter.getIdsTrabalhador());
-		}
-	}
-
 	private void montarFiltroPaginado(StringBuilder jpql, Map<String, Object> parametros,
 			PesquisaSesiFilter pesquisaSesiFilter, boolean unidadeSesi, boolean estado, boolean municipio,
 			boolean bairro) {

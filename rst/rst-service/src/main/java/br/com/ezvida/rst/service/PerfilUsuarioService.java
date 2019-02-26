@@ -18,7 +18,9 @@ import java.util.HashMap;
 @Stateless
 public class PerfilUsuarioService extends BaseService implements Serializable {
 
-    @Inject
+	private static final long serialVersionUID = 1L;
+	
+	@Inject
     @Preferencial
     UsuarioService service;
     public byte[] gerarRelatorioPDF(UsuarioFilter usuarioFilter, DadosFilter dados

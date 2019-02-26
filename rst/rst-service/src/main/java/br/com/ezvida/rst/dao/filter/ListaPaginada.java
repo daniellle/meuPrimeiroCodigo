@@ -1,7 +1,5 @@
 package br.com.ezvida.rst.dao.filter;
 
-import br.com.ezvida.rst.model.pagination.Sort;
-
 import java.util.List;
 
 public class ListaPaginada<T> {

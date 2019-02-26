@@ -16,10 +16,13 @@ import br.com.ezvida.rst.model.Email;
 
 public final class ValidadorUtils {
 
+	private ValidadorUtils() {
+		throw new IllegalStateException("Utility class");
+	}
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ValidadorUtils.class);
 
 	private static final int[] pesoCPF = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-	private static final int[] pesoCNPJ = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
 
 	public static <T> Set<String> validar(T entidade) {
 		Set<String> violationMessages = Sets.newHashSet();
@@ -49,9 +52,11 @@ public final class ValidadorUtils {
 
 	public static boolean isValidCNPJ(String cnpj) {
 		return (cnpj != null) && (cnpj.length() == 14);
-		/*		Integer digito1 = calcularDigito(cnpj.substring(0, 12), pesoCNPJ);
-		Integer digito2 = calcularDigito(cnpj.substring(0, 12) + digito1, pesoCNPJ);
-		return cnpj.equals(cnpj.substring(0, 12) + digito1.toString() + digito2.toString());*/
+		/*
+		 * Integer digito1 = calcularDigito(cnpj.substring(0, 12), pesoCNPJ); Integer
+		 * digito2 = calcularDigito(cnpj.substring(0, 12) + digito1, pesoCNPJ); return
+		 * cnpj.equals(cnpj.substring(0, 12) + digito1.toString() + digito2.toString());
+		 */
 	}
 
 	public static boolean isValidCPF(String cpf) {
@@ -88,8 +93,8 @@ public final class ValidadorUtils {
 		dv = dv != 11 ? dv : 0;
 		return Integer.parseInt(nit.substring(nit.length() - 1)) == dv;
 	}
-	
-	public static boolean isValidEmail(String email){
+
+	public static boolean isValidEmail(String email) {
 		return email.matches(Email.REGEX_EMAIL);
 	}
 }

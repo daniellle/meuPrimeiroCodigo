@@ -8,9 +8,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.rmi.CORBA.Util;
 
-import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,13 +18,12 @@ import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.dao.filter.ListaPaginada;
 import br.com.ezvida.rst.dao.filter.UsuarioFilter;
 import br.com.ezvida.rst.model.UsuarioGirstView;
+import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
 import fw.core.jpa.BaseDAO;
 import fw.core.jpa.DAOUtil;
 
 public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
     private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioGirstViewDAO.class);
-
-    private boolean filtroAplicado;
 
     @Inject
     public UsuarioGirstViewDAO(EntityManager em) {
@@ -53,11 +50,11 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
         }
 
         listaPaginada.setList(query.getResultList());
-
         return listaPaginada;
     }
 
-    public ListaPaginada<PerfilUsuarioDTO> pesquisarPerfilUsuarioFiltro(UsuarioFilter usuarioFilter, DadosFilter dados, List<String> listaDeLogins) {
+    @SuppressWarnings("unchecked")
+	public ListaPaginada<PerfilUsuarioDTO> pesquisarPerfilUsuarioFiltro(UsuarioFilter usuarioFilter, DadosFilter dados, List<String> listaDeLogins) {
         LOGGER.debug("Pesquisando PerfilUsuarioDTO por filtro para geração de lista paginada");
         ListaPaginada<PerfilUsuarioDTO> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
 
@@ -87,9 +84,8 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
         Query query = criarConsultaNativa(sql.toString());
         DAOUtil.setParameterMap(query, parametros);
 
-        List<Object[]> list = query.getResultList();
-
-
+        @SuppressWarnings("unchecked")
+		List<Object[]> list = query.getResultList();
         return preencherLista(list);
     }
 
@@ -195,7 +191,6 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
                     .append(" WHERE id_departamento_regional IN (vue.id_departamento_regional_fk))")
                     .append(" OR id_departamento_regional_fk is null ");
             parametros.put("idsDepRegional", dados.getIdsDepartamentoRegional());
-            setFiltroAplicado(true);
 
         } else if (dados.isGetorUnidadeSESI()) {
             jpql.append(" WHERE (vue.id_und_atd_trab_fk IN (:idsUnidadeSESI)");
@@ -206,12 +201,10 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
                     .append(" JOIN empresa e ON id_empresa = o.id_empresa_fk")
                     .append(" WHERE id_departamento_regional IN (vue.id_departamento_regional_fk)) ");
             parametros.put("idsUnidadeSESI", dados.getIdsUnidadeSESI());
-            setFiltroAplicado(true);
 
         } else if (dados.isGestorEmpresa()) {
             jpql.append(" WHERE (vue.id_empresa_fk IN (:idsEmpresa)");
             parametros.put("idsEmpresa", dados.getIdsEmpresa());
-            setFiltroAplicado(true);
 
         }
         jpql.append(" ) ");
@@ -269,40 +262,9 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
     }
 
 
-    private void aplicarFiltrosDados(StringBuilder jpql, Map<String, Object> parametros, DadosFilter dados) {
-        if (dados != null && !dados.isSuperUsuario()) {
-            if (dados.temIdsEmpresa()) {
-
-                adicionarAnd(jpql);
-                jpql.append(" (vue.id_empresa_fk IN (:idsEmpresa) OR ");
-                jpql.append(" e.id_empresa IN (:idsEmpresa)) ");
-                parametros.put("idsEmpresa", dados.getIdsEmpresa());
-                setFiltroAplicado(true);
-            }
-            if (dados.temIdsDepRegional()) {
-                String conectorLogico = dados.temIdsEmpresa() ? " OR " : isFiltroAplicado() ? " AND " : " ";
-                jpql.append(conectorLogico);
-                jpql.append(" (vw_usuario_entidade.id_departamento_regional_fk IN (:idsDepRegional) OR ");
-                jpql.append(" departamento_regional.id_departamento_regional IN (:idsDepRegional)) ");
-                jpql.append("             and vw_usuario_entidade.id_departamento_regional_fk is not null");
-                parametros.put("idsDepRegional", dados.getIdsDepartamentoRegional());
-                setFiltroAplicado(true);
-            }
-
-            if (dados.temIdsUnidadeSESI()) {
-                String conectorLogico = dados.temIdsEmpresa() || dados.temIdsDepRegional() ? " OR " : isFiltroAplicado() ? " AND " : " ";
-                jpql.append(conectorLogico);
-                jpql.append(" (und_atd_trabalhador.id_und_atd_trabalhador IN (:idsUnidadeSESI)) ");
-                parametros.put("idsUnidadeSESI", dados.getIdsUnidadeSESI());
-                setFiltroAplicado(true);
-            }
-        }
-    }
-
     private void aplicarFiltros(boolean count, StringBuilder jpql, Map<String, Object> parametros,
                                 UsuarioFilter usuarioFilter) {
         if (usuarioFilter != null) {
-            setFiltroAplicado(true);
             if (usuarioFilter.getCodigoPerfil() != null) {
                 if (usuarioFilter.getCodigoPerfil().equals("SP")) {
                     jpql.append(" AND vue.codigo_perfil is null and vue.origemdados is not null");
@@ -318,7 +280,6 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
                 jpql.append(" AND set_simple_name(UPPER(vue.nome)) like set_simple_name(:nome) escape :sc");
                 parametros.put("sc", "\\");
                 parametros.put("nome", "%" + usuarioFilter.getNome().replaceAll("%", "\\%").toUpperCase().replace(" ", "%") + "%");
-                setFiltroAplicado(true);
             }
 
             montarFiltroLogin(jpql, parametros, usuarioFilter);
@@ -332,7 +293,6 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
         if (usuarioFilter.getLogin() != null) {
             jpql.append(" AND vue.login = :login ");
             parametros.put("login", usuarioFilter.getLogin());
-            setFiltroAplicado(true);
         }
     }
 
@@ -353,21 +313,6 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 
             jpql.append(" AND (vue.id_und_atd_trab_fk = :idUnidadeSesi) ");
             parametros.put("idUnidadeSesi", usuarioFilter.getIdUnidadeSesi());
-        }
-    }
-
-    private boolean isFiltroAplicado() {
-        return filtroAplicado;
-    }
-
-    private void setFiltroAplicado(boolean filtroAplicado) {
-        this.filtroAplicado = filtroAplicado;
-    }
-
-    private void adicionarAnd(StringBuilder jpql) {
-        if (isFiltroAplicado()) {
-            jpql.append(" and ");
-            setFiltroAplicado(true);
         }
     }
 
@@ -398,43 +343,6 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
             perfis.add(pu);
         }
         return perfis;
-    }
-
-    private List<PerfilUsuarioDTO> tratarPerfisDuplicados(List<PerfilUsuarioDTO> lista) {
-        List<PerfilUsuarioDTO> novaList = new ArrayList<>();
-        String departamento;
-        String empresa;
-        String unidade;
-        int i = 0;
-        for (PerfilUsuarioDTO item : lista) {
-            for (i = 0; i < novaList.size(); i++) {
-                if (item.getLogin().equals(novaList.get(i).getLogin())) {
-                    break;
-                }
-            }
-            if (i >= novaList.size()) {
-                novaList.add(item);
-            } else {
-                novaList.get(i).setPerfil(novaList.get(i).getPerfil() + "; " + item.getPerfil());
-                if (novaList.get(i).getDepartamento() == null) { novaList.get(i).setDepartamento(""); }
-                if (item.getDepartamento() == null) { item.setDepartamento(""); }
-
-                departamento = novaList.get(i).getDepartamento() + item.getDepartamento();
-                novaList.get(i).setDepartamento(departamento);
-
-                if (novaList.get(i).getEmpresa() == null) { novaList.get(i).setEmpresa("");}
-                if (item.getEmpresa() == null) { item.setEmpresa(""); }
-
-                empresa = novaList.get(i).getEmpresa() + item.getEmpresa();
-                novaList.get(i).setEmpresa(empresa);
-
-                if (novaList.get(i).getUnidade() == null) { novaList.get(i).setUnidade("");}
-                if (item.getUnidade() == null) { item.setUnidade("");}
-                unidade = novaList.get(i).getUnidade() + item.getUnidade();
-                novaList.get(i).setUnidade(unidade);
-            }
-        }
-        return novaList;
     }
 
 }

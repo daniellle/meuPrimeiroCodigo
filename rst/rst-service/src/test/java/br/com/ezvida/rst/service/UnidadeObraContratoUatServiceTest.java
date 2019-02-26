@@ -10,7 +10,9 @@ import org.mockito.Spy;
 
 public class UnidadeObraContratoUatServiceTest extends BaseService {
 
-    @InjectMocks
+	private static final long serialVersionUID = 1L;
+	
+	@InjectMocks
     @Spy
     private UnidadeObraContratoUatService service;
 
