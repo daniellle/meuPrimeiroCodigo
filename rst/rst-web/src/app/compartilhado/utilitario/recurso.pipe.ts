@@ -433,6 +433,9 @@ export const MensagemProperties = {
   app_rst_labels_produto: 'Produto',
   app_rst_departamento_subtitulo_produtos_e_servicos_associados: 'Produtos e Serviços Associados',
 
+  // Estrutura da Unidade
+  app_rst_estrutura_da_unidade_title_menu: 'Estrutura da Unidade',
+
   // Auditoria
   app_rst_tittle_auditoria: 'Pesquisar Auditoria',
   app_rst_labels_auditoria: 'Auditoria',

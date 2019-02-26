@@ -39,7 +39,7 @@ public class CboServiceTest extends BaseService {
 
 	@Test
 	public void pesquisarPorIdNulo() throws Exception {
-		LOGGER.debug("Testando pesquisar Cbo por id nulo");
+		LOGGER.info("Testando pesquisar Cbo por id nulo");
 		String mensagemErro = "";
 		try {
 			cboService.pesquisarPorId(null, this.auditoria);
