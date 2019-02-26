@@ -31,7 +31,6 @@ public class UatInstalacaoFisicaCategoriaEndpoint extends SegurancaEndpoint<UatI
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    //TODO: ADICIONAR PERMISSOES
     public Response findAll(@Context SecurityContext context
         , @Context HttpServletRequest request) {
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
