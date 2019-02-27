@@ -4,7 +4,7 @@ Manual de montagem de ambiente de desenvolvimento.
 
 ## Conteúdo
 
-- [Pré requisitos](#pré-requisitos)
+- [Pré requisitos](#Pré-requisitos)
 - [Configuração](#configuração)
     - [Ambiente](#ambiente)
     - [Jboss WidFly](#jboss-widfly)
@@ -18,7 +18,7 @@ Manual de montagem de ambiente de desenvolvimento.
 > Todos os passos desta documentação são obrigatórios, sendo imprescindível que você obtenha sucesso na realização de cada passo.  
 
 
-> Nesta documentação consideramos que você está utilizando uma distribuição Linux (Ubuntu, OpenSuse, Mint, etc), caso esteja utilizando outro sistema operacional, faça as devidas adaptações.
+> Nesta documentação consideramos que você está utilizando uma distribuição Linux (Ubuntu, OpenSuse, Mint, etc). Caso esteja utilizando outro sistema operacional, faça as devidas adaptações.
 
 ## Pré-requisitos
 
@@ -96,9 +96,9 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
 2. Instalando o driver do PostgreSQL:
 
-    2.1 Faça o download do PostgreSQL JDBC Driver mais recente [neste site](https://jdbc.postgresql.org/download.html).
+    2.1 Faça o download do [PostgreSQL JDBC Driver](https://jdbc.postgresql.org/download.html).
 
-    2.2 Mova o arquivo **.jar** baixado para a pasta bin que fica dentro da pasata de instalação do WidFly.
+    2.2 Mova o arquivo **.jar** baixado para a pasta bin que fica dentro da pasta de instalação do WidFly.
     
     2.3 Abra uma janela do terminal/console acesse esta pasta bin e execute o comando `./standalone.sh`, para que o servidor WidFly seja iniciado.
 
