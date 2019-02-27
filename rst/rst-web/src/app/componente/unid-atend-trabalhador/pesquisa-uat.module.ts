@@ -23,6 +23,7 @@ import { UatInstalacoesFisicasComponent } from './uat-instalacoes-fisicas/uat-in
 import { UatInstalacaoFisicaCategoriaService } from 'app/servico/uat-instalacao-fisica-categoria.service';
 import { UatInstalacaoFisicaCategoriaAmbienteService } from 'app/servico/uat-instalacao-fisica-ambiente.service';
 import { UatInstalacaoFisicaService } from 'app/servico/uat-instalacao-fisica.service';
+import { UatVeiculoComponent } from './uat-veiculo/uat-veiculo.component';
 
 const routes: Routes = [
     {
@@ -109,7 +110,7 @@ const routes: Routes = [
     ],
     entryComponents: [TypeaheadContainerComponent],
     exports: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent],
-    declarations: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent, UatEstruturaUnidadeComponent, UatInstalacoesFisicasComponent],
+    declarations: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent, UatEstruturaUnidadeComponent, UatInstalacoesFisicasComponent, UatVeiculoComponent],
     providers: [UatService, DialogService, CadastroUatComponent, EstadoService, DepartRegionalService,
         ProdutoServicoService, UatProdutoServicoService, LinhaService, UatInstalacaoFisicaCategoriaService, UatInstalacaoFisicaCategoriaAmbienteService, UatInstalacaoFisicaService],
 })

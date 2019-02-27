@@ -75,6 +75,7 @@ export const MensagemProperties = {
   app_rst_labels_cipa: 'CIPA',
   app_rst_labels_matriz: 'MATRIZ',
   app_rst_labels_endereco: 'Endereço',
+  app_rst_labels_quantidade: 'Quantidade',
   app_rst_labels_complemento: 'Complemento',
   app_rst_labels_numero: 'Número',
   app_rst_labels_estado: 'Estado',

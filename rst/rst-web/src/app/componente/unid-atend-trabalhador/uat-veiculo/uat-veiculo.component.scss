@@ -1,0 +1,23 @@
+.container {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.mat-input-container, .md-container, ng-select > div {
+    width: calc(100% - 30px);
+}
+
+
+.input-item-tabela {
+    border: 1px solid rgba(85, 85, 85, 0.2);
+    
+}
+
+.label-item-tabela {
+  
+}
+
+.row .tabela{
+    justify-content: space-between;
+}
