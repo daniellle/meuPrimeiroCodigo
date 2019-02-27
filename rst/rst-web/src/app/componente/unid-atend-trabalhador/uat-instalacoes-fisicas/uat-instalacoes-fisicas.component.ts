@@ -39,9 +39,9 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
         private activatedRoute: ActivatedRoute,
         protected bloqueioService: BloqueioService,
         protected dialogo: ToastyService,
-        private uatInstalacaosFisicasService: UatInstalacaoFisicaService,
-        private uatInstalacaosFisicasCategoriaService: UatInstalacaoFisicaCategoriaService,
-        private uatInstalacaosFisicasAmbienteService: UatInstalacaoFisicaCategoriaAmbienteService,
+        private uatInstalacaoFisicasService: UatInstalacaoFisicaService,
+        private uatInstalacaoFisicasCategoriaService: UatInstalacaoFisicaCategoriaService,
+        private uatInstalacaoFisicasAmbienteService: UatInstalacaoFisicaCategoriaAmbienteService,
 
     ) {
         super(bloqueioService, dialogo);
@@ -61,7 +61,7 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
     }
 
     private loadCategorias() {
-        this.uatInstalacaosFisicasCategoriaService.findAll().subscribe((categorias) => {
+        this.uatInstalacaoFisicasCategoriaService.findAll().subscribe((categorias) => {
             this.listCategorias = categorias;
         }, (error) => {
             this.mensagemError(error);
@@ -76,7 +76,7 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
     }
 
     private loadAmbientes(idCategoria: Number) {
-        this.uatInstalacaosFisicasAmbienteService.findByCategoria(idCategoria).subscribe((ambientes) => {
+        this.uatInstalacaoFisicasAmbienteService.findByCategoria(idCategoria).subscribe((ambientes) => {
             this.listAmbientes = ambientes;
             this.changeForm();
         },
@@ -106,6 +106,23 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
             this.listInstalacoesFisicasSave !== null &&
             this.listInstalacoesFisicasSave !== undefined &&
             this.listInstalacoesFisicasSave.length > 0;
+    }
 
+    salvar() {
+        this.uatInstalacaoFisicasService.salvar(this.listInstalacoesFisicasSave).subscribe((data) => {
+            this.form.reset();
+            this.listInstalacoesFisicasSave = [];
+            this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+        },
+            (error) => {
+                this.mensagemError(error);
+            });
+    }
+
+    duplicarCampo(index: number) {
+        const amb = this.listInstalacoesFisicasSave[index].uatInstalacaoFisicaAmbiente;
+        this.listInstalacoesFisicasSave.splice(index + 1, 0,
+            new UatInstalacaoFisica(null, null, null, amb,
+                new UnidadeAtendimentoTrabalhador(this.idUnidade)));
     }
 }

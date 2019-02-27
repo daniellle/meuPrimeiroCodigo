@@ -3,11 +3,11 @@ import { UnidadeAtendimentoTrabalhador } from "./unid-atend-trabalhador.model";
 
 export class UatInstalacaoFisica {
     constructor(
-        private id?: Number,
-        private area?: Number,
-        private quantidade?: Number,
-        private uatInstalacaoFisicaAmbiente?: UatInstalacaoFisicaAmbiente,
-        private unidadeAtendimentoTrabalhador?: UnidadeAtendimentoTrabalhador
+        public id?: Number,
+        public area?: Number,
+        public quantidade?: Number,
+        public uatInstalacaoFisicaAmbiente?: UatInstalacaoFisicaAmbiente,
+        public unidadeAtendimentoTrabalhador?: UnidadeAtendimentoTrabalhador
     ) {
 
     }
