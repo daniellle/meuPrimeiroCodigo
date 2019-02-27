@@ -29,6 +29,8 @@ export class UatInstalacaoFisicaService extends BaseService<UatInstalacaoFisica>
                 return response;
             }).catch((error) => {
                 return Observable.throw(error);
+            }).finally(() => {
+                this.bloqueio.evento.emit(true);
             });
     }
 

@@ -135,7 +135,6 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
             this.uatInstalacaoFisicasService.findByUnidadeAgg(this.idUnidade).subscribe(
                 (data) => {
                     this.instalacoesAgg = data;
-                    console.log(this.instalacoesAgg);
                 }, (error) => {
                     this.mensagemError(error);
                 },
@@ -155,12 +154,12 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
     }
 
     desativar(idInstalacaoFisica: Number) {
-        this.uatInstalacaoFisicasService.desativar(idInstalacaoFisica).subscribe((data) => {
-            this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
-            this.findInstalacoesAgg();
-        },
-            (error) => {
-                this.mensagemError(error);
+        this.uatInstalacaoFisicasService.desativar(idInstalacaoFisica).subscribe(
+            (data) => {
+                this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+                this.findInstalacoesAgg();
+            }, (error) => {
+                this.mensagemError(MensagemProperties.app_rst_erro_geral);
             });
     }
 }
