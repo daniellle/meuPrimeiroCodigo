@@ -15,6 +15,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,6 +34,7 @@ public class UatInstalacaoFisicaService extends BaseService {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<UatInstalacaoFisica> salvar(List<UatInstalacaoFisica> listInstalacoesFisicas, ClienteAuditoria auditoria, DadosFilter dados) {
         LogAuditoria.registrar(LOGGER, auditoria, "Salvando Instalação Física");
+        List<UatInstalacaoFisica> listaSalvar = new ArrayList<>();
         if (listInstalacoesFisicas != null && !listInstalacoesFisicas.isEmpty()) {
             for (UatInstalacaoFisica uatInstalacaoFisica : listInstalacoesFisicas) {
                 if (uatInstalacaoFisica.getArea() != null &&
@@ -39,15 +42,18 @@ public class UatInstalacaoFisicaService extends BaseService {
                         uatInstalacaoFisica.getUnidadeAtendimentoTrabalhador() != null &&
                         uatInstalacaoFisica.getUnidadeAtendimentoTrabalhador().getId() != null) {
                     //TODO: Posteriormente Validar origem de dados
-                    this.uatInstalacaoFisicaDAO.salvar(uatInstalacaoFisica);
-
-                } else {
-                    String mensagem = getMensagem("app_rst_instalacao_fisica_campos_obrigatorios");
-                    LOGGER.info(mensagem);
-                    throw new BusinessErrorException(mensagem);
+                    listaSalvar.add(uatInstalacaoFisica);
                 }
             }
-            return listInstalacoesFisicas;
+            if (!listaSalvar.isEmpty()) {
+                for (UatInstalacaoFisica uatInstalacaoFisica : listaSalvar) {
+                    uatInstalacaoFisica.setDataCriacao(new Date());
+                    this.uatInstalacaoFisicaDAO.salvar(uatInstalacaoFisica);
+                }
+                return listaSalvar;
+            } else {
+                throw new BusinessErrorException(getMensagem("app_rst_instalacao_fisica_obrigatoria"));
+            }
         } else {
             throw new BusinessErrorException(getMensagem("app_rst_instalacao_fisica_obrigatoria"));
         }

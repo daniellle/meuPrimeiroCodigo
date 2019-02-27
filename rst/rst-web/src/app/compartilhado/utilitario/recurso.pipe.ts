@@ -301,7 +301,7 @@ export const MensagemProperties = {
   app_rst_mensagem_inconsistencia: 'O(s) campo(s): {0}  {1}  {2}  {3}  é/são importante(s) para o cadastro. Favor preenchê-lo(s).',
   app_rst_tamanho_arquivo: 'O arquivo deverá possuir o tamanho máximo de {0} MB',
   app_rst_label_tamanho_arquivo: 'Tamanho máximo do arquivo {0}MB',
-  app_rst_labels_area: 'Área',
+  app_rst_labels_area: 'Área m²',
   app_rst_labels_quantidade: 'Quantidade',
   app_rst_mensagem_pontuacao_maxima_maior_que_pontuacao_minima: 'O campo Pontuação Máxima deve ser maior que o campo Pontuação Mínima',
   // BOTOES COMPARTILHADOS
