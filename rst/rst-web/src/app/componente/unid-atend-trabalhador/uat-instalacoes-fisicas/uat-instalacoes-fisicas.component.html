@@ -29,42 +29,48 @@
 
 </div>
 
-<div class="container-form" [ngClass]="{ divDis : modoConsulta }" *ngIf="showFormInstalacoesFisicas()">
 
-    <form>
+<div class="row tabela" *ngIf="showFormInstalacoesFisicas()">
+    <div class="header-tabela">
+        <span class="column-label">
+            {{ 'app_rst_labels_ambiente' | recurso }}
+        </span>
+        <span class="column-quantidade">
+            {{ 'app_rst_labels_quantidade' | recurso }}
+        </span>
+        <span class="column-area">
+            {{ 'app_rst_labels_area_m2' | recurso }}
+        </span>
+        <span class="column-duplicar">
+        </span>
+    </div>
 
+    <div class="content-tabela">
         <div *ngFor="let instFis of listInstalacoesFisicasSave; let index = index;">
+            <div class="row-content-tabela">
 
-            <div class="row">
+                <span class="column-label">
+                    {{instFis.uatInstalacaoFisicaAmbiente.descricao}}
+                </span>
 
-                <div class="form-group col-md-2" [ngClass]="{ divDis :  modoConsulta }">
-                    <label>{{instFis.uatInstalacaoFisicaAmbiente.descricao}}</label>
+                <span class="column-quantidade">
+                    <input type="text" name="{{instFis.uatInstalacaoFisicaAmbiente.descricao}}-quantidade-{{index}}"
+                        [(ngModel)]="listInstalacoesFisicasSave[index].quantidade" id="quantidade" maxlength="5"
+                        inputmode="numeric" pattern="[0-9]*" digitOnly>
+                </span>
+
+                <span class="column-area">
+                    <input type="text" name="{{instFis.uatInstalacaoFisicaAmbiente.descricao}}-area-{{index}}"
+                        [(ngModel)]="listInstalacoesFisicasSave[index].area" id="area" maxlength="5" inputmode="numeric"
+                        pattern="[0-9]*" digitOnly>
+                </span>
+
+                <div class="column-duplicar">
+                    <a (click)="duplicarCampo(index)"><span class="fa fa-copy fa-2x" aria-hidden="true" style="color: #3fc2f8;"></span></a>
                 </div>
-
-                <div class="form-group col-md-2" [ngClass]="{ divDis :  modoConsulta }">
-                    <md-input-container [floatPlaceholder]="true">
-                        <input mdInput placeholder="{{ 'app_rst_labels_quantidade' | recurso }}" type="number" min="0"
-                            name="{{instFis.uatInstalacaoFisicaAmbiente.descricao}}-quantidade-{{index}}" [(ngModel)]="listInstalacoesFisicasSave[index].quantidade"
-                            class="form-control" />
-                    </md-input-container>
-                </div>
-
-                <div class="form-group col-md-2" [ngClass]="{ divDis :  modoConsulta }">
-                    <md-input-container [floatPlaceholder]="true">
-                        <input mdInput placeholder="{{ 'app_rst_labels_area_m2' | recurso }}" type="number" min="0" name="{{instFis.uatInstalacaoFisicaAmbiente.descricao}}-area-{{index}}"
-                            [(ngModel)]="listInstalacoesFisicasSave[index].area" class="form-control" />
-                    </md-input-container>
-                </div>
-
-                <div class="form-group col-md-2" [ngClass]="{ divDis :  modoConsulta}" style="cursor: pointer;">
-                        <a (click)="duplicarCampo(index)"><span class="fa fa-copy fa-2x" aria-hidden="true" style="color: #3fc2f8;"></span></a>
-                </div>
-
             </div>
-
         </div>
-
-    </form>
+    </div>
 
 
     <div class="btn-rodape-acoes space-up">
@@ -72,5 +78,4 @@
             {{'app_rst_btn_salvar' | recurso}}
         </button>
     </div>
-
 </div>
