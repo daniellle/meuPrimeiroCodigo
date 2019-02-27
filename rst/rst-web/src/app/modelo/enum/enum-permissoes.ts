@@ -255,4 +255,12 @@ export enum PermissoesEnum {
 
     //PERFIL USUARIO PESQUISA
     PERFIL_USUARIO = 'relatorio_perfis_por_usuario',
+
+    //Gerenciamento de unidade SESI
+
+	GESTAO_UNIDADE_SESI_CADASTRAR = "cat_estrutura_cadastrar",
+	GESTAO_UNIDADE_SESI_ALTERAR = "cat_estrutura_alterar",
+	GESTAO_UNIDADE_SESI_CONSULTAR = "cat_estrutura_consultar",
+	GESTAO_UNIDADE_SESI_DESATIVAR = "cat_estrutura_desativar"
+
 }

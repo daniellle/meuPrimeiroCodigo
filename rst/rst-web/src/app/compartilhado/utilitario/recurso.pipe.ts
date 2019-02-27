@@ -112,6 +112,7 @@ export const MensagemProperties = {
   app_rst_labels_residencial: 'Residencial',
   app_rst_labels_comercial: 'Comercial',
   app_rst_labels_fax: 'Fax',
+  app_rst_labels_categoria: 'Categoria',
   app_rst_labels_celular: 'Celular',
   app_rst_labels_contato: 'Contato',
   app_rst_labels_ativo: 'Ativo',
@@ -301,6 +302,8 @@ export const MensagemProperties = {
   app_rst_mensagem_inconsistencia: 'O(s) campo(s): {0}  {1}  {2}  {3}  é/são importante(s) para o cadastro. Favor preenchê-lo(s).',
   app_rst_tamanho_arquivo: 'O arquivo deverá possuir o tamanho máximo de {0} MB',
   app_rst_label_tamanho_arquivo: 'Tamanho máximo do arquivo {0}MB',
+  app_rst_labels_area: 'Área',
+  app_rst_labels_quantidade: 'Quantidade',
   app_rst_mensagem_pontuacao_maxima_maior_que_pontuacao_minima: 'O campo Pontuação Máxima deve ser maior que o campo Pontuação Mínima',
   // BOTOES COMPARTILHADOS
   app_rst_btn_voltar: 'Voltar',
@@ -357,6 +360,9 @@ export const MensagemProperties = {
   app_rst_pesquisa_sesi_busca_unidade_sesi: 'Busca por Unidade SESI',
   app_rst_pesquisa_sesi_busca_local: 'Busca por local',
   app_rst_pesquisa_sesi_busca_produto: 'Busca por produto',
+
+  //Gestão de Unidade SESI
+  app_rst_cadastro_instalacoes_fisicas_title: 'Cadastro de Instalações Físicas',
 
   // Trabalhador
   app_rst_trabalhador_title_pesquisar: 'Pesquisar Trabalhador',
