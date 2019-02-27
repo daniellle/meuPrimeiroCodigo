@@ -26,7 +26,7 @@ import { Paginacao } from './../../../modelo/paginacao.model';
 })
 export class UatEstruturaUnidadeComponent extends BaseComponent implements OnInit {
 
-  idUat: number;
+  idUat: Number;
   uat: Uat;
   edicao: boolean;
 

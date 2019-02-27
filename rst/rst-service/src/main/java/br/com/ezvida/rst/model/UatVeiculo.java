@@ -1,5 +1,7 @@
 package br.com.ezvida.rst.model;
 
+import java.util.Date;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,14 +22,24 @@ public class UatVeiculo extends AbstractData {
     @JoinColumn(name = "ID_UND_ATD_TRABALHADOR_FK", referencedColumnName = "ID_UND_ATD_TRABALHADOR", nullable = false)
     private UnidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_UAT_VEICULO_TIPO_ATENDIMENTO_FK", referencedColumnName = "ID_UAT_VEICULO_TIPO_ATENDIMENTO", nullable = false)
+    @JoinColumn(name = "ID_UAT_VEICULO_TIPO_ATENDIMENTO_FK", referencedColumnName = "ID_UAT_VEICULO_TIPO_ATENDIMENTO")
     private UatVeiculoTipoAtendimento unidadeVeiculoTipoAtendimento;
 
     @Column(name = "QUANTIDADE", nullable = false)
     private Integer quantidade;
 
+    @PreUpdate
+	public void preUpdate() {
+		setDataAlteracao(new Date());
+	}
+
+	@PrePersist
+	public void prePersist() {
+		setDataAlteracao(new Date());
+		setDataCriacao(new Date());
+	}
+	
     public Long getId() {
         return id;
     }

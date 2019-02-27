@@ -29,8 +29,15 @@ public class UatVeiculoTipoAtendimento extends BaseEntity<Long> {
     @JoinColumn(name = "id_uat_veiculo_tipo_fk", referencedColumnName = "id_uat_veiculo_tipo", nullable = false)
     private UatVeiculoTipo uatVeiculoTipo;
 
+    public UatVeiculoTipoAtendimento() {
+		// Construct default
+	}
 
-    public String getDescricao() {
+	public UatVeiculoTipoAtendimento(Long id) {
+		this.id = id;
+	}
+
+	public String getDescricao() {
         return descricao;
     }
 

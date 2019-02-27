@@ -1,24 +1,27 @@
 
 <div class="container">
   <div class="row">
-    <div class="form-group col-xs-12 col-sm-6">
+    <div class="form-group col-xs-12 col-sm-8">
       <div class="md-container">
-        <md-select required [disabled]="modoConsulta" placeholder="{{ 'app_rst_labels_tipo' | recurso }}">
+        <md-select required [disabled]="modoConsulta" placeholder="{{ 'app_rst_labels_tipo' | recurso }}" [(ngModel)]="idVeiculoTipoSelecionado" id="veiculo-tipo">
             <md-option>
               <option value="">{{ 'app_rst_labels_selecione' | recurso }}</option>
+          </md-option>
+          <md-option *ngFor='let item of listUatVeiculoTipo' [value]="item.id">
+              {{item.descricao}}
           </md-option>
         </md-select>
       </div>
     </div>
 
-    <div class="form-group col-xs-12 col-sm-3">
+    <div class="form-group col-xs-12 col-sm-3" *ngIf="isVeiculoAtendimentoPasseio()">
         <md-input-container [floatPlaceholder]="true">
-            <input mdInput placeholder="{{ 'app_rst_labels_quantidade' | recurso }}" type="number" id="quantidade_veiculo_passeio" name="quantidade" class="form-control" />
+            <input mdInput placeholder="{{ 'app_rst_labels_quantidade' | recurso }}" type="text" maxlength="5" [(ngModel)]="quantidadeVeiculoPasseio" inputmode="numeric" pattern="[0-9]*" digitOnly id="quantidade_veiculo_passeio" name="quantidade" class="form-control" />
         </md-input-container>
     </div>
   </div>
 
-  <div class="row tabela">
+  <div class="row tabela" *ngIf="isVeiculoUnidadeMovel()">
     <div class="header-tabela">
         <span class="column-label">
           Tipo de atendimento
@@ -29,31 +32,17 @@
     </div>
 
     <div class="content-tabela">
-      <div class="row-content-tabela">
+      <div class="row-content-tabela" *ngFor='let item of listVeiculoUnidMoveis'>
         <span class="column-label">
-          Espirometrica
+          {{item.uatVeiculoTipoAtendimento.descricao}}
         </span>
         <span class="column-quantidade" >
-          <input type="text" name="quantidade" id="quantidade" maxlength="5" inputmode="numeric" pattern="[0-9]*" digitOnly>
-        </span>
-      </div>
-      <div class="row-content-tabela">
-        <span class="column-label">
-          RX
-        </span>
-        <span class="column-quantidade" >
-          <input type="number" name="quantidade"/>
-        </span>
-      </div>
-
-      <div class="row-content-tabela">
-        <span class="column-label">
-          Consulta
-        </span>
-        <span class="column-quantidade" >
-          <input type="number" name="quantidade"/>
+          <input type="text" name="quantidade" id="quantidade" [(ngModel)]="item.quantidade" maxlength="5" inputmode="numeric" pattern="[0-9]*" digitOnly>
         </span>
       </div>
     </div>
+  </div>
+  <div class="btn-rodape-acoes space-up" *ngIf="idVeiculoTipoSelecionado">
+    <button class="btn btn-primary" [(disabled)]="modoConsulta" (click)="salvar()">{{ 'app_rst_btn_salvar' | recurso}}</button>
   </div>
 </div>

@@ -34,7 +34,7 @@ public class UatVeiculoTipoServiceTest {
 	}
 
 	@Test
-	public void deveTrazerListaComTodosVeiculos() throws Exception {
+	public void deveTrazerListaComTodosTiposVeiculos() throws Exception {
 		LOGGER.info("Testando listarTodos");
 		List<UatVeiculoTipo> list = Arrays.asList(Mockito.mock(UatVeiculoTipo.class));
 		Mockito.doReturn(list).when(uatVeiculoTipoDAO).pesquisarTodos();

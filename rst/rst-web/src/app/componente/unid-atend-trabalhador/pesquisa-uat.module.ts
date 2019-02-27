@@ -24,6 +24,7 @@ import { UatInstalacaoFisicaCategoriaService } from 'app/servico/uat-instalacao-
 import { UatInstalacaoFisicaCategoriaAmbienteService } from 'app/servico/uat-instalacao-fisica-ambiente.service';
 import { UatInstalacaoFisicaService } from 'app/servico/uat-instalacao-fisica.service';
 import { UatVeiculoComponent } from './uat-veiculo/uat-veiculo.component';
+import { UatVeiculoService } from 'app/servico/uat-veiculo.service';
 
 const routes: Routes = [
     {
@@ -112,6 +113,6 @@ const routes: Routes = [
     exports: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent],
     declarations: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent, UatEstruturaUnidadeComponent, UatInstalacoesFisicasComponent, UatVeiculoComponent],
     providers: [UatService, DialogService, CadastroUatComponent, EstadoService, DepartRegionalService,
-        ProdutoServicoService, UatProdutoServicoService, LinhaService, UatInstalacaoFisicaCategoriaService, UatInstalacaoFisicaCategoriaAmbienteService, UatInstalacaoFisicaService],
+        ProdutoServicoService, UatProdutoServicoService, LinhaService, UatInstalacaoFisicaCategoriaService, UatInstalacaoFisicaCategoriaAmbienteService, UatInstalacaoFisicaService, UatVeiculoService],
 })
 export class PesquisaUatModule { }

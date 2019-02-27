@@ -89,6 +89,10 @@ public class UnidadeAtendimentoTrabalhador extends AbstractData {
 		this.departamentoRegional = new DepartamentoRegional(cnpjDR, razaoSocialDR, siglaDR, estadoDR);
 	}
 
+	public UnidadeAtendimentoTrabalhador(Long idUat) {
+		this.id = idUat;
+	}
+
 	@PreUpdate
 	public void preUpdate() {
 		setDataAlteracao(new Date());
