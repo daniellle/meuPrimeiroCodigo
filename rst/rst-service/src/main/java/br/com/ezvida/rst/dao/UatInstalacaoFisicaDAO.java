@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UatInstalacaoFisicaDAO extends BaseDAO<UatInstalacaoFisica, Long> {
@@ -49,17 +50,18 @@ public class UatInstalacaoFisicaDAO extends BaseDAO<UatInstalacaoFisica, Long> {
         UatInstalacaoFisicaDTO indicadorDTO;
         List<UatInstalacaoFisicaDTO> listaInstalacaoFisicaDTO = new ArrayList<>();
         for (Object[] objects : listaInstalacoesFisicaBanco) {
-            indicadorDTO = new UatInstalacaoFisicaDTO((Long) objects[0], (String) objects[1], (String) objects[3], (Integer) objects[4], (BigDecimal) objects[5]);
+            indicadorDTO = new UatInstalacaoFisicaDTO(new Long(((Integer) objects[0]).intValue()), (String) objects[1], (String) objects[2], (Integer) objects[3], (BigDecimal) objects[4]);
             listaInstalacaoFisicaDTO.add(indicadorDTO);
         }
         return listaInstalacaoFisicaDTO;
     }
 
     public void desativar(Long id) {
-        LOGGER.debug("Inativando EmpresaTrabalhador");
-        String sql = "  update uat_instalacao_fisica set dt_exclusao = current_date where id id_uat_instalacao_fisica = :id";
-        Query query = criarConsulta(sql);
+        LOGGER.debug("Inativando Instalação Física");
+        String sql = "  update uat_instalacao_fisica set dt_exclusao = :data where id_uat_instalacao_fisica = :id";
+        Query query = getEm().createNativeQuery(sql);
         query.setParameter("id", id);
+        query.setParameter("data", new Date());
         query.executeUpdate();
     }
 

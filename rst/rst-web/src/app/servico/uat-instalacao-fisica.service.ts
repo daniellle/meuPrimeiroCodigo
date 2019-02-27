@@ -22,4 +22,24 @@ export class UatInstalacaoFisicaService extends BaseService<UatInstalacaoFisica>
                 this.bloqueio.evento.emit(true);
             });
     }
+
+    public findByUnidadeAgg(idUnidade: Number): Observable<any> {
+        return super.get('/v1/uatinstalacaofisica/unidade/' + idUnidade.toString())
+            .map((response: any) => {
+                return response;
+            }).catch((error) => {
+                return Observable.throw(error);
+            });
+    }
+
+    public desativar(idInstalacaoFisica: Number): Observable<any> {
+        return super.put('/v1/uatinstalacaofisica/desativar/' + idInstalacaoFisica.toString())
+            .map((response: any) => {
+                return response;
+            }).catch((error: HttpResponse<MensagemErro>) => {
+                return Observable.throw(error);
+            }).finally(() => {
+                this.bloqueio.evento.emit(true);
+            });
+    }
 }

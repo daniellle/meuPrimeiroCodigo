@@ -364,6 +364,7 @@ export const MensagemProperties = {
 
   //Gestão de Unidade SESI
   app_rst_cadastro_instalacoes_fisicas_title: 'Cadastro de Instalações Físicas',
+  app_rst_categorias_cadastradas_title: 'Categorias cadastradas',
 
   // Trabalhador
   app_rst_trabalhador_title_pesquisar: 'Pesquisar Trabalhador',

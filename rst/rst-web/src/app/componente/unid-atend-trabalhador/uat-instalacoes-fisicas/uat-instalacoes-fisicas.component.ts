@@ -33,10 +33,12 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
 
     listInstalacoesFisicasSave: UatInstalacaoFisica[] = [];
 
+    instalacoesAgg: any = null;
+
+    objectKeys = Object.keys;
+
     constructor(
         private formBuilder: FormBuilder,
-        private router: Router,
-        private activatedRoute: ActivatedRoute,
         protected bloqueioService: BloqueioService,
         protected dialogo: ToastyService,
         private uatInstalacaoFisicasService: UatInstalacaoFisicaService,
@@ -52,6 +54,7 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
     ngOnInit(): void {
         this.initForm();
         this.loadCategorias();
+        this.findInstalacoesAgg();
     }
 
     private initForm() {
@@ -113,6 +116,7 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
             this.form.reset();
             this.listInstalacoesFisicasSave = [];
             this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+            this.findInstalacoesAgg();
         },
             (error) => {
                 this.mensagemError(error);
@@ -124,5 +128,39 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
         this.listInstalacoesFisicasSave.splice(index + 1, 0,
             new UatInstalacaoFisica(null, null, null, amb,
                 new UnidadeAtendimentoTrabalhador(this.idUnidade)));
+    }
+
+    findInstalacoesAgg() {
+        if (this.idUnidade !== null && this.idUnidade !== undefined) {
+            this.uatInstalacaoFisicasService.findByUnidadeAgg(this.idUnidade).subscribe(
+                (data) => {
+                    this.instalacoesAgg = data;
+                    console.log(this.instalacoesAgg);
+                }, (error) => {
+                    this.mensagemError(error);
+                },
+            );
+        }
+    }
+
+    showGridInstalacoes() {
+        return this.instalacoesAgg !== null &&
+            this.instalacoesAgg !== undefined &&
+            this.instalacoesAgg !== {};
+    }
+
+    hasPermissaoDesativar() {
+        return Seguranca.isPermitido(
+            [PermissoesEnum.GESTAO_UNIDADE_SESI_DESATIVAR]);
+    }
+
+    desativar(idInstalacaoFisica: Number) {
+        this.uatInstalacaoFisicasService.desativar(idInstalacaoFisica).subscribe((data) => {
+            this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+            this.findInstalacoesAgg();
+        },
+            (error) => {
+                this.mensagemError(error);
+            });
     }
 }
