@@ -118,4 +118,11 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
                 this.mensagemError(error);
             });
     }
+
+    duplicarCampo(index: number) {
+        const amb = this.listInstalacoesFisicasSave[index].uatInstalacaoFisicaAmbiente;
+        this.listInstalacoesFisicasSave.splice(index + 1, 0,
+            new UatInstalacaoFisica(null, null, null, amb,
+                new UnidadeAtendimentoTrabalhador(this.idUnidade)));
+    }
 }

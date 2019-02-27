@@ -32,7 +32,9 @@
 <div class="container-form" [ngClass]="{ divDis : modoConsulta }" *ngIf="showFormInstalacoesFisicas()">
 
     <form>
+
         <div *ngFor="let instFis of listInstalacoesFisicasSave; let index = index;">
+
             <div class="row">
 
                 <div class="form-group col-md-2" [ngClass]="{ divDis :  modoConsulta }">
@@ -41,24 +43,25 @@
 
                 <div class="form-group col-md-2" [ngClass]="{ divDis :  modoConsulta }">
                     <md-input-container [floatPlaceholder]="true">
-                        <input mdInput placeholder="{{ 'app_rst_labels_quantidade' | recurso }}" type="number" name="{{instFis.uatInstalacaoFisicaAmbiente.descricao}}-quantidade"
-                            [(ngModel)]="listInstalacoesFisicasSave[index].quantidade"
+                        <input mdInput placeholder="{{ 'app_rst_labels_quantidade' | recurso }}" type="number" min="0"
+                            name="{{instFis.uatInstalacaoFisicaAmbiente.descricao}}-quantidade-{{index}}" [(ngModel)]="listInstalacoesFisicasSave[index].quantidade"
                             class="form-control" />
                     </md-input-container>
                 </div>
 
                 <div class="form-group col-md-2" [ngClass]="{ divDis :  modoConsulta }">
                     <md-input-container [floatPlaceholder]="true">
-                        <input mdInput placeholder="{{ 'app_rst_labels_area' | recurso }}" type="number" name="{{instFis.uatInstalacaoFisicaAmbiente.descricao}}-area"
+                        <input mdInput placeholder="{{ 'app_rst_labels_area' | recurso }}" type="number" min="0" name="{{instFis.uatInstalacaoFisicaAmbiente.descricao}}-area-{{index}}"
                             [(ngModel)]="listInstalacoesFisicasSave[index].area" class="form-control" />
                     </md-input-container>
                 </div>
 
-                <div class="form-group col-md-2" [ngClass]="{ divDis :  modoConsulta }">
-                    Duplicar
+                <div class="form-group col-md-2" [ngClass]="{ divDis :  modoConsulta}" style="cursor: pointer;">
+                        <a (click)="duplicarCampo(index)"><span class="fa fa-copy fa-2x" aria-hidden="true" style="color: #3fc2f8;"></span></a>
                 </div>
 
             </div>
+
         </div>
 
     </form>
