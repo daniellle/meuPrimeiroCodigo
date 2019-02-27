@@ -48,7 +48,7 @@ public class UatInstalacaoFisicaEndPoint extends SegurancaEndpoint<UatInstalacao
     }
 
     @GET
-    @Path("/uatinstalacaofisica/{idUnidade}")
+    @Path("/unidade/{idUnidade}")
     @Produces(MediaType.APPLICATION_JSON)
     @Autorizacao(permissoes = @Permissao(value = { PermissionConstants.GESTAO_UNIDADE_SESI_CONSULTAR}))
     public Response findByUnidade(@PathParam("idUnidade") Long idUnidade, @Context SecurityContext context

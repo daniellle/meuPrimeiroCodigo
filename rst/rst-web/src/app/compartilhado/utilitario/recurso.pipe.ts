@@ -36,6 +36,7 @@ export const MensagemProperties = {
   app_rst_labels_data: 'Data',
   app_rst_labels_resultado: 'Resultado',
   app_rst_labels_cpf: 'CPF',
+  app_rst_labels_ambiente: 'Ambiente',
   app_rst_labels_razao_social: 'Razão Social',
   app_rst_labels_data_desativacao: 'Data de Desativação',
   app_rst_labels_data_nascimento: 'Data de Nascimento',
@@ -365,6 +366,7 @@ export const MensagemProperties = {
 
   //Gestão de Unidade SESI
   app_rst_cadastro_instalacoes_fisicas_title: 'Cadastro de Instalações Físicas',
+  app_rst_categorias_cadastradas_title: 'Categorias cadastradas',
 
   // Trabalhador
   app_rst_trabalhador_title_pesquisar: 'Pesquisar Trabalhador',
@@ -664,7 +666,6 @@ export const MensagemProperties = {
   app_rst_sistema_credenciado: 'Sistema Credenciado',
   app_rst_sistema_credenciado_alterar: 'Alterar Sistema Credenciado',
   app_rst_sistema_credenciado_reset_client_secret: 'Reset client secret',
-
   //Relatório de Perfis por Usuários
   app_rst_relatorio_perfil_usuario: 'Relatórios de Perfis por Usuários',
 
