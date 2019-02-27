@@ -19,7 +19,41 @@
   </div>
 
   <div class="row tabela">
-    <p class="label-item-tabela">Espirometrica</p>
-    <input class="input-item-tabela" type="number" name="quantidade"/>
+    <div class="header-tabela">
+        <span class="column-label">
+          Tipo de atendimento
+        </span>
+        <span class="column-quantidade" >
+          Quantidade
+        </span>
+    </div>
+
+    <div class="content-tabela">
+      <div class="row-content-tabela">
+        <span class="column-label">
+          Espirometrica
+        </span>
+        <span class="column-quantidade" >
+          <input type="text" name="quantidade" id="quantidade" maxlength="5" inputmode="numeric" pattern="[0-9]*" digitOnly>
+        </span>
+      </div>
+      <div class="row-content-tabela">
+        <span class="column-label">
+          RX
+        </span>
+        <span class="column-quantidade" >
+          <input type="number" name="quantidade"/>
+        </span>
+      </div>
+
+      <div class="row-content-tabela">
+        <span class="column-label">
+          Consulta
+        </span>
+        <span class="column-quantidade" >
+          <input type="number" name="quantidade"/>
+        </span>
+      </div>
+    </div>
   </div>
 </div>
