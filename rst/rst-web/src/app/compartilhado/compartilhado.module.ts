@@ -74,6 +74,7 @@ import {
 import { CALENDARIO_DIRECTIVES } from 'app/diretiva/calendario.directive';
 import { VacinaModalComponent } from 'app/compartilhado/modal-vacina-componenet/vacina-modal/vacina-modal.component';
 import { VacinaGridComponent } from 'app/compartilhado/modal-vacina-componenet/vacina-grid/vacina-grid.component';
+import { DigitOnlyDirective } from 'app/diretiva/digit-only.directive';
 
 
 @NgModule({
@@ -131,6 +132,7 @@ import { VacinaGridComponent } from 'app/compartilhado/modal-vacina-componenet/v
         ModalSelecionarGrupoPerguntaComponent,
         VacinaModalComponent,
         VacinaGridComponent,
+        DigitOnlyDirective,
     ],
     exports: [
         CommonModule,
@@ -201,6 +203,7 @@ import { VacinaGridComponent } from 'app/compartilhado/modal-vacina-componenet/v
         MdToolbarModule,
         MdTooltipModule,
         CALENDARIO_DIRECTIVES,
+        DigitOnlyDirective,
         CardTelaIntermediariaComponent,
         ModalSelecionarGrupoPerguntaComponent,
     ],
