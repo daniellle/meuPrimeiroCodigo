@@ -16,6 +16,13 @@ public class UatVeiculoDTO {
 	public UatVeiculoDTO() {
 	}
 
+	public UatVeiculoDTO(Long id, Integer quantidade, Long idUat, Long idVeiculoTipoAtendimento) {
+		this.id = id;
+		this.quantidade = quantidade;
+		this.idUat = idUat;
+		this.idVeiculoTipoAtendimento = idVeiculoTipoAtendimento;
+	}
+
 	public UatVeiculoDTO(UatVeiculo uatVeiculo) {
 		this.id = uatVeiculo.getId();
 		this.quantidade = uatVeiculo.getQuantidade();

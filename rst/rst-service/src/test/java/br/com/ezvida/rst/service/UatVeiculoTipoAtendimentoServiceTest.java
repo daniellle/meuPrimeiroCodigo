@@ -46,6 +46,7 @@ public class UatVeiculoTipoAtendimentoServiceTest {
 		Mockito.doReturn(list).when(uatVeiculoTipoAtendimentoDAO).pesquisarTodos();
 		
 		List<UatVeiculoTipoAtendimentoDTO> retorno = uatVeiculoTipoAtendimentoService.listarTodos();
+		
 		assertEquals(list.get(0).getId(), retorno.get(0).getId());
 		assertEquals(list.get(0).getDescricao(), retorno.get(0).getDescricao());
 	}
