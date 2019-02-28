@@ -1090,6 +1090,22 @@ th {
     background-image: url("../img/produtosservicos_cor.svg");
 }
 
+.img_estruturaunidade {
+    height: 120px;
+    background-repeat: no-repeat;
+    background-position-x: 0px;
+    background-size: 150px 150px;
+    background-position-y: -8px;
+}
+
+.front.img_estruturaunidade {
+    background-image: url("../img/estruturadauni.svg");
+}
+
+.back.img_estruturaunidade {
+    background-image: url("../img/estruturadauni_roxo.svg");
+}
+
 .img_empresa {
     height: 120px;
     background-repeat: no-repeat;
