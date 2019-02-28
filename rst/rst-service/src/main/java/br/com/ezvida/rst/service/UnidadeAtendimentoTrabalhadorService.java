@@ -203,4 +203,9 @@ public class UnidadeAtendimentoTrabalhadorService extends BaseService {
         return unidadeAtendimentoTrabalhadorDAO.countByListIdAndCNPJEmpresa(listId, CNPJ);
     }
 
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Boolean existsByListDRIdAndIdUnidade(List<Long>idsDr, Long idUnidade){
+        return this.unidadeAtendimentoTrabalhadorDAO.existsByDRSAndIdUnidade(idsDr, idUnidade);
+    }
+
 }

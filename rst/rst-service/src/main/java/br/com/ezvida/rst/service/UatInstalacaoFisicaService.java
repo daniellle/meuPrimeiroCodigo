@@ -15,10 +15,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Stateless
@@ -31,6 +28,9 @@ public class UatInstalacaoFisicaService extends BaseService {
     @Inject
     private UatInstalacaoFisicaDAO uatInstalacaoFisicaDAO;
 
+    @Inject
+    private ValidationService validationService;
+
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<UatInstalacaoFisica> salvar(List<UatInstalacaoFisica> listInstalacoesFisicas, ClienteAuditoria auditoria, DadosFilter dados) {
         LogAuditoria.registrar(LOGGER, auditoria, "Salvando Instalação Física");
@@ -41,14 +41,24 @@ public class UatInstalacaoFisicaService extends BaseService {
                         uatInstalacaoFisica.getQuantidade() != null &&
                         uatInstalacaoFisica.getUnidadeAtendimentoTrabalhador() != null &&
                         uatInstalacaoFisica.getUnidadeAtendimentoTrabalhador().getId() != null) {
-                    //TODO: Posteriormente Validar origem de dados
                     listaSalvar.add(uatInstalacaoFisica);
                 }
             }
             if (!listaSalvar.isEmpty()) {
                 for (UatInstalacaoFisica uatInstalacaoFisica : listaSalvar) {
                     uatInstalacaoFisica.setDataCriacao(new Date());
-                    this.uatInstalacaoFisicaDAO.salvar(uatInstalacaoFisica);
+                    if (validationService.validarFiltroDadosGestaoUnidadeSesi(dados, uatInstalacaoFisica.getUnidadeAtendimentoTrabalhador().getId())) {
+                        try {
+                            this.uatInstalacaoFisicaDAO.salvar(uatInstalacaoFisica);
+                        } catch (Exception e) {
+                            LOGGER.error(e.getMessage());
+                            throw new BusinessErrorException(getMensagem("app_validacao_error"));
+                        }
+                    } else {
+                        String mensagem = getMensagem("app_rst_instalacao_fisica_nao_autorizado");
+                        LOGGER.error(mensagem);
+                        throw new BusinessErrorException(mensagem);
+                    }
                 }
                 return listaSalvar;
             } else {
@@ -61,19 +71,31 @@ public class UatInstalacaoFisicaService extends BaseService {
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Map<String, List<UatInstalacaoFisicaDTO>> findByUnidade(Long idUnidade, ClienteAuditoria auditoria, DadosFilter dados) {
-        LogAuditoria.registrar(LOGGER, auditoria, "Buscando Instalações Físicas por id da unidade sesi " + idUnidade);
         Map<String, List<UatInstalacaoFisicaDTO>> instalacoesFisicasAGG = null;
-        List<UatInstalacaoFisicaDTO> listaInstalacoes = this.uatInstalacaoFisicaDAO.findByUnidade(idUnidade);
-        if (listaInstalacoes != null && !listaInstalacoes.isEmpty()) {
-            instalacoesFisicasAGG = listaInstalacoes.stream().collect(Collectors.groupingBy(UatInstalacaoFisicaDTO::getDescricaoCategoria));
+        if (validationService.validarFiltroDadosGestaoUnidadeSesi(dados, idUnidade)) {
+            LogAuditoria.registrar(LOGGER, auditoria, "Buscando Instalações Físicas por id da unidade sesi " + idUnidade);
+            List<UatInstalacaoFisicaDTO> listaInstalacoes = this.uatInstalacaoFisicaDAO.findByUnidade(idUnidade);
+            if (listaInstalacoes != null && !listaInstalacoes.isEmpty()) {
+                instalacoesFisicasAGG = listaInstalacoes.stream().collect(Collectors.groupingBy(UatInstalacaoFisicaDTO::getDescricaoCategoria));
+            }
         }
         return instalacoesFisicasAGG;
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void desativar(Long id, ClienteAuditoria auditoria, DadosFilter dados) {
+    public void desativar(Long id, Long idUnidade, ClienteAuditoria auditoria, DadosFilter dados) {
         LogAuditoria.registrar(LOGGER, auditoria, "Desativando Instalação Física id: " + id);
-        this.uatInstalacaoFisicaDAO.desativar(id);
+        if (validationService.validarFiltroDadosGestaoUnidadeSesi(dados, idUnidade)) {
+            try {
+                this.uatInstalacaoFisicaDAO.desativar(id);
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage());
+                throw new BusinessErrorException(getMensagem("app_validacao_error"));
+            }
+        } else {
+            LOGGER.error("app_rst_instalacao_fisica_nao_desativar_autorizado");
+            throw new BusinessErrorException(getMensagem("app_rst_instalacao_fisica_nao_desativar_autorizado"));
+        }
     }
 
 }

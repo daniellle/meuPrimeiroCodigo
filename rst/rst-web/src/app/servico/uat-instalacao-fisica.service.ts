@@ -34,8 +34,8 @@ export class UatInstalacaoFisicaService extends BaseService<UatInstalacaoFisica>
             });
     }
 
-    public desativar(idInstalacaoFisica: Number): Observable<any> {
-        return super.put('/v1/uatinstalacaofisica/desativar/' + idInstalacaoFisica.toString())
+    public desativar(idInstalacaoFisica: Number, idUnidade: Number): Observable<any> {
+        return super.put('/v1/uatinstalacaofisica/desativar/' + idInstalacaoFisica.toString() + '/' + idUnidade.toString())
             .map((response: any) => {
                 return response;
             }).catch((error: HttpResponse<MensagemErro>) => {

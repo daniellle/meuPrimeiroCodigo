@@ -33,7 +33,8 @@ public class UatInstalacaoFisicaDAO extends BaseDAO<UatInstalacaoFisica, Long> {
         sql.append("	cat.descricao as categoria, ");
         sql.append("	amb.descricao as ambiente, ");
         sql.append("	inst_fis.quantidade , ");
-        sql.append("	inst_fis.area ");
+        sql.append("	inst_fis.area , ");
+        sql.append("    inst_fis.id_und_atd_trabalhador_fk as id_unidade ");
         sql.append(" from ");
         sql.append("	uat_instalacao_fisica inst_fis ");
         sql.append(" inner join uat_instalacao_fisica_ambiente amb on ");
@@ -50,7 +51,7 @@ public class UatInstalacaoFisicaDAO extends BaseDAO<UatInstalacaoFisica, Long> {
         UatInstalacaoFisicaDTO indicadorDTO;
         List<UatInstalacaoFisicaDTO> listaInstalacaoFisicaDTO = new ArrayList<>();
         for (Object[] objects : listaInstalacoesFisicaBanco) {
-            indicadorDTO = new UatInstalacaoFisicaDTO(new Long(((Integer) objects[0]).intValue()), (String) objects[1], (String) objects[2], (Integer) objects[3], (BigDecimal) objects[4]);
+            indicadorDTO = new UatInstalacaoFisicaDTO(new Long(((Integer) objects[0]).intValue()), (String) objects[1], (String) objects[2], (Integer) objects[3], (BigDecimal) objects[4], new Long(((Integer) objects[5]).intValue()));
             listaInstalacaoFisicaDTO.add(indicadorDTO);
         }
         return listaInstalacaoFisicaDTO;

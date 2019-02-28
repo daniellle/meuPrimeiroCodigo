@@ -64,13 +64,13 @@ public class UatInstalacaoFisicaEndPoint extends SegurancaEndpoint<UatInstalacao
 
     @PUT
     @Encoded
-    @Path("/desativar/{id}")
+    @Path("/desativar/{id}/{idUnidade}")
     @Produces(MediaType.APPLICATION_JSON)
     @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.GESTAO_UNIDADE_SESI_DESATIVAR}))
-    public Response desativar(@PathParam("id") Long id, @Context SecurityContext context
+    public Response desativar(@PathParam("id") Long id, @PathParam("idUnidade") Long idUnidade, @Context SecurityContext context
         , @Context HttpServletRequest request) {
         try {
-            this.uatInstalacaoFisicaService.desativar(id,
+            this.uatInstalacaoFisicaService.desativar(id, idUnidade,
                 ClienteInfos.getClienteInfos(context, request,
                     TipoOperacaoAuditoria.CONSULTA, Funcionalidade.GESTAO_UNIDADE_SESI),
                 ClienteInfos.getDadosFilter(context));
