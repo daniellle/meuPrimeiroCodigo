@@ -151,8 +151,8 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
             [PermissoesEnum.GESTAO_UNIDADE_SESI_DESATIVAR]);
     }
 
-    desativar(idInstalacaoFisica: Number) {
-        this.uatInstalacaoFisicasService.desativar(idInstalacaoFisica).subscribe(
+    desativar(idInstalacaoFisica: Number, idUnidade: Number) {
+        this.uatInstalacaoFisicasService.desativar(idInstalacaoFisica, idUnidade).subscribe(
             (data) => {
                 this.mensagemSucesso(data['content']);
                 this.findInstalacoesAgg();

@@ -28,7 +28,7 @@ public class UatInstalacaoFisicaCategoriaService extends BaseService {
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<UatInstalacaoFisicaCategoria> listarTodos(ClienteAuditoria auditoria, DadosFilter dados) {
-        LogAuditoria.registrar(LOGGER, auditoria, "Listar todas Periodicidade");
+        LogAuditoria.registrar(LOGGER, auditoria, "Listar categorias");
         return uatInstalacaoFisicaCategoriaDAO.pesquisarTodos();
     }
 }

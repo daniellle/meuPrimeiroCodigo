@@ -112,7 +112,7 @@
                         <td class="text-center">&nbsp;{{value.quantidade}}</td>
                         <td class="text-center">&nbsp;{{value.area}}</td>
                         <td class="text-center" *ngIf="hasPermissaoDesativar()">
-                            <button class="btn-link" (click)="desativar(value.idInstalacaoFisica)"
+                            <button class="btn-link" (click)="desativar(value.idInstalacaoFisica, value.idUnidade)"
                                 #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Desativar'" [mdTooltipPosition]="'below'">
                                 <img class="lixo" [src]="'assets/img/trash.svg'">
                             </button>
