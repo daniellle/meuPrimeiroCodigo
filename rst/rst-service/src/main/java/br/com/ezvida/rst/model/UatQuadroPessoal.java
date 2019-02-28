@@ -16,9 +16,9 @@ import javax.persistence.UniqueConstraint;
 @Table(name = "UAT_QUADRO_PESSOAL", uniqueConstraints = @UniqueConstraint(name = "PK_UAT_INSTALACAO_FISICA_CATEGORIA", columnNames = {
 		"ID_UAT_QUADRO_PESSOAL" }))
 public class UatQuadroPessoal extends AbstractData {
-	
-	private static final long serialVersionUID = 1L;
-	
+
+	private static final long serialVersionUID = -5199737621570322045L;
+
 	@Id
 	@Column(name = "ID_UAT_QUADRO_PESSOAL")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQUENCE_UAT_QUADRO_PESSOAL")

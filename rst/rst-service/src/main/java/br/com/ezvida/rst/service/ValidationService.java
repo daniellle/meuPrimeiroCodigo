@@ -1,6 +1,5 @@
 package br.com.ezvida.rst.service;
 
-import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
 
 import javax.ejb.Stateless;
