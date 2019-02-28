@@ -77,6 +77,7 @@ export const MensagemProperties = {
   app_rst_labels_matriz: 'MATRIZ',
   app_rst_labels_endereco: 'Endereço',
   app_rst_labels_quantidade: 'Quantidade',
+  app_rst_labels_tipo_de_atendimento: 'Tipo de atendimento',
   app_rst_labels_complemento: 'Complemento',
   app_rst_labels_numero: 'Número',
   app_rst_labels_estado: 'Estado',
@@ -367,6 +368,7 @@ export const MensagemProperties = {
   //Gestão de Unidade SESI
   app_rst_cadastro_instalacoes_fisicas_title: 'Cadastro de Instalações Físicas',
   app_rst_categorias_cadastradas_title: 'Categorias cadastradas',
+  app_rst_tipos_cadastrados_title: 'Tipos cadastrados',
 
   // Trabalhador
   app_rst_trabalhador_title_pesquisar: 'Pesquisar Trabalhador',

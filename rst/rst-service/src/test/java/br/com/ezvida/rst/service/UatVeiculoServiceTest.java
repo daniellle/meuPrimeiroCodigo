@@ -48,7 +48,8 @@ public class UatVeiculoServiceTest {
 	@Test
 	public void deveSalvarListaDeVeiculosUnidadeMovelERetornarVeiculosSalvos() throws Exception {
 		LOGGER.info("Testando salvar lista de Veiculos Unidade Movel");
-		UatVeiculoDTO uatVeiculoDTO = new UatVeiculoDTO(null, 1, 1L, 1L);
+		UatVeiculoDTO uatVeiculoDTO = new UatVeiculoDTO();
+		uatVeiculoDTO.setIdVeiculoTipoAtendimento(1L);
 		List<UatVeiculoDTO> listVeiculoDTO = Arrays.asList(uatVeiculoDTO);
 		
 		Mockito.doNothing().when(uatVeiculoDAO).salvar(Mockito.any(UatVeiculo.class));
@@ -59,18 +60,4 @@ public class UatVeiculoServiceTest {
 		assertTrue(CollectionUtils.isNotEmpty(retorno));
 	}
 	
-	@Test
-	public void deveSalvarListaDeVeiculosPasseioERetornarVeiculosSalvos() throws Exception {
-		LOGGER.info("Testando salvar lista de Veiculos Passeio");
-		UatVeiculoDTO uatVeiculoDTO = new UatVeiculoDTO(null, 1, 1L, null);
-		List<UatVeiculoDTO> listVeiculoDTO = Arrays.asList(uatVeiculoDTO);
-		
-		Mockito.doNothing().when(uatVeiculoDAO).salvar(Mockito.any(UatVeiculo.class));
-
-		List<UatVeiculoDTO> retorno = uatVeiculoService.salvar(listVeiculoDTO);
-
-		Mockito.verify(uatVeiculoDAO).salvar(Mockito.any(UatVeiculo.class));
-		assertTrue(CollectionUtils.isNotEmpty(retorno));
-	}
-
 }

@@ -11,16 +11,17 @@ public class UatVeiculoDTO {
 	private Long id;
 	private Integer quantidade;
 	private Long idUat;
+	private Long idTipo;
 	private Long idVeiculoTipoAtendimento;
+	private String descricao;
 	
 	public UatVeiculoDTO() {
 	}
 
-	public UatVeiculoDTO(Long id, Integer quantidade, Long idUat, Long idVeiculoTipoAtendimento) {
+	public UatVeiculoDTO(Long id, Integer quantidade, String descricao) {
 		this.id = id;
 		this.quantidade = quantidade;
-		this.idUat = idUat;
-		this.idVeiculoTipoAtendimento = idVeiculoTipoAtendimento;
+		this.descricao = descricao;
 	}
 
 	public UatVeiculoDTO(UatVeiculo uatVeiculo) {
@@ -60,5 +61,21 @@ public class UatVeiculoDTO {
 
 	public void setIdVeiculoTipoAtendimento(Long idVeiculoTipoAtendimento) {
 		this.idVeiculoTipoAtendimento = idVeiculoTipoAtendimento;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Long getIdTipo() {
+		return idTipo;
+	}
+
+	public void setIdTipo(Long idTipo) {
+		this.idTipo = idTipo;
 	}
 }

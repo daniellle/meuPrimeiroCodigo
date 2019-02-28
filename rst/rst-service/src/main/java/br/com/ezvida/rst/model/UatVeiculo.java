@@ -17,11 +17,14 @@ public class UatVeiculo extends AbstractData {
     @SequenceGenerator(name = "SEQUENCE_UAT_VEICULO", sequenceName = "SEQ_UAT_VEICULO", allocationSize = 1)
     private Long id;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_UND_ATD_TRABALHADOR_FK", referencedColumnName = "ID_UND_ATD_TRABALHADOR", nullable = false)
     private UnidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_UAT_VEICULO_TIPO_FK", referencedColumnName = "ID_UAT_VEICULO_TIPO")
+    private UatVeiculoTipo uatVeiculoTipo;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_UAT_VEICULO_TIPO_ATENDIMENTO_FK", referencedColumnName = "ID_UAT_VEICULO_TIPO_ATENDIMENTO")
     private UatVeiculoTipoAtendimento unidadeVeiculoTipoAtendimento;
@@ -73,4 +76,12 @@ public class UatVeiculo extends AbstractData {
     public void setUnidadeVeiculoTipoAtendimento(UatVeiculoTipoAtendimento unidadeVeiculoTipoAtendimento) {
         this.unidadeVeiculoTipoAtendimento = unidadeVeiculoTipoAtendimento;
     }
+
+	public UatVeiculoTipo getUatVeiculoTipo() {
+		return uatVeiculoTipo;
+	}
+
+	public void setUatVeiculoTipo(UatVeiculoTipo uatVeiculoTipo) {
+		this.uatVeiculoTipo = uatVeiculoTipo;
+	}
 }
