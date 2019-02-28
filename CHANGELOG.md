@@ -2,6 +2,14 @@
 
 -Aplicações para manutenção dos cadastros RST
 
+**v2.127.0**
+(RELEASE EM 28/02/2019)
+- [CADASTROS] Otimização da API/Endpoint empresaFornecedor (INTERNO)
+- [CADASTROS] Fixar as versões de bibliotecas de terceiros no arquivo package.json de todos os sistemas/projetos (INTERNO)
+- [CADASTROS] Correção de Segurança na Pesquisa de Usuários 
+- [CADASTROS] Lista de Usuários x Perfil, Resultado de pesquisa não está retornando todos os dados (GLPI 2678)
+- [CADASTROS] Refatorar Pesquisa e Cadastro de Usuários (INTERNO)
+
 **v.2.121.1**
 (RELEASE EM 21/02/2019)
 - [CADASTROS] Otimização da API/Endpoint empresaFornecedor
