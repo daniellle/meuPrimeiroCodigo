@@ -10,6 +10,10 @@ public class FiltroUnidadeSesi extends FiltroUsuario {
     @Override
     public Filtro aplica(UsuarioFilter usuarioFilter, DadosFilter dadosFilter, Usuario usuario) {
 
+        if(usuarioFilter.getIdDepartamentoRegional() != null) {
+            this.filtro.adicionaRestricao("vue.id_und_atd_trab_fk in (:idsDrs)", "idsDrs", usuarioFilter.getIdDepartamentoRegional());
+        }
+
         if(dadosFilter.isAdministrador() || dadosFilter.contemPapel("ATD") || dadosFilter.isGestorDn()) {
             return this.filtro;
         }
@@ -19,13 +23,6 @@ public class FiltroUnidadeSesi extends FiltroUsuario {
                     "idsDrs", dadosFilter.getIdsDepartamentoRegional());
         }
 
-//        if(dadosFilter.isGetorUnidadeSESI()) {
-//            if(dadosFilter.isGestorDr()) {
-//                this.filtro.adicionaRestricao(" and vue.id_und_atd_trab_fk in (:idsUats)", "idsUats", dadosFilter.getIdsUnidadeSESI());
-//            } else {
-//                this.filtro.adicionaRestricao("vue.id_und_atd_trab_fk in (:idsUats)", "idsUats", dadosFilter.getIdsUnidadeSESI());
-//            }
-//        }
 
         return this.filtro;
     }
