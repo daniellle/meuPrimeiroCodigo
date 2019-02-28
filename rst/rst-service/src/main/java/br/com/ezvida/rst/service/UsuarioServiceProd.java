@@ -212,11 +212,11 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> pesquisarPaginadoGirst(
-            br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
+            br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados, Usuario usuario
             , ClienteAuditoria auditoria) {
 
         br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> listaPaginada = usuarioGirstViewDAO
-                .pesquisarPorFiltro(usuarioFilter, dados,  pesquisarLoginsPerfisHierarquiaSuperior(usuarioFilter));
+                .pesquisarPorFiltro(usuarioFilter, dados, usuario);
         LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
         return listaPaginada;
     }

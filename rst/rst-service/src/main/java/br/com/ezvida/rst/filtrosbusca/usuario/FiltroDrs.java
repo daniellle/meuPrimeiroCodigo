@@ -10,7 +10,8 @@ public class FiltroDrs extends FiltroUsuario {
     @Override
     public Filtro aplica(UsuarioFilter usuarioFilter, DadosFilter dadosFilter, Usuario usuario) {
         if(usuarioFilter.getIdDepartamentoRegional() != null) {
-            this.filtro.adicionaRestricao("id_departamento_regional_fk = :idDr", "idDr", usuarioFilter.getIdDepartamentoRegional());
+            this.filtro.adicionaRestricao("vue.id_departamento_regional_fk = :idDr", "idDr", usuarioFilter.getIdDepartamentoRegional());
+            return this.filtro;
         }
 
         if(dadosFilter.isAdministrador() || dadosFilter.contemPapel("ATD") || dadosFilter.isGestorDn()) {
@@ -18,7 +19,7 @@ public class FiltroDrs extends FiltroUsuario {
         }
 
         if(dadosFilter.isGestorDr()) {
-            this.filtro.adicionaRestricao("id_departamento_regional_fk in (:idsDrs)", "idsDrs", dadosFilter.getIdsDepartamentoRegional());
+            this.filtro.adicionaRestricao("vue.id_departamento_regional_fk in (:idsDrs)", "idsDrs", dadosFilter.getIdsDepartamentoRegional());
         }
 
         return this.filtro;

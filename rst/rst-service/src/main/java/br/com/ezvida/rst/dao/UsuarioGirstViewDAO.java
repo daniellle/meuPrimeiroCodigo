@@ -1,27 +1,25 @@
 package br.com.ezvida.rst.dao;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import br.com.ezvida.rst.dao.filter.DadosFilter;
+import br.com.ezvida.rst.dao.filter.ListaPaginada;
+import br.com.ezvida.rst.dao.filter.UsuarioFilter;
+import br.com.ezvida.rst.filtrosbusca.usuario.FiltroUsuarioBuilder;
+import br.com.ezvida.rst.model.Usuario;
+import br.com.ezvida.rst.model.UsuarioGirstView;
+import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
+import com.google.common.collect.Maps;
+import fw.core.jpa.BaseDAO;
+import fw.core.jpa.DAOUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.rmi.CORBA.Util;
-
-import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Maps;
-
-import br.com.ezvida.rst.dao.filter.DadosFilter;
-import br.com.ezvida.rst.dao.filter.ListaPaginada;
-import br.com.ezvida.rst.dao.filter.UsuarioFilter;
-import br.com.ezvida.rst.model.UsuarioGirstView;
-import fw.core.jpa.BaseDAO;
-import fw.core.jpa.DAOUtil;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
     private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioGirstViewDAO.class);
@@ -33,18 +31,19 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
         super(em, UsuarioGirstView.class);
     }
 
+
     @SuppressWarnings("unchecked")
-    public ListaPaginada<UsuarioGirstView> pesquisarPorFiltro(UsuarioFilter usuarioFilter, DadosFilter dados, List<String> listaDeLogins) { LOGGER.debug("Pesquisando paginado UsuarioGirstView por filtro");
-
+    public ListaPaginada<UsuarioGirstView> pesquisarPorFiltro(UsuarioFilter usuarioFilter, DadosFilter dados, Usuario usuario) { LOGGER.debug("Pesquisando paginado UsuarioGirstView por filtro");
         ListaPaginada<UsuarioGirstView> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
+        FiltroUsuarioBuilder builder = new FiltroUsuarioBuilder(usuarioFilter, dados, usuario).buildPesquisaUsuario();
 
-        StringBuilder sql = new StringBuilder();
-        Map<String, Object> parametros = Maps.newHashMap();
-        getQueryPaginadoNativo(sql, parametros, usuarioFilter, dados, false, listaDeLogins, false);
-        Query query = criarConsultaNativa(sql.toString(), UsuarioGirstView.class);
-        DAOUtil.setParameterMap(query, parametros);
+        Query query = criarConsultaNativa(builder.getQueryPesquisaUsuario(), UsuarioGirstView.class);
+        Query queryCount = criarConsultaNativa(builder.getQueryCountPesquisaUsuario());
 
-        listaPaginada.setQuantidade(getCountQueryPaginado(usuarioFilter, dados, listaDeLogins).longValue());
+        DAOUtil.setParameterMap(query, builder.getParametros());
+        DAOUtil.setParameterMap(queryCount, builder.getParametros());
+
+        listaPaginada.setQuantidade(((BigInteger) DAOUtil.getSingleResult(queryCount)).longValue());
 
         if (usuarioFilter != null && usuarioFilter.getPagina() != null
                 && usuarioFilter.getQuantidadeRegistro() != null) {

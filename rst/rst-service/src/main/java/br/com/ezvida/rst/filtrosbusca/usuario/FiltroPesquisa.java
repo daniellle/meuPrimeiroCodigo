@@ -11,13 +11,13 @@ public class FiltroPesquisa extends FiltroUsuario {
     @Override
     public Filtro aplica(UsuarioFilter usuarioFilter, DadosFilter dados, Usuario usuario) {
         if(!Strings.isNullOrEmpty(usuarioFilter.getNome())) {
-            this.filtro.adicionaRestricao("nome ilike concat('%', :nome, '%')", "nome", usuarioFilter.getNome());
+            this.filtro.adicionaRestricao("vue.nome ilike concat('%', :nome, '%')", "nome", usuarioFilter.getNome());
         }
         if(!Strings.isNullOrEmpty(usuarioFilter.getLogin())) {
-            this.filtro.adicionaRestricao("login = :login", "login", usuarioFilter.getLogin());
+            this.filtro.adicionaRestricao("vue.login = :login", "login", usuarioFilter.getLogin());
         }
         if(!Strings.isNullOrEmpty(usuarioFilter.getCodigoPerfil())) {
-            this.filtro.adicionaRestricao("codigo_perfil = :codigoPerfil", "codigoPerfil", usuarioFilter.getCodigoPerfil());
+            this.filtro.adicionaRestricao("vue.codigo_perfil = :codigoPerfil", "codigoPerfil", usuarioFilter.getCodigoPerfil());
         }
 
         return this.filtro;
