@@ -26,8 +26,8 @@ public class FiltroPorEmpresa extends FiltroUsuario {
                 str.append(" and ");
             }
             str.append(" vue.id_empresa_fk in ");
-            str.append(" (select id_empresa from empresa join und_obra on id_emrpesa = vue.id_empresa_fk ");
-            str.append(" join und_obra_contrato_uat where id_und_atd_trabalahdor_fk in ");
+            str.append(" (select id_empresa from empresa join und_obra on id_empresa = id_empresa_fk ");
+            str.append(" join und_obra_contrato_uat on id_und_obra_contrato_uat = id_und_obra where id_und_atd_trabalhador_fk in ");
             str.append(" (select id_und_atd_trabalhador from und_atd_trabalhador ");
             str.append(" where id_departamento_regional_fk in (:idsDrs))) ");
 
@@ -46,7 +46,7 @@ public class FiltroPorEmpresa extends FiltroUsuario {
             str.append(" vue.id_empresa_fk in ");
             str.append(" (select id_empresa from empresa ");
             str.append(" join und_obra on id_empresa = vue.id_empresa_fk ");
-            str.append(" join und_obra_contrato_uat where id_und_atd_trabalahdor_fk in (:idsUnidadesSesi))");
+            str.append(" join und_obra_contrato_uat where id_und_atd_trabalhador_fk in (:idsUnidadesSesi))");
 
             this.filtro.adicionaRestricao(str.toString(), "idsUnidadesSesi", dadosFilter.getIdsUnidadeSESI());
         }

@@ -26,6 +26,7 @@ public class FiltroUsuarioBuilder {
     private final Filtro filtroHierarquiaRelatorioUsuario;
     private final Filtro filtroDrs;
     private final Filtro filtroUnidadeSesi;
+    private final Filtro filtroEmpresa;
     private final Filtro filtroTrabalhador;
     private final StringBuilder query;
     private final StringBuilder queryPorPermissao;
@@ -37,6 +38,7 @@ public class FiltroUsuarioBuilder {
         this.filtroHierarquiaRelatorioUsuario = new FiltroHierarquiaRelatorioUsuario().aplica(usuarioFilter, dados, usuario);
         this.filtroDrs = new FiltroDrs().aplica(usuarioFilter, dados, usuario);
         this.filtroUnidadeSesi = new FiltroUnidadeSesi().aplica(usuarioFilter, dados, usuario);
+        this.filtroEmpresa = new FiltroPorEmpresa().aplica(usuarioFilter, dados, usuario);
         this.filtroTrabalhador = new FiltroTrabalhador().aplica(usuarioFilter, dados, usuario);
         this.query = new StringBuilder();
         this.queryPorPermissao = new StringBuilder();
@@ -48,6 +50,7 @@ public class FiltroUsuarioBuilder {
             .addFiltroDeHierarquiaPesquisaUsuarios()
             .addFiltroPorDrs()
             .addFiltroPorUnidadeSesi()
+            .addFiltroEmpresas()
             .addFiltroTrabalhador();
     }
 
@@ -56,6 +59,7 @@ public class FiltroUsuarioBuilder {
                 .addFiltroDeHierarquiaRelatorioUsuarios()
                 .addFiltroPorDrs()
                 .addFiltroPorUnidadeSesi()
+                .addFiltroEmpresas()
                 .addFiltroTrabalhador();
     }
 
@@ -116,6 +120,17 @@ public class FiltroUsuarioBuilder {
             String queryUnidadeSesi = "("+filtroUnidadeSesi.getQuery()+")";
             this.queryPorPermissao.append(queryUnidadeSesi);
             this.parametros.putAll(filtroUnidadeSesi.getParametros());
+        }
+
+        return this;
+    }
+
+    private FiltroUsuarioBuilder addFiltroEmpresas() {
+        if(!Strings.isNullOrEmpty(filtroEmpresa.getQuery())) {
+            addOrNaQueryPorPermissao(this.queryPorPermissao);
+            String queryEmpresas = "("+filtroEmpresa.getQuery()+")";
+            this.queryPorPermissao.append(queryEmpresas);
+            this.parametros.putAll(filtroEmpresa.getParametros());
         }
 
         return this;
