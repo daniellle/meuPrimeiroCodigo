@@ -21,6 +21,9 @@ import java.util.Map;
 public class UsuarioServiceDev implements UsuarioService {
 
     private Logger logger = LoggerFactory.getLogger(UsuarioServiceDev.class);
+    private UsuarioFilter usuarioFilter;
+    private DadosFilter dados;
+    private ClienteAuditoria auditoria;
 
     @Override
     public Usuario getUsuario(String login) {
@@ -88,18 +91,21 @@ public class UsuarioServiceDev implements UsuarioService {
     }
 
     @Override
-    public br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> pesquisarPaginadoGirst(UsuarioFilter usuarioFilter, DadosFilter dados, ClienteAuditoria auditoria) {
+    public br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> pesquisarPaginadoGirst(UsuarioFilter usuarioFilter, DadosFilter dados, Usuario usuario, ClienteAuditoria auditoria) {
+        this.usuarioFilter = usuarioFilter;
+        this.dados = dados;
+        this.auditoria = auditoria;
         logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
         return null;
     }
 
     @Override
-    public List<PerfilUsuarioDTO> pesquisarPaginadoRelatorio(UsuarioFilter usuarioFilter, DadosFilter dados, ClienteAuditoria auditoria) {
+    public List<PerfilUsuarioDTO> pesquisarPaginadoRelatorio(UsuarioFilter usuarioFilter, DadosFilter dados, Usuario usuario, ClienteAuditoria auditoria) {
         logger.warn("UTILIZANDO MÉTODO DO AMBIENTE DE DESENVOLVIMENTO");
         return null;
     }
     @Override
-    public br.com.ezvida.rst.dao.filter.ListaPaginada<PerfilUsuarioDTO> pesquisarListaPaginadaPerfilUsuario(UsuarioFilter usuarioFilter, DadosFilter dados, ClienteAuditoria auditoria) {
+    public br.com.ezvida.rst.dao.filter.ListaPaginada<PerfilUsuarioDTO> pesquisarListaPaginadaPerfilUsuario(UsuarioFilter usuarioFilter, DadosFilter dados, Usuario usuario, ClienteAuditoria auditoria) {
         return null;
     }
 

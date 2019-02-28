@@ -5,7 +5,7 @@ import br.com.ezvida.rst.dao.filter.UsuarioFilter;
 import br.com.ezvida.rst.filtrosbusca.Filtro;
 import br.com.ezvida.rst.model.Usuario;
 
-public class FiltroHierarquia extends FiltroUsuario {
+public class FiltroHierarquiaRelatorioUsuario extends FiltroUsuario {
 
 
     @Override
@@ -14,7 +14,7 @@ public class FiltroHierarquia extends FiltroUsuario {
             return this.filtro;
         }
 
-        this.filtro.adicionaRestricao("p_hierarquia is not null");
+        this.filtro.adicionaRestricao("vue.p_hierarquia is not null");
 
         if(dadosFilter.contemPapel("GDNA")) {
             this.filtro.adicionaRestricao("p_hierarquia >= :hierarquia", "hierarquia", usuario.getHierarquia());

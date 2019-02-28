@@ -36,9 +36,11 @@ public class SegurancaUtils {
 //             return "56866951135"; // gestor dr master
 //            return "90468451170"; //
 //            return "74055251564"; // gestor dr aplicacoes
-            //return "99573911434";
+//            return "96031445921";
+//            return "73243474795";
             //return "84755789850";
-             return "71141598973"; // gestor empresa master
+//            return "22204102776";
+//             return "71141598973"; // gestor empresa master
             // return "92883645361"; // gestor empresa
 //             return "46335766744"; // trabalhador
             // return "37139762520"; // carol adm
@@ -48,7 +50,9 @@ public class SegurancaUtils {
             // return "97739727989"; // GCDN
             // return  "83855096740"; //MTSDR
            // return "78907216410"; //GCDR
-             //return "95901290801"; //GUS
+//             return "95901290801"; //GUS
+//            return "73243474795";
+            return "96031445921";
 //            return "04265927947"; // Superintendente DR
 //            return "01178192474";
 //            return "83704786209";
