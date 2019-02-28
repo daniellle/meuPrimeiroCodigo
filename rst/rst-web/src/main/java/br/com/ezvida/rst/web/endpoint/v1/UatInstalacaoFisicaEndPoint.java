@@ -36,7 +36,7 @@ public class UatInstalacaoFisicaEndPoint extends SegurancaEndpoint<UatInstalacao
     @Encoded
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Autorizacao(permissoes = @Permissao(value = { PermissionConstants.GESTAO_UNIDADE_SESI_CADASTRAR}))
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.GESTAO_UNIDADE_SESI_CADASTRAR}))
     public Response salvar(@Encoded List<UatInstalacaoFisica> listaInstalacoesFisicas, @Context SecurityContext context
         , @Context HttpServletRequest request) {
         getResponse().setCharacterEncoding(StandardCharsets.UTF_8.displayName());
@@ -50,7 +50,7 @@ public class UatInstalacaoFisicaEndPoint extends SegurancaEndpoint<UatInstalacao
     @GET
     @Path("/unidade/{idUnidade}")
     @Produces(MediaType.APPLICATION_JSON)
-    @Autorizacao(permissoes = @Permissao(value = { PermissionConstants.GESTAO_UNIDADE_SESI_CONSULTAR}))
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.GESTAO_UNIDADE_SESI_CONSULTAR}))
     public Response findByUnidade(@PathParam("idUnidade") Long idUnidade, @Context SecurityContext context
         , @Context HttpServletRequest request) {
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
@@ -66,7 +66,7 @@ public class UatInstalacaoFisicaEndPoint extends SegurancaEndpoint<UatInstalacao
     @Encoded
     @Path("/desativar/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @Autorizacao(permissoes = @Permissao(value = { PermissionConstants.GESTAO_UNIDADE_SESI_DESATIVAR}))
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.GESTAO_UNIDADE_SESI_DESATIVAR}))
     public Response desativar(@PathParam("id") Long id, @Context SecurityContext context
         , @Context HttpServletRequest request) {
         try {
@@ -74,14 +74,15 @@ public class UatInstalacaoFisicaEndPoint extends SegurancaEndpoint<UatInstalacao
                 ClienteInfos.getClienteInfos(context, request,
                     TipoOperacaoAuditoria.CONSULTA, Funcionalidade.GESTAO_UNIDADE_SESI),
                 ClienteInfos.getDadosFilter(context));
-            return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON).entity(serializar(getMensagem("app_rst_instalacao_fisica_desativado_sucesso"))).build();
+            return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON).entity(
+                serializar(new br.com.ezvida.rst.web.util.Response<>(getMensagem("app_rst_instalacao_fisica_desativado_sucesso")))).build();
         } catch (BusinessException ex) {
             return Response.status(HttpServletResponse.SC_BAD_REQUEST).type(MediaType.APPLICATION_JSON)
-                .header("Content-Version", getApplicationVersion()).entity(serializar(ex.getMessage())).build();
+                .header("Content-Version", getApplicationVersion()).entity(new br.com.ezvida.rst.web.util.Response<>(serializar(ex.getMessage()))).build();
         } catch (Exception e) {
             return Response.status(HttpServletResponse.SC_BAD_REQUEST).type(MediaType.APPLICATION_JSON)
                 .header("Content-Version", getApplicationVersion())
-                .entity(serializar(getMensagem("app_validacao_error"))).build();
+                .entity(serializar(new br.com.ezvida.rst.web.util.Response<>(getMensagem("app_validacao_error")))).build();
         }
 
     }
