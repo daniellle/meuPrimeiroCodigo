@@ -16,9 +16,10 @@ public class FiltroUsuarioBuilder {
     private static final String JOINS_RELATORIO_USUARIO = "left join departamento_regional dr on dr.id_departamento_regional = vue.id_departamento_regional_fk " +
             "left join empresa e on id_empresa =  vue.id_empresa_fk " +
             "left join und_atd_trabalhador uat on id_und_atd_trabalhador = vue.id_und_atd_trab_fk ";
-    private static final String RESULT_BUSCA_USUARIO_RELATORIO = "select vue.nome, vue.login, vue.nome_perfil, dr.ds_nome_fantasia, uat.nm_fantasia, e.nm_fantasia as nome_empresa from vw_usuario_entidade vue " +
+    private static final String RESULT_BUSCA_USUARIO_RELATORIO = "select distinct vue.nome, vue.login, vue.nome_perfil, dr.ds_nome_fantasia, uat.nm_fantasia, e.nm_fantasia as nome_empresa from vw_usuario_entidade vue " +
            JOINS_RELATORIO_USUARIO;
-    private static final String COUNT_BUSCA_USUARIO_RELATORIO = "select count(1) from vw_usuario_entidade vue " + JOINS_RELATORIO_USUARIO;
+    private static final String COUNT_BUSCA_USUARIO_RELATORIO = "select count(1) from (select distinct vue.nome, vue.login, vue.nome_perfil, dr.ds_nome_fantasia, " +
+            "uat.nm_fantasia, e.nm_fantasia as nome_empresa from vw_usuario_entidade vue " + JOINS_RELATORIO_USUARIO;
 
     private final Filtro filtroPesquisa;
     private final Filtro filtroHierarquiaBuscaUsuario;
@@ -150,7 +151,7 @@ public class FiltroUsuarioBuilder {
     }
 
     public String getQueryCountRelatorioUsuario() {
-        return COUNT_BUSCA_USUARIO_RELATORIO + query.toString() + getQueryPorPermissao();
+        return COUNT_BUSCA_USUARIO_RELATORIO + query.toString() + getQueryPorPermissao() +" ) as usuario_perfil";
     }
 
     private String getQueryPorPermissao() {
