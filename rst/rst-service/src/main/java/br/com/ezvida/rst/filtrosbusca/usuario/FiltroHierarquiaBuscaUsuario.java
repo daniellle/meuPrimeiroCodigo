@@ -5,7 +5,7 @@ import br.com.ezvida.rst.dao.filter.UsuarioFilter;
 import br.com.ezvida.rst.filtrosbusca.Filtro;
 import br.com.ezvida.rst.model.Usuario;
 
-public class FiltroHierarquia extends FiltroUsuario {
+public class FiltroHierarquiaBuscaUsuario extends FiltroUsuario {
 
 
     @Override

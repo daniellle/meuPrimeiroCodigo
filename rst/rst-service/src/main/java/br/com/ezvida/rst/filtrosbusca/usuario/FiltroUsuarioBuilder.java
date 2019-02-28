@@ -13,9 +13,14 @@ public class FiltroUsuarioBuilder {
 
     private static final String RESULT_BUSCA_USUARIO = "select distinct(vue.id), vue.login, vue.nome, vue.email from vw_usuario_entidade vue ";
     private static final String COUNT_BUSCA_USUARIO = "select count(distinct vue.id) from vw_usuario_entidade vue ";
+    private static final String RESULT_BUSCA_USUARIO_RELATORIO = "select vue.id, vue.login, vue.nome, vue.email, vue.nome_perfil from vw_usuario_entidade vue " +
+            "left join departamento_regional dr on dr.id_departamento_regional = vue.id_departamento_regional_fk " +
+            "left join empresa e on id_empresa =  vue.empresa_fk " +
+            "left join und_atd_trabalhador uat on id_und_atd_trabalhador = vue.id_und_atd_trab_fk ";
+    private static final String COUNT_BUSCA_USUARIO_RELATORIO = "select vue.id from vw_usuario_entidade vue ";
 
     private final Filtro filtroPesquisa;
-    private final Filtro filtroHierarquia;
+    private final Filtro filtroHierarquiaBuscaUsuario;
     private final Filtro filtroDrs;
     private final Filtro filtroUnidadeSesi;
     private final Filtro filtroTrabalhador;
@@ -25,7 +30,7 @@ public class FiltroUsuarioBuilder {
 
     public FiltroUsuarioBuilder(UsuarioFilter usuarioFilter, DadosFilter dados, Usuario usuario) {
         this.filtroPesquisa = new FiltroPesquisa().aplica(usuarioFilter, dados, usuario);
-        this.filtroHierarquia = new FiltroHierarquia().aplica(usuarioFilter, dados, usuario);
+        this.filtroHierarquiaBuscaUsuario = new FiltroHierarquiaBuscaUsuario().aplica(usuarioFilter, dados, usuario);
         this.filtroDrs = new FiltroDrs().aplica(usuarioFilter, dados, usuario);
         this.filtroUnidadeSesi = new FiltroUnidadeSesi().aplica(usuarioFilter, dados, usuario);
         this.filtroTrabalhador = new FiltroTrabalhador().aplica(usuarioFilter, dados, usuario);
@@ -36,10 +41,10 @@ public class FiltroUsuarioBuilder {
 
     public FiltroUsuarioBuilder buildPesquisaUsuario() {
         return this.addFiltroDePesquisa()
-            .addFiltroDeHierarquia();
-//            .addFiltroTrabalhador();
-//            .addFiltroPorDrs()
-//            .addFiltroPorUnidadeSesi();
+            .addFiltroDeHierarquia()
+            .addFiltroPorDrs()
+            .addFiltroPorUnidadeSesi()
+            .addFiltroTrabalhador();
     }
 
     private FiltroUsuarioBuilder addFiltroDePesquisa() {
@@ -53,7 +58,7 @@ public class FiltroUsuarioBuilder {
     }
 
     private FiltroUsuarioBuilder addFiltroDeHierarquia() {
-        if(!Strings.isNullOrEmpty(filtroHierarquia.getQuery())) {
+        if(!Strings.isNullOrEmpty(filtroHierarquiaBuscaUsuario.getQuery())) {
             if(!Strings.isNullOrEmpty(filtroPesquisa.getQuery())) {
                 this.query.append(" and ");
             }
@@ -61,8 +66,8 @@ public class FiltroUsuarioBuilder {
                 this.query.append(" where ");
             }
 
-            this.query.append(filtroHierarquia.getQuery());
-            this.parametros.putAll(filtroHierarquia.getParametros());
+            this.query.append(filtroHierarquiaBuscaUsuario.getQuery());
+            this.parametros.putAll(filtroHierarquiaBuscaUsuario.getParametros());
         }
 
         return this;
@@ -90,7 +95,9 @@ public class FiltroUsuarioBuilder {
 
     private FiltroUsuarioBuilder addFiltroTrabalhador() {
         if(!Strings.isNullOrEmpty(filtroTrabalhador.getQuery())) {
-            this.queryPorPermissao.append(filtroTrabalhador.getQuery());
+            addOrNaQueryPorPermissao(this.queryPorPermissao);
+            String queryTrabalhador = "("+filtroTrabalhador.getQuery()+")";
+            this.queryPorPermissao.append(queryTrabalhador);
             this.parametros.putAll(filtroTrabalhador.getParametros());
         }
 

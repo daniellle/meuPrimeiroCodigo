@@ -18,9 +18,9 @@ public class FiltroDrs extends FiltroUsuario {
             return this.filtro;
         }
 
-        if(dadosFilter.isGestorDr()) {
-            this.filtro.adicionaRestricao("vue.id_departamento_regional_fk in (:idsDrs)", "idsDrs", dadosFilter.getIdsDepartamentoRegional());
-        }
+//        if(dadosFilter.isGestorDr()) {
+//            this.filtro.adicionaRestricao("vue.id_departamento_regional_fk in (:idsDrs)", "idsDrs", dadosFilter.getIdsDepartamentoRegional());
+//        }
 
         return this.filtro;
     }

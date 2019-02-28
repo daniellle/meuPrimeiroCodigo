@@ -77,10 +77,6 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
     this.filtro.codigoPerfil = '';
   }
 
-  hierarquiaUsuarioLogado() {
-    this.filtro.usuarioLogadoHierarquia = this.usuarioLogado.nivel;
-  }
-
   criandoPerfilVazio(){
       this.semPerfilBarramento.nome = "Sem Perfil";
       this.semPerfilBarramento.codigo = 'SP';
