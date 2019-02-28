@@ -13,14 +13,16 @@ public class FiltroUsuarioBuilder {
 
     private static final String RESULT_BUSCA_USUARIO = "select distinct(vue.id), vue.login, vue.nome, vue.email from vw_usuario_entidade vue ";
     private static final String COUNT_BUSCA_USUARIO = "select count(distinct vue.id) from vw_usuario_entidade vue ";
-    private static final String RESULT_BUSCA_USUARIO_RELATORIO = "select vue.id, vue.login, vue.nome, vue.email, vue.nome_perfil from vw_usuario_entidade vue " +
-            "left join departamento_regional dr on dr.id_departamento_regional = vue.id_departamento_regional_fk " +
-            "left join empresa e on id_empresa =  vue.empresa_fk " +
+    private static final String JOINS_RELATORIO_USUARIO = "left join departamento_regional dr on dr.id_departamento_regional = vue.id_departamento_regional_fk " +
+            "left join empresa e on id_empresa =  vue.id_empresa_fk " +
             "left join und_atd_trabalhador uat on id_und_atd_trabalhador = vue.id_und_atd_trab_fk ";
-    private static final String COUNT_BUSCA_USUARIO_RELATORIO = "select vue.id from vw_usuario_entidade vue ";
+    private static final String RESULT_BUSCA_USUARIO_RELATORIO = "select vue.nome, vue.login, vue.nome_perfil, dr.ds_nome_fantasia, uat.nm_fantasia, e.nm_fantasia as nome_empresa from vw_usuario_entidade vue " +
+           JOINS_RELATORIO_USUARIO;
+    private static final String COUNT_BUSCA_USUARIO_RELATORIO = "select count(1) from vw_usuario_entidade vue " + JOINS_RELATORIO_USUARIO;
 
     private final Filtro filtroPesquisa;
     private final Filtro filtroHierarquiaBuscaUsuario;
+    private final Filtro filtroHierarquiaRelatorioUsuario;
     private final Filtro filtroDrs;
     private final Filtro filtroUnidadeSesi;
     private final Filtro filtroTrabalhador;
@@ -31,6 +33,7 @@ public class FiltroUsuarioBuilder {
     public FiltroUsuarioBuilder(UsuarioFilter usuarioFilter, DadosFilter dados, Usuario usuario) {
         this.filtroPesquisa = new FiltroPesquisa().aplica(usuarioFilter, dados, usuario);
         this.filtroHierarquiaBuscaUsuario = new FiltroHierarquiaBuscaUsuario().aplica(usuarioFilter, dados, usuario);
+        this.filtroHierarquiaRelatorioUsuario = new FiltroHierarquiaRelatorioUsuario().aplica(usuarioFilter, dados, usuario);
         this.filtroDrs = new FiltroDrs().aplica(usuarioFilter, dados, usuario);
         this.filtroUnidadeSesi = new FiltroUnidadeSesi().aplica(usuarioFilter, dados, usuario);
         this.filtroTrabalhador = new FiltroTrabalhador().aplica(usuarioFilter, dados, usuario);
@@ -41,10 +44,18 @@ public class FiltroUsuarioBuilder {
 
     public FiltroUsuarioBuilder buildPesquisaUsuario() {
         return this.addFiltroDePesquisa()
-            .addFiltroDeHierarquia()
+            .addFiltroDeHierarquiaPesquisaUsuarios()
             .addFiltroPorDrs()
             .addFiltroPorUnidadeSesi()
             .addFiltroTrabalhador();
+    }
+
+    public FiltroUsuarioBuilder buildRelatorioUsuario() {
+        return this.addFiltroDePesquisa()
+                .addFiltroDeHierarquiaRelatorioUsuarios()
+                .addFiltroPorDrs()
+                .addFiltroPorUnidadeSesi()
+                .addFiltroTrabalhador();
     }
 
     private FiltroUsuarioBuilder addFiltroDePesquisa() {
@@ -57,7 +68,7 @@ public class FiltroUsuarioBuilder {
         return this;
     }
 
-    private FiltroUsuarioBuilder addFiltroDeHierarquia() {
+    private FiltroUsuarioBuilder addFiltroDeHierarquiaPesquisaUsuarios() {
         if(!Strings.isNullOrEmpty(filtroHierarquiaBuscaUsuario.getQuery())) {
             if(!Strings.isNullOrEmpty(filtroPesquisa.getQuery())) {
                 this.query.append(" and ");
@@ -68,6 +79,22 @@ public class FiltroUsuarioBuilder {
 
             this.query.append(filtroHierarquiaBuscaUsuario.getQuery());
             this.parametros.putAll(filtroHierarquiaBuscaUsuario.getParametros());
+        }
+
+        return this;
+    }
+
+    private FiltroUsuarioBuilder addFiltroDeHierarquiaRelatorioUsuarios() {
+        if(!Strings.isNullOrEmpty(filtroHierarquiaRelatorioUsuario.getQuery())) {
+            if(!Strings.isNullOrEmpty(filtroPesquisa.getQuery())) {
+                this.query.append(" and ");
+            }
+            else {
+                this.query.append(" where ");
+            }
+
+            this.query.append(filtroHierarquiaRelatorioUsuario.getQuery());
+            this.parametros.putAll(filtroHierarquiaRelatorioUsuario.getParametros());
         }
 
         return this;
@@ -116,6 +143,14 @@ public class FiltroUsuarioBuilder {
 
     public String getQueryCountPesquisaUsuario() {
         return COUNT_BUSCA_USUARIO + query.toString() + getQueryPorPermissao();
+    }
+
+    public String getQueryRelatorioUsuario() {
+        return RESULT_BUSCA_USUARIO_RELATORIO  + query.toString() + getQueryPorPermissao() + " order by vue.nome asc";
+    }
+
+    public String getQueryCountRelatorioUsuario() {
+        return COUNT_BUSCA_USUARIO_RELATORIO + query.toString() + getQueryPorPermissao();
     }
 
     private String getQueryPorPermissao() {

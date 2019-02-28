@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -56,16 +57,17 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
         return listaPaginada;
     }
 
-    public ListaPaginada<PerfilUsuarioDTO> pesquisarPerfilUsuarioFiltro(UsuarioFilter usuarioFilter, DadosFilter dados, List<String> listaDeLogins) {
-        LOGGER.debug("Pesquisando PerfilUsuarioDTO por filtro para geração de lista paginada");
+    public ListaPaginada<PerfilUsuarioDTO> pesquisarPerfilUsuarioFiltro(UsuarioFilter usuarioFilter, DadosFilter dados, Usuario usuario) {
         ListaPaginada<PerfilUsuarioDTO> listaPaginada = new ListaPaginada<>(0L, new ArrayList<>());
+        FiltroUsuarioBuilder builder = new FiltroUsuarioBuilder(usuarioFilter, dados, usuario).buildRelatorioUsuario();
 
-        StringBuilder sql = new StringBuilder();
-        Map<String, Object> parametros = Maps.newHashMap();
-        getQueryPaginadoNativoPerfilUsuario(sql, parametros, usuarioFilter, dados, false, listaDeLogins);
-        Query query = criarConsultaNativa(sql.toString());
-        DAOUtil.setParameterMap(query, parametros);
-        listaPaginada.setQuantidade(getCountQueryPaginado(usuarioFilter, dados, listaDeLogins).longValue());
+        Query query = criarConsultaNativa(builder.getQueryRelatorioUsuario());
+        Query queryCount = criarConsultaNativa(builder.getQueryCountRelatorioUsuario());
+
+        DAOUtil.setParameterMap(query, builder.getParametros());
+        DAOUtil.setParameterMap(queryCount, builder.getParametros());
+
+        listaPaginada.setQuantidade(((BigInteger) DAOUtil.getSingleResult(queryCount)).longValue());
 
         if (usuarioFilter != null && usuarioFilter.getPagina() != null
                 && usuarioFilter.getQuantidadeRegistro() != null) {
@@ -73,21 +75,21 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
             query.setMaxResults(usuarioFilter.getQuantidadeRegistro());
         }
 
-        listaPaginada.setList(preencherLista(query.getResultList()));
+        List<Object[]> list = query.getResultList();
+
+        listaPaginada.setList(preencherLista(list));
+
         return listaPaginada;
     }
 
-    public List<PerfilUsuarioDTO> pesquisarRelatorioFiltro(UsuarioFilter usuarioFilter, DadosFilter dados, List<String> listaDeLogin) {
+    public List<PerfilUsuarioDTO> pesquisarRelatorioFiltro(UsuarioFilter usuarioFilter, DadosFilter dados, Usuario usuario) {
         LOGGER.debug("Pesquisando PerfilUsuario por filtro para geração de PDF");
+        FiltroUsuarioBuilder builder = new FiltroUsuarioBuilder(usuarioFilter, dados, usuario).buildRelatorioUsuario();
+        Query query = criarConsultaNativa(builder.getQueryRelatorioUsuario());
+        Query queryCount = criarConsultaNativa(builder.getQueryCountRelatorioUsuario());
 
-        StringBuilder sql = new StringBuilder();
-        Map<String, Object> parametros = Maps.newHashMap();
-        getQueryPaginadoNativoPerfilUsuario(sql, parametros, usuarioFilter, dados, false, listaDeLogin);
-        Query query = criarConsultaNativa(sql.toString());
-        DAOUtil.setParameterMap(query, parametros);
-
+        DAOUtil.setParameterMap(query, builder.getParametros());
         List<Object[]> list = query.getResultList();
-
 
         return preencherLista(list);
     }
@@ -376,23 +378,23 @@ public class UsuarioGirstViewDAO extends BaseDAO<UsuarioGirstView, Long> {
 
         for (Object[] objeto : list) {
             PerfilUsuarioDTO pu = new PerfilUsuarioDTO();
+            if (objeto[0] != null) {
+                pu.setNome(objeto[0].toString());
+            }
             if (objeto[1] != null) {
-                pu.setNome(objeto[1].toString());
+                pu.setLogin(objeto[1].toString());
             }
             if (objeto[2] != null) {
-                pu.setLogin(objeto[2].toString());
+                pu.setPerfil(objeto[2].toString());
+            }
+            if (objeto[3] != null) {
+                pu.setDepartamento(objeto[3].toString());
             }
             if (objeto[4] != null) {
-                pu.setPerfil(objeto[4].toString());
+                pu.setUnidade(objeto[4].toString());
             }
             if (objeto[5] != null) {
                 pu.setEmpresa(objeto[5].toString());
-            }
-            if (objeto[6] != null) {
-                pu.setDepartamento(objeto[6].toString());
-            }
-            if (objeto[7] != null) {
-                pu.setUnidade(objeto[7].toString());
             }
             perfis.add(pu);
         }
