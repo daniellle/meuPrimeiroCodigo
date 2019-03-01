@@ -40,7 +40,9 @@ public class UatInstalacaoFisicaService extends BaseService {
                 if (uatInstalacaoFisica.getArea() != null &&
                         uatInstalacaoFisica.getQuantidade() != null &&
                         uatInstalacaoFisica.getUnidadeAtendimentoTrabalhador() != null &&
-                        uatInstalacaoFisica.getUnidadeAtendimentoTrabalhador().getId() != null) {
+                        uatInstalacaoFisica.getUnidadeAtendimentoTrabalhador().getId() != null &&
+                        uatInstalacaoFisica.getUatInstalacaoFisicaAmbiente() != null &&
+                        uatInstalacaoFisica.getUatInstalacaoFisicaAmbiente().getId() != null) {
                     listaSalvar.add(uatInstalacaoFisica);
                 }
             }

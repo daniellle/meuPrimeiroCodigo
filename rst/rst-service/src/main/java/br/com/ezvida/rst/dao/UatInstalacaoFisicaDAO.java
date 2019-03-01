@@ -1,25 +1,22 @@
 package br.com.ezvida.rst.dao;
 
+import br.com.ezvida.rst.model.UatInstalacaoFisica;
+import br.com.ezvida.rst.model.dto.UatInstalacaoFisicaDTO;
+import fw.core.jpa.BaseDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import br.com.ezvida.rst.model.UatInstalacaoFisica;
-import br.com.ezvida.rst.model.dto.UatInstalacaoFisicaDTO;
-import fw.core.jpa.BaseDAO;
-
 public class UatInstalacaoFisicaDAO extends BaseDAO<UatInstalacaoFisica, Long> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UatInstalacaoFisicaDAO.class);
-
 
     @Inject
     public UatInstalacaoFisicaDAO(EntityManager em) {
