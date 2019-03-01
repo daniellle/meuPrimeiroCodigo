@@ -212,11 +212,11 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> pesquisarPaginadoGirst(
-            br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
+            br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados, Usuario usuario
             , ClienteAuditoria auditoria) {
 
         br.com.ezvida.rst.dao.filter.ListaPaginada<UsuarioGirstView> listaPaginada = usuarioGirstViewDAO
-                .pesquisarPorFiltro(usuarioFilter, dados,  pesquisarLoginsPerfisHierarquiaSuperior(usuarioFilter));
+                .pesquisarPorFiltro(usuarioFilter, dados, usuario);
         LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
         return listaPaginada;
     }
@@ -236,11 +236,11 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
     @Override
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<PerfilUsuarioDTO> pesquisarPaginadoRelatorio(
-            br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
+            br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados, Usuario usuario
             , ClienteAuditoria auditoria) {
 
         List<PerfilUsuarioDTO> lista = usuarioGirstViewDAO
-                .pesquisarRelatorioFiltro(usuarioFilter, dados, pesquisarLoginsPerfisHierarquiaSuperior(usuarioFilter));
+                .pesquisarRelatorioFiltro(usuarioFilter, dados, usuario);
         LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
         return lista;
     }
@@ -248,11 +248,11 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
     @Override
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public br.com.ezvida.rst.dao.filter.ListaPaginada<PerfilUsuarioDTO> pesquisarListaPaginadaPerfilUsuario(
-            br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados
+            br.com.ezvida.rst.dao.filter.UsuarioFilter usuarioFilter, DadosFilter dados, Usuario usuario
             , ClienteAuditoria auditoria) {
 
         br.com.ezvida.rst.dao.filter.ListaPaginada<PerfilUsuarioDTO> lista = usuarioGirstViewDAO
-                .pesquisarPerfilUsuarioFiltro(usuarioFilter, dados, pesquisarLoginsPerfisHierarquiaSuperior(usuarioFilter));
+                .pesquisarPerfilUsuarioFiltro(usuarioFilter, dados, usuario);
         LogAuditoria.registrar(LOGGER, auditoria, "pesquisa de usuário por filtro: ", usuarioFilter);
         return lista;
     }

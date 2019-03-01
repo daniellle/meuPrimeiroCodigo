@@ -39,7 +39,11 @@ public class PerfilUsuarioEndpoint extends SegurancaEndpoint<PerfilUsuarioDTO> {
     @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.USUARIO, PermissionConstants.USUARIO_CADASTRAR, PermissionConstants.USUARIO_ALTERAR, PermissionConstants.USUARIO_CONSULTAR, PermissionConstants.USUARIO_DESATIVAR, PermissionConstants.USUARIO_ENTIDADE, PermissionConstants.USUARIO_ENTIDADE_CADASTRAR, PermissionConstants.USUARIO_ENTIDADE_ALTERAR, PermissionConstants.USUARIO_ENTIDADE_CONSULTAR, PermissionConstants.USUARIO_ENTIDADE_DESATIVAR}))
     public Response buscaPagina(@BeanParam UsuarioFilter usuarioFilter, @Context SecurityContext context, @Context HttpServletRequest request){
         LOGGER.debug("Inicio da busca paginada perfil x usuário");
-        return Response.status(HttpServletResponse.SC_OK).type("application/json").header("Content-Version", getApplicationVersion()).entity(serializar(service.pesquisarPaginado(usuarioFilter, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS)))).build();
+        return Response.status(HttpServletResponse.SC_OK).type("application/json")
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(service.pesquisarPaginado(usuarioFilter, ClienteInfos.getDadosFilter(context), ClienteInfos.getUsuario(context),
+                ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS))))
+            .build();
     }
 
 
@@ -56,6 +60,7 @@ public class PerfilUsuarioEndpoint extends SegurancaEndpoint<PerfilUsuarioDTO> {
         LOGGER.debug("Gerando PDF por filtro");
         byte[] file = service.gerarRelatorioPDF(usuarioFilter
             , ClienteInfos.getDadosFilter(context)
+            , ClienteInfos.getUsuario(context)
             , ClienteInfos.getClienteInfos(context, request
                 , TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS));
         return Response.status(HttpServletResponse.SC_OK).type("application/pdf")
@@ -81,6 +86,7 @@ public class PerfilUsuarioEndpoint extends SegurancaEndpoint<PerfilUsuarioDTO> {
 
         byte[] file = service.gerarRelatorioXLS(usuarioFilter
             , ClienteInfos.getDadosFilter(context)
+            , ClienteInfos.getUsuario(context)
             , ClienteInfos.getClienteInfos(context, request
                 , TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS));
         return Response.status(HttpServletResponse.SC_OK).type("application/vnd.ms-excel")
