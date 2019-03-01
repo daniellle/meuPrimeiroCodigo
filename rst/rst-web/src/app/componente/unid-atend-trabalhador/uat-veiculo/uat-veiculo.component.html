@@ -44,6 +44,7 @@
   </div>
   <div class="btn-rodape-acoes space-up" *ngIf="idVeiculoTipoSelecionado">
     <button class="btn btn-primary" [(disabled)]="modoConsulta" (click)="salvar()">{{ 'app_rst_btn_salvar' | recurso}}</button>
+    <button class="btn btn-secondary" [(disabled)]="modoConsulta" (click)="cancelar()">{{ 'app_rst_btn_cancelar' | recurso}}</button>
   </div>
 
   <div class="space-up" *ngIf="showGrid()">
@@ -55,18 +56,18 @@
             <table class="table table-responsive">
                 <thead class="header-grid">
                     <tr>
-                      <th *ngIf="item.isTipoAtendimento" ><span>{{ 'app_rst_labels_tipo_de_atendimento' | recurso }}</span></th>
-                      <th class="text-center"><span>{{ 'app_rst_labels_quantidade' | recurso }}</span></th>
-                      <th class="text-center"></th>
+                      <th class="column-label" *ngIf="item.isTipoAtendimento" ><span>{{ 'app_rst_labels_tipo_de_atendimento' | recurso }}</span></th>
+                      <th class="column-quantidade" [ngClass]="{'grid-sem-descricao': !item.isTipoAtendimento}"><span>{{ 'app_rst_labels_quantidade' | recurso }}</span></th>
+                      <th class="column-btn"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="content-grid">
                   <tr *ngFor="let veiculo of item.veiculos">
-                    <td *ngIf="item.isTipoAtendimento">{{ veiculo.descricao }}</td>
-                    <td class="text-center">{{ veiculo.quantidade}}</td>
-                    <td class="text-center">
+                    <td class="column-label" *ngIf="item.isTipoAtendimento">{{ veiculo.descricao }}</td>
+                    <td class="column-quantidade" [ngClass]="{'grid-sem-descricao': !item.isTipoAtendimento}">{{ veiculo.quantidade}}</td>
+                    <td class="column-btn">
                         <button class="btn-link"
-                          #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Desativar'" [mdTooltipPosition]="'below'">
+                          #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Exluir'" [mdTooltipPosition]="'below'">
                           <img class="lixo" [src]="'assets/img/trash.svg'">
                         </button>
                     </td>

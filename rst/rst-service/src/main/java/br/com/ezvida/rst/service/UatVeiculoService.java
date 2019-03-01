@@ -20,6 +20,7 @@ import br.com.ezvida.rst.model.UatVeiculoTipoAtendimento;
 import br.com.ezvida.rst.model.UnidadeAtendimentoTrabalhador;
 import br.com.ezvida.rst.model.dto.UatVeiculoDTO;
 import br.com.ezvida.rst.model.dto.UatVeiculoGroupedByTipoDTO;
+import fw.core.exception.BusinessErrorException;
 import fw.core.service.BaseService;
 
 @Stateless
@@ -45,12 +46,46 @@ public class UatVeiculoService extends BaseService {
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public List<UatVeiculoDTO> salvar(List<UatVeiculoDTO> listVeiculoDTO) {
+		validarSeOVeiculoJaEstaCadastrado(listVeiculoDTO);
 		return listVeiculoDTO.stream().map(item -> {
 			UatVeiculo uatVeiculo = parseToEntity(item);
 			uatVeiculoDAO.salvar(uatVeiculo);
 			item.setId(uatVeiculo.getId());
 			return item;
 		}).collect(Collectors.toList());
+	}
+
+	private void validarSeOVeiculoJaEstaCadastrado(List<UatVeiculoDTO> listVeiculoDTO) {
+		Long idUat = listVeiculoDTO.get(0).getIdUat();
+		List<UatVeiculo> uatVeiculosCadastrados = uatVeiculoDAO.listAllUatVeiculosByIdUat(idUat);
+		boolean hasVeiculoPasseioCadastrado = uatVeiculosCadastrados.stream().anyMatch(item -> item.getUatVeiculoTipo().getId().equals(2L));
+		List<Long> unidadesMoveisCadastradas = uatVeiculosCadastrados.stream()
+				.filter(item -> !item.getUatVeiculoTipo().getId().equals(2L))
+				.map(item -> item.getUnidadeVeiculoTipoAtendimento().getId())
+				.collect(Collectors.toList());
+		
+		String descricaoVeiculoPasseio = getDescricaoVeiculoTipo2(uatVeiculosCadastrados, hasVeiculoPasseioCadastrado);
+		
+		for (UatVeiculoDTO uatVeiculoDTO : listVeiculoDTO) {
+			if (uatVeiculoDTO.getIdTipo() != null && uatVeiculoDTO.getIdTipo().equals(2L) && hasVeiculoPasseioCadastrado) {
+				throw new BusinessErrorException(getMensagem("app_rst_veiculo_duplicado", descricaoVeiculoPasseio));
+			}
+			
+			if(uatVeiculoDTO.getIdVeiculoTipoAtendimento() != null && unidadesMoveisCadastradas.contains(uatVeiculoDTO.getIdVeiculoTipoAtendimento())) {
+				throw new BusinessErrorException(getMensagem("app_rst_veiculo_duplicado", uatVeiculoDTO.getDescricao()));
+			}
+		}
+	}
+
+	private String getDescricaoVeiculoTipo2(List<UatVeiculo> uatVeiculosCadastrados,
+			boolean hasVeiculoPasseioCadastrado) {
+		if(hasVeiculoPasseioCadastrado) {
+			return uatVeiculosCadastrados.stream()
+					.filter(item -> item.getUatVeiculoTipo().getId().equals(2L))
+					.map(item -> item.getUatVeiculoTipo().getDescricao())
+					.findFirst().orElse("");
+		}
+		return "";
 	}
 
 	private UatVeiculo parseToEntity(UatVeiculoDTO dto) {

@@ -10,6 +10,7 @@ import { ToastyService } from 'ng2-toasty';
 import { BaseComponent } from 'app/componente/base.component';
 import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
 import { UatVeiculoGroupedTipoDTO } from 'app/modelo/uat-veiculo-grouped-tipo-dto';
+import { UatVeiculoDTO } from 'app/modelo/uat-veiculo-dto';
 
 @Component({
   selector: 'app-uat-veiculo',
@@ -48,11 +49,16 @@ export class UatVeiculoComponent extends BaseComponent implements OnInit {
     if (this.isValid()) {
       this.uatVeiculoService.salvar(this.prepareSave()).subscribe((res) => {
         this.resetForm();
+        this.loadUatVeiculoGroupedByTipo();
         this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
       }, (error) => {
         this.mensagemError(error);
       })
     }
+  }
+
+  cancelar(): void {
+    this.resetForm();
   }
 
   changeTipo(id: Number): void {
@@ -75,7 +81,7 @@ export class UatVeiculoComponent extends BaseComponent implements OnInit {
   }
 
   showGrid(): boolean {
-    return true;
+    return this.listUatVeiculoGroupedByTipo && this.listUatVeiculoGroupedByTipo.length > 0;
   }
 
   private resetForm(): void {
@@ -95,6 +101,7 @@ export class UatVeiculoComponent extends BaseComponent implements OnInit {
             idTipo: this.idVeiculoTipoSelecionado,
             quantidade: item.quantidade,
             idUat: this.idUat,
+            descricao: item.uatVeiculoTipoAtendimento.descricao,
             idVeiculoTipoAtendimento: item.uatVeiculoTipoAtendimento.id
           }
         });
