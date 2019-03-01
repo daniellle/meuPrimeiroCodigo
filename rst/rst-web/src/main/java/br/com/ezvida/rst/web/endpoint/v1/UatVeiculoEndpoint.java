@@ -19,11 +19,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import br.com.ezvida.rst.enums.Funcionalidade;
+import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.model.UatVeiculoTipo;
 import br.com.ezvida.rst.model.dto.UatVeiculoDTO;
 import br.com.ezvida.rst.service.UatVeiculoService;
 import br.com.ezvida.rst.service.UatVeiculoTipoAtendimentoService;
 import br.com.ezvida.rst.service.UatVeiculoTipoService;
+import br.com.ezvida.rst.web.auditoria.ClienteInfos;
 import fw.web.endpoint.SegurancaEndpoint;
 
 @RequestScoped
@@ -64,20 +67,29 @@ public class UatVeiculoEndpoint extends SegurancaEndpoint<UatVeiculoTipo> {
 	@Encoded
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response salvarVeiculo(@Encoded List<UatVeiculoDTO> listUatVeiculoDTO, @Context SecurityContext context
-			, @Context HttpServletRequest request) {
-        getResponse().setCharacterEncoding(StandardCharsets.UTF_8.displayName());
-	    return Response.status(HttpServletResponse.SC_CREATED)
-				.entity(uatVeiculoService.salvar(listUatVeiculoDTO))
+	public Response salvarVeiculo(@Encoded List<UatVeiculoDTO> listUatVeiculoDTO, @Context SecurityContext context,
+			@Context HttpServletRequest request) {
+		getResponse().setCharacterEncoding(StandardCharsets.UTF_8.displayName());
+		return Response.status(HttpServletResponse.SC_CREATED)
+				.entity(uatVeiculoService.salvar(listUatVeiculoDTO,
+						ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.INCLUSAO,
+								Funcionalidade.GESTAO_UNIDADE_SESI),
+						ClienteInfos.getDadosFilter(context)))
 				.type(MediaType.APPLICATION_JSON).build();
 	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response listAllUatVeiculoGroupedByTipo(@QueryParam("idUat") Long idUat) {
+	public Response listAllUatVeiculoGroupedByTipo(@QueryParam("idUat") Long idUat, @Context SecurityContext context,
+			@Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
 				.header(CONTENT_VERSION, getApplicationVersion())
-				.entity(serializar(uatVeiculoService.listAllUatVeiculoGroupedByTipo(idUat))).build();
+				.entity(serializar(
+						uatVeiculoService.listAllUatVeiculoGroupedByTipo(idUat,
+								ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA,
+										Funcionalidade.GESTAO_UNIDADE_SESI),
+								ClienteInfos.getDadosFilter(context))))
+				.build();
 	}
 
 }
