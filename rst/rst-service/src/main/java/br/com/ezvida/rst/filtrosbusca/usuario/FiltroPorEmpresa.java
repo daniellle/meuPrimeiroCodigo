@@ -27,7 +27,7 @@ public class FiltroPorEmpresa extends FiltroUsuario {
             }
             str.append(" vue.id_empresa_fk in ");
             str.append(" (select id_empresa from empresa join und_obra on id_empresa = id_empresa_fk ");
-            str.append(" join und_obra_contrato_uat on id_und_obra_contrato_uat = id_und_obra where id_und_atd_trabalhador_fk in ");
+            str.append(" join und_obra_contrato_uat on id_und_obra = id_und_obra_fk where id_und_atd_trabalhador_fk in ");
             str.append(" (select id_und_atd_trabalhador from und_atd_trabalhador ");
             str.append(" where id_departamento_regional_fk in (:idsDrs))) ");
 

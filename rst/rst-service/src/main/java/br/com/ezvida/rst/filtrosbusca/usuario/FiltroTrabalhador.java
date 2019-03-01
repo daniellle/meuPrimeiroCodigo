@@ -46,7 +46,7 @@ public class FiltroTrabalhador extends FiltroUsuario {
             str.append(" vue.login in ");
             str.append(" (select no_cpf from trabalhador join emp_trabalhador on id_trabalhador_fk = id_trabalhador where id_empresa_fk ");
             str.append(" in (select id_empresa from empresa join und_obra on id_empresa = id_empresa_fk ");
-            str.append(" join und_obra_contrato_uat on id_und_obra_contrato_uat = id_und_obra_fk ");
+            str.append(" join und_obra_contrato_uat on id_und_obra = id_und_obra_fk ");
             str.append(" where id_und_atd_trabalhador_fk in (:idsUnidadesSesi))) ");
 
             this.filtro.adicionaRestricao(str.toString(), "idsUnidadesSesi", dadosFilter.getIdsUnidadeSESI());
