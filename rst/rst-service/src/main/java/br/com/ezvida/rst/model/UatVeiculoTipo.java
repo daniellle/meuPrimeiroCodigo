@@ -4,6 +4,9 @@ import fw.core.model.BaseEntity;
 
 import javax.persistence.*;
 
+import br.com.ezvida.rst.converter.SimNaoConverter;
+import br.com.ezvida.rst.enums.SimNao;
+
 @Entity
 @Table(name = "UAT_VEICULO_TIPO", uniqueConstraints = @UniqueConstraint(name = "PK_UAT_VEICULO_TIPO", columnNames = {
         "ID_UAT_VEICULO_TIPO"}))
@@ -17,8 +20,19 @@ public class UatVeiculoTipo extends BaseEntity<Long> {
 
     @Column(name = "DESCRICAO", nullable = false)
     private String descricao;
+    
+    @Column(name = "FL_ATENDIMENTO")
+	@Convert(converter = SimNaoConverter.class)
+	private SimNao atendimento;
 
-    public Long getId() {
+    public UatVeiculoTipo() {
+	}
+
+	public UatVeiculoTipo(Long id) {
+		this.id = id;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -34,4 +48,11 @@ public class UatVeiculoTipo extends BaseEntity<Long> {
         this.descricao = descricao;
     }
 
+	public SimNao getAtendimento() {
+		return atendimento;
+	}
+
+	public void setAtendimento(SimNao atendimento) {
+		this.atendimento = atendimento;
+	}
 }

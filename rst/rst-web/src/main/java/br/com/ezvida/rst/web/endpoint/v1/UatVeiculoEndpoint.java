@@ -13,6 +13,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -69,6 +70,14 @@ public class UatVeiculoEndpoint extends SegurancaEndpoint<UatVeiculoTipo> {
 	    return Response.status(HttpServletResponse.SC_CREATED)
 				.entity(uatVeiculoService.salvar(listUatVeiculoDTO))
 				.type(MediaType.APPLICATION_JSON).build();
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response listAllUatVeiculoGroupedByTipo(@QueryParam("idUat") Long idUat) {
+		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
+				.header(CONTENT_VERSION, getApplicationVersion())
+				.entity(serializar(uatVeiculoService.listAllUatVeiculoGroupedByTipo(idUat))).build();
 	}
 
 }

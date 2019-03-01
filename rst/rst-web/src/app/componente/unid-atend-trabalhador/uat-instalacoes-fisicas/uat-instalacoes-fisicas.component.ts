@@ -5,7 +5,6 @@ import { BloqueioService } from './../../../servico/bloqueio.service';
 import { BaseComponent } from "app/componente/base.component";
 import { OnInit, Component, Input } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
 import { ToastyService } from 'ng2-toasty';
 import { UatInstalacaoFisicaService } from 'app/servico/uat-instalacao-fisica.service';
 import { UatInstalacaoFisicaCategoriaService } from 'app/servico/uat-instalacao-fisica-categoria.service';
@@ -95,7 +94,6 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
                 new UatInstalacaoFisica(null, null, null, amb,
                     new UnidadeAtendimentoTrabalhador(this.idUnidade)));
         }
-        console.log(this.listInstalacoesFisicasSave);
     }
 
     private emModoConsulta() {

@@ -1,14 +1,13 @@
 package br.com.ezvida.rst.dao;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import br.com.ezvida.rst.model.Trabalhador;
 import br.com.ezvida.rst.model.UatInstalacaoFisicaAmbiente;
 import fw.core.jpa.BaseDAO;
-
-import java.util.List;
 
 public class UatInstalacaoFisicaAmbienteDAO extends BaseDAO<UatInstalacaoFisicaAmbiente, Long> {
 

@@ -57,3 +57,30 @@ $font-color: #808080;
 .tabela {
     padding: 15px;
 }
+
+.table th, .table td {
+    padding: 0;
+}
+
+.titulo-table {
+    display: flex;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: $font-color;
+}
+
+.subtitulo-table {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    display: flex;
+}
+
+.header-grid {
+    width: 100%;
+    display: flex;
+    border-bottom: 1px solid lightgrey;
+}
+
+.table th, .table td, .table td + td {
+    border: none !important;
+}

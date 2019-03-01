@@ -9,6 +9,7 @@ import { BloqueioService } from 'app/servico/bloqueio.service';
 import { ToastyService } from 'ng2-toasty';
 import { BaseComponent } from 'app/componente/base.component';
 import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
+import { UatVeiculoGroupedTipoDTO } from 'app/modelo/uat-veiculo-grouped-tipo-dto';
 
 @Component({
   selector: 'app-uat-veiculo',
@@ -21,10 +22,12 @@ export class UatVeiculoComponent extends BaseComponent implements OnInit {
   @Input() modoConsulta: boolean;
 
   listUatVeiculoTipo = new Array<UatVeiculoTipo>();
-  listVeiculoUnidMoveis = new Array<UatVeiculo>();
+  listVeiculoWithAtendimento = new Array<UatVeiculo>();
+  listUatVeiculoGroupedByTipo = new Array<UatVeiculoGroupedTipoDTO>();
   veiculoPasseio: UatVeiculo;
   quantidadeVeiculoPasseio: Number;
   idVeiculoTipoSelecionado: Number;
+  tipoSelecionado = new UatVeiculoTipo();
 
 
   constructor(
@@ -38,51 +41,67 @@ export class UatVeiculoComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     this.loadVeiculoTipo();
     this.loadVeiculoTipoAtendimento();
+    this.loadUatVeiculoGroupedByTipo();
   }
 
   salvar(): void {
     if (this.isValid()) {
-      console.log('Salvando...' , this.prepareSave());
       this.uatVeiculoService.salvar(this.prepareSave()).subscribe((res) => {
-        console.log(res);
+        this.resetForm();
+        this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+      }, (error) => {
+        this.mensagemError(error);
       })
     }
   }
 
-  isValid() {
-    if (this.isVeiculoUnidadeMovel()) {
-      return this.unidadeMoveisIsValid();
-    }
+  changeTipo(id: Number): void {
+    this.tipoSelecionado = this.listUatVeiculoTipo.filter(item => item.id == id)[0];
+  }
 
-    if (this.isVeiculoAtendimentoPasseio()) {
-      return this.veiculoPasseiAtendimentoIsValid();
+  isValid(): boolean {
+    if (this.hasTipoAtendimento()) {
+      return this.validateUnidadeMovel();
+    } else {
+      return this.validateVeiculoPasseioAtendimento();
     }
+  }
 
+  hasTipoAtendimento(): boolean {
+    if(this.idVeiculoTipoSelecionado) {
+      return this.tipoSelecionado.atendimento;
+    }
     return false;
   }
 
-  isVeiculoAtendimentoPasseio(): boolean {
-    return this.idVeiculoTipoSelecionado === 2;
+  showGrid(): boolean {
+    return true;
   }
 
-  isVeiculoUnidadeMovel(): boolean {
-    return this.idVeiculoTipoSelecionado === 1;
+  private resetForm(): void {
+    this.idVeiculoTipoSelecionado = undefined;
+    this.listVeiculoWithAtendimento.map((item) => {
+      item.quantidade = undefined;
+    });
+    this.quantidadeVeiculoPasseio = undefined;
   }
 
   private prepareSave(): any[] {
-    if(this.isVeiculoUnidadeMovel()) {
-      return this.listVeiculoUnidMoveis.map((item) => {
-        return {
-          quantidade: item.quantidade,
-          idUat: this.idUat,
-          idVeiculoTipoAtendimento: item.uatVeiculoTipoAtendimento.id
-        }
-      });
-    }
-
-    if(this.isVeiculoAtendimentoPasseio()) {
+    if(this.hasTipoAtendimento()) {
+      return this.listVeiculoWithAtendimento
+        .filter(item => item.quantidade)
+        .map((item) => {
+          return {
+            idTipo: this.idVeiculoTipoSelecionado,
+            quantidade: item.quantidade,
+            idUat: this.idUat,
+            idVeiculoTipoAtendimento: item.uatVeiculoTipoAtendimento.id
+          }
+        });
+    } else {
       const list = new Array<any>();
-      const uatVeiculo = { 
+      const uatVeiculo = {
+        idTipo: this.idVeiculoTipoSelecionado,
         quantidade: Number(this.quantidadeVeiculoPasseio),
         idUat: this.idUat
       };
@@ -91,7 +110,7 @@ export class UatVeiculoComponent extends BaseComponent implements OnInit {
     }
   }
 
-  private veiculoPasseiAtendimentoIsValid(): boolean {
+  private validateVeiculoPasseioAtendimento(): boolean {
     if(!this.quantidadeVeiculoPasseio) {
       this.mensagemErroComParametrosModel('app_rst_campo_obrigatorio', MensagemProperties.app_rst_labels_quantidade);
       return false;
@@ -99,8 +118,8 @@ export class UatVeiculoComponent extends BaseComponent implements OnInit {
     return true;
   }
 
-  private unidadeMoveisIsValid(): boolean {
-    const listUnidadesMoveisParaSalvar = this.listVeiculoUnidMoveis.filter(item => item.quantidade);
+  private validateUnidadeMovel(): boolean {
+    const listUnidadesMoveisParaSalvar = this.listVeiculoWithAtendimento.filter(item => item.quantidade);
     if (!listUnidadesMoveisParaSalvar.length) {
       this.mensagemErroComParametros('app_rst_msg_nenhuma_quantidade_informada');
       return false;
@@ -114,7 +133,7 @@ export class UatVeiculoComponent extends BaseComponent implements OnInit {
     });
   }
 
-  private loadVeiculoTipoAtendimento() {
+  private loadVeiculoTipoAtendimento(): void {
       this.uatVeiculoService.listUatVeiculoTipoAtendimento().subscribe((res: UatVeiculoTipoAtendimento[]) => {
         res.forEach((item) => {
           const uatVeiculo = new UatVeiculo();
@@ -122,8 +141,16 @@ export class UatVeiculoComponent extends BaseComponent implements OnInit {
           const unidadeAtendimentoTrabalhador = new UnidadeAtendimentoTrabalhador();
           unidadeAtendimentoTrabalhador.id = this.idUat;
           uatVeiculo.unidadeAtendimentoTrabalhador = unidadeAtendimentoTrabalhador;
-          this.listVeiculoUnidMoveis.push(uatVeiculo);
+          this.listVeiculoWithAtendimento.push(uatVeiculo);
         });
+    });
+  }
+
+  private loadUatVeiculoGroupedByTipo(): void {
+    this.uatVeiculoService.listUatVeiculoByIdUatAndGroupedByTipo(this.idUat).subscribe((res: UatVeiculoGroupedTipoDTO[]) => {
+      this.listUatVeiculoGroupedByTipo = res;
+    }, (error) => {
+      this.mensagemError(error);
     });
   }
 }

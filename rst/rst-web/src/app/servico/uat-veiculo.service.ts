@@ -7,6 +7,7 @@ import { UatVeiculo } from "app/modelo/uat-veiculo";
 import { UatVeiculoTipo } from "app/modelo/uat-veiculo-tipo";
 import { UatVeiculoTipoAtendimento } from "app/modelo/uat-veiculo-tipo-atendimento";
 import { MensagemErro } from "app/modelo/mensagem-erro.model";
+import { UatVeiculoGroupedTipoDTO } from "app/modelo/uat-veiculo-grouped-tipo-dto";
 
 @Injectable()
 export class UatVeiculoService extends BaseService<UatVeiculo>{
@@ -44,5 +45,14 @@ export class UatVeiculoService extends BaseService<UatVeiculo>{
             }).finally(() => {
                 this.bloqueio.evento.emit(true);
             });
+    }
+
+    listUatVeiculoByIdUatAndGroupedByTipo(idUat: Number): Observable<UatVeiculoGroupedTipoDTO[]> {
+        return super.get(`/v1/uat-veiculo/?idUat=${idUat}`)
+            .map((response: UatVeiculoGroupedTipoDTO[]) => {
+                return response;
+            }).catch((error) => {
+                return Observable.throw(error);
+        });
     }
 }

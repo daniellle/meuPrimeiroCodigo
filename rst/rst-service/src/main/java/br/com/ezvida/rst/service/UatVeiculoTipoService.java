@@ -18,9 +18,13 @@ public class UatVeiculoTipoService extends BaseService{
   private UatVeiculoTipoDAO uatVeiculoTipoDAO;
   
   @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-  public List<UatVeiculoTipo> listarTodos() {  
+  public List<UatVeiculoTipo> listarTodos() {
       return uatVeiculoTipoDAO.pesquisarTodos();
   }
   
+  @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+  public UatVeiculoTipo findById(Long id) {
+      return uatVeiculoTipoDAO.pesquisarPorId(id);
+  }
 
 }
