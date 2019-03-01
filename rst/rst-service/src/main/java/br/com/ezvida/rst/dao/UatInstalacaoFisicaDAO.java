@@ -1,6 +1,5 @@
 package br.com.ezvida.rst.dao;
 
-import br.com.ezvida.rst.enums.Situacao;
 import br.com.ezvida.rst.model.UatInstalacaoFisica;
 import br.com.ezvida.rst.model.dto.UatInstalacaoFisicaDTO;
 import fw.core.jpa.BaseDAO;
@@ -18,7 +17,6 @@ import java.util.List;
 public class UatInstalacaoFisicaDAO extends BaseDAO<UatInstalacaoFisica, Long> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UatInstalacaoFisicaDAO.class);
-
 
     @Inject
     public UatInstalacaoFisicaDAO(EntityManager em) {

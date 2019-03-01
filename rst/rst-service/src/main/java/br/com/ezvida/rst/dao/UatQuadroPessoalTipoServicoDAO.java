@@ -22,7 +22,7 @@ public class UatQuadroPessoalTipoServicoDAO extends BaseDAO<UatQuadroPessoalTipo
         jpql.append(" select s UatQuadroPessoalTipoServico s inner join fetch s.uatQuadroPessoalArea a");
         jpql.append(" where a.id = :idArea ");
         TypedQuery<UatQuadroPessoalTipoServico> query = criarConsultaPorTipo(jpql.toString());
-        query.setParameter("idCategoria", idArea);
+        query.setParameter("idArea", idArea);
         return query.getResultList();
     }
 }
