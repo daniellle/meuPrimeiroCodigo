@@ -25,6 +25,10 @@ import { UatInstalacaoFisicaCategoriaAmbienteService } from 'app/servico/uat-ins
 import { UatInstalacaoFisicaService } from 'app/servico/uat-instalacao-fisica.service';
 import { UatVeiculoComponent } from './uat-veiculo/uat-veiculo.component';
 import { UatVeiculoService } from 'app/servico/uat-veiculo.service';
+import { UatQuadroPessoalAreaService } from 'app/servico/uat-quadro-pessoal-area.service';
+import { UatQuadroPessoaTipoServicoService } from 'app/servico/uat-quadro-pessoal-tipo-servico.service';
+import { UatQuadroPessoalTipoProfissionalService } from 'app/servico/uat-quadro-pessoal-tipo-profissional.service';
+import { UatQuadroPessoalService } from 'app/servico/uat-quadro-pessoal.service';
 
 const routes: Routes = [
     {
@@ -113,6 +117,6 @@ const routes: Routes = [
     exports: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent],
     declarations: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent, UatEstruturaUnidadeComponent, UatInstalacoesFisicasComponent, UatVeiculoComponent],
     providers: [UatService, DialogService, CadastroUatComponent, EstadoService, DepartRegionalService,
-        ProdutoServicoService, UatProdutoServicoService, LinhaService, UatInstalacaoFisicaCategoriaService, UatInstalacaoFisicaCategoriaAmbienteService, UatInstalacaoFisicaService, UatVeiculoService],
+        ProdutoServicoService, UatProdutoServicoService, LinhaService, UatInstalacaoFisicaCategoriaService, UatInstalacaoFisicaCategoriaAmbienteService, UatInstalacaoFisicaService, UatVeiculoService, UatQuadroPessoalAreaService, UatQuadroPessoaTipoServicoService, UatQuadroPessoalTipoProfissionalService, UatQuadroPessoalService],
 })
 export class PesquisaUatModule { }
