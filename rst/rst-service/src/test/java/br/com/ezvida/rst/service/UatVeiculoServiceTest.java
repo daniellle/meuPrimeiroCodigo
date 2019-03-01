@@ -1,6 +1,7 @@
 package br.com.ezvida.rst.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -25,7 +26,9 @@ import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.enums.Funcionalidade;
 import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.model.UatVeiculo;
+import br.com.ezvida.rst.model.UatVeiculoTipo;
 import br.com.ezvida.rst.model.dto.UatVeiculoDTO;
+import br.com.ezvida.rst.model.dto.UatVeiculoGroupedByTipoDTO;
 import fw.security.exception.UnauthorizedException;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -42,6 +45,9 @@ public class UatVeiculoServiceTest {
 	@Mock
 	private ValidationService validationService;
 	
+	@Mock
+	private UatVeiculoTipoService uatVeiculoTipoService;
+	
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 
@@ -52,6 +58,49 @@ public class UatVeiculoServiceTest {
 		Mockito.doReturn(list).when(uatVeiculoDAO).pesquisarTodos();
 		List<UatVeiculo> retorno = uatVeiculoService.listarTodos();
 		assertEquals(list, retorno);
+	}
+	
+	@Test
+	public void deveRetornarExcpetionAoTentarListaUatVeiculosSemPermissao() throws Exception {
+		LOGGER.info("Testando listar Uat Veiculos, sem permissão");
+		
+		exception.expect(UnauthorizedException.class);
+	    exception.expectMessage("Usuário não possui acesso autorizado.");
+	    
+		ClienteAuditoria auditoria = new ClienteAuditoria();
+		auditoria.setFuncionalidade(Funcionalidade.GESTAO_UNIDADE_SESI);
+		auditoria.setTipoOperacao(TipoOperacaoAuditoria.INCLUSAO);
+		DadosFilter dados = new DadosFilter();
+		
+		Mockito.when(validationService.validarFiltroDadosGestaoUnidadeSesi(Mockito.any(DadosFilter.class), Mockito.anyLong()))
+		.thenReturn(false);
+		
+		uatVeiculoService.listAllUatVeiculoGroupedByTipo(1L, auditoria, dados);
+	}
+	
+	@Test
+	public void deveRetornarListaUatVeiculoGroupedByTipoDTO() throws Exception {
+		LOGGER.info("Testando listar Uat Veiculos, sem permissão");
+		
+		ClienteAuditoria auditoria = new ClienteAuditoria();
+		auditoria.setFuncionalidade(Funcionalidade.GESTAO_UNIDADE_SESI);
+		auditoria.setTipoOperacao(TipoOperacaoAuditoria.INCLUSAO);
+		DadosFilter dados = new DadosFilter();
+		UatVeiculo uatVeiculo = new UatVeiculo();
+		uatVeiculo.setId(1L);
+		uatVeiculo.setQuantidade(1);
+		uatVeiculo.setUatVeiculoTipo(new UatVeiculoTipo(2L));
+		List<UatVeiculo> listUatVeiculo = Arrays.asList(uatVeiculo );
+		List<UatVeiculoTipo> listVeiculoTipo = Arrays.asList(new UatVeiculoTipo(2L));
+		
+		Mockito.when(validationService.validarFiltroDadosGestaoUnidadeSesi(Mockito.any(DadosFilter.class), Mockito.anyLong()))
+		.thenReturn(true);
+		Mockito.when(uatVeiculoDAO.listAllUatVeiculosByIdUat(Mockito.anyLong())).thenReturn(listUatVeiculo);
+		Mockito.when(uatVeiculoTipoService.listarTodos()).thenReturn(listVeiculoTipo);
+		List<UatVeiculoGroupedByTipoDTO> retorno = uatVeiculoService.listAllUatVeiculoGroupedByTipo(1L, auditoria, dados);
+		
+		assertNotNull(retorno);
+		assertEquals(listUatVeiculo.get(0).getId(), retorno.get(0).getVeiculos().get(0).getId());
 	}
 
 	@Test
@@ -77,7 +126,7 @@ public class UatVeiculoServiceTest {
 	}
 	
 	@Test
-	public void deveSalvarListaDeVeiculosUnidadeMovelERetornarVeiculosSalvos_userWithoutPermissao() {
+	public void retornaExceptionAoTentarSalvarUatVeiculosSemPermissao() throws Exception  {
 		LOGGER.info("Testando salvar lista de Veiculos Unidade Movel, usuário sem permissão");
 		
 		exception.expect(UnauthorizedException.class);
@@ -97,5 +146,6 @@ public class UatVeiculoServiceTest {
 
 		uatVeiculoService.salvar(listVeiculoDTO, auditoria, dados);
 	}
+	
 	
 }
