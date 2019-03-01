@@ -7,7 +7,8 @@ export class UatInstalacaoFisica {
         public area?: Number,
         public quantidade?: Number,
         public uatInstalacaoFisicaAmbiente?: UatInstalacaoFisicaAmbiente,
-        public unidadeAtendimentoTrabalhador?: UnidadeAtendimentoTrabalhador
+        public unidadeAtendimentoTrabalhador?: UnidadeAtendimentoTrabalhador,
+        public duplicado?: boolean,
     ) {
 
     }

@@ -92,7 +92,7 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
         for (const amb of this.listAmbientes) {
             this.listInstalacoesFisicasSave.push(
                 new UatInstalacaoFisica(null, null, null, amb,
-                    new UnidadeAtendimentoTrabalhador(this.idUnidade)));
+                    new UnidadeAtendimentoTrabalhador(this.idUnidade), false));
         }
     }
 
@@ -125,7 +125,7 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
         const amb = this.listInstalacoesFisicasSave[index].uatInstalacaoFisicaAmbiente;
         this.listInstalacoesFisicasSave.splice(index + 1, 0,
             new UatInstalacaoFisica(null, null, null, amb,
-                new UnidadeAtendimentoTrabalhador(this.idUnidade)));
+                new UnidadeAtendimentoTrabalhador(this.idUnidade), true));
     }
 
     findInstalacoesAgg() {
@@ -159,5 +159,11 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
             }, (error) => {
                 this.mensagemError(MensagemProperties.app_rst_erro_geral);
             });
+    }
+
+    limpar() {
+        this.form.reset();
+        this.listInstalacoesFisicasSave = [];
+        this.findInstalacoesAgg();
     }
 }

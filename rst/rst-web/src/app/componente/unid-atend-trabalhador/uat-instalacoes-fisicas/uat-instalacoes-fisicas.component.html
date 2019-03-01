@@ -66,7 +66,7 @@
                 </span>
 
                 <div class="column-duplicar">
-                    <a (click)="duplicarCampo(index)"><span class="fa fa-copy fa-2x" aria-hidden="true" style="color: #3fc2f8;"></span></a>
+                    <a (click)="duplicarCampo(index)" *ngIf="!instFis.duplicado"><span class="fa fa-copy fa-2x" aria-hidden="true" style="color: #3fc2f8;"></span></a>
                 </div>
             </div>
         </div>
@@ -77,6 +77,7 @@
         <button type="button " class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!modoConsulta" (click)="salvar()">
             {{'app_rst_btn_salvar' | recurso}}
         </button>
+        <button class=" btn-rodape btn btn-secondary"  (click)="limpar()">{{'app_rst_btn_cancelar' | recurso}}</button>
     </div>
 </div>
 
