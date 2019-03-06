@@ -55,74 +55,91 @@
 
                 <span class="column-quantidade">
                     <input type="text" name="{{instFis.uatInstalacaoFisicaAmbiente.descricao}}-quantidade-{{index}}"
-                        [(ngModel)]="listInstalacoesFisicasSave[index].quantidade" id="quantidade" maxlength="5"
+                        [(ngModel)]="listInstalacoesFisicasSave[index].quantidade" id="quantidade" maxlength="4"
                         inputmode="numeric" pattern="[0-9]*" digitOnly>
                 </span>
 
                 <span class="column-area">
                     <input type="text" name="{{instFis.uatInstalacaoFisicaAmbiente.descricao}}-area-{{index}}"
-                        [(ngModel)]="listInstalacoesFisicasSave[index].area" id="area" maxlength="5" inputmode="numeric"
+                        [(ngModel)]="listInstalacoesFisicasSave[index].area" id="area" maxlength="4" inputmode="numeric"
                         pattern="[0-9]*" digitOnly>
                 </span>
 
                 <div class="column-duplicar">
-                    <a (click)="duplicarCampo(index)"><span class="fa fa-copy fa-2x" aria-hidden="true" style="color: #3fc2f8;"></span></a>
+                    <a (click)="duplicarCampo(index)" *ngIf="!instFis.duplicado"><span class="fa fa-copy fa-2x"
+                            aria-hidden="true" style="color: #3fc2f8;"></span></a>
                 </div>
             </div>
         </div>
     </div>
 
-
     <div class="btn-rodape-acoes space-up">
-        <button type="button " class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!modoConsulta" (click)="salvar()">
-            {{'app_rst_btn_salvar' | recurso}}
-        </button>
+        <button class="btn btn-primary" [(disabled)]="modoConsulta" (click)="salvar()">{{ 'app_rst_btn_salvar' |
+            recurso}}</button>
+        <button class="btn btn-secondary" [(disabled)]="modoConsulta" (click)="limpar()">{{
+            'app_rst_btn_cancelar' | recurso}}</button>
     </div>
 </div>
 
+<div class="space-up" *ngIf="showGridInstalacoes()">
 
-<div class="container-form space-up" *ngIf="showGridInstalacoes()">
-
-    <p class="titulo-table">
-        {{'app_rst_categorias_cadastradas_title' | recurso}}
-    </p>
+    <span class="titulo-table">{{'app_rst_tipos_cadastrados_title' | recurso}}</span>
 
     <div *ngFor="let key of objectKeys(instalacoesAgg)">
+        <span class="subtitulo-table"> {{ key }} </span>
+        <table class="table table-responsive">
+            <thead class="header-grid">
+                <tr>
+                    <th class="column-label"><span>{{
+                            'app_rst_labels_ambiente' | recurso }}</span></th>
+                    <th class="column-quantidade"><span>{{
+                            'app_rst_labels_quantidade' | recurso }}</span></th>
 
-        <p class="titulo-pagina">
-            {{ key }}
-        </p>
+                    <th class="column-quantidade"><span>{{
+                            'app_rst_labels_area_m2' | recurso }}</span></th>
 
-        <div class="grid-pesquisa">
+                    <th class="column-btn" *ngIf="hasPermissaoDesativar()"></th>
+                </tr>
+            </thead>
 
-            <table class="table table-responsive">
-                <thead>
-                    <tr>
-                        <th class="" class="label"><span>{{ 'app_rst_labels_ambiente' | recurso }}</span></th>
-                        <th class="text-center" class="label"><span>{{ 'app_rst_labels_quantidade' | recurso }}</span></th>
-                        <th class="text-center" class="label"><span>{{ 'app_rst_labels_area_m2' | recurso }}</span></th>
-                        <th class="text-center" class="label" *ngIf="hasPermissaoDesativar()"><span>{{
-                                'app_rst_btn_desativar' |
-                                recurso }}</span></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let value of instalacoesAgg[key]">
-                        <td class="">&nbsp;{{value.descricaoAmbiente }}</td>
-                        <td class="text-center">&nbsp;{{value.quantidade}}</td>
-                        <td class="text-center">&nbsp;{{value.area}}</td>
-                        <td class="text-center" *ngIf="hasPermissaoDesativar()">
-                            <button class="btn-link" (click)="desativar(value.idInstalacaoFisica, value.idUnidade)"
-                                #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Desativar'" [mdTooltipPosition]="'below'">
-                                <img class="lixo" [src]="'assets/img/trash.svg'">
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <tbody class="content-grid">
+                <tr *ngFor="let value of instalacoesAgg[key]">
+                    <td class="column-label">{{value.descricaoAmbiente }}</td>
+                    <td class="column-quantidade">{{value.quantidade}}</td>
+                    <td class="column-quantidade">{{value.area}}</td>
+                    <td class="column-btn" *ngIf="hasPermissaoDesativar()">
+                        <button class="btn-link" #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Desativar'" (click)="openModal(confirmDesativar); selecionarRemover(value.idInstalacaoFisica)"
+                            [mdTooltipPosition]="'below'">
+                            <img class="lixo" [src]="'assets/img/trash.svg'">
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
 
-        </div>
-
+        </table>
     </div>
-
 </div>
+
+
+<ng-template #confirmDesativar let-close="close" let-fechar="dismiss">
+        <div class="modal-header">
+            <p class="modal-title">Remover Instalação Física</p>
+        </div>
+        <div class="modal-body text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        Deseja realmente remover a Instalação Física?
+                    </div>
+                    <div class="offset-md-1 col-10 row space-up">
+                        <div class=" col-6">
+                            <button type="button" class="btn-rodape btn btn-primary btn-cadastro"  (click)="close('remover'); desativar() ">Sim</button>
+                        </div>
+                        <div class="col-6">
+                            <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="fechar('cancelar')">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>

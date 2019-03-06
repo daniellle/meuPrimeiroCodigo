@@ -15,10 +15,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Stateless
@@ -51,6 +48,7 @@ public class UatQuadroPessoalService extends BaseService {
             }
 
             if (!listaSalvar.isEmpty()) {
+                this.validarQuadroPessoalJaCadastrado(listaSalvar);
                 for (UatQuadroPessoal uatQuadroPessoal : listaSalvar) {
                     uatQuadroPessoal.setDataCriacao(new Date());
                     if (validationService.validarFiltroDadosGestaoUnidadeSesi(dados, uatQuadroPessoal.getUnidadeAtendimentoTrabalhador().getId())) {
@@ -103,6 +101,21 @@ public class UatQuadroPessoalService extends BaseService {
         } else {
             LOGGER.error("app_rst_quadro_pessoal_nao_desativar_autorizado");
             throw new BusinessErrorException(getMensagem("app_rst_quadro_pessoal_nao_desativar_autorizado"));
+        }
+    }
+
+    private void validarQuadroPessoalJaCadastrado(List<UatQuadroPessoal> listUatQuadroPessoal) {
+        Long idUat = listUatQuadroPessoal.get(0).getUnidadeAtendimentoTrabalhador().getId();
+        List<UatQuadroPessoalDTO> quadrosPessoaisCadastradosUnidade = this.uatQuadroPessoalDAO.findByUnidade(idUat);
+        if (quadrosPessoaisCadastradosUnidade != null && !quadrosPessoaisCadastradosUnidade.isEmpty()) {
+            listUatQuadroPessoal.forEach(q -> {
+                Optional<UatQuadroPessoalDTO> quadroPessoal = quadrosPessoaisCadastradosUnidade.stream().filter(d ->
+                        d.getIdTipoProfissional().equals(q.getUatQuadroPessoalTipoProfissional().getId())
+                ).findFirst();
+                if (quadroPessoal.isPresent()) {
+                    throw new BusinessErrorException(getMensagem("app_rst_quadro_pessoal_duplicado", quadroPessoal.get().getDescricaoTipoProfissional()));
+                }
+            });
         }
     }
 }

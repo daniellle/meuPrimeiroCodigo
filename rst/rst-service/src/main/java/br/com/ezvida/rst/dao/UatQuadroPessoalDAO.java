@@ -32,7 +32,8 @@ public class UatQuadroPessoalDAO extends BaseDAO<UatQuadroPessoal, Long> {
         sql.append("	tipo_profissional.descricao as tipo_profissional_descricao, ");
         sql.append("	quadro_pessoal.quantidade, ");
         sql.append("	quadro_pessoal.id_uat_quadro_pessoal as id_quadro_pessoal, ");
-        sql.append("	quadro_pessoal.id_und_atd_trabalhador_fk as id_uat ");
+        sql.append("	quadro_pessoal.id_und_atd_trabalhador_fk as id_uat, ");
+        sql.append("	tipo_profissional.id_uat_quadro_pessoal_tipo_profissional as tipo_profissional_id ");
         sql.append(" from ");
         sql.append("	uat_quadro_pessoal quadro_pessoal ");
         sql.append(" inner join uat_quadro_pessoal_tipo_profissional tipo_profissional on ");
@@ -52,7 +53,7 @@ public class UatQuadroPessoalDAO extends BaseDAO<UatQuadroPessoal, Long> {
         UatQuadroPessoalDTO indicadorDTO;
         List<UatQuadroPessoalDTO> listaInstalacaoFisicaDTO = new ArrayList<>();
         for (Object[] objects : listaInstalacoesFisicaBanco) {
-            indicadorDTO = new UatQuadroPessoalDTO((String) objects[0], (String) objects[1], (String) objects[2], (Integer) objects[3], new Long(((Integer) objects[4]).intValue()), new Long(((Integer) objects[5]).intValue()));
+            indicadorDTO = new UatQuadroPessoalDTO((String) objects[0], (String) objects[1], (String) objects[2], (Integer) objects[3], new Long(((Integer) objects[4]).intValue()), new Long(((Integer) objects[5]).intValue()), new Long(((Integer) objects[6]).intValue()));
             listaInstalacaoFisicaDTO.add(indicadorDTO);
         }
         return listaInstalacaoFisicaDTO;
@@ -60,7 +61,7 @@ public class UatQuadroPessoalDAO extends BaseDAO<UatQuadroPessoal, Long> {
 
 
     public void desativar(Long id) {
-        LOGGER.debug("Inativando Instalação Física");
+        LOGGER.debug("Desativando Instalação Física");
         String sql = "  update uat_quadro_pessoal set dt_exclusao = :data where id_uat_quadro_pessoal = :id";
         Query query = getEm().createNativeQuery(sql);
         query.setParameter("id", id);

@@ -58,7 +58,7 @@ public class UatInstalacaoFisicaDAO extends BaseDAO<UatInstalacaoFisica, Long> {
     }
 
     public void desativar(Long id) {
-        LOGGER.debug("Inativando Instalação Física");
+        LOGGER.debug("Desativando Instalação Física");
         String sql = "  update uat_instalacao_fisica set dt_exclusao = :data where id_uat_instalacao_fisica = :id";
         Query query = getEm().createNativeQuery(sql);
         query.setParameter("id", id);

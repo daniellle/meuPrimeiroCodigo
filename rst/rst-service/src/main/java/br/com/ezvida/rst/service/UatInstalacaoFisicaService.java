@@ -15,6 +15,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 

@@ -13,6 +13,7 @@ import { UatInstalacaoFisicaCategoria } from 'app/modelo/uat-instalacai-fisica-c
 import { UatInstalacaoFisicaAmbiente } from 'app/modelo/uat-instalacao-fisica-ambiente';
 import { UatInstalacaoFisica } from 'app/modelo/uat-instalacao-fisica';
 import { UnidadeAtendimentoTrabalhador } from 'app/modelo/unid-atend-trabalhador.model';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-uat-instalacoes-fisicas',
@@ -36,6 +37,12 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
 
     objectKeys = Object.keys;
 
+    modal;
+
+    modalRef;
+
+    idInstalacaoFisicaExcluir: Number;
+
     constructor(
         private formBuilder: FormBuilder,
         protected bloqueioService: BloqueioService,
@@ -43,7 +50,9 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
         private uatInstalacaoFisicasService: UatInstalacaoFisicaService,
         private uatInstalacaoFisicasCategoriaService: UatInstalacaoFisicaCategoriaService,
         private uatInstalacaoFisicasAmbienteService: UatInstalacaoFisicaCategoriaAmbienteService,
-
+        public modalAtivo: NgbActiveModal,
+        public activeModal: NgbActiveModal,
+        private modalService: NgbModal,
     ) {
         super(bloqueioService, dialogo);
         this.title = MensagemProperties.app_rst_cadastro_instalacoes_fisicas_title;
@@ -92,7 +101,7 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
         for (const amb of this.listAmbientes) {
             this.listInstalacoesFisicasSave.push(
                 new UatInstalacaoFisica(null, null, null, amb,
-                    new UnidadeAtendimentoTrabalhador(this.idUnidade)));
+                    new UnidadeAtendimentoTrabalhador(this.idUnidade), false));
         }
     }
 
@@ -125,7 +134,7 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
         const amb = this.listInstalacoesFisicasSave[index].uatInstalacaoFisicaAmbiente;
         this.listInstalacoesFisicasSave.splice(index + 1, 0,
             new UatInstalacaoFisica(null, null, null, amb,
-                new UnidadeAtendimentoTrabalhador(this.idUnidade)));
+                new UnidadeAtendimentoTrabalhador(this.idUnidade), true));
     }
 
     findInstalacoesAgg() {
@@ -151,13 +160,27 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
             [PermissoesEnum.CAT_ESTRUTURA_DESATIVAR]);
     }
 
-    desativar(idInstalacaoFisica: Number, idUnidade: Number) {
-        this.uatInstalacaoFisicasService.desativar(idInstalacaoFisica, idUnidade).subscribe(
+    desativar() {
+        this.uatInstalacaoFisicasService.desativar(this.idInstalacaoFisicaExcluir, this.idUnidade).subscribe(
             (data) => {
                 this.mensagemSucesso(data['content']);
                 this.findInstalacoesAgg();
             }, (error) => {
                 this.mensagemError(MensagemProperties.app_rst_erro_geral);
             });
+    }
+
+    openModal(modal: any) {
+        this.modalRef = this.modalService.open(modal, { size: 'sm' });
+    }
+
+    selecionarRemover(idInstalacaoFisicaExcluir: Number) {
+        this.idInstalacaoFisicaExcluir = idInstalacaoFisicaExcluir;
+    }
+
+    limpar() {
+        this.form.reset();
+        this.listInstalacoesFisicasSave = [];
+        this.findInstalacoesAgg();
     }
 }
