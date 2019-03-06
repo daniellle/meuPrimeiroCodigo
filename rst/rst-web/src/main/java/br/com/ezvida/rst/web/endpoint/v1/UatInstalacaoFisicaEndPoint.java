@@ -36,7 +36,7 @@ public class UatInstalacaoFisicaEndPoint extends SegurancaEndpoint<UatInstalacao
     @Encoded
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.GESTAO_UNIDADE_SESI_CADASTRAR}))
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.CAT_ESTRUTURA_CADASTRAR}))
     public Response salvar(@Encoded List<UatInstalacaoFisica> listaInstalacoesFisicas, @Context SecurityContext context
         , @Context HttpServletRequest request) {
         getResponse().setCharacterEncoding(StandardCharsets.UTF_8.displayName());
@@ -50,7 +50,7 @@ public class UatInstalacaoFisicaEndPoint extends SegurancaEndpoint<UatInstalacao
     @GET
     @Path("/unidade/{idUnidade}")
     @Produces(MediaType.APPLICATION_JSON)
-    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.GESTAO_UNIDADE_SESI_CONSULTAR}))
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.CAT_ESTRUTURA_CONSULTAR}))
     public Response findByUnidade(@PathParam("idUnidade") Long idUnidade, @Context SecurityContext context
         , @Context HttpServletRequest request) {
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
@@ -66,7 +66,7 @@ public class UatInstalacaoFisicaEndPoint extends SegurancaEndpoint<UatInstalacao
     @Encoded
     @Path("/desativar/{id}/{idUnidade}")
     @Produces(MediaType.APPLICATION_JSON)
-    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.GESTAO_UNIDADE_SESI_DESATIVAR}))
+    @Autorizacao(permissoes = @Permissao(value = {PermissionConstants.CAT_ESTRUTURA_DESATIVAR}))
     public Response desativar(@PathParam("id") Long id, @PathParam("idUnidade") Long idUnidade, @Context SecurityContext context
         , @Context HttpServletRequest request) {
         try {

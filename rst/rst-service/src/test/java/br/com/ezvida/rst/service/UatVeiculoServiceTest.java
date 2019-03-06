@@ -95,7 +95,7 @@ public class UatVeiculoServiceTest {
 		
 		Mockito.when(validationService.validarFiltroDadosGestaoUnidadeSesi(Mockito.any(DadosFilter.class), Mockito.anyLong()))
 		.thenReturn(true);
-		Mockito.when(uatVeiculoDAO.listAllUatVeiculosByIdUat(Mockito.anyLong())).thenReturn(listUatVeiculo);
+		Mockito.when(uatVeiculoDAO.listAllUatVeiculosByIdUatAndAtivo(Mockito.anyLong())).thenReturn(listUatVeiculo);
 		Mockito.when(uatVeiculoTipoService.listarTodos()).thenReturn(listVeiculoTipo);
 		List<UatVeiculoGroupedByTipoDTO> retorno = uatVeiculoService.listAllUatVeiculoGroupedByTipo(1L, auditoria, dados);
 		
@@ -117,7 +117,7 @@ public class UatVeiculoServiceTest {
 		Mockito.doNothing().when(uatVeiculoDAO).salvar(Mockito.any(UatVeiculo.class));
 		Mockito.when(validationService.validarFiltroDadosGestaoUnidadeSesi(Mockito.any(DadosFilter.class), Mockito.anyLong()))
 			.thenReturn(true);
-		Mockito.when(uatVeiculoDAO.listAllUatVeiculosByIdUat(Mockito.anyLong())).thenReturn(new ArrayList<UatVeiculo>());
+		Mockito.when(uatVeiculoDAO.listAllUatVeiculosByIdUatAndAtivo(Mockito.anyLong())).thenReturn(new ArrayList<UatVeiculo>());
 
 		List<UatVeiculoDTO> retorno = uatVeiculoService.salvar(listVeiculoDTO, auditoria, dados);
 
@@ -147,5 +147,38 @@ public class UatVeiculoServiceTest {
 		uatVeiculoService.salvar(listVeiculoDTO, auditoria, dados);
 	}
 	
+	@Test
+	public void deveDesativarUatVeiculo() throws Exception {
+		LOGGER.info("Testando Excluir Uat Veiculos");
+		
+		ClienteAuditoria auditoria = new ClienteAuditoria();
+		auditoria.setFuncionalidade(Funcionalidade.GESTAO_UNIDADE_SESI);
+		auditoria.setTipoOperacao(TipoOperacaoAuditoria.DESATIVACAO);
+		
+		Mockito.when(validationService.validarFiltroDadosGestaoUnidadeSesi(Mockito.any(DadosFilter.class), Mockito.anyLong()))
+		.thenReturn(true);
+		
+		uatVeiculoService.desativar(1L, 1L, auditoria, new DadosFilter());
+		
+		Mockito.verify(uatVeiculoDAO).desativar((Mockito.anyLong()));
+	}
+	
+	@Test
+	public void deveRetornarExceptionAoTentarDesativarUatVeiculoSemPermissao() throws Exception {
+		LOGGER.info("Testando Excluir Uat Veiculos, sem permissão");
+		
+		exception.expect(UnauthorizedException.class);
+	    exception.expectMessage("Usuário não possui acesso autorizado.");
+	    
+		ClienteAuditoria auditoria = new ClienteAuditoria();
+		auditoria.setFuncionalidade(Funcionalidade.GESTAO_UNIDADE_SESI);
+		auditoria.setTipoOperacao(TipoOperacaoAuditoria.DESATIVACAO);
+		DadosFilter dados = new DadosFilter();
+		
+		Mockito.when(validationService.validarFiltroDadosGestaoUnidadeSesi(Mockito.any(DadosFilter.class), Mockito.anyLong()))
+		.thenReturn(false);
+		
+		uatVeiculoService.desativar(1L, 1L, auditoria, dados);
+	}
 	
 }

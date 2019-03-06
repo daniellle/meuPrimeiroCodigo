@@ -257,10 +257,9 @@ export enum PermissoesEnum {
     PERFIL_USUARIO = 'relatorio_perfis_por_usuario',
 
     //Gerenciamento de unidade SESI
-
-	GESTAO_UNIDADE_SESI_CADASTRAR = "cat_estrutura_cadastrar",
-	GESTAO_UNIDADE_SESI_ALTERAR = "cat_estrutura_alterar",
-	GESTAO_UNIDADE_SESI_CONSULTAR = "cat_estrutura_consultar",
-	GESTAO_UNIDADE_SESI_DESATIVAR = "cat_estrutura_desativar"
+	CAT_ESTRUTURA_CADASTRAR = "cat_estrutura_cadastrar",
+	CAT_ESTRUTURA_ALTERAR = "cat_estrutura_alterar",
+	CAT_ESTRUTURA_CONSULTAR = "cat_estrutura_consultar",
+	CAT_ESTRUTURA_DESATIVAR = "cat_estrutura_desativar"
 
 }

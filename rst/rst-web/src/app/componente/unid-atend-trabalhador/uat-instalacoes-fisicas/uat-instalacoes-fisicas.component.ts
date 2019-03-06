@@ -107,7 +107,7 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
 
     private emModoConsulta() {
         this.modoConsulta = !Seguranca.isPermitido(
-            [PermissoesEnum.GESTAO_UNIDADE_SESI_CADASTRAR]);
+            [PermissoesEnum.CAT_ESTRUTURA_CADASTRAR]);
     }
 
     showFormInstalacoesFisicas() {
@@ -157,7 +157,7 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
 
     hasPermissaoDesativar() {
         return Seguranca.isPermitido(
-            [PermissoesEnum.GESTAO_UNIDADE_SESI_DESATIVAR]);
+            [PermissoesEnum.CAT_ESTRUTURA_DESATIVAR]);
     }
 
     desativar() {

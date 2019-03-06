@@ -50,7 +50,6 @@ export class RecuperarSenhaComponent extends BaseComponent implements OnInit {
         this.mensagemSucesso(MensagemProperties.app_rst_recupera_senha_sucesso);
         this.central = false;
       }, (error) => {
-         //console.log(error);
           if(error === "Não foi possível processar a operação") {
               this.mensagemError(MensagemProperties.app_seguranca_usuario_barramento);
               this.central = true;

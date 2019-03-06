@@ -54,7 +54,7 @@ public class UatVeiculoService extends BaseService {
 	public List<UatVeiculoGroupedByTipoDTO> listAllUatVeiculoGroupedByTipo(Long idUat, ClienteAuditoria auditoria, DadosFilter dados) {
 		LogAuditoria.registrar(LOGGER, auditoria, "Buscando Veículos por id da uat " + idUat);
 		validarSeUsuarioTemPermissao(dados, idUat);
-		return createListUatVeiculoGroupedByTipoDTO(uatVeiculoDAO.listAllUatVeiculosByIdUat(idUat));
+		return createListUatVeiculoGroupedByTipoDTO(uatVeiculoDAO.listAllUatVeiculosByIdUatAndAtivo(idUat));
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -71,6 +71,13 @@ public class UatVeiculoService extends BaseService {
 			return item;
 		}).collect(Collectors.toList());
 	}
+	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void desativar(Long idVeiculo, Long idUat, ClienteAuditoria auditoria, DadosFilter dados) {
+		LogAuditoria.registrar(LOGGER, auditoria, "Desativando UAT Veículo de ID " + idVeiculo);
+		validarSeUsuarioTemPermissao(dados, idUat);
+		uatVeiculoDAO.desativar(idVeiculo);
+	}
 
 	private void validarSeUsuarioTemPermissao(DadosFilter dados, Long idUat) {
 		if(!validationService.validarFiltroDadosGestaoUnidadeSesi(dados, idUat)) {
@@ -79,7 +86,7 @@ public class UatVeiculoService extends BaseService {
 	}
 
 	private void validarSeOVeiculoJaEstaCadastrado(List<UatVeiculoDTO> listVeiculoDTO, Long idUat) {
-		List<UatVeiculo> uatVeiculosCadastrados = uatVeiculoDAO.listAllUatVeiculosByIdUat(idUat);
+		List<UatVeiculo> uatVeiculosCadastrados = uatVeiculoDAO.listAllUatVeiculosByIdUatAndAtivo(idUat);
 		boolean hasVeiculoPasseioCadastrado = uatVeiculosCadastrados.stream().anyMatch(item -> item.getUatVeiculoTipo().getId().equals(2L));
 		List<Long> unidadesMoveisCadastradas = uatVeiculosCadastrados.stream()
 				.filter(item -> !item.getUatVeiculoTipo().getId().equals(2L))

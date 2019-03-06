@@ -101,6 +101,11 @@ const routes: Routes = [
         canActivate: [AutorizacaoGuard],
         data: {
             title: MensagemProperties.app_rst_estrutura_da_unidade_title_menu,
+            permissoes: [
+                PermissoesEnum.CAT_ESTRUTURA_CADASTRAR,
+                PermissoesEnum.CAT_ESTRUTURA_ALTERAR,
+                PermissoesEnum.CAT_ESTRUTURA_DESATIVAR,
+                PermissoesEnum.CAT_ESTRUTURA_CONSULTAR],
         },
     },
 ];

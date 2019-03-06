@@ -27,7 +27,11 @@ const routes: Routes = [
 					PermissoesEnum.CAT_PRODUTO_SERVICO_ALTERAR,
 					PermissoesEnum.CAT_PRODUTO_SERVICO_CADASTRAR,
 					PermissoesEnum.CAT_PRODUTO_SERVICO_CONSULTAR,
-					PermissoesEnum.CAT_PRODUTO_SERVICO_DESATIVAR],
+					PermissoesEnum.CAT_PRODUTO_SERVICO_DESATIVAR,
+					PermissoesEnum.CAT_ESTRUTURA_CADASTRAR,
+					PermissoesEnum.CAT_ESTRUTURA_ALTERAR,
+					PermissoesEnum.CAT_ESTRUTURA_CONSULTAR,
+					PermissoesEnum.CAT_ESTRUTURA_DESATIVAR],
 				},
 			},
 			{

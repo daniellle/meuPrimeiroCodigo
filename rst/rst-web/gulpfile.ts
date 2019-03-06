@@ -59,8 +59,6 @@ gulp.task('css', function () {
       cascade: false
     }))
     .pipe(cleanCSS({debug: true}, function (details) {
-      //console.log(details.name + ': ' + details.stats.originalSize);
-      //console.log(details.name + ': ' + details.stats.minifiedSize);
     }))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(webapp))
