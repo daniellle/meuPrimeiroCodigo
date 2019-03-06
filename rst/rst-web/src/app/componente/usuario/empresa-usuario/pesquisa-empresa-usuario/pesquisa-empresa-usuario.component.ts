@@ -79,13 +79,10 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     }
 
     onAlertListener(_usuariosEntidade) {
-       //console.log(_usuariosEntidade);
-      }
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
-       //console.log('oi');
         if (changes['usuario']) {
-           //console.log(this.usuario);
         }
     }
 

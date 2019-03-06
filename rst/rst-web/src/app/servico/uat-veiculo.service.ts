@@ -8,6 +8,7 @@ import { UatVeiculoTipo } from "app/modelo/uat-veiculo-tipo";
 import { UatVeiculoTipoAtendimento } from "app/modelo/uat-veiculo-tipo-atendimento";
 import { MensagemErro } from "app/modelo/mensagem-erro.model";
 import { UatVeiculoGroupedTipoDTO } from "app/modelo/uat-veiculo-grouped-tipo-dto";
+import { UatVeiculoDTO } from "app/modelo/uat-veiculo-dto";
 
 @Injectable()
 export class UatVeiculoService extends BaseService<UatVeiculo>{
@@ -39,6 +40,17 @@ export class UatVeiculoService extends BaseService<UatVeiculo>{
     salvar(uatVeiculo: any[]): Observable<any[]> {
         return super.post('/v1/uat-veiculo', uatVeiculo)
             .map((response: any[]) => {
+                return response;
+            }).catch((error: HttpResponse<MensagemErro>) => {
+                return Observable.throw(error);
+            }).finally(() => {
+                this.bloqueio.evento.emit(true);
+            });
+    }
+
+    excluir(idVeiculo: Number, idUat: Number): Observable<void> {
+        return super.delete(`/v1/uat-veiculo?idVeiculo=${idVeiculo}&idUat=${idUat}`)
+            .map((response: any) => {
                 return response;
             }).catch((error: HttpResponse<MensagemErro>) => {
                 return Observable.throw(error);

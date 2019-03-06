@@ -84,7 +84,6 @@ export class AssociacaoEmpresaSindicatoComponent extends BaseComponent implement
 
   private validarEmpresaSindicato(): Boolean {
     let isValido = true;
-    //console.log(this.dataAssociacao)
     if (!this.dataAssociacao && this.verificaDataModelAssociacao) {
       this.mensagemErroComParametrosModel('app_rst_campo_obrigatorio', MensagemProperties.app_rst_labels_dataAssociacao);
       isValido = false;

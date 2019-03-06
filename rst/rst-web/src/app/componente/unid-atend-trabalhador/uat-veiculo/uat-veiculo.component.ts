@@ -11,6 +11,9 @@ import { BaseComponent } from 'app/componente/base.component';
 import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
 import { UatVeiculoGroupedTipoDTO } from 'app/modelo/uat-veiculo-grouped-tipo-dto';
 import { UatVeiculoDTO } from 'app/modelo/uat-veiculo-dto';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Seguranca } from 'app/compartilhado/utilitario/seguranca.model';
+import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
 
 @Component({
   selector: 'app-uat-veiculo',
@@ -28,18 +31,21 @@ export class UatVeiculoComponent extends BaseComponent implements OnInit {
   veiculoPasseio: UatVeiculo;
   quantidadeVeiculoPasseio: Number;
   idVeiculoTipoSelecionado: Number;
-  tipoSelecionado = new UatVeiculoTipo();
+  private tipoSelecionado = new UatVeiculoTipo();
+  private veiculoSelecionadoParaRemover: UatVeiculoDTO;
 
 
   constructor(
     protected bloqueioService: BloqueioService,
     protected dialogo: ToastyService,
     private uatVeiculoService: UatVeiculoService,
+    private modalService: NgbModal,
   ) { 
     super(bloqueioService, dialogo);
   }
 
   ngOnInit() {
+    this.emModoConsulta();
     this.loadVeiculoTipo();
     this.loadVeiculoTipoAtendimento();
     this.loadUatVeiculoGroupedByTipo();
@@ -55,6 +61,21 @@ export class UatVeiculoComponent extends BaseComponent implements OnInit {
         this.mensagemError(error);
       })
     }
+  }
+
+  openModal(modal: any, uatVeiculo: UatVeiculoDTO) {
+    this.veiculoSelecionadoParaRemover = uatVeiculo;
+    this.modalService.open(modal, { size: 'sm' });
+  }
+
+  remover(): void {
+    const uatVeiculo = this.veiculoSelecionadoParaRemover;
+    this.uatVeiculoService.excluir(uatVeiculo.id, this.idUat).subscribe(() => {
+      this.loadUatVeiculoGroupedByTipo();
+      this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+    }, (error) => {
+      this.mensagemError(error);
+    });
   }
 
   cancelar(): void {
@@ -159,5 +180,10 @@ export class UatVeiculoComponent extends BaseComponent implements OnInit {
     }, (error) => {
       this.mensagemError(error);
     });
+  }
+
+  private emModoConsulta() {
+    this.modoConsulta = !Seguranca.isPermitido(
+        [PermissoesEnum.CAT_ESTRUTURA_CADASTRAR]);
   }
 }

@@ -1,17 +1,19 @@
 package br.com.ezvida.rst.dao;
 
-import br.com.ezvida.rst.model.UatQuadroPessoal;
-import br.com.ezvida.rst.model.dto.UatQuadroPessoalDTO;
-import fw.core.jpa.BaseDAO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import br.com.ezvida.rst.model.UatQuadroPessoal;
+import br.com.ezvida.rst.model.dto.UatQuadroPessoalDTO;
+import fw.core.jpa.BaseDAO;
 
 public class UatQuadroPessoalDAO extends BaseDAO<UatQuadroPessoal, Long> {
 

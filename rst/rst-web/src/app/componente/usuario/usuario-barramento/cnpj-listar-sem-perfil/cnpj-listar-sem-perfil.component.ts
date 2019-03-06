@@ -74,7 +74,6 @@ export class CNPJListarSemPerfilComponent extends BaseComponent implements OnIni
     }
 
     createUsuarioEntidade() {
-       //console.log(this.usuariosEntidade);
         this.usuariosEntidade.forEach((element) => {
             if (element.empresa && !element.perfil) {
                 this.usuarioEntidadeEmpresa.push(element);
@@ -86,8 +85,6 @@ export class CNPJListarSemPerfilComponent extends BaseComponent implements OnIni
                 this.usuarioEntidadeUnidadeSesi.push(element);
             }
         });
-       //console.log(this.usuarioEntidadeUnidadeSesi);
-       //console.log(this.usuarioEntidadeDepartamentoRegional);
     }
 
     checkUsuarioEntidade(usuariosEntidade: UsuarioEntidade[]): boolean{

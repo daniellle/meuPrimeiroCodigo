@@ -98,8 +98,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             this.adicionarGestorDRPortal(this.usuario);
 
             this.usuarioService.salvarUsuario(this.usuario).subscribe((retorno: Usuario) => {
-                console.log(this.usuario.perfisSistema);
-                
                 this.usuario.id = retorno.id;
                 this.id = this.usuario.id;
                 this.excluirCardsPerfisDesassociadas(this.usuario, [PerfilEnum.GDRA, PerfilEnum.GDRM, PerfilEnum.GDRP,], 'departamentoRegional');

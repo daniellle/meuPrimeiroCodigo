@@ -67,7 +67,7 @@
                     <td class="column-quantidade" [ngClass]="{'grid-sem-descricao': !item.isTipoAtendimento}">{{ veiculo.quantidade}}</td>
                     <td class="column-btn">
                         <button class="btn-link"
-                          #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Exluir'" [mdTooltipPosition]="'below'">
+                          #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Exluir'" [mdTooltipPosition]="'below'" (click)="openModal(modalConfirmarExclusao, veiculo)">
                           <img class="lixo" [src]="'assets/img/trash.svg'">
                         </button>
                     </td>
@@ -77,3 +77,25 @@
       </div>
   </div>
 </div>
+<ng-template #modalConfirmarExclusao let-close="close" let-fechar="dismiss">
+    <div class="modal-header">
+        <p class="modal-title">Excluir Veículo</p>
+    </div>
+    <div class="modal-body text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    Deseja realmente excluir este veículo?
+                </div>
+                <div class="offset-md-1 col-10 row space-up">
+                    <div class=" col-6">
+                        <button type="button" class="btn-rodape btn btn-primary btn-cadastro"  (click)="close('remover'); remover() ">Sim</button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="fechar('cancelar')">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
