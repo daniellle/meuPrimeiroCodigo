@@ -36,7 +36,7 @@ Manual de montagem de ambiente de desenvolvimento.
 - [JBoss WidFly](http://wildfly.org/downloads/) (_10.x_)  
 
 - IDE para codificação do backend Java (Recomendamos o [Eclipse](https://www.eclipse.org/downloads/) ou [IntelliJ IDEA Ultimate](https://www.jetbrains.com/idea/download))
-- IDE para codificação da parte web (Recomendamos o [Visutal Studio Code](https://code.visualstudio.com/download))
+- IDE para codificação da parte web (Recomendamos o [Visual Studio Code](https://code.visualstudio.com/download))
 
 O RST Cadastro depende de algumas bibliotecas proprietárias. Certifique-se de que essas bibliotecas estão disponíveis no repositório Nexus. 
 
@@ -128,9 +128,10 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
     > Caso esta seja sua primeira instalação e configuração do Jboss WidFly, recomendamos a leitura desse [Getting Started Guide](https://docs.jboss.org/author/display/WFLY10/Getting+Started+Guide). Para os próximos passos será necessário que seu servidor esteja iniciado e configurado com o usuário de acesso ao console administrativo.
 
     3.1 Acesse o console administrativo do WidFly:  
-    ```
-    http://localhost:9990/console
-    ```
+    
+     ```
+     http://localhost:9990/console
+     ```
 
     3.2 Clique na aba **Configuration**
 
@@ -138,7 +139,7 @@ Para mais informações de como instalar e configurar essas bibliotecas e ferram
 
     3.4 Na janela que foi aberta, selecione a opção **PostgreSQL Datasource** e clique em **Next**
 
-    3.5 Entre com os valores **RstDS** e **java:jboss/datasources/rst** para os campos nome e JNDI name respectvamente, em seguida clique em **Next**
+    3.5 Entre com os valores **RstDS** e **java:jboss/datasources/rst** para os campos nome e JNDI name respectivamente, em seguida clique em **Next**
 
     3.6 Clique na aba **Detected Driver**, selecione a opção **postgres** e, em seguida, clique em **Next**
 
