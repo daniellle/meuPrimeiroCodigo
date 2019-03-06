@@ -11,8 +11,13 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import br.com.ezvida.rst.auditoria.logger.LogAuditoria;
+import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.UatVeiculoDAO;
+import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.enums.SimNao;
 import br.com.ezvida.rst.model.UatVeiculo;
 import br.com.ezvida.rst.model.UatVeiculoTipo;
@@ -22,17 +27,23 @@ import br.com.ezvida.rst.model.dto.UatVeiculoDTO;
 import br.com.ezvida.rst.model.dto.UatVeiculoGroupedByTipoDTO;
 import fw.core.exception.BusinessErrorException;
 import fw.core.service.BaseService;
+import fw.security.exception.UnauthorizedException;
 
 @Stateless
 public class UatVeiculoService extends BaseService {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(UatVeiculoService.class);
 
 	@Inject
 	private UatVeiculoDAO uatVeiculoDAO;
 	
 	@Inject
 	private UatVeiculoTipoService uatVeiculoTipoService;
+	
+	@Inject
+    private ValidationService validationService;
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<UatVeiculo> listarTodos() {
@@ -40,13 +51,19 @@ public class UatVeiculoService extends BaseService {
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public List<UatVeiculoGroupedByTipoDTO> listAllUatVeiculoGroupedByTipo(Long idUat) {
+	public List<UatVeiculoGroupedByTipoDTO> listAllUatVeiculoGroupedByTipo(Long idUat, ClienteAuditoria auditoria, DadosFilter dados) {
+		LogAuditoria.registrar(LOGGER, auditoria, "Buscando Veículos por id da uat " + idUat);
+		validarSeUsuarioTemPermissao(dados, idUat);
 		return createListUatVeiculoGroupedByTipoDTO(uatVeiculoDAO.listAllUatVeiculosByIdUat(idUat));
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public List<UatVeiculoDTO> salvar(List<UatVeiculoDTO> listVeiculoDTO) {
-		validarSeOVeiculoJaEstaCadastrado(listVeiculoDTO);
+	public List<UatVeiculoDTO> salvar(List<UatVeiculoDTO> listVeiculoDTO, ClienteAuditoria auditoria, DadosFilter dados) {
+		Long idUat = listVeiculoDTO.get(0).getIdUat();
+		LogAuditoria.registrar(LOGGER, auditoria, "Salvando Veículos para uat " + idUat);
+		validarSeUsuarioTemPermissao(dados, idUat);
+		validarSeOVeiculoJaEstaCadastrado(listVeiculoDTO, idUat);
+		
 		return listVeiculoDTO.stream().map(item -> {
 			UatVeiculo uatVeiculo = parseToEntity(item);
 			uatVeiculoDAO.salvar(uatVeiculo);
@@ -55,8 +72,13 @@ public class UatVeiculoService extends BaseService {
 		}).collect(Collectors.toList());
 	}
 
-	private void validarSeOVeiculoJaEstaCadastrado(List<UatVeiculoDTO> listVeiculoDTO) {
-		Long idUat = listVeiculoDTO.get(0).getIdUat();
+	private void validarSeUsuarioTemPermissao(DadosFilter dados, Long idUat) {
+		if(!validationService.validarFiltroDadosGestaoUnidadeSesi(dados, idUat)) {
+			 throw new UnauthorizedException(getMensagem("app_seguranca_acesso_negado"));
+		}
+	}
+
+	private void validarSeOVeiculoJaEstaCadastrado(List<UatVeiculoDTO> listVeiculoDTO, Long idUat) {
 		List<UatVeiculo> uatVeiculosCadastrados = uatVeiculoDAO.listAllUatVeiculosByIdUat(idUat);
 		boolean hasVeiculoPasseioCadastrado = uatVeiculosCadastrados.stream().anyMatch(item -> item.getUatVeiculoTipo().getId().equals(2L));
 		List<Long> unidadesMoveisCadastradas = uatVeiculosCadastrados.stream()
@@ -81,9 +103,9 @@ public class UatVeiculoService extends BaseService {
 			boolean hasVeiculoPasseioCadastrado) {
 		if(hasVeiculoPasseioCadastrado) {
 			return uatVeiculosCadastrados.stream()
-					.filter(item -> item.getUatVeiculoTipo().getId().equals(2L))
-					.map(item -> item.getUatVeiculoTipo().getDescricao())
-					.findFirst().orElse("");
+				.filter(item -> item.getUatVeiculoTipo().getId().equals(2L))
+				.map(item -> item.getUatVeiculoTipo().getDescricao())
+				.findFirst().orElse("");
 		}
 		return "";
 	}
@@ -95,7 +117,7 @@ public class UatVeiculoService extends BaseService {
 		uatVeiculo.setUnidadeAtendimentoTrabalhador(new UnidadeAtendimentoTrabalhador(dto.getIdUat()));
 		if (dto.getIdVeiculoTipoAtendimento() != null) {
 			uatVeiculo
-					.setUnidadeVeiculoTipoAtendimento(new UatVeiculoTipoAtendimento(dto.getIdVeiculoTipoAtendimento()));
+				.setUnidadeVeiculoTipoAtendimento(new UatVeiculoTipoAtendimento(dto.getIdVeiculoTipoAtendimento()));
 		}
 		return uatVeiculo;
 	}

@@ -44,5 +44,17 @@ public class UatVeiculoTipoServiceTest {
 		
 		assertEquals(list, retorno);
 	}
+	
+	@Test
+	public void deveRetornarUmUatVeiculoTipo() throws Exception {
+		LOGGER.info("Testando buscar Uat Veiculo Tipo por ID...");
+		UatVeiculoTipo uatVeiculoTipo = Mockito.mock(UatVeiculoTipo.class);
+		
+		Mockito.doReturn(uatVeiculoTipo).when(uatVeiculoTipoDAO).pesquisarPorId(Mockito.anyLong());
+		
+		UatVeiculoTipo retorno = uatVeiculoTipoService.findById(Mockito.anyLong());
+		
+		assertEquals(uatVeiculoTipo, retorno);
+	}
 
 }

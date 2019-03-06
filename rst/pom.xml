@@ -421,10 +421,14 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${org.junit.version}</version>
+            <exclusions>
+		        <exclusion>
+		            <artifactId>hamcrest-core</artifactId>
+		            <groupId>org.hamcrest</groupId>
+		        </exclusion>
+		    </exclusions>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
