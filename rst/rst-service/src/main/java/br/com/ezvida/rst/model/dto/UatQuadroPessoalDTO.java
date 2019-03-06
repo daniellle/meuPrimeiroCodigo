@@ -7,14 +7,16 @@ public class UatQuadroPessoalDTO {
     private Integer quantidade;
     private Long idQuadroPessoal;
     private Long idUat;
+    private Long idTipoProfissional;
 
-    public UatQuadroPessoalDTO(String descricaoArea, String descricaoTipoServico, String descricaoTipoProfissional, Integer quantidade, Long idQuadroPessoal, Long idUat) {
+    public UatQuadroPessoalDTO(String descricaoArea, String descricaoTipoServico, String descricaoTipoProfissional, Integer quantidade, Long idQuadroPessoal, Long idUat, Long idTipoProfissional) {
         this.descricaoArea = descricaoArea;
         this.descricaoTipoServico = descricaoTipoServico;
         this.descricaoTipoProfissional = descricaoTipoProfissional;
         this.quantidade = quantidade;
         this.idQuadroPessoal = idQuadroPessoal;
         this.idUat = idUat;
+        this.idTipoProfissional = idTipoProfissional;
     }
 
     public String getDescricaoArea() {
@@ -39,5 +41,9 @@ public class UatQuadroPessoalDTO {
 
     public Long getIdUat() {
         return idUat;
+    }
+
+    public Long getIdTipoProfissional() {
+        return idTipoProfissional;
     }
 }
