@@ -1,17 +1,16 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Uat } from 'app/modelo/uat.model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastyService } from 'ng2-toasty';
 import { UatVeiculoTipo } from 'app/modelo/uat-veiculo-tipo';
 import { UatVeiculoService } from 'app/servico/uat-veiculo.service';
 import { UatVeiculo } from 'app/modelo/uat-veiculo';
 import { UatVeiculoTipoAtendimento } from 'app/modelo/uat-veiculo-tipo-atendimento';
 import { UnidadeAtendimentoTrabalhador } from 'app/modelo/unid-atend-trabalhador.model';
 import { BloqueioService } from 'app/servico/bloqueio.service';
-import { ToastyService } from 'ng2-toasty';
 import { BaseComponent } from 'app/componente/base.component';
 import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
 import { UatVeiculoGroupedTipoDTO } from 'app/modelo/uat-veiculo-grouped-tipo-dto';
 import { UatVeiculoDTO } from 'app/modelo/uat-veiculo-dto';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Seguranca } from 'app/compartilhado/utilitario/seguranca.model';
 import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
 
@@ -105,6 +104,17 @@ export class UatVeiculoComponent extends BaseComponent implements OnInit {
     return this.listUatVeiculoGroupedByTipo && this.listUatVeiculoGroupedByTipo.length > 0;
   }
 
+  hasPermissaoCadastrarAlterar() {
+    return Seguranca.isPermitido (
+        [PermissoesEnum.CAT_ESTRUTURA_CADASTRAR,
+          PermissoesEnum.CAT_ESTRUTURA_ALTERAR]);
+  }
+
+  hasPermissaoDesativar() {
+    return Seguranca.isPermitido (
+        [PermissoesEnum.CAT_ESTRUTURA_DESATIVAR]);
+  }
+
   private resetForm(): void {
     this.idVeiculoTipoSelecionado = undefined;
     this.listVeiculoWithAtendimento.map((item) => {
@@ -183,7 +193,9 @@ export class UatVeiculoComponent extends BaseComponent implements OnInit {
   }
 
   private emModoConsulta() {
-    this.modoConsulta = !Seguranca.isPermitido(
-        [PermissoesEnum.CAT_ESTRUTURA_CADASTRAR]);
+    this.modoConsulta = !Seguranca.isPermitido (
+        [PermissoesEnum.CAT_ESTRUTURA_CADASTRAR,
+          PermissoesEnum.CAT_ESTRUTURA_ALTERAR,
+          PermissoesEnum.CAT_ESTRUTURA_DESATIVAR]);
   }
 }

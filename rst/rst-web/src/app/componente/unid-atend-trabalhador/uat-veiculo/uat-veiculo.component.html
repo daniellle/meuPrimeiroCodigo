@@ -1,9 +1,8 @@
-
 <div class="container">
   <div class="row">
     <div class="form-group col-xs-12 col-sm-8">
       <div class="md-container">
-        <md-select required [disabled]="modoConsulta" placeholder="{{ 'app_rst_labels_tipo' | recurso }}" [(ngModel)]="idVeiculoTipoSelecionado" id="veiculo-tipo" (change)="changeTipo(idVeiculoTipoSelecionado)">
+        <md-select required [disabled]="modoConsulta || !hasPermissaoCadastrarAlterar()" placeholder="{{ 'app_rst_labels_tipo' | recurso }}" [(ngModel)]="idVeiculoTipoSelecionado" id="veiculo-tipo" (change)="changeTipo(idVeiculoTipoSelecionado)">
             <md-option>
               <option value="">{{ 'app_rst_labels_selecione' | recurso }}</option>
           </md-option>
@@ -58,14 +57,14 @@
                     <tr>
                       <th class="column-label" *ngIf="item.isTipoAtendimento" ><span>{{ 'app_rst_labels_tipo_de_atendimento' | recurso }}</span></th>
                       <th class="column-quantidade" [ngClass]="{'grid-sem-descricao': !item.isTipoAtendimento}"><span>{{ 'app_rst_labels_quantidade' | recurso }}</span></th>
-                      <th class="column-btn"></th>
+                      <th *ngIf="!modoConsulta && hasPermissaoDesativar()" class="column-btn"></th>
                     </tr>
                 </thead>
                 <tbody class="content-grid">
                   <tr *ngFor="let veiculo of item.veiculos">
                     <td class="column-label" *ngIf="item.isTipoAtendimento">{{ veiculo.descricao }}</td>
                     <td class="column-quantidade" [ngClass]="{'grid-sem-descricao': !item.isTipoAtendimento}">{{ veiculo.quantidade}}</td>
-                    <td class="column-btn">
+                    <td *ngIf="!modoConsulta && hasPermissaoDesativar()" class="column-btn">
                         <button class="btn-link"
                           #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Exluir'" [mdTooltipPosition]="'below'" (click)="openModal(modalConfirmarExclusao, veiculo)">
                           <img class="lixo" [src]="'assets/img/trash.svg'">

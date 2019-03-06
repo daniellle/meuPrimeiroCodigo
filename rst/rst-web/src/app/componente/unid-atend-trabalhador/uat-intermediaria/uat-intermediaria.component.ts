@@ -40,6 +40,7 @@ export class UatIntermediariaComponent implements OnInit {
   }
 
   buscar() {
+    
     this.service.pesquisarPorId(this.id.toString()).subscribe((uat) => {
       this.uat = uat;
       this.existeUat = true;
