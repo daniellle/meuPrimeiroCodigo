@@ -278,6 +278,7 @@ export const MensagemProperties = {
   app_rst_label_client_id: 'Client id',
   app_rst_labels_area: 'Área',
   app_rst_labels_area_m2: 'Área m²',
+  app_rst_labels_tipo_servico: 'Tipo Serviço',
 
   // MSG COMPARTILHADAS
   app_rst_msg_nenhum_registro_adicionado: 'Nenhum registro adicionado.',
@@ -308,7 +309,7 @@ export const MensagemProperties = {
   app_rst_label_tamanho_arquivo: 'Tamanho máximo do arquivo {0}MB',
   app_rst_mensagem_pontuacao_maxima_maior_que_pontuacao_minima: 'O campo Pontuação Máxima deve ser maior que o campo Pontuação Mínima',
   app_rst_msg_nenhuma_quantidade_informada: 'Nenhumma quantidade informada',
-  
+
   // BOTOES COMPARTILHADOS
   app_rst_btn_voltar: 'Voltar',
   app_rst_btn_novo: 'Novo',
@@ -365,10 +366,13 @@ export const MensagemProperties = {
   app_rst_pesquisa_sesi_busca_local: 'Busca por local',
   app_rst_pesquisa_sesi_busca_produto: 'Busca por produto',
 
-  //Gestão de Unidade SESI
+  //Gestão de Unidade SESI Instalações Físicas
   app_rst_cadastro_instalacoes_fisicas_title: 'Cadastro de Instalações Físicas',
   app_rst_categorias_cadastradas_title: 'Categorias cadastradas',
   app_rst_tipos_cadastrados_title: 'Tipos cadastrados',
+
+//Gestão de Unidade SESI Quadro Pessoal
+  app_rst_cadastro_quadro_pessoal_title: 'Cadastro de Quadro de Pessoal',
 
   // Trabalhador
   app_rst_trabalhador_title_pesquisar: 'Pesquisar Trabalhador',
