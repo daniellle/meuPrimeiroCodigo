@@ -19,7 +19,7 @@ public class UatQuadroPessoalTipoProfissionalDAO extends BaseDAO<UatQuadroPessoa
 
     public List<UatQuadroPessoalTipoProfissional> findByTipoServico(Long idTipoServico) {
         StringBuilder jpql = new StringBuilder();
-        jpql.append(" select s UatQuadroPessoalTipoProfissional p inner join fetch p.uatQuadroPessoalTipoServico s ");
+        jpql.append(" select p from UatQuadroPessoalTipoProfissional p join fetch p.uatQuadroPessoalTipoServico s  ");
         jpql.append(" where s.id = :idTipoServico ");
         TypedQuery<UatQuadroPessoalTipoProfissional> query = criarConsultaPorTipo(jpql.toString());
         query.setParameter("idTipoServico", idTipoServico);

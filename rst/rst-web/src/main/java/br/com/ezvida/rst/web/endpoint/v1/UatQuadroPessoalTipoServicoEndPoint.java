@@ -30,7 +30,7 @@ public class UatQuadroPessoalTipoServicoEndPoint extends SegurancaEndpoint<UatQu
     @Path("/area/{idArea}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response findAll(@PathParam("idArea") Long idArea, @Context SecurityContext context
+    public Response findByArea(@PathParam("idArea") Long idArea, @Context SecurityContext context
         , @Context HttpServletRequest request) {
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
             .header("Content-Version", getApplicationVersion())
