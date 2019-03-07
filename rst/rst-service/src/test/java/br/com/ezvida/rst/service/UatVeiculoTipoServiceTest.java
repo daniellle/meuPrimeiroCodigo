@@ -15,7 +15,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.UatVeiculoTipoDAO;
+import br.com.ezvida.rst.enums.Funcionalidade;
+import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.model.UatVeiculoTipo;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -36,25 +39,17 @@ public class UatVeiculoTipoServiceTest {
 	@Test
 	public void deveTrazerListaComTodosTiposVeiculos() throws Exception {
 		LOGGER.info("Testando listarTodos");
+		
 		List<UatVeiculoTipo> list = Arrays.asList(Mockito.mock(UatVeiculoTipo.class));
+		
+		ClienteAuditoria auditoria = new ClienteAuditoria();
+		auditoria.setFuncionalidade(Funcionalidade.GESTAO_UNIDADE_SESI);
+		auditoria.setTipoOperacao(TipoOperacaoAuditoria.CONSULTA);
 		
 		Mockito.doReturn(list).when(uatVeiculoTipoDAO).pesquisarTodos();
 		
-		List<UatVeiculoTipo> retorno = uatVeiculoTipoService.listarTodos();
+		List<UatVeiculoTipo> retorno = uatVeiculoTipoService.listarTodos(auditoria);
 		
 		assertEquals(list, retorno);
 	}
-	
-	@Test
-	public void deveRetornarUmUatVeiculoTipo() throws Exception {
-		LOGGER.info("Testando buscar Uat Veiculo Tipo por ID...");
-		UatVeiculoTipo uatVeiculoTipo = Mockito.mock(UatVeiculoTipo.class);
-		
-		Mockito.doReturn(uatVeiculoTipo).when(uatVeiculoTipoDAO).pesquisarPorId(Mockito.anyLong());
-		
-		UatVeiculoTipo retorno = uatVeiculoTipoService.findById(Mockito.anyLong());
-		
-		assertEquals(uatVeiculoTipo, retorno);
-	}
-
 }
