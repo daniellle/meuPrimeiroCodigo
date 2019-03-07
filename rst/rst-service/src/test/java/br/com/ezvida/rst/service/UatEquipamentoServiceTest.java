@@ -27,6 +27,7 @@ import br.com.ezvida.rst.model.UatEquipamentoArea;
 import br.com.ezvida.rst.model.UatEquipamentoTipo;
 import br.com.ezvida.rst.model.UnidadeAtendimentoTrabalhador;
 import br.com.ezvida.rst.model.dto.UatEquipamentoGroupedByAreaDTO;
+import fw.core.exception.BusinessErrorException;
 import fw.security.exception.UnauthorizedException;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -119,6 +120,36 @@ public class UatEquipamentoServiceTest {
 		.thenReturn(false);
 		
 		uatEquipamentoService.desativar(1L, 1L, auditoria, dados);
+	}
+	
+	@Test
+	public void deveRetornarExceptionAoTentarDesativarUatVeiculoComIdEquipamentoNulo() throws Exception {
+		LOGGER.info("Testando Excluir Uat Equipamento, com idEquipamento nulo");
+
+		exception.expect(BusinessErrorException.class);
+		exception.expectMessage("Parâmetro idEquipamento é obrigatório.");
+
+		ClienteAuditoria auditoria = new ClienteAuditoria();
+		auditoria.setFuncionalidade(Funcionalidade.GESTAO_UNIDADE_SESI);
+		auditoria.setTipoOperacao(TipoOperacaoAuditoria.DESATIVACAO);
+		DadosFilter dados = new DadosFilter();
+
+		uatEquipamentoService.desativar(null, 1L, auditoria, dados);
+	}
+	
+	@Test
+	public void deveRetornarExceptionAoTentarDesativarUatVeiculoComIdUatNulo() throws Exception {
+		LOGGER.info("Testando Excluir Uat Equipamento, com idUat nulo");
+
+		exception.expect(BusinessErrorException.class);
+		exception.expectMessage("Parâmetro idUat é obrigatório.");
+
+		ClienteAuditoria auditoria = new ClienteAuditoria();
+		auditoria.setFuncionalidade(Funcionalidade.GESTAO_UNIDADE_SESI);
+		auditoria.setTipoOperacao(TipoOperacaoAuditoria.DESATIVACAO);
+		DadosFilter dados = new DadosFilter();
+
+		uatEquipamentoService.desativar(1L, null, auditoria, dados);
 	}
 
 	private List<UatEquipamento> createListEquipamentosFake() {
