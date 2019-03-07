@@ -32,15 +32,23 @@ public class UatEquipamentoService extends BaseService {
 
 	@Inject
 	private UatEquipamentoDAO uatEquipamentoDAO;
-	
+
 	@Inject
-    private ValidationService validationService;
+	private ValidationService validationService;
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public List<UatEquipamentoGroupedByAreaDTO> listarTodosEquipamentosPorIdUatAgrupadosPorArea(Long idUat, ClienteAuditoria auditoria, DadosFilter dados) {
+	public List<UatEquipamentoGroupedByAreaDTO> listarTodosEquipamentosPorIdUatAgrupadosPorArea(Long idUat,
+			ClienteAuditoria auditoria, DadosFilter dados) {
 		LogAuditoria.registrar(LOGGER, auditoria, "Buscando Equipamentos da UAT com id " + idUat);
 		validarSeUsuarioTemPermissao(dados, idUat);
 		return createListUatEquipamentoGroupedByAreaDTO(idUat);
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void desativar(Long idEquipamento, Long idUat, ClienteAuditoria auditoria, DadosFilter dados) {
+		LogAuditoria.registrar(LOGGER, auditoria, "Desativando UAT Equipamento de ID " + idEquipamento);
+		validarSeUsuarioTemPermissao(dados, idUat);
+		uatEquipamentoDAO.desativar(idEquipamento);
 	}
 
 	private List<UatEquipamentoGroupedByAreaDTO> createListUatEquipamentoGroupedByAreaDTO(Long idUat) {
@@ -55,10 +63,10 @@ public class UatEquipamentoService extends BaseService {
 	private List<UatEquipamentoDTO> parseToListEquipamentoDTO(List<UatEquipamento> list) {
 		return list.stream().map(temp -> new UatEquipamentoDTO(temp)).collect(Collectors.toList());
 	}
-	
+
 	private void validarSeUsuarioTemPermissao(DadosFilter dados, Long idUat) {
-		if(!validationService.validarFiltroDadosGestaoUnidadeSesi(dados, idUat)) {
-			 throw new UnauthorizedException(getMensagem("app_seguranca_acesso_negado"));
+		if (!validationService.validarFiltroDadosGestaoUnidadeSesi(dados, idUat)) {
+			throw new UnauthorizedException(getMensagem("app_seguranca_acesso_negado"));
 		}
 	}
 }

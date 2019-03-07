@@ -42,36 +42,41 @@ public class UatVeiculoEndpoint extends SegurancaEndpoint<UatVeiculoTipo> {
 
 	@Inject
 	private UatVeiculoTipoService uatVeiculoTipoService;
-	
+
 	@Inject
 	private UatVeiculoTipoAtendimentoService uatVeiculoTipoAtendimentoService;
-	
+
 	@Inject
 	private UatVeiculoService uatVeiculoService;
-	
+
 	@GET
 	@Path("/tipo")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response listAllVeiculoTipo() {
+	public Response listAllVeiculoTipo(@Context SecurityContext context, @Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
 				.header(CONTENT_VERSION, getApplicationVersion())
-				.entity(serializar(uatVeiculoTipoService.listarTodos())).build();
+				.entity(serializar(uatVeiculoTipoService.listarTodos(ClienteInfos.getClienteInfos(context, request,
+						TipoOperacaoAuditoria.CONSULTA, Funcionalidade.GESTAO_UNIDADE_SESI))))
+				.build();
 	}
-	
+
 	@GET
 	@Path("/tipo-atendimento")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response listAllVeiculoTipoAtendimento() {
+	public Response listAllVeiculoTipoAtendimento(@Context SecurityContext context,
+			@Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
 				.header(CONTENT_VERSION, getApplicationVersion())
-				.entity(serializar(uatVeiculoTipoAtendimentoService.listarTodos())).build();
+				.entity(serializar(uatVeiculoTipoAtendimentoService.listarTodos(ClienteInfos.getClienteInfos(context,
+						request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.GESTAO_UNIDADE_SESI))))
+				.build();
 	}
-	
+
 	@POST
 	@Encoded
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Autorizacao(permissoes = @Permissao(value = {PermissionConstants.CAT_ESTRUTURA_CADASTRAR}))
+	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.CAT_ESTRUTURA_CADASTRAR }))
 	public Response cadastrar(@Encoded List<UatVeiculoDTO> listUatVeiculoDTO, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
 		getResponse().setCharacterEncoding(StandardCharsets.UTF_8.displayName());
@@ -82,10 +87,10 @@ public class UatVeiculoEndpoint extends SegurancaEndpoint<UatVeiculoTipo> {
 						ClienteInfos.getDadosFilter(context)))
 				.type(MediaType.APPLICATION_JSON).build();
 	}
-	
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Autorizacao(permissoes = @Permissao(value = {PermissionConstants.CAT_ESTRUTURA_CONSULTAR}))
+	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.CAT_ESTRUTURA_CONSULTAR }))
 	public Response listAllUatVeiculoGroupedByTipo(@QueryParam("idUat") Long idUat, @Context SecurityContext context,
 			@Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
@@ -97,18 +102,18 @@ public class UatVeiculoEndpoint extends SegurancaEndpoint<UatVeiculoTipo> {
 								ClienteInfos.getDadosFilter(context))))
 				.build();
 	}
-	
+
 	@DELETE
-	@Autorizacao(permissoes = @Permissao(value = {PermissionConstants.CAT_ESTRUTURA_DESATIVAR}))
-	public Response desativar(@QueryParam("idVeiculo") Long idVeiculo, @QueryParam("idUat") Long idUat, @Context SecurityContext context,
-			@Context HttpServletRequest request) {
+	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.CAT_ESTRUTURA_DESATIVAR }))
+	public Response desativar(@QueryParam("idVeiculo") Long idVeiculo, @QueryParam("idUat") Long idUat,
+			@Context SecurityContext context, @Context HttpServletRequest request) {
 		getResponse().setCharacterEncoding(StandardCharsets.UTF_8.displayName());
-		uatVeiculoService.desativar(idVeiculo, idUat,
-				ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.DESATIVACAO,
-						Funcionalidade.GESTAO_UNIDADE_SESI),
-				ClienteInfos.getDadosFilter(context));
-		return Response.status(HttpServletResponse.SC_NO_CONTENT)
-				.type(MediaType.APPLICATION_JSON).build();
+		uatVeiculoService
+				.desativar(
+						idVeiculo, idUat, ClienteInfos.getClienteInfos(context, request,
+								TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.GESTAO_UNIDADE_SESI),
+						ClienteInfos.getDadosFilter(context));
+		return Response.status(HttpServletResponse.SC_NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
 	}
 
 }

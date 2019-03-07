@@ -85,6 +85,41 @@ public class UatEquipamentoServiceTest {
 		
 		uatEquipamentoService.listarTodosEquipamentosPorIdUatAgrupadosPorArea(1L, auditoria, dados);
 	}
+	
+	@Test
+	public void deveDesativarEquipamento() throws Exception {
+		LOGGER.info("Testando exlcluir equipamento por id de UAT");
+		
+		ClienteAuditoria auditoria = new ClienteAuditoria();
+		auditoria.setFuncionalidade(Funcionalidade.GESTAO_UNIDADE_SESI);
+		auditoria.setTipoOperacao(TipoOperacaoAuditoria.CONSULTA);
+		DadosFilter dados = new DadosFilter();
+		
+		Mockito.when(validationService.validarFiltroDadosGestaoUnidadeSesi(Mockito.any(DadosFilter.class), Mockito.anyLong()))
+		.thenReturn(true);
+		
+		uatEquipamentoService.desativar(1L, 1L, auditoria, dados);
+		
+		Mockito.verify(uatEquipamentoDAO).desativar(Mockito.anyLong());
+	}
+	
+	@Test
+	public void deveRetornarExceptionQuandoTentarDesativarEquipamentoPorIdUatSemPermissao() throws Exception {
+		LOGGER.info("Testando exlcluir equipamento por id de UAT, sem permissão");
+		
+		exception.expect(UnauthorizedException.class);
+	    exception.expectMessage("Usuário não possui acesso autorizado.");
+	    
+	    ClienteAuditoria auditoria = new ClienteAuditoria();
+		auditoria.setFuncionalidade(Funcionalidade.GESTAO_UNIDADE_SESI);
+		auditoria.setTipoOperacao(TipoOperacaoAuditoria.CONSULTA);
+		DadosFilter dados = new DadosFilter();
+		
+		Mockito.when(validationService.validarFiltroDadosGestaoUnidadeSesi(Mockito.any(DadosFilter.class), Mockito.anyLong()))
+		.thenReturn(false);
+		
+		uatEquipamentoService.desativar(1L, 1L, auditoria, dados);
+	}
 
 	private List<UatEquipamento> createListEquipamentosFake() {
 		

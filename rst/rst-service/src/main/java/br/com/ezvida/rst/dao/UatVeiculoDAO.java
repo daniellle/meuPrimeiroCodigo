@@ -41,8 +41,8 @@ public class UatVeiculoDAO extends BaseDAO<UatVeiculo, Long> {
 	public void desativar(Long id) {
 		LOGGER.debug("Desativando UAT Veículo de ID {}", id);
 		
-		Query query = getEm().createQuery("UPDATE UatVeiculo uv SET uv.dataExclusao = :data "
-	              + "WHERE uv.id = :id");
+		Query query = getEm().createQuery("UPDATE UatVeiculo SET dataExclusao = :data "
+	              + "WHERE id = :id");
         query.setParameter("id", id);
         query.setParameter("data", new Date());
         query.executeUpdate();

@@ -1,9 +1,12 @@
 package br.com.ezvida.rst.web.endpoint.v1;
 
+import java.nio.charset.StandardCharsets;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -73,6 +76,19 @@ public class UatEquipamentoEndpoint extends SegurancaEndpoint<UatVeiculoTipo> {
 										Funcionalidade.GESTAO_UNIDADE_SESI),
 								ClienteInfos.getDadosFilter(context))))
 				.build();
+	}
+	
+	@DELETE
+	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.CAT_ESTRUTURA_DESATIVAR }))
+	public Response desativar(@QueryParam("idEquipamento") Long idEquipamento, @QueryParam("idUat") Long idUat,
+			@Context SecurityContext context, @Context HttpServletRequest request) {
+		getResponse().setCharacterEncoding(StandardCharsets.UTF_8.displayName());
+		uatEquipamentoService
+				.desativar(
+						idEquipamento, idUat, ClienteInfos.getClienteInfos(context, request,
+								TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.GESTAO_UNIDADE_SESI),
+						ClienteInfos.getDadosFilter(context));
+		return Response.status(HttpServletResponse.SC_NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
 	}
 	
 }
