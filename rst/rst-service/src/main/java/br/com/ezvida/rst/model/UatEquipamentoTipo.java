@@ -29,6 +29,13 @@ public class UatEquipamentoTipo extends BaseEntity<Long>  {
 	@JoinColumn(name = "ID_UAT_EQUIPAMENTO_AREA_FK", referencedColumnName = "ID_UAT_EQUIPAMENTO_AREA", nullable = false)
 	private UatEquipamentoArea uatEquipamentoArea;
 
+	public UatEquipamentoTipo() {
+	}
+
+	public UatEquipamentoTipo(Long id) {
+		this.id = id;
+	}
+
 	public Long getId() {
 		return id;
 	}

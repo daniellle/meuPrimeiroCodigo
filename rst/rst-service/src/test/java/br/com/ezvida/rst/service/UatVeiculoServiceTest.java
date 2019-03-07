@@ -167,8 +167,8 @@ public class UatVeiculoServiceTest {
 	}
 
 	@Test
-	public void deveSalvarListaDeVeiculosUnidadeMovelERetornarVeiculosSalvos_userWithPermissao() throws Exception {
-		LOGGER.info("Testando salvar lista de Veiculos Unidade Movel, usuário com permissão");
+	public void deveSalvarListaDeVeiculosUnidadeMovelERetornarVeiculosSalvos() throws Exception {
+		LOGGER.info("Testando salvar lista de Veiculos Unidade Movel");
 
 		UatVeiculoDTO uatVeiculoDTO = new UatVeiculoDTO();
 		uatVeiculoDTO.setIdUat(1L);
@@ -194,8 +194,8 @@ public class UatVeiculoServiceTest {
 	}
 
 	@Test
-	public void deveSalvarListaDeVeiculoPasseiolERetornarVeiculosSalvos_userWithPermissao() throws Exception {
-		LOGGER.info("Testando salvar lista de Veiculo Passeio, usuário com permissão");
+	public void deveSalvarListaDeVeiculoPasseiolERetornarVeiculosSalvos() throws Exception {
+		LOGGER.info("Testando salvar lista de Veiculo Passeio");
 
 		UatVeiculoDTO uatVeiculoDTO = new UatVeiculoDTO();
 		uatVeiculoDTO.setIdUat(1L);
@@ -216,12 +216,14 @@ public class UatVeiculoServiceTest {
 		List<UatVeiculoDTO> retorno = uatVeiculoService.salvar(listVeiculoDTO, auditoria, dados);
 
 		Mockito.verify(uatVeiculoDAO).salvar(Mockito.any(UatVeiculo.class));
+		Mockito.verify(validationService).validarFiltroDadosGestaoUnidadeSesi(Mockito.any(DadosFilter.class),
+				Mockito.anyLong());
 		assertTrue(CollectionUtils.isNotEmpty(retorno));
 		assertEquals(listVeiculoDTO.get(0).getId(), retorno.get(0).getId());
 	}
 
 	@Test
-	public void deveRetornaExceptionAoTentarSalvarUatVeiculosUnidadeMovelSemPermissao() throws Exception {
+	public void deveRetornaExceptionQuandoTentarSalvarUatVeiculosUnidadeMovelSemPermissao() throws Exception {
 		LOGGER.info("Testando salvar lista de Veiculos Unidade Movel, usuário sem permissão");
 
 		exception.expect(UnauthorizedException.class);
