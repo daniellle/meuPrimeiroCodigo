@@ -8,6 +8,11 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import br.com.ezvida.rst.auditoria.logger.LogAuditoria;
+import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.UatVeiculoTipoAtendimentoDAO;
 import br.com.ezvida.rst.model.UatVeiculoTipoAtendimento;
 import br.com.ezvida.rst.model.dto.UatVeiculoTipoAtendimentoDTO;
@@ -18,11 +23,14 @@ public class UatVeiculoTipoAtendimentoService extends BaseService{
 
   private static final long serialVersionUID = -642667528948172399L;
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(UatVeiculoTipoAtendimentoService.class);
+  
   @Inject
   private UatVeiculoTipoAtendimentoDAO uatVeiculoTipoAtendimentoDAO;
   
   @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-  public List<UatVeiculoTipoAtendimentoDTO> listarTodos() {  
+  public List<UatVeiculoTipoAtendimentoDTO> listarTodos(ClienteAuditoria auditoria) {  
+	  LogAuditoria.registrar(LOGGER, auditoria, "Listando todos os UatVeiculoTipo");
       return parseToDTO(uatVeiculoTipoAtendimentoDAO.pesquisarTodos());
   }
   

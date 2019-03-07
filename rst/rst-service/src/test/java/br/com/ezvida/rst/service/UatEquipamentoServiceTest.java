@@ -1,6 +1,5 @@
 package br.com.ezvida.rst.service;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -48,19 +47,6 @@ public class UatEquipamentoServiceTest {
 	public ExpectedException exception = ExpectedException.none();
 
 	@Test
-	public void deveTrazerListaComTodosEquipamentos() throws Exception {
-		LOGGER.info("Testando listar Todos");
-		
-		List<UatEquipamento> list = Arrays.asList(Mockito.mock(UatEquipamento.class));
-		
-		Mockito.when(uatEquipamentoDAO.pesquisarTodos()).thenReturn(list);
-		
-		List<UatEquipamento> retorno = uatEquipamentoService.listarTodos();
-		
-		assertEquals(list, retorno);
-	}
-	
-	@Test
 	public void deveTrazerListaComTodosEquipamentosAgrupadosPorArea() throws Exception {
 		LOGGER.info("Testando listar Todos equipamentos agrupados por area");
 		
@@ -98,7 +84,6 @@ public class UatEquipamentoServiceTest {
 		.thenReturn(false);
 		
 		uatEquipamentoService.listarTodosEquipamentosPorIdUatAgrupadosPorArea(1L, auditoria, dados);
-		
 	}
 
 	private List<UatEquipamento> createListEquipamentosFake() {

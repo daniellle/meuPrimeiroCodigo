@@ -46,16 +46,10 @@ public class UatVeiculoService extends BaseService {
     private ValidationService validationService;
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public List<UatVeiculo> listarTodos() {
-		LOGGER.info("Listando todos os Veiulos");
-		return uatVeiculoDAO.pesquisarTodos();
-	}
-	
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<UatVeiculoGroupedByTipoDTO> listAllUatVeiculoGroupedByTipo(Long idUat, ClienteAuditoria auditoria, DadosFilter dados) {
 		LogAuditoria.registrar(LOGGER, auditoria, "Buscando Veículos por id da uat " + idUat);
 		validarSeUsuarioTemPermissao(dados, idUat);
-		return createListUatVeiculoGroupedByTipoDTO(uatVeiculoDAO.listAllUatVeiculosByIdUatAndAtivo(idUat));
+		return createListUatVeiculoGroupedByTipoDTO(uatVeiculoDAO.listAllUatVeiculosByIdUatAndAtivo(idUat), auditoria);
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -130,9 +124,9 @@ public class UatVeiculoService extends BaseService {
 		return uatVeiculo;
 	}
 	
-	private List<UatVeiculoGroupedByTipoDTO> createListUatVeiculoGroupedByTipoDTO(List<UatVeiculo> list) {
+	private List<UatVeiculoGroupedByTipoDTO> createListUatVeiculoGroupedByTipoDTO(List<UatVeiculo> list, ClienteAuditoria auditoria) {
 		List<UatVeiculoGroupedByTipoDTO> listUatVeiculoGroupedByTipoDTO = new ArrayList<>();
-		List<UatVeiculoTipo> uatVeiculoTipos = uatVeiculoTipoService.listarTodos();
+		List<UatVeiculoTipo> uatVeiculoTipos = uatVeiculoTipoService.listarTodos(auditoria);
 		
 		for (UatVeiculoTipo uatVeiculoTipo : uatVeiculoTipos) {
 			List<UatVeiculo> listUatVeiculosFiltered = list.stream()

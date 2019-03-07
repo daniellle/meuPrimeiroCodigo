@@ -37,12 +37,6 @@ public class UatEquipamentoService extends BaseService {
     private ValidationService validationService;
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public List<UatEquipamento> listarTodos() {
-		LOGGER.info("Listando todos os Equipamentos");
-		return uatEquipamentoDAO.pesquisarTodos();
-	}
-
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<UatEquipamentoGroupedByAreaDTO> listarTodosEquipamentosPorIdUatAgrupadosPorArea(Long idUat, ClienteAuditoria auditoria, DadosFilter dados) {
 		LogAuditoria.registrar(LOGGER, auditoria, "Buscando Equipamentos da UAT com id " + idUat);
 		validarSeUsuarioTemPermissao(dados, idUat);

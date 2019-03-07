@@ -54,15 +54,6 @@ public class UatVeiculoServiceTest {
 	public ExpectedException exception = ExpectedException.none();
 
 	@Test
-	public void deveTrazerListaComTodosVeiculos() throws Exception {
-		LOGGER.info("Testando listar Todos");
-		List<UatVeiculo> list = Arrays.asList(Mockito.mock(UatVeiculo.class));
-		Mockito.doReturn(list).when(uatVeiculoDAO).pesquisarTodos();
-		List<UatVeiculo> retorno = uatVeiculoService.listarTodos();
-		assertEquals(list, retorno);
-	}
-	
-	@Test
 	public void deveRetornarExcpetionAoTentarListaUatVeiculosSemPermissao() throws Exception {
 		LOGGER.info("Testando listar Uat Veiculos, sem permissão");
 		
@@ -100,7 +91,7 @@ public class UatVeiculoServiceTest {
 		Mockito.when(validationService.validarFiltroDadosGestaoUnidadeSesi(Mockito.any(DadosFilter.class), Mockito.anyLong()))
 		.thenReturn(true);
 		Mockito.when(uatVeiculoDAO.listAllUatVeiculosByIdUatAndAtivo(Mockito.anyLong())).thenReturn(listUatVeiculo);
-		Mockito.when(uatVeiculoTipoService.listarTodos()).thenReturn(listVeiculoTipo);
+		Mockito.when(uatVeiculoTipoService.listarTodos(auditoria)).thenReturn(listVeiculoTipo);
 		List<UatVeiculoGroupedByTipoDTO> retorno = uatVeiculoService.listAllUatVeiculoGroupedByTipo(1L, auditoria, dados);
 		
 		assertNotNull(retorno);
@@ -135,7 +126,7 @@ public class UatVeiculoServiceTest {
 		Mockito.when(validationService.validarFiltroDadosGestaoUnidadeSesi(Mockito.any(DadosFilter.class), Mockito.anyLong()))
 		.thenReturn(true);
 		Mockito.when(uatVeiculoDAO.listAllUatVeiculosByIdUatAndAtivo(Mockito.anyLong())).thenReturn(listUatVeiculo);
-		Mockito.when(uatVeiculoTipoService.listarTodos()).thenReturn(listVeiculoTipo);
+		Mockito.when(uatVeiculoTipoService.listarTodos(auditoria)).thenReturn(listVeiculoTipo);
 		List<UatVeiculoGroupedByTipoDTO> retorno = uatVeiculoService.listAllUatVeiculoGroupedByTipo(1L, auditoria, dados);
 		
 		assertNotNull(retorno);
@@ -165,7 +156,7 @@ public class UatVeiculoServiceTest {
 		Mockito.when(validationService.validarFiltroDadosGestaoUnidadeSesi(Mockito.any(DadosFilter.class), Mockito.anyLong()))
 		.thenReturn(true);
 		Mockito.when(uatVeiculoDAO.listAllUatVeiculosByIdUatAndAtivo(Mockito.anyLong())).thenReturn(listUatVeiculo);
-		Mockito.when(uatVeiculoTipoService.listarTodos()).thenReturn(listVeiculoTipo);
+		Mockito.when(uatVeiculoTipoService.listarTodos(auditoria)).thenReturn(listVeiculoTipo);
 		List<UatVeiculoGroupedByTipoDTO> retorno = uatVeiculoService.listAllUatVeiculoGroupedByTipo(1L, auditoria, dados);
 		
 		assertTrue(CollectionUtils.isEmpty(retorno));
