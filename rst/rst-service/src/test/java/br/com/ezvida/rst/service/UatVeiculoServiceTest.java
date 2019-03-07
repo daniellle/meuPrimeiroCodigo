@@ -350,4 +350,34 @@ public class UatVeiculoServiceTest {
 
 		uatVeiculoService.desativar(1L, 1L, auditoria, dados);
 	}
+	
+	@Test
+	public void deveRetornarExceptionAoTentarDesativarUatVeiculoComIdVeiculoNulo() throws Exception {
+		LOGGER.info("Testando Excluir Uat Veiculos, com idVeiculo nulo");
+
+		exception.expect(BusinessErrorException.class);
+		exception.expectMessage("Parâmetro idVeiculo é obrigatório.");
+
+		ClienteAuditoria auditoria = new ClienteAuditoria();
+		auditoria.setFuncionalidade(Funcionalidade.GESTAO_UNIDADE_SESI);
+		auditoria.setTipoOperacao(TipoOperacaoAuditoria.DESATIVACAO);
+		DadosFilter dados = new DadosFilter();
+
+		uatVeiculoService.desativar(null, 1L, auditoria, dados);
+	}
+	
+	@Test
+	public void deveRetornarExceptionAoTentarDesativarUatVeiculoComIdUatNulo() throws Exception {
+		LOGGER.info("Testando Excluir Uat Veiculos, com idUat nulo");
+
+		exception.expect(BusinessErrorException.class);
+		exception.expectMessage("Parâmetro idUat é obrigatório.");
+
+		ClienteAuditoria auditoria = new ClienteAuditoria();
+		auditoria.setFuncionalidade(Funcionalidade.GESTAO_UNIDADE_SESI);
+		auditoria.setTipoOperacao(TipoOperacaoAuditoria.DESATIVACAO);
+		DadosFilter dados = new DadosFilter();
+
+		uatVeiculoService.desativar(1L, null, auditoria, dados);
+	}
 }

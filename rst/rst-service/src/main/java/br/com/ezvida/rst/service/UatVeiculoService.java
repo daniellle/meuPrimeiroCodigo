@@ -70,8 +70,20 @@ public class UatVeiculoService extends BaseService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void desativar(Long idVeiculo, Long idUat, ClienteAuditoria auditoria, DadosFilter dados) {
 		LogAuditoria.registrar(LOGGER, auditoria, "Desativando UAT Veículo de ID " + idVeiculo);
+		validarSeIdVeiculoEIdUatForamInformados(idVeiculo, idUat);
 		validarSeUsuarioTemPermissao(dados, idUat);
 		uatVeiculoDAO.desativar(idVeiculo);
+	}
+
+	private void validarSeIdVeiculoEIdUatForamInformados(Long idVeiculo, Long idUat) {
+		if (idVeiculo == null) {
+			throw new BusinessErrorException("Parâmetro idVeiculo é obrigatório.");
+		}
+		
+		if (idUat == null) {
+			throw new BusinessErrorException("Parâmetro idUat é obrigatório.");
+		}
+		
 	}
 
 	private void validarSeUsuarioTemPermissao(DadosFilter dados, Long idUat) {

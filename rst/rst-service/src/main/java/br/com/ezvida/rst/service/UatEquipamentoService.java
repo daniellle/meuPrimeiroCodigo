@@ -20,6 +20,7 @@ import br.com.ezvida.rst.model.UatEquipamento;
 import br.com.ezvida.rst.model.UatEquipamentoArea;
 import br.com.ezvida.rst.model.dto.UatEquipamentoDTO;
 import br.com.ezvida.rst.model.dto.UatEquipamentoGroupedByAreaDTO;
+import fw.core.exception.BusinessErrorException;
 import fw.core.service.BaseService;
 import fw.security.exception.UnauthorizedException;
 
@@ -47,8 +48,19 @@ public class UatEquipamentoService extends BaseService {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void desativar(Long idEquipamento, Long idUat, ClienteAuditoria auditoria, DadosFilter dados) {
 		LogAuditoria.registrar(LOGGER, auditoria, "Desativando UAT Equipamento de ID " + idEquipamento);
+		validarSeIdEquipamentoEIdUatForamInformados(idEquipamento, idUat);
 		validarSeUsuarioTemPermissao(dados, idUat);
 		uatEquipamentoDAO.desativar(idEquipamento);
+	}
+	
+	private void validarSeIdEquipamentoEIdUatForamInformados(Long idEquipamento, Long idUat) {
+		if (idEquipamento == null) {
+			throw new BusinessErrorException("Parâmetro idEquipamento é obrigatório.");
+		}
+		
+		if (idUat == null) {
+			throw new BusinessErrorException("Parâmetro idUat é obrigatório.");
+		}
 	}
 
 	private List<UatEquipamentoGroupedByAreaDTO> createListUatEquipamentoGroupedByAreaDTO(Long idUat) {
