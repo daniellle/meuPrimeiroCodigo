@@ -106,7 +106,7 @@
             <tbody class="content-grid">
                 <tr *ngFor="let value of quadrosPessoaisAgg[key]">
                     <td class="column-label">{{value.descricaoTipoServico }}</td>
-                    <td class="column-quantidade">{{value.descricaoTipoProfissional}}</td>
+                    <td class="column-quantidade text-center">{{value.descricaoTipoProfissional}}</td>
                     <td class="column-quantidade">{{value.quantidade}}</td>
                     <td class="column-btn" *ngIf="hasPermissaoDesativar()">
                         <button class="btn-link" #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Desativar'" (click)="openModal(confirmDesativar); selecionarRemover(value.idQuadroPessoal)"
