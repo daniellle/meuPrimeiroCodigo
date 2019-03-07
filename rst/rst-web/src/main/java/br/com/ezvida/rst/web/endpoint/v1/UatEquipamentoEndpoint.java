@@ -52,19 +52,23 @@ public class UatEquipamentoEndpoint extends SegurancaEndpoint<UatVeiculoTipo> {
 	@GET
 	@Path("/tipo")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response listAllVeiculoTipo() {
+	public Response listAllVeiculoTipo(@QueryParam("idArea") Long idArea, @Context SecurityContext context,
+			@Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
 				.header(CONTENT_VERSION, getApplicationVersion())
-				.entity(serializar(uatEquipamentoTipoService.listarTodos())).build();
+				.entity(serializar(uatEquipamentoTipoService.listarTodosPorArea(idArea, ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA,
+						Funcionalidade.GESTAO_UNIDADE_SESI)))).build();
 	}
 	
 	@GET
 	@Path("/area")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response listAllVeiculoTipoAtendimento() {
+	public Response listAllVeiculoTipoAtendimento(@Context SecurityContext context,
+			@Context HttpServletRequest request) {
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
 				.header(CONTENT_VERSION, getApplicationVersion())
-				.entity(serializar(uatEquipamentoAreaService.listarTodos())).build();
+				.entity(serializar(uatEquipamentoAreaService.listarTodos(ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA,
+						Funcionalidade.GESTAO_UNIDADE_SESI)))).build();
 	}
 	
 	
