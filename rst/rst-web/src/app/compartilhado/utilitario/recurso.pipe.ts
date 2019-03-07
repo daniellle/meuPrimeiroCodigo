@@ -370,6 +370,7 @@ export const MensagemProperties = {
   app_rst_cadastro_instalacoes_fisicas_title: 'Cadastro de Instalações Físicas',
   app_rst_categorias_cadastradas_title: 'Categorias cadastradas',
   app_rst_tipos_cadastrados_title: 'Tipos cadastrados',
+  app_rst_areas_cadastradas: 'Áreas cadastradas',
 
 //Gestão de Unidade SESI Quadro Pessoal
   app_rst_cadastro_quadro_pessoal_title: 'Cadastro de Quadro de Pessoal',

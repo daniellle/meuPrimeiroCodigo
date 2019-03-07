@@ -55,7 +55,7 @@
 
                 <span class="column-quantidade">
                     <input type="text" name="{{instFis.uatInstalacaoFisicaAmbiente.descricao}}-quantidade-{{index}}"
-                        [(ngModel)]="listInstalacoesFisicasSave[index].quantidade" id="quantidade" maxlength="4"
+                        [(ngModel)]="listInstalacoesFisicasSave[index].quantidade" id="quantidade" maxlength="8"
                         inputmode="numeric" pattern="[0-9]*" digitOnly>
                 </span>
 
@@ -83,7 +83,7 @@
 
 <div class="space-up" *ngIf="showGridInstalacoes()">
 
-    <span class="titulo-table">{{'app_rst_tipos_cadastrados_title' | recurso}}</span>
+    <span class="titulo-table">{{'app_rst_categorias_cadastradas_title' | recurso}}</span>
 
     <div *ngFor="let key of objectKeys(instalacoesAgg)">
         <span class="subtitulo-table"> {{ key }} </span>

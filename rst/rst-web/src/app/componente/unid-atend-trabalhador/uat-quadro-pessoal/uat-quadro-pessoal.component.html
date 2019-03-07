@@ -64,7 +64,7 @@
 
                 <span class="column-quantidade">
                     <input type="text" name="{{quadroPessoal.uatQuadroPessoalTipoProfissional.descricao}}-quantidade-{{index}}"
-                        [(ngModel)]="listQuadroPessoalSave[index].quantidade" id="quantidade" maxlength="5" inputmode="numeric"
+                        [(ngModel)]="listQuadroPessoalSave[index].quantidade" id="quantidade" maxlength="8" inputmode="numeric"
                         pattern="[0-9]*" digitOnly>
                 </span>
 
@@ -73,4 +73,77 @@
 
     </div>
 
+    <div class="btn-rodape-acoes space-up">
+        <button class="btn btn-primary" [(disabled)]="modoConsulta" (click)="salvar()">{{ 'app_rst_btn_salvar' |
+            recurso}}</button>
+        <button class="btn btn-secondary" [(disabled)]="modoConsulta" (click)="limpar()">{{
+            'app_rst_btn_cancelar' | recurso}}</button>
+    </div>
+
 </div>
+
+
+<div class="space-up" *ngIf="showGridQuadroPessoal()">
+
+    <span class="titulo-table">{{'app_rst_areas_cadastradas' | recurso}}</span>
+
+    <div *ngFor="let key of objectKeys(quadrosPessoaisAgg)">
+        <span class="subtitulo-table"> {{ key }} </span>
+        <table class="table table-responsive">
+            <thead class="header-grid">
+                <tr>
+                    <th class="column-label"><span>{{
+                            'app_rst_labels_tipo_servico' | recurso }}</span></th>
+
+                    <th class="column-quantidade"><span>{{
+                            'app_rst_labels_tipo_profissional' | recurso }}</span></th>
+
+                    <th class="column-quantidade"><span>{{
+                            'app_rst_labels_quantidade' | recurso }}</span></th>
+
+                    <th class="column-btn" *ngIf="hasPermissaoDesativar()"></th>
+                </tr>
+            </thead>
+
+            <tbody class="content-grid">
+                <tr *ngFor="let value of quadrosPessoaisAgg[key]">
+                    <td class="column-label">{{value.descricaoTipoServico }}</td>
+                    <td class="column-quantidade">{{value.descricaoTipoProfissional}}</td>
+                    <td class="column-quantidade">{{value.quantidade}}</td>
+                    <td class="column-btn" *ngIf="hasPermissaoDesativar()">
+                        <button class="btn-link" #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Desativar'" (click)="openModal(confirmDesativar); selecionarRemover(value.idQuadroPessoal)"
+                            [mdTooltipPosition]="'below'">
+                            <img class="lixo" [src]="'assets/img/trash.svg'">
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+
+
+<ng-template #confirmDesativar let-close="close" let-fechar="dismiss">
+    <div class="modal-header">
+        <p class="modal-title">Remover Instalação Física</p>
+    </div>
+    <div class="modal-body text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    Deseja realmente remover a Instalação Física?
+                </div>
+                <div class="offset-md-1 col-10 row space-up">
+                    <div class=" col-6">
+                        <button type="button" class="btn-rodape btn btn-primary btn-cadastro" (click)="close('remover'); desativar() ">Sim</button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="fechar('cancelar')">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

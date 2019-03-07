@@ -87,7 +87,15 @@ export class UatQuadroPessoalComponent extends BaseComponent implements OnInit {
 
     private emModoConsulta() {
         this.modoConsulta = !Seguranca.isPermitido(
-            [PermissoesEnum.GESTAO_UNIDADE_SESI_CADASTRAR]);
+            [PermissoesEnum.CAT_ESTRUTURA_CADASTRAR]);
+    }
+
+    openModal(modal: any) {
+        this.modalRef = this.modalService.open(modal, { size: 'sm' });
+    }
+
+    selecionarRemover(idQuadroPessoalExcluir: Number) {
+        this.idQuadroPessoalExcluir = idQuadroPessoalExcluir;
     }
 
     private loadAreas() {
@@ -125,12 +133,31 @@ export class UatQuadroPessoalComponent extends BaseComponent implements OnInit {
         }
     }
 
+    salvar() {
+        this.uatQuadroPessoalService.salvar(this.listQuadroPessoalSave).subscribe((data) => {
+            this.form.reset();
+            this.listQuadroPessoalSave = [];
+            this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+            this.findQuadroPessoalAgg();
+        },
+            (error) => {
+                this.mensagemError(error);
+            });
+    }
+
+    limpar() {
+        this.form.reset();
+        this.listQuadroPessoalSave = [];
+        this.findQuadroPessoalAgg();
+    }
+
     changeCombo(name: string) {
         if (name === 'area') {
             const idArea = this.form.get('area').value;
             if (idArea !== null && idArea !== undefined) {
                 this.loadTipoServico(idArea);
             }
+            this.form.patchValue({ tipoServico: null });
         } else if (name === 'tipoServico') {
             const idTipoServico = this.form.get('tipoServico').value;
             if (idTipoServico !== null && idTipoServico !== undefined) {
@@ -158,10 +185,33 @@ export class UatQuadroPessoalComponent extends BaseComponent implements OnInit {
 
     showFormQuadroPessoal() {
         const tipoServico = this.form.get('tipoServico').value;
+        const idArea = this.form.get('area').value;
         return tipoServico != null && tipoServico !== undefined &&
+            idArea !== null && idArea !== undefined &&
             this.listQuadroPessoalSave !== null &&
             this.listQuadroPessoalSave !== undefined &&
             this.listQuadroPessoalSave.length > 0;
+    }
+
+    showGridQuadroPessoal() {
+        return this.quadrosPessoaisAgg !== null &&
+            this.quadrosPessoaisAgg !== undefined &&
+            this.quadrosPessoaisAgg !== {};
+    }
+
+    hasPermissaoDesativar() {
+        return Seguranca.isPermitido(
+            [PermissoesEnum.CAT_ESTRUTURA_DESATIVAR]);
+    }
+
+    desativar() {
+        this.uatQuadroPessoalService.desativar(this.idQuadroPessoalExcluir, this.idUnidade).subscribe(
+            (data) => {
+                this.mensagemSucesso(data['content']);
+                this.findQuadroPessoalAgg();
+            }, (error) => {
+                this.mensagemError(MensagemProperties.app_rst_erro_geral);
+            });
     }
 
 }
