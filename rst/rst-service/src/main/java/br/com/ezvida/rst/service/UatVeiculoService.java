@@ -47,6 +47,7 @@ public class UatVeiculoService extends BaseService {
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<UatVeiculo> listarTodos() {
+		LOGGER.info("Listando todos os Veiulos");
 		return uatVeiculoDAO.pesquisarTodos();
 	}
 	

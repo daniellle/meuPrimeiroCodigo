@@ -28,6 +28,5 @@ public class UatVeiculoTipoAtendimentoService extends BaseService{
   
   private List<UatVeiculoTipoAtendimentoDTO> parseToDTO(List<UatVeiculoTipoAtendimento> list) {
 		return list.stream().map(temp -> new UatVeiculoTipoAtendimentoDTO(temp)).collect(Collectors.toList());
-
   }
 }
