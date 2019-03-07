@@ -2,6 +2,7 @@ package br.com.ezvida.rst.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
@@ -18,6 +19,8 @@ import br.com.ezvida.rst.dao.UatEquipamentoDAO;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.model.UatEquipamento;
 import br.com.ezvida.rst.model.UatEquipamentoArea;
+import br.com.ezvida.rst.model.UatEquipamentoTipo;
+import br.com.ezvida.rst.model.UnidadeAtendimentoTrabalhador;
 import br.com.ezvida.rst.model.dto.UatEquipamentoDTO;
 import br.com.ezvida.rst.model.dto.UatEquipamentoGroupedByAreaDTO;
 import fw.core.exception.BusinessErrorException;
@@ -53,6 +56,41 @@ public class UatEquipamentoService extends BaseService {
 		uatEquipamentoDAO.desativar(idEquipamento);
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public List<UatEquipamentoDTO> salvar(List<UatEquipamentoDTO> listUatEquipamentoDTO, ClienteAuditoria auditoria,
+			DadosFilter dados) {
+		Long idUat = listUatEquipamentoDTO.get(0).getIdUat();
+		LogAuditoria.registrar(LOGGER, auditoria, "Salvando Equipamentos para uat de ID " + idUat);
+		validarSeUsuarioTemPermissao(dados, idUat);
+		validarSeOEquipamentoJaEstaCadastrado(listUatEquipamentoDTO, idUat);
+		
+		return listUatEquipamentoDTO.stream().map(item -> {
+			UatEquipamento uatEquipamento = parseToEntity(item);
+			uatEquipamentoDAO.salvar(uatEquipamento);
+			item.setId(uatEquipamento.getId());
+			return item;
+		}).collect(Collectors.toList());
+	}
+	
+	private UatEquipamento parseToEntity(UatEquipamentoDTO dto) {
+		UatEquipamento uatEquipamento = new UatEquipamento();
+		uatEquipamento.setQuantidade(dto.getQuantidade());
+		uatEquipamento.setUatEquipamentoTipo(new UatEquipamentoTipo(dto.getIdTipo()));
+		uatEquipamento.setUnidadeAtendimentoTrabalhador(new UnidadeAtendimentoTrabalhador(dto.getIdUat()));
+		return uatEquipamento;
+	}
+	
+	private void validarSeOEquipamentoJaEstaCadastrado(List<UatEquipamentoDTO> listUatEquipamentoDTO, Long idUat) {
+		Set<Long> idsTiposCadastrados = uatEquipamentoDAO.listAllUatEquipamentoByIdUatAndAtivo(idUat).stream()
+				.map(item -> item.getUatEquipamentoTipo().getId()).collect(Collectors.toSet());
+		
+		listUatEquipamentoDTO.stream().forEach(item -> {
+			if(idsTiposCadastrados.contains(item.getIdTipo())) {
+				throw new BusinessErrorException(getMensagem("app_rst_uat_equipamento_duplicado", item.getDescricao()));
+			}
+		});
+	}
+
 	private void validarSeIdEquipamentoEIdUatForamInformados(Long idEquipamento, Long idUat) {
 		if (idEquipamento == null) {
 			throw new BusinessErrorException("Parâmetro idEquipamento é obrigatório.");
@@ -81,4 +119,5 @@ public class UatEquipamentoService extends BaseService {
 			throw new UnauthorizedException(getMensagem("app_seguranca_acesso_negado"));
 		}
 	}
+
 }

@@ -1,13 +1,17 @@
 package br.com.ezvida.rst.web.endpoint.v1;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.Encoded;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -20,6 +24,7 @@ import br.com.ezvida.rst.constants.PermissionConstants;
 import br.com.ezvida.rst.enums.Funcionalidade;
 import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.model.UatVeiculoTipo;
+import br.com.ezvida.rst.model.dto.UatEquipamentoDTO;
 import br.com.ezvida.rst.service.UatEquipamentoAreaService;
 import br.com.ezvida.rst.service.UatEquipamentoService;
 import br.com.ezvida.rst.service.UatEquipamentoTipoService;
@@ -89,6 +94,22 @@ public class UatEquipamentoEndpoint extends SegurancaEndpoint<UatVeiculoTipo> {
 								TipoOperacaoAuditoria.DESATIVACAO, Funcionalidade.GESTAO_UNIDADE_SESI),
 						ClienteInfos.getDadosFilter(context));
 		return Response.status(HttpServletResponse.SC_NO_CONTENT).type(MediaType.APPLICATION_JSON).build();
+	}
+	
+	@POST
+	@Encoded
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Autorizacao(permissoes = @Permissao(value = { PermissionConstants.CAT_ESTRUTURA_CADASTRAR }))
+	public Response cadastrar(@Encoded List<UatEquipamentoDTO> listUatEquipamentoDTO, @Context SecurityContext context,
+			@Context HttpServletRequest request) {
+		getResponse().setCharacterEncoding(StandardCharsets.UTF_8.displayName());
+		return Response.status(HttpServletResponse.SC_CREATED)
+				.entity(uatEquipamentoService.salvar(listUatEquipamentoDTO,
+						ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.INCLUSAO,
+								Funcionalidade.GESTAO_UNIDADE_SESI),
+						ClienteInfos.getDadosFilter(context)))
+				.type(MediaType.APPLICATION_JSON).build();
 	}
 	
 }
