@@ -5,10 +5,10 @@
 </p>
 
 <form [formGroup]="form">
-    <div class="container-form" [ngClass]="{ divDis : modoConsulta }">
+    <div class="container" [ngClass]="{ divDis : modoConsulta }">
 
         <div class="row">
-            <div class="form-group col-md-6" [ngClass]="{ divDis :  modoConsulta }">
+            <div class="form-group col-xs-4 col-sm-4" [ngClass]="{ divDis :  modoConsulta }">
                 <div class="md-container">
                     <md-select formControlName="area" id="area" placeholder="{{ 'app_rst_labels_area' | recurso }}"
                         appFormularioCamposErro (change)="changeCombo('area')">
@@ -21,10 +21,8 @@
                     </md-select>
                 </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="form-group col-md-6" [ngClass]="{ divDis :  modoConsulta }" [hidden]="!showComboTipoServico()">
+            <div class="form-group col-xs-4 col-sm-4" [ngClass]="{ divDis :  modoConsulta }" [hidden]="!showComboTipoServico()">
                 <div class="md-container">
                     <md-select formControlName="tipoServico" id="tipoServico" placeholder="{{ 'app_rst_labels_tipo_servico' | recurso }}"
                         appFormularioCamposErro (change)="changeCombo('tipoServico')">
