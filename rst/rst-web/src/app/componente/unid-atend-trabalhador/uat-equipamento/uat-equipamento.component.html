@@ -1,71 +1,71 @@
 <div class="container">
   <div class="row">
-    <div class="form-group col-sm-6 col-xs-12">
-      <div class="md-container">
-        <md-select required [disabled]="modoConsulta || !hasPermissaoCadastrarAlterar" placeholder="{{ 'app_rst_labels_area' | recurso }}" [(ngModel)]="idEquipamentoAreaSelecionado" (change)="changeArea(idEquipamentoAreaSelecionado)">
-            <md-option>
-              <option value="">{{ 'app_rst_labels_selecione' | recurso }}</option>
-          </md-option>
-          <md-option *ngFor='let item of listUatEquipamentoArea' [value]="item.id">
-              {{item.descricao}}
-          </md-option>
-        </md-select>
-      </div>
-    </div>
+	<div class="form-group col-sm-6 col-xs-12" [ngClass]="{ divDis : modoConsulta }">
+	  <div class="md-container">
+		<md-select required [disabled]="modoConsulta || !hasPermissaoCadastrarAlterar" placeholder="{{ 'app_rst_labels_area' | recurso }}" [(ngModel)]="idEquipamentoAreaSelecionado" (change)="changeArea(idEquipamentoAreaSelecionado)">
+			<md-option>
+			  <option value="">{{ 'app_rst_labels_selecione' | recurso }}</option>
+		  </md-option>
+		  <md-option *ngFor='let item of listUatEquipamentoArea' [value]="item.id">
+			  {{item.descricao}}
+		  </md-option>
+		</md-select>
+	  </div>
+	</div>
   </div>
 
   <div class="row tabela" *ngIf="idEquipamentoAreaSelecionado">
-      <div class="header-tabela">
-        <span class="column-label">
-          {{'app_rst_labels_area' | recurso}}
-        </span>
-        <span class="column-quantidade">
-          {{'app_rst_labels_quantidade' | recurso}}
-        </span>
-    </div>
-    <div class="content-tabela">
-      <div class="row-content-tabela" *ngFor='let item of listUatEquipamentos'>
-        <span class="column-label">
-          {{item.descricao}}
-        </span>
-        <span class="column-quantidade" >
-          <input type="text" name="quantidade" [(ngModel)]="item.quantidade" maxlength="5" inputmode="numeric" pattern="[0-9]*" digitOnly>
-        </span>
-      </div>
-    </div>
-    <div class="btn-rodape-acoes space-up">
-      <button class="btn btn-primary" [(disabled)]="modoConsulta" (click)="salvar()">{{ 'app_rst_btn_salvar' | recurso}}</button>
-      <button class="btn btn-secondary" [(disabled)]="modoConsulta" (click)="cancelar()">{{ 'app_rst_btn_cancelar' | recurso}}</button>
-    </div>
+	  <div class="header-tabela">
+		<span class="column-label">
+		  {{'app_rst_labels_area' | recurso}}
+		</span>
+		<span class="column-quantidade">
+		  {{'app_rst_labels_quantidade' | recurso}}
+		</span>
+	</div>
+	<div class="content-tabela">
+	  <div class="row-content-tabela" *ngFor='let item of listUatEquipamentos'>
+		<span class="column-label">
+		  {{item.descricao}}
+		</span>
+		<span class="column-quantidade" >
+		  <input type="text" name="quantidade" [(ngModel)]="item.quantidade" maxlength="5" inputmode="numeric" pattern="[0-9]*" digitOnly>
+		</span>
+	  </div>
+	</div>
+	<div class="btn-rodape-acoes space-up">
+	  <button class="btn btn-primary" [(disabled)]="modoConsulta" (click)="salvar()">{{ 'app_rst_btn_salvar' | recurso}}</button>
+	  <button class="btn btn-secondary" [(disabled)]="modoConsulta" (click)="cancelar()">{{ 'app_rst_btn_cancelar' | recurso}}</button>
+	</div>
   </div>
 
   <div class="space-up" *ngIf="showGrid()">
 
-      <span class="titulo-table">{{'app_rst_areas_cadastradas' | recurso}}</span>
+	  <span class="titulo-table">{{'app_rst_areas_cadastradas' | recurso}}</span>
   
-      <div *ngFor="let item of listUatEquipamentosGroupedByArea">
-          <span class="subtitulo-table"> {{ item.area.descricao }} </span>
-            <table class="table table-responsive">
-                <thead class="header-grid">
-                    <tr>
-                      <th class="column-label" ><span>{{ 'app_rst_labels_tipo' | recurso }}</span></th>
-                      <th class="column-quantidade"><span>{{ 'app_rst_labels_quantidade' | recurso }}</span></th>
-                      <th *ngIf="!modoConsulta && hasPermissaoDesativar" class="column-btn"></th>
-                    </tr>
-                </thead>
-                <tbody class="content-grid">
-                  <tr *ngFor="let equipamento of item.equipamentos">
-                    <td class="column-label">{{ equipamento.descricao }}</td>
-                    <td class="column-quantidade">{{ equipamento.quantidade}}</td>
-                    <td *ngIf="!modoConsulta && hasPermissaoDesativar" class="column-btn">
-                        <button class="btn-link"
-                          #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Exluir'" [mdTooltipPosition]="'below'" (click)="openConfirmationDialog(equipamento)">
-                          <img class="lixo" [src]="'assets/img/trash.svg'">
-                        </button>
-                    </td>
-                  </tr>
-                </tbody>
-            </table>
-      </div>
+	  <div *ngFor="let item of listUatEquipamentosGroupedByArea">
+		  <span class="subtitulo-table"> {{ item.area.descricao }} </span>
+			<table class="table table-responsive">
+				<thead class="header-grid">
+					<tr>
+					  <th class="column-label" ><span>{{ 'app_rst_labels_tipo' | recurso }}</span></th>
+					  <th class="column-quantidade"><span>{{ 'app_rst_labels_quantidade' | recurso }}</span></th>
+					  <th *ngIf="!modoConsulta && hasPermissaoDesativar" class="column-btn"></th>
+					</tr>
+				</thead>
+				<tbody class="content-grid">
+				  <tr *ngFor="let equipamento of item.equipamentos">
+					<td class="column-label">{{ equipamento.descricao }}</td>
+					<td class="column-quantidade">{{ equipamento.quantidade}}</td>
+					<td *ngIf="!modoConsulta && hasPermissaoDesativar" class="column-btn">
+						<button class="btn-link"
+						  #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Exluir'" [mdTooltipPosition]="'below'" (click)="openConfirmationDialog(equipamento)">
+						  <img class="lixo" [src]="'assets/img/trash.svg'">
+						</button>
+					</td>
+				  </tr>
+				</tbody>
+			</table>
+	  </div>
   </div>
 </div>

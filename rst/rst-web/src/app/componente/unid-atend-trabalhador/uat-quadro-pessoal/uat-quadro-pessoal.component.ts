@@ -1,4 +1,3 @@
-import { PermissoesEnum } from './../../../modelo/enum/enum-permissoes';
 import { MensagemProperties } from './../../../compartilhado/utilitario/recurso.pipe';
 import { BloqueioService } from './../../../servico/bloqueio.service';
 import { Component, Input, OnInit } from '@angular/core';
@@ -9,7 +8,6 @@ import { UatQuadroPessoalService } from 'app/servico/uat-quadro-pessoal.service'
 import { UatQuadroPessoalAreaService } from 'app/servico/uat-quadro-pessoal-area.service';
 import { UatQuadroPessoalTipoProfissionalService } from 'app/servico/uat-quadro-pessoal-tipo-profissional.service';
 import { UatQuadroPessoaTipoServicoService } from 'app/servico/uat-quadro-pessoal-tipo-servico.service';
-import { Seguranca } from 'app/compartilhado/utilitario/seguranca.model';
 import { UatQuadroPessoalArea } from 'app/modelo/uat-quadro-pessoal-area';
 import { UatQuadroPessoalTipoServico } from 'app/modelo/uat-quadro-pessoal-tipo-servico';
 import { UatQuadroPessoal } from 'app/modelo/uat-quadro-pessoal';
@@ -24,8 +22,10 @@ import { ModalConfirmarService } from 'app/compartilhado/modal-confirmar/modal-c
 })
 export class UatQuadroPessoalComponent extends BaseComponent implements OnInit {
 
-    @Input()
-    private idUnidade: Number;
+    @Input() idUnidade: Number;
+    @Input() modoConsulta: boolean;
+    @Input() hasPermissaoCadastrarAlterar: boolean;
+    @Input() hasPermissaoDesativar: boolean;
 
     private form: FormGroup;
     objectKeys = Object.keys;
@@ -47,25 +47,12 @@ export class UatQuadroPessoalComponent extends BaseComponent implements OnInit {
     ) {
         super(bloqueioService, dialogo);
         this.title = MensagemProperties.app_rst_cadastro_quadro_pessoal_title;
-        this.emModoConsulta();
     }
 
     ngOnInit(): void {
         this.initForm();
         this.loadAreas();
         this.findQuadroPessoalAgg();
-    }
-
-    private initForm() {
-        this.form = this.formBuilder.group({
-            area: [{ value: null, disabled: this.modoConsulta }, Validators.required],
-            tipoServico: [{ value: null, disabled: this.modoConsulta }, Validators.required],
-        });
-    }
-
-    private emModoConsulta() {
-        this.modoConsulta = !Seguranca.isPermitido(
-            [PermissoesEnum.CAT_ESTRUTURA_CADASTRAR]);
     }
 
     openConfirmationDialog(uatQuadroPessoal: any) {
@@ -83,10 +70,9 @@ export class UatQuadroPessoalComponent extends BaseComponent implements OnInit {
             this.listQuadroPessoalSave = [];
             this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
             this.findQuadroPessoalAgg();
-        },
-            (error) => {
+        }, (error) => {
                 this.mensagemError(error);
-            });
+        });
     }
 
     limpar() {
@@ -143,11 +129,6 @@ export class UatQuadroPessoalComponent extends BaseComponent implements OnInit {
             this.quadrosPessoaisAgg !== {};
     }
 
-    hasPermissaoDesativar() {
-        return Seguranca.isPermitido(
-            [PermissoesEnum.CAT_ESTRUTURA_DESATIVAR]);
-    }
-
     private loadAreas() {
         this.uatQuadroPessoalAreaService.findAll().subscribe((areas) => {
             this.listArea = areas;
@@ -189,8 +170,14 @@ export class UatQuadroPessoalComponent extends BaseComponent implements OnInit {
                 this.mensagemSucesso(data['content']);
                 this.findQuadroPessoalAgg();
             }, (error) => {
-                this.mensagemError(MensagemProperties.app_rst_erro_geral);
-            });
+                this.mensagemError(error);
+        });
     }
 
+    private initForm() {
+        this.form = this.formBuilder.group({
+            area: [{ value: null, disabled: this.modoConsulta }, Validators.required],
+            tipoServico: [{ value: null, disabled: this.modoConsulta }, Validators.required],
+        });
+    }
 }

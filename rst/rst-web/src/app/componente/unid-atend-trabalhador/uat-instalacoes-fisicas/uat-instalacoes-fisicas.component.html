@@ -1,14 +1,6 @@
-<ng2-toasty></ng2-toasty>
-<app-bloqueio></app-bloqueio>
-<p class="titulo-pagina">
-    {{ title }}
-</p>
-
-<div class="container-form" [ngClass]="{ divDis : modoConsulta }">
-
+<div>
     <form [formGroup]="form">
         <div class="row">
-
             <div class="form-group col-md-4" [ngClass]="{ divDis :  modoConsulta }">
                 <div class="md-container">
                     <md-select formControlName="categoria" id="categoria" placeholder="{{ 'app_rst_labels_categoria' | recurso }}"
@@ -24,11 +16,8 @@
             </div>
 
         </div>
-
     </form>
-
 </div>
-
 
 <div class="row tabela" *ngIf="showFormInstalacoesFisicas()">
     <div class="header-tabela">
@@ -98,7 +87,7 @@
                     <th class="column-quantidade"><span>{{
                             'app_rst_labels_area_m2' | recurso }}</span></th>
 
-                    <th class="column-btn" *ngIf="hasPermissaoDesativar()"></th>
+                    <th class="column-btn" *ngIf="!modoConsulta && hasPermissaoDesativar"></th>
                 </tr>
             </thead>
 
@@ -107,7 +96,7 @@
                     <td class="column-label">{{value.descricaoAmbiente }}</td>
                     <td class="column-quantidade">{{value.quantidade}}</td>
                     <td class="column-quantidade">{{value.area}}</td>
-                    <td class="column-btn" *ngIf="hasPermissaoDesativar()">
+                    <td class="column-btn" *ngIf="!modoConsulta && hasPermissaoDesativar">
                         <button class="btn-link" #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Desativar'" (click)="openConfirmationDialog(value)"
                             [mdTooltipPosition]="'below'">
                             <img class="lixo" [src]="'assets/img/trash.svg'">

@@ -1,5 +1,3 @@
-import { PermissoesEnum } from './../../../modelo/enum/enum-permissoes';
-import { Seguranca } from './../../../compartilhado/utilitario/seguranca.model';
 import { MensagemProperties } from './../../../compartilhado/utilitario/recurso.pipe';
 import { BloqueioService } from './../../../servico/bloqueio.service';
 import { BaseComponent } from "app/componente/base.component";
@@ -22,8 +20,10 @@ import { ModalConfirmarService } from 'app/compartilhado/modal-confirmar/modal-c
 })
 export class UatInstalacoesFisicasComponent extends BaseComponent implements OnInit {
 
-    @Input()
-    private idUnidade: Number;
+    @Input() idUnidade: Number;
+    @Input() modoConsulta: boolean;
+    @Input() hasPermissaoCadastrarAlterar: boolean;
+    @Input() hasPermissaoDesativar: boolean;
 
     private form: FormGroup;
     listCategorias: UatInstalacaoFisicaCategoria[] = [];
@@ -43,7 +43,6 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
     ) {
         super(bloqueioService, dialogo);
         this.title = MensagemProperties.app_rst_cadastro_instalacoes_fisicas_title;
-        this.emModoConsulta();
     }
 
     ngOnInit(): void {
@@ -52,49 +51,11 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
         this.findInstalacoesAgg();
     }
 
-    private initForm() {
-        this.form = this.formBuilder.group({
-            categoria: [{ value: null, disabled: this.modoConsulta }, Validators.required],
-        });
-    }
-
-    private loadCategorias() {
-        this.uatInstalacaoFisicasCategoriaService.findAll().subscribe((categorias) => {
-            this.listCategorias = categorias;
-        }, (error) => {
-            this.mensagemError(error);
-        });
-    }
-
     onChangeCategoria() {
         let categoria = this.form.get('categoria').value;
         if (categoria !== null && categoria !== undefined) {
             this.loadAmbientes(categoria);
         }
-    }
-
-    private loadAmbientes(idCategoria: Number) {
-        this.uatInstalacaoFisicasAmbienteService.findByCategoria(idCategoria).subscribe((ambientes) => {
-            this.listAmbientes = ambientes;
-            this.changeForm();
-        },
-            (error) => {
-                this.mensagemError(error);
-            });
-    }
-
-    private changeForm() {
-        this.listInstalacoesFisicasSave = [];
-        for (const amb of this.listAmbientes) {
-            this.listInstalacoesFisicasSave.push(
-                new UatInstalacaoFisica(null, null, null, amb,
-                    new UnidadeAtendimentoTrabalhador(this.idUnidade), false));
-        }
-    }
-
-    private emModoConsulta() {
-        this.modoConsulta = !Seguranca.isPermitido(
-            [PermissoesEnum.CAT_ESTRUTURA_CADASTRAR]);
     }
 
     showFormInstalacoesFisicas() {
@@ -117,6 +78,12 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
             });
     }
 
+    limpar() {
+        this.form.reset();
+        this.listInstalacoesFisicasSave = [];
+        this.findInstalacoesAgg();
+    }
+
     openConfirmationDialog(uatInstalacaoFisica: any) {
         this.modalConfirmarSerivce.confirm('Excluir Instalação Física', 'Tem certeza que deseja excluir esta Instalação Física?')
         .then((confirmed) => {
@@ -133,7 +100,13 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
                 new UnidadeAtendimentoTrabalhador(this.idUnidade), true));
     }
 
-    findInstalacoesAgg() {
+    showGridInstalacoes() {
+        return this.instalacoesAgg !== null &&
+            this.instalacoesAgg !== undefined &&
+            this.instalacoesAgg !== {};
+    }
+
+    private findInstalacoesAgg() {
         if (this.idUnidade !== null && this.idUnidade !== undefined) {
             this.uatInstalacaoFisicasService.findByUnidadeAgg(this.idUnidade).subscribe(
                 (data) => {
@@ -143,17 +116,6 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
                 },
             );
         }
-    }
-
-    showGridInstalacoes() {
-        return this.instalacoesAgg !== null &&
-            this.instalacoesAgg !== undefined &&
-            this.instalacoesAgg !== {};
-    }
-
-    hasPermissaoDesativar() {
-        return Seguranca.isPermitido(
-            [PermissoesEnum.CAT_ESTRUTURA_DESATIVAR]);
     }
 
     private desativar(idInstalacaoFisica: Number, idUnidade: Number) {
@@ -166,9 +128,36 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
             });
     }
 
-    limpar() {
-        this.form.reset();
+    private initForm() {
+        this.form = this.formBuilder.group({
+            categoria: [{ value: null, disabled: this.modoConsulta }, Validators.required],
+        });
+    }
+
+    private loadCategorias() {
+        this.uatInstalacaoFisicasCategoriaService.findAll().subscribe((categorias) => {
+            this.listCategorias = categorias;
+        }, (error) => {
+            this.mensagemError(error);
+        });
+    }
+
+    private loadAmbientes(idCategoria: Number) {
+        this.uatInstalacaoFisicasAmbienteService.findByCategoria(idCategoria).subscribe((ambientes) => {
+            this.listAmbientes = ambientes;
+            this.changeForm();
+        },
+            (error) => {
+                this.mensagemError(error);
+            });
+    }
+
+    private changeForm() {
         this.listInstalacoesFisicasSave = [];
-        this.findInstalacoesAgg();
+        for (const amb of this.listAmbientes) {
+            this.listInstalacoesFisicasSave.push(
+                new UatInstalacaoFisica(null, null, null, amb,
+                    new UnidadeAtendimentoTrabalhador(this.idUnidade), false));
+        }
     }
 }

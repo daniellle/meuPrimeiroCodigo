@@ -1,9 +1,3 @@
-<ng2-toasty></ng2-toasty>
-<app-bloqueio></app-bloqueio>
-<p class="titulo-pagina">
-    {{ title }}
-</p>
-
 <form [formGroup]="form">
     <div class="container" [ngClass]="{ divDis : modoConsulta }">
 
@@ -99,7 +93,7 @@
                     <th class="column-quantidade"><span>{{
                             'app_rst_labels_quantidade' | recurso }}</span></th>
 
-                    <th class="column-btn" *ngIf="hasPermissaoDesativar()"></th>
+                    <th class="column-btn" *ngIf="!modoConsulta && hasPermissaoDesativar"></th>
                 </tr>
             </thead>
 
@@ -108,7 +102,7 @@
                     <td class="column-label">{{value.descricaoTipoServico }}</td>
                     <td class="column-quantidade text-center">{{value.descricaoTipoProfissional}}</td>
                     <td class="column-quantidade">{{value.quantidade}}</td>
-                    <td class="column-btn" *ngIf="hasPermissaoDesativar()">
+                    <td class="column-btn" *ngIf="!modoConsulta && hasPermissaoDesativar">
                         <button class="btn-link" #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Desativar'" (click)="openConfirmationDialog(value)"
                             [mdTooltipPosition]="'below'">
                             <img class="lixo" [src]="'assets/img/trash.svg'">
