@@ -1,23 +1,13 @@
-import { LinhaService } from './../../../servico/linha.service';
-import { UatProdutoServicoService } from './../../../servico/uat-produto-servico.service';
 import { UatService } from 'app/servico/uat.service';
-import { ProdutoServico } from './../../../modelo/produto-servico.model';
-import { UatProdutoServico } from './../../../modelo/uat-produto-servico.model';
 import { Uat } from 'app/modelo/uat.model';
-import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
-import { Seguranca } from './../../../compartilhado/utilitario/seguranca.model';
 import { environment } from './../../../../environments/environment';
-import { IHash } from './../../../compartilhado/modal-uat-component/uat-modal/uat-modal.component';
-import { Linha } from './../../../modelo/linha.model';
-import { MensagemProperties } from './../../../compartilhado/utilitario/recurso.pipe';
-import { ListaPaginada } from './../../../modelo/lista-paginada.model';
 import { BaseComponent } from './../../../componente/base.component';
 import { Component, OnInit } from '@angular/core';
-import { ProdutoServicoFilter } from './../../../modelo/filtro-produto-servico';
 import { BloqueioService } from './../../../servico/bloqueio.service';
 import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Paginacao } from './../../../modelo/paginacao.model';
+import { Seguranca } from 'app/compartilhado/utilitario/seguranca.model';
+import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
 
 @Component({
   selector: 'app-uat-estrutura-unidade',
@@ -29,6 +19,8 @@ export class UatEstruturaUnidadeComponent extends BaseComponent implements OnIni
   idUat: Number;
   uat: Uat;
   edicao: boolean;
+  hasPermissaoCadastrarAlterar: any;
+  hasPermissaoDesativar: any;
 
   constructor(
     private router: Router,
@@ -37,15 +29,33 @@ export class UatEstruturaUnidadeComponent extends BaseComponent implements OnIni
     protected bloqueioService: BloqueioService,
     protected dialogo: ToastyService) {
     super(bloqueioService, dialogo);
-    this.carregarTela();
   }
 
   ngOnInit() {
     this.title = this.activatedRoute.snapshot.data.title;
+    this.emModoConsulta();
+    this.verificaPermissoes()
+    this.carregarTela();
   }
 
   voltar(): void {
     this.router.navigate([`${environment.path_raiz_cadastro}/uat/${this.idUat}`]);
+  }
+
+  verificaPermissoes() {
+    this.hasPermissaoCadastrarAlterar = Seguranca.isPermitido (
+      [PermissoesEnum.CAT_ESTRUTURA_CADASTRAR,
+        PermissoesEnum.CAT_ESTRUTURA_ALTERAR]);
+
+    this.hasPermissaoDesativar = Seguranca.isPermitido (
+      [PermissoesEnum.CAT_ESTRUTURA_DESATIVAR]);
+  }
+
+  private emModoConsulta() {
+    this.modoConsulta = !Seguranca.isPermitido (
+        [PermissoesEnum.CAT_ESTRUTURA_CADASTRAR,
+          PermissoesEnum.CAT_ESTRUTURA_ALTERAR,
+          PermissoesEnum.CAT_ESTRUTURA_DESATIVAR]);
   }
 
   private carregarTela() {

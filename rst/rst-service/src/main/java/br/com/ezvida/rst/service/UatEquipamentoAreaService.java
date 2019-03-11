@@ -10,6 +10,8 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.ezvida.rst.auditoria.logger.LogAuditoria;
+import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.UatEquipamentoAreaDAO;
 import br.com.ezvida.rst.model.UatEquipamentoArea;
 import fw.core.service.BaseService;
@@ -25,8 +27,8 @@ public class UatEquipamentoAreaService extends BaseService {
   private UatEquipamentoAreaDAO uatEquipamentoAreaDAO;
   
   @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-  public List<UatEquipamentoArea> listarTodos() {  
-	  LOGGER.info("Listando todos os Equipamentos Area");
+  public List<UatEquipamentoArea> listarTodos(ClienteAuditoria auditoria) {  
+	  LogAuditoria.registrar(LOGGER, auditoria, "Listando todos os UatEquipamentoArea");
       return uatEquipamentoAreaDAO.pesquisarTodos();
   }
 

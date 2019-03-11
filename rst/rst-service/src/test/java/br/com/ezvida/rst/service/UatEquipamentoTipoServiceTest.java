@@ -14,7 +14,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.UatEquipamentoTipoDAO;
+import br.com.ezvida.rst.enums.Funcionalidade;
+import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.model.UatEquipamentoTipo;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,14 +32,17 @@ public class UatEquipamentoTipoServiceTest {
 	private UatEquipamentoTipoDAO uatEquipamentoTipoDAO;
 
 	@Test
-	public void deveTrazerListaComTodosEquipamentoTipo() throws Exception {
-		LOGGER.info("Testando listar Todos");
+	public void deveTrazerListaComTodosEquipamentoTipoPorArea() throws Exception {
+		LOGGER.info("Testando listar EquipamentoTipo por area");
 		
 		List<UatEquipamentoTipo> list = Arrays.asList(Mockito.mock(UatEquipamentoTipo.class));
+		ClienteAuditoria auditoria = new ClienteAuditoria();
+		auditoria.setFuncionalidade(Funcionalidade.GESTAO_UNIDADE_SESI);
+		auditoria.setTipoOperacao(TipoOperacaoAuditoria.CONSULTA);
 		
-		Mockito.when(uatEquipamentoTipoDAO.pesquisarTodos()).thenReturn(list);
+		Mockito.when(uatEquipamentoTipoDAO.pesquisarPorIdArea(Mockito.anyLong())).thenReturn(list);
 		
-		List<UatEquipamentoTipo> retorno = uatEquipamentoTipoService.listarTodos();
+		List<UatEquipamentoTipo> retorno = uatEquipamentoTipoService.listarTodosPorArea(1L, auditoria);
 		
 		assertEquals(list, retorno);
 	}

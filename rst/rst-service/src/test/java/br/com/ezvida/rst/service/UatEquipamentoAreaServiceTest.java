@@ -14,7 +14,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.UatEquipamentoAreaDAO;
+import br.com.ezvida.rst.enums.Funcionalidade;
+import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
 import br.com.ezvida.rst.model.UatEquipamentoArea;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -33,10 +36,13 @@ public class UatEquipamentoAreaServiceTest {
 		LOGGER.info("Testando listar Todos");
 		
 		List<UatEquipamentoArea> list = Arrays.asList(Mockito.mock(UatEquipamentoArea.class));
+		ClienteAuditoria auditoria = new ClienteAuditoria();
+		auditoria.setFuncionalidade(Funcionalidade.GESTAO_UNIDADE_SESI);
+		auditoria.setTipoOperacao(TipoOperacaoAuditoria.CONSULTA);
 		
 		Mockito.when(uatEquipamentoAreaDAO.pesquisarTodos()).thenReturn(list);
 		
-		List<UatEquipamentoArea> retorno = uatEquipamentoAreaService.listarTodos();
+		List<UatEquipamentoArea> retorno = uatEquipamentoAreaService.listarTodos(auditoria);
 		
 		assertEquals(list, retorno);
 	}

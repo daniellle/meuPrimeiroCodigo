@@ -24,7 +24,7 @@
                 <div class="seta"> </div>
             </mat-panel-title>
             </mat-expansion-panel-header>
-            <app-uat-veiculo [modoConsulta]="modoConsulta" [idUat]="idUat"></app-uat-veiculo>
+            <app-uat-veiculo [idUat]="idUat" [modoConsulta]="modoConsulta" [hasPermissaoDesativar]="hasPermissaoDesativar"  [hasPermissaoCadastrarAlterar]="hasPermissaoCadastrarAlterar"></app-uat-veiculo>
         </mat-expansion-panel>
 
         <mat-expansion-panel hideToggle="true" class="custom-panel">
@@ -44,7 +44,7 @@
                 <div class="seta"> </div>
             </mat-panel-title>
             </mat-expansion-panel-header>
-            <p>Body</p>
+            <app-uat-equipamento [idUat]="idUat" [modoConsulta]="modoConsulta" [hasPermissaoDesativar]="hasPermissaoDesativar"  [hasPermissaoCadastrarAlterar]="hasPermissaoCadastrarAlterar"></app-uat-equipamento>
         </mat-expansion-panel>
 
     </mat-accordion>

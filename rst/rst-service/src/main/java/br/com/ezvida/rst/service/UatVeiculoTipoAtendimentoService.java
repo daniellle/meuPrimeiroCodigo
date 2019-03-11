@@ -29,7 +29,7 @@ public class UatVeiculoTipoAtendimentoService extends BaseService{
   private UatVeiculoTipoAtendimentoDAO uatVeiculoTipoAtendimentoDAO;
   
   @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-  public List<UatVeiculoTipoAtendimentoDTO> listarTodos(ClienteAuditoria auditoria) {  
+  public List<UatVeiculoTipoAtendimentoDTO> listarTodos(ClienteAuditoria auditoria) {
 	  LogAuditoria.registrar(LOGGER, auditoria, "Listando todos os UatVeiculoTipo");
       return parseToDTO(uatVeiculoTipoAtendimentoDAO.pesquisarTodos());
   }

@@ -83,7 +83,6 @@ public class UatVeiculoService extends BaseService {
 		if (idUat == null) {
 			throw new BusinessErrorException("Parâmetro idUat é obrigatório.");
 		}
-		
 	}
 
 	private void validarSeUsuarioTemPermissao(DadosFilter dados, Long idUat) {

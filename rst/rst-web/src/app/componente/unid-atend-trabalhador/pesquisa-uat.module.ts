@@ -30,6 +30,8 @@ import { UatQuadroPessoaTipoServicoService } from 'app/servico/uat-quadro-pessoa
 import { UatQuadroPessoalTipoProfissionalService } from 'app/servico/uat-quadro-pessoal-tipo-profissional.service';
 import { UatQuadroPessoalService } from 'app/servico/uat-quadro-pessoal.service';
 import { UatQuadroPessoalComponent } from './uat-quadro-pessoal/uat-quadro-pessoal.component';
+import { UatEquipamentoService } from 'app/servico/uat-equipamento.service';
+import { UatEquipamentoComponent } from './uat-equipamento/uat-equipamento.component';
 
 const routes: Routes = [
     {
@@ -121,8 +123,9 @@ const routes: Routes = [
     ],
     entryComponents: [TypeaheadContainerComponent],
     exports: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent],
-    declarations: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent, UatEstruturaUnidadeComponent, UatInstalacoesFisicasComponent, UatVeiculoComponent, UatQuadroPessoalComponent],
+    declarations: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent, UatEstruturaUnidadeComponent, UatInstalacoesFisicasComponent, UatVeiculoComponent, UatQuadroPessoalComponent, UatEquipamentoComponent],
     providers: [UatService, DialogService, CadastroUatComponent, EstadoService, DepartRegionalService,
-        ProdutoServicoService, UatProdutoServicoService, LinhaService, UatInstalacaoFisicaCategoriaService, UatInstalacaoFisicaCategoriaAmbienteService, UatInstalacaoFisicaService, UatVeiculoService, UatQuadroPessoalAreaService, UatQuadroPessoaTipoServicoService, UatQuadroPessoalTipoProfissionalService, UatQuadroPessoalService],
+        ProdutoServicoService, UatProdutoServicoService, LinhaService, UatInstalacaoFisicaCategoriaService, UatInstalacaoFisicaCategoriaAmbienteService, UatInstalacaoFisicaService, UatVeiculoService, UatQuadroPessoalAreaService, 
+        UatQuadroPessoaTipoServicoService, UatQuadroPessoalTipoProfissionalService, UatQuadroPessoalService, UatEquipamentoService],
 })
 export class PesquisaUatModule { }
