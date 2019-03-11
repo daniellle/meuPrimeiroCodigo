@@ -6,6 +6,9 @@ import { UatEquipamentoArea } from 'app/modelo/uat-equipamento-area';
 import { UatEquipamentoDTO } from 'app/modelo/uat-equipamento-dto';
 import { UatEquipamentoService } from 'app/servico/uat-equipamento.service';
 import { UatEquipamentoTipo } from 'app/modelo/uat-equipamento-tipo';
+import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
+import { UatEquipamentoGroupedAreaDTO } from 'app/modelo/uat-equipamento-grouped-tipo-dto';
+import { Item } from '@ezvida/adl-core';
 
 @Component({
   selector: 'app-uat-equipamento',
@@ -22,6 +25,7 @@ export class UatEquipamentoComponent extends BaseComponent implements OnInit {
   idEquipamentoAreaSelecionado: Number;
   listUatEquipamentoArea = new Array<UatEquipamentoArea>();
   listUatEquipamentos = new Array<UatEquipamentoDTO>()
+  listUatEquipamentosGroupedByArea = new Array<UatEquipamentoGroupedAreaDTO>();
   private equipamentoAreaSelecionado: UatEquipamentoArea;
 
   constructor(
@@ -39,10 +43,52 @@ export class UatEquipamentoComponent extends BaseComponent implements OnInit {
   changeArea(idArea: Number) {
     this.equipamentoAreaSelecionado = this.listUatEquipamentoArea.filter(item => item.id == idArea)[0];
     this.uatEquipamentoService.listUatEquipamentoTipoPorArea(idArea).subscribe((res: UatEquipamentoTipo[]) => {
-      console.log(res);
       this.createNewListUatEquipamento(res);
     }, (error) => {
       this.mensagemError(error);
+    });
+  }
+
+  cancelar(): void {
+    this.resetForm();
+  }
+
+  salvar(): void {
+    if (this.isValid()) {
+      this.uatEquipamentoService.salvar(this.prepareSave()).subscribe((res) => {
+        this.resetForm();
+        this.loadUatEquipamentoGroupedByTipo();
+        this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+      }, (error) => {
+        this.mensagemError(error);
+      })
+    }
+  }
+
+  isValid() {
+    const listFiltered = this.listUatEquipamentos.filter(item => item.quantidade);
+    if (!listFiltered.length) {
+      this.mensagemErroComParametros('app_rst_msg_nenhuma_quantidade_informada');
+      return false;
+    }
+    return true;
+  }
+
+  private prepareSave(): any {
+    return this.listUatEquipamentos.filter(item => item.quantidade > 0);
+  }
+
+  private loadUatEquipamentoGroupedByTipo(): void {
+    this.uatEquipamentoService.listAllUatEquipamentosGroupedByArea(this.idUat).subscribe((res: UatEquipamentoGroupedAreaDTO[]) => {
+      this.listUatEquipamentosGroupedByArea = res;
+    }, (error) => {
+      this.mensagemError(error);
+    });
+  }
+
+  private resetForm(): void {
+    this.listUatEquipamentos.map((item) => {
+      item.quantidade = undefined;
     });
   }
 
@@ -57,6 +103,7 @@ export class UatEquipamentoComponent extends BaseComponent implements OnInit {
   private createNewListUatEquipamento(res: UatEquipamentoTipo[]): void {
     this.listUatEquipamentos = res.map((item) => {
       const uatEquipamentoDTO = new UatEquipamentoDTO()
+      uatEquipamentoDTO.idUat = this.idUat;
       uatEquipamentoDTO.idTipo = item.id;
       uatEquipamentoDTO.descricao = item.descricao;
       return uatEquipamentoDTO;

@@ -308,7 +308,7 @@ export const MensagemProperties = {
   app_rst_tamanho_arquivo: 'O arquivo deverá possuir o tamanho máximo de {0} MB',
   app_rst_label_tamanho_arquivo: 'Tamanho máximo do arquivo {0}MB',
   app_rst_mensagem_pontuacao_maxima_maior_que_pontuacao_minima: 'O campo Pontuação Máxima deve ser maior que o campo Pontuação Mínima',
-  app_rst_msg_nenhuma_quantidade_informada: 'Nenhumma quantidade informada',
+  app_rst_msg_nenhuma_quantidade_informada: 'É necessário informar a quantidade.',
 
   // BOTOES COMPARTILHADOS
   app_rst_btn_voltar: 'Voltar',
