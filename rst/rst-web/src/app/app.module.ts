@@ -54,7 +54,7 @@ import { environment } from 'environments/environment';
                   BsDropdownModule.forRoot(),
                   TabsModule.forRoot(),
                   PublicoModule
-              ]
+              ],
           })
 export class AppModule {
 

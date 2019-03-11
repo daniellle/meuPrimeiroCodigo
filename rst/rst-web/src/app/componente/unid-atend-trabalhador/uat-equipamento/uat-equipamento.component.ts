@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, NgModule } from '@angular/core';
 import { ToastyService } from 'ng2-toasty';
 import { BloqueioService } from 'app/servico/bloqueio.service';
 import { BaseComponent } from 'app/componente/base.component';
@@ -8,7 +8,7 @@ import { UatEquipamentoService } from 'app/servico/uat-equipamento.service';
 import { UatEquipamentoTipo } from 'app/modelo/uat-equipamento-tipo';
 import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
 import { UatEquipamentoGroupedAreaDTO } from 'app/modelo/uat-equipamento-grouped-tipo-dto';
-import { Item } from '@ezvida/adl-core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-uat-equipamento',
@@ -26,27 +26,36 @@ export class UatEquipamentoComponent extends BaseComponent implements OnInit {
   listUatEquipamentoArea = new Array<UatEquipamentoArea>();
   listUatEquipamentos = new Array<UatEquipamentoDTO>()
   listUatEquipamentosGroupedByArea = new Array<UatEquipamentoGroupedAreaDTO>();
-  private equipamentoAreaSelecionado: UatEquipamentoArea;
+  private equipamentoSelecionadoParaRemover: UatEquipamentoDTO;
 
   constructor(
     protected bloqueioService: BloqueioService,
     protected dialogo: ToastyService,
     private uatEquipamentoService: UatEquipamentoService,
+    private modalService: NgbModal,
   ) { 
     super(bloqueioService, dialogo);
   }
 
   ngOnInit() {
     this.loadListUatEquipamentoArea();
+    this.loadUatEquipamentoGroupedByTipo()
   }
 
   changeArea(idArea: Number) {
-    this.equipamentoAreaSelecionado = this.listUatEquipamentoArea.filter(item => item.id == idArea)[0];
     this.uatEquipamentoService.listUatEquipamentoTipoPorArea(idArea).subscribe((res: UatEquipamentoTipo[]) => {
       this.createNewListUatEquipamento(res);
     }, (error) => {
       this.mensagemError(error);
     });
+  }
+
+  remover(): void {
+    this.uatEquipamentoService.excluir(this.equipamentoSelecionadoParaRemover.id, this.idUat).subscribe((res) => {
+      this.loadUatEquipamentoGroupedByTipo()
+    }, (error) => {
+      this.mensagemError(error);
+    })
   }
 
   cancelar(): void {
@@ -74,6 +83,15 @@ export class UatEquipamentoComponent extends BaseComponent implements OnInit {
     return true;
   }
 
+  openModal(modal: any, uatEquipamento: UatEquipamentoDTO) {
+    this.equipamentoSelecionadoParaRemover = uatEquipamento;
+    this.modalService.open(modal, { size: 'sm' });
+  }
+
+  showGrid(): boolean {
+    return this.listUatEquipamentosGroupedByArea && this.listUatEquipamentosGroupedByArea.length > 0;
+  }
+
   private prepareSave(): any {
     return this.listUatEquipamentos.filter(item => item.quantidade > 0);
   }
@@ -90,6 +108,7 @@ export class UatEquipamentoComponent extends BaseComponent implements OnInit {
     this.listUatEquipamentos.map((item) => {
       item.quantidade = undefined;
     });
+    this.idEquipamentoAreaSelecionado = undefined;
   }
 
   private loadListUatEquipamentoArea(): void {

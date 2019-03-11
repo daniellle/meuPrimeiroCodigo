@@ -366,7 +366,7 @@ export const MensagemProperties = {
   app_rst_pesquisa_sesi_busca_local: 'Busca por local',
   app_rst_pesquisa_sesi_busca_produto: 'Busca por produto',
 
-  //Gestão de Unidade SESI Instalações Físicas
+  //Gestão de Unidade SESI
   app_rst_cadastro_instalacoes_fisicas_title: 'Cadastro de Instalações Físicas',
   app_rst_categorias_cadastradas_title: 'Categorias cadastradas',
   app_rst_tipos_cadastrados_title: 'Tipos cadastrados',

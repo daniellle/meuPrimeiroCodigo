@@ -11,8 +11,6 @@ import { BaseComponent } from 'app/componente/base.component';
 import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
 import { UatVeiculoGroupedTipoDTO } from 'app/modelo/uat-veiculo-grouped-tipo-dto';
 import { UatVeiculoDTO } from 'app/modelo/uat-veiculo-dto';
-import { Seguranca } from 'app/compartilhado/utilitario/seguranca.model';
-import { PermissoesEnum } from 'app/modelo/enum/enum-permissoes';
 
 @Component({
   selector: 'app-uat-veiculo',

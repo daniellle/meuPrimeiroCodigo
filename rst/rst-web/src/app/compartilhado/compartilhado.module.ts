@@ -207,7 +207,7 @@ import { DigitOnlyDirective } from 'app/diretiva/digit-only.directive';
         CardTelaIntermediariaComponent,
         ModalSelecionarGrupoPerguntaComponent,
     ],
-    providers: [EstadoService, ConselhoRegionalService, NgbModal, NgbActiveModal, SegmentoService, EmpresaTrabalhadorLotacaoService,
+    providers: [EstadoService, ConselhoRegionalService, NgbActiveModal, NgbModal, SegmentoService, EmpresaTrabalhadorLotacaoService,
          { provide: 'Window',  useValue: window }],
     entryComponents: [TelefoneModalComponent, TelefoneGridComponent, SegmentoModalComponent,
         SegmentoGridComponent, UatModalComponent, UatGridComponent, ModalSelecionarGrupoPerguntaComponent],

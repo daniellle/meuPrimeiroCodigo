@@ -38,3 +38,57 @@
       <button class="btn btn-secondary" [(disabled)]="modoConsulta" (click)="cancelar()">{{ 'app_rst_btn_cancelar' | recurso}}</button>
     </div>
   </div>
+
+  <div class="space-up" *ngIf="showGrid()">
+
+      <span class="titulo-table">{{'app_rst_areas_cadastradas' | recurso}}</span>
+  
+      <div *ngFor="let item of listUatEquipamentosGroupedByArea">
+          <span class="subtitulo-table"> {{ item.area.descricao }} </span>
+            <table class="table table-responsive">
+                <thead class="header-grid">
+                    <tr>
+                      <th class="column-label" ><span>{{ 'app_rst_labels_tipo' | recurso }}</span></th>
+                      <th class="column-quantidade"><span>{{ 'app_rst_labels_quantidade' | recurso }}</span></th>
+                      <th *ngIf="!modoConsulta && hasPermissaoDesativar" class="column-btn"></th>
+                    </tr>
+                </thead>
+                <tbody class="content-grid">
+                  <tr *ngFor="let equipamento of item.equipamentos">
+                    <td class="column-label">{{ equipamento.descricao }}</td>
+                    <td class="column-quantidade">{{ equipamento.quantidade}}</td>
+                    <td *ngIf="!modoConsulta && hasPermissaoDesativar" class="column-btn">
+                        <button class="btn-link"
+                          #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Exluir'" [mdTooltipPosition]="'below'" (click)="openModal(modalConfirmarExclusao, equipamento)">
+                          <img class="lixo" [src]="'assets/img/trash.svg'">
+                        </button>
+                    </td>
+                  </tr>
+                </tbody>
+            </table>
+      </div>
+  </div>
+</div>
+
+<ng-template #modalConfirmarExclusao let-close="close" let-fechar="dismiss">
+    <div class="modal-header">
+        <p class="modal-title">Exlcluir Equipamento</p>
+    </div>
+    <div class="modal-body text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    Deseja realmente excluir este equipamento?
+                </div>
+                <div class="offset-md-1 col-10 row space-up">
+                    <div class=" col-6">
+                        <button type="button" class="btn-rodape btn btn-primary btn-cadastro"  (click)="close('remover'); remover() ">Sim</button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="fechar('cancelar')">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
