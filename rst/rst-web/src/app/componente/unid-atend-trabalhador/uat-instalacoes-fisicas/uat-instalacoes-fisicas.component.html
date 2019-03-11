@@ -108,7 +108,7 @@
                     <td class="column-quantidade">{{value.quantidade}}</td>
                     <td class="column-quantidade">{{value.area}}</td>
                     <td class="column-btn" *ngIf="hasPermissaoDesativar()">
-                        <button class="btn-link" #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Desativar'" (click)="openModal(confirmDesativar); selecionarRemover(value.idInstalacaoFisica)"
+                        <button class="btn-link" #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Desativar'" (click)="openConfirmationDialog(value)"
                             [mdTooltipPosition]="'below'">
                             <img class="lixo" [src]="'assets/img/trash.svg'">
                         </button>
@@ -119,27 +119,3 @@
         </table>
     </div>
 </div>
-
-
-<ng-template #confirmDesativar let-close="close" let-fechar="dismiss">
-        <div class="modal-header">
-            <p class="modal-title">Remover Instalação Física</p>
-        </div>
-        <div class="modal-body text-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 text-center">
-                        Deseja realmente remover a Instalação Física?
-                    </div>
-                    <div class="offset-md-1 col-10 row space-up">
-                        <div class=" col-6">
-                            <button type="button" class="btn-rodape btn btn-primary btn-cadastro"  (click)="close('remover'); desativar() ">Sim</button>
-                        </div>
-                        <div class="col-6">
-                            <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="fechar('cancelar')">Cancelar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </ng-template>

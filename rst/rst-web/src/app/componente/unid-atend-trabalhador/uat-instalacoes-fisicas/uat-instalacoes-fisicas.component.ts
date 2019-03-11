@@ -13,7 +13,7 @@ import { UatInstalacaoFisicaCategoria } from 'app/modelo/uat-instalacai-fisica-c
 import { UatInstalacaoFisicaAmbiente } from 'app/modelo/uat-instalacao-fisica-ambiente';
 import { UatInstalacaoFisica } from 'app/modelo/uat-instalacao-fisica';
 import { UnidadeAtendimentoTrabalhador } from 'app/modelo/unid-atend-trabalhador.model';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalConfirmarService } from 'app/compartilhado/modal-confirmar/modal-confirmar.service';
 
 @Component({
     selector: 'app-uat-instalacoes-fisicas',
@@ -26,22 +26,11 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
     private idUnidade: Number;
 
     private form: FormGroup;
-
     listCategorias: UatInstalacaoFisicaCategoria[] = [];
-
     listAmbientes: UatInstalacaoFisicaAmbiente[] = [];
-
     listInstalacoesFisicasSave: UatInstalacaoFisica[] = [];
-
     instalacoesAgg: any = null;
-
     objectKeys = Object.keys;
-
-    modal;
-
-    modalRef;
-
-    idInstalacaoFisicaExcluir: Number;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -50,9 +39,7 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
         private uatInstalacaoFisicasService: UatInstalacaoFisicaService,
         private uatInstalacaoFisicasCategoriaService: UatInstalacaoFisicaCategoriaService,
         private uatInstalacaoFisicasAmbienteService: UatInstalacaoFisicaCategoriaAmbienteService,
-        public modalAtivo: NgbActiveModal,
-        public activeModal: NgbActiveModal,
-        private modalService: NgbModal,
+        private modalConfirmarSerivce: ModalConfirmarService,
     ) {
         super(bloqueioService, dialogo);
         this.title = MensagemProperties.app_rst_cadastro_instalacoes_fisicas_title;
@@ -130,6 +117,15 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
             });
     }
 
+    openConfirmationDialog(uatInstalacaoFisica: any) {
+        this.modalConfirmarSerivce.confirm('Excluir Instalação Física', 'Tem certeza que deseja excluir esta Instalação Física?')
+        .then((confirmed) => {
+          if(confirmed) {
+            this.desativar(uatInstalacaoFisica.idInstalacaoFisica, this.idUnidade);
+          }
+        });
+    }
+
     duplicarCampo(index: number) {
         const amb = this.listInstalacoesFisicasSave[index].uatInstalacaoFisicaAmbiente;
         this.listInstalacoesFisicasSave.splice(index + 1, 0,
@@ -160,22 +156,14 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
             [PermissoesEnum.CAT_ESTRUTURA_DESATIVAR]);
     }
 
-    desativar() {
-        this.uatInstalacaoFisicasService.desativar(this.idInstalacaoFisicaExcluir, this.idUnidade).subscribe(
+    private desativar(idInstalacaoFisica: Number, idUnidade: Number) {
+        this.uatInstalacaoFisicasService.desativar(idInstalacaoFisica, idUnidade).subscribe(
             (data) => {
                 this.mensagemSucesso(data['content']);
                 this.findInstalacoesAgg();
             }, (error) => {
                 this.mensagemError(MensagemProperties.app_rst_erro_geral);
             });
-    }
-
-    openModal(modal: any) {
-        this.modalRef = this.modalService.open(modal, { size: 'sm' });
-    }
-
-    selecionarRemover(idInstalacaoFisicaExcluir: Number) {
-        this.idInstalacaoFisicaExcluir = idInstalacaoFisicaExcluir;
     }
 
     limpar() {

@@ -11,6 +11,7 @@ import { BaseComponent } from 'app/componente/base.component';
 import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
 import { UatVeiculoGroupedTipoDTO } from 'app/modelo/uat-veiculo-grouped-tipo-dto';
 import { UatVeiculoDTO } from 'app/modelo/uat-veiculo-dto';
+import { ModalConfirmarService } from 'app/compartilhado/modal-confirmar/modal-confirmar.service';
 
 @Component({
   selector: 'app-uat-veiculo',
@@ -38,7 +39,7 @@ export class UatVeiculoComponent extends BaseComponent implements OnInit {
     protected bloqueioService: BloqueioService,
     protected dialogo: ToastyService,
     private uatVeiculoService: UatVeiculoService,
-    private modalService: NgbModal,
+    private modalConfirmarSerivce: ModalConfirmarService,
   ) { 
     super(bloqueioService, dialogo);
   }
@@ -61,14 +62,17 @@ export class UatVeiculoComponent extends BaseComponent implements OnInit {
     }
   }
 
-  openModal(modal: any, uatVeiculo: UatVeiculoDTO) {
-    this.veiculoSelecionadoParaRemover = uatVeiculo;
-    this.modalService.open(modal, { size: 'sm' });
+  openConfirmationDialog(veiculo: UatVeiculoDTO) {
+    this.modalConfirmarSerivce.confirm('Excluir Veículo', 'Tem certeza que deseja excluir este veículo?')
+    .then((confirmed) => {
+      if(confirmed) {
+        this.remover(veiculo.id, this.idUat);
+      }
+    });
   }
 
-  remover(): void {
-    const uatVeiculo = this.veiculoSelecionadoParaRemover;
-    this.uatVeiculoService.excluir(uatVeiculo.id, this.idUat).subscribe(() => {
+  remover(idVeiculo: Number, idUat: Number): void {
+    this.uatVeiculoService.excluir(idVeiculo, idUat).subscribe(() => {
       this.loadUatVeiculoGroupedByTipo();
       this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
     }, (error) => {

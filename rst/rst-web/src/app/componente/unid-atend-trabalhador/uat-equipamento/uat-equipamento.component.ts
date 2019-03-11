@@ -9,6 +9,7 @@ import { UatEquipamentoTipo } from 'app/modelo/uat-equipamento-tipo';
 import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
 import { UatEquipamentoGroupedAreaDTO } from 'app/modelo/uat-equipamento-grouped-tipo-dto';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalConfirmarService } from 'app/compartilhado/modal-confirmar/modal-confirmar.service';
 
 @Component({
   selector: 'app-uat-equipamento',
@@ -32,7 +33,7 @@ export class UatEquipamentoComponent extends BaseComponent implements OnInit {
     protected bloqueioService: BloqueioService,
     protected dialogo: ToastyService,
     private uatEquipamentoService: UatEquipamentoService,
-    private modalService: NgbModal,
+    private modalConfirmarSerivce: ModalConfirmarService,
   ) { 
     super(bloqueioService, dialogo);
   }
@@ -48,14 +49,6 @@ export class UatEquipamentoComponent extends BaseComponent implements OnInit {
     }, (error) => {
       this.mensagemError(error);
     });
-  }
-
-  remover(): void {
-    this.uatEquipamentoService.excluir(this.equipamentoSelecionadoParaRemover.id, this.idUat).subscribe((res) => {
-      this.loadUatEquipamentoGroupedByTipo()
-    }, (error) => {
-      this.mensagemError(error);
-    })
   }
 
   cancelar(): void {
@@ -83,13 +76,26 @@ export class UatEquipamentoComponent extends BaseComponent implements OnInit {
     return true;
   }
 
-  openModal(modal: any, uatEquipamento: UatEquipamentoDTO) {
-    this.equipamentoSelecionadoParaRemover = uatEquipamento;
-    this.modalService.open(modal, { size: 'sm' });
+  openConfirmationDialog(equipamento: UatEquipamentoDTO) {
+    this.modalConfirmarSerivce.confirm('Excluir Equipamento', 'Tem certeza que deseja excluir este equipamento?')
+    .then((confirmed) => {
+      if(confirmed) {
+        this.remover(equipamento.id, this.idUat);
+      }
+    });
   }
 
   showGrid(): boolean {
     return this.listUatEquipamentosGroupedByArea && this.listUatEquipamentosGroupedByArea.length > 0;
+  }
+
+  private remover(idEquipamento: Number, idUat: Number): void {
+    this.uatEquipamentoService.excluir(idEquipamento, idUat).subscribe((res) => {
+      this.loadUatEquipamentoGroupedByTipo();
+      this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
+    }, (error) => {
+      this.mensagemError(error);
+    })
   }
 
   private prepareSave(): any {

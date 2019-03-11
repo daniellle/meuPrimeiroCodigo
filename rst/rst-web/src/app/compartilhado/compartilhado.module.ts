@@ -19,7 +19,7 @@ import { CnpjPipe } from 'app/compartilhado/utilitario/cnpj.pipe';
 import { TextMaskModule } from 'angular2-text-mask/dist/angular2TextMask';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectModule } from 'ng-select';
 import { EstadoService } from 'app/servico/estado.service';
 import { ConselhoRegionalService } from 'app/servico/conselho-regional.service';
@@ -75,6 +75,8 @@ import { CALENDARIO_DIRECTIVES } from 'app/diretiva/calendario.directive';
 import { VacinaModalComponent } from 'app/compartilhado/modal-vacina-componenet/vacina-modal/vacina-modal.component';
 import { VacinaGridComponent } from 'app/compartilhado/modal-vacina-componenet/vacina-grid/vacina-grid.component';
 import { DigitOnlyDirective } from 'app/diretiva/digit-only.directive';
+import { ModalConfirmarComponent } from './modal-confirmar/modal-confirmar.component';
+import { ModalConfirmarService } from './modal-confirmar/modal-confirmar.service';
 
 
 @NgModule({
@@ -123,6 +125,7 @@ import { DigitOnlyDirective } from 'app/diretiva/digit-only.directive';
         MdTabsModule,
         MdToolbarModule,
         MdTooltipModule,
+        NgbModule.forRoot()
     ],
     declarations: [CardTelaIntermediariaComponent, RecursoPipe, CnpjPipe, CpfPipe, DatePipe, TelefonePipe, InativoPipe,
         EmailModalComponent, EmailGridComponent, TelefoneModalComponent, TelefoneGridComponent,
@@ -133,6 +136,7 @@ import { DigitOnlyDirective } from 'app/diretiva/digit-only.directive';
         VacinaModalComponent,
         VacinaGridComponent,
         DigitOnlyDirective,
+        ModalConfirmarComponent,
     ],
     exports: [
         CommonModule,
@@ -206,11 +210,12 @@ import { DigitOnlyDirective } from 'app/diretiva/digit-only.directive';
         DigitOnlyDirective,
         CardTelaIntermediariaComponent,
         ModalSelecionarGrupoPerguntaComponent,
+        ModalConfirmarComponent,
     ],
-    providers: [EstadoService, ConselhoRegionalService, NgbActiveModal, NgbModal, SegmentoService, EmpresaTrabalhadorLotacaoService,
+    providers: [EstadoService, ConselhoRegionalService, NgbActiveModal, NgbModal, ModalConfirmarService, SegmentoService, EmpresaTrabalhadorLotacaoService,
          { provide: 'Window',  useValue: window }],
     entryComponents: [TelefoneModalComponent, TelefoneGridComponent, SegmentoModalComponent,
-        SegmentoGridComponent, UatModalComponent, UatGridComponent, ModalSelecionarGrupoPerguntaComponent],
+        SegmentoGridComponent, UatModalComponent, UatGridComponent, ModalSelecionarGrupoPerguntaComponent, ModalConfirmarComponent],
 })
 export class CompartilhadoModule {
 }

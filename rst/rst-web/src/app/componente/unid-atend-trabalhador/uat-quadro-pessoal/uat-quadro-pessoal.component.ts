@@ -5,7 +5,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from 'app/componente/base.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastyService } from 'ng2-toasty';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UatQuadroPessoalService } from 'app/servico/uat-quadro-pessoal.service';
 import { UatQuadroPessoalAreaService } from 'app/servico/uat-quadro-pessoal-area.service';
 import { UatQuadroPessoalTipoProfissionalService } from 'app/servico/uat-quadro-pessoal-tipo-profissional.service';
@@ -16,6 +15,7 @@ import { UatQuadroPessoalTipoServico } from 'app/modelo/uat-quadro-pessoal-tipo-
 import { UatQuadroPessoal } from 'app/modelo/uat-quadro-pessoal';
 import { UatQuadroPessoalTipoProfissional } from 'app/modelo/uat-quadro-pessoal-tipo-profissional';
 import { UnidadeAtendimentoTrabalhador } from 'app/modelo/unid-atend-trabalhador.model';
+import { ModalConfirmarService } from 'app/compartilhado/modal-confirmar/modal-confirmar.service';
 
 @Component({
     selector: 'app-uat-quadro-pessoal',
@@ -28,32 +28,12 @@ export class UatQuadroPessoalComponent extends BaseComponent implements OnInit {
     private idUnidade: Number;
 
     private form: FormGroup;
-
     objectKeys = Object.keys;
-
-    modal;
-
-    modalRef;
-
-    idQuadroPessoalExcluir: Number;
-
     quadrosPessoaisAgg: any = null;
-
     listArea: UatQuadroPessoalArea[] = [];
-
     listTipoServico: UatQuadroPessoalTipoServico[] = [];
-
     listTipoProfissional: UatQuadroPessoalTipoProfissional[] = [];
-
     listQuadroPessoalSave: UatQuadroPessoal[] = [];
-
-    /*
-    areaSelecionada: any = null;
-
-    tipoServicoSelecionado: any = null;
-
-    tipoProfissionalSelecionado: any = null;
-*/
 
     constructor(
         private formBuilder: FormBuilder,
@@ -63,9 +43,7 @@ export class UatQuadroPessoalComponent extends BaseComponent implements OnInit {
         private uatQuadroPessoalAreaService: UatQuadroPessoalAreaService,
         private uatQuadroPessoalTipoServicoService: UatQuadroPessoaTipoServicoService,
         private uatQuadroPessoalTipoProfissionalService: UatQuadroPessoalTipoProfissionalService,
-        public modalAtivo: NgbActiveModal,
-        public activeModal: NgbActiveModal,
-        private modalService: NgbModal,
+        private modalConfirmarSerivce: ModalConfirmarService,
     ) {
         super(bloqueioService, dialogo);
         this.title = MensagemProperties.app_rst_cadastro_quadro_pessoal_title;
@@ -90,47 +68,13 @@ export class UatQuadroPessoalComponent extends BaseComponent implements OnInit {
             [PermissoesEnum.CAT_ESTRUTURA_CADASTRAR]);
     }
 
-    openModal(modal: any) {
-        this.modalRef = this.modalService.open(modal, { size: 'sm' });
-    }
-
-    selecionarRemover(idQuadroPessoalExcluir: Number) {
-        this.idQuadroPessoalExcluir = idQuadroPessoalExcluir;
-    }
-
-    private loadAreas() {
-        this.uatQuadroPessoalAreaService.findAll().subscribe((areas) => {
-            this.listArea = areas;
-        }, (error) => {
-            this.mensagemError(error);
+    openConfirmationDialog(uatQuadroPessoal: any) {
+        this.modalConfirmarSerivce.confirm('Excluir Quadro de Pessoal', 'Tem certeza que deseja excluir este Quadro de Pessoal?')
+        .then((confirmed) => {
+          if(confirmed) {
+            this.desativar(uatQuadroPessoal.idQuadroPessoal, this.idUnidade);
+          }
         });
-    }
-
-    private loadTipoServico(idArea: Number) {
-        this.uatQuadroPessoalTipoServicoService.findByArea(idArea).subscribe((tiposServicos) => {
-            this.listTipoServico = tiposServicos;
-        }, (error) => {
-            this.mensagemError(error);
-        });
-    }
-
-    private loadTipoProfissional(idTipoServico: Number) {
-        this.uatQuadroPessoalTipoProfissionalService.findByTipoServico(idTipoServico).subscribe((tiposProfissionais) => {
-            this.listTipoProfissional = tiposProfissionais;
-            this.changeForm();
-        }, (error) => {
-            this.mensagemError(error);
-        });
-    }
-
-    private changeForm() {
-        this.listQuadroPessoalSave = [];
-        for (const prof of this.listTipoProfissional) {
-            this.listQuadroPessoalSave.push(
-                new UatQuadroPessoal(null,
-                    new UatQuadroPessoalTipoProfissional(prof.id, null, prof.descricao),
-                    new UnidadeAtendimentoTrabalhador(this.idUnidade)));
-        }
     }
 
     salvar() {
@@ -204,8 +148,43 @@ export class UatQuadroPessoalComponent extends BaseComponent implements OnInit {
             [PermissoesEnum.CAT_ESTRUTURA_DESATIVAR]);
     }
 
-    desativar() {
-        this.uatQuadroPessoalService.desativar(this.idQuadroPessoalExcluir, this.idUnidade).subscribe(
+    private loadAreas() {
+        this.uatQuadroPessoalAreaService.findAll().subscribe((areas) => {
+            this.listArea = areas;
+        }, (error) => {
+            this.mensagemError(error);
+        });
+    }
+
+    private loadTipoServico(idArea: Number) {
+        this.uatQuadroPessoalTipoServicoService.findByArea(idArea).subscribe((tiposServicos) => {
+            this.listTipoServico = tiposServicos;
+        }, (error) => {
+            this.mensagemError(error);
+        });
+    }
+
+    private loadTipoProfissional(idTipoServico: Number) {
+        this.uatQuadroPessoalTipoProfissionalService.findByTipoServico(idTipoServico).subscribe((tiposProfissionais) => {
+            this.listTipoProfissional = tiposProfissionais;
+            this.changeForm();
+        }, (error) => {
+            this.mensagemError(error);
+        });
+    }
+
+    private changeForm() {
+        this.listQuadroPessoalSave = [];
+        for (const prof of this.listTipoProfissional) {
+            this.listQuadroPessoalSave.push(
+                new UatQuadroPessoal(null,
+                    new UatQuadroPessoalTipoProfissional(prof.id, null, prof.descricao),
+                    new UnidadeAtendimentoTrabalhador(this.idUnidade)));
+        }
+    }
+
+    private desativar(idQuadroPessoal: Number, idUnidade: Number) {
+        this.uatQuadroPessoalService.desativar(idQuadroPessoal, idUnidade).subscribe(
             (data) => {
                 this.mensagemSucesso(data['content']);
                 this.findQuadroPessoalAgg();

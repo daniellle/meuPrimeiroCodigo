@@ -5,6 +5,10 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 public class CollectionUtil {
+	
+	private CollectionUtil() {
+	    throw new IllegalStateException("Utility class");
+	  }
 
 	public static List<Long> getIds(String ids) {
 		String[] array = ids.split(",");
