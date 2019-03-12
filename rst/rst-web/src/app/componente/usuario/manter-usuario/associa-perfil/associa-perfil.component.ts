@@ -282,10 +282,10 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
       this.perfisDoSistema.some((lista,indice) => {
         if(lista.perfil.codigo == 'DIDR'){
           index = indice;
+          this.perfisDoSistema.splice(index,1);          
           return true;
         };
       });
-      this.perfisDoSistema.splice(index,1);
     }
 
     removeOpcaoDiretorDN(){
@@ -293,10 +293,10 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
       this.perfisDoSistema.some((lista,indice) => {
         if(lista.perfil.codigo == 'DIDN'){
           index = indice;
+          this.perfisDoSistema.splice(index,1);          
           return true;
         };
       });
-      this.perfisDoSistema.splice(index,1);
     }
   
 }
