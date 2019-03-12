@@ -21,10 +21,7 @@ import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimentoTrabalhador, Long> {
 
@@ -489,5 +486,20 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
             query.setParameter("listId", listId);
         }
         return  DAOUtil.getSingleResult(query);
+    }
+
+    public List<UnidadeAtendimentoTrabalhador> buscaTodasPorId(Set<Long> ids) {
+        if(ids.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("select new UnidadeAtendimentoTrabalhador(uat.cnpj, uat.razaoSocial, uat.nomeFantasia, dr) ");
+        jpql.append(" from UnidadeAtendimentoTrabalhador uat join uat.departamentoRegional dr where uat.id in (:ids) ");
+
+        TypedQuery<UnidadeAtendimentoTrabalhador> query = this.getEm().createQuery(jpql.toString(), UnidadeAtendimentoTrabalhador.class);
+        query.setParameter("ids", ids);
+
+        return query.getResultList();
     }
 }
