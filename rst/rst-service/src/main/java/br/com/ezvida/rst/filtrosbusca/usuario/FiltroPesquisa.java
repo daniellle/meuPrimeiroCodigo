@@ -17,7 +17,11 @@ public class FiltroPesquisa extends FiltroUsuario {
             this.filtro.adicionaRestricao("vue.login = :login", "login", usuarioFilter.getLogin());
         }
         if(!Strings.isNullOrEmpty(usuarioFilter.getCodigoPerfil())) {
-            this.filtro.adicionaRestricao("vue.codigo_perfil = :codigoPerfil", "codigoPerfil", usuarioFilter.getCodigoPerfil());
+            if(usuarioFilter.getCodigoPerfil().equalsIgnoreCase("SP")) {
+                this.filtro.adicionaRestricao("vue.codigo_perfil is null");
+            } else {
+                this.filtro.adicionaRestricao("vue.codigo_perfil = :codigoPerfil", "codigoPerfil", usuarioFilter.getCodigoPerfil());
+            }
         }
 
         return this.filtro;
