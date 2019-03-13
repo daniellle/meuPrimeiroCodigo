@@ -48,8 +48,11 @@ public class UatVeiculoService extends BaseService {
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<UatVeiculoGroupedByTipoDTO> listAllUatVeiculoGroupedByTipo(Long idUat, ClienteAuditoria auditoria, DadosFilter dados) {
 		LogAuditoria.registrar(LOGGER, auditoria, "Buscando Veículos por id da uat " + idUat);
-		validarSeUsuarioTemPermissao(dados, idUat);
-		return createListUatVeiculoGroupedByTipoDTO(uatVeiculoDAO.listAllUatVeiculosByIdUatAndAtivo(idUat), auditoria);
+		if(validarSeUsuarioTemPermissaoConsulta(dados, idUat)){
+			return createListUatVeiculoGroupedByTipoDTO(uatVeiculoDAO.listAllUatVeiculosByIdUatAndAtivo(idUat), auditoria);
+		}else {
+			throw new UnauthorizedException(getMensagem("app_seguranca_acesso_negado"));
+		}
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -89,6 +92,11 @@ public class UatVeiculoService extends BaseService {
 		if(!validationService.validarFiltroDadosGestaoUnidadeSesi(dados, idUat)) {
 			 throw new UnauthorizedException(getMensagem("app_seguranca_acesso_negado"));
 		}
+	}
+
+	private boolean validarSeUsuarioTemPermissaoConsulta(DadosFilter dados, Long idUat) {
+		return validationService.validarFiltroDadosGestaoUnidadeSesi(dados, idUat) || dados.isCallCenter();
+
 	}
 
 	private void validarSeOVeiculoJaEstaCadastrado(List<UatVeiculoDTO> listVeiculoDTO, Long idUat) {

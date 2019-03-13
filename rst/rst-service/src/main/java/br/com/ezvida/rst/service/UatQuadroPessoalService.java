@@ -77,7 +77,7 @@ public class UatQuadroPessoalService extends BaseService {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Map<String, List<UatQuadroPessoalDTO>> findByUnidade(Long idUnidade, ClienteAuditoria auditoria, DadosFilter dados) {
         Map<String, List<UatQuadroPessoalDTO>> listQuadrosPessoaisAgg = null;
-        if (validationService.validarFiltroDadosGestaoUnidadeSesi(dados, idUnidade)) {
+        if (validationService.validarFiltroDadosGestaoUnidadeSesi(dados, idUnidade) || dados.isCallCenter()) {
             LogAuditoria.registrar(LOGGER, auditoria, "Buscando Quadros Pessoais por id da unidade sesi " + idUnidade);
             List<UatQuadroPessoalDTO> listaQuadrosPessoais = this.uatQuadroPessoalDAO.findByUnidade(idUnidade);
             if (listaQuadrosPessoais != null && !listaQuadrosPessoais.isEmpty()) {

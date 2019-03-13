@@ -44,8 +44,11 @@ public class UatEquipamentoService extends BaseService {
 	public List<UatEquipamentoGroupedByAreaDTO> listarTodosEquipamentosPorIdUatAgrupadosPorArea(Long idUat,
 			ClienteAuditoria auditoria, DadosFilter dados) {
 		LogAuditoria.registrar(LOGGER, auditoria, "Buscando Equipamentos da UAT com id " + idUat);
-		validarSeUsuarioTemPermissao(dados, idUat);
-		return createListUatEquipamentoGroupedByAreaDTO(idUat);
+		if(validarSeUsuarioTemPermissaoConsulta(dados, idUat)){
+			return createListUatEquipamentoGroupedByAreaDTO(idUat);
+		}else {
+			throw new UnauthorizedException(getMensagem("app_seguranca_acesso_negado"));
+		}
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -118,6 +121,10 @@ public class UatEquipamentoService extends BaseService {
 		if (!validationService.validarFiltroDadosGestaoUnidadeSesi(dados, idUat)) {
 			throw new UnauthorizedException(getMensagem("app_seguranca_acesso_negado"));
 		}
+	}
+
+	private boolean validarSeUsuarioTemPermissaoConsulta(DadosFilter dados, Long idUat) {
+		return validationService.validarFiltroDadosGestaoUnidadeSesi(dados, idUat) || dados.isCallCenter();
 	}
 
 }

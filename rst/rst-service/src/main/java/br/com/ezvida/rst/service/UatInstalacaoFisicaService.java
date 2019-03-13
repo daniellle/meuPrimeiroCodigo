@@ -75,7 +75,7 @@ public class UatInstalacaoFisicaService extends BaseService {
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Map<String, List<UatInstalacaoFisicaDTO>> findByUnidade(Long idUnidade, ClienteAuditoria auditoria, DadosFilter dados) {
         Map<String, List<UatInstalacaoFisicaDTO>> instalacoesFisicasAGG = null;
-        if (validationService.validarFiltroDadosGestaoUnidadeSesi(dados, idUnidade)) {
+        if (validationService.validarFiltroDadosGestaoUnidadeSesi(dados, idUnidade) || dados.isCallCenter()) {
             LogAuditoria.registrar(LOGGER, auditoria, "Buscando Instalações Físicas por id da unidade sesi " + idUnidade);
             List<UatInstalacaoFisicaDTO> listaInstalacoes = this.uatInstalacaoFisicaDAO.findByUnidade(idUnidade);
             if (listaInstalacoes != null && !listaInstalacoes.isEmpty()) {

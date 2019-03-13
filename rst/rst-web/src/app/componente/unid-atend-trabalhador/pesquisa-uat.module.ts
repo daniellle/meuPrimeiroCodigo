@@ -104,9 +104,6 @@ const routes: Routes = [
         data: {
             title: MensagemProperties.app_rst_estrutura_da_unidade_title_menu,
             permissoes: [
-                PermissoesEnum.CAT_ESTRUTURA_CADASTRAR,
-                PermissoesEnum.CAT_ESTRUTURA_ALTERAR,
-                PermissoesEnum.CAT_ESTRUTURA_DESATIVAR,
                 PermissoesEnum.CAT_ESTRUTURA_CONSULTAR],
         },
     },
@@ -125,7 +122,7 @@ const routes: Routes = [
     exports: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent],
     declarations: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent, UatEstruturaUnidadeComponent, UatInstalacoesFisicasComponent, UatVeiculoComponent, UatQuadroPessoalComponent, UatEquipamentoComponent],
     providers: [UatService, DialogService, CadastroUatComponent, EstadoService, DepartRegionalService,
-        ProdutoServicoService, UatProdutoServicoService, LinhaService, UatInstalacaoFisicaCategoriaService, UatInstalacaoFisicaCategoriaAmbienteService, UatInstalacaoFisicaService, UatVeiculoService, UatQuadroPessoalAreaService, 
+        ProdutoServicoService, UatProdutoServicoService, LinhaService, UatInstalacaoFisicaCategoriaService, UatInstalacaoFisicaCategoriaAmbienteService, UatInstalacaoFisicaService, UatVeiculoService, UatQuadroPessoalAreaService,
         UatQuadroPessoaTipoServicoService, UatQuadroPessoalTipoProfissionalService, UatQuadroPessoalService, UatEquipamentoService],
 })
 export class PesquisaUatModule { }

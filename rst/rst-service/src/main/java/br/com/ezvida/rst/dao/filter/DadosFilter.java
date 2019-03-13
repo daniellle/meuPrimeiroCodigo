@@ -32,7 +32,7 @@ public class DadosFilter implements Serializable {
     public static final String MEDICO_TRABALHO_DR = "MTSDR";
     public static final String GESTOR_COMERCIAL_DR = "GCDR";
     public static final String GESTOR_UNIDADE_SESI = "GUS";
-
+    public static final String CALL_CENTER = "ATD";
 
     private boolean administrador;
 
@@ -346,5 +346,9 @@ public class DadosFilter implements Serializable {
 
     public void setListaPerfisPermitidos(Set<String> listaPerfisPermitidos) {
         this.listaPerfisPermitidos = listaPerfisPermitidos;
+    }
+
+    public boolean isCallCenter(){
+        return this.contemPapel(CALL_CENTER);
     }
 }
