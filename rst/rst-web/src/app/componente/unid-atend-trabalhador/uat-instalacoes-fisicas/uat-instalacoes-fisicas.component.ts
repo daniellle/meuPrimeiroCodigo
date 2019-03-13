@@ -121,10 +121,10 @@ export class UatInstalacoesFisicasComponent extends BaseComponent implements OnI
     private desativar(idInstalacaoFisica: Number, idUnidade: Number) {
         this.uatInstalacaoFisicasService.desativar(idInstalacaoFisica, idUnidade).subscribe(
             (data) => {
-                this.mensagemSucesso(data['content']);
+                this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
                 this.findInstalacoesAgg();
             }, (error) => {
-                this.mensagemError(MensagemProperties.app_rst_erro_geral);
+                this.mensagemError(error);
             });
     }
 
