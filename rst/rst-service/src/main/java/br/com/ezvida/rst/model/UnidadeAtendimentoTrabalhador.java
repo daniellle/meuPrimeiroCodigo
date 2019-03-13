@@ -89,6 +89,13 @@ public class UnidadeAtendimentoTrabalhador extends AbstractData {
 		this.departamentoRegional = new DepartamentoRegional(cnpjDR, razaoSocialDR, siglaDR, estadoDR);
 	}
 
+	public UnidadeAtendimentoTrabalhador(String cnpj, String razaoSocial, String nomeFantasia, DepartamentoRegional dr) {
+		this.cnpj = cnpj;
+		this.razaoSocial = razaoSocial;
+		this.nomeFantasia = nomeFantasia;
+		this.departamentoRegional = new DepartamentoRegional(dr.getCnpj(), dr.getRazaoSocial(), dr.getSiglaDR());
+	}
+
 	@PreUpdate
 	public void preUpdate() {
 		setDataAlteracao(new Date());

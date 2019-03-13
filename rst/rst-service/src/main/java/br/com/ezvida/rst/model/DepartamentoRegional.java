@@ -85,6 +85,12 @@ public class DepartamentoRegional extends AbstractData {
 		this.estado = estado;
 	}
 
+	public DepartamentoRegional(String cnpj, String razaoSocial, String sigla) {
+		this.cnpj = cnpj;
+		this.razaoSocial = razaoSocial;
+		this.siglaDR = sigla;
+	}
+
 	@PreUpdate
 	public void preUpdate() {
 		setDataAlteracao(new Date());

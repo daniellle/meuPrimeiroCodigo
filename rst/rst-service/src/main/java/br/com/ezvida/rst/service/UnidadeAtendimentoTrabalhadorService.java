@@ -28,6 +28,7 @@ import javax.inject.Inject;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Stateless
@@ -194,13 +195,24 @@ public class UnidadeAtendimentoTrabalhadorService extends BaseService {
         return unidadeAtendimentoTrabalhadorDAO.pesquisarPorEndereco(enderecoFilter, dados);
     }
 
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<UnidadeAtendimentoTrabalhador> buscarPorEmpresaEAtivas(Long id) {
         return unidadeAtendimentoTrabalhadorDAO.buscarPorEmpresaEAtivas(id);
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<UnidadeAtendimentoTrabalhador> buscaPorIdEmpresa(Long id) {
+        return unidadeAtendimentoTrabalhadorDAO.buscaTodasPorEmpresa(id);
+    }
+
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public BigInteger countByListIdAndCNPJ(Collection<Long> listId, String CNPJ) {
         return unidadeAtendimentoTrabalhadorDAO.countByListIdAndCNPJEmpresa(listId, CNPJ);
+    }
+
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<UnidadeAtendimentoTrabalhador> buscarPorIds(Set<Long> ids) {
+        return unidadeAtendimentoTrabalhadorDAO.buscaTodasPorId(ids);
     }
 
 }
