@@ -52,7 +52,8 @@ public class SegurancaUtils {
            // return "78907216410"; //GCDR
 //             return "95901290801"; //GUS
 //            return "73243474795";
-            return "35880617971";
+//            return "35880617971";
+            return "96031445921";
 //            return "04265927947"; // Superintendente DR
 //            return "01178192474";
 //            return "83704786209";

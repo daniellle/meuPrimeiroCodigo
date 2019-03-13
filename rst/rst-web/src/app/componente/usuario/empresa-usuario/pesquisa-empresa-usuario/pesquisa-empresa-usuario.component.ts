@@ -160,11 +160,13 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
 
     public getUsuarioEntidade() {
         this.usuarioEntidadeService.pesquisaUsuariosEntidade(this.usuario.login).subscribe((response: UsuarioEntidade[]) => {
-            response.forEach((element) => {
-                if (element.empresa) {
-                    this.usuariosEntidade.push(element);
-                }
-            });
+            if(response) {
+                response.forEach((element) => {
+                    if (element.empresa) {
+                        this.usuariosEntidade.push(element);
+                    }
+                });
+            }
         });
     }
 
