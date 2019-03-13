@@ -5,6 +5,7 @@ import br.com.ezvida.rst.dao.filter.EnderecoFilter;
 import br.com.ezvida.rst.dao.filter.ListaPaginada;
 import br.com.ezvida.rst.dao.filter.UnidAtendTrabalhadorFilter;
 import br.com.ezvida.rst.enums.Situacao;
+import br.com.ezvida.rst.model.DepartamentoRegional;
 import br.com.ezvida.rst.model.UnidadeAtendimentoTrabalhador;
 import com.google.common.collect.Maps;
 import fw.core.jpa.BaseDAO;
@@ -501,5 +502,27 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
         query.setParameter("ids", ids);
 
         return query.getResultList();
+    }
+
+    public List<UnidadeAtendimentoTrabalhador> buscaTodasPorEmpresa(Long idEmpresa) {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append(" SELECT uat.no_cnpj, uat.ds_razao_social, uat.nm_fantasia, dr.no_cnpj as dr_cnpj, dr.ds_razao_social as dr_razao_social, dr.sigla_dr FROM und_atd_trabalhador uat ");
+        jpql.append(" JOIN und_obra_contrato_uat uocu ON uat.id_und_atd_trabalhador = uocu.id_und_atd_trabalhador_fk ");
+        jpql.append(" JOIN und_obra uo ON uo.id_und_obra = uocu.id_und_obra_fk ");
+        jpql.append(" JOIN departamento_regional dr ON dr.id_departamento_regional = uat.id_departamento_regional_fk ");
+        jpql.append(" WHERE uo.id_empresa_fk = :idEmpresa ");
+
+        Query query = this.getEm().createNativeQuery(jpql.toString());
+        query.setParameter("idEmpresa", idEmpresa);
+
+        List<UnidadeAtendimentoTrabalhador> uats = new ArrayList<>();
+        List<Object[]> rows = query.getResultList();
+
+        for (Object[] row : rows) {
+            uats.add(new UnidadeAtendimentoTrabalhador((String) row[0], (String) row[1], (String) row[2],
+                new DepartamentoRegional((String) row[3], (String) row[4], (String) row[5])));
+        }
+
+        return uats;
     }
 }

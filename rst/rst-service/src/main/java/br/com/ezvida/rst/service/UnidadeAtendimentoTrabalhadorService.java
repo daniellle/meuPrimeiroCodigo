@@ -195,8 +195,14 @@ public class UnidadeAtendimentoTrabalhadorService extends BaseService {
         return unidadeAtendimentoTrabalhadorDAO.pesquisarPorEndereco(enderecoFilter, dados);
     }
 
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<UnidadeAtendimentoTrabalhador> buscarPorEmpresaEAtivas(Long id) {
         return unidadeAtendimentoTrabalhadorDAO.buscarPorEmpresaEAtivas(id);
+    }
+
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<UnidadeAtendimentoTrabalhador> buscaPorIdEmpresa(Long id) {
+        return unidadeAtendimentoTrabalhadorDAO.buscaTodasPorEmpresa(id);
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
