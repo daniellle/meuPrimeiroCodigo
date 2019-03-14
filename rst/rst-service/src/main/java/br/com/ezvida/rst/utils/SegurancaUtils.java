@@ -25,7 +25,7 @@ public class SegurancaUtils {
             LOGGER.warn(" UTILIZANDO SEGURANÇA DO AMBIENTE DE DESENVOLVIMENTO");
             //return "08194790980"; // trabalhador
             // return "86010158168"; // adm do grupo
-             // "65020081515"; // administrador
+           return  "65020081515"; // administrador
            // return "37139762520"; // adm
             // return "09934689421"; // dna
             // return "48552219026"; // gestor dn aplicacoes
@@ -43,7 +43,7 @@ public class SegurancaUtils {
            // return "78907216410"; //GCDR
              //return "95901290801"; //GUS
 //            return "04265927947"; // Superintendente DR
-            return "94220488855"; //Call Center
+         //  return "94220488855"; //Call Center
         }
         LOGGER.debug("SessionLogin {}", request.getAttribute(SHIB_SESSION_LOGIN));
         if (request.getAttribute(SHIB_SESSION_ID) == null || request.getAttribute(SHIB_SESSION_LOGIN) == null) {

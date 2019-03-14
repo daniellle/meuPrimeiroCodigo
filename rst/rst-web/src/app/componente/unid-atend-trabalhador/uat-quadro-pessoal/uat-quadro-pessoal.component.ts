@@ -167,7 +167,7 @@ export class UatQuadroPessoalComponent extends BaseComponent implements OnInit {
     private desativar(idQuadroPessoal: Number, idUnidade: Number) {
         this.uatQuadroPessoalService.desativar(idQuadroPessoal, idUnidade).subscribe(
             (data) => {
-                this.mensagemSucesso(data['content']);
+                this.mensagemSucesso(MensagemProperties.app_rst_operacao_sucesso);
                 this.findQuadroPessoalAgg();
             }, (error) => {
                 this.mensagemError(error);
