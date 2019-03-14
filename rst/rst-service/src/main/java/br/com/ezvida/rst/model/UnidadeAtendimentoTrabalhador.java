@@ -42,7 +42,7 @@ public class UnidadeAtendimentoTrabalhador extends AbstractData {
 	@JsonDeserialize(using = DateJsonDeserializer.class)
 	@JsonSerialize(using = DateJsonSerializer.class)
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "DT_DESATIVACAO", nullable = true)
+	@Column(name = "dt_desativacao", nullable = true)
 	private Date dataDesativacao;
 	
 	@Column(name = "DS_RAZAO_SOCIAL", nullable = false)
@@ -93,7 +93,15 @@ public class UnidadeAtendimentoTrabalhador extends AbstractData {
 		this.id = idUat;
 	}
 
-	@PreUpdate
+    public UnidadeAtendimentoTrabalhador(String cnpj, String razaoSocial, String nomeFantasia, DepartamentoRegional dr) {
+        this.cnpj = cnpj;
+        this.razaoSocial = razaoSocial;
+        this.nomeFantasia = nomeFantasia;
+        this.departamentoRegional = new DepartamentoRegional(dr.getCnpj(), dr.getRazaoSocial(), dr.getSiglaDR());
+    }
+
+
+    @PreUpdate
 	public void preUpdate() {
 		setDataAlteracao(new Date());
 	}

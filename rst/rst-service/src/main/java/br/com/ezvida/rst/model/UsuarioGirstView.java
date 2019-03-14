@@ -22,6 +22,12 @@ public class UsuarioGirstView extends BaseEntity<Long> {
 	@Column(name = "login")
 	private String login;
 
+	@Column(name = "nome")
+	private String nome;
+
+	@Column(name = "email")
+	private String email;
+
 
 	public String getNome() {
 		return nome;
@@ -38,12 +44,6 @@ public class UsuarioGirstView extends BaseEntity<Long> {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	@Column(name = "nome")
-	private String nome;
-
-	@Column(name = "email")
-	private String email;
 
 	public Long getId() {
 		return id;

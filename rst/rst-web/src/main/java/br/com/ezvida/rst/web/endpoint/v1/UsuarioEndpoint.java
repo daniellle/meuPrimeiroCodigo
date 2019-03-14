@@ -92,6 +92,7 @@ public class UsuarioEndpoint extends SegurancaEndpoint<Usuario> {
             .header(CONTENT_VERSION, getApplicationVersion())
             .entity(serializar(usuarioService.pesquisarPaginadoGirst(usuarioFilter
                 , ClienteInfos.getDadosFilter(context)
+                , ClienteInfos.getUsuario(context)
                 , ClienteInfos.getClienteInfos(context, request
                     , TipoOperacaoAuditoria.CONSULTA, Funcionalidade.USUARIOS)))).build();
     }

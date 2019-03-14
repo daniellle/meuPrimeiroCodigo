@@ -66,24 +66,19 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.usuarioLogado = Seguranca.getUsuario();
-      this.semPerfilBarramento = new Perfil();
-      this.criandoPerfilVazio();
-      this.filtro = new PerfilUsuarioFilter();
-      this.hierarquiaUsuarioLogado();
+    this.usuarioLogado = Seguranca.getUsuario();
+    this.semPerfilBarramento = new Perfil();
+    this.criandoPerfilVazio();
+    this.filtro = new PerfilUsuarioFilter();
     this.usuarios = new Array<Usuario>();
     this.title = MensagemProperties.app_rst_usuario_title_pesquisar;
     this.pesquisaUsuarioForm = this.formBuilder.group({});
     this.filtro.codigoPerfil = '';
   }
 
-  hierarquiaUsuarioLogado() {
-    this.filtro.usuarioLogadoHierarquia = this.usuarioLogado.nivel;
-  }
-
-  criandoPerfilVazio(){
-      this.semPerfilBarramento.nome = "Sem Perfil";
-      this.semPerfilBarramento.codigo = 'SP';
+  criandoPerfilVazio() {
+    this.semPerfilBarramento.nome = "Sem Perfil";
+    this.semPerfilBarramento.codigo = 'SP';
   }
 
   buscarPerfis(): void {
@@ -95,7 +90,7 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
     }, (error) => {
       this.mensagemError(error);
     }, () => {
-        this.orderByNome(this.perfis);
+      this.orderByNome(this.perfis);
     });
   }
 
@@ -145,8 +140,8 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
 
     if (!this.isVazia(this.filtro.nome)) {
       if (this.filtro.nome.length < 2) {
-          this.mensagemError('Digite pelo menos 2 caracteres para o campo nome');
-          verificador = false;
+        this.mensagemError('Digite pelo menos 2 caracteres para o campo nome');
+        verificador = false;
       }
 
     }
@@ -232,48 +227,48 @@ export class PesquisaUsuarioComponent extends BaseComponent implements OnInit {
     }
   }
 
-  filterByHierarquia(list: Perfil[]){
-   let retorno: Perfil[];
+  filterByHierarquia(list: Perfil[]) {
+    let retorno: Perfil[];
     if (!this.listaUndefinedOuVazia(list)) {
-      if(this.usuarioLogado.nivel <= 2){
+      if (this.usuarioLogado.nivel <= 2) {
         retorno = list.filter(element => (element.hierarquia >= this.usuarioLogado.nivel) || element.codigo == "TRA");
       } else {
-        if(this.usuarioLogado.papeis.some((element) => element == "GEEMM")){
-          retorno = list.filter(element => (element.hierarquia >  this.usuarioLogado.nivel) || element.codigo == "TRA");
+        if (this.usuarioLogado.papeis.some((element) => element == "GEEMM")) {
+          retorno = list.filter(element => (element.hierarquia > this.usuarioLogado.nivel) || element.codigo == "TRA");
           retorno = retorno.filter((element) => element.codigo != "EPI");
-        }else{
-        retorno = list.filter(element => (element.hierarquia >  this.usuarioLogado.nivel) || element.codigo == "TRA");
+        } else {
+          retorno = list.filter(element => (element.hierarquia > this.usuarioLogado.nivel) || element.codigo == "TRA");
         }
         //retorno = list.filter((element) => element.codigo != "EPI");
       }
       return retorno;
-      }
+    }
   }
 
-  removeOpcaoDiretores(){
+  removeOpcaoDiretores() {
     this.removeOpcaoDiretorDN();
     this.removeOpcaoDiretorDR();
   }
 
-  removeOpcaoDiretorDR(){
-    let index:number;
-    this.perfis.some((lista,indice) => {
-      if(lista.codigo == 'DIDR'){
+  removeOpcaoDiretorDR() {
+    let index: number;
+    this.perfis.some((lista, indice) => {
+      if (lista.codigo == 'DIDR') {
         index = indice;
         return true;
       };
     });
-    this.perfis.splice(index,1);
+    this.perfis.splice(index, 1);
   }
 
-  removeOpcaoDiretorDN(){
-    let index:number;
-    this.perfis.some((lista,indice) => {
-      if(lista.codigo == 'DIDN'){
+  removeOpcaoDiretorDN() {
+    let index: number;
+    this.perfis.some((lista, indice) => {
+      if (lista.codigo == 'DIDN') {
         index = indice;
         return true;
       };
     });
-    this.perfis.splice(index,1);
+    this.perfis.splice(index, 1);
   }
 }

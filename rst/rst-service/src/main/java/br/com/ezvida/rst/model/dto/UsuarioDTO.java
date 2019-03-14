@@ -2,6 +2,7 @@ package br.com.ezvida.rst.model.dto;
 
 import br.com.ezvida.rst.model.DepartamentoRegional;
 import br.com.ezvida.rst.model.Empresa;
+import br.com.ezvida.rst.model.UnidadeAtendimentoTrabalhador;
 
 import java.util.List;
 
@@ -10,6 +11,8 @@ public class UsuarioDTO {
     private String login;
 
     private List<DepartamentoRegional> departamentosRegionais;
+
+    private List<UnidadeAtendimentoTrabalhador> uats;
 
     private List<Empresa> empresas;
 
@@ -85,5 +88,9 @@ public class UsuarioDTO {
 
     public void setFotoPerfil(String fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
+    }
+
+    public void setUats(List<UnidadeAtendimentoTrabalhador> uats) {
+        this.uats = uats;
     }
 }
