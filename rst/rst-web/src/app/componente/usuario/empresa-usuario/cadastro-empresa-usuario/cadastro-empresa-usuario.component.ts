@@ -90,6 +90,9 @@ export class CadastroEmpresaUsuarioComponent extends BaseComponent implements On
                     case PerfilEnum.GEEMM:
                         p.push(new Perfil(null, value, key));
                         break;
+                    case PerfilEnum.GCOI:
+                        p.push(new Perfil(null, value, key));
+                        break;
                 }
             });
             return p;
