@@ -260,4 +260,8 @@ public class PermissionConstants {
 	public static final String SISTEMA_CREDENCIADO_PESQUISAR = "sistema_credenciado_pesquisar";
 	public static final String SISTEMA_CREDENCIADO_ATIVAR_DESATIVAR = "sistema_credenciado_ativar_desativar";
 
+	public static final String CAT_ESTRUTURA_CADASTRAR = "cat_estrutura_cadastrar";
+	public static final String CAT_ESTRUTURA_ALTERAR = "cat_estrutura_alterar";
+	public static final String CAT_ESTRUTURA_CONSULTAR = "cat_estrutura_consultar";
+	public static final String CAT_ESTRUTURA_DESATIVAR = "cat_estrutura_desativar";
 }

@@ -61,8 +61,6 @@ export class AssociaPerfilBarramentoComponent extends BaseComponent implements O
             this.tipoCnpj = this.strUat;
         }
 
-       //console.log(this.tipoCnpj);
-
         this.perfisSistemas = [];
         if(this.usuario && this.usuario.perfisSistema != undefined ) {
             this.perfisSistemas = [].concat(this.usuario.perfisSistema);

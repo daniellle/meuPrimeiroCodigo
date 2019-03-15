@@ -11,7 +11,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +22,9 @@ import fw.web.endpoint.SegurancaEndpoint;
 @Path("/public/v1/parametro")
 public class ParametroEndpoint extends SegurancaEndpoint<Parametro> {
 
-    private static final long serialVersionUID = 1L;
+    private static final String CONTENT_VERSION = "Content-Version";
+
+	private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ParametroEndpoint.class);
 
@@ -38,7 +39,7 @@ public class ParametroEndpoint extends SegurancaEndpoint<Parametro> {
     public Response buscarTermoUso() {
         LOGGER.debug("Buscando Termo de Uso");
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-            .header("Content-Version", getApplicationVersion()).entity(serializar(parametroService.getTermoUso()))
+            .header(CONTENT_VERSION, getApplicationVersion()).entity(serializar(parametroService.getTermoUso()))
             .build();
     }
 
@@ -50,7 +51,7 @@ public class ParametroEndpoint extends SegurancaEndpoint<Parametro> {
     public Response buscarIgev() {
         LOGGER.debug("Buscando igev");
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-            .header("Content-Version", getApplicationVersion()).entity(serializar(parametroService.getIgev()))
+            .header(CONTENT_VERSION, getApplicationVersion()).entity(serializar(parametroService.getIgev()))
             .build();
     }
 
@@ -62,7 +63,7 @@ public class ParametroEndpoint extends SegurancaEndpoint<Parametro> {
     public Response pesquisar() {
         LOGGER.debug("Buscando parametro por nome");
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-            .header("Content-Version", getApplicationVersion()).entity(serializar(parametroService.getTamanhoMaximoUpload()))
+            .header(CONTENT_VERSION, getApplicationVersion()).entity(serializar(parametroService.getTamanhoMaximoUpload()))
             .build();
     }
 
@@ -73,7 +74,7 @@ public class ParametroEndpoint extends SegurancaEndpoint<Parametro> {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getTokenAcessoClienteRst() {
         LOGGER.debug("Buscando parametro por nome");
-        return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON).header("Content-Version", getApplicationVersion())
+        return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON).header(CONTENT_VERSION, getApplicationVersion())
             .entity(serializar(parametroService.getTokenAcessoClienteRst())).build();
     }
 
@@ -85,7 +86,7 @@ public class ParametroEndpoint extends SegurancaEndpoint<Parametro> {
     public Response getSolicitacaoTelefoneCentralRelacionamento() {
          LOGGER.debug("Buscando parametro telefone de central de relacionamento");
         return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-            .header("Content-Version", getApplicationVersion()).entity(parametroService.getSolicitacaoTelefoneCentralRelacionamento())
+            .header(CONTENT_VERSION, getApplicationVersion()).entity(parametroService.getSolicitacaoTelefoneCentralRelacionamento())
             .build();
     }
 

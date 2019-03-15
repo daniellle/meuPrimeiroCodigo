@@ -1,0 +1,116 @@
+<form [formGroup]="form">
+    <div class="container" [ngClass]="{ divDis : modoConsulta }">
+
+        <div class="row">
+            <div class="form-group col-xs-4 col-sm-4" [ngClass]="{ divDis :  modoConsulta }">
+                <div class="md-container">
+                    <md-select formControlName="area" id="area" placeholder="{{ 'app_rst_labels_area' | recurso }}"
+                        appFormularioCamposErro (change)="changeCombo('area')">
+                        <md-option>
+                            <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                        </md-option>
+                        <md-option *ngFor='let a of listArea' [value]="a.id">
+                            {{a.descricao}}
+                        </md-option>
+                    </md-select>
+                </div>
+            </div>
+
+            <div class="form-group col-xs-4 col-sm-4" [ngClass]="{ divDis :  modoConsulta }" [hidden]="!showComboTipoServico()">
+                <div class="md-container">
+                    <md-select formControlName="tipoServico" id="tipoServico" placeholder="{{ 'app_rst_labels_tipo_servico' | recurso }}"
+                        appFormularioCamposErro (change)="changeCombo('tipoServico')">
+                        <md-option>
+                            <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                        </md-option>
+                        <md-option *ngFor='let s of listTipoServico' [value]="s.id">
+                            {{s.descricao}}
+                        </md-option>
+                    </md-select>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+<div class="row tabela" *ngIf="showFormQuadroPessoal()">
+    <div class="header-tabela">
+        <span class="column-label">
+            {{ 'app_rst_labels_tipo_profissional' | recurso }}
+        </span>
+        <span class="column-quantidade">
+            {{ 'app_rst_labels_quantidade' | recurso }}
+        </span>
+    </div>
+
+    <div class="content-tabela">
+
+        <div *ngFor="let quadroPessoal of listQuadroPessoalSave; let index = index;">
+            <div class="row-content-tabela">
+
+                <span class="column-label">
+                    {{quadroPessoal.uatQuadroPessoalTipoProfissional.descricao}}
+                </span>
+
+
+                <span class="column-quantidade">
+                    <input type="text" name="{{quadroPessoal.uatQuadroPessoalTipoProfissional.descricao}}-quantidade-{{index}}"
+                        [(ngModel)]="listQuadroPessoalSave[index].quantidade" id="quantidade" maxlength="8" inputmode="numeric"
+                        pattern="[0-9]*" digitOnly>
+                </span>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="btn-rodape-acoes space-up">
+        <button class="btn btn-primary" [(disabled)]="modoConsulta" (click)="salvar()">{{ 'app_rst_btn_salvar' |
+            recurso}}</button>
+        <button class="btn btn-secondary" [(disabled)]="modoConsulta" (click)="limpar()">{{
+            'app_rst_btn_cancelar' | recurso}}</button>
+    </div>
+
+</div>
+
+
+<div class="space-up" *ngIf="showGridQuadroPessoal()">
+
+    <span class="titulo-table">{{'app_rst_areas_cadastradas' | recurso}}</span>
+
+    <div *ngFor="let key of objectKeys(quadrosPessoaisAgg)">
+        <span class="subtitulo-table"> {{ key }} </span>
+        <table class="table table-responsive">
+            <thead class="header-grid">
+                <tr>
+                    <th class="column-label"><span>{{
+                            'app_rst_labels_tipo_servico' | recurso }}</span></th>
+
+                    <th class="column-quantidade"><span>{{
+                            'app_rst_labels_tipo_profissional' | recurso }}</span></th>
+
+                    <th class="column-quantidade"><span>{{
+                            'app_rst_labels_quantidade' | recurso }}</span></th>
+
+                    <th class="column-btn" *ngIf="!modoConsulta && hasPermissaoDesativar"></th>
+                </tr>
+            </thead>
+
+            <tbody class="content-grid">
+                <tr *ngFor="let value of quadrosPessoaisAgg[key]">
+                    <td class="column-label">{{value.descricaoTipoServico }}</td>
+                    <td class="column-quantidade text-center">{{value.descricaoTipoProfissional}}</td>
+                    <td class="column-quantidade">{{value.quantidade}}</td>
+                    <td class="column-btn" *ngIf="!modoConsulta && hasPermissaoDesativar">
+                        <button class="btn-link" #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Desativar'" (click)="openConfirmationDialog(value)"
+                            [mdTooltipPosition]="'below'">
+                            <img class="lixo" [src]="'assets/img/trash.svg'">
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>

@@ -128,7 +128,7 @@ public class RESService extends BaseService {
                 Response<Object> response = retro.create(RESApi.class)
                                                  .buscarEncontroMedico(token, id)
                                                  .execute();
-                if (response != null || response.isSuccessful()) {
+                if (response != null) {
                     Object form = buscarForm(TEMPLATE);
                     resultado = new ImmutableMap.Builder<String, Object>()
                             .put("resultado", response.body())

@@ -1,0 +1,110 @@
+<div>
+    <form [formGroup]="form">
+        <div class="row">
+            <div class="form-group col-md-4" [ngClass]="{ divDis :  modoConsulta }">
+                <div class="md-container">
+                    <md-select formControlName="categoria" id="categoria" placeholder="{{ 'app_rst_labels_categoria' | recurso }}"
+                        appFormularioCamposErro (change)="onChangeCategoria()">
+                        <md-option>
+                            <option value=undefined>{{ 'app_rst_labels_selecione' | recurso }}</option>
+                        </md-option>
+                        <md-option *ngFor='let c of listCategorias' [value]="c.id">
+                            {{c.descricao}}
+                        </md-option>
+                    </md-select>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<div class="row tabela" *ngIf="showFormInstalacoesFisicas()">
+    <div class="header-tabela">
+        <span class="column-label">
+            {{ 'app_rst_labels_ambiente' | recurso }}
+        </span>
+        <span class="column-quantidade">
+            {{ 'app_rst_labels_quantidade' | recurso }}
+        </span>
+        <span class="column-area">
+            {{ 'app_rst_labels_area_m2' | recurso }}
+        </span>
+        <span class="column-duplicar">
+        </span>
+    </div>
+
+    <div class="content-tabela">
+        <div *ngFor="let instFis of listInstalacoesFisicasSave; let index = index;">
+            <div class="row-content-tabela">
+
+                <span class="column-label">
+                    {{instFis.uatInstalacaoFisicaAmbiente.descricao}}
+                </span>
+
+                <span class="column-quantidade">
+                    <input type="text" name="{{instFis.uatInstalacaoFisicaAmbiente.descricao}}-quantidade-{{index}}"
+                        [(ngModel)]="listInstalacoesFisicasSave[index].quantidade" id="quantidade" maxlength="8"
+                        inputmode="numeric" pattern="[0-9]*" digitOnly>
+                </span>
+
+                <span class="column-area">
+                    <input type="text" name="{{instFis.uatInstalacaoFisicaAmbiente.descricao}}-area-{{index}}"
+                        [(ngModel)]="listInstalacoesFisicasSave[index].area" id="area" maxlength="4" inputmode="numeric"
+                        pattern="[0-9]*" digitOnly>
+                </span>
+
+                <div class="column-duplicar">
+                    <a (click)="duplicarCampo(index)" *ngIf="!instFis.duplicado"><span class="fa fa-copy fa-2x"
+                            aria-hidden="true" style="color: #3fc2f8;"></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-rodape-acoes space-up">
+        <button class="btn btn-primary" [(disabled)]="modoConsulta" (click)="salvar()">{{ 'app_rst_btn_salvar' |
+            recurso}}</button>
+        <button class="btn btn-secondary" [(disabled)]="modoConsulta" (click)="limpar()">{{
+            'app_rst_btn_cancelar' | recurso}}</button>
+    </div>
+</div>
+
+<div class="space-up" *ngIf="showGridInstalacoes()">
+
+    <span class="titulo-table">{{'app_rst_categorias_cadastradas_title' | recurso}}</span>
+
+    <div *ngFor="let key of objectKeys(instalacoesAgg)">
+        <span class="subtitulo-table"> {{ key }} </span>
+        <table class="table table-responsive">
+            <thead class="header-grid">
+                <tr>
+                    <th class="column-label"><span>{{
+                            'app_rst_labels_ambiente' | recurso }}</span></th>
+                    <th class="column-quantidade"><span>{{
+                            'app_rst_labels_quantidade' | recurso }}</span></th>
+
+                    <th class="column-quantidade"><span>{{
+                            'app_rst_labels_area_m2' | recurso }}</span></th>
+
+                    <th class="column-btn" *ngIf="!modoConsulta && hasPermissaoDesativar"></th>
+                </tr>
+            </thead>
+
+            <tbody class="content-grid">
+                <tr *ngFor="let value of instalacoesAgg[key]">
+                    <td class="column-label">{{value.descricaoAmbiente }}</td>
+                    <td class="column-quantidade">{{value.quantidade}}</td>
+                    <td class="column-quantidade">{{value.area}}</td>
+                    <td class="column-btn" *ngIf="!modoConsulta && hasPermissaoDesativar">
+                        <button class="btn-link" #tooltip="mdTooltip" color="'red'" [mdTooltip]="'Desativar'" (click)="openConfirmationDialog(value)"
+                            [mdTooltipPosition]="'below'">
+                            <img class="lixo" [src]="'assets/img/trash.svg'">
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>

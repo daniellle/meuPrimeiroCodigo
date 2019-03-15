@@ -18,6 +18,20 @@ import { TextMaskModule } from 'angular2-text-mask/dist/angular2TextMask';
 import { UatService } from 'app/servico/uat.service';
 import { EstadoService } from 'app/servico/estado.service';
 import { AutorizacaoGuard } from '../../seguranca/autorizacao.guard';
+import { UatEstruturaUnidadeComponent } from './uat-estrutura-unidade/uat-estrutura-unidade.component';
+import { UatInstalacoesFisicasComponent } from './uat-instalacoes-fisicas/uat-instalacoes-fisicas.component';
+import { UatInstalacaoFisicaCategoriaService } from 'app/servico/uat-instalacao-fisica-categoria.service';
+import { UatInstalacaoFisicaCategoriaAmbienteService } from 'app/servico/uat-instalacao-fisica-ambiente.service';
+import { UatInstalacaoFisicaService } from 'app/servico/uat-instalacao-fisica.service';
+import { UatVeiculoComponent } from './uat-veiculo/uat-veiculo.component';
+import { UatVeiculoService } from 'app/servico/uat-veiculo.service';
+import { UatQuadroPessoalAreaService } from 'app/servico/uat-quadro-pessoal-area.service';
+import { UatQuadroPessoaTipoServicoService } from 'app/servico/uat-quadro-pessoal-tipo-servico.service';
+import { UatQuadroPessoalTipoProfissionalService } from 'app/servico/uat-quadro-pessoal-tipo-profissional.service';
+import { UatQuadroPessoalService } from 'app/servico/uat-quadro-pessoal.service';
+import { UatQuadroPessoalComponent } from './uat-quadro-pessoal/uat-quadro-pessoal.component';
+import { UatEquipamentoService } from 'app/servico/uat-equipamento.service';
+import { UatEquipamentoComponent } from './uat-equipamento/uat-equipamento.component';
 
 const routes: Routes = [
     {
@@ -84,6 +98,15 @@ const routes: Routes = [
             PermissoesEnum.CAT_PRODUTO_SERVICO_DESATIVAR],
         },
     },
+    {
+        path: ':id/estruturadaunidade', component: UatEstruturaUnidadeComponent,
+        canActivate: [AutorizacaoGuard],
+        data: {
+            title: MensagemProperties.app_rst_estrutura_da_unidade_title_menu,
+            permissoes: [
+                PermissoesEnum.CAT_ESTRUTURA_CONSULTAR],
+        },
+    },
 ];
 
 @NgModule({
@@ -97,8 +120,9 @@ const routes: Routes = [
     ],
     entryComponents: [TypeaheadContainerComponent],
     exports: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent],
-    declarations: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent],
+    declarations: [PesquisaUatComponent, CadastroUatComponent, UatIntermediariaComponent, UatProdutoServicoComponent, UatEstruturaUnidadeComponent, UatInstalacoesFisicasComponent, UatVeiculoComponent, UatQuadroPessoalComponent, UatEquipamentoComponent],
     providers: [UatService, DialogService, CadastroUatComponent, EstadoService, DepartRegionalService,
-        ProdutoServicoService, UatProdutoServicoService, LinhaService],
+        ProdutoServicoService, UatProdutoServicoService, LinhaService, UatInstalacaoFisicaCategoriaService, UatInstalacaoFisicaCategoriaAmbienteService, UatInstalacaoFisicaService, UatVeiculoService, UatQuadroPessoalAreaService,
+        UatQuadroPessoaTipoServicoService, UatQuadroPessoalTipoProfissionalService, UatQuadroPessoalService, UatEquipamentoService],
 })
 export class PesquisaUatModule { }

@@ -71,6 +71,9 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
     @Inject
     private EmpresaService empresaService;
 
+    @Inject
+    private UnidadeAtendimentoTrabalhadorService uatService;
+
     @Override
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Usuario getUsuario(String login) {
@@ -551,6 +554,7 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             else {
                 usuario.setDepartamentosRegionais(departamentoRegionalService.pesquisarPorIds(usuarioAConsultar.getIdDepartamentos()));
                 usuario.setEmpresas(empresaService.buscarEmpresasUatsDrsPorIds(usuarioAConsultar.getIdEmpresas()));
+                usuario.setUats(uatService.buscarPorIds(usuarioAConsultar.getIdUnidadesSESI()));
             }
         }
 

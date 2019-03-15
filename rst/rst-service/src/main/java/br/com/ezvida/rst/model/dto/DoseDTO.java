@@ -1,7 +1,5 @@
 package br.com.ezvida.rst.model.dto;
 
-import java.util.Date;
-
 public class DoseDTO {
 
     private String nome;

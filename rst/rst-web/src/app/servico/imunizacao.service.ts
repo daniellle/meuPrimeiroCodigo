@@ -42,7 +42,6 @@ export class ImunizacaoService extends BaseService<Vacina> {
       .append('qtdRegistro', paginacao.qtdRegistro.toString());
     return super.get('/v1/vacinas-autodeclaradas/historico', params)
       .map((response: Response) => {
-        //console.log(response);
         return response;
       }).catch((error: Response) => {
         return Observable.throw(error);
@@ -89,7 +88,6 @@ export class ImunizacaoService extends BaseService<Vacina> {
   ultimasProximasDoses(): Observable<ProximaDoseDTO[]>{
       return super.get('/v1/vacinas-autodeclaradas/ultimas-proximas-doses')
           .map((response: Response) => {
-            ////console.log(response);
               return response;
           }).catch((error: Response) => {
               return Observable.throw(error);
@@ -99,7 +97,6 @@ export class ImunizacaoService extends BaseService<Vacina> {
   proximasDosesDoMes(mes: number, ano: number) : Observable<ProximaDoseDTO[]>{
       return super.get('/v1/vacinas-autodeclaradas/mensal/'+ mes + '/' + ano)
           .map((response: Response) => {
-              ////console.log(response);
               return response;
           }).catch((error: Response) => {
               return Observable.throw(error);

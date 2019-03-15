@@ -1,26 +1,31 @@
 package br.com.ezvida.rst.dao;
 
-import br.com.ezvida.rst.dao.filter.DadosFilter;
-import br.com.ezvida.rst.dao.filter.ListaPaginada;
-import br.com.ezvida.rst.dao.filter.TrabalhadorFilter;
-import br.com.ezvida.rst.enums.Situacao;
-import br.com.ezvida.rst.model.Trabalhador;
-import br.com.ezvida.rst.model.UnidadeObra;
-import br.com.ezvida.rst.model.UnidadeObraContratoUat;
-import com.google.common.collect.Maps;
-import fw.core.jpa.BaseDAO;
-import fw.core.jpa.DAOUtil;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.math.BigInteger;
-import java.util.*;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Maps;
+
+import br.com.ezvida.rst.dao.filter.DadosFilter;
+import br.com.ezvida.rst.dao.filter.ListaPaginada;
+import br.com.ezvida.rst.dao.filter.TrabalhadorFilter;
+import br.com.ezvida.rst.enums.Situacao;
+import br.com.ezvida.rst.model.Trabalhador;
+import fw.core.jpa.BaseDAO;
+import fw.core.jpa.DAOUtil;
 
 public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 
@@ -442,7 +447,8 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 
 
         BigInteger count = DAOUtil.getSingleResult(query);
-        List<Object> trabalhadores = query2.getResultList();
+        @SuppressWarnings("unchecked")
+		List<Object> trabalhadores = query2.getResultList();
         Map<String, List<Object>> hashMap = new HashMap<>();
         List<Object> countL = new ArrayList<>();
         countL.add(count);
@@ -494,7 +500,7 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
             jpql.append("(no_cpf like :cpf) ");
         }
 
-        if ((hasNome || hasCpf) & hasEmpresas) {
+        if ((hasNome || hasCpf) && hasEmpresas) {
             jpql.append(" AND ");
         }
 

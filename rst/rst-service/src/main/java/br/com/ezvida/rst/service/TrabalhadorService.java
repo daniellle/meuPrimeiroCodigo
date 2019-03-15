@@ -254,7 +254,6 @@ public class TrabalhadorService extends BaseService {
             if (trab.getDataFalecimento() != null) {
                 throw new BusinessErrorException(getMensagem("app_rst_primeiro_acesso_erro_data_falecimento"));
             }
-            String id = trab.getId().toString();
 
             if (!buscarTrabalhadorVidaAtiva(trab.getCpf())) {
                 throw new BusinessErrorException(getMensagem("app_rst_primeiro_acesso_erro_vida_inativa"));

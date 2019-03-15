@@ -1,0 +1,161 @@
+$font-color: #808080;
+
+.container {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.mat-input-container, .md-container, ng-select > div {
+    width: calc(100% - 30px);
+}
+
+.header-tabela {
+    display: flex;
+    width: 100%;
+    height: 1.5rem;
+    margin-bottom: 15px;
+    color: $font-color;
+    border-bottom: 1px solid lightgray;;
+}
+
+.content-tabela {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.column-label {
+    display: flex;
+    width: 80%;
+}
+
+.column-quantidade {
+    display: flex;
+    width: 20%;
+    justify-content: center;
+    text-align: center;
+    padding: 0 10px;
+}
+
+.column-quantidade > input {
+    width: 100%;
+    text-align: center;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    color: $font-color;
+}
+
+.column-area {
+    display: flex;
+    width: 20%;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.column-area > input {
+    width: 100%;
+    text-align: center;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    color: $font-color;
+}
+
+.column-duplicar {
+    display: flex;
+    width: 20%;
+    justify-content: center;
+    margin-right: 5px;
+}
+
+.column-duplicar > input {
+    width: 100%;
+    text-align: center;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    color: $font-color;
+}
+
+.row-content-tabela {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    line-height: 2rem;
+    color: $font-color;
+}
+
+.tabela {
+    padding: 15px;
+}
+
+.titulo-table {
+    margin-bottom: 20px;
+    color: #808080;
+    margin-top: 10px;
+    font-size: 22px;
+}
+// CSS FOR GRID
+
+.tabela {
+    padding: 15px;
+}
+
+.table th, .table td {
+    padding: 0;
+}
+
+.titulo-table {
+    display: flex;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: $font-color;
+}
+
+.subtitulo-table {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    display: flex;
+}
+
+.header-grid {
+    width: 100%;
+    display: flex;
+    margin-bottom: 10px;
+    border-bottom: 1px solid lightgrey;
+}
+
+.content-grid {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    font-size: 1rem;
+    color: gray;
+}
+
+.table th, .table td, .table td + td {
+    border: none !important;
+}
+
+tr {
+    display: flex;
+    width: 100%;
+    padding: 5px 0;
+}
+
+.column-btn {
+    width: 10%;
+    display: flex;
+    justify-content: center;
+}
+
+.column-quantidade.grid-sem-descricao {
+    justify-content: flex-start;
+    width: 90%;
+}
+
+.lixo {
+    height: 20px;
+    width: 20px;
+}

@@ -2,6 +2,16 @@
 
 -Aplicações para manutenção dos cadastros RST
 
+**v2.133.0**
+(RELEASE EM 15/03/2019)
+- [CADASTROS] Usuários que são do perfil GUS não possuem vínculos com a sua UAT. (GLPI 4620)
+- [CADASTROS] Lista de Usuários x Perfil, Resultado de pesquisa não está retornando todos os dados (GLPI 2678)
+- [CADASTROS] Erro ao pesquisar usuário (GLPI 4260)	
+- [CADASTROS] Não é possível vincular os perfis Profissional de Saúde SESI DR e Gestor de Conteúdos Indústria (GLPI 4464)
+- [CADASTROS] Não visualização do perfil GESTOR COMERCIAL DR (GLPI 4752)
+- [CADASTROS] Pesquisa de Usuários (GLPI 4812)
+- [CADASTROS] Código da eZVida para Alteração Formulario Esqueci Minha Senha, caractere "+" no e-mail
+
 **v2.127.0**
 (RELEASE EM 28/02/2019)
 - [CADASTROS] Otimização da API/Endpoint empresaFornecedor (INTERNO)

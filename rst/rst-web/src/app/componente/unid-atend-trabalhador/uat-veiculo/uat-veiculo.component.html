@@ -1,0 +1,78 @@
+<div class="container">
+	<div class="row">
+		<div class="form-group col-xs-12 col-sm-8" [ngClass]="{ divDis : modoConsulta }">
+	  		<div class="md-container">
+				<md-select required [disabled]="modoConsulta || !hasPermissaoCadastrarAlterar" placeholder="{{ 'app_rst_labels_tipo' | recurso }}" [(ngModel)]="idVeiculoTipoSelecionado" id="veiculo-tipo" (change)="changeTipo(idVeiculoTipoSelecionado)">
+					<md-option>
+						<option value="">{{ 'app_rst_labels_selecione' | recurso }}</option>
+					</md-option>
+					<md-option *ngFor='let item of listUatVeiculoTipo' [value]="item.id">
+						{{item.descricao}}
+					</md-option>
+				</md-select>
+	  		</div>
+		</div>
+
+		<div class="form-group col-xs-12 col-sm-3" *ngIf="idVeiculoTipoSelecionado && !hasTipoAtendimento()">
+			<md-input-container [floatPlaceholder]="true">
+				<input mdInput placeholder="{{ 'app_rst_labels_quantidade' | recurso }}" type="text" maxlength="5" [(ngModel)]="quantidadeVeiculoPasseio" inputmode="numeric" pattern="[0-9]*" digitOnly id="quantidade_veiculo_passeio" name="quantidade" class="form-control" />
+			</md-input-container>
+		</div>
+	</div>
+
+	<div class="row tabela" *ngIf="idVeiculoTipoSelecionado && hasTipoAtendimento()">
+		<div class="header-tabela">
+			<span class="column-label">
+				{{'app_rst_labels_tipo_de_atendimento' | recurso}}
+			</span>
+			<span class="column-quantidade">
+				{{'app_rst_labels_quantidade' | recurso}}
+			</span>
+		</div>
+
+		<div class="content-tabela">
+			<div class="row-content-tabela" *ngFor='let item of listVeiculoWithAtendimento'>
+				<span class="column-label">
+					{{item.uatVeiculoTipoAtendimento.descricao}}
+				</span>
+				<span class="column-quantidade" >
+					<input type="text" name="quantidade" id="quantidade" [(ngModel)]="item.quantidade" maxlength="5" inputmode="numeric" pattern="[0-9]*" digitOnly>
+				</span>
+			</div>
+		</div>
+	</div>
+	
+	<div class="btn-rodape-acoes space-up" *ngIf="idVeiculoTipoSelecionado">
+		<button class="btn btn-primary" [(disabled)]="modoConsulta" (click)="salvar()">{{ 'app_rst_btn_salvar' | recurso}}</button>
+		<button class="btn btn-secondary" [(disabled)]="modoConsulta" (click)="cancelar()">{{ 'app_rst_btn_cancelar' | recurso}}</button>
+	</div>
+
+	<div class="space-up" *ngIf="showGrid()">
+		<span class="titulo-table">{{'app_rst_tipos_cadastrados_title' | recurso}}</span>
+
+		<div *ngFor="let item of listUatVeiculoGroupedByTipo">
+			<span class="subtitulo-table"> {{ item.descricaoTipo }} </span>
+			<table class="table table-responsive">
+				<thead class="header-grid">
+					<tr>
+						<th class="column-label" *ngIf="item.isTipoAtendimento" ><span>{{ 'app_rst_labels_tipo_de_atendimento' | recurso }}</span></th>
+						<th class="column-quantidade" [ngClass]="{'grid-sem-descricao': !item.isTipoAtendimento}"><span>{{ 'app_rst_labels_quantidade' | recurso }}</span></th>
+						<th *ngIf="!modoConsulta && hasPermissaoDesativar" class="column-btn"></th>
+						</tr>
+				</thead>
+				<tbody class="content-grid">
+					<tr *ngFor="let veiculo of item.veiculos">
+						<td class="column-label" *ngIf="item.isTipoAtendimento">{{ veiculo.descricao }}</td>
+						<td class="column-quantidade" [ngClass]="{'grid-sem-descricao': !item.isTipoAtendimento}">{{ veiculo.quantidade}}</td>
+						<td *ngIf="!modoConsulta && hasPermissaoDesativar" class="column-btn">
+							<button class="btn-link"
+								#tooltip="mdTooltip" color="'red'" [mdTooltip]="'Exluir'" [mdTooltipPosition]="'below'" (click)="openConfirmationDialog(veiculo)">
+							<img class="lixo" [src]="'assets/img/trash.svg'">
+						</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

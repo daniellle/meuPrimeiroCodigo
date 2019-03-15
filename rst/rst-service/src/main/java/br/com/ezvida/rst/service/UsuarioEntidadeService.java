@@ -103,7 +103,6 @@ public class UsuarioEntidadeService extends BaseService {
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<UsuarioEntidade> salvar(List<UsuarioEntidade> list, ClienteAuditoria auditoria) {
-        boolean sucess = false;
         List<UsuarioEntidade> lista = list;
         try {
             for (UsuarioEntidade usuarioEntidade : list) {

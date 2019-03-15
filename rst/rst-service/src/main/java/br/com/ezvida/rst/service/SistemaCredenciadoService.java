@@ -1,5 +1,14 @@
 package br.com.ezvida.rst.service;
 
+import java.math.BigInteger;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.ezvida.girst.apiclient.client.SistemaCredenciadoClient;
 import br.com.ezvida.girst.apiclient.model.ListaPaginada;
 import br.com.ezvida.girst.apiclient.model.SistemaCredenciado;
@@ -12,35 +21,17 @@ import br.com.ezvida.rst.utils.StringUtil;
 import br.com.ezvida.rst.utils.ValidadorUtils;
 import fw.core.exception.BusinessException;
 import fw.core.service.BaseService;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Stateless
 public class SistemaCredenciadoService extends BaseService {
 
-    @Inject
+	private static final long serialVersionUID = 1L;
+
+	@Inject
     private APIClientService apiClientService;
 
     @Inject
     private SistemaCredenciadoClient sistemaCredenciadoClient;
-
-    @Inject
-    private DepartamentoRegionalService departamentoRegionalService;
-
-    @Inject
-    private UnidadeAtendimentoTrabalhadorService unidadeAtendimentoTrabalhadorService;
-
-    @Inject
-    private EmpresaService empresaService;
 
     @Inject
     private OrigemDadosService origemDadosService;

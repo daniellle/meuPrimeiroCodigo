@@ -64,7 +64,6 @@ export class ResService extends BaseService<any> {
                     return lista;
                 }
             }).catch((error) => {
-                //console.log(error);
                 return Observable.empty();
             });
     }
@@ -95,7 +94,6 @@ export class ResService extends BaseService<any> {
                     return lista;
                 }
             }).catch((error) => {
-                //console.log(error);
                 return Observable.empty();
             });
     }
@@ -117,7 +115,6 @@ export class ResService extends BaseService<any> {
 
                 return null;
             }).catch((erro) => {
-               //console.error(erro);
                 return null;
             });
     }
@@ -125,7 +122,6 @@ export class ResService extends BaseService<any> {
 
     buscarEncontro(encontroId: string): Observable<any> {
         return this.get(`${this.API}/fichaMedica/${encontroId}`).catch((erro) => {
-            //console.log(erro);
             return null;
         });
     }

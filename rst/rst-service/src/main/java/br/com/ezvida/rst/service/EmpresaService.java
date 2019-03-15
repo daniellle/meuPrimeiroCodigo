@@ -3,12 +3,14 @@
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import br.com.ezvida.rst.model.UnidadeAtendimentoTrabalhador;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -198,11 +200,12 @@ public class EmpresaService extends BaseService {
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public List<Empresa> buscarEmpresasUatsDrsPorIds(Set<Long> ids) {
 		LOGGER.debug("Pesquisando Empresas por id");
+
 		if (CollectionUtils.isNotEmpty(ids)) {
 			List<Empresa> empresas = empresaDAO.buscarEmpresasPorIds(ids);
 
 			for (Empresa empresa : empresas) {
-				empresa.setUats(uatService.buscarPorEmpresaEAtivas(empresa.getId()));
+                empresa.setUats(uatService.buscaPorIdEmpresa(empresa.getId()));
 				empresa.setSindicatos(sindicatoService.buscarPorEmpresaEAtivos(empresa.getId()));
 				empresa.setId(null);
 			}

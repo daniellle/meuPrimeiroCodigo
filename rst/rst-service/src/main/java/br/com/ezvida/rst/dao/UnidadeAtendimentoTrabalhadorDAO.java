@@ -5,12 +5,12 @@ import br.com.ezvida.rst.dao.filter.EnderecoFilter;
 import br.com.ezvida.rst.dao.filter.ListaPaginada;
 import br.com.ezvida.rst.dao.filter.UnidAtendTrabalhadorFilter;
 import br.com.ezvida.rst.enums.Situacao;
+import br.com.ezvida.rst.model.DepartamentoRegional;
 import br.com.ezvida.rst.model.UnidadeAtendimentoTrabalhador;
 import com.google.common.collect.Maps;
 import fw.core.jpa.BaseDAO;
 import fw.core.jpa.DAOUtil;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,13 +18,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimentoTrabalhador, Long> {
 
@@ -380,10 +375,9 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
 
             montarFiltroPesquisarPorEndereco(enderecoFilter, jpql, parametros, idEstado, idMunicipio, bairro);
 
-        }
-
-        if("0".equals(enderecoFilter.getFiltrarDepRegEmp())){
-            addFiltroDepRegEmpPesquisarPorEndereco(segurancaFilter, jpql, parametros, idEstado, idMunicipio, bairro);
+            if ("0".equals(enderecoFilter.getFiltrarDepRegEmp())) {
+                addFiltroDepRegEmpPesquisarPorEndereco(segurancaFilter, jpql, parametros, idEstado, idMunicipio, bairro);
+            }
         }
 
         TypedQuery<UnidadeAtendimentoTrabalhador> query = criarConsultaPorTipo(jpql.toString());
@@ -489,5 +483,60 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
             query.setParameter("listId", listId);
         }
         return  DAOUtil.getSingleResult(query);
+    }
+
+    public Boolean existsByDRSAndIdUnidade(List<Long>idsDRs, Long idUnidade ) {
+        StringBuilder sql = new StringBuilder();
+        sql.append(" select ");
+        sql.append("	exists( ");
+        sql.append("	select ");
+        sql.append("		id_und_atd_trabalhador ");
+        sql.append("	from ");
+        sql.append("		und_atd_trabalhador ");
+        sql.append("	where ");
+        sql.append("		id_departamento_regional_fk in(:idsDR) ");
+        sql.append("		and id_und_atd_trabalhador = :idUnidade) ");
+        Query query = this.getEm().createNativeQuery(sql.toString());
+        query.setParameter("idsDR", idsDRs);
+        query.setParameter("idUnidade", idUnidade);
+        return (Boolean) query.getSingleResult();
+    }
+
+
+    public List<UnidadeAtendimentoTrabalhador> buscaTodasPorId(Set<Long> ids) {
+        if(ids.isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("select new UnidadeAtendimentoTrabalhador(uat.cnpj, uat.razaoSocial, uat.nomeFantasia, dr) ");
+        jpql.append(" from UnidadeAtendimentoTrabalhador uat join uat.departamentoRegional dr where uat.id in (:ids) ");
+
+        TypedQuery<UnidadeAtendimentoTrabalhador> query = this.getEm().createQuery(jpql.toString(), UnidadeAtendimentoTrabalhador.class);
+        query.setParameter("ids", ids);
+
+        return query.getResultList();
+    }
+
+    public List<UnidadeAtendimentoTrabalhador> buscaTodasPorEmpresa(Long idEmpresa) {
+        StringBuilder jpql = new StringBuilder();
+        jpql.append(" SELECT uat.no_cnpj, uat.ds_razao_social, uat.nm_fantasia, dr.no_cnpj as dr_cnpj, dr.ds_razao_social as dr_razao_social, dr.sigla_dr FROM und_atd_trabalhador uat ");
+        jpql.append(" JOIN und_obra_contrato_uat uocu ON uat.id_und_atd_trabalhador = uocu.id_und_atd_trabalhador_fk ");
+        jpql.append(" JOIN und_obra uo ON uo.id_und_obra = uocu.id_und_obra_fk ");
+        jpql.append(" JOIN departamento_regional dr ON dr.id_departamento_regional = uat.id_departamento_regional_fk ");
+        jpql.append(" WHERE uo.id_empresa_fk = :idEmpresa ");
+
+        Query query = this.getEm().createNativeQuery(jpql.toString());
+        query.setParameter("idEmpresa", idEmpresa);
+
+        List<UnidadeAtendimentoTrabalhador> uats = new ArrayList<>();
+        List<Object[]> rows = query.getResultList();
+
+        for (Object[] row : rows) {
+            uats.add(new UnidadeAtendimentoTrabalhador((String) row[0], (String) row[1], (String) row[2],
+                    new DepartamentoRegional((String) row[3], (String) row[4], (String) row[5])));
+        }
+
+        return uats;
     }
 }

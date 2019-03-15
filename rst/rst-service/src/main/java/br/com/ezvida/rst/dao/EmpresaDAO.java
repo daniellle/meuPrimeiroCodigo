@@ -1,6 +1,10 @@
 package br.com.ezvida.rst.dao;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -372,6 +376,7 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<String> findCNPJByIdsDepartamentoRegional(Collection<Long> ids) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select ");
@@ -391,6 +396,7 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 		return query.getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<String> findCNPJByIdsUnidadeSesi(Collection<Long> ids) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select ");

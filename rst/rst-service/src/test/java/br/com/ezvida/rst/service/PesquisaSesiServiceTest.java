@@ -1,13 +1,10 @@
 package br.com.ezvida.rst.service;
 
-import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
-import br.com.ezvida.rst.dao.PesquisaSesiDAO;
-import br.com.ezvida.rst.dao.filter.ListaPaginada;
-import br.com.ezvida.rst.dao.filter.PesquisaSesiFilter;
-import br.com.ezvida.rst.enums.Funcionalidade;
-import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
-import br.com.ezvida.rst.model.*;
-import br.com.ezvida.rst.model.dto.PesquisaSesiDTO;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,13 +14,20 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
+import br.com.ezvida.rst.dao.PesquisaSesiDAO;
+import br.com.ezvida.rst.dao.filter.ListaPaginada;
+import br.com.ezvida.rst.dao.filter.PesquisaSesiFilter;
+import br.com.ezvida.rst.enums.Funcionalidade;
+import br.com.ezvida.rst.enums.TipoOperacaoAuditoria;
+import br.com.ezvida.rst.model.DepartamentoRegional;
+import br.com.ezvida.rst.model.Linha;
+import br.com.ezvida.rst.model.ProdutoServico;
+import br.com.ezvida.rst.model.Telefone;
+import br.com.ezvida.rst.model.TelefoneUnidadeAtendimentoTrabalhador;
+import br.com.ezvida.rst.model.UnidadeAtendimentoTrabalhador;
+import br.com.ezvida.rst.model.dto.PesquisaSesiDTO;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PesquisaSesiServiceTest {
@@ -42,8 +46,6 @@ public class PesquisaSesiServiceTest {
 
     @Mock
     private TelefoneUnidadeAtendimentoTrabalhadorService telefoneUnidadeAtendimentoTrabalhadorService;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TrabalhadorServiceTest.class);
 
     private ClienteAuditoria auditoria = new ClienteAuditoria();
 

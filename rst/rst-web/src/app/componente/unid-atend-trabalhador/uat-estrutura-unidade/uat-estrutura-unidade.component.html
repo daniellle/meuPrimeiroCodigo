@@ -1,0 +1,55 @@
+<ng2-toasty>
+</ng2-toasty>
+<app-bloqueio></app-bloqueio>
+<p class="titulo-pagina">
+    {{title}}
+</p>
+
+<div class="col-md-12 container-panel">
+    <mat-accordion>
+        <mat-expansion-panel hideToggle="true" class="custom-panel">
+            <mat-expansion-panel-header>
+            <mat-panel-title>
+                Instalações Físicas
+                <div class="seta"> </div>
+            </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-uat-instalacoes-fisicas [idUnidade]="idUat" [modoConsulta]="modoConsulta" [hasPermissaoDesativar]="hasPermissaoDesativar"  [hasPermissaoCadastrarAlterar]="hasPermissaoCadastrarAlterar"></app-uat-instalacoes-fisicas>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel hideToggle="true" class="custom-panel">
+            <mat-expansion-panel-header>
+            <mat-panel-title>
+                Veículos à Disposição
+                <div class="seta"> </div>
+            </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-uat-veiculo [idUat]="idUat" [modoConsulta]="modoConsulta" [hasPermissaoDesativar]="hasPermissaoDesativar"  [hasPermissaoCadastrarAlterar]="hasPermissaoCadastrarAlterar"></app-uat-veiculo>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel hideToggle="true" class="custom-panel">
+            <mat-expansion-panel-header>
+            <mat-panel-title>
+                Quadro de Pessoal
+                <div class="seta"> </div>
+            </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-uat-quadro-pessoal [idUnidade]="idUat" [modoConsulta]="modoConsulta" [hasPermissaoDesativar]="hasPermissaoDesativar"  [hasPermissaoCadastrarAlterar]="hasPermissaoCadastrarAlterar"></app-uat-quadro-pessoal>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel hideToggle="true" class="custom-panel">
+            <mat-expansion-panel-header>
+            <mat-panel-title>
+                Dimensionamento dos Equipamentos
+                <div class="seta"> </div>
+            </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-uat-equipamento [idUat]="idUat" [modoConsulta]="modoConsulta" [hasPermissaoDesativar]="hasPermissaoDesativar"  [hasPermissaoCadastrarAlterar]="hasPermissaoCadastrarAlterar"></app-uat-equipamento>
+        </mat-expansion-panel>
+
+    </mat-accordion>
+</div>
+
+<div class="btn-filter-pesquisar space-up">
+    <button type="button" class="btn btn-secondary btn-cadastro" (click)="voltar();">{{ 'app_rst_btn_voltar' | recurso }}</button>
+</div>

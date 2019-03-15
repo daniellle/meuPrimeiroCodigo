@@ -1,6 +1,5 @@
 package br.com.ezvida.rst.dao;
 
-import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 

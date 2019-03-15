@@ -3,7 +3,7 @@ import {Component, Input, Output, EventEmitter, Optional} from '@angular/core';
 import { Usuario } from 'app/modelo/usuario.model';
 import { UsuarioPerfilSistema } from 'app/modelo/usuario-perfil-sistema.model';
 import { PerfilEnum } from 'app/modelo/enum/enum-perfil';
-import { PerfilSistema } from 'app/modelo/ṕerfil-sistemas';
+import { PerfilSistema } from 'app/modelo/perfil-sistemas';
 import {Sistema} from "../../../../modelo/sistema.model";
 import {ToastOptions, ToastyService} from "ng2-toasty";
 import {AbstractControl} from "@angular/forms";

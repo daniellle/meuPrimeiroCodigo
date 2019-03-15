@@ -1,5 +1,23 @@
 package br.com.ezvida.rst.web.endpoint.v1;
 
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.Encoded;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
+
 import br.com.ezvida.girst.apiclient.model.ListaPaginada;
 import br.com.ezvida.girst.apiclient.model.SistemaCredenciado;
 import br.com.ezvida.girst.apiclient.model.filter.SistemaCredenciadoFilter;
@@ -12,26 +30,17 @@ import br.com.ezvida.rst.web.util.Response;
 import fw.security.binding.Autorizacao;
 import fw.security.binding.Permissao;
 import fw.web.endpoint.SegurancaEndpoint;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.SecurityContext;
 
 @RequestScoped
 @Path("/private/v1/sistemascredenciados")
 public class SistemaCredenciadoEndPoint extends SegurancaEndpoint<SistemaCredenciado> {
 
-    @Inject
-    SistemaCredenciadoService sistemaCredenciadoService;
+	private static final String CONTENT_VERSION = "Content-Version";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SistemaCredenciadoEndPoint.class);
+	private static final long serialVersionUID = 1L;
+	
+	@Inject
+    SistemaCredenciadoService sistemaCredenciadoService;
 
     @POST
     @Encoded
@@ -44,7 +53,7 @@ public class SistemaCredenciadoEndPoint extends SegurancaEndpoint<SistemaCredenc
         @Encoded SistemaCredenciado sistemaCredenciado) {
         String mensagem = sistemaCredenciadoService.cadastrar(sistemaCredenciado, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.INCLUSAO, Funcionalidade.SISTEMAS_CREDENCIADOS));
         return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-            .header("Content-Version", getApplicationVersion())
+            .header(CONTENT_VERSION, getApplicationVersion())
             .entity(serializar(new Response<>(mensagem))).build();
     }
 
@@ -60,7 +69,7 @@ public class SistemaCredenciadoEndPoint extends SegurancaEndpoint<SistemaCredenc
 
         String mensagem = sistemaCredenciadoService.alterar(sistemaCredenciado, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ALTERACAO, Funcionalidade.SISTEMAS_CREDENCIADOS));
         return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-            .header("Content-Version", getApplicationVersion())
+            .header(CONTENT_VERSION, getApplicationVersion())
             .entity(serializar(new Response<>(mensagem))).build();
     }
 
@@ -83,7 +92,7 @@ public class SistemaCredenciadoEndPoint extends SegurancaEndpoint<SistemaCredenc
         SistemaCredenciadoFilter sistemaCredenciadoFilter = new SistemaCredenciadoFilter(cnpj, nomeResponsavel, sistema, bloqueado, pagina, quantidadeRegistro);
         ListaPaginada<SistemaCredenciado> mensagem = sistemaCredenciadoService.pesquisarPaginado(sistemaCredenciadoFilter, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.SISTEMAS_CREDENCIADOS));
         return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-            .header("Content-Version", getApplicationVersion())
+            .header(CONTENT_VERSION, getApplicationVersion())
             .entity(serializar(mensagem)).build();
     }
 
@@ -99,7 +108,7 @@ public class SistemaCredenciadoEndPoint extends SegurancaEndpoint<SistemaCredenc
 
         SistemaCredenciado sistemaCredenciado = sistemaCredenciadoService.findById(id, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.CONSULTA, Funcionalidade.SISTEMAS_CREDENCIADOS));
         return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-            .header("Content-Version", getApplicationVersion())
+            .header(CONTENT_VERSION, getApplicationVersion())
             .entity(serializar(sistemaCredenciado)).build();
     }
 
@@ -115,7 +124,7 @@ public class SistemaCredenciadoEndPoint extends SegurancaEndpoint<SistemaCredenc
 
         String mensagem = sistemaCredenciadoService.ativarDesativar(sistemaCredenciado, ClienteInfos.getDadosFilter(context), ClienteInfos.getClienteInfos(context, request, TipoOperacaoAuditoria.ATIVAR_DESATIVAR, Funcionalidade.SISTEMAS_CREDENCIADOS));
         return javax.ws.rs.core.Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
-            .header("Content-Version", getApplicationVersion())
+            .header(CONTENT_VERSION, getApplicationVersion())
             .entity(serializar(new Response<>(mensagem))).build();
     }
 }

@@ -54,9 +54,5 @@ export class CardTelaIntermediariaComponent {
     if (div5) {
       div5.remove();
     }
-    // let teste = $(window.parent.document).find('iframe');
-    // teste[0].attributes.width.nodeValue = 1000;
-    // teste[0].attributes.height.nodeValue = 1000;
-    // //console.log(teste[0].attributes)
   }
 }

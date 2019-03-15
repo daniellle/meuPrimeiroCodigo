@@ -79,13 +79,10 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     }
 
     onAlertListener(_usuariosEntidade) {
-       //console.log(_usuariosEntidade);
-      }
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
-       //console.log('oi');
         if (changes['usuario']) {
-           //console.log(this.usuario);
         }
     }
 
@@ -160,11 +157,13 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
 
     public getUsuarioEntidade() {
         this.usuarioEntidadeService.pesquisaUsuariosEntidade(this.usuario.login).subscribe((response: UsuarioEntidade[]) => {
-            response.forEach((element) => {
-                if (element.empresa) {
-                    this.usuariosEntidade.push(element);
-                }
-            });
+            if(response) {
+                response.forEach((element) => {
+                    if (element.empresa) {
+                        this.usuariosEntidade.push(element);
+                    }
+                });
+            }
         });
     }
 

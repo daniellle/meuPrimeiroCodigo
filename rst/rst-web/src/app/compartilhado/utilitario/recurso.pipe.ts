@@ -36,6 +36,7 @@ export const MensagemProperties = {
   app_rst_labels_data: 'Data',
   app_rst_labels_resultado: 'Resultado',
   app_rst_labels_cpf: 'CPF',
+  app_rst_labels_ambiente: 'Ambiente',
   app_rst_labels_razao_social: 'Razão Social',
   app_rst_labels_data_desativacao: 'Data de Desativação',
   app_rst_labels_data_nascimento: 'Data de Nascimento',
@@ -75,16 +76,18 @@ export const MensagemProperties = {
   app_rst_labels_cipa: 'CIPA',
   app_rst_labels_matriz: 'MATRIZ',
   app_rst_labels_endereco: 'Endereço',
+  app_rst_labels_quantidade: 'Quantidade',
+  app_rst_labels_tipo_de_atendimento: 'Tipo de atendimento',
   app_rst_labels_complemento: 'Complemento',
   app_rst_labels_numero: 'Número',
   app_rst_labels_estado: 'Estado',
   app_rst_labels_conselhoregional: 'ConselhoRegional',
   app_rst_labels_jornada: 'Jornada',
-    app_rst_labels_data_inicio: 'Data Inicio',
-    app_rst_labels_data_fim: 'Data fim',
-    app_rst_labels_ano_vigencia: 'Ano Vigência',
-    app_rst_labels_tipo_programa: 'Tipo Programa',
-    app_rst_labels_unidade_sesi: 'Unidade Sesi',
+  app_rst_labels_data_inicio: 'Data Inicio',
+  app_rst_labels_data_fim: 'Data fim',
+  app_rst_labels_ano_vigencia: 'Ano Vigência',
+  app_rst_labels_tipo_programa: 'Tipo Programa',
+  app_rst_labels_unidade_sesi: 'Unidade Sesi',
   app_rst_remover_segmento: 'Remover Segmento',
   app_rst_remover_setor: 'Remover Setor',
   app_rst_remover_cargo: 'Remover Cargo',
@@ -111,6 +114,7 @@ export const MensagemProperties = {
   app_rst_labels_residencial: 'Residencial',
   app_rst_labels_comercial: 'Comercial',
   app_rst_labels_fax: 'Fax',
+  app_rst_labels_categoria: 'Categoria',
   app_rst_labels_celular: 'Celular',
   app_rst_labels_contato: 'Contato',
   app_rst_labels_ativo: 'Ativo',
@@ -272,6 +276,9 @@ export const MensagemProperties = {
   app_rst_label_entidade: 'Entidade',
   app_rst_label_data_criacao: 'Data de criação',
   app_rst_label_client_id: 'Client id',
+  app_rst_labels_area: 'Área',
+  app_rst_labels_area_m2: 'Área m²',
+  app_rst_labels_tipo_servico: 'Tipo Serviço',
 
   // MSG COMPARTILHADAS
   app_rst_msg_nenhum_registro_adicionado: 'Nenhum registro adicionado.',
@@ -301,6 +308,8 @@ export const MensagemProperties = {
   app_rst_tamanho_arquivo: 'O arquivo deverá possuir o tamanho máximo de {0} MB',
   app_rst_label_tamanho_arquivo: 'Tamanho máximo do arquivo {0}MB',
   app_rst_mensagem_pontuacao_maxima_maior_que_pontuacao_minima: 'O campo Pontuação Máxima deve ser maior que o campo Pontuação Mínima',
+  app_rst_msg_nenhuma_quantidade_informada: 'É necessário informar a quantidade.',
+
   // BOTOES COMPARTILHADOS
   app_rst_btn_voltar: 'Voltar',
   app_rst_btn_novo: 'Novo',
@@ -309,8 +318,8 @@ export const MensagemProperties = {
   app_rst_btn_excluir: 'Excluir',
   app_rst_btn_desativar: 'Desativar',
   app_rst_btn_pesquisar: 'Pesquisar',
-    app_rst_btn_novaVacina: 'Nova Vacina',
-    app_rst_btn_verHistorico: 'Ver Historico',
+  app_rst_btn_novaVacina: 'Nova Vacina',
+  app_rst_btn_verHistorico: 'Ver Historico',
   app_rst_btn_salvar: 'Salvar',
   app_rst_btn_publicar: 'Publicar',
   app_rst_btn_selecionar: 'Selecionar',
@@ -356,6 +365,15 @@ export const MensagemProperties = {
   app_rst_pesquisa_sesi_busca_unidade_sesi: 'Busca por Unidade SESI',
   app_rst_pesquisa_sesi_busca_local: 'Busca por local',
   app_rst_pesquisa_sesi_busca_produto: 'Busca por produto',
+
+  //Gestão de Unidade SESI
+  app_rst_cadastro_instalacoes_fisicas_title: 'Cadastro de Instalações Físicas',
+  app_rst_categorias_cadastradas_title: 'Categorias cadastradas',
+  app_rst_tipos_cadastrados_title: 'Tipos cadastrados',
+  app_rst_areas_cadastradas: 'Áreas cadastradas',
+
+//Gestão de Unidade SESI Quadro Pessoal
+  app_rst_cadastro_quadro_pessoal_title: 'Cadastro de Quadro de Pessoal',
 
   // Trabalhador
   app_rst_trabalhador_title_pesquisar: 'Pesquisar Trabalhador',
@@ -432,6 +450,9 @@ export const MensagemProperties = {
   app_rst_Departamento_subtitulo_pesquisar_produto: 'Pesquisar Produto',
   app_rst_labels_produto: 'Produto',
   app_rst_departamento_subtitulo_produtos_e_servicos_associados: 'Produtos e Serviços Associados',
+
+  // Estrutura da Unidade
+  app_rst_estrutura_da_unidade_title_menu: 'Estrutura da Unidade',
 
   // Auditoria
   app_rst_tittle_auditoria: 'Pesquisar Auditoria',
@@ -652,7 +673,6 @@ export const MensagemProperties = {
   app_rst_sistema_credenciado: 'Sistema Credenciado',
   app_rst_sistema_credenciado_alterar: 'Alterar Sistema Credenciado',
   app_rst_sistema_credenciado_reset_client_secret: 'Reset client secret',
-
   //Relatório de Perfis por Usuários
   app_rst_relatorio_perfil_usuario: 'Relatórios de Perfis por Usuários',
 
