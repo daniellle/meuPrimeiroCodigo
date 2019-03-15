@@ -2,7 +2,7 @@
 
 -Aplicações para manutenção dos cadastros RST
 
-**v2.133.0***
+**v2.133.0**
 (RELEASE EM 15/03/2019)
 - [CADASTROS] Usuários que são do perfil GUS não possuem vínculos com a sua UAT. (GLPI 4620)
 - [CADASTROS] Lista de Usuários x Perfil, Resultado de pesquisa não está retornando todos os dados (GLPI 2678)
