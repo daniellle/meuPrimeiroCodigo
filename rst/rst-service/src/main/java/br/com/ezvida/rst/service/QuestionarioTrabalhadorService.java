@@ -67,24 +67,26 @@ public class QuestionarioTrabalhadorService extends BaseService {
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-    public Boolean getUltimoRegistro(Long idTrabalhador) {
+    public Boolean isAllowedAnswerQuestionarioIgev(Long idTrabalhador) {
         QuestionarioTrabalhador questionarioTrabalhador = questionarioTrabalhadorDAO.getUltimoRegisto(idTrabalhador);
-        Questionario questionarioAtual = questionarioDAO.buscarQuestionarioPublicado();
-        if (questionarioTrabalhador != null) {
-            if(questionarioAtual.getPeriodicidade().getQuantidadeDias() == null){
-                return true;
-            }
-            else{
-                Days dias = Days.daysBetween(new DateTime(questionarioTrabalhador.getDataQuestionarioTrabalhador()),
-                        new DateTime());
-                if (dias.getDays() > questionarioAtual.getPeriodicidade().getQuantidadeDias()) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+        
+        if(questionarioTrabalhador == null) {
+        	return true;
         }
-        return true;
+        
+    	Questionario questionarioAtual = questionarioDAO.buscarQuestionarioPublicado().get(0);
+    	
+    	if(questionarioAtual.getId().equals(questionarioTrabalhador.getQuestionario().getId())) {
+    		if(questionarioAtual.getPeriodicidade().getQuantidadeDias() == null) {
+                return true;
+            } else {
+            	Days qtdDiasDaUltimaReposta = Days.daysBetween(new DateTime(questionarioTrabalhador.getDataQuestionarioTrabalhador()),
+                        new DateTime());
+            	return qtdDiasDaUltimaReposta.getDays() > questionarioAtual.getPeriodicidade().getQuantidadeDias();
+            }
+    	}
+    	
+    	return true;
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -93,7 +95,7 @@ public class QuestionarioTrabalhadorService extends BaseService {
         if (trabalhador == null) {
             throw new NotFoundException("Trabalhador não encontrado");
         }
-        return getUltimoRegistro(trabalhador.getId());
+        return isAllowedAnswerQuestionarioIgev(trabalhador.getId());
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -226,7 +228,7 @@ public class QuestionarioTrabalhadorService extends BaseService {
 
         }
         if (questionarioTrabalhador.getTrabalhador().getId() != null) {
-            if (!this.getUltimoRegistro(questionarioTrabalhador.getTrabalhador().getId())) {
+            if (!this.isAllowedAnswerQuestionarioIgev(questionarioTrabalhador.getTrabalhador().getId())) {
                 throw new BusinessErrorException("Você já preencheu o seu IGEV do período. Aguarde o próximo ciclo.");
             }
         }

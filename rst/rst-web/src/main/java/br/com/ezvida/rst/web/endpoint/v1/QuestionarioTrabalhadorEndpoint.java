@@ -56,7 +56,7 @@ public class QuestionarioTrabalhadorEndpoint extends SegurancaEndpoint<Questiona
 		return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
 				.header("Content-Version",
 						getApplicationVersion())
-				.entity(serializar(questionarioTrabalhadorService.getUltimoRegistro(idTrabalhador)))
+				.entity(serializar(questionarioTrabalhadorService.isAllowedAnswerQuestionarioIgev(idTrabalhador)))
 				.build();
 	}
 	@GET

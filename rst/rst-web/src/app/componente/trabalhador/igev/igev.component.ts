@@ -82,8 +82,8 @@ export class IgevComponent extends BaseComponent implements OnInit {
   }
 
   habilitarBtnPreencherIgev(): boolean {
-    return Seguranca.getUsuario().papeis.indexOf('TRA') > -1 &&
-    Seguranca.getUsuario().sub === this.trabalhador.cpf;
+    const usuario = Seguranca.getUsuario();
+    return usuario.papeis.indexOf('TRA') > -1 && usuario.sub === this.trabalhador.cpf;
   }
 
   openModalResponder() {
