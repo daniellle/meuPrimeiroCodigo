@@ -53,10 +53,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
         super(bloqueioService, dialogo);
     }
 
-    editarSistemaPerfil(event){
-
-    }
-
     ngOnInit() {
         this.route.params.subscribe((params) => {
             this.id = params['id'];
@@ -95,7 +91,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             this.usuario.login = MascaraUtil.removerMascara(login);
             this.usuario.email = email;
             this.usuario.dados = undefined;
-            this.adicionarGestorDRPortal(this.usuario);
 
             this.usuarioService.salvarUsuario(this.usuario).subscribe((retorno: Usuario) => {
                 this.usuario.id = retorno.id;
@@ -108,29 +103,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             }, error =>
             this.mensagemError(error)
             );
-        }
-    }
-
-    adicionarGestorDRPortal(usuario: Usuario){
-        if((this.ehGCDN() || this.ehGDNA() || this.ehGDNP() || this.ehSUDR()) || this.ehGDRM() && !this.contemPerfil([PerfilEnum.GDRP], usuario) && this.contemPerfil([PerfilEnum.GDRM, PerfilEnum.GDRA], usuario)){
-            let sistemaEnums = ['', SistemaEnum.PORTAL, SistemaEnum.CADASTRO];
-            let sistemaNomes = ['', 'Portal', 'Cadastro'];
-           this.cadastrarPerfisSistemasGDRPortal(sistemaNomes, sistemaEnums, usuario);
-
-        }
-        if(this.contemPerfil([PerfilEnum.GDRP], usuario) && (!this.contemPerfil([PerfilEnum.GDRM], usuario)&& !this.contemPerfil([PerfilEnum.GDRA], usuario))){
-
-            for(let i =0; i<2; i++){
-                usuario.perfisSistema.forEach((perfilSistema: UsuarioPerfilSistema) => {
-                    if(perfilSistema.perfil.codigo == PerfilEnum.GDRP){
-                        const index = usuario.perfisSistema.indexOf(perfilSistema, 0);
-                        if (index > -1) {
-                            usuario.perfisSistema.splice(index, 1);
-                        }
-                    }
-
-                });
-            }
         }
     }
 
@@ -166,21 +138,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
             return !this.modoConsulta;
         }
         
-    }
-    cadastrarPerfisSistemasGDRPortal(sistemaNomes, sistemaEnums, usuario){
-        for(let i =1 ;i <=2;i++){
-            let perfil = new Perfil();
-            let sistema = new Sistema();
-            perfil.codigo = PerfilEnum.GDRP;
-            perfil.nome = 'Gestor DR Portal';
-            perfil.hierarquia = 7;
-                perfil.id=8;
-                sistema.id = i;
-                sistema.codigo = sistemaEnums[i];
-                sistema.nome = sistemaNomes[i];
-                let perfilSistema = new UsuarioPerfilSistema(perfil, sistema);
-                usuario.perfisSistema.push(perfilSistema);
-            }
     }
     excluirCardsPerfisDesassociadas(usuario: Usuario, perfisDesassociados: PerfilEnum[], tipoPerfil: string){
         
@@ -224,9 +181,6 @@ export class ManterUsuarioComponent extends BaseComponent implements OnInit {
     ehGCDN(){
         return this.usuarioLogado.papeis.includes(PerfilEnum.GCDN);
     }
-    // ehGCODN(){
-    //     return this.usuarioLogado.papeis.includes(PerfilEnum.GCODN);
-    // }
     ehSUDR(){
         return this.usuarioLogado.papeis.includes(PerfilEnum.SUDR);
 
