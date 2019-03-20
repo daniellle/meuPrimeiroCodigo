@@ -326,7 +326,8 @@ public class EmpresaDAO extends BaseDAO<Empresa, Long> {
 		jpql.append("select new Empresa( ");
 		jpql.append(" empresa.id, empresa.cnpj, empresa.razaoSocial ) ");
 		jpql.append(" from Empresa empresa ");
-		jpql.append(" where empresa.id in (:ids)");
+		jpql.append(" where empresa.id in (:ids) ");
+		jpql.append(" order by empresa.razaoSocial");
 
 		TypedQuery<Empresa> query = criarConsultaPorTipo(jpql.toString());
 		query.setParameter("ids", ids);
