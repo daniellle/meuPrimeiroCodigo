@@ -61,7 +61,9 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
       this.perfisSistemas = [].concat(this.usuario.perfisSistema);
     }
     this.sistemaService.buscarSistemasPermitidos(Seguranca.getUsuario())
-      .subscribe(sistemas => this.sistemas = sistemas);
+      .subscribe(sistemas => {
+        this.sistemas = sistemas;
+      });
   }
 }
 
@@ -70,14 +72,9 @@ export class AssociaPerfilComponent extends BaseComponent implements OnInit, OnC
       this.perfisSistemas = this.usuario.perfisSistema;
       
     }
-    // if(changes['usuarioEntidade'] && this.usuarioEntidade.departamentoRegional != undefined && this.usuario.clientId != null){
-    //   this.usuarioEhGestorDNBarramento = true;
-    // }
-
     if(this.usuario.login != null){
       this.usuarioGestorDNBarramento();
     }
-    
   }
 
   changeSistema(sistema: Sistema) {

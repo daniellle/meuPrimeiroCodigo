@@ -34,4 +34,5 @@ export class ConcatenaPerfisSistemasCadastroPipe implements PipeTransform {
   
     return sistemaCadastro;
   }
+
 }
