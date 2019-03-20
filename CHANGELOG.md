@@ -2,6 +2,10 @@
 
 -Aplicações para manutenção dos cadastros RST
 
+**v2.133.1**
+(RELEASE EM 20/03/2019)
+- [CADASTROS] Adequação dos dados retornados pelo endpoint '/public/v1/usuarios/dados/{cpf}' para sempre retornar a propriedade empresa->uats->departamentoRegional->estado
+
 **v2.133.0**
 (RELEASE EM 15/03/2019)
 - [CADASTROS] Usuários que são do perfil GUS não possuem vínculos com a sua UAT. (GLPI 4620)
