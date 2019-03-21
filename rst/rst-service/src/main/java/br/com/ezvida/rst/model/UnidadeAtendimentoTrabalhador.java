@@ -93,9 +93,10 @@ public class UnidadeAtendimentoTrabalhador extends AbstractData {
 		this.id = idUat;
 	}
 
-    public UnidadeAtendimentoTrabalhador(String cnpj, String razaoSocial, DepartamentoRegional dr) {
+    public UnidadeAtendimentoTrabalhador(String cnpj, String razaoSocial, String nomeFantasia, DepartamentoRegional dr) {
         this.cnpj = cnpj;
         this.razaoSocial = razaoSocial;
+        this.nomeFantasia = nomeFantasia;
         this.departamentoRegional = new DepartamentoRegional(dr.getCnpj(), dr.getRazaoSocial(), dr.getSiglaDR(), dr.getSiglaDR());
     }
 
