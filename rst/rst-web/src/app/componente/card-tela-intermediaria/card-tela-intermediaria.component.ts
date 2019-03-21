@@ -4,6 +4,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 @Component({
   selector: 'app-card-tela-intermediaria',
   templateUrl: './card-tela-intermediaria.component.html',
+  styleUrls: ['./card-tela-intermediaria.component.scss'],
 })
 export class CardTelaIntermediariaComponent {
 
@@ -17,10 +18,10 @@ export class CardTelaIntermediariaComponent {
   classCardCor = '';
 
   @Input()
-  classImgFront = '';
+  imgFront = '';
 
   @Input()
-  classImgBack = '';
+  imgBack = '';
 
   constructor(@Inject('Window') window: Window
   ) {

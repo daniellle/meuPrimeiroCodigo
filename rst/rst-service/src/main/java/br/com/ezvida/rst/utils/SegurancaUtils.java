@@ -27,11 +27,11 @@ public class SegurancaUtils {
            //return "28928105900";
             // return "80782078168";
 //            return "86010158168"; // adm do grupo
-             // "65020081515"; // administrador
+             return "65020081515"; // administrador
             //return "37139762520"; // adm
              //return "65020081515"; // administrador
             //return "37139762520"; // adm
-             return "09934689421"; // dna
+             // return "09934689421"; // dna
 //             return "48552219026"; // gestor dn aplicacoes
 //             return "56866951135"; // gestor dr master
 //            return "90468451170"; //
