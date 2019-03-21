@@ -63,9 +63,9 @@ export class TrabalhadorIntermediarioComponent implements OnInit {
     this.router.navigate([page]);
   }
 
-    openPage(page) {
-        this.router.navigate([page]);
-    }
+  openPage(page) {
+      this.router.navigate([page]);
+  }
 
   hasPermissaoDependente() {
     return Seguranca.isPermitido([PermissoesEnum.TRABALHADOR_DEPENDENTE,

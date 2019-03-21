@@ -27,7 +27,7 @@ public class SegurancaUtils {
            //return "28928105900";
             // return "80782078168";
 //            return "86010158168"; // adm do grupo
-             return "65020081515"; // administrador
+             return "07749306919"; // Trabalhador HOMOLOG
             //return "37139762520"; // adm
              //return "65020081515"; // administrador
             //return "37139762520"; // adm
