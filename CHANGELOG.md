@@ -5,6 +5,7 @@
 **v2.133.1**
 (RELEASE EM 20/03/2019)
 - [CADASTROS] Adequação dos dados retornados pelo endpoint '/public/v1/usuarios/dados/{cpf}' para sempre retornar a propriedade empresa->uats->departamentoRegional->estado
+- [CADASTROS] Script que adiciona a permissões e os perfis relacionados ao Formulário de Estrutura de Unidade SESI
 
 **v2.133.0**
 (RELEASE EM 15/03/2019)
@@ -15,6 +16,7 @@
 - [CADASTROS] Não visualização do perfil GESTOR COMERCIAL DR (GLPI 4752)
 - [CADASTROS] Pesquisa de Usuários (GLPI 4812)
 - [CADASTROS] Código da eZVida para Alteração Formulario Esqueci Minha Senha, caractere "+" no e-mail
+- [CADASTROS] Disponibilização do formulário de estrutura de Unidade SESI
 
 **v2.127.0**
 (RELEASE EM 28/02/2019)
