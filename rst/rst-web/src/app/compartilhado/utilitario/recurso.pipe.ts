@@ -575,6 +575,7 @@ export const MensagemProperties = {
   app_rst_usuario_empresa_empresas_adicionados_profissional: 'Empresas do Profissional de Saúde',
   app_rst_usuario_empresa_empresas_recursos_humanos: 'Empresas do Recursos Humanos',
   app_rst_usuario_empresa_empresas_seguranca_do_trabalho: 'Empresas do Segurança de Trabalho',
+  app_rst_usuario_empresa_empresas_adicionados_gestor_conteudo_industria: 'Empresas do Gestor de Conteúdos Indústria',
 
   // Usuario Sindicato
   app_rst_usuario_sindicato_subtitulo_associar_sindicato: 'Associar Sindicato',

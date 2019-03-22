@@ -248,6 +248,48 @@
     </div>
 </div>
 
+<div class="container-form space-up" *ngIf="hasGestorConteudoIndustria">
+        <div class="container-subtitulo">
+            <p>{{'app_rst_usuario_empresa_empresas_adicionados_gestor_conteudo_industria' | recurso}}</p>
+        </div>
+        <div *ngIf="isEmpty(listaEmpresasGCOI)" class="row">
+            <div class="form-group col-md-12">
+                {{ 'app_rst_msg_nenhum_registro_adicionado' | recurso }}
+            </div>
+        </div>
+        <div class="row grid-pesquisa" *ngIf="isNotEmpty(listaEmpresasGCOI)">
+            <div class="col-12">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="label"><span>{{ 'app_rst_labels_razao_social' | recurso }}</span></th>
+                            <th class="label"><span>{{ 'app_rst_labels_nome_fantasia' | recurso }}</span></th>
+                            <th class="label"><span>{{ 'app_rst_labels_cnpj' | recurso }}</span></th>
+                            <th class="label text-center">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of listaEmpresasGCOI">
+                            <td class="col-quebra">{{item.empresa.razaoSocial}}</td>
+                            <td class="col-quebra">{{item.empresa.nomeFantasia}}</td>
+                            <td class="col-nao-quebra">{{item.empresa.cnpj | cnpjPipe }}</td>
+                            <td class="text-center">
+                                <button *ngIf="!modoConsulta" class="btn-link" (click)="removerEmpresa(item)"><img class="lixo"
+                                                                                                               src="assets/img/trash.svg"
+                                                                                                               alt="Excluir">
+                            </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="btn-paginacao">
+                    <pagination [firstText]="paginacaoGCOI.textPrimeiro" [lastText]="paginacaoGCOI.textUltimo" [nextText]="paginacaoGCOI.textProximo" [previousText]="paginacaoGCOI.textAnterior" [totalItems]="paginacaoGCOI.totalItens" [(ngModel)]="paginacaoGCOI.pagina" [itemsPerPage]="paginacaoGCOI.qtdRegistro"
+                        (numPages)="paginacaoGCOI.numPages = $event" (pageChanged)="pageChanged($event, 'GCOI')" [maxSize]="paginacaoGCOI.maxSize" class="pagination-sm justify-content-center" [align]="true" [boundaryLinks]="true" [rotate]="false"></pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <div class="container-form space-up" *ngIf="hasTrabalhador">
     <div class="container-subtitulo">
         <p>{{'app_rst_usuario_empresa_empresas_trabalhador' | recurso}}</p>

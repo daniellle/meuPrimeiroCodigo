@@ -42,6 +42,7 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     hasRecursoHumano = false;
     hasSegurancaTrabalho = false;
     hasGestorEmpresaMaster = false;
+    hasGestorConteudoIndustria = false;
     isBarramento: boolean;
 
     paginacaoPFS = new Paginacao();
@@ -49,6 +50,7 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     paginacaoRH = new Paginacao();
     paginacaoST = new Paginacao();
     paginacaoGEEMMaster = new Paginacao();
+    paginacaoGCOI = new Paginacao();
 
     listaEmpresasTRA = new Array<EmpresaTrabalhador>();
     listaEmpresasPFS = new Array<UsuarioEntidade>();
@@ -56,6 +58,7 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     listaEmpresasRH = new Array<UsuarioEntidade>();
     listaEmpresasST = new Array<UsuarioEntidade>();
     listaEmpresasGEEMMaster = new Array<UsuarioEntidade>();
+    listaEmpresasGCOI = new Array<UsuarioEntidade>();
 
     usuariosEntidade = new Array<UsuarioEntidade>();
 
@@ -76,9 +79,6 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     ngOnInit() {
         this.filtro = new FiltroUsuarioEntidade();
         this.buscarUsuario();
-    }
-
-    onAlertListener(_usuariosEntidade) {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -125,6 +125,10 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
             case PerfilEnum.GEEMM:
                 this.paginacaoGEEMMaster.pagina = event.page;
                 this.carregarEmpresasPerfil(PerfilEnum.GEEMM, this.paginacaoGEEMMaster, filtroSelecionado);
+                break;
+            case PerfilEnum.GCOI:
+                this.paginacaoGCOI.pagina = event.page;
+                this.carregarEmpresasPerfil(PerfilEnum.GCOI, this.paginacaoGCOI, filtroSelecionado);
                 break;
         }
 
@@ -222,7 +226,27 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
                 this.hasGestorEmpresaMaster = true;
                 this.pesquisarEmpGEEMMaster(filtro, paginacao);
                 break;
+            case PerfilEnum.GCOI:
+                filtro.perfil = PerfilEnum.GCOI;
+                this.hasGestorConteudoIndustria = true;
+                this.pesquisarGCOI(filtro, paginacao);
+                break;
         }
+    }
+
+    private pesquisarGCOI(filtro: FiltroUsuarioEntidade, paginacao: Paginacao): void {
+
+        this.usuarioEntidadeService.pesquisarPaginado(filtro, paginacao, MensagemProperties.app_rst_menu_empresa).subscribe((retorno: ListaPaginada<UsuarioEntidade>) => {
+            if (retorno.quantidade > 0) {
+                this.listaEmpresasGCOI = this.tratarResultList(retorno.list);
+                this.paginacaoGCOI = this.getPaginacao(this.paginacaoGCOI, retorno);
+            } else {
+                this.listaEmpresasGCOI = [];
+                this.paginacaoGCOI = this.getPaginacao(this.paginacaoGCOI, retorno);
+            }
+        }, (error) => {
+            this.mensagemError(error);
+        });
     }
 
     private pesquisarEmpGEEM(filtro: FiltroUsuarioEntidade, paginacao: Paginacao): void {
