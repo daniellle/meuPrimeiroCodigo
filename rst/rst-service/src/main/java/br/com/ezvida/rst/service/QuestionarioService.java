@@ -153,13 +153,6 @@ public class QuestionarioService extends BaseService {
 	}
 
 	private void validar(Questionario questionario) {
-//		List<Questionario> questionarioRetorno = questionarioDAO.pesquisarPorNome(questionario);
-//		
-//		if (CollectionUtils.isNotEmpty(questionarioRetorno) && !questionarioRetorno.iterator().next().getId().equals(questionario.getId())) {
-//			throw new BusinessErrorException(getMensagem("app_rst_registro_duplicado",
-//					getMensagem("app_rst_label_questionario"), getMensagem("app_rst_label_titulo")));
-//		}
-		
 		List<PerguntaQuestionario> perguntasQuestionario = perguntaQuestionarioDAO.buscarPerguntasQuestionarioPorIdQuestionario(questionario.getId());
 		if (CollectionUtils.isEmpty(perguntasQuestionario)) {
 			throw new BusinessErrorException(getMensagem("app_rst_questionario_sem_pergunta_resposta"));
@@ -206,12 +199,6 @@ public class QuestionarioService extends BaseService {
 	public List<String> buscarVersoes() {
 		LOGGER.debug(" Buscando versoes Questionário ");
 		return questionarioDAO.buscarVersoes();
-	}
-
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public Questionario buscarPublicado(){
-		LOGGER.debug("Buscando questionario publicado atual");
-		return questionarioDAO.buscarQuestionarioPublicado();
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)

@@ -193,12 +193,14 @@ public class QuestionarioDAO extends BaseDAO<Questionario, Long> {
 		}
 	}
 
-
-	public Questionario buscarQuestionarioPublicado(){
-		StringBuilder sql = new StringBuilder();
-		sql.append("select * from questionario q where q.fl_status = 'P' ");
-		Query query = criarConsulta(sql.toString());
-		return DAOUtil.getSingleResult(query);
+	public List<Questionario> buscarQuestionarioPublicado(){
+		StringBuilder jpql = new StringBuilder();
+		jpql.append(" SELECT q FROM Questionario q ");
+		jpql.append(" JOIN FETCH q.periodicidade p ");
+		jpql.append(" WHERE q.status = :status");
+		TypedQuery<Questionario> query = criarConsultaPorTipo(jpql.toString());
+		query.setParameter("status", StatusQuestionario.PUBLICADO);
+		return query.getResultList();
 	}
 
 	public boolean isFiltroAplicado() {

@@ -107,7 +107,7 @@ public class PerguntaQuestionarioService extends BaseService {
             if(trabalhador == null){
                 throw new RegistroNaoEncontradoException("Trabalhador não encontrado");
             }
-            Boolean podeResponder = questionarioTrabalhadorService.getUltimoRegistro(trabalhador.getId());
+            Boolean podeResponder = questionarioTrabalhadorService.isAllowedAnswerQuestionarioIgev(trabalhador.getId());
             if (podeResponder) {
                 QuestionarioDTO quetionario = this.montarQuestionario(auditoria);
                 mapTrabaQuest.put("questionario", quetionario);
