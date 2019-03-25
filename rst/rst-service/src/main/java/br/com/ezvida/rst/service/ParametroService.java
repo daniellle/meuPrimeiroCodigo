@@ -190,7 +190,7 @@ public class ParametroService extends BaseService {
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Parametro getIgev() {
-        return carregarParametroPorNome(IGEV);
+    	return parametroDao.carregarPorNome(IGEV);
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
