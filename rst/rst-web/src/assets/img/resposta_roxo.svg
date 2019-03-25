@@ -14,7 +14,7 @@
    viewBox="0 0 180 180"
    version="1.1"
    id="svg6720"
-   inkscape:version="0.92.1 r15371"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="resposta_roxo.svg">
   <defs
      id="defs6714" />
@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="346.939"
-     inkscape:cy="237.21849"
+     inkscape:zoom="0.35"
+     inkscape:cx="-480.16525"
+     inkscape:cy="67.595179"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -35,10 +35,10 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1920"
-     inkscape:window-height="1018"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-width="1366"
+     inkscape:window-height="704"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      showguides="false" />
   <metadata
@@ -49,7 +49,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -308,90 +308,94 @@
          style="fill:#ffffff;fill-opacity:1;stroke:#ff7f2a;stroke-width:0.72159994;stroke-opacity:1" />
     </g>
     <g
-       id="g9479"
-       transform="matrix(1.5019963,0,0,1.5019963,213.25427,403.7359)"
-       style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
-       inkscape:export-filename="F:\SESI\Layout\RST\Novas telas\card_questionarios.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90">
+       id="g3877"
+       transform="matrix(1.6593044,0,0,1.6593044,-177.57641,-301.94527)">
       <g
-         id="g9420"
-         style="fill:#571346;fill-opacity:1;stroke-width:0.17615443">
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="F:\SESI\Layout\RST\Novas telas\card_questionarios.png"
+         style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+         transform="matrix(1.5019963,0,0,1.5019963,213.25427,403.7359)"
+         id="g9479">
         <g
-           id="g9418"
-           style="fill:#571346;fill-opacity:1;stroke-width:0.17615443">
-          <path
-             id="path9412"
-             d="M 32.5,65 C 50.42,65 65,50.421 65,32.5 65,14.579 50.42,0 32.5,0 14.58,0 0,14.579 0,32.5 0,50.421 14.58,65 32.5,65 Z m 0,-61 C 48.215,4 61,16.785 61,32.5 61,48.215 48.215,61 32.5,61 16.785,61 4,48.215 4,32.5 4,16.785 16.785,4 32.5,4 Z"
-             inkscape:connector-curvature="0"
-             style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
-          <circle
-             id="circle9414"
-             r="3.345"
-             cy="43.654999"
-             cx="33.018002"
-             style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
-          <path
-             id="path9416"
-             d="m 32.332,35.342 c 1.104,0 2,-0.896 2,-2 v -17 c 0,-1.104 -0.896,-2 -2,-2 -1.104,0 -2,0.896 -2,2 v 17 c 0,1.104 0.896,2 2,2 z"
-             inkscape:connector-curvature="0"
-             style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
+           style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+           id="g9420">
+          <g
+             style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+             id="g9418">
+            <path
+               style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+               inkscape:connector-curvature="0"
+               d="M 32.5,65 C 50.42,65 65,50.421 65,32.5 65,14.579 50.42,0 32.5,0 14.58,0 0,14.579 0,32.5 0,50.421 14.58,65 32.5,65 Z m 0,-61 C 48.215,4 61,16.785 61,32.5 61,48.215 48.215,61 32.5,61 16.785,61 4,48.215 4,32.5 4,16.785 16.785,4 32.5,4 Z"
+               id="path9412" />
+            <circle
+               style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+               cx="33.018002"
+               cy="43.654999"
+               r="3.345"
+               id="circle9414" />
+            <path
+               style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+               inkscape:connector-curvature="0"
+               d="m 32.332,35.342 c 1.104,0 2,-0.896 2,-2 l 0,-17 c 0,-1.104 -0.896,-2 -2,-2 -1.104,0 -2,0.896 -2,2 l 0,17 c 0,1.104 0.896,2 2,2 z"
+               id="path9416" />
+          </g>
         </g>
+        <g
+           style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+           id="g9422" />
+        <g
+           style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+           id="g9424" />
+        <g
+           style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+           id="g9426" />
+        <g
+           style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+           id="g9428" />
+        <g
+           style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+           id="g9430" />
+        <g
+           style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+           id="g9432" />
+        <g
+           style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+           id="g9434" />
+        <g
+           style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+           id="g9436" />
+        <g
+           style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+           id="g9438" />
+        <g
+           style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+           id="g9440" />
+        <g
+           style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+           id="g9442" />
+        <g
+           style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+           id="g9444" />
+        <g
+           style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+           id="g9446" />
+        <g
+           style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+           id="g9448" />
+        <g
+           style="fill:#571346;fill-opacity:1;stroke-width:0.17615443"
+           id="g9450" />
       </g>
-      <g
-         id="g9422"
-         style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
-      <g
-         id="g9424"
-         style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
-      <g
-         id="g9426"
-         style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
-      <g
-         id="g9428"
-         style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
-      <g
-         id="g9430"
-         style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
-      <g
-         id="g9432"
-         style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
-      <g
-         id="g9434"
-         style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
-      <g
-         id="g9436"
-         style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
-      <g
-         id="g9438"
-         style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
-      <g
-         id="g9440"
-         style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
-      <g
-         id="g9442"
-         style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
-      <g
-         id="g9444"
-         style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
-      <g
-         id="g9446"
-         style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
-      <g
-         id="g9448"
-         style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
-      <g
-         id="g9450"
-         style="fill:#571346;fill-opacity:1;stroke-width:0.17615443" />
+      <circle
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="F:\SESI\Layout\RST\Novas telas\card_questionarios.png"
+         r="48.814884"
+         cy="463.40021"
+         cx="270.48553"
+         id="path11312-0"
+         style="opacity:0.4;fill:#571346;fill-opacity:1;stroke:none;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     </g>
-    <circle
-       style="opacity:0.4;vector-effect:none;fill:#571346;fill-opacity:1;stroke:none;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       id="path11312-0"
-       cx="270.48553"
-       cy="463.40021"
-       r="48.814884"
-       inkscape:export-filename="F:\SESI\Layout\RST\Novas telas\card_questionarios.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
   </g>
 </svg>

@@ -1,0 +1,116 @@
+@import "./src/assets/scss/_custom-variables";
+
+// INICIO Effect CSS Flip CARD
+
+.flip_container_card {
+    position: relative;
+    width: 100%;
+    height: 15vmax;
+}
+
+.flip_container_card {
+    perspective: 1000;
+    transform-style: preserve-3d;
+}
+
+.flipper_card {
+    width: 100%;
+    height: 100%;
+    transition: 0.6s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.flip_container_card:hover .front,
+.flip_container_card.hover .front {
+    transform: rotateY(180deg);
+}
+
+.flip_container_card:hover .back,
+.flip_container_card.hover .back {
+    transform: rotateY(0deg);
+}
+
+.front,
+.back {
+    backface-visibility: hidden;
+    transition: 0.6s;
+    transform-style: preserve-3d;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 10px;
+}
+
+.front {
+    z-index: 2;
+    transform: rotateY(0deg);
+}
+
+.back {
+    transform: rotateY(-180deg);
+}
+
+.face {
+    width: 100%;
+    height: 100%;
+    color: white;
+    backface-visibility: hidden;
+}
+
+.face.back {
+    transform: rotateY(180deg);
+    box-sizing: border-box;
+}
+
+.flipper_card-titulo {
+    font-size: 1em;
+    font-weight: bold;
+    text-align: right;
+    margin: 0;
+}
+
+.flipper_card-img {
+    width: 6vmax;
+}
+
+// FIM - Effect CSS Flip CARD
+.front.card-azul {
+    background-color: $azul;
+}
+
+.back.card-azul {
+    background-color: white;
+    color: $azul;
+}
+
+.front.card-laranja {
+    background-color: $orange;
+}
+
+.back.card-laranja {
+    background-color: white;
+    color: $orange;
+}
+
+.front.card-musgo {
+    background-color: $musgo;
+}
+
+.back.card-musgo {
+    background-color: white;
+    color: $musgo;
+}
+
+.front.card-roxo {
+    background-color: $roxo-escuro;
+}
+
+.back.card-roxo {
+    background-color: $branco;
+    color: $roxo-escuro;
+}

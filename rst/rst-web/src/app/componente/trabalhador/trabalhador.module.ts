@@ -219,6 +219,7 @@ const routes: Routes = [
                 PermissoesEnum.VACINA_AUTODECLARADA_DESATIVAR],
         },
     },
+    
     {
         path: ':id/igev', component: IgevComponent,
         canActivate: [AutorizacaoGuard],
@@ -271,7 +272,7 @@ const routes: Routes = [
             PermissoesEnum.TRABALHADOR_CERTIFICADO_ALTERAR,
             PermissoesEnum.TRABALHADOR_CERTIFICADO_CONSULTAR,
             PermissoesEnum.TRABALHADOR_CERTIFICADO_DESATIVAR],
-        },
+        }
     },
     {
         path: ':id/dependente', component: TrabalhadorDependenteComponent,
@@ -367,6 +368,41 @@ const routes: Routes = [
             PermissoesEnum.TRABALHADOR_ALTERAR,
             PermissoesEnum.TRABALHADOR_CONSULTAR,
             PermissoesEnum.TRABALHADOR_DESATIVAR],
+        },
+    },
+    {
+        path: 'meusdados/:id/vacina-declarada',
+        component: TelaInicialVacinaComponent,
+        canActivate: [AutorizacaoGuard], data: {
+            permissoes: [PermissoesEnum.VACINA_AUTODECLARADA,
+                PermissoesEnum.VACINA_AUTODECLARADA_CONSULTAR,
+                PermissoesEnum.VACINA_AUTODECLARADA_DESATIVAR]
+        }
+    },
+    {
+        path: 'meusdados/:id/vacina-declarada/cadastrar',
+        component: CadastrarVacinaComponent,
+        canActivate: [AutorizacaoGuard], data: {
+            permissoes: [PermissoesEnum.VACINA_AUTODECLARADA,
+                PermissoesEnum.VACINA_AUTODECLARADA_CADASTRAR],
+        },
+    },
+    {
+        path: 'meusdados/:id/vacina-declarada/:idVacina/cadastrar',
+        component: CadastrarVacinaComponent,
+        canActivate: [AutorizacaoGuard], data: {
+            permissoes: [PermissoesEnum.VACINA_AUTODECLARADA,
+                PermissoesEnum.VACINA_AUTODECLARADA_ALTERAR,
+                PermissoesEnum.VACINA_AUTODECLARADA_CONSULTAR],
+        },
+    },
+    {
+        path: 'meusdados/:id/vacina-declarada/historico',
+        component: HistoricoVacinaComponent,
+        canActivate: [AutorizacaoGuard], data: {
+            permissoes: [PermissoesEnum.VACINA_AUTODECLARADA,
+                PermissoesEnum.VACINA_AUTODECLARADA_CONSULTAR,
+                PermissoesEnum.VACINA_AUTODECLARADA_DESATIVAR],
         },
     },
 ];

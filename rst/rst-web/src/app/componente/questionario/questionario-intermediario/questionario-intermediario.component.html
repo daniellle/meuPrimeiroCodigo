@@ -9,32 +9,31 @@
 
     <div class="row">
         <div class="form-group col-md-4 col-lg-3" *ngIf="hasPermissaoGrupoPergunta()">
-            <app-card-tela-intermediaria (onNavegar)="mudarPagina('grupopergunta')" [titulo]="'Grupo'" [classCardCor]="'card-laranja'" [classImgFront]="'img_grupo'" [classImgBack]="'img_grupo'">
-            </app-card-tela-intermediaria>
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('grupopergunta')" [titulo]="'Grupo'" [classCardCor]="'card-laranja'" [imgFront]="'../../../../assets/img/grupo.svg'" [imgBack]="'../../../../assets/img/grupo_laranja.svg'"></app-card-tela-intermediaria>
         </div>
 
         <div class="form-group col-md-4 col-lg-3" *ngIf="hasPermissaoPergunta()">
-            <app-card-tela-intermediaria (onNavegar)="mudarPagina('pergunta')" [titulo]="'Pergunta'" [classCardCor]="'card-musgo'" [classImgFront]="'img_pergunta'" [classImgBack]="'img_pergunta'">
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('pergunta')" [titulo]="'Pergunta'" [classCardCor]="'card-musgo'" [imgFront]="'../../../../assets/img/pergunta.svg'" [imgBack]="'../../../../assets/img/pergunta_verde.svg'">
             </app-card-tela-intermediaria>
         </div>
 
         <div class="form-group col-md-4 col-lg-3" *ngIf="hasPermissaoResposta()">
-            <app-card-tela-intermediaria (onNavegar)="mudarPagina('resposta')" [titulo]="'Resposta'" [classCardCor]="'card-roxo'" [classImgFront]="'img_resposta'" [classImgBack]="'img_resposta'">
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('resposta')" [titulo]="'Resposta'" [classCardCor]="'card-roxo'" [imgFront]="'../../../../assets/img/resposta.svg'" [imgBack]="'../../../../assets/img/resposta_roxo.svg'">
             </app-card-tela-intermediaria>
         </div>
 
         <div class="form-group col-md-4 col-lg-3" *ngIf="hasPermissaoIndicador()">
-            <app-card-tela-intermediaria (onNavegar)="mudarPagina('indicadorquestionario')" [titulo]="'Indicador'" [classCardCor]="'card-azul'" [classImgFront]="'img_indicador'" [classImgBack]="'img_indicador'">
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('indicadorquestionario')" [titulo]="'Indicador'" [classCardCor]="'card-azul'" [imgFront]="'../../../../assets/img/indicador.svg'" [imgBack]="'../../../../assets/img/indicador_azul.svg'">
             </app-card-tela-intermediaria>
         </div>
 
         <div class="form-group col-md-4 col-lg-3" *ngIf="hasPermissaoClassificacao()">
-            <app-card-tela-intermediaria (onNavegar)="mudarPagina('classificacaopontuacao')" [titulo]="'Classificação'" [classCardCor]="'card-azul'" [classImgFront]="'img_classificacao'" [classImgBack]="'img_classificacao'">
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('classificacaopontuacao')" [titulo]="'Classificação'" [classCardCor]="'card-azul'" [imgFront]="'../../../../assets/img/classificacao.svg'" [imgBack]="'../../../../assets/img/classificacao_azul.svg'">
             </app-card-tela-intermediaria>
         </div>
 
         <div class="form-group col-md-4 col-lg-3" *ngIf="hasPermissaoQuestionario()">
-            <app-card-tela-intermediaria (onNavegar)="mudarPagina('pesquisar')" [titulo]="'Questionário'" [classCardCor]="'card-roxo'" [classImgFront]="'img_questionario'" [classImgBack]="'img_questionario'">
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('pesquisar')" [titulo]="'Questionário'" [classCardCor]="'card-roxo'" [imgFront]="'../../../../assets/img/questionario.svg'" [imgBack]="'../../../../assets/img/questionario_roxo.svg'">
             </app-card-tela-intermediaria>
         </div>
     </div>
