@@ -36,6 +36,7 @@ import { CNPJPerfisAssociadosComponent } from './usuario-barramento/cnpj-perfis-
 import {AssociaPerfilComponent} from "./manter-usuario/associa-perfil/associa-perfil.component";
 import {AssociaPerfilBarramentoComponent} from "./usuario-barramento/associa-perfil-barramento/associa-perfil-barramento.component";
 import {ConcatenaPerfisSistemasCadastroBarramentoPipe} from "./usuario-barramento/concatena-perfis-sistemas-cadastro-barramento.pipe";
+import { EmpresasAssociadasComponent } from './empresa-usuario/empresas-associadas/empresas-associadas.component';
 
 @NgModule({
     imports: [
@@ -61,8 +62,9 @@ import {ConcatenaPerfisSistemasCadastroBarramentoPipe} from "./usuario-barrament
         UsuarioBarramentoComponent,
         CNPJListarSemPerfilComponent,
         CNPJPerfisAssociadosComponent,
-    AssociaPerfilBarramentoComponent,
+        AssociaPerfilBarramentoComponent,
         ConcatenaPerfisSistemasCadastroBarramentoPipe,
+        EmpresasAssociadasComponent,
     ],
     providers: [
         UsuarioService,

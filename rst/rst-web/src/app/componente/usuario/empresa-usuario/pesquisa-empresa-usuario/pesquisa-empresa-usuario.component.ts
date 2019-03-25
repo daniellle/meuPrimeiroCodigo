@@ -8,7 +8,7 @@ import {environment} from './../../../../../environments/environment';
 import {Usuario} from './../../../../modelo/usuario.model';
 import {UsuarioService} from './../../../../servico/usuario.service';
 import {MensagemProperties} from 'app/compartilhado/utilitario/recurso.pipe';
-import {Component, OnInit, Output, EventEmitter, SimpleChanges, OnChanges} from '@angular/core';
+import {Component, OnInit, Output} from '@angular/core';
 import {Paginacao} from './../../../../modelo/paginacao.model';
 import {UsuarioEntidadeService} from './../../../../servico/usuario-entidade.service';
 import {UsuarioEntidade} from './../../../../modelo/usuario-entidade.model';
@@ -19,7 +19,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FiltroUsuarioEntidade} from './../../../../modelo/filtro-usuario-entidade.model';
 import {BaseComponent} from 'app/componente/base.component';
 import {Perfil} from "../../../../modelo/perfil.model";
-import { element } from 'protractor';
 
 
 @Component({
@@ -27,7 +26,7 @@ import { element } from 'protractor';
     templateUrl: './pesquisa-empresa-usuario.component.html',
     styleUrls: ['./pesquisa-empresa-usuario.component.scss'],
 })
-export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements OnInit, OnChanges {
+export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements OnInit {
 
     usuarioBarramentoComponent: UsuarioBarramentoComponent;
 
@@ -42,6 +41,7 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     hasRecursoHumano = false;
     hasSegurancaTrabalho = false;
     hasGestorEmpresaMaster = false;
+    hasGestorConteudoIndustria = false;
     isBarramento: boolean;
 
     paginacaoPFS = new Paginacao();
@@ -49,6 +49,7 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     paginacaoRH = new Paginacao();
     paginacaoST = new Paginacao();
     paginacaoGEEMMaster = new Paginacao();
+    paginacaoGCOI = new Paginacao();
 
     listaEmpresasTRA = new Array<EmpresaTrabalhador>();
     listaEmpresasPFS = new Array<UsuarioEntidade>();
@@ -56,6 +57,7 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
     listaEmpresasRH = new Array<UsuarioEntidade>();
     listaEmpresasST = new Array<UsuarioEntidade>();
     listaEmpresasGEEMMaster = new Array<UsuarioEntidade>();
+    listaEmpresasGCOI = new Array<UsuarioEntidade>();
 
     usuariosEntidade = new Array<UsuarioEntidade>();
 
@@ -78,14 +80,6 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
         this.buscarUsuario();
     }
 
-    onAlertListener(_usuariosEntidade) {
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes['usuario']) {
-        }
-    }
-
     tipoTela() {
         this.modoConsulta = !Seguranca.isPermitido(
             [PermissoesEnum.USUARIO_ENTIDADE, PermissoesEnum.USUARIO_ENTIDADE_ALTERAR,
@@ -103,28 +97,34 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
         }
     }
 
-    pageChanged(event: any, perfil: string): void {
+    pageChanged(event: any): void {
+        const {page, perfil } = event;
+
         let filtroSelecionado = new FiltroUsuarioEntidade(this.filtro);
         switch (perfil) {
             case PerfilEnum.GEEM:
-                this.paginacaoGEEM.pagina = event.page;
+                this.paginacaoGEEM.pagina = page;
                 this.carregarEmpresasPerfil(PerfilEnum.GEEM, this.paginacaoGEEM, filtroSelecionado);
                 break;
             case PerfilEnum.PFS:
-                this.paginacaoPFS.pagina = event.page;
+                this.paginacaoPFS.pagina = page;
                 this.carregarEmpresasPerfil(PerfilEnum.PFS, this.paginacaoPFS, filtroSelecionado);
                 break;
             case PerfilEnum.RH:
-                this.paginacaoRH.pagina = event.page;
+                this.paginacaoRH.pagina = page;
                 this.carregarEmpresasPerfil(PerfilEnum.RH, this.paginacaoRH, filtroSelecionado);
                 break;
             case PerfilEnum.ST:
-                this.paginacaoST.pagina = event.page;
+                this.paginacaoST.pagina = page;
                 this.carregarEmpresasPerfil(PerfilEnum.ST, this.paginacaoST, filtroSelecionado);
                 break;
             case PerfilEnum.GEEMM:
-                this.paginacaoGEEMMaster.pagina = event.page;
+                this.paginacaoGEEMMaster.pagina = page;
                 this.carregarEmpresasPerfil(PerfilEnum.GEEMM, this.paginacaoGEEMMaster, filtroSelecionado);
+                break;
+            case PerfilEnum.GCOI:
+                this.paginacaoGCOI.pagina = page;
+                this.carregarEmpresasPerfil(PerfilEnum.GCOI, this.paginacaoGCOI, filtroSelecionado);
                 break;
         }
 
@@ -222,7 +222,27 @@ export class PesquisaEmpresaUsuarioComponent extends BaseComponent implements On
                 this.hasGestorEmpresaMaster = true;
                 this.pesquisarEmpGEEMMaster(filtro, paginacao);
                 break;
+            case PerfilEnum.GCOI:
+                filtro.perfil = PerfilEnum.GCOI;
+                this.hasGestorConteudoIndustria = true;
+                this.pesquisarGCOI(filtro, paginacao);
+                break;
         }
+    }
+
+    private pesquisarGCOI(filtro: FiltroUsuarioEntidade, paginacao: Paginacao): void {
+
+        this.usuarioEntidadeService.pesquisarPaginado(filtro, paginacao, MensagemProperties.app_rst_menu_empresa).subscribe((retorno: ListaPaginada<UsuarioEntidade>) => {
+            if (retorno.quantidade > 0) {
+                this.listaEmpresasGCOI = this.tratarResultList(retorno.list);
+                this.paginacaoGCOI = this.getPaginacao(this.paginacaoGCOI, retorno);
+            } else {
+                this.listaEmpresasGCOI = [];
+                this.paginacaoGCOI = this.getPaginacao(this.paginacaoGCOI, retorno);
+            }
+        }, (error) => {
+            this.mensagemError(error);
+        });
     }
 
     private pesquisarEmpGEEM(filtro: FiltroUsuarioEntidade, paginacao: Paginacao): void {

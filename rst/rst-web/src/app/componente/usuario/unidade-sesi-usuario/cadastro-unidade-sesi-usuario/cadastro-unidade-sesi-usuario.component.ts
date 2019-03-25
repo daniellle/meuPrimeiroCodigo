@@ -31,7 +31,6 @@ import { element } from 'protractor';
 export class CadastroUnidadeSESIUsuarioComponent extends BaseComponent implements OnInit {
 
     idUsuario: number;
-    idUsuarioTrabalhador: number;
     usuario: Usuario;
     filtroUat: FiltroUat;
     listaUnidade: Uat[];
@@ -104,9 +103,7 @@ export class CadastroUnidadeSESIUsuarioComponent extends BaseComponent implement
     }
 
     limpar() {
-        if (this.idUsuarioTrabalhador) {
-            this.router.navigate([`${environment.path_raiz_cadastro}/usuario/${this.idUsuario}/unidadesesi`]);
-        }
+        this.router.navigate([`${environment.path_raiz_cadastro}/usuario/${this.idUsuario}/unidadesesi`]);
     }
 
     selecionar(selecionado: Uat, event: any, i: number) {

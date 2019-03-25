@@ -30,7 +30,6 @@ import { ToastyService } from 'ng2-toasty';
 export class CadastroSindicatoUsuarioComponent extends BaseComponent implements OnInit {
 
   idUsuario: number;
-  idUsuarioTrabalhador: number;
   usuario: Usuario;
   filtro: FiltroSindicato;
   listaSindicato: Sindicato[];
@@ -84,9 +83,7 @@ export class CadastroSindicatoUsuarioComponent extends BaseComponent implements 
   }
 
   limpar() {
-    if (this.idUsuarioTrabalhador) {
-      this.router.navigate([`${environment.path_raiz_cadastro}/usuario/${this.idUsuario}/sindicato`]);
-    }
+    this.router.navigate([`${environment.path_raiz_cadastro}/usuario/${this.idUsuario}/sindicato`]);
   }
 
   selecionar(selecionado: Sindicato, event: any, i: number) {
