@@ -9,23 +9,23 @@
 
     <div class="row">
         <div class="form-group col-md-4 col-lg-3">
-            <app-card-tela-intermediaria (onNavegar)="mudarPagina('cadastrar')" [titulo]="'Cadastro Básico'" [classCardCor]="'card-laranja'" [imgFront]="'../../../../assets/img/edit.svg'" [imgBack]="'../../../../assets/img/edit_laranja.svg'"></app-card-tela-intermediaria>
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('cadastrar')" [titulo]="'Cadastro Básico'" [classCardCor]="'card-laranja'" [imgFront]="'assets/img/edit.svg'" [imgBack]="'assets/img/edit_laranja.svg'"></app-card-tela-intermediaria>
         </div>
 
         <div class="form-group col-md-4 col-lg-3" *ngIf="temPerfilEmpresa">
-            <app-card-tela-intermediaria (onNavegar)="mudarPagina('empresa')" [titulo]="'Empresa'" [classCardCor]="'card-musgo'" [imgFront]="'../../../../assets/img/empresa.svg'" [imgBack]="'../../../../assets/img/empresa_verde.svg'"></app-card-tela-intermediaria>
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('empresa')" [titulo]="'Empresa'" [classCardCor]="'card-musgo'" [imgFront]="'assets/img/empresa.svg'" [imgBack]="'assets/img/empresa_verde.svg'"></app-card-tela-intermediaria>
         </div>
 
         <div class="form-group col-md-4 col-lg-3" *ngIf="temPerfilSindicato">
-            <app-card-tela-intermediaria (onNavegar)="mudarPagina('sindicato')" [titulo]="'Sindicato'" [classCardCor]="'card-roxo'" [imgFront]="'../../../../assets/img/sindicato.svg'" [imgBack]="'../../../../assets/img/sindicato_roxo.svg'"></app-card-tela-intermediaria>
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('sindicato')" [titulo]="'Sindicato'" [classCardCor]="'card-roxo'" [imgFront]="'assets/img/sindicato.svg'" [imgBack]="'assets/img/sindicato_roxo.svg'"></app-card-tela-intermediaria>
         </div>
 
         <div class="form-group col-md-4 col-lg-3" *ngIf="temPerfilDR">
-            <app-card-tela-intermediaria (onNavegar)="mudarPagina('departamentoregional')" [titulo]="'Departamento Regional'" [classCardCor]="'card-azul'" [imgFront]="'../../../../assets/img/departamento.svg'" [imgBack]="'../../../../assets/img/departamento_azul.svg'"></app-card-tela-intermediaria>
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('departamentoregional')" [titulo]="'Departamento Regional'" [classCardCor]="'card-azul'" [imgFront]="'assets/img/departamento.svg'" [imgBack]="'assets/img/departamento_azul.svg'"></app-card-tela-intermediaria>
         </div>
 
         <div class="form-group col-md-4 col-lg-3" *ngIf="temPerfilUnidade">
-            <app-card-tela-intermediaria (onNavegar)="mudarPagina('unidadesesi')" [titulo]="'Unidade SESI'" [classCardCor]="'card-roxo'" [imgFront]="'../../../../assets/img/lotacao.svg'" [imgBack]="'../../../../assets/img/lotacao_roxo.svg'"></app-card-tela-intermediaria>
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('unidadesesi')" [titulo]="'Unidade SESI'" [classCardCor]="'card-roxo'" [imgFront]="'assets/img/lotacao.svg'" [imgBack]="'assets/img/lotacao_roxo.svg'"></app-card-tela-intermediaria>
         </div>
     </div>
     <div class="row">

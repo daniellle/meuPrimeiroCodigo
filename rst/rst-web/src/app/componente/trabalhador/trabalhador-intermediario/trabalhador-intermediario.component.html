@@ -8,32 +8,32 @@
 
     <div class="row">
         <div class="form-group col-md-4 col-lg-3" *ngIf="hasPermissaoTrabalhador()">
-            <app-card-tela-intermediaria (onNavegar)="mudarPagina('cadastrar')" [titulo]="'Cadastro Básico'" [imgFront]="'../../../../assets/img/edit.svg'" [imgBack]="'../../../../assets/img/edit_laranja.svg'" [classCardCor]="'card-laranja'"></app-card-tela-intermediaria>
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('cadastrar')" [titulo]="'Cadastro Básico'" [imgFront]="'assets/img/edit.svg'" [imgBack]="'assets/img/edit_laranja.svg'" [classCardCor]="'card-laranja'"></app-card-tela-intermediaria>
         </div>
 
         <div class="form-group col-md-4 col-lg-3" *ngIf="hasPermissaoDependente()">
-            <app-card-tela-intermediaria (onNavegar)="mudarPagina('dependente')" [titulo]="'Dependentes'" [imgFront]="'../../../../assets/img/dependente.svg'" [imgBack]="'../../../../assets/img/dependente_verde.svg'" [classCardCor]="'card-musgo'"></app-card-tela-intermediaria>
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('dependente')" [titulo]="'Dependentes'" [imgFront]="'assets/img/dependente.svg'" [imgBack]="'assets/img/dependente_verde.svg'" [classCardCor]="'card-musgo'"></app-card-tela-intermediaria>
         </div>
 
         <div class="form-group col-md-4 col-lg-3" *ngIf="!hasPermissaoCallCenter() && hasPermissionSaude()">
-            <app-card-tela-intermediaria (onNavegar)="openPageMinhaSaude('/res/minhasaude')" [titulo]="'Minha Saúde'" [imgFront]="'../../../../assets/img/minhasaude.svg'" [imgBack]="'../../../../assets/img/minhasaude_roxo.svg'" [classCardCor]="'card-roxo'"></app-card-tela-intermediaria>
+            <app-card-tela-intermediaria (onNavegar)="openPageMinhaSaude('/res/minhasaude')" [titulo]="'Minha Saúde'" [imgFront]="'assets/img/minhasaude.svg'" [imgBack]="'assets/img/minhasaude_roxo.svg'" [classCardCor]="'card-roxo'"></app-card-tela-intermediaria>
         </div>
 
 
         <div class="form-group col-md-4 col-lg-3" *ngIf="hasPermissaoCertificado()">
-            <app-card-tela-intermediaria (onNavegar)="mudarPagina('certificado')" [titulo]="'Certificados'" [imgFront]="'../../../../assets/img/certificados.svg'" [imgBack]="'../../../../assets/img/certificados_azul.svg'" [classCardCor]="'card-azul'"></app-card-tela-intermediaria>
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('certificado')" [titulo]="'Certificados'" [imgFront]="'assets/img/certificados.svg'" [imgBack]="'assets/img/certificados_azul.svg'" [classCardCor]="'card-azul'"></app-card-tela-intermediaria>
         </div>
 
         <div class="form-group col-md-4 col-lg-3" *ngIf="hasPermissaoIGEV()">
-            <app-card-tela-intermediaria (onNavegar)="mudarPagina('igev')" [titulo]="'IGEV'" [imgFront]="'../../../../assets/img/questionario.svg'" [imgBack]="'../../../../assets/img/questionario_azul.svg'" [classCardCor]="'card-azul'"></app-card-tela-intermediaria>
+            <app-card-tela-intermediaria (onNavegar)="mudarPagina('igev')" [titulo]="'IGEV'" [imgFront]="'assets/img/questionario.svg'" [imgBack]="'assets/img/questionario_azul.svg'" [classCardCor]="'card-azul'"></app-card-tela-intermediaria>
         </div>
 
         <div class="form-group col-md-4 col-lg-3" *ngIf="hasAcessMinhaConta()">
-            <app-card-tela-intermediaria (onNavegar)="openPage('/cadastro/minhaconta')" [titulo]="'Minha Conta'" [imgFront]="'../../../../assets/img/minhaconta.svg'" [imgBack]="'../../../../assets/img/minhaconta_roxo.svg'" [classCardCor]="'card-roxo'"></app-card-tela-intermediaria>
+            <app-card-tela-intermediaria (onNavegar)="openPage('/cadastro/minhaconta')" [titulo]="'Minha Conta'" [imgFront]="'assets/img/minhaconta.svg'" [imgBack]="'assets/img/minhaconta_roxo.svg'" [classCardCor]="'card-roxo'"></app-card-tela-intermediaria>
         </div>
 
         <div class="form-group col-md-4 col-lg-3"*ngIf="hasPermissaoTrabalhador()">
-                <app-card-tela-intermediaria (onNavegar)="mudarPagina('/vacina-declarada/')" [titulo]="'Vacinas Autodeclaradas'" [imgFront]="'../../../../assets/img/vacina_branca.svg'" [imgBack]="'../../../../assets/img/vacina_laranja.svg'"  [classCardCor]="'card-laranja'"></app-card-tela-intermediaria>
+                <app-card-tela-intermediaria (onNavegar)="mudarPagina('/vacina-declarada/')" [titulo]="'Vacinas Autodeclaradas'" [imgFront]="'assets/img/vacina_branca.svg'" [imgBack]="'assets/img/vacina_laranja.svg'"  [classCardCor]="'card-laranja'"></app-card-tela-intermediaria>
             </div>
 
     </div>
