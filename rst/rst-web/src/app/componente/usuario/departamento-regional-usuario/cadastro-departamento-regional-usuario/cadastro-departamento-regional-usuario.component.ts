@@ -31,7 +31,6 @@ import { ToastyService } from 'ng2-toasty';
 export class CadastroDepartamentoUsuarioComponent extends BaseComponent implements OnInit {
 
   idUsuario: number;
-  idUsuarioTrabalhador: number;
   usuario: Usuario;
   filtro: FiltroDepartRegional;
   listaDepartamento: DepartamentoRegional[];
@@ -127,9 +126,7 @@ export class CadastroDepartamentoUsuarioComponent extends BaseComponent implemen
   }
 
   limpar() {
-    if (this.idUsuarioTrabalhador) {
-      this.router.navigate([`${environment.path_raiz_cadastro}/usuario/${this.idUsuario}/departamentoregional`]);
-    }
+    this.router.navigate([`${environment.path_raiz_cadastro}/usuario/${this.idUsuario}/departamentoregional`]);
   }
 
   selecionar(selecionado: DepartamentoRegional, event: any, i: number) {

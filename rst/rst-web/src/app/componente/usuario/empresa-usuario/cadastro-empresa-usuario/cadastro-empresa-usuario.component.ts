@@ -29,7 +29,6 @@ import {Perfil} from "../../../../modelo/perfil.model";
 export class CadastroEmpresaUsuarioComponent extends BaseComponent implements OnInit {
 
     idUsuario: number;
-    idUsuarioTrabalhador: number;
     usuario: Usuario;
     filtro: FiltroEmpresa;
     listaEmpresa: Empresa[];
@@ -113,9 +112,7 @@ export class CadastroEmpresaUsuarioComponent extends BaseComponent implements On
     }
 
     limpar() {
-        if (this.idUsuarioTrabalhador) {
-            this.router.navigate([`${environment.path_raiz_cadastro}/usuario/${this.idUsuario}/empresa`]);
-        }
+        this.router.navigate([`${environment.path_raiz_cadastro}/usuario/${this.idUsuario}/empresa`]);
     }
 
     selecionar(selecionado: Empresa, event: any, i: number) {
