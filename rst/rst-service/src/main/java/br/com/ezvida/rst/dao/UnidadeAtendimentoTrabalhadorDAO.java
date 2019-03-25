@@ -232,6 +232,10 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
                 jpql.append(" and ");
             }
 
+            if(segurancaFilter.isGetorUnidadeSESI()) {
+                jpql.append(" and ");
+            }
+
             jpql.append(" uat.id IN (:idsUnidadeSESI) ");
             parametros.put("idsUnidadeSESI", segurancaFilter.getIdsUnidadeSESI());
         }
