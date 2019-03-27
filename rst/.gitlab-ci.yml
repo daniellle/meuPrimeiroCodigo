@@ -1,0 +1,30 @@
+image: gcr.io/cloud-builders/mvn
+
+variables:
+  MAVEN_CLI_OPTS: --batch-mode
+  IMAGE_LOCAL: $APP_NAME:$CI_PIPELINE_ID
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2"
+
+cache:
+  paths:
+  - .m2
+
+stages:
+- build
+
+
+.build_template: &build
+  stage: build
+
+build:develop:
+  <<: *build
+  script:
+  - mvn $MAVEN_CLI_OPTS clean package -Dmaven.test.skip=true
+  - mvn $MAVEN_CLI_OPTS sonar:sonar -Dsonar.projectKey=rst-cadastro -Dsonar.projectName=rst-cadastro -Dsonar.login=$KEY_SONAR -Dsonar.host.url=$URL_SONAR
+  artifacts:
+    paths:
+    - target/*.ear
+    expire_in: 20 minutes
+
+
+
