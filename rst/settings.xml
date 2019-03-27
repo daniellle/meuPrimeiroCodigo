@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <pluginGroups>
+        <pluginGroup>org.sonarsource.scanner.maven</pluginGroup>
+    </pluginGroups>
+    <!-- localRepository
+    | The path to the local repository maven will use to store artifacts.
+    |
+    | Default: ~/.m2/repository
+    -->
+
+
+    <!-- Configuração de acesso ao Servidor Nexus do Solutis -->
+    <servers>
+        <server>
+            <id>solutis-nexus</id>
+            <username>nexus-sa</username>
+            <password>hdPt5eyum23v3oLBkOvuUw==</password>
+        </server>
+    </servers>
+
+    <!-- Url do repositório nexus -->
+    <mirrors>
+        <mirror>
+            <id>solutis-nexus</id>
+            <mirrorOf>*</mirrorOf>
+            <!-- <url>http://nexus.solutis.com.br/content/groups/public</url> -->
+            <url>https://nexus.solutis.digital/repository/maven-public/</url>
+        </mirror>
+    </mirrors>
+
+    <!-- Configurações de Proxy (Opcional) -->
+
+    <!-- Configurações de Perfis -->
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!-- Optional URL to server. Default value is http://localhost:9000 -->
+                <sonar.host.url>
+                    https://sonar.solutis.digital
+                </sonar.host.url>
+            </properties>
+        </profile>
+        <profile>
+
+            <id>solutis-nexus</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>http://central</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>central</id>
+                    <url>http://central</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+
+    <activeProfiles>
+        <activeProfile>solutis-nexus</activeProfile>
+    </activeProfiles>
+
+    <interactiveMode>true</interactiveMode>
+    <usePluginRegistry>false</usePluginRegistry>
+    <offline>false</offline>
+
+</settings>
