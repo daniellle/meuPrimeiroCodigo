@@ -34,7 +34,6 @@ export class PrimeiroAcessoComponent extends BaseComponent implements OnInit {
     private formBuilder: FormBuilder,
     protected bloqueioService: BloqueioService,
     protected dialogo: ToastyService,
-    private dialogService: DialogService,
     private location: Location
     ) {
     super(bloqueioService, dialogo);

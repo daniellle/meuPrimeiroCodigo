@@ -59,20 +59,6 @@ public class TrabalhadorEndpoint extends SegurancaEndpoint<Trabalhador> {
 				.type(MediaType.APPLICATION_JSON).build();
 	}
 
-	@POST
-	@Encoded
-	@Path("/solicitar-email")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response solicitarEmailSesi(@Encoded PrimeiroAcesso solicitacaoEmail,  @Context SecurityContext context
-			, @Context HttpServletRequest request) {
-        getResponse().setCharacterEncoding(Charsets.UTF_8.displayName());
-	    return Response.status(HttpServletResponse.SC_OK)
-				.entity(trabalhadorService.solicitarEmailSesi(solicitacaoEmail))
-				.type(MediaType.APPLICATION_JSON).build();
-
-	}
-
     //@formatter:off
     @GET
     @Encoded

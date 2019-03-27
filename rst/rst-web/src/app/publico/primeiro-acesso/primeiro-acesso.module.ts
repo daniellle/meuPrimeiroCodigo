@@ -1,4 +1,3 @@
-import { SolicitarEmailService } from './../../servico/solicitar-email.service';
 import { SistemaService } from './../../servico/sistema.service';
 import { PerfilService } from './../../servico/perfil.service';
 import { ParametroService } from './../../servico/parametro.service';
@@ -40,7 +39,6 @@ const routes: Routes = [
     ParametroService,
     PerfilService,
     SistemaService,
-    SolicitarEmailService,
   ],
 })
 export class PrimeiroAcessoModule { }

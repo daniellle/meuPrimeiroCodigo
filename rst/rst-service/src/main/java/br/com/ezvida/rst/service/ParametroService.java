@@ -33,24 +33,11 @@ public class ParametroService extends BaseService {
     public static final String TERMO_USO = "termo_uso";
     public static final String IGEV = "igev";
     public static final String HOST_ELASTICSEARCH = "host_elasticsearch";
-    public static final String MAIL_SMTP_HOST = "mail_smtp_host";
-    public static final String MAIL_SMTP_PORT = "mail_smtp_port";
-    public static final String MAIL_SMTP_AUTH = "mail_smtp_auth";
-    public static final String MAIL_SMTP_STARTTLS_ENABLE = "mail_smtp_starttls_enable";
-    public static final String MAIL_SSL_TRUST = "mail_smtp_ssl_trust";
-    public static final String EMAIL_REMETENTE_SESI = "email_remetente_sesi";
-    public static final String EMAIL_NOME_REMETENTE_SESI = "email_nome_remetente_sesi";
-    public static final String EMAIL_SENHA_SESI = "email_senha_sesi";
-    public static final String EMAIL_USERNAME_SESI = "email_username_sesi";
-    public static final String EMAIL_ASSUNTO_SESI = "email_assunto_sesi";
     public static final String TAMANHO_MAXIMO_UPLOAD_ARQUIVO = "tamanho_maximo_upload_arquivo";
     public static final String TOKEN_ACESSO_CLIENTE_RST = "token_acesso_cliente_rst";
-    public static final String SOLICITACAO_EMAIL_SESI = "solicitacao_email_sesi";
-    public static final String SOLICITACAO_EMAIL_SESI_CORPO_TEXTO = "solicitacao_email_sesi_corpo_texto";
     public static final String SOLICITACAO_TELEFONE_CENTRAL_RELACIONAMENTO = "telefone_central_relacionamento_sesi_viva_mais";
     private static final long serialVersionUID = -542751432948139228L;
     private static final String RES_URL = "res_url";
-    //private static final String RES_URL = "http://localhost:8000";
     private static final String IMUNIZACAO_URL = "imunizacao_url";
     @Inject
     private ParametroDAO parametroDao;
