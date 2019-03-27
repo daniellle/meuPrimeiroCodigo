@@ -547,7 +547,7 @@ public class UsuarioServiceProd extends BaseService implements UsuarioService {
             usuario.setTipoImagem(trabalhador.getTipoImagem());
             usuario.setImagem(trabalhador.getImagem());
         } else {
-            if(usuarioAConsultar.getPapeis().contains(DadosFilter.DIRETOR_DN) || usuarioAConsultar.getPapeis().contains(DadosFilter.GESTOR_DN)
+            if(usuarioAConsultar.getPapeis().contains(DadosFilter.DIRETOR_DN) || usuarioAConsultar.getPapeis().contains(DadosFilter.GESTOR_DN_APLIACACOES)
                     || usuarioAConsultar.getPapeis().contains(DadosFilter.GESTOR_CONTEUDO_DN) || usuarioAConsultar.getPapeis().contains(DadosFilter.MEDICO_TRABALHO_DN)){
                 usuario.setDepartamentosRegionais(departamentoRegionalService.buscarDNPorSigla());
             }

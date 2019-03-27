@@ -1,5 +1,13 @@
 package br.com.ezvida.rst.service;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.ezvida.girst.apiclient.model.ListaPaginada;
 import br.com.ezvida.rst.auditoria.model.ClienteAuditoria;
 import br.com.ezvida.rst.dao.filter.DadosFilter;
@@ -10,17 +18,11 @@ import br.com.ezvida.rst.model.Usuario;
 import br.com.ezvida.rst.model.UsuarioGirstView;
 import br.com.ezvida.rst.model.dto.PerfilUsuarioDTO;
 import br.com.ezvida.rst.model.dto.UsuarioDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 
 public class UsuarioServiceDev implements UsuarioService {
 
-    private Logger logger = LoggerFactory.getLogger(UsuarioServiceDev.class);
+	private static final long serialVersionUID = 1L;
+	private Logger logger = LoggerFactory.getLogger(UsuarioServiceDev.class);
     private UsuarioFilter usuarioFilter;
     private DadosFilter dados;
     private ClienteAuditoria auditoria;
