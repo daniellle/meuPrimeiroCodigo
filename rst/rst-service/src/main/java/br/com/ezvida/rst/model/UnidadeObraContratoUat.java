@@ -72,6 +72,10 @@ public class UnidadeObraContratoUat extends BaseEntity<Long> {
     @Column(name = "ano_vigencia")
     private String anoVigencia;
 
+    @ManyToOne
+    @JoinColumn(name = "id_origem_dados_fk")
+    private OrigemDados origemContrato;
+
     @Override
     public Long getId() {
         return id;
@@ -146,7 +150,15 @@ public class UnidadeObraContratoUat extends BaseEntity<Long> {
         this.dataInativo = dataInativo;
     }
 
-	@Override
+    public OrigemDados getOrigemContrato() {
+        return origemContrato;
+    }
+
+    public void setOrigemContrato(OrigemDados origemContrato) {
+        this.origemContrato = origemContrato;
+    }
+
+    @Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();

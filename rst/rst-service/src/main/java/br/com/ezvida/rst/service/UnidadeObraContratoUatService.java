@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import br.com.ezvida.rst.enums.OrigemDadosEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -155,9 +156,13 @@ public class UnidadeObraContratoUatService extends BaseService {
         }else if( unidadeObraContratoUat.getDataContratoFim() == null ){
             throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_fim_contrato_invalido",
                     getMensagem("app_rst_unidade_obra_contrato_fim_contrato_invalido") ) );
-        }else if( unidadeObraContratoUat.getAnoVigencia() == null ){
+        }else if( unidadeObraContratoUat.getAnoVigencia() == null ) {
             throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_ano_vigencia_invalido",
-                    getMensagem("app_rst_unidade_obra_contrato_ano_vigencia_invalido") ) );
+                    getMensagem("app_rst_unidade_obra_contrato_ano_vigencia_invalido")));
+        }else if(unidadeObraContratoUat.getOrigemContrato()==null) {
+            throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_origem_dados_obrigatorio"));
+        }else if(!unidadeObraContratoUat.getOrigemContrato().getDescricao().equals(OrigemDadosEnum.DEGUSTACAO.getDescricao()) && !unidadeObraContratoUat.getOrigemContrato().getDescricao().equals(OrigemDadosEnum.ENTRADA_MANUAL.getDescricao())){
+            throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_origem_dados_invalida"));
         }else{
             int diff = getZeroTimeDate(unidadeObraContratoUat.getDataContratoFim() ).compareTo(getZeroTimeDate(unidadeObraContratoUat.getDataContratoInicio() ) );
 

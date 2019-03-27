@@ -33,4 +33,10 @@ public class OrigemDadosService extends BaseService {
     public BigInteger countByDescricao(String descricao){
         return origemDadosDAO.countByDescricao(descricao);
     }
+
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public List<OrigemDados> findOrigemDadosToContrato(){
+        LOGGER.debug("Listando origens de dados para combo origem do contrato");
+        return this.origemDadosDAO.findOrigemDadosToContrato();
+    }
 }

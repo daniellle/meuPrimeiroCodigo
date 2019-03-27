@@ -26,8 +26,8 @@ public class SegurancaUtils {
         if (ambiente == Ambiente.DESENVOLVIMENTO) {
             LOGGER.warn(" UTILIZANDO SEGURANÇA DO AMBIENTE DE DESENVOLVIMENTO");
 //            return "86010158168"; // adm do grupo
-             return "65020081515"; // administrador
-            //return "37139762520"; // adm
+          //   return "65020081515"; // administrador
+            return "37139762520"; // adm
             // return "65020081515"; // administrador
             //return "37139762520"; // adm
              //return "09934689421"; // dna
