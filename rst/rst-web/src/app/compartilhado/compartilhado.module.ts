@@ -77,6 +77,7 @@ import { VacinaGridComponent } from 'app/compartilhado/modal-vacina-componenet/v
 import { DigitOnlyDirective } from 'app/diretiva/digit-only.directive';
 import { ModalConfirmarComponent } from './modal-confirmar/modal-confirmar.component';
 import { ModalConfirmarService } from './modal-confirmar/modal-confirmar.service';
+import { SpinnerLoadingComponent } from './spinner-loading/spinner-loading.component';
 
 
 @NgModule({
@@ -137,6 +138,7 @@ import { ModalConfirmarService } from './modal-confirmar/modal-confirmar.service
         VacinaGridComponent,
         DigitOnlyDirective,
         ModalConfirmarComponent,
+        SpinnerLoadingComponent,
     ],
     exports: [
         CommonModule,
@@ -211,6 +213,7 @@ import { ModalConfirmarService } from './modal-confirmar/modal-confirmar.service
         CardTelaIntermediariaComponent,
         ModalSelecionarGrupoPerguntaComponent,
         ModalConfirmarComponent,
+        SpinnerLoadingComponent,
     ],
     providers: [EstadoService, ConselhoRegionalService, NgbActiveModal, NgbModal, ModalConfirmarService, SegmentoService, EmpresaTrabalhadorLotacaoService,
          { provide: 'Window',  useValue: window }],

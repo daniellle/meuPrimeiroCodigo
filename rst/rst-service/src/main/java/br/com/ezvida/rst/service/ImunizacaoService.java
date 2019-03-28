@@ -29,6 +29,7 @@ import br.com.ezvida.rst.model.Usuario;
 import br.com.ezvida.rst.model.dto.DoseDTO;
 import br.com.ezvida.rst.model.dto.VacinaAutodeclaradaDTO;
 import br.com.ezvida.rst.model.pagination.Page;
+import fw.core.exception.BusinessErrorException;
 import fw.core.service.BaseService;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
@@ -154,6 +155,7 @@ public class ImunizacaoService extends BaseService {
 
             if (response == null || !response.isSuccessful()) {
                 LOGGER.debug("Não foi possível salvar a vacina {} {}", vacina, response == null ? null : response.errorBody().toString());
+                throw new BusinessErrorException(getMensagem("app_rst_validacao_error"));
             }
 
             return response.body();

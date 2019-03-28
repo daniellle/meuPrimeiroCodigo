@@ -76,14 +76,6 @@ export class PesquisaTrabalhadorComponent extends BaseComponent implements OnIni
   public verificarCampos() {
     let verificador: Boolean = true;
 
-    // if (this.isVazia(this.filtro.cpf)
-    // && this.isVazia(this.filtro.nome)
-    // && this.isVazia(this.filtro.nit)
-    // && this.isVazia(this.filtro.idEstado)) {
-    //   this.mensagemError(MensagemProperties.app_rst_pesquisar_todos_vazios);
-    //   verificador = false;
-    // }
-
     if (!this.isVazia(this.filtro.cpf)) {
       if (this.filtro.cpf.length < 14) {
         this.mensagemError(MensagemProperties.app_rst_labels_cpf_incompleto);
