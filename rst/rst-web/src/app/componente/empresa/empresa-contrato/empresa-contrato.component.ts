@@ -1,28 +1,29 @@
-import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import {BaseComponent} from "../../base.component";
-import {ToastyService} from "ng2-toasty";
-import {EmpresaService} from "../../../servico/empresa.service";
-import {DialogService} from "ng2-bootstrap-modal";
-import {BloqueioService} from "../../../servico/bloqueio.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {MensagemProperties} from "../../../compartilhado/utilitario/recurso.pipe";
-import {EmpresaContratoService} from "../../../servico/empresa-contrato.service";
-import {environment} from "../../../../environments/environment";
-import {Paginacao} from "../../../modelo/paginacao.model";
-import {FiltroEmpresa} from "../../../modelo/filtro-empresa.model";
-import {Contrato} from "../../../modelo/contrato.model";
-import {FiltroEmpresaContrato} from "../../../modelo/filtro-empresa-contrato.model";
-import {ListaPaginada} from "../../../modelo/lista-paginada.model";
-import {FormGroup} from "@angular/forms";
-import {Usuario} from "../../../modelo/usuario.model";
-import {Seguranca} from "../../../compartilhado/utilitario/seguranca.model";
-import {PerfilEnum} from "../../../modelo/enum/enum-perfil";
-import {FiltroDepartRegional} from "../../../modelo/filtro-depart-regional.model";
-import {UsuarioEntidade} from "../../../modelo/usuario-entidade.model";
-import {UsuarioEntidadeService} from "../../../servico/usuario-entidade.service";
-import {FiltroUsuarioEntidade} from "../../../modelo/filtro-usuario-entidade.model";
-import {DepartamentoRegional} from "../../../modelo/departamento-regional.model";
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { BaseComponent } from "../../base.component";
+import { ToastyService } from "ng2-toasty";
+import { EmpresaService } from "../../../servico/empresa.service";
+import { DialogService } from "ng2-bootstrap-modal";
+import { BloqueioService } from "../../../servico/bloqueio.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { MensagemProperties } from "../../../compartilhado/utilitario/recurso.pipe";
+import { EmpresaContratoService } from "../../../servico/empresa-contrato.service";
+import { environment } from "../../../../environments/environment";
+import { Paginacao } from "../../../modelo/paginacao.model";
+import { FiltroEmpresa } from "../../../modelo/filtro-empresa.model";
+import { Contrato } from "../../../modelo/contrato.model";
+import { FiltroEmpresaContrato } from "../../../modelo/filtro-empresa-contrato.model";
+import { ListaPaginada } from "../../../modelo/lista-paginada.model";
+import { FormGroup } from "@angular/forms";
+import { Usuario } from "../../../modelo/usuario.model";
+import { Seguranca } from "../../../compartilhado/utilitario/seguranca.model";
+import { PerfilEnum } from "../../../modelo/enum/enum-perfil";
+import { FiltroDepartRegional } from "../../../modelo/filtro-depart-regional.model";
+import { UsuarioEntidade } from "../../../modelo/usuario-entidade.model";
+import { UsuarioEntidadeService } from "../../../servico/usuario-entidade.service";
+import { FiltroUsuarioEntidade } from "../../../modelo/filtro-usuario-entidade.model";
+import { DepartamentoRegional } from "../../../modelo/departamento-regional.model";
 import * as moment from 'moment';
+import { DateUtil } from 'app/compartilhado/utilitario/date-util';
 
 export interface IHash {
     [details: number]: boolean;
@@ -58,14 +59,14 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
     public estadoToggle: boolean;
 
     constructor(private route: ActivatedRoute,
-                private router: Router,
-                private empresaService: EmpresaService,
-                protected bloqueioService: BloqueioService,
-                protected dialogo: ToastyService,
-                private dialogService: DialogService,
-                private usuarioEntidadeService: UsuarioEntidadeService,
-                private empresaContratoService: EmpresaContratoService,
-                private cdRef: ChangeDetectorRef) {
+        private router: Router,
+        private empresaService: EmpresaService,
+        protected bloqueioService: BloqueioService,
+        protected dialogo: ToastyService,
+        private dialogService: DialogService,
+        private usuarioEntidadeService: UsuarioEntidadeService,
+        private empresaContratoService: EmpresaContratoService,
+        private cdRef: ChangeDetectorRef) {
         super(bloqueioService, dialogo);
         this.title = MensagemProperties.app_rst_empresa_contrato_title;
     }
@@ -160,7 +161,7 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
             }, (error) => {
                 this.mensagemError(error);
             });
-      }
+    }
 
     pegaUatsDoUsuario() {
         this.filtroUsuarioEntidade.cpf = this.usuarioLogado.sub;
@@ -265,8 +266,13 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
         }
     }
 
-    desativaToggle(flagInativa: string) {
-        return (flagInativa != undefined && parseInt(flagInativa, 10) > parseInt(this.flagUsuario, 10));
+    desativaToggle(flagInativa: string, contrato: Contrato) {
+        return (flagInativa != undefined && parseInt(flagInativa, 10) > parseInt(this.flagUsuario, 10)) ||
+         !this.validarVigenciaContrato(contrato);
+    }
+
+    validarVigenciaContrato(contrato: Contrato): boolean {
+        return (DateUtil.isBetween(contrato.dataContratoInicio, contrato.dataContratoFim));
     }
 
     mudaStatus(value, contratoId: number, contrato) {

@@ -89,6 +89,10 @@ public class UnidadeObraContratoUatService extends BaseService {
                     getMensagem("app_rst_label_unidade_obra")));
         }
 
+        if(!validarVigenciaDoContrato(unidadeObraContratoUat)) {
+            throw new BusinessErrorException(getMensagem("app_rst_operacao_invalida"));
+        }
+
         unidadeObraContratoUat.setFlagInativo(flag);
         unidadeObraContratoUat.setDataInativo(new Date());
 
@@ -131,12 +135,22 @@ public class UnidadeObraContratoUatService extends BaseService {
                     getMensagem("app_rst_unidade_obra_contrato_perfil_invalido")));
         }
 
+        if(!validarVigenciaDoContrato(unidadeObraContratoUat)) {
+             throw new BusinessErrorException(getMensagem("app_rst_operacao_invalida"));
+        }
+
         unidadeObraContratoUat.setFlagInativo(null);
         unidadeObraContratoUat.setDataInativo(null);
 
         unidadeObraContratoUatDAO.salvar(unidadeObraContratoUat);
 
         return null;
+    }
+
+    private boolean validarVigenciaDoContrato(UnidadeObraContratoUat contrato) {
+        Date dataAtual = new Date();
+        return dataAtual.after(contrato.getDataContratoInicio()) &&
+                dataAtual.before(contrato.getDataContratoFim());
     }
 
     private void validarContrato(UnidadeObraContratoUat unidadeObraContratoUat){
