@@ -24,7 +24,7 @@ build:develop:
   - mvn $MAVEN_CLI_OPTS sonar:sonar -Dsonar.projectKey=rst-cadastro -Dsonar.projectName=rst-cadastro -Dsonar.login=$KEY_SONAR -Dsonar.host.url=$URL_SONAR
   artifacts:
     paths:
-    - target/*.ear
+    - target/*-dev.ear
     expire_in: 20 minutes
 
 
