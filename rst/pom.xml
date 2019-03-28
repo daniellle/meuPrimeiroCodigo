@@ -121,6 +121,7 @@
             <url>https://nexus.solutis.digital/repository/maven-public</url>
         </repository>
     </repositories>
+
     <dependencyManagement>
 
         <dependencies>
