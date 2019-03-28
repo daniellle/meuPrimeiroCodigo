@@ -115,7 +115,12 @@
         <br.com.ezvida.girst.api-client.version>1.10.0</br.com.ezvida.girst.api-client.version>
 
     </properties>
-
+    <repositories>
+        <repository>
+            <id>solutis-nexus</id>
+            <url>https://nexus.solutis.digital/repository/maven-public</url>
+        </repository>
+    </repositories>
     <dependencyManagement>
 
         <dependencies>
