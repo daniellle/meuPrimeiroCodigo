@@ -27,13 +27,13 @@ public class SegurancaUtils {
             LOGGER.warn(" UTILIZANDO SEGURANÇA DO AMBIENTE DE DESENVOLVIMENTO");
 //            return "86010158168"; // adm do grupo
           //   return "65020081515"; // administrador
-            return "37139762520"; // adm
+          //  return "37139762520"; // adm
             // return "65020081515"; // administrador
             //return "37139762520"; // adm
              //return "09934689421"; // dna
 //             return "48552219026"; // gestor dn aplicacoes
 //            return "90468451170"; //
-//            return "74055251564"; // gestor dr aplicacoes
+            return "74055251564"; // gestor dr aplicacoes
              // return "71141598973"; // gestor empresa master
             // return "92883645361"; // gestor empresa
            //  return "46335766744"; // trabalhador

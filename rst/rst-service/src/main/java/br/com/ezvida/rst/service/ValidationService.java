@@ -13,6 +13,9 @@ public class ValidationService {
     @Inject
     private UnidadeAtendimentoTrabalhadorService unidadeAtendimentoTrabalhadorService;
 
+    @Inject
+    private UnidadeObraContratoUatService unidadeObraContratoUatService;
+
     public boolean validarFiltroDadosGestaoUnidadeSesi(DadosFilter dados, Long idUnidade) {
         boolean next = false;
         if (dados.isAdministrador() || dados.isGestorDn()) {
@@ -25,6 +28,25 @@ public class ValidationService {
         } else if (dados.isGetorUnidadeSESI()) {
             Set<Long> listIdUnidades = dados.getIdsUnidadeSESI();
             if (listIdUnidades != null && !listIdUnidades.isEmpty() && listIdUnidades.contains(idUnidade)) {
+                next = true;
+            }
+        }
+
+        return next;
+    }
+
+    public boolean validarFiltroDadosContrato(DadosFilter dados, Long idContrato) {
+        boolean next = false;
+        if (dados.isSuperUsuario()) {
+            next = true;
+        } else if (dados.isGestorDr()) {
+            Set<Long> listIdDepartamentosRegionais = dados.getIdsDepartamentoRegional();
+            if (listIdDepartamentosRegionais != null && !listIdDepartamentosRegionais.isEmpty() && unidadeObraContratoUatService.existisByDrs(new ArrayList<>(listIdDepartamentosRegionais), idContrato)) {
+                next = true;
+            }
+        } else if (dados.isGetorUnidadeSESI()) {
+            Set<Long> listIdUnidades = dados.getIdsUnidadeSESI();
+            if (listIdUnidades != null && !listIdUnidades.isEmpty() && unidadeObraContratoUatService.existisByUnidades(new ArrayList<>(listIdUnidades), idContrato)) {
                 next = true;
             }
         }

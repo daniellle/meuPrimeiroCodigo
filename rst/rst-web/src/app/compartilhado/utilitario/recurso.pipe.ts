@@ -179,6 +179,8 @@ export const MensagemProperties = {
   app_rst_labels_sigla: 'Sigla',
   app_rst_labels_data_inicio_contrato: 'Data de Inicio*',
   app_rst_labels_data_final_contrato: 'Data de Fim*',
+  app_rst_labels_data_inicio_contrato_grid: 'Data de Inicio',
+  app_rst_labels_data_final_contrato_grid: 'Data de Fim',
   app_rst_labels_unidade_sesi_nome: 'Unidade SESI',
   app_rst_labels_contrato_status: 'Status',
   app_rst_labels_programa_contrato: 'Tipo de Serviço',

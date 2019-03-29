@@ -5,8 +5,11 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import br.com.ezvida.rst.dao.filter.DadosFilter;
 import br.com.ezvida.rst.enums.OrigemDadosEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +32,9 @@ public class UnidadeObraContratoUatService extends BaseService {
 
     @Inject
     private UnidadeObraContratoUatDAO unidadeObraContratoUatDAO;
+
+    @Inject
+    private ValidationService validationService;
 
     public List<UnidadeObraContratoUat> validarPorEmpresa(String cnpj){
         LOGGER.debug("Validando Unidade Obra...");
@@ -71,7 +77,7 @@ public class UnidadeObraContratoUatService extends BaseService {
         return unidadeObraContratoUat;
     }
 
-    public UnidadeObraContratoUat desativar( UnidadeObraContratoUat unidadeObraContratoUat) {
+    public UnidadeObraContratoUat desativar( UnidadeObraContratoUat unidadeObraContratoUat, DadosFilter dadosFilter) {
         if ( unidadeObraContratoUat.getId() == null ) {
             throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_id_invalido",
                     getMensagem("app_rst_unidade_obra_contrato_id_invalido") ) );
@@ -93,6 +99,10 @@ public class UnidadeObraContratoUatService extends BaseService {
             throw new BusinessErrorException(getMensagem("app_rst_operacao_invalida"));
         }
 
+        if(!this.validationService.validarFiltroDadosContrato(dadosFilter, unidadeObraContratoUat.getId())){
+            throw new BusinessErrorException(getMensagem("app_rst_operacao_invalida"));
+        }
+
         unidadeObraContratoUat.setFlagInativo(flag);
         unidadeObraContratoUat.setDataInativo(new Date());
 
@@ -101,7 +111,7 @@ public class UnidadeObraContratoUatService extends BaseService {
         return null;
     }
 
-    public UnidadeObraContratoUat ativar( UnidadeObraContratoUat unidadeObraContratoUat){
+    public UnidadeObraContratoUat ativar(UnidadeObraContratoUat unidadeObraContratoUat, DadosFilter dadosFilter){
         if (unidadeObraContratoUat.getId() == null) {
             throw new BusinessErrorException(getMensagem("app_rst_unidade_obra_contrato_id_invalido",
                     getMensagem("app_rst_unidade_obra_contrato_id_invalido") ) );
@@ -139,6 +149,10 @@ public class UnidadeObraContratoUatService extends BaseService {
              throw new BusinessErrorException(getMensagem("app_rst_operacao_invalida"));
         }
 
+        if(!this.validationService.validarFiltroDadosContrato(dadosFilter, unidadeObraContratoUat.getId())){
+            throw new BusinessErrorException(getMensagem("app_rst_operacao_invalida"));
+        }
+
         unidadeObraContratoUat.setFlagInativo(null);
         unidadeObraContratoUat.setDataInativo(null);
 
@@ -151,6 +165,16 @@ public class UnidadeObraContratoUatService extends BaseService {
         Date dataAtual = new Date();
         return dataAtual.after(contrato.getDataContratoInicio()) &&
                 dataAtual.before(contrato.getDataContratoFim());
+    }
+
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public boolean existisByDrs(List<Long> drs, Long idContrato) {
+        return this.unidadeObraContratoUatDAO.existsByDRs(drs, idContrato);
+    }
+
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public boolean existisByUnidades(List<Long> unidades, Long idContrato) {
+        return this.unidadeObraContratoUatDAO.existsByUnidade(unidades, idContrato);
     }
 
     private void validarContrato(UnidadeObraContratoUat unidadeObraContratoUat){

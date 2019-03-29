@@ -161,4 +161,38 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
 
     }
 
+    public Boolean existsByDRs(List<Long> listDRs, Long idContrato) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("select ");
+        sql.append("	exists( ");
+        sql.append("	select ");
+        sql.append("		c.id_und_obra_contrato_uat ");
+        sql.append("	from ");
+        sql.append("		und_obra_contrato_uat c ");
+        sql.append("	inner join und_atd_trabalhador uat on ");
+        sql.append("		c.id_und_atd_trabalhador_fk = uat.id_und_atd_trabalhador ");
+        sql.append("	where c.id_und_obra_contrato_uat = :idContrato ");
+        sql.append("		and uat.id_departamento_regional_fk in (:drs)) ");
+        Query query = this.getEm().createNativeQuery(sql.toString());
+        query.setParameter("drs", listDRs);
+        query.setParameter("idContrato", idContrato);
+        return (Boolean) query.getSingleResult();
+    }
+
+    public Boolean existsByUnidade(List<Long> listUnidades, Long idContrato) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("select ");
+        sql.append("	exists( ");
+        sql.append("	select ");
+        sql.append("		c.id_und_obra_contrato_uat ");
+        sql.append("	from ");
+        sql.append("		und_obra_contrato_uat c ");
+        sql.append("	where c.id_und_obra_contrato_uat = :idContrato ");
+        sql.append("		and c.id_und_atd_trabalhador_fk in (:unidades)) ");
+        Query query = this.getEm().createNativeQuery(sql.toString());
+        query.setParameter("unidades", listUnidades);
+        query.setParameter("idContrato", idContrato);
+        return (Boolean) query.getSingleResult();
+    }
+
 }
