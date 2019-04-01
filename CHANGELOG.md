@@ -2,6 +2,15 @@
 
 -Aplicações para manutenção dos cadastros RST
 
+**v2.139.0**
+(RELEASE EM 25/03/2019)
+- [CADASTROS] IGEV - Habilitar a possibilidade de preencher formulário a qualquer tempo (GLPI 3309)
+- [CADASTROS] Refatorar pesquisa e cadastro de usuários (v2.127.0 devolvido)
+- [CADASTROS] Perfil Gestor de Conteúdos DR aparece duplicado na seleção do DR (GLPI 4458)
+- [CADASTROS] Card Vacinas Autodeclaradas não está acessível (GLPI 3020)
+- [CADASTROS] Não é possível vincular os perfis Profissional de Saúde SESI DR e Gestor de Conteúdos Indústria (GLPI 4464)
+- [CADASTROS] - Pesquisar Usuário Gestor Unidade Sesi não consegue pesquisar. (GLPI 4812)
+
 **v2.133.1**
 (RELEASE EM 20/03/2019)
 - [CADASTROS] Adequação dos dados retornados pelo endpoint '/public/v1/usuarios/dados/{cpf}' para sempre retornar a propriedade empresa->uats->departamentoRegional->estado
