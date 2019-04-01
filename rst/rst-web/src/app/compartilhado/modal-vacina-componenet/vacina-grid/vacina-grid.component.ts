@@ -24,10 +24,6 @@ export class VacinaGridComponent implements OnInit {
   constructor() {
   }
 
-  //   selecionar(item: any, index: any) {
-  //       this.modal.selecionarVacina(item, index);
-  //   }
-
   remover(item: any) {
     item.remover = true;
   }

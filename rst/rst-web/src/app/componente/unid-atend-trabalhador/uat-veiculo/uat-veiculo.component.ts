@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastyService } from 'ng2-toasty';
 import { UatVeiculoTipo } from 'app/modelo/uat-veiculo-tipo';
 import { UatVeiculoService } from 'app/servico/uat-veiculo.service';

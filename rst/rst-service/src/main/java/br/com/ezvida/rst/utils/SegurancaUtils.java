@@ -25,10 +25,8 @@ public class SegurancaUtils {
     	System.getenv();
         if (ambiente == Ambiente.DESENVOLVIMENTO) {
             LOGGER.warn(" UTILIZANDO SEGURANÇA DO AMBIENTE DE DESENVOLVIMENTO");
-//            return "86010158168"; // adm do grupo
-             // return "46170875674"; // administrador HOMOLOG
-            return "33359472233"; // trabalhador
-            // return "65020081515"; // administrador
+           // return "33359472233"; // trabalhador
+            return "65020081515"; // administrador
             //return "37139762520"; // adm
              //return "09934689421"; // dna
 //             return "48552219026"; // gestor dn aplicacoes

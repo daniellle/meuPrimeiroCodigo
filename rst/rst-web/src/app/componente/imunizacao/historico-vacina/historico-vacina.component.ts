@@ -1,7 +1,7 @@
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal/modal';
 import { Vacina } from './../../../modelo/vacina.model';
 import { environment } from './../../../../environments/environment';
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from 'app/componente/base.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
@@ -13,9 +13,8 @@ import { ListaPaginada } from 'app/modelo/lista-paginada.model';
 import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
 import { ImunizacaoService } from '../../../servico/imunizacao.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import * as moment from 'moment';
 import { enumFiltro } from '../../../modelo/enum/enum.filtroVacina.model';
-import {Subscription} from "rxjs/Subscription";
+import { Paginacao } from 'app/modelo/paginacao.model';
 
 @Component({
   selector: 'app-historico-vacina',
@@ -31,6 +30,7 @@ export class HistoricoVacinaComponent extends BaseComponent implements OnInit {
   public keysPeriodoVacina: string[];
   vacinas: Vacina[] = [];
   vacinaRemover: Vacina;
+  loading: boolean;
 
   public modal;
   public modalRef;
@@ -46,42 +46,51 @@ export class HistoricoVacinaComponent extends BaseComponent implements OnInit {
     protected dialogo: ToastyService,
     private dialogService: DialogService) {
     super(bloqueioService, dialogo);
-    this.carregarTela();
   }
+
   ngOnInit() {
     this.vacinas = this.vacinas = new Array<Vacina>();
     this.filtroVacina = new FiltroVacina();
     this.keysPeriodoVacina = Object.keys(this.periodo);
     this.vacinaRemover = new Vacina();
+    this.carregarTela();
   }
-
 
   openModal(modal) {
     this.modalRef = this.modalService.open(modal, { size: 'sm' });
   }
 
   pesquisar() {
-    this.vacinas = new Array<Vacina>();
-    if (this.filtroVacina.nome !== '') {
+      this.vacinas = new Array<Vacina>();
       this.paginacao.pagina = 1;
-      this.service.pesquisar(this.filtroVacina, this.paginacao).subscribe((retorno: ListaPaginada<Vacina>) => {
-        this.vacinas = retorno.list;
-        this.paginacao = this.getPaginacao(this.paginacao, retorno);
-        if (retorno.quantidade === 0) {
-          this.mensagemError(MensagemProperties.app_rst_nenhum_registro_encontrado);
-        }
-      }, (error) => {
-        this.mensagemError(error);
-      });
-    } else {
-      this.mensagemError('Não é possivel pesquisar vacinas autodeclaradas sem nome');
-    }
+      this.buscarHistoricoVacina(this.paginacao);
+  }
+
+  private carregarHistoricoVacinas() {
+    this.paginacao.pagina = 1;
+    this.buscarHistoricoVacina(this.paginacao, true);
+  }
+
+  private buscarHistoricoVacina(paginacao: Paginacao, showLoading?: boolean) {
+    if(showLoading) { this.loading = true };
+    this.service.pesquisar(this.filtroVacina, paginacao).subscribe((retorno: ListaPaginada<Vacina>) => {
+      this.vacinas = retorno.list;
+      this.paginacao = this.getPaginacao(this.paginacao, retorno);
+      if (retorno.quantidade === 0) {
+        this.mensagemError(MensagemProperties.app_rst_nenhum_registro_encontrado);
+      }
+      this.loading = false;
+    }, (error) => {
+      this.loading = false;
+      this.mensagemError(error);
+    });
   }
 
   carregarTela() {
     this.activatedRoute.params.subscribe((params) => {
       this.idTrabalhador = params['id'];
     });
+    this.carregarHistoricoVacinas();
   }
 
   voltar(): void {
@@ -102,7 +111,7 @@ export class HistoricoVacinaComponent extends BaseComponent implements OnInit {
     });
   }
 
-  edit(item: Vacina) {
+  selecionar(item: Vacina) {
     this.idVacina = item.id;
     this.router.navigate(
       [`${environment.path_raiz_cadastro}/trabalhador/${this.idTrabalhador}/vacina-declarada/${this.idVacina}/cadastrar`]);
@@ -115,10 +124,6 @@ export class HistoricoVacinaComponent extends BaseComponent implements OnInit {
     }, (error) => {
       this.mensagemError(error);
     });
-  }
-
-  checkVacina(){
-    return this.vacinas.length > 0;
   }
 
   selecionarVacinaRemover(item: Vacina){
