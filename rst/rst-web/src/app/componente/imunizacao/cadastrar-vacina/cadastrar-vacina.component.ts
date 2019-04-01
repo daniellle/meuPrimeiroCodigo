@@ -110,8 +110,10 @@ export class CadastrarVacinaComponent extends BaseComponent implements OnInit {
 
   carregarVacina(id: number) {
     this.service.buscarVacinaPorId(id).subscribe((response: Vacina) => {
-      this.vacina = response;
-      this.converterModelParaForm();
+      if(response) {
+        this.vacina = response;
+        this.converterModelParaForm();
+      }
     }, (error) => {
       this.limparForm();
       this.mensagemError(error);
