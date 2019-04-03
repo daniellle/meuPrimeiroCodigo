@@ -35,13 +35,13 @@
                     <tr *ngFor="let item of contratos">
                         <th class="label text-center">
                         </th>
-                        <td class="col-nome col-quebra">&nbsp;{{item.unidadeObra.descricao}}</td>
-                        <td class="col-nome col-quebra">&nbsp;{{item.dataContratoInicio}}</td>
-                        <td class="col-nome col-quebra">&nbsp;{{item.dataContratoFim}}</td>
-                        <td class="col-nome col-quebra">&nbsp;{{item.anoVigencia}}</td>
-                        <td class="col-nome col-quebra">&nbsp;{{item.origemContrato.descricao}}</td>
-                        <td class="col-nome col-quebra">&nbsp;{{item.tipoPrograma.descricao}}</td>
-                        <td class="col-nome col-quebra">&nbsp;{{item.unidadeAtendimentoTrabalhador.nomeFantasia}}</td>
+                        <td class="col-nome col-quebra">&nbsp;{{item?.unidadeObra?.descricao}}</td>
+                        <td class="col-nome col-quebra">&nbsp;{{item?.dataContratoInicio}}</td>
+                        <td class="col-nome col-quebra">&nbsp;{{item?.dataContratoFim}}</td>
+                        <td class="col-nome col-quebra">&nbsp;{{item?.anoVigencia}}</td>
+                        <td class="col-nome col-quebra">&nbsp;{{item?.origemContrato?.descricao}}</td>
+                        <td class="col-nome col-quebra">&nbsp;{{item?.tipoPrograma?.descricao}}</td>
+                        <td class="col-nome col-quebra">&nbsp;{{item?.unidadeAtendimentoTrabalhador?.nomeFantasia}}</td>
 
                         <td class="col-nome col-nao-quebra">
                             <div class="form-check row-md-4" style="display: flex !important; align-items: center !important;">
