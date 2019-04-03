@@ -41,7 +41,7 @@
                         <td class="col-nome col-quebra">&nbsp;{{item?.anoVigencia}}</td>
                         <td class="col-nome col-quebra">&nbsp;{{item?.origemContrato?.descricao}}</td>
                         <td class="col-nome col-quebra">&nbsp;{{item?.tipoPrograma?.descricao}}</td>
-                        <td class="col-nome col-quebra">&nbsp;{{item?.unidadeAtendimentoTrabalhador?.nomeFantasia}}</td>
+                        <td class="col-nome col-quebra">&nbsp;{{item?.unidadeAtendimentoTrabalhador.nomeFantasia}}</td>
 
                         <td class="col-nome col-nao-quebra">
                             <div class="form-check row-md-4" style="display: flex !important; align-items: center !important;">
@@ -50,7 +50,7 @@
                                                   [disableRipple]="desativaToggle(item.flagInativo, item)"
                                                   [disabled]="desativaToggle(item.flagInativo, item)"
                                                   (change)="mudaStatus($event, item.id, item) "
-                                                  [checked]="(item.flagInativo == undefined || item.flagInativo == 'N') && validarVigenciaContrato(item) "
+                                                  [checked]="(item.flagInativo === undefined || item.flagInativo === null || item.flagInativo == 'N') && validarVigenciaContrato(item) "
                                                   [mdTooltip]="mudaTooltip(item)" [mdTooltipPosition]="'below'">
                                 </mat-slide-toggle>
                                 <img src="assets/img/unblock.svg" style="height: 15px">
