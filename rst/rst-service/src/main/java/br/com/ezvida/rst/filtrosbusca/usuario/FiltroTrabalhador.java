@@ -52,7 +52,7 @@ public class FiltroTrabalhador extends FiltroUsuario {
             this.filtro.adicionaRestricao(str.toString(), "idsUnidadesSesi", dadosFilter.getIdsUnidadeSESI());
         }
 
-        if(dadosFilter.isGestorEmpresa()) {
+        if(dadosFilter.isGestorEmpresa() && dadosFilter.getIdsEmpresa() != null) {
             StringBuilder str = new StringBuilder();
             if(usuarioFilter.getIdEmpresa() != null) {
                 str.append(" and ");
