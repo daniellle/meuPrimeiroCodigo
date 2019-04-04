@@ -156,9 +156,10 @@ public class UnidadeObraContratoUatDAO extends BaseRstDAO<UnidadeObraContratoUat
             jpql.append(" and unidadeAtendimentoTrabalhador.id in :uats");
         }
 
-       /* jpql.append(" order by unidadeObraContratoUat.dataContratoInicio desc, unidadeObraContratoUat.flagInativo");
-        jpql.append(" group by unidadeObraContratoUat.dataContratoInicio, unidadeObraContratoUat.flagInativo");*/
 
+        if(!count){
+            jpql.append(" order by case when unidadeObraContratoUat.flagInativo is null then 0  else 1  end, unidadeObraContratoUat.dataContratoInicio desc");
+        }
     }
 
     public Boolean existsByDRs(List<Long> listDRs, Long idContrato) {

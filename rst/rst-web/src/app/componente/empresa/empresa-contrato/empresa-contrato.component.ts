@@ -122,6 +122,19 @@ export class EmpresaContratoComponent extends BaseComponent implements OnInit {
         });
     }
 
+   usuarioSotemPerfisDeEmpresa(): boolean {
+    let validar = true;
+    this.usuarioLogado.papeis.forEach( (perfil) => {
+        if (perfil !== PerfilEnum.GEEM && perfil !== PerfilEnum.GEEMM &&
+            perfil !== PerfilEnum.PFS && perfil !== PerfilEnum.TRA &&
+            perfil !== PerfilEnum.GCOI && perfil !== PerfilEnum.RH &&
+            perfil !== PerfilEnum.ST) {
+            validar = false;
+        }
+        });
+    return validar;
+    }
+
     voltar() {
         if (this.route.snapshot.url[0].path === 'minhaempresa') {
             this.router.navigate([`${environment.path_raiz_cadastro}/empresa/minhaempresa`]);

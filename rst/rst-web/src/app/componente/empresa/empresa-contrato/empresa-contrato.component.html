@@ -71,7 +71,7 @@
     <button type="button" class="btn btn-secondary btn-cadastro" (click)="voltar();">{{ 'app_rst_btn_voltar' | recurso
         }}
     </button>
-    <button *ngIf="!isEmpresa" type="button" class="btn btn-primary btn-cadastro" (click)="criarCadastro();">{{ 'app_rst_btn_novo' |
+    <button *ngIf="!usuarioSotemPerfisDeEmpresa()" type="button" class="btn btn-primary btn-cadastro" (click)="criarCadastro();">{{ 'app_rst_btn_novo' |
         recurso }}
     </button>
 </div>
