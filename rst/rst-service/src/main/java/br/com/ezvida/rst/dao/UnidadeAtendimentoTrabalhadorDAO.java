@@ -509,7 +509,7 @@ public class UnidadeAtendimentoTrabalhadorDAO extends BaseDAO<UnidadeAtendimento
 
     public List<UnidadeAtendimentoTrabalhador> buscaTodasPorId(Set<Long> ids) {
         if(ids.isEmpty()) {
-            return Collections.EMPTY_LIST;
+            return new ArrayList<>();
         }
 
         StringBuilder jpql = new StringBuilder();

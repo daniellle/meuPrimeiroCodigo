@@ -1,7 +1,5 @@
-import { isNullOrUndefined } from 'util';
 import { IMyDpOptions } from 'mydatepicker';
-import { MomentModule } from 'angular2-moment';
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router, Data } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ImunizacaoService } from 'app/servico/imunizacao.service';
@@ -11,7 +9,7 @@ import { ToastyService } from 'ng2-toasty/src/toasty.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal/modal';
 import { DialogService } from 'ng2-bootstrap-modal/dist/dialog.service';
 import { Vacina } from 'app/modelo/vacina.model';
-import { ValidateData, ValidateDataPassadaOuCorrente, ValidateDataFutura } from 'app/compartilhado/validators/data.validator';
+import { ValidateData, ValidateDataFutura } from 'app/compartilhado/validators/data.validator';
 import { environment } from 'environments/environment';
 import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
 import { ProximaDoseVacina } from '../../../modelo/proximaDoseVacina.model';
@@ -112,8 +110,10 @@ export class CadastrarVacinaComponent extends BaseComponent implements OnInit {
 
   carregarVacina(id: number) {
     this.service.buscarVacinaPorId(id).subscribe((response: Vacina) => {
-      this.vacina = response;
-      this.converterModelParaForm();
+      if(response) {
+        this.vacina = response;
+        this.converterModelParaForm();
+      }
     }, (error) => {
       this.limparForm();
       this.mensagemError(error);

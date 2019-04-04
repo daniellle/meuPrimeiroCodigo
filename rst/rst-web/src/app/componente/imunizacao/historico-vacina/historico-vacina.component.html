@@ -30,8 +30,17 @@
     <button type="button " class="btn-rodape btn btn-secondary btn-cadastro" (click)="voltar()">{{'app_rst_btn_voltar' | recurso}}</button>
 </div>
 
-<div class="container-form space-up" *ngIf="checkVacina()">
-    <div class="grid-pesquisa">
+<app-spinner-loading [loading]="loading"></app-spinner-loading>
+
+<div class="container-form space-up" *ngIf="!loading">
+
+    <div *ngIf="isEmpty(vacinas)" class="row">
+        <div class="form-group col-md-12">
+            {{ 'app_rst_nenhum_registro_encontrado' | recurso }}
+        </div>
+    </div>
+
+    <div class="grid-pesquisa" *ngIf="isNotEmpty(vacinas)">
         <table class="table table-responsive table-hover">
             <thead>
                 <tr>
@@ -43,9 +52,6 @@
                     </th>
                     <th class="label">
                         <span>Próximas doses</span>
-                    </th>
-                    <th class="label">
-                        <span></span>
                     </th>
                     <th class="label">
                         <span></span>
@@ -62,15 +68,7 @@
                         </span>
                     </td>
                     <td class="col-nao-quebra">
-                            <button class="btn-link" (click)="openModal(confirmar)">
-                                    <img class="lixo" src="assets/img/edit.svg" alt="Excluir">
-                                </button>
-                        <button class="btn-link" (click)="edit(item)">
-                            <span class="fa fa-pencil"></span>
-                        </button>
-                    </td>
-                    <td class="col-nao-quebra">
-                        <button class="btn-link" (click)="openModal(confirmar); selecionarVacinaRemover(item)">
+                        <button class="btn-link" (click)="$event.stopPropagation(); openModal(confirmar); selecionarVacinaRemover(item)">
                             <img class="lixo" src="assets/img/trash.svg" alt="Excluir">
                         </button>
                     </td>

@@ -1,4 +1,3 @@
-import { SolicitarEmailService } from './../servico/solicitar-email.service';
 import { TrabalhadorService } from './../servico/trabalhador.service';
 import { AcessoNegadoComponent } from './erro/acesso-negado/acesso-negado.component';
 import { CompartilhadoModule } from 'app/compartilhado/compartilhado.module';
@@ -14,7 +13,6 @@ import { MensagemProperties } from 'app/compartilhado/utilitario/recurso.pipe';
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SolicitarEmailComponent } from './solicitar-email/solicitar-email.component';
 import { ParametroService } from 'app/servico/parametro.service';
 import { SistemaCredenciadoResetClientSecretComponent } from './sistema-credenciado-reset-client-secret/sistema-credenciado-reset-client-secret.component';
 import { SistemaCredenciadoService } from 'app/servico/sistema-credenciado.service';
@@ -42,12 +40,6 @@ const routes: Routes = [
                 data: { title: MensagemProperties.app_rst_alterar_senha_titulo },
             },
             {
-                path: 'solicitaremail/:id',
-                component: SolicitarEmailComponent,
-                data: { title: MensagemProperties.app_rst_alterar_senha_titulo },
-            },
-
-            {
                 path: 'resetclientsecret',
                 component: SistemaCredenciadoResetClientSecretComponent,
                 data: { title: MensagemProperties.app_rst_sistema_credenciado_reset_client_secret },
@@ -70,7 +62,6 @@ const routes: Routes = [
         RecuperarSenhaComponent,
         AcessoNegadoComponent,
         AlterarSenhaComponent,
-        SolicitarEmailComponent,
         SistemaCredenciadoResetClientSecretComponent],
     providers: [
         BloqueioService,
@@ -78,7 +69,6 @@ const routes: Routes = [
         ToastyService,
         AutenticacaoService,
         TrabalhadorService,
-        SolicitarEmailService,
         ParametroService,
         SistemaCredenciadoService,
     ],

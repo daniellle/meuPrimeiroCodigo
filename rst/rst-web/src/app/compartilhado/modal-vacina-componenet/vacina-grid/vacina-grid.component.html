@@ -13,7 +13,7 @@
     </thead>
     <tbody>
       <ng-container *ngFor="let item of list; let i = index">
-          <tr class="imunizacao" *ngIf="removido(item)" (click)="selecionar(item, i)">
+          <tr class="imunizacao" *ngIf="removido(item)">
               <td class="text-center">{{ nomeDaVacina }}</td>
               <td>{{item?.dtProximaDoseVacina | date: 'dd/MM/yyyy' }}</td>
               <td class="text-center">
@@ -21,7 +21,7 @@
                   <img class="lixo" src="assets/img/trash.svg" alt="Excluir">
                 </button>
               </td>
-            </tr>
+          </tr>
       </ng-container>
     </tbody>
   </table>

@@ -73,9 +73,6 @@ public class TrabalhadorService extends BaseService {
     @Preferencial
     private UsuarioService usuarioService;
 
-    @Inject
-    private SolicitacaoEmailService solicitacaoEmailService;
-
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Trabalhador buscarPorId(TrabalhadorFilter trabalhadorFilter, ClienteAuditoria auditoria,
                                    DadosFilter dadosFilter) {
@@ -404,23 +401,6 @@ public class TrabalhadorService extends BaseService {
             }
         }
         return ehTrabalhador;
-    }
-
-    public SolicitacaoEmail solicitarEmailSesi(PrimeiroAcesso solicitacaoEmail) {
-        if (solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador() != null
-                && solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().size() == 1
-                && solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next() != null
-                && solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next().getId() == null) {
-            solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next().getTelefone()
-                    .setTipo(TipoTelefone.RESIDENCIAL);
-            solicitacaoEmail.getTrabalhador().getListaTelefoneTrabalhador().iterator().next().getTelefone()
-                    .setContato(SimNao.SIM);
-        }
-
-        salvarPrimeiroAcesso(solicitacaoEmail);
-        solicitacaoEmail.getSolicitacaoEmail()
-                .setCpf(adicionarMascaraCpf(solicitacaoEmail.getSolicitacaoEmail().getCpf()));
-        return solicitacaoEmailService.enviarEmail(solicitacaoEmail.getSolicitacaoEmail());
     }
 
     public Trabalhador buscarVacinasAlergiasMedicamentosAutoDeclarados(String cpf) {

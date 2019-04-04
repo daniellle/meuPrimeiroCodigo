@@ -353,14 +353,15 @@ export class CadastroTrabalhadorComponent extends BaseComponent implements OnIni
         }
 
         if (this.trabalhador.listaEnderecoTrabalhador) {
+            const municipio = this.trabalhador.listaEnderecoTrabalhador[0].endereco.municipio || null
             this.trabalhadorForm.patchValue({
                 endereco: this.trabalhador.listaEnderecoTrabalhador[0].endereco.descricao,
                 complemento: this.trabalhador.listaEnderecoTrabalhador[0].endereco.complemento,
                 numero: this.trabalhador.listaEnderecoTrabalhador[0].endereco.numero,
                 bairro: this.trabalhador.listaEnderecoTrabalhador[0].endereco.bairro,
                 cep: this.trabalhador.listaEnderecoTrabalhador[0].endereco.cep,
-                municipio: this.trabalhador.listaEnderecoTrabalhador[0].endereco.municipio.id.toString(),
-                estado: this.trabalhador.listaEnderecoTrabalhador[0].endereco.municipio.estado.id,
+                municipio: municipio ? municipio.id.toString() : null,
+                estado: (municipio && municipio.estado) ? municipio.estado.id : null,
             });
         }
 

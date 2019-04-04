@@ -39,7 +39,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="aceitouTermo && !solicitarEmail">
+<div *ngIf="aceitouTermo">
     <p class="text-center">Olá {{primeiroAcesso.trabalhador.nome}}</p>
     <form class="float-label" [formGroup]="formularioSenha">
         <p class="text-center">{{ 'app_rst_primeiro_acesso_confirme_email' | recurso }}</p>
@@ -56,43 +56,6 @@
             <button type="button" (click)="confirmarPrimeiroAcesso();" class="btn-rodape btn btn-primary btn-cadastro " *ngIf="!modoConsulta">{{'app_rst_btn_confirmar' | recurso}}</button>
         </div>
     </div>
-    <!-- <div class="btn-rodape-acoes">
-        <div class="img-modal-btn text-center">{{'app_rst_primeiro_acesso_soliticat_email_sesi' | recurso}}<button class="btn-img" (click)="solicitarEmailSesi()" *ngIf="!modoConsulta"><img class="btn-img-link" src="assets/img/add.svg" alt="Solicitar"></button></div>
-    </div> -->
-</div>
-
-<div *ngIf="aceitouTermo && solicitarEmail">
-    <p class="text-center">
-        Solicitar email da Rede SESI VIVA +
-    </p>
-    <p>
-        Confirme seus dados:
-    </p>
-    <div class="row">
-        <div class="form-group  col-sm-12 col-md-12" [ngClass]="{ divDis : nome.disabled }">
-            <md-input-container [floatPlaceholder]="true">
-                <input required #nome mdInput placeholder="{{'app_rst_labels_nome' | recurso}}" type="text" [disabled]='solicitacaoEmail.nome' name="nome" maxlength="255" [(ngModel)]="solicitacaoEmail.nome" class="form-control" id="nome" />
-            </md-input-container>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="form-group col-md-6">
-            <md-input-container [floatPlaceholder]="true">
-                <input *ngIf="solicitacaoEmail.email" mdInput placeholder="{{'app_rst_labels_nome' | recurso}}" type="text" name="nome" maxlength="255" [(ngModel)]="solicitacaoEmail.email" class="form-control" id="email" />
-                <input *ngIf="!solicitacaoEmail.email" mdInput placeholder="{{'app_rst_labels_email_alternativo' | recurso}}" type="text" name="nome" maxlength="255" [(ngModel)]="solicitacaoEmail.email" class="form-control" id="email">
-            </md-input-container>
-        </div>
-        <div class="form-group col-md-6">
-            <md-input-container [floatPlaceholder]="true">
-                <input required mdInput placeholder="{{'app_rst_labels_telefone' | recurso}}" type="text" name="nome" maxlength="15" [(ngModel)]="solicitacaoEmail.telefone" class="form-control" id="telefone" (keyup)="mudarMascara($event)" />
-            </md-input-container>
-        </div>
-    </div>
-
-    <div class="btn-rodape-acoes">
-        <button type="button " class="btn-rodape btn btn-primary" (click)="confirmarSolicitacaoEmailSesi()">{{'app_rst_btn_enviar' | recurso}}</button>
-    </div>
 </div>
 
 <ng-template #modalTermoUso let-close="close" let-fechar="dismiss" class="modal-content">
@@ -100,7 +63,7 @@
         <p style="text-align:center" class="text-center modal-title">{{ 'app_rst_primeiro_acesso_title_termo_uso' | recurso }}</p>
 
     </div>
-    <a (click)="mostrar()">
+    <a (click)="showModal()">
         <div class="text-center modal-title space-up visualizar">
             <span>Visualizar
                     <img [ngClass]="{'img-size': !show , 'rotate': show }"  src="assets/img/seta_baixo.svg" alt="estender" />

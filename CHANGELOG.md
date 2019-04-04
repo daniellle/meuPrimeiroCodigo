@@ -8,7 +8,7 @@
 - [CADASTROS] Erro Pesquisa - Gestor DR Aplicações (GLPI 4695)
 - [CADASTROS] Card Vacinas Autodeclaradas não está acessível (GLPI 3020)
 - [CADASTROS] Gestor DR Master da BA está enxergando de outras DR´s (GLPI 5007)
-- [CADASTROS] Alterar Comportamento do Status dos Contratos para contratos virgentes
+- [CADASTROS] Alterar Comportamento do Status dos Contratos para contratos vigentes
 - [CADASTROS] Alterar/Incluir Campo Origem do Contrato
 - [CADASTROS] Alterar "desbloqueio manual" para " Sem Serviço"
 - [CADASTROS] Alterar "Tipo de Programa" para "Tipo de Serviço"

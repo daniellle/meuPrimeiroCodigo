@@ -12,27 +12,27 @@ public class DadosFilter implements Serializable {
     private static final long serialVersionUID = -3468814525094214305L;
 
     public static final String ADMINISTRADOR = "ADM";
-    public static final String DIRETOR_DR = "DIDR";
+    public static final String CALL_CENTER = "ATD";
     public static final String DIRETOR_DN = "DIDN";
-    public static final String GESTOR_DR = "GDRA";
+    public static final String DIRETOR_DR = "DIDR";
+    public static final String GESTOR_COMERCIAL_DR = "GCDR";
+    public static final String GESTOR_CONTEUDO_DN = "GCDN";
+    public static final String GESTOR_DN_APLIACACOES = "GDNA";
+    public static final String GESTOR_DR_APLICACOES = "GDRA";
     public static final String GESTOR_DR_MASTER = "GDRM";
     public static final String GESTOR_EMPRESA = "GEEM";
     public static final String GESTOR_EMPRESA_MASTER = "GEEMM";
-    public static final String GESTOR_SINDICATO = "GESI";
-    public static final String TRABALHADOR = "TRA";
     public static final String GESTOR_PARCEIRO = "GEPC";
-    public static final String GESTOR_REDE = "GERC";
-    public static final String GESTOR_DN = "GDNA";
-    public static final String PROF_SAUDE = "PFS";
-    public static final String REC_HUMANOS = "RH";
-    public static final String SEG_TRABALHO = "ST";
-    public static final String SUPERINTENDENTE_DR = "SUDR";
-    public static final String MEDICO_TRABALHO_DN = "MTSDN";
-    public static final String GESTOR_CONTEUDO_DN = "GCDN";
-    public static final String MEDICO_TRABALHO_DR = "MTSDR";
-    public static final String GESTOR_COMERCIAL_DR = "GCDR";
+    public static final String GESTOR_REDE_CREDENCIADA = "GERC";
+    public static final String GESTOR_SINDICATO = "GESI";
     public static final String GESTOR_UNIDADE_SESI = "GUS";
-    public static final String CALL_CENTER = "ATD";
+    public static final String MEDICO_TRABALHO_DN = "MTSDN";
+    public static final String MEDICO_TRABALHO_DR = "MTSDR";
+    public static final String PROFISSIONAL_SAUDE = "PFS";
+    public static final String RECURSOS_HUMANOS = "RH";
+    public static final String SEGURANCA_TRABALHO = "ST";
+    public static final String SUPERINTENDENTE_DR = "SUDR";
+    public static final String TRABALHADOR = "TRA";
 
     private boolean administrador;
 
@@ -97,11 +97,11 @@ public class DadosFilter implements Serializable {
         this.administrador = contemPapel(ADMINISTRADOR);
         this.diretoriaDr = contemPapel(DIRETOR_DR);
         this.diretoriaDn = contemPapel(DIRETOR_DN);
-        this.gestorDr = contemPapeis(GESTOR_DR, GESTOR_DR_MASTER, SUPERINTENDENTE_DR, MEDICO_TRABALHO_DR, GESTOR_COMERCIAL_DR);
-        this.gestorDn = contemPapeis(GESTOR_DN, MEDICO_TRABALHO_DN, GESTOR_CONTEUDO_DN);
-        this.gestorEmpresa = contemPapeis(GESTOR_EMPRESA, GESTOR_EMPRESA_MASTER, PROF_SAUDE, REC_HUMANOS, SEG_TRABALHO);
+        this.gestorDr = contemPapeis(GESTOR_DR_APLICACOES, GESTOR_DR_MASTER, SUPERINTENDENTE_DR, MEDICO_TRABALHO_DR, GESTOR_COMERCIAL_DR);
+        this.gestorDn = contemPapeis(GESTOR_DN_APLIACACOES, MEDICO_TRABALHO_DN, GESTOR_CONTEUDO_DN);
+        this.gestorEmpresa = contemPapeis(GESTOR_EMPRESA, GESTOR_EMPRESA_MASTER, PROFISSIONAL_SAUDE, RECURSOS_HUMANOS, SEGURANCA_TRABALHO);
         this.gestorParceiroCredenciado = contemPapel(GESTOR_PARCEIRO);
-        this.gestorRedeCredenciada = contemPapel(GESTOR_REDE);
+        this.gestorRedeCredenciada = contemPapel(GESTOR_REDE_CREDENCIADA);
         this.gestorSindicato = contemPapel(GESTOR_SINDICATO);
         this.trabalhador = contemPapel(TRABALHADOR);
         this.getorUnidadeSESI = contemPapel(GESTOR_UNIDADE_SESI);
@@ -166,17 +166,17 @@ public class DadosFilter implements Serializable {
         }
 
         if (isGestorEmpresa()) {
-            listaPerfisPermitidos = Sets.newHashSet(GESTOR_SINDICATO, GESTOR_PARCEIRO, GESTOR_REDE);
+            listaPerfisPermitidos = Sets.newHashSet(GESTOR_SINDICATO, GESTOR_PARCEIRO, GESTOR_REDE_CREDENCIADA);
         }
 
         if (isGestorDr() || isDiretoriaDr()) {
-            listaPerfisPermitidos = Sets.newHashSet(TRABALHADOR, GESTOR_SINDICATO, GESTOR_PARCEIRO, GESTOR_REDE,
+            listaPerfisPermitidos = Sets.newHashSet(TRABALHADOR, GESTOR_SINDICATO, GESTOR_PARCEIRO, GESTOR_REDE_CREDENCIADA,
                     GESTOR_EMPRESA, GESTOR_EMPRESA_MASTER);
         }
 
         if (isGestorDn() || isDiretoriaDn()) {
-            listaPerfisPermitidos = Sets.newHashSet(TRABALHADOR, GESTOR_SINDICATO, GESTOR_PARCEIRO, GESTOR_REDE,
-                    GESTOR_EMPRESA, GESTOR_DR, GESTOR_DR_MASTER, SUPERINTENDENTE_DR, MEDICO_TRABALHO_DR, GESTOR_COMERCIAL_DR, DIRETOR_DR);
+            listaPerfisPermitidos = Sets.newHashSet(TRABALHADOR, GESTOR_SINDICATO, GESTOR_PARCEIRO, GESTOR_REDE_CREDENCIADA,
+                    GESTOR_EMPRESA, GESTOR_DR_APLICACOES, GESTOR_DR_MASTER, SUPERINTENDENTE_DR, MEDICO_TRABALHO_DR, GESTOR_COMERCIAL_DR, DIRETOR_DR);
         }
     }
 
@@ -289,7 +289,7 @@ public class DadosFilter implements Serializable {
     }
 
     public boolean isSuperUsuario() {
-        return this.isAdministrador() || this.isGestorDn() | this.isDiretoriaDn();
+        return this.isAdministrador() || this.isGestorDn() || this.isDiretoriaDn();
     }
 
     public void setGestorDn(boolean gestorDn) {
@@ -351,4 +351,5 @@ public class DadosFilter implements Serializable {
     public boolean isCallCenter(){
         return this.contemPapel(CALL_CENTER);
     }
+
 }

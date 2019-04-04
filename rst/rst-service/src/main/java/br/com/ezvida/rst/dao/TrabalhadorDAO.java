@@ -64,7 +64,7 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 
     private void filtroIdsPesquisarPorId(DadosFilter segurancaFilter, TrabalhadorFilter trabalhadorFilter, Boolean usuarioLogadoSePesquisando, Long id, StringBuilder jpql, Map<String, Object> parametros) {
 
-        if (segurancaFilter != null && !segurancaFilter.isAdministrador()) {
+        if (segurancaFilter != null && !segurancaFilter.isSuperUsuario()) {
             boolean notUserLog = !(Boolean.TRUE.equals(trabalhadorFilter.getFromMinhaConta()) && usuarioLogadoSePesquisando);
             boolean ativo = id != null;
             if (segurancaFilter.temIdsEmpresa() && notUserLog) {
@@ -111,7 +111,7 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
         jpql.append(" left join fetch trabalhador.municipio m ");
         jpql.append(" left join fetch m.estado e ");
 
-        if (segurancaFilter != null && !segurancaFilter.isAdministrador()) {
+        if (segurancaFilter != null && !segurancaFilter.isSuperUsuario()) {
             if (segurancaFilter.temIdsEmpresa() || segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsUnidadeSESI()) {
                 jpql.append(" left join trabalhador.listaEmpresaTrabalhador listaEmpresaTrabalhador ");
                 jpql.append(" left join listaEmpresaTrabalhador.empresa empresa ");
@@ -229,7 +229,7 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
 
     private void addFiltroIds(StringBuilder jpql, Map<String, Object> parametros, DadosFilter segurancaFilter,
                               boolean hasFilters) {
-        if (!segurancaFilter.isAdministrador()) {
+        if (!segurancaFilter.isSuperUsuario()) {
             if (segurancaFilter.temIdsEmpresa()) {
                 if (hasFilters) {
                     jpql.append(" and ");
@@ -266,7 +266,7 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
         }
     }
 
-    private void montarFiltroFalecidoPaginado(StringBuilder jpql, TrabalhadorFilter trabalhadorFilter, boolean situacao,
+	private void montarFiltroFalecidoPaginado(StringBuilder jpql, TrabalhadorFilter trabalhadorFilter, boolean situacao,
                                               boolean cpf, boolean nome, boolean nit, boolean estado) {
         if (trabalhadorFilter.isFalecidos()) {
             if (situacao || cpf || nome || nit || estado) {
@@ -340,13 +340,13 @@ public class TrabalhadorDAO extends BaseDAO<Trabalhador, Long> {
             jpql.append(" left join m.estado e ");
         }
 
-        if (segurancaFilter != null) {
-            if (segurancaFilter.temIdsEmpresa() || segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsUnidadeSESI() && !segurancaFilter.isAdministrador()) {
+        if (segurancaFilter != null && !segurancaFilter.isSuperUsuario()) {
+            if (segurancaFilter.temIdsEmpresa() || segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsUnidadeSESI()) {
                 jpql.append(" inner join trabalhador.listaEmpresaTrabalhador listaEmpresaTrabalhador ");
                 jpql.append(" inner join listaEmpresaTrabalhador.empresa empresa ");
             }
 
-            if (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsUnidadeSESI() && !segurancaFilter.isAdministrador()) {
+            if (segurancaFilter.temIdsDepRegional() || segurancaFilter.temIdsUnidadeSESI()) {
                 jpql.append(" inner join empresa.empresaUats empresaUats ");
                 jpql.append(" inner join empresaUats.unidadeAtendimentoTrabalhador unidadeAtendimentoTrabalhador ");
                 jpql.append(" inner join unidadeAtendimentoTrabalhador.departamentoRegional depRegional ");
