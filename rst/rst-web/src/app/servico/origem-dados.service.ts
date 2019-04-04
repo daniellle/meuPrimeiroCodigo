@@ -20,4 +20,13 @@ export class OrigemDadosService extends BaseService<OrigemDados>{
                 return Observable.throw(error);
             });
     }
+
+    findOrigemDoContrato(): Observable<OrigemDados[]> {
+        return super.get('/v1/origemdados/origem-contrato')
+        .map((response: Response) => {
+            return response;
+        }).catch((error: Response) => {
+            return Observable.throw(error);
+        });
+    }
 }

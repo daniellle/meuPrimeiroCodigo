@@ -50,6 +50,7 @@ import { CadastroEmpresaContratoComponent } from './empresa-contrato/cadastro-em
 import {TipoProgramaService} from "../../servico/tipo-programa.service";
 import {UsuarioEntidadeService} from "../../servico/usuario-entidade.service";
 import {DepartRegionalService} from "../../servico/depart-regional.service";
+import { OrigemDadosService } from 'app/servico/origem-dados.service';
 
 const routes: Routes = [
     {
@@ -515,6 +516,6 @@ const routes: Routes = [
     providers: [EmpresaService, DialogService, PorteEmpresaService, EstadoService, TipoEmpresaService, UatService, UnidadeObraService,
         RamoEmpresaService, EmpresaJornadaService, JornadaService, SindicatoService, EmpresaCboService, CboService, FuncaoService,
         SetorService, EmpresaLotacaoService, EmpresaSindicatoService, EmpresaFuncaoService, EmpresaSetorService, EmpresaTrabalhadorService,
-        TrabalhadorService, EmpresaContratoService, TipoProgramaService, UsuarioEntidadeService, DepartRegionalService],
+        TrabalhadorService, EmpresaContratoService, TipoProgramaService, UsuarioEntidadeService, DepartRegionalService, OrigemDadosService],
 })
 export class EmpresaModule { }

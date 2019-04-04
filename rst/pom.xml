@@ -6,7 +6,7 @@
 
     <groupId>br.com.ezvida.rst</groupId>
     <artifactId>rst</artifactId>
-    <version>2.139.0</version>
+    <version>2.145.0</version>
     <packaging>pom</packaging>
 
     <name>Registro de Saúde do Trabalhador</name>
@@ -115,6 +115,12 @@
         <br.com.ezvida.girst.api-client.version>1.10.0</br.com.ezvida.girst.api-client.version>
 
     </properties>
+    <repositories>
+        <repository>
+            <id>solutis-nexus</id>
+            <url>https://nexus.solutis.digital/repository/maven-public</url>
+        </repository>
+    </repositories>
 
     <dependencyManagement>
 

@@ -20,10 +20,11 @@
                 <thead>
                     <tr>
                         <th>&nbsp;</th>
-                        <th class="label" style="width: 15%;"><span>{{ 'app_rst_labels_unidade_nome_obra' | recurso }}</span></th>
-                        <th class="label"><span>{{ 'app_rst_labels_data_inicio_contrato' | recurso }}</span></th>
-                        <th class="label"><span>{{ 'app_rst_labels_data_final_contrato' | recurso }}</span></th>
-                        <th class="label"><span>{{ 'app_rst_labels_ano_vigencia_contrato' | recurso }}</span></th>
+                        <th class="label" style="width: 10%"><span>{{ 'app_rst_labels_unidade_nome_obra' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_data_inicio_contrato_grid' | recurso }}</span></th>
+                        <th class="label"><span>{{ 'app_rst_labels_data_final_contrato_grid' | recurso }}</span></th>
+                        <th class="label" style="width: 8%"><span>{{ 'app_rst_labels_ano_vigencia_contrato' | recurso }}</span></th>
+                        <th class="label" style="width: 12%"><span>{{ 'app_rst_labels_origem_contrato' | recurso }}</span></th>
                         <th class="label"><span>{{ 'app_rst_labels_programa_contrato' | recurso }}</span></th>
                         <th class="label"><span>{{ 'app_rst_labels_unidade_sesi_nome' | recurso }}</span></th>
                         <th class="label"><span>{{ 'app_rst_labels_contrato_status' | recurso }}</span></th>
@@ -34,20 +35,22 @@
                     <tr *ngFor="let item of contratos">
                         <th class="label text-center">
                         </th>
-                        <td class="col-nome col-nao-quebra">&nbsp;{{item.unidadeObra.descricao}}</td>
-                        <td class="col-nome col-nao-quebra">&nbsp;{{item.dataContratoInicio}}</td>
-                        <td class="col-nome col-nao-quebra">&nbsp;{{item.dataContratoFim}}</td>
-                        <td class="col-nome col-quebra">&nbsp;{{item.anoVigencia}}</td>
-                        <td class="col-nome col-quebra">&nbsp;{{item.tipoPrograma.sigla}}</td>
-                        <td class="col-nome col-quebra">&nbsp;{{item.unidadeAtendimentoTrabalhador.nomeFantasia}}</td>
+                        <td class="col-nome col-quebra">&nbsp;{{item?.unidadeObra?.descricao}}</td>
+                        <td class="col-nome col-quebra">&nbsp;{{item?.dataContratoInicio}}</td>
+                        <td class="col-nome col-quebra">&nbsp;{{item?.dataContratoFim}}</td>
+                        <td class="col-nome col-quebra">&nbsp;{{item?.anoVigencia}}</td>
+                        <td class="col-nome col-quebra">&nbsp;{{item?.origemContrato?.descricao}}</td>
+                        <td class="col-nome col-quebra">&nbsp;{{item?.tipoPrograma?.descricao}}</td>
+                        <td class="col-nome col-quebra">&nbsp;{{item?.unidadeAtendimentoTrabalhador.nomeFantasia}}</td>
+
                         <td class="col-nome col-nao-quebra">
                             <div class="form-check row-md-4" style="display: flex !important; align-items: center !important;">
                                 <img src="assets/img/block.svg" style="height: 15px; margin-right: 7px;">
                                 <mat-slide-toggle #tooltip="mdTooltip" name="cipa" id="cipa"
-                                                  [disableRipple]="desativaToggle(item.flagInativo)"
-                                                  [disabled]="desativaToggle(item.flagInativo)"
+                                                  [disableRipple]="desativaToggle(item.flagInativo, item)"
+                                                  [disabled]="desativaToggle(item.flagInativo, item)"
                                                   (change)="mudaStatus($event, item.id, item) "
-                                                  [checked]="item.flagInativo == undefined || item.flagInativo == 'N'"
+                                                  [checked]="(item.flagInativo === undefined || item.flagInativo === null || item.flagInativo == 'N') && validarVigenciaContrato(item) "
                                                   [mdTooltip]="mudaTooltip(item)" [mdTooltipPosition]="'below'">
                                 </mat-slide-toggle>
                                 <img src="assets/img/unblock.svg" style="height: 15px">
@@ -68,7 +71,7 @@
     <button type="button" class="btn btn-secondary btn-cadastro" (click)="voltar();">{{ 'app_rst_btn_voltar' | recurso
         }}
     </button>
-    <button *ngIf="!isEmpresa" type="button" class="btn btn-primary btn-cadastro" (click)="criarCadastro();">{{ 'app_rst_btn_novo' |
+    <button *ngIf="!usuarioSotemPerfisDeEmpresa()" type="button" class="btn btn-primary btn-cadastro" (click)="criarCadastro();">{{ 'app_rst_btn_novo' |
         recurso }}
     </button>
 </div>

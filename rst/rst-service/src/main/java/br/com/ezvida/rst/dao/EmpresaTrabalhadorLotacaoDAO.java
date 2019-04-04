@@ -220,11 +220,11 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 
 		jpql.append(" select empresaTrabalhadorLotacao ");
 		jpql.append(" from EmpresaTrabalhadorLotacao empresaTrabalhadorLotacao ");
-		jpql.append(" left join fetch empresaTrabalhadorLotacao.empresaTrabalhador empresaTrabalhador ");
-		jpql.append(" left join fetch empresaTrabalhador.trabalhador  trabalhador");
-		jpql.append(" left join fetch empresaTrabalhadorLotacao.empresaLotacao empresaLotacao");
-		jpql.append(" left join fetch empresaLotacao.unidadeObra unidadeObra ");
-		jpql.append(" left join fetch unidadeObra.unidadeObraContratoUats unidadeObraContratoUat ");
+		jpql.append(" inner join fetch empresaTrabalhadorLotacao.empresaTrabalhador empresaTrabalhador ");
+		jpql.append(" inner join fetch empresaTrabalhador.trabalhador  trabalhador");
+		jpql.append(" inner join fetch empresaTrabalhadorLotacao.empresaLotacao empresaLotacao");
+		jpql.append(" inner join fetch empresaLotacao.unidadeObra unidadeObra ");
+		jpql.append(" inner join fetch unidadeObra.unidadeObraContratoUats unidadeObraContratoUat ");
 		jpql.append(" where trabalhador.cpf = :cpf ");
 		jpql.append(" and (unidadeObraContratoUat.dataContratoInicio is not null and unidadeObraContratoUat.dataContratoInicio <= :dataHoje) ");
 		jpql.append(" and (unidadeObraContratoUat.dataContratoFim is not null and unidadeObraContratoUat.dataContratoFim > :dataHoje) ");
@@ -236,8 +236,7 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		query.setParameter("cpf", cpf);
 		query.setParameter("dataHoje", new Date(), TemporalType.TIMESTAMP);
 		query.setParameter("flagInativo", "N".charAt(0));
-		return true;
-//		return (query.getResultList().size() != 0);
+		return (query.getResultList().size() != 0);
 	}
 
 
@@ -247,9 +246,9 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 
 		sql.append(" select usuarioEntidade ");
 		sql.append(" from UsuarioEntidade usuarioEntidade ");
-		sql.append(" left join fetch usuarioEntidade.empresa empresa ");
-		sql.append(" left join fetch empresa.unidadeObra unidadeObra ");
-		sql.append(" left join fetch unidadeObra.unidadeObraContratoUats unidadeObraContratoUat ");
+		sql.append(" inner join fetch usuarioEntidade.empresa empresa ");
+		sql.append(" inner join fetch empresa.unidadeObra unidadeObra ");
+		sql.append(" inner join fetch unidadeObra.unidadeObraContratoUats unidadeObraContratoUat ");
 		sql.append(" where usuarioEntidade.cpf = :cpf ");
 		sql.append(" and (unidadeObraContratoUat.dataContratoInicio is not null and unidadeObraContratoUat.dataContratoInicio <= :dataHoje) ");
 		sql.append(" and (unidadeObraContratoUat.dataContratoFim is not null and unidadeObraContratoUat.dataContratoFim > :dataHoje) ");
@@ -257,8 +256,7 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 		TypedQuery<UsuarioEntidade> query = criarConsultaPorTipo(sql.toString(), UsuarioEntidade.class);
 		query.setParameter("cpf", cpf);
 		query.setParameter("dataHoje", new Date(), TemporalType.TIMESTAMP);
-		return true;
-//		return (query.getResultList().size() != 0);
+		return (query.getResultList().size() != 0);
 	}
 
 }

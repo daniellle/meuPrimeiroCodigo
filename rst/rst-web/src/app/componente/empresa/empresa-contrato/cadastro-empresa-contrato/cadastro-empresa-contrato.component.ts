@@ -36,6 +36,8 @@ import {DepartamentoRegionalProdutoServicoService} from "../../../../servico/dep
 import {DepartRegionalService} from "../../../../servico/depart-regional.service";
 import {FiltroDepartRegional} from "../../../../modelo/filtro-depart-regional.model";
 import {MdOptionSelectionChange} from "@angular/material";
+import { OrigemDados } from 'app/modelo/origem-dados.model';
+import { OrigemDadosService } from 'app/servico/origem-dados.service';
 
 @Component({
     selector: 'app-cadastro-empresa-contrato',
@@ -72,7 +74,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
     listaUsuarioEntidade: UsuarioEntidade[];
     filtroDepartRegional: FiltroDepartRegional;
     drSelecionado: DepartamentoRegional;
-
+    listOrigensDoContrato: OrigemDados[] = [];
 
     constructor(
         private router: Router,
@@ -86,6 +88,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         private tipoProgramaService: TipoProgramaService,
         private usuarioEntidadeService: UsuarioEntidadeService,
         private drService: DepartRegionalService,
+        private origemDadosService: OrigemDadosService,
     ) {
         super(bloqueioService, dialogo);
         this.delayerUndObra.debounceTime(500).distinctUntilChanged().subscribe(text => {this.unidadesObra = this.pesquisarUnidadeObrasPorNome(text)});
@@ -114,6 +117,7 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         this.model = new Contrato();
         this.listaContratos = new Array<Contrato>();
         this.carregarCombo();
+        this.carregarOrigensDoContrato();
         this.title = MensagemProperties.app_rst_empresa_contrato_cadastrar_title;
         this.createForm();
 
@@ -258,6 +262,13 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
             }
         }
 
+        if (this.contratoForm.controls['origemContrato'].errors) {
+            if (this.contratoForm.controls['origemContrato'].errors.required) {
+                this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['origemContrato'],
+                    MensagemProperties.app_rst_labels_origem_contrato);
+            }
+        }
+
         if (this.contratoForm.controls['anoVigencia'].errors) {
             if (this.contratoForm.controls['anoVigencia'].errors.required) {
                 this.mensagemErroComParametros('app_rst_campo_obrigatorio', this.contratoForm.controls['anoVigencia'],
@@ -332,6 +343,12 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
         });
     }
 
+    private carregarOrigensDoContrato(){
+        this.origemDadosService.findOrigemDoContrato().subscribe((retorno)=>{
+            this.listOrigensDoContrato = retorno;
+        });
+    }
+
     pesquisarUnidadeObrasPorNome(text: string): Observable<UnidadeObra[]> {
         return this.unidadeObraService.pesquisarPorNome(text, this.idEmpresa);
     }
@@ -400,7 +417,12 @@ export class CadastroEmpresaContratoComponent extends BaseComponent implements O
                     Validators.maxLength(100),
                     Validators.required
                 ],
-            ]
+            ],
+            origemContrato: [
+                null,
+                [Validators.required],
+            ],
+
         }, {
             validator: datasContratoValidator
         });

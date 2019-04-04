@@ -99,7 +99,7 @@ public class UnidadeObraContratoUatEndpoint extends SegurancaEndpoint<UnidadeObr
         , @Context HttpServletRequest request) {
         getResponse().setCharacterEncoding(StandardCharsets.UTF_8.displayName());
         return Response.status(HttpServletResponse.SC_OK)
-            .entity(unidadeObraContratoUatService.ativar(unidadeObraContratoUat))
+            .entity(unidadeObraContratoUatService.ativar(unidadeObraContratoUat, ClienteInfos.getDadosFilter(context)))
             .type(MediaType.APPLICATION_JSON).build();
 
     }
@@ -113,7 +113,7 @@ public class UnidadeObraContratoUatEndpoint extends SegurancaEndpoint<UnidadeObr
         , @Context HttpServletRequest request) {
         getResponse().setCharacterEncoding(StandardCharsets.UTF_8.displayName());
         return Response.status(HttpServletResponse.SC_OK)
-            .entity(unidadeObraContratoUatService.desativar(unidadeObraContratoUat))
+            .entity(unidadeObraContratoUatService.desativar(unidadeObraContratoUat, ClienteInfos.getDadosFilter(context)))
             .type(MediaType.APPLICATION_JSON).build();
 
     }

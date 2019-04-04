@@ -24,6 +24,9 @@ public class ValidationServiceTest extends BaseService {
     @Mock
     private UnidadeAtendimentoTrabalhadorService unidadeAtendimentoTrabalhadorService;
 
+    @Mock
+    private UnidadeObraContratoUatService unidadeObraContratoUatService;
+
     private static final String ADM_PERFIL_SIGLA = "ADM";
 
     public static final String GESTOR_DR_SIGLA = "GDRA";
@@ -35,9 +38,12 @@ public class ValidationServiceTest extends BaseService {
 
     private Long idUnidade;
 
+    private Long idContrato;
+
     @Before
     public void setup() {
         this.idUnidade = 1L;
+        this.idContrato = 1L;
     }
 
     @Test
@@ -77,5 +83,44 @@ public class ValidationServiceTest extends BaseService {
         Assert.assertFalse(this.validationService.validarFiltroDadosGestaoUnidadeSesi(dadosFilter, this.idUnidade));
     }
 
+    @Test
+    public void testValidationContratoADM() {
+        this.dadosFilter = new DadosFilter(
+                new HashSet<>(Arrays.asList(ADM_PERFIL_SIGLA)), null, null, null,
+                null, null, null, null);
+        Assert.assertTrue(this.validationService.validarFiltroDadosContrato(this.dadosFilter, this.idUnidade));
+    }
 
+
+    @Test
+    public void testValidationContratoGDRValid() {
+        List<Long> listIdDR = Arrays.asList(1L);
+        Mockito.when(this.unidadeObraContratoUatService.
+                existisByDrs(listIdDR, this.idContrato)).thenReturn(true);
+        this.dadosFilter = new DadosFilter(
+                new HashSet<>(Arrays.asList(GESTOR_DR_SIGLA)), new HashSet<>(listIdDR), null, null,
+                null, null, null, null);
+        Assert.assertTrue(this.validationService.validarFiltroDadosContrato(dadosFilter, this.idContrato));
+    }
+
+
+    @Test
+    public void testValidationContratoGUSValid() {
+        List<Long> listIdUnidades = Arrays.asList(1L);
+        Mockito.when(this.unidadeObraContratoUatService.existisByUnidades(listIdUnidades, this.idContrato)).thenReturn(true);
+        this.dadosFilter = new DadosFilter(
+                new HashSet<>(Arrays.asList(GESTOR_UNIDADE_SESI_SIGLA)), null, null, null,
+                null, null, null, new HashSet<>(listIdUnidades));
+        Assert.assertTrue(this.validationService.validarFiltroDadosContrato(dadosFilter, this.idContrato));
+    }
+
+    @Test
+    public void testValidationContratoGUSInvalid() {
+        List<Long> listIdUnidades = Arrays.asList(2L);
+        Mockito.when(this.unidadeObraContratoUatService.existisByUnidades(listIdUnidades, this.idContrato)).thenReturn(false);
+        this.dadosFilter = new DadosFilter(
+                new HashSet<>(Arrays.asList(GESTOR_UNIDADE_SESI_SIGLA)), null, null, null,
+                null, null, null, new HashSet<>(listIdUnidades));
+        Assert.assertFalse(this.validationService.validarFiltroDadosGestaoUnidadeSesi(dadosFilter, this.idContrato));
+    }
 }

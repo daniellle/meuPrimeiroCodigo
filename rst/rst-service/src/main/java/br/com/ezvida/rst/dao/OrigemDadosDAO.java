@@ -1,5 +1,7 @@
 package br.com.ezvida.rst.dao;
 
+import br.com.ezvida.rst.enums.OrigemDadosEnum;
+import br.com.ezvida.rst.model.EmailRedeCredenciada;
 import br.com.ezvida.rst.model.OrigemDados;
 import fw.core.jpa.BaseDAO;
 import fw.core.jpa.DAOUtil;
@@ -7,7 +9,10 @@ import fw.core.jpa.DAOUtil;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
 
 public class OrigemDadosDAO extends BaseDAO<OrigemDados, Long> {
 
@@ -23,4 +28,10 @@ public class OrigemDadosDAO extends BaseDAO<OrigemDados, Long> {
         return DAOUtil.getSingleResult(query);
     }
 
+    public List<OrigemDados> findOrigemDadosToContrato() {
+        String jpql = " select od from OrigemDados od where od.descricao in ( :descricoes ) ";
+        TypedQuery<OrigemDados> query = criarConsultaPorTipo(jpql);
+        query.setParameter("descricoes", Arrays.asList(OrigemDadosEnum.DEGUSTACAO.getDescricao(), OrigemDadosEnum.ENTRADA_MANUAL.getDescricao()));
+        return query.getResultList();
+    }
 }

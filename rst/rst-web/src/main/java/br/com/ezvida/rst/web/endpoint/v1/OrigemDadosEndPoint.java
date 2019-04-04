@@ -38,4 +38,19 @@ public class OrigemDadosEndPoint extends SegurancaEndpoint<OrigemDados> {
             .header("Content-Version", getApplicationVersion())
             .entity(serializar(origemDadosService.listarTodos())).build();
     }
+
+
+    @GET
+    @Path("/origem-contrato")
+    @Encoded
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response listarParaComboOrigemContrato(@Context SecurityContext context
+        , @Context HttpServletRequest request) {
+        LOGGER.debug("Listando origem de dados");
+        return Response.status(HttpServletResponse.SC_OK).type(MediaType.APPLICATION_JSON)
+            .header("Content-Version", getApplicationVersion())
+            .entity(serializar(origemDadosService.findOrigemDadosToContrato())).build();
+    }
+
 }
