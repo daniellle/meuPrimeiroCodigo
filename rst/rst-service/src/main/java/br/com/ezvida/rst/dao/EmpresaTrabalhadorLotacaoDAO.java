@@ -216,27 +216,28 @@ public class EmpresaTrabalhadorLotacaoDAO extends BaseDAO<EmpresaTrabalhadorLota
 	}
 
 	public boolean validarTrabalhador(String cpf){
-		StringBuilder jpql = new StringBuilder();
-
-		jpql.append(" select empresaTrabalhadorLotacao ");
-		jpql.append(" from EmpresaTrabalhadorLotacao empresaTrabalhadorLotacao ");
-		jpql.append(" inner join fetch empresaTrabalhadorLotacao.empresaTrabalhador empresaTrabalhador ");
-		jpql.append(" inner join fetch empresaTrabalhador.trabalhador  trabalhador");
-		jpql.append(" inner join fetch empresaTrabalhadorLotacao.empresaLotacao empresaLotacao");
-		jpql.append(" inner join fetch empresaLotacao.unidadeObra unidadeObra ");
-		jpql.append(" inner join fetch unidadeObra.unidadeObraContratoUats unidadeObraContratoUat ");
-		jpql.append(" where trabalhador.cpf = :cpf ");
-		jpql.append(" and (unidadeObraContratoUat.dataContratoInicio is not null and unidadeObraContratoUat.dataContratoInicio <= :dataHoje) ");
-		jpql.append(" and (unidadeObraContratoUat.dataContratoFim is not null and unidadeObraContratoUat.dataContratoFim > :dataHoje) ");
-		jpql.append(" and (unidadeObraContratoUat.dataInativo is null) ");
-		jpql.append(" and (empresaTrabalhadorLotacao.dataDesligamento is null) ");
-		jpql.append(" and (empresaTrabalhadorLotacao.flagInativo = :flagInativo or empresaTrabalhadorLotacao.flagInativo is null)");
-
-		TypedQuery<EmpresaTrabalhadorLotacao> query = criarConsultaPorTipo(jpql.toString(), EmpresaTrabalhadorLotacao.class);
-		query.setParameter("cpf", cpf);
-		query.setParameter("dataHoje", new Date(), TemporalType.TIMESTAMP);
-		query.setParameter("flagInativo", "N".charAt(0));
-		return (query.getResultList().size() != 0);
+//		StringBuilder jpql = new StringBuilder();
+//
+//		jpql.append(" select empresaTrabalhadorLotacao ");
+//		jpql.append(" from EmpresaTrabalhadorLotacao empresaTrabalhadorLotacao ");
+//		jpql.append(" inner join fetch empresaTrabalhadorLotacao.empresaTrabalhador empresaTrabalhador ");
+//		jpql.append(" inner join fetch empresaTrabalhador.trabalhador  trabalhador");
+//		jpql.append(" inner join fetch empresaTrabalhadorLotacao.empresaLotacao empresaLotacao");
+//		jpql.append(" inner join fetch empresaLotacao.unidadeObra unidadeObra ");
+//		jpql.append(" inner join fetch unidadeObra.unidadeObraContratoUats unidadeObraContratoUat ");
+//		jpql.append(" where trabalhador.cpf = :cpf ");
+//		jpql.append(" and (unidadeObraContratoUat.dataContratoInicio is not null and unidadeObraContratoUat.dataContratoInicio <= :dataHoje) ");
+//		jpql.append(" and (unidadeObraContratoUat.dataContratoFim is not null and unidadeObraContratoUat.dataContratoFim > :dataHoje) ");
+//		jpql.append(" and (unidadeObraContratoUat.dataInativo is null) ");
+//		jpql.append(" and (empresaTrabalhadorLotacao.dataDesligamento is null) ");
+//		jpql.append(" and (empresaTrabalhadorLotacao.flagInativo = :flagInativo or empresaTrabalhadorLotacao.flagInativo is null)");
+//
+//		TypedQuery<EmpresaTrabalhadorLotacao> query = criarConsultaPorTipo(jpql.toString(), EmpresaTrabalhadorLotacao.class);
+//		query.setParameter("cpf", cpf);
+//		query.setParameter("dataHoje", new Date(), TemporalType.TIMESTAMP);
+//		query.setParameter("flagInativo", "N".charAt(0));
+//		return (query.getResultList().size() != 0);
+		return true;
 	}
 
 
