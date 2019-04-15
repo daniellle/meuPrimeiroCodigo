@@ -2,6 +2,10 @@
 
 -Aplicações para manutenção dos cadastros RST
 
+**v2.145.1**
+(RELEASE EM 15/04/2019)
+- [CADASTROS] By pass bloqueio de vidas ativas
+
 **v2.145.0**
 (RELEASE EM 04/04/2019)
 - [CADASTROS] Usuário não localizado - Erro 500 (GLPI 5010)
