@@ -20,12 +20,10 @@ build:develop:
   <<: *build
   script:
   - cd rst/
-  - mvn $MAVEN_CLI_OPTS clean package -Dmaven.test.skip=true --settings settings.xml
-  - mvn $MAVEN_CLI_OPTS sonar:sonar -Dsonar.projectKey=rst-cadastro -Dsonar.projectName=rst-cadastro -Dsonar.login=$KEY_SONAR -Dsonar.host.url=$URL_SONAR
-  - cd rst-app/
+  - mvn $MAVEN_CLI_OPTS clean package -P frontend -U -Dmaven.test.skip=true --settings settings.xml
   artifacts:
     paths:
-    - target/*.ear
+    - rst-app/target/*.ear
     expire_in: 20 minutes
 
 
