@@ -155,19 +155,19 @@ public class FiltroUsuarioBuilder {
     }
 
     public String getQueryPesquisaUsuario() {
-        return RESULT_BUSCA_USUARIO  + query.toString() + getQueryPorPermissao() + " and dt_exclusao is null order by vue.nome asc";
+        return RESULT_BUSCA_USUARIO  + query.toString() + getQueryPorPermissao() + " and dt_exclusao is null and data_desativacao is null order by vue.nome asc";
     }
 
     public String getQueryCountPesquisaUsuario() {
-        return COUNT_BUSCA_USUARIO + query.toString() + getQueryPorPermissao() + " and dt_exclusao is null";
+        return COUNT_BUSCA_USUARIO + query.toString() + getQueryPorPermissao() + " and dt_exclusao is null and data_desativacao is null";
     }
 
     public String getQueryRelatorioUsuario() {
-        return RESULT_BUSCA_USUARIO_RELATORIO  + query.toString() + getQueryPorPermissao() + " and vue.dt_exclusao is null order by vue.nome asc";
+        return RESULT_BUSCA_USUARIO_RELATORIO  + query.toString() + getQueryPorPermissao() + " and vue.dt_exclusao is null and vue.data_desativacao is null order by vue.nome asc";
     }
 
     public String getQueryCountRelatorioUsuario() {
-        return COUNT_BUSCA_USUARIO_RELATORIO + query.toString() + getQueryPorPermissao() +" and vue.dt_exclusao is null) as usuario_perfil";
+        return COUNT_BUSCA_USUARIO_RELATORIO + query.toString() + getQueryPorPermissao() +" and vue.dt_exclusao is null and vue.data_desativacao is null) as usuario_perfil";
     }
 
     private String getQueryPorPermissao() {
